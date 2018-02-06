@@ -43,6 +43,8 @@ $ python
 >>> NiaPy.__version__
 ```
 
+For more usage examples please look at *examples* folder.
+
 ## About 
 
 ## Mission
