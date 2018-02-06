@@ -1,0 +1,33 @@
+language: python
+python:
+  - 3.6
+
+cache:
+  pip: true
+  directories:
+    - .venv
+
+env:
+  global:
+    - RANDOM_SEED=0
+
+before_install:
+  - pip install pipenv
+  - make doctor
+
+install:
+  - make install
+
+script:
+  - make check
+  #- make test
+
+after_success:
+  - pip install coveralls scrutinizer-ocular
+  - coveralls
+  - ocular
+
+notifications:
+  email:
+    on_success: never
+    on_failure: never

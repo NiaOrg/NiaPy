@@ -1,0 +1,13 @@
+site_name: NiaPy
+site_description: Python micro framework for comparing nature-inspired algorithms.
+site_author: NiaOrg
+repo_url: https://github.com/NiaOrg/NiaPy
+
+theme: readthedocs
+
+pages:
+- Home: index.md
+- About:
+  - Release Notes: about/changelog.md
+  - Contributing: about/contributing.md
+  - License: about/license.md

@@ -1,0 +1,20 @@
+machine:
+  python:
+    version: 3.6.1
+  environment:
+    RANDOM_SEED: 0
+
+dependencies:
+  pre:
+    - pip install pipenv
+    - make doctor
+  override:
+    - make install
+  cache_directories:
+    - .venv
+
+test:
+  override:
+    - make check
+    - make test-unit REPORTS=${CIRCLE_TEST_REPORTS}
+    - make test-int REPORTS=${CIRCLE_TEST_REPORTS}
