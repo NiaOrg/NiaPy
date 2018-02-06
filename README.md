@@ -4,11 +4,18 @@ Unix: [![Unix Build Status](https://img.shields.io/travis/NiaOrg/NiaPy/master.sv
 
 Python micro framework for comparing nature-inspired algorithms.
 
+The micro framework features following algorithms:
+
+- basic:
+  - Bat Algorithm [(see example)](examples/run_ba.py)
+  - Firefly Algorithm [(see example)](examples/run_fa.py)
+- modified:
+
 # Setup
 
 ## Requirements
 
-* Python 3.6+
+* Python 3.6+ (backward compatibility with 2.7.14)
 
 ## Installation
 
