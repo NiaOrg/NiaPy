@@ -10,6 +10,7 @@ The micro framework features following algorithms:
   - Bat Algorithm [(see example)](examples/run_ba.py)
   - Firefly Algorithm [(see example)](examples/run_fa.py)
 - modified:
+  - Hybrid Bat Algorithm [(see example)](examples/run_hba.py)
 
 # Setup
 
