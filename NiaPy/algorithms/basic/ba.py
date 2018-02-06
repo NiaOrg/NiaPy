@@ -1,4 +1,4 @@
-"""Bat algorithm
+"""Bat algorithm.
 
 Date: 2015
 

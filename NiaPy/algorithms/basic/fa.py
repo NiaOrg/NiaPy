@@ -1,4 +1,4 @@
-"""Firefly algorithm
+"""Firefly algorithm.
 
 Date: 2016
 
@@ -32,7 +32,7 @@ class FireflyAlgorithm():
         self.Fireflies_tmp = [[0 for i in range(self.D)] for j in range(
             self.NP)]  # intermediate pop
         self.Fitness = [0.0] * self.NP  # fitness values
-        self.I = [0.0] * self.NP  # light intensity
+        self.Intensity = [0.0] * self.NP  # light intensity
         self.nbest = [0.0] * self.NP  # the best solution found so far
         self.LB = LB  # lower bound
         self.UB = UB  # upper bound
@@ -46,7 +46,7 @@ class FireflyAlgorithm():
                 self.Fireflies[i][j] = random.uniform(
                     0, 1) * (self.UB - self.LB) + self.LB
             self.Fitness[i] = 1.0  # initialize attractiveness
-            self.I[i] = self.Fitness[i]
+            self.Intensity[i] = self.Fitness[i]
 
     def alpha_new(self, a):
         delta = 1.0 - math.pow((math.pow(10.0, -4.0) / 0.9), 1.0 / float(a))
@@ -59,10 +59,10 @@ class FireflyAlgorithm():
         for i in range(0, (self.NP - 1)):
             j = i + 1
             for j in range(j, self.NP):
-                if self.I[i] > self.I[j]:
-                    z = self.I[i]  # exchange attractiveness
-                    self.I[i] = self.I[j]
-                    self.I[j] = z
+                if self.Intensity[i] > self.Intensity[j]:
+                    z = self.Intensity[i]  # exchange attractiveness
+                    self.Intensity[i] = self.Intensity[j]
+                    self.Intensity[j] = z
                     z = self.Fitness[i]  # exchange fitness
                     self.Fitness[i] = self.Fitness[j]
                     self.Fitness[j] = z
@@ -97,7 +97,7 @@ class FireflyAlgorithm():
                     r += (self.Fireflies[i][k] - self.Fireflies[j][k]) * \
                         (self.Fireflies[i][k] - self.Fireflies[j][k])
                 r = math.sqrt(r)
-                if self.I[i] > self.I[j]:  # brighter and more attractive
+                if self.Intensity[i] > self.Intensity[j]:  # brighter and more attractive
                     beta0 = 1.0
                     beta = (beta0 - self.betamin) * \
                         math.exp(-self.gamma * math.pow(r, 2.0)) + self.betamin
@@ -122,14 +122,14 @@ class FireflyAlgorithm():
             for i in range(self.NP):
                 self.Fitness[i] = self.Fun(self.D, self.Fireflies[i])
                 self.evaluations = self.evaluations + 1
-                self.I[i] = self.Fitness[i]
+                self.Intensity[i] = self.Fitness[i]
 
             # ranking fireflies by their light intensity
             self.sort_ffa()
             # replace old population
             self.replace_ffa()
             # find the current best
-            self.fbest = self.I[0]
+            self.fbest = self.Intensity[0]
             # move all fireflies to the better locations
             self.move_ffa()
 
