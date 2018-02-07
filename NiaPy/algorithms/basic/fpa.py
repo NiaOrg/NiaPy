@@ -37,10 +37,10 @@ class FlowerPollinationAlgorithm(object):
         self.Lb = [0] * self.D  # lower bound
         self.Ub = [0] * self.D  # upper bound
 
-        self.dS = [[0 for i in range(self.D)]
-                   for j in range(self.NP)]  # differential
-        self.Sol = [[0 for i in range(self.D)]
-                    for j in range(self.NP)]  # population of solutions
+        self.dS = [[0 for _i in range(self.D)]
+                   for _j in range(self.NP)]  # differential
+        self.Sol = [[0 for _i in range(self.D)]
+                    for _j in range(self.NP)]  # population of solutions
         self.Fitness = [0] * self.NP  # fitness
         self.best = [0] * self.D  # best solution
         self.evaluations = 0  # evaluations counter

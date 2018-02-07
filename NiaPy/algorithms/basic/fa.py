@@ -15,7 +15,7 @@ import math
 __all__ = ['FireflyAlgorithm']
 
 
-class FireflyAlgorithm():
+class FireflyAlgorithm(object):
 
     # pylint: disable=too-many-instance-attributes
     def __init__(self, D, NP, nFES, alpha, betamin, gamma, LB, UB, function):
@@ -27,9 +27,9 @@ class FireflyAlgorithm():
         self.gamma = gamma  # gamma parameter
         # sort of fireflies according to fitness value
         self.Index = [0] * self.NP
-        self.Fireflies = [[0 for i in range(self.D)]
-                          for j in range(self.NP)]  # firefly agents
-        self.Fireflies_tmp = [[0 for i in range(self.D)] for j in range(
+        self.Fireflies = [[0 for _i in range(self.D)]
+                          for _j in range(self.NP)]  # firefly agents
+        self.Fireflies_tmp = [[0 for _i in range(self.D)] for _j in range(
             self.NP)]  # intermediate pop
         self.Fitness = [0.0] * self.NP  # fitness values
         self.Intensity = [0.0] * self.NP  # light intensity
