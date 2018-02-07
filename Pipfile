@@ -34,3 +34,4 @@ sniffer = "*"
 pync = "*"
 macfsevents = {version = "*", sys_platform = "== 'darwin'"}
 "enum34" = "*"
+singledispatch = "*"

@@ -32,3 +32,5 @@ notifications:
   email:
     on_success: never
     on_failure: never
+  webhooks:
+    - https://hooks.slack.com/services/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 
