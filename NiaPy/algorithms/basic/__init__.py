@@ -2,10 +2,10 @@
 
 from NiaPy.algorithms.basic.ba import BatAlgorithm
 from NiaPy.algorithms.basic.fa import FireflyAlgorithm
-from NiaPy.algorithms.basic.de import DEAlgorithm
+from NiaPy.algorithms.basic.de import DifferentialEvolutionAlgorithm
 
 __all__ = [
-    'DEAlgorithm',
     'BatAlgorithm',
-    'FireflyAlgorithm'
+    'FireflyAlgorithm',
+    'DifferentialEvolutionAlgorithm'
 ]
