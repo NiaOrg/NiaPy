@@ -7,7 +7,7 @@ Authors : Grega Vrbancic
 License: MIT
 
 Reference paper: Fister Jr., Iztok and Fister, Dusan and Yang, Xin-She.
-"A Hybrid Bat Algorithm". ElektrotehniŠki vestnik, 2013. 1-7.
+"A Hybrid Bat Algorithm". Elektrotehniski vestnik, 2013. 1-7.
 """
 
 
