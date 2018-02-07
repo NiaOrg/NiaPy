@@ -1,4 +1,4 @@
-"""Implementation of Sphere function"""
+"""Implementation of Sphere function."""
 
 
 class Sphere:
