@@ -21,4 +21,3 @@ for i in range(10):
     Best = Algorithm.move_bat()
 
     print(Best)
-
