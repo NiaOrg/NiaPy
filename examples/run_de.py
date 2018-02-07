@@ -5,7 +5,8 @@ sys.path.append('.')
 # End of fix
 
 import random
-from NiaPy.algorithms.modified import HybridBatAlgorithm
+from NiaPy.algorithms.basic import DEAlgorithm
+
 
 def Fun(D, sol):
     val = 0.0
@@ -13,12 +14,10 @@ def Fun(D, sol):
         val = val + sol[i] * sol[i]
     return val
 
-# For reproducive results
-random.seed(1234)
 
 for i in range(10):
-    Algorithm = HybridBatAlgorithm(
-        10, 40, 1000, 0.5, 0.5, 0.0, 2.0, -2, 2, Fun)
-    Best = Algorithm.move_bat()
+    Algorithm = DEAlgorithm(10, 40, 10000, 0.5, 0.9,
+                             0.0, 2.0, Fun)
+    Best = Algorithm.run()
 
     print(Best)
