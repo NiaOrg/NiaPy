@@ -35,3 +35,4 @@ pync = "*"
 macfsevents = {version = "*", sys_platform = "== 'darwin'"}
 "enum34" = "*"
 singledispatch = "*"
+backports-functools-lru-cache = "*"

@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "d5691a2bff16c7c608c5279d8221b20b60601db983be909a4e2c70ec1bdeb86b"
+            "sha256": "d89d273c4f759e271beb4a962ce9a8790a7b3a467d80f5d8a6a895658ae2c895"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -112,6 +112,13 @@
                 "sha256:1c7960ccfd6a005cd9f7ba884e6316b5e430a3f1a6c37c5f87d8b43f83b54ec9"
             ],
             "version": "==17.4.0"
+        },
+        "backports-functools-lru-cache": {
+            "hashes": [
+                "sha256:f0b0e4eba956de51238e17573b7087e852dfe9854afd2e9c873f73fc0ca0a6dd",
+                "sha256:9d98697f088eb1b0fa451391f91afb5e3ebde16bbdb272819fd091151fda4f1a"
+            ],
+            "version": "==1.5"
         },
         "backports.shutil-get-terminal-size": {
             "hashes": [
