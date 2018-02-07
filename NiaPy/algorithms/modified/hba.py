@@ -1,14 +1,13 @@
-# -*- coding: utf-8 -*-
 """Hybrid bat algorithm.
 
 Date: 2018
 
-Authors : Grega Vrbančič
+Authors : Grega Vrbancic
 
 License: MIT
 
-Reference paper: Fister Jr., Iztok and Fister, Dušan and Yang, Xin-She.
-"A Hybrid Bat Algorithm". ElektrotehniŠki vestnik, 2013. 1-7.
+Reference paper: Fister Jr., Iztok and Fister, Dusan and Yang, Xin-She.
+"A Hybrid Bat Algorithm". Elektrotehniski vestnik, 2013. 1-7.
 """
 
 
@@ -17,7 +16,7 @@ import random
 __all__ = ['HybridBatAlgorithm']
 
 
-class HybridBatAlgorithm():
+class HybridBatAlgorithm(object):
     # pylint: disable=too-many-instance-attributes
     def __init__(self, D, NP, nFES, A, r, Qmin, Qmax, Lower, Upper, function):
         self.D = D  # dimension
@@ -36,9 +35,9 @@ class HybridBatAlgorithm():
         self.Ub = [0] * self.D  # upper bound
         self.Q = [0] * self.NP  # frequency
 
-        self.v = [[0 for i in range(self.D)]
-                  for j in range(self.NP)]  # velocity
-        self.Sol = [[0 for i in range(self.D)] for j in range(
+        self.v = [[0 for _i in range(self.D)]
+                  for _j in range(self.NP)]  # velocity
+        self.Sol = [[0 for _i in range(self.D)] for _j in range(
             self.NP)]  # population of solutions
         self.Fitness = [0] * self.NP  # fitness
         self.best = [0] * self.D  # best solution

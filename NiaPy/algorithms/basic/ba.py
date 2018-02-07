@@ -16,7 +16,7 @@ import random
 __all__ = ['BatAlgorithm']
 
 
-class BatAlgorithm():
+class BatAlgorithm(object):
     # pylint: disable=too-many-instance-attributes
     def __init__(self, D, NP, nFES, A, r, Qmin, Qmax, Lower, Upper, function):
         self.D = D  # dimension
@@ -35,9 +35,9 @@ class BatAlgorithm():
         self.Ub = [0] * self.D  # upper bound
         self.Q = [0] * self.NP  # frequency
 
-        self.v = [[0 for i in range(self.D)]
-                  for j in range(self.NP)]  # velocity
-        self.Sol = [[0 for i in range(self.D)] for j in range(
+        self.v = [[0 for _i in range(self.D)]
+                  for _j in range(self.NP)]  # velocity
+        self.Sol = [[0 for _i in range(self.D)] for _j in range(
             self.NP)]  # population of solutions
         self.Fitness = [0] * self.NP  # fitness
         self.best = [0] * self.D  # best solution
