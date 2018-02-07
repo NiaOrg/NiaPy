@@ -21,4 +21,4 @@ for i in range(10):
         10, 40, 1000, 0.5, 0.5, 0.0, 2.0, -2, 2, Fun)
     Best = Algorithm.move_bat()
 
-print(Best)
+    print(Best)
