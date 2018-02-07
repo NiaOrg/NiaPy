@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "1142532fd757e1a8b405bdaea93ddecdbd15a5280c60ed3792ebbc3abeca7e7b"
+            "sha256": "5b03e620057084a38ffdcac6fe7c3a2ed5bdb8c4165d6696a61aaf9bfed0970f"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -209,6 +209,15 @@
                 "sha256:51e64ef2ebfb29cae1faa133b3710143496eca21c530f3f71424d77687764274"
             ],
             "version": "==0.14"
+        },
+        "enum34": {
+            "hashes": [
+                "sha256:6bd0f6ad48ec2aa117d3d141940d484deccda84d4fcd884f5c3d93c23ecd8c79",
+                "sha256:644837f692e5f550741432dd3f223bbb9852018674981b1664e5dc339387588a",
+                "sha256:8ad8c4783bf61ded74527bffb48ed9b54166685e4230386a9ed9b1279e2df5b1",
+                "sha256:2d81cbbe0e73112bdfe6ef8576f2238f2ba27dd0d55752a776c41d38b7da2850"
+            ],
+            "version": "==1.1.6"
         },
         "freezegun": {
             "hashes": [
