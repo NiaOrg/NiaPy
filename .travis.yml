@@ -1,34 +1,28 @@
 language: python
 python:
-  - 3.6
-  - 2.7.14
-
+- 3.6
+- 2.7.14
 cache:
   pip: true
   directories:
-    - .venv
-
+  - ".venv"
 env:
   global:
-    - RANDOM_SEED=0
-
+  - RANDOM_SEED=0
 before_install:
-  - pip install pipenv
-  - make doctor
-
+- pip install pipenv
+- make doctor
 install:
-  - make install
-
+- make install
 script:
-  - make check
-  #- make test
-
+- make check
 after_success:
-  - pip install coveralls scrutinizer-ocular
-  - coveralls
-  - ocular
-
+- pip install coveralls scrutinizer-ocular
+- coveralls
+- ocular
 notifications:
   email:
     on_success: never
     on_failure: never
+  slack:
+    secure: R0ISRBK3qhYECeJaUtdua2RAyYLPPsgHkk9BvceA228HlyZx8l3y2FXgbQ1AJeEQycenyJ1fPUNaQJCeTdja32+NVoQ8dsieQlYD1Jzzg3rEVLeaaHhQ3kjOsg5A3btPonmSBKfZtVUOob5GmoaqieuX10krHQgIyGBshI5bqbxhoqrJ837hJ4oxK48ymIL7pWXGMG2zIgWCQ4CasZLA2cluKraBiYyolGpUb3ntA18GMFz9Lg/fATpUY4nP0zcCWpGZdvibW1RYbZQasrjk31IYT+huju2xW5LdbP66/PPtkAzfB5s52cSjRxAHqgiZOA2zg+0Q6FwWZKpznYnjzB001AzFL/V9eXoTtQrA2j0ERYpPapsvwXfdFhpoJBczjmFlTIrLIXXp5l7pX+IJIRFipDFqzhJ7+p7NDP5N3q6CtK8SnJ8sCbjP5g9gb5usJxlqMQODWi0cUxICNGM/wLazDwLLo8qlLkNEMxZDh7bizGIRy/20mK+j4lv+rPSinfbfz4Ptk10kfVW/FjwIh2r3RUuELcECG9fKd+vBOf3s/hKJMbx/HK2B4Ugh2MRfnH4jgNvc5rQcB+Hy4sXrnEEkfbPWDVY838Ry5Rr/cKRc7PzopFIqiy2wcKfH/GFqhZjFRG/HG2Zlufcle2vd/sGAl7Wwo2WBJDCEZoY6RCI=

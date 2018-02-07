@@ -2,6 +2,8 @@ environment:
   global:
     RANDOM_SEED: 0
   matrix:
+    - PYTHON_MAJOR: 2
+      PYTHON_MINOR: 7
     - PYTHON_MAJOR: 3
       PYTHON_MINOR: 6
 
@@ -25,3 +27,7 @@ build: off
 test_script:
   - make check
   #- make test
+
+notifications:
+  - provider: Slack
+    incoming_webhook: https://hooks.slack.com/services/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
