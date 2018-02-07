@@ -25,3 +25,9 @@ build: off
 test_script:
   - make check
   #- make test
+
+notifications:
+  - provider: Slack
+    auth_token:
+      secure: $SLACK_TOKEN
+    channel: niapy_builds
