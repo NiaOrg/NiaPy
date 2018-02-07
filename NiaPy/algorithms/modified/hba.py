@@ -1,13 +1,12 @@
-# -*- coding: utf-8 -*-
 """Hybrid bat algorithm.
 
 Date: 2018
 
-Authors : Grega Vrbančič
+Authors : Grega Vrbancic
 
 License: MIT
 
-Reference paper: Fister Jr., Iztok and Fister, Dušan and Yang, Xin-She.
+Reference paper: Fister Jr., Iztok and Fister, Dusan and Yang, Xin-She.
 "A Hybrid Bat Algorithm". ElektrotehniŠki vestnik, 2013. 1-7.
 """
 
