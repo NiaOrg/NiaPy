@@ -15,15 +15,14 @@ https://www.mathworks.com/matlabcentral/fileexchange/45112-flower-pollination-al
 """
 
 import random
-import math
 import numpy as np
 from scipy.special import gamma as Gamma
 
 __all__ = ['FlowerPollinationAlgorithm']
 
 
-class FlowerPollination():
-
+class FlowerPollinationAlgorithm():
+    # pylint: disable=too-many-instance-attributes
     def __init__(self, D, NP, nFES, p, Lower, Upper, function):
         self.D = D  # dimension
         self.NP = NP  # population size
@@ -122,7 +121,7 @@ class FlowerPollination():
 
     def Levy(self):
         beta = 1.5
-        sigma = (Gamma(1 + beta) * np.sin(np.pi * beta / 2) / \
+        sigma = (Gamma(1 + beta) * np.sin(np.pi * beta / 2) /
                  (Gamma((1 + beta) / 2) * beta * 2**((beta - 1) / 2)))**(1 / beta)
         u = [[0] for j in range(self.D)]
         v = [[0] for j in range(self.D)]
