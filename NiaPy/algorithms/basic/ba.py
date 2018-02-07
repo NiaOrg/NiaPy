@@ -35,9 +35,9 @@ class BatAlgorithm(object):
         self.Ub = [0] * self.D  # upper bound
         self.Q = [0] * self.NP  # frequency
 
-        self.v = [[0 for i in range(self.D)]
-                  for j in range(self.NP)]  # velocity
-        self.Sol = [[0 for i in range(self.D)] for j in range(
+        self.v = [[0 for _i in range(self.D)]
+                  for _j in range(self.NP)]  # velocity
+        self.Sol = [[0 for _i in range(self.D)] for _j in range(
             self.NP)]  # population of solutions
         self.Fitness = [0] * self.NP  # fitness
         self.best = [0] * self.D  # best solution
