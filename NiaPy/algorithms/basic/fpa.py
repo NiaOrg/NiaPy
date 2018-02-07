@@ -21,7 +21,7 @@ from scipy.special import gamma as Gamma
 __all__ = ['FlowerPollinationAlgorithm']
 
 
-class FlowerPollinationAlgorithm():
+class FlowerPollinationAlgorithm(object):
     # pylint: disable=too-many-instance-attributes
     def __init__(self, D, NP, nFES, p, Lower, Upper, function):
         self.D = D  # dimension

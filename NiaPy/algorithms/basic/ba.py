@@ -16,7 +16,7 @@ import random
 __all__ = ['BatAlgorithm']
 
 
-class BatAlgorithm():
+class BatAlgorithm(object):
     # pylint: disable=too-many-instance-attributes
     def __init__(self, D, NP, nFES, A, r, Qmin, Qmax, Lower, Upper, function):
         self.D = D  # dimension
