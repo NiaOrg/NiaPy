@@ -14,6 +14,13 @@ export PIPENV_VENV_IN_PROJECT=true
 export PIPENV_IGNORE_VIRTUALENVS=true
 ENV := .venv
 
+# Set python version
+ifeq ($(shell which python2),)
+	PYTHON = python2
+else
+	PYTHON = python
+endif
+
 # MAIN TASKS ##################################################################
 
 SNIFFER := pipenv run sniffer
@@ -30,7 +37,7 @@ watch: install .clean-test ## Continuously run all CI tasks when files chanage
 
 .PHONY: run ## Start the program
 run: install
-	pipenv run python $(PACKAGE)/__main__.py
+	pipenv run $(PYTHON) $(PACKAGE)/__main__.py
 
 # SYSTEM DEPENDENCIES #########################################################
 
@@ -51,7 +58,7 @@ $(DEPENDENCIES):
 	@ touch $@
 
 $(METADATA): setup.py
-	pipenv run python setup.py develop
+	pipenv run $(PYTHON) setup.py develop
 	@ touch $@
 
 # CHECKS ######################################################################
@@ -169,9 +176,9 @@ build: dist
 dist: install $(DIST_FILES)
 $(DIST_FILES): $(MODULES) README.rst CHANGELOG.rst
 	rm -f $(DIST_FILES)
-	pipenv run python setup.py check --restructuredtext --strict --metadata
-	pipenv run python setup.py sdist
-	pipenv run python setup.py bdist_wheel
+	pipenv run $(PYTHON) setup.py check --restructuredtext --strict --metadata
+	pipenv run $(PYTHON) setup.py sdist
+	pipenv run $(PYTHON) setup.py bdist_wheel
 
 %.rst: %.md
 	pandoc -f markdown_github -t rst -o $@ $<
