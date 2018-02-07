@@ -2,6 +2,8 @@ environment:
   global:
     RANDOM_SEED: 0
   matrix:
+    - PYTHON_MAJOR: 2
+      PYTHON_MINOR: 7
     - PYTHON_MAJOR: 3
       PYTHON_MINOR: 6
 
@@ -29,5 +31,5 @@ test_script:
 notifications:
   - provider: Slack
     auth_token:
-      secure: $SLACK_TOKEN
+      secure: SLACK_TOKEN
     channel: niapy_builds
