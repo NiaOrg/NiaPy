@@ -4,13 +4,13 @@ url = "https://pypi.python.org/simple"
 verify_ssl = true
 name = "pypi"
 
-[requires]
-
-python_version = "3.6"
 
 [packages]
 
 click = "*"
+numpy = "==1.14.0"
+scipy = "==1.0.0"
+
 
 [dev-packages]
 
@@ -22,19 +22,14 @@ pytest-describe = "*"
 pytest-expecter = "*"
 pytest-random = "*"
 pytest-cov = "*"
-
 freezegun = "*"
 "coverage.space" = "*"
-
 mkdocs = "*"
 docutils = "*"
 pygments = "*"
-
 wheel = "*"
 pyinstaller = "*"
-
 twine = "*"
-
 sniffer = "*"
 pync = "*"
-MacFSEvents = {version = "*", sys_platform = "== 'darwin'"}
+macfsevents = {version = "*", sys_platform = "== 'darwin'"}
