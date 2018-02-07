@@ -15,11 +15,7 @@ export PIPENV_IGNORE_VIRTUALENVS=true
 ENV := .venv
 
 # Set python version
-ifeq ($(shell which python2),)
-	PYTHON = python2
-else
-	PYTHON = python
-endif
+PYTHON = python
 
 # MAIN TASKS ##################################################################
 
