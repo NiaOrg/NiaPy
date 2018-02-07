@@ -14,7 +14,7 @@ def pytest_configure(config):
         """Reporter that only shows dots when running tests."""
 
         def __init__(self, *args, **kwargs):
-            super().__init__(*args, **kwargs)
+            super(QuietReporter, self).__init__(*args, **kwargs)
             self.verbosity = 0
             self.showlongtestinfo = False
             self.showfspath = False
