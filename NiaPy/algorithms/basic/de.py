@@ -6,7 +6,9 @@ Authors : Uros Mlakar
 
 License: MIT
 
-Reference paper: Storn, Rainer, and Kenneth Price. "Differential evolution - a simple and efficient heuristic for global optimization over continuous spaces." Journal of global optimization 11.4 (1997): 341-359.
+Reference paper: Storn, Rainer, and Kenneth Price. "Differential evolution - a simple and
+efficient heuristic for global optimization over continuous spaces." Journal of global
+optimization 11.4 (1997): 341-359.
 
 TODO
 """
