@@ -1,6 +1,24 @@
-# For Contributors
+# Contributing to NiaPy
+:+1::tada: First off, thanks for taking the time to contribute! :tada::+1:
 
-## Setup
+## Code of Conduct
+This project and everyone participating in it is governed by the [NiaPy Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to [niapy.organization@gmail.com](mailto:niapy.organization@gmail.com).
+
+## How Can I Contribute?
+
+### Reporting Bugs
+Before creating bug reports, please check existing issues list as you might find out that you don't need to create one. When you are creating a bug report, please include as many details as possible. Fill out the [required template](.github/issue_template.md), the information it asks for helps us resolve issues faster.
+
+### Suggesting Enhancements
+git statu
+
+### Pull requests
+- Fill in the [reqired template](.github/pull_request_template.md)
+- Document new code
+- Make sure all the code goes through Pylint without problems (run ```make check``` command)
+- Make sure PR builds (Travis and AppVeyor) goes through
+
+## Setup development environment
 
 ### Requirements
 
@@ -61,20 +79,3 @@ $ make pylint
 $ make pycodestyle
 $ make pydocstyle
 $ make check  # includes all checks
-```
-
-## Continuous Integration
-
-The CI server will report overall build status:
-
-```sh
-$ make ci
-```
-
-## Release Tasks
-
-Release to PyPI:
-
-```sh
-$ make upload
-```

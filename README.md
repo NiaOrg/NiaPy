@@ -10,10 +10,12 @@ Python micro framework for comparing nature-inspired algorithms.
 The micro framework features following algorithms:
 
 - basic:
-  - Bat Algorithm [(see example)](examples/run_ba.py)
-  - Firefly Algorithm [(see example)](examples/run_fa.py)
+  - Bat Algorithm ([see example](examples/run_ba.py))
+  - Firefly Algorithm ([see example](examples/run_fa.py))
+  - Differential evolution algorithm ([see example](examples/run_de.py))
+  - Flower Pollination algorithm
 - modified:
-  - Hybrid Bat Algorithm [(see example)](examples/run_hba.py)
+  - Hybrid Bat Algorithm ([see example](examples/run_hba.py))
 
 # Setup
 
@@ -47,7 +49,15 @@ $ python
 >>> NiaPy.__version__
 ```
 
-For more usage examples please look at *examples* folder.
+For more usage examples please look at **examples** folder.
+
+## Contributing
+
+[![Open Source Helpers](https://www.codetriage.com/niaorg/niapy/badges/users.svg)](https://www.codetriage.com/niaorg/niapy)
+
+We encourage you to contribute to NiaPy! Please check out the [](Contributing to NiaPy guide) for guidelines about how to proceed.
+
+Everyone interacting in NiaPy's codebases, issue trackers, chat rooms and mailing lists is expected to follow the NiaPy [](code of conduct).
 
 ## About 
 
@@ -55,8 +65,8 @@ For more usage examples please look at *examples* folder.
 
 ## Contributors
 
-**License**
+## Licence
 This package is distributed under the MIT License. This license can be found online at http://www.opensource.org/licenses/MIT.
 
-**Disclaimer**
+## Disclaimer
 This framework is provided as-is, and there are no guarantees that it fits your purposes or that it is bug-free. Use it at your own risk!
