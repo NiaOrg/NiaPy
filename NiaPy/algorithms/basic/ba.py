@@ -12,6 +12,7 @@ Springer, Berlin, Heidelberg, 2010. 65-74.
 """
 
 import random
+from NiaPy.benchmarks import Rastrigin, Rosenbrock, Griewank, Sphere
 
 __all__ = ['BatAlgorithm']
 
@@ -42,7 +43,19 @@ class BatAlgorithm(object):
         self.Fitness = [0] * self.NP  # fitness
         self.best = [0] * self.D  # best solution
         self.evaluations = 0  # evaluations counter
-        self.Fun = function
+        if callable(function):
+            self.Fun = function
+        else:
+            if function == 'rastrigin':
+                self.Fun = Rastrigin().function()
+            elif function == 'rosenbrock':
+                self.Fun = Rosenbrock().function()
+            elif function == 'griewank':
+                self.Fun = Griewank().function()
+            elif function == 'sphere':
+                self.Fun = Sphere().function()
+            else:
+                raise TypeError('Passed benchmark is not defined!')
 
     def best_bat(self):
         i = 0

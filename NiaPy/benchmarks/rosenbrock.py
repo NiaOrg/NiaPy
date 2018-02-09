@@ -7,19 +7,16 @@ __all__ = ['Rosenbrock']
 
 class Rosenbrock(object):
 
-    def __init__(self, D, sol):
-        self.D = D
-        self.sol = sol
+    @classmethod
+    def function(cls):
+        def evaluate(D, sol):
+            val = 0.0
 
-    def evaluate(self):
-        val = 0.0
+            for i in range(D - 1):
+                val = val + 100 * \
+                    math.pow(sol[i + 1] - math.pow((sol[i]), 2),
+                             2) + math.pow((sol[i] - 1), 2)
 
-        for i in range(self.D - 1):
-            val = val + 100 * \
-                math.pow(
-                    self.sol[i + 1] - math.pow((self.sol[i]),
-                                               2),
-                    2) + math.pow((self.sol[i] - 1),
-                                  2)
+            return val
 
-        return val
+        return evaluate
