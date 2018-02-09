@@ -2,6 +2,7 @@ from unittest import TestCase
 
 from NiaPy.algorithms.basic import FireflyAlgorithm
 
+
 class FATestCase(TestCase):
     def setUp(self):
         def Fun(D, sol):
