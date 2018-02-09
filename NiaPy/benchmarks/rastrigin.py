@@ -1,8 +1,10 @@
 """Implementation of Rastrigin benchmark function."""
 import math
 
+__all__ = ['Rastrigin']
 
-class Rastrigin:
+
+class Rastrigin(object):
 
     def __init__(self, D, sol):
         self.D = D
