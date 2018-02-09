@@ -3,7 +3,7 @@
 __all__ = ['Sphere']
 
 
-class Sphere:
+class Sphere(object):
     def __init__(self, D, sol):
         self.D = D
         self.sol = sol

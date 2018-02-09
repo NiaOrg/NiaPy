@@ -5,7 +5,7 @@ import math
 __all__ = ['Rosenbrock']
 
 
-class Rosenbrock:
+class Rosenbrock(object):
 
     def __init__(self, D, sol):
         self.D = D
