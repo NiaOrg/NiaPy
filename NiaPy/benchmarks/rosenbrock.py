@@ -2,6 +2,8 @@
 
 import math
 
+__all__ = ['Rosenbrock']
+
 
 class Rosenbrock:
 

@@ -1,5 +1,7 @@
 """Implementation of Sphere function."""
 
+__all__ = ['Sphere']
+
 
 class Sphere:
     def __init__(self, D, sol):
