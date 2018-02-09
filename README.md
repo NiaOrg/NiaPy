@@ -55,9 +55,9 @@ For more usage examples please look at **examples** folder.
 
 [![Open Source Helpers](https://www.codetriage.com/niaorg/niapy/badges/users.svg)](https://www.codetriage.com/niaorg/niapy)
 
-We encourage you to contribute to NiaPy! Please check out the [](Contributing to NiaPy guide) for guidelines about how to proceed.
+We encourage you to contribute to NiaPy! Please check out the [Contributing to NiaPy guide](CONTRIBUTING.md) for guidelines about how to proceed.
 
-Everyone interacting in NiaPy's codebases, issue trackers, chat rooms and mailing lists is expected to follow the NiaPy [](code of conduct).
+Everyone interacting in NiaPy's codebases, issue trackers, chat rooms and mailing lists is expected to follow the NiaPy [code of conduct](CODE_OF_CONDUCT.md).
 
 ## About 
 
