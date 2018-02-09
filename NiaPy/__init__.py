@@ -1,6 +1,6 @@
 from NiaPy import algorithms
 
-__all__ = ['algorithms']
+__all__ = ['algorithms', 'benchmarks']
 __project__ = 'NiaPy'
 __version__ = '0.0.0'
 
