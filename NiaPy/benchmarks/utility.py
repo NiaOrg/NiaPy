@@ -4,6 +4,7 @@ from . import Rastrigin, Rosenbrock, Griewank, Sphere
 
 __all__ = ['Utility']
 
+
 class Utility(object):
 
     @staticmethod
