@@ -17,6 +17,7 @@ https://www.mathworks.com/matlabcentral/fileexchange/45112-flower-pollination-al
 import random
 import numpy as np
 from scipy.special import gamma as Gamma
+from NiaPy.benchmarks.utility import Utility
 
 __all__ = ['FlowerPollinationAlgorithm']
 
@@ -30,7 +31,7 @@ class FlowerPollinationAlgorithm(object):
         self.p = p  # probability switch
         self.Lower = Lower  # lower bound
         self.Upper = Upper  # upper bound
-        self.Fun = function  # function
+        self.Fun = Utility.itialize_benchmark(function)  # function
 
         self.f_min = 0.0  # minimum fitness
 

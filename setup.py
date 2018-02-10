@@ -55,11 +55,6 @@ setuptools.setup(
 
     packages=setuptools.find_packages(),
 
-    entry_points={'console_scripts': [
-        'NiaPy-cli = NiaPy.cli:main',
-        'NiaPy-gui = NiaPy.gui:main',
-    ]},
-
     long_description=build_description(),
     license='MIT',
     classifiers=[
@@ -68,12 +63,16 @@ setuptools.setup(
         'Natural Language :: English',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.6'
     ],
 
     install_requires=[
         # TODO: Add your library's requirements here
         "click ~= 6.0",
+        "numpy ~= 1.14.0",
+        "scipy ~= 1.0.0"
     ]
 )

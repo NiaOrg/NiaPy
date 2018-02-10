@@ -6,16 +6,16 @@ __all__ = ['Rastrigin']
 
 class Rastrigin(object):
 
-    def __init__(self, D, sol):
-        self.D = D
-        self.sol = sol
+    @classmethod
+    def function(cls):
+        def evaluate(D, sol):
+            val = 0.0
 
-    def evaluate(self):
-        val = 0.0
+            for i in range(D):
+                val = val + \
+                    math.pow(sol[i], 2) - 10 * math.cos(
+                        2 * math.pi * sol[i]) + 10
 
-        for i in range(self.D):
-            val = val + \
-                math.pow(self.sol[i], 2) - 10 * math.cos(
-                    2 * math.pi * self.sol[i]) + 10
+            return val
 
-        return val
+        return evaluate

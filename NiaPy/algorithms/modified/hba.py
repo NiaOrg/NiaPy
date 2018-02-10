@@ -12,6 +12,7 @@ Reference paper: Fister Jr., Iztok and Fister, Dusan and Yang, Xin-She.
 
 
 import random
+from NiaPy.benchmarks.utility import Utility
 
 __all__ = ['HybridBatAlgorithm']
 
@@ -28,6 +29,7 @@ class HybridBatAlgorithm(object):
         self.Qmax = Qmax  # frequency max
         self.Lower = Lower  # lower bound
         self.Upper = Upper  # upper bound
+        self.Fun = Utility.itialize_benchmark(function)
 
         self.f_min = 0.0  # minimum fitness
 
@@ -42,7 +44,6 @@ class HybridBatAlgorithm(object):
         self.Fitness = [0] * self.NP  # fitness
         self.best = [0] * self.D  # best solution
         self.evaluations = 0  # evaluations counter
-        self.Fun = function
 
         self.F = 0.5
         self.CR = 0.9
