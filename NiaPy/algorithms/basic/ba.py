@@ -12,14 +12,35 @@ Springer, Berlin, Heidelberg, 2010. 65-74.
 """
 
 import random
-from NiaPy.benchmarks import Rastrigin, Rosenbrock, Griewank, Sphere
+from NiaPy.benchmarks.utility import Utility
 
 __all__ = ['BatAlgorithm']
 
 
 class BatAlgorithm(object):
+    """Bat Algorithm implementation."""
+
     # pylint: disable=too-many-instance-attributes
     def __init__(self, D, NP, nFES, A, r, Qmin, Qmax, Lower, Upper, function):
+        """Initialize algorithm.
+
+        Arguments:
+            D {integer} -- dimension of problem
+            NP {integer} -- population size
+            nFES {integer} -- number of function evaluations
+            A {decimal} -- loudness
+            r {decimal} -- pulse rate
+            Qmin {decimal} -- minimum frequency
+            Qmax {decimal } -- maximum frequency
+            Lower {decimal} -- lower bound
+            Upper {decimal} -- upper bound
+            function {function} -- benchmark function
+
+        Raises:
+            TypeError -- Raised when given benchmark function which does not exists.
+
+        """
+
         self.D = D  # dimension
         self.NP = NP  # population size
         self.nFES = nFES  # number of function evaluations
@@ -43,21 +64,11 @@ class BatAlgorithm(object):
         self.Fitness = [0] * self.NP  # fitness
         self.best = [0] * self.D  # best solution
         self.evaluations = 0  # evaluations counter
-        if callable(function):
-            self.Fun = function
-        else:
-            if function == 'rastrigin':
-                self.Fun = Rastrigin().function()
-            elif function == 'rosenbrock':
-                self.Fun = Rosenbrock().function()
-            elif function == 'griewank':
-                self.Fun = Griewank().function()
-            elif function == 'sphere':
-                self.Fun = Sphere().function()
-            else:
-                raise TypeError('Passed benchmark is not defined!')
+        self.Fun = Utility.itialize_benchmark(function)
 
     def best_bat(self):
+        """Find best bat."""
+
         i = 0
         j = 0
         for i in range(self.NP):
@@ -68,6 +79,8 @@ class BatAlgorithm(object):
         self.f_min = self.Fitness[j]
 
     def init_bat(self):
+        """Initialize bat."""
+
         for i in range(self.D):
             self.Lb[i] = self.Lower
             self.Ub[i] = self.Upper

@@ -9,12 +9,11 @@ License: MIT
 Reference paper: Storn, Rainer, and Kenneth Price. "Differential evolution - a simple and
 efficient heuristic for global optimization over continuous spaces." Journal of global
 optimization 11.4 (1997): 341-359.
-
-TODO
 """
 
 import random as rnd
 import copy
+from NiaPy.benchmarks.utility import Utility
 
 __all__ = ['DifferentialEvolutionAlgorithm']
 
@@ -47,17 +46,19 @@ class SolutionDE(object):
 
 
 class DifferentialEvolutionAlgorithm(object):
+    """Differential Evolution Algorithm implementation."""
+
     # pylint: disable=too-many-instance-attributes
-    def __init__(self, D, NP, nFES, F, Cr, Lower, Upper, function):
+    def __init__(self, D, NP, nFES, F, CR, Lower, Upper, function):
         self.D = D  # dimension of problem
         self.Np = NP  # population size
         self.nFES = nFES  # number of function evaluations
         self.F = F  # scaling factor
-        self.Cr = Cr  # crossover rate
+        self.CR = CR  # crossover rate
         self.Lower = Lower  # lower bound
         self.Upper = Upper  # upper bound
 
-        SolutionDE.FuncEval = staticmethod(function)
+        SolutionDE.FuncEval = staticmethod(Utility.itialize_benchmark(function))
         self.Population = []
         self.bestSolution = SolutionDE(self.D, Lower, Upper)
 
@@ -82,7 +83,7 @@ class DifferentialEvolutionAlgorithm(object):
             jrand = int(rnd.random() * self.Np)
 
             for j in range(self.D):
-                if rnd.random() < self.Cr or j == jrand:
+                if rnd.random() < self.CR or j == jrand:
                     newSolution.Solution[j] = Population[r[0]].Solution[j] + \
                         self.F * (Population[r[1]].Solution[j] - Population[r[2]].Solution[j])
                 else:
