@@ -70,7 +70,7 @@ class GreyWolfOptimizer(object):
             for i in range(self.NP):
                 self.Positions[i] = self.bounds(self.Positions[i])
 
-                Fit = Fun(self.D, self.Positions[i])
+                Fit = self.Fun(self.D, self.Positions[i])
                 self.evaluations = self.evaluations + 1
 
                 if Fit < self.Alpha_score:
