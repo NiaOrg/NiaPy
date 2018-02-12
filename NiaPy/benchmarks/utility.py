@@ -21,4 +21,4 @@ class Utility(object):
             elif function == 'sphere':
                 return Sphere.function()
             else:
-                raise TypeError('Passed benchmark is not defined!')
+                raise TypeError('Passed benchmark is not defined!!!')
