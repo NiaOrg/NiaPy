@@ -16,7 +16,6 @@ logger.setLevel('INFO')
 # For reproducive results
 random.seed(1234)
 
-
 class MyBenchmark(object):
     def __init__(self):
         self.Lower = -11
