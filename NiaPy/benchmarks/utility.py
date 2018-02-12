@@ -7,6 +7,7 @@ __all__ = ['Utility']
 
 class Utility(object):
 
+    # pylint: disable=too-many-return-statements
     @staticmethod
     def get_benchmark(benchmark):
         if not isinstance(benchmark, ''.__class__):
