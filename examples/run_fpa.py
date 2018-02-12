@@ -4,8 +4,8 @@ import sys
 sys.path.append('../')
 # End of fix
 
+import logging
 from NiaPy.algorithms.basic import FlowerPollinationAlgorithm
-
 
 def Fun(D, sol):
     val = 0.0
@@ -17,4 +17,4 @@ for i in range(10):
     Algorithm = FlowerPollinationAlgorithm(10, 20, 10000, 0.5, -2.0, 2.0, Fun)
     Best = Algorithm.move_flower()
 
-    print(Best)
+    logging.info(Best)

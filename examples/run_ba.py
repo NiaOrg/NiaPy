@@ -5,14 +5,16 @@ sys.path.append('../')
 # End of fix
 
 import random
+import logging
 from NiaPy.algorithms.basic import BatAlgorithm
 
+# For reproducive results
+random.seed(1234)
 
 def Fun(D, sol):
     val = 0.0
     for i in range(D):
         val = val + sol[i] * sol[i]
-        print(val)
     return val
 
 
@@ -22,7 +24,7 @@ for i in range(10):
                              0.0, 2.0, -10.0, 10.0, Fun)
     Best = Algorithm.move_bat()
 
-    print(Best)
+    logging.info(Best)
 
 # example using predifined benchmark function
 # available benchmarks are:
@@ -35,4 +37,4 @@ for i in range(10):
                              0.0, 2.0, -10.0, 10.0, 'griewank')
     Best = Algorithm.move_bat()
 
-    print(Best)
+    logging.info(Best)
