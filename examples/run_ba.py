@@ -70,8 +70,7 @@ logger.info('Running with Griewank with changed Upper and Lower bounds...')
 griewank = Griewank(-50, 50)
 
 for i in range(10):
-    Algorithm = BatAlgorithm(10, 40, 10000, 0.5, 0.5,
-                             0.0, 2.0, -10.0, 10.0, 'griewank')
+    Algorithm = BatAlgorithm(10, 40, 10000, 0.5, 0.5, 0.0, 2.0, griewank)
     Best = Algorithm.run()
 
     logger.info(Best)
