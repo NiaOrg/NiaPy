@@ -19,8 +19,8 @@ __all__ = ['GreyWolfOptimizer']
 
 
 class GreyWolfOptimizer(object):
-    # pylint: disable=too-many-instance-attributes
 
+    # pylint: disable=too-many-instance-attributes
     def __init__(self, D, NP, nFES, Lower, Upper, function):
         self.D = D  # dimension of the problem
         self.NP = NP  # population size; number of search agents
@@ -81,7 +81,8 @@ class GreyWolfOptimizer(object):
                     self.Beta_score = Fit
                     self.Beta_pos = self.Positions[i]
 
-                if ((Fit > self.Alpha_score) and (Fit > self.Beta_score) and (Fit < self.Delta_score)):
+                if ((Fit > self.Alpha_score) and (Fit > self.Beta_score) and
+                        (Fit < self.Delta_score)):
                     self.Delta_score = Fit
                     self.Delta_pos = self.Positions[i]
 
