@@ -9,7 +9,7 @@ __all__ = ['Utility']
 class Utility(object):
 
     @staticmethod
-    def itialize_benchmark(function):
+    def initialize_benchmark(function):
         if isinstance(function, object):
             return function.function()
         else:

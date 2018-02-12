@@ -20,7 +20,7 @@ class FireflyAlgorithm(object):
     """Firefly Algorithm implementation."""
 
     # pylint: disable=too-many-instance-attributes
-    def __init__(self, D, NP, nFES, alpha, betamin, gamma, Lower, Upper, function):
+    def __init__(self, D, NP, nFES, alpha, betamin, gamma, benchmark):
         self.D = D  # dimension of the problem
         self.NP = NP  # population size
         self.nFES = nFES  # number of function evaluations
@@ -36,11 +36,11 @@ class FireflyAlgorithm(object):
         self.Fitness = [0.0] * self.NP  # fitness values
         self.Intensity = [0.0] * self.NP  # light intensity
         self.nbest = [0.0] * self.NP  # the best solution found so far
-        self.Lower = Lower  # lower bound
-        self.Upper = Upper  # upper bound
+        self.Lower = benchmark.Lower  # lower bound
+        self.Upper = benchmark.Upper  # upper bound
         self.fbest = None  # the best
         self.evaluations = 0
-        self.Fun = Utility.itialize_benchmark(function)
+        self.Fun = Utility.initialize_benchmark(benchmark)
 
     def init_ffa(self):
         for i in range(self.NP):
