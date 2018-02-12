@@ -8,6 +8,10 @@ import random
 import logging
 from NiaPy.algorithms.basic import BatAlgorithm
 
+logging.basicConfig()
+logger = logging.getLogger('examples')
+logger.setLevel('INFO')
+
 # For reproducive results
 random.seed(1234)
 
@@ -24,7 +28,7 @@ for i in range(10):
                              0.0, 2.0, -10.0, 10.0, Fun)
     Best = Algorithm.move_bat()
 
-    logging.info(Best)
+    logger.info(Best)
 
 # example using predifined benchmark function
 # available benchmarks are:
@@ -37,4 +41,4 @@ for i in range(10):
                              0.0, 2.0, -10.0, 10.0, 'griewank')
     Best = Algorithm.move_bat()
 
-    logging.info(Best)
+    logger.info(Best)

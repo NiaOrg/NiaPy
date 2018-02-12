@@ -7,6 +7,10 @@ sys.path.append('../')
 import logging
 from NiaPy.algorithms.basic import FlowerPollinationAlgorithm
 
+logging.basicConfig()
+logger = logging.getLogger('examples')
+logger.setLevel('INFO')
+
 def Fun(D, sol):
     val = 0.0
     for i in range(D):
@@ -17,4 +21,4 @@ for i in range(10):
     Algorithm = FlowerPollinationAlgorithm(10, 20, 10000, 0.5, -2.0, 2.0, Fun)
     Best = Algorithm.move_flower()
 
-    logging.info(Best)
+    logger.info(Best)

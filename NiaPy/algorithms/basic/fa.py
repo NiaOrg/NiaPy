@@ -110,7 +110,7 @@ class FireflyAlgorithm(object):
                             k] * (1.0 - beta) + self.Fireflies_tmp[j][k] * beta + tmpf
             self.FindLimits(i)
 
-    def Run(self):
+    def run(self):
         self.init_ffa()
 
         while True:

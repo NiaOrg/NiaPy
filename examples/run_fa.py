@@ -7,6 +7,9 @@ sys.path.append('../')
 import logging
 from NiaPy.algorithms.basic import FireflyAlgorithm
 
+logging.basicConfig()
+logger = logging.getLogger('examples')
+logger.setLevel('INFO')
 
 def Fun(D, sol):
     val = 0.0
@@ -16,6 +19,6 @@ def Fun(D, sol):
 
 
 Algorithm = FireflyAlgorithm(10, 20, 10000, 0.5, 0.2, 1.0, -2.0, 2.0, Fun)
-Best = Algorithm.Run()
+Best = Algorithm.run()
 
-logging.info(Best)
+logger.info(Best)
