@@ -44,7 +44,7 @@ class GreyWolfOptimizer(object):
         self.Delta_pos = [0] * self.D  # init of delta
         self.Delta_score = float("inf")
 
-    def init(self):
+    def initialization(self):
         # initialization of positions
         for i in range(self.NP):
             for j in range(self.D):
@@ -59,9 +59,10 @@ class GreyWolfOptimizer(object):
                 position[i] = self.Upper
         return position
 
+    # pylint: disable=too-many-locals
     def move(self):
 
-        self.init()
+        self.initialization()
 
         while True:
             if self.evaluations == self.nFES:
