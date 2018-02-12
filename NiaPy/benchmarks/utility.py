@@ -1,5 +1,4 @@
 """Utilities for benchmarks."""
-import inspect
 
 from . import Rastrigin, Rosenbrock, Griewank, \
     Sphere, Ackley, Schwefel, Schwefel221, \
