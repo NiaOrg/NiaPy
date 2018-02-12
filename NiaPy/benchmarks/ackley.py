@@ -6,7 +6,7 @@ __all__ = ['Ackley']
 
 class Ackley(object):
 
-    def __init__(self, Lower=-100, Upper=100):
+    def __init__(self, Lower=-32.768, Upper=32.768):
         self.Lower = Lower
         self.Upper = Upper
 

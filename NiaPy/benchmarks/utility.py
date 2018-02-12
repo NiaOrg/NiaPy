@@ -1,6 +1,6 @@
 """Utilities for benchmarks."""
 
-from . import Rastrigin, Rosenbrock, Griewank, Sphere, Ackley
+from . import Rastrigin, Rosenbrock, Griewank, Sphere, Ackley, Schwefel
 
 __all__ = ['Utility']
 
@@ -22,5 +22,7 @@ class Utility(object):
                 return Sphere()
             elif benchmark == 'ackley':
                 return Ackley()
+            elif benchmark == 'schwefel':
+                return Schwefel()
             else:
                 raise TypeError('Passed benchmark is not defined!')
