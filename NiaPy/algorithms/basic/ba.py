@@ -39,6 +39,7 @@ class BatAlgorithm(object):
 
         """
 
+        self.benchmark = Utility.get_benchmark(benchmark)
         self.D = D  # dimension
         self.NP = NP  # population size
         self.nFES = nFES  # number of function evaluations
@@ -46,8 +47,8 @@ class BatAlgorithm(object):
         self.r = r  # pulse rate
         self.Qmin = Qmin  # frequency min
         self.Qmax = Qmax  # frequency max
-        self.Lower = benchmark.Lower  # lower bound
-        self.Upper = benchmark.Upper  # upper bound
+        self.Lower = self.benchmark.Lower  # lower bound
+        self.Upper = self.benchmark.Upper  # upper bound
 
         self.f_min = 0.0  # minimum fitness
 
@@ -62,7 +63,7 @@ class BatAlgorithm(object):
         self.Fitness = [0] * self.NP  # fitness
         self.best = [0] * self.D  # best solution
         self.evaluations = 0  # evaluations counter
-        self.Fun = Utility.initialize_benchmark(benchmark)
+        self.Fun = self.benchmark.function()
 
     def best_bat(self):
         """Find best bat."""

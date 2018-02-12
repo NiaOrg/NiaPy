@@ -25,13 +25,14 @@ __all__ = ['FlowerPollinationAlgorithm']
 class FlowerPollinationAlgorithm(object):
     # pylint: disable=too-many-instance-attributes
     def __init__(self, D, NP, nFES, p, benchmark):
+        self.benchmark = Utility.get_benchmark(benchmark)
         self.D = D  # dimension
         self.NP = NP  # population size
         self.nFES = nFES  # number of function evaluations
         self.p = p  # probability switch
-        self.Lower = benchmark.Lower  # lower bound
-        self.Upper = benchmark.Upper  # upper bound
-        self.Fun = Utility.initialize_benchmark(benchmark)  # function
+        self.Lower = self.benchmark.Lower  # lower bound
+        self.Upper = self.benchmark.Upper  # upper bound
+        self.Fun = self.benchmark.function()  # function
 
         self.f_min = 0.0  # minimum fitness
 

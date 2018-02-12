@@ -16,6 +16,7 @@ logger.setLevel('INFO')
 # For reproducive results
 random.seed(1234)
 
+
 class MyBenchmark(object):
     def __init__(self):
         self.Lower = -11
@@ -28,6 +29,7 @@ class MyBenchmark(object):
                 val = val + sol[i] * sol[i]
             return val
         return evaluate
+
 
 # example using custom benchmark "MyBenchmark"
 logger.info('Running with custom MyBenchmark...')
@@ -49,6 +51,15 @@ griewank = Griewank()
 
 for i in range(10):
     Algorithm = BatAlgorithm(10, 40, 10000, 0.5, 0.5, 0.0, 2.0, griewank)
+    Best = Algorithm.run()
+
+    logger.info(Best)
+
+logger.info(
+    'Running with default Griewank benchmark - should be the same as previous implementataion...')
+
+for i in range(10):
+    Algorithm = BatAlgorithm(10, 40, 10000, 0.5, 0.5, 0.0, 2.0, 'griewank')
     Best = Algorithm.run()
 
     logger.info(Best)
