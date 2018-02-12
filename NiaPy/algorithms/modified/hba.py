@@ -19,7 +19,8 @@ __all__ = ['HybridBatAlgorithm']
 
 class HybridBatAlgorithm(object):
     # pylint: disable=too-many-instance-attributes
-    def __init__(self, D, NP, nFES, A, r, Qmin, Qmax, Lower, Upper, function):
+    def __init__(self, D, NP, nFES, A, r, Qmin, Qmax, benchmark):
+        self.benchmark = Utility.get_benchmark(benchmark)
         self.D = D  # dimension
         self.NP = NP  # population size
         self.nFES = nFES  # number of function evaluations
@@ -27,9 +28,9 @@ class HybridBatAlgorithm(object):
         self.r = r  # pulse rate
         self.Qmin = Qmin  # frequency min
         self.Qmax = Qmax  # frequency max
-        self.Lower = Lower  # lower bound
-        self.Upper = Upper  # upper bound
-        self.Fun = Utility.itialize_benchmark(function)
+        self.Lower = self.benchmark.Lower  # lower bound
+        self.Upper = self.benchmark.Upper  # upper bound
+        self.Fun = self.benchmark.function()
 
         self.f_min = 0.0  # minimum fitness
 
@@ -128,3 +129,6 @@ class HybridBatAlgorithm(object):
                     self.f_min = Fnew
 
         return self.f_min
+
+    def run(self):
+        return self.move_bat()

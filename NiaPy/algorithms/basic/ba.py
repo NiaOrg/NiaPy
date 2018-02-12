@@ -21,7 +21,7 @@ class BatAlgorithm(object):
     """Bat Algorithm implementation."""
 
     # pylint: disable=too-many-instance-attributes
-    def __init__(self, D, NP, nFES, A, r, Qmin, Qmax, Lower, Upper, function):
+    def __init__(self, D, NP, nFES, A, r, Qmin, Qmax, benchmark):
         """Initialize algorithm.
 
         Arguments:
@@ -32,15 +32,14 @@ class BatAlgorithm(object):
             r {decimal} -- pulse rate
             Qmin {decimal} -- minimum frequency
             Qmax {decimal } -- maximum frequency
-            Lower {decimal} -- lower bound
-            Upper {decimal} -- upper bound
-            function {function} -- benchmark function
+            benchmark {object} -- benchmark implementation object
 
         Raises:
             TypeError -- Raised when given benchmark function which does not exists.
 
         """
 
+        self.benchmark = Utility.get_benchmark(benchmark)
         self.D = D  # dimension
         self.NP = NP  # population size
         self.nFES = nFES  # number of function evaluations
@@ -48,8 +47,8 @@ class BatAlgorithm(object):
         self.r = r  # pulse rate
         self.Qmin = Qmin  # frequency min
         self.Qmax = Qmax  # frequency max
-        self.Lower = Lower  # lower bound
-        self.Upper = Upper  # upper bound
+        self.Lower = self.benchmark.Lower  # lower bound
+        self.Upper = self.benchmark.Upper  # upper bound
 
         self.f_min = 0.0  # minimum fitness
 
@@ -64,7 +63,7 @@ class BatAlgorithm(object):
         self.Fitness = [0] * self.NP  # fitness
         self.best = [0] * self.D  # best solution
         self.evaluations = 0  # evaluations counter
-        self.Fun = Utility.itialize_benchmark(function)
+        self.Fun = self.benchmark.function()
 
     def best_bat(self):
         """Find best bat."""
@@ -147,3 +146,6 @@ class BatAlgorithm(object):
                     self.f_min = Fnew
 
         return self.f_min
+
+    def run(self):
+        return self.move_bat()

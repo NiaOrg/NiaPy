@@ -49,18 +49,19 @@ class DifferentialEvolutionAlgorithm(object):
     """Differential Evolution Algorithm implementation."""
 
     # pylint: disable=too-many-instance-attributes
-    def __init__(self, D, NP, nFES, F, CR, Lower, Upper, function):
+    def __init__(self, D, NP, nFES, F, CR, benchmark):
+        self.benchmark = Utility.get_benchmark(benchmark)
         self.D = D  # dimension of problem
         self.Np = NP  # population size
         self.nFES = nFES  # number of function evaluations
         self.F = F  # scaling factor
         self.CR = CR  # crossover rate
-        self.Lower = Lower  # lower bound
-        self.Upper = Upper  # upper bound
+        self.Lower = self.benchmark.Lower  # lower bound
+        self.Upper = self.benchmark.Upper  # upper bound
 
-        SolutionDE.FuncEval = staticmethod(Utility.itialize_benchmark(function))
+        SolutionDE.FuncEval = staticmethod(self.benchmark.function())
         self.Population = []
-        self.bestSolution = SolutionDE(self.D, Lower, Upper)
+        self.bestSolution = SolutionDE(self.D, self.Lower, self.Upper)
 
     def evalPopulation(self):
         for p in self.Population:

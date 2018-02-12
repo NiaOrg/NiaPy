@@ -8,19 +8,19 @@ __all__ = ['Utility']
 class Utility(object):
 
     @staticmethod
-    def itialize_benchmark(function):
-        if callable(function):
-            return function
+    def get_benchmark(benchmark):
+        if not isinstance(benchmark, ''.__class__):
+            return benchmark
         else:
-            if function == 'rastrigin':
-                return Rastrigin.function()
-            elif function == 'rosenbrock':
-                return Rosenbrock.function()
-            elif function == 'griewank':
-                return Griewank.function()
-            elif function == 'sphere':
-                return Sphere.function()
-            elif function == 'ackley':
-                return Ackley.function()
+            if benchmark == 'rastrigin':
+                return Rastrigin()
+            elif benchmark == 'rosenbrock':
+                return Rosenbrock()
+            elif benchmark == 'griewank':
+                return Griewank()
+            elif benchmark == 'sphere':
+                return Sphere()
+            elif benchmark == 'ackley':
+                return Ackley()
             else:
                 raise TypeError('Passed benchmark is not defined!')
