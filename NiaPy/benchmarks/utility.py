@@ -1,5 +1,4 @@
 """Utilities for benchmarks."""
-import inspect
 
 from . import Rastrigin, Rosenbrock, Griewank, Sphere, Ackley
 
@@ -10,7 +9,7 @@ class Utility(object):
 
     @staticmethod
     def get_benchmark(benchmark):
-        if not isinstance(benchmark, basestring):
+        if not isinstance(benchmark, ''.__class__):
             return benchmark
         else:
             if benchmark == 'rastrigin':
