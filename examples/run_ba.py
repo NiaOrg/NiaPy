@@ -16,6 +16,7 @@ logger.setLevel('INFO')
 # For reproducive results
 random.seed(1234)
 
+
 class MyBenchmark(object):
     def __init__(self):
         self.Lower = -11
@@ -28,6 +29,7 @@ class MyBenchmark(object):
                 val = val + sol[i] * sol[i]
             return val
         return evaluate
+
 
 # example using custom benchmark "MyBenchmark"
 logger.info('Running with custom MyBenchmark...')
