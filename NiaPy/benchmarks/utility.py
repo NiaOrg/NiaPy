@@ -1,4 +1,5 @@
 """Utilities for benchmarks."""
+import inspect
 
 from . import Rastrigin, Rosenbrock, Griewank, Sphere, Ackley
 
@@ -11,6 +12,8 @@ class Utility(object):
     def itialize_benchmark(function):
         if callable(function):
             return function
+        elif isinstance(function, object):
+            return function.function()
         else:
             if function == 'rastrigin':
                 return Rastrigin.function()

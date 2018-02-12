@@ -21,7 +21,7 @@ class BatAlgorithm(object):
     """Bat Algorithm implementation."""
 
     # pylint: disable=too-many-instance-attributes
-    def __init__(self, D, NP, nFES, A, r, Qmin, Qmax, Lower, Upper, function):
+    def __init__(self, D, NP, nFES, A, r, Qmin, Qmax, function):
         """Initialize algorithm.
 
         Arguments:
@@ -48,8 +48,8 @@ class BatAlgorithm(object):
         self.r = r  # pulse rate
         self.Qmin = Qmin  # frequency min
         self.Qmax = Qmax  # frequency max
-        self.Lower = Lower  # lower bound
-        self.Upper = Upper  # upper bound
+        self.Lower = function.Lower  # lower bound
+        self.Upper = function.Upper  # upper bound
 
         self.f_min = 0.0  # minimum fitness
 
@@ -147,3 +147,6 @@ class BatAlgorithm(object):
                     self.f_min = Fnew
 
         return self.f_min
+
+    def run(self):
+        return self.move_bat()
