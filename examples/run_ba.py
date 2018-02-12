@@ -12,7 +12,6 @@ def Fun(D, sol):
     val = 0.0
     for i in range(D):
         val = val + sol[i] * sol[i]
-        print(val)
     return val
 
 
