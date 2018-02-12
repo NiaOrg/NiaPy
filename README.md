@@ -39,7 +39,7 @@ The micro framework features following algorithms:
 
 ## Installation
 
-Install NiaPy with pip:
+Install NiaPy with pip (will be available soon):
 
 ```sh
 $ pip install NiaPy
