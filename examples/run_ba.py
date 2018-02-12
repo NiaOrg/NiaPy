@@ -29,7 +29,8 @@ class MyBenchmark(object):
             return val
         return evaluate
 
-# example using custom benchmark function "Fun"
+# example using custom benchmark "MyBenchmark"
+logger.info('Running with custom MyBenchmark...')
 for i in range(10):
     Algorithm = BatAlgorithm(10, 40, 10000, 0.5, 0.5, 0.0, 2.0, MyBenchmark())
     Best = Algorithm.run()
@@ -42,8 +43,20 @@ for i in range(10):
 # - rastrigin
 # - rosenbrock
 # - sphere
+logger.info('Running with default Griewank benchmark...')
 
 griewank = Griewank()
+
+for i in range(10):
+    Algorithm = BatAlgorithm(10, 40, 10000, 0.5, 0.5, 0.0, 2.0, griewank)
+    Best = Algorithm.run()
+
+    logger.info(Best)
+
+# example with changed griewank's lower and upper bounds
+logger.info('Running with Griewank with changed Upper and Lower bounds...')
+
+griewank = Griewank(-50, 50)
 
 for i in range(10):
     Algorithm = BatAlgorithm(10, 40, 10000, 0.5, 0.5, 0.0, 2.0, griewank)

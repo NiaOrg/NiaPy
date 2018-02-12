@@ -10,9 +10,7 @@ class Utility(object):
 
     @staticmethod
     def itialize_benchmark(function):
-        if callable(function):
-            return function
-        elif isinstance(function, object):
+        if isinstance(function, object):
             return function.function()
         else:
             if function == 'rastrigin':
