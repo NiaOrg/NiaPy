@@ -10,7 +10,7 @@ class BATestCase(TestCase):
             for i in range(D):
                 val = val + sol[i] * sol[i]
             return val
-        
+
         self.ba_custom = BatAlgorithm(
             10, 20, 10000, 0.5, 0.5, 0.0, 2.0, -10.0, 10.0, Fun)
         self.ba_griewank = BatAlgorithm(
