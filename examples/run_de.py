@@ -5,6 +5,7 @@ sys.path.append('../')
 # End of fix
 
 import random
+import logging
 from NiaPy.algorithms.basic import DifferentialEvolutionAlgorithm
 
 
@@ -15,8 +16,11 @@ def Fun(D, sol):
     return val
 
 
+# For reproducive results
+random.seed(1234)
+
 for i in range(10):
     Algorithm = DifferentialEvolutionAlgorithm(10, 40, 10000, 0.5, 0.9, 0.0, 2.0, Fun)
     Best = Algorithm.run()
 
-    print(Best)
+    logging.info(Best)
