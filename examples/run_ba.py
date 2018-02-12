@@ -26,7 +26,7 @@ def Fun(D, sol):
 for i in range(10):
     Algorithm = BatAlgorithm(10, 40, 10000, 0.5, 0.5,
                              0.0, 2.0, -10.0, 10.0, Fun)
-    Best = Algorithm.move_bat()
+    Best = Algorithm.run()
 
     logger.info(Best)
 
@@ -39,6 +39,6 @@ for i in range(10):
 for i in range(10):
     Algorithm = BatAlgorithm(10, 40, 10000, 0.5, 0.5,
                              0.0, 2.0, -10.0, 10.0, 'griewank')
-    Best = Algorithm.move_bat()
+    Best = Algorithm.run()
 
     logger.info(Best)
