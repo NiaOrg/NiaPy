@@ -15,7 +15,7 @@ logger.setLevel('INFO')
 # For reproducive results
 random.seed(1234)
 
-algorithms = ['BatAlgorithm']
+algorithms = ['BatAlgorithm', 'DifferentialEvolutionAlgorithm']
 benchmarks = ['griewank', 'ackley', 'sphere']
 
 NiaPy.Runner(10, 40, 1000, 10, algorithms, benchmarks).run()

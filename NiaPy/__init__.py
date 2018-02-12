@@ -36,6 +36,9 @@ class Runner(object):
         if name == 'BatAlgorithm':
             bench = benchmarks.utility.Utility.get_benchmark(benchmark, self.Lower, self.Upper)
             return algorithms.basic.BatAlgorithm(self.D, self.NP, self.nFES, self.A, self.r, self.Qmin, self.Qmax, bench)
+        elif name == 'DifferentialEvolutionAlgorithm':
+            bench = benchmarks.utility.Utility.get_benchmark(benchmark, self.Upper, self.Lower)
+            return algorithms.basic.DifferentialEvolutionAlgorithm(self.D, self.NP, self.nFES, self.F, self.CR, bench)
 
 
     def run(self, export=None):
