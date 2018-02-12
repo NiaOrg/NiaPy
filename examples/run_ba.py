@@ -30,6 +30,7 @@ class MyBenchmark(object):
             return val
         return evaluate
 
+
 # example using custom benchmark "MyBenchmark"
 logger.info('Running with custom MyBenchmark...')
 for i in range(10):
