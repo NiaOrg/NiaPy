@@ -22,8 +22,8 @@ class Ackley(object):
                 val1 += math.pow(sol[i], 2)
                 val2 += math.cos(c * sol[i])
 
-            temp1 = -b * math.sqrt(val1/D)
-            temp2 = val2/D
+            temp1 = -b * math.sqrt(val1 / D)
+            temp2 = val2 / D
 
             val = -a * math.exp(temp1) - math.exp(temp2) + a + math.exp(1)
 
