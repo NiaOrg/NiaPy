@@ -1,3 +1,4 @@
+# pylint: disable=anomalous-backslash-in-string
 """Implementation of Schwefel function.
 
 Date: 2018
