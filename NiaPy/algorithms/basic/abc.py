@@ -10,6 +10,9 @@ Reference paper: Karaboga, D., and Bahriye B. "A powerful
 and efficient algorithm for numerical function optimization: artificial
 bee colony (ABC) algorithm." Journal of global optimization 39.3 (2007): 459-471.
 
+EDITED - TODO: More tests are required! Validation!
+
+TODO: EVALUATIONS!
 """
 
 import random as rnd
@@ -18,7 +21,8 @@ import copy
 __all__ = ['ArtificialBeeColonyAlgorithm']
 
 
-class SolutionABC:
+class SolutionABC(object):
+
     def __init__(self, D, LB, UB):
         self.D = D
         self.Solution = []
@@ -29,12 +33,13 @@ class SolutionABC:
 
     def generateSolution(self):
         self.Solution = [self.LB + (self.UB - self.LB)
-                         * rnd.random() for i in range(self.D)]
+                         * rnd.random() for _i in range(self.D)]
 
     def repair(self):
         for i in range(self.D):
-            if (self.Solution[i] > self.UB):
+            if self.Solution[i] > self.UB:
                 self.Solution[i] = self.UB
+
             if self.Solution[i] < self.LB:
                 self.Solution[i] = self.LB
 
@@ -45,7 +50,9 @@ class SolutionABC:
         pass
 
 
-class ArtificialBeeColonyAlgorithm:
+class ArtificialBeeColonyAlgorithm(object):
+    # pylint: disable=too-many-instance-attributes
+
     def __init__(self, NP, D, nFES, Lower, Upper, function):
         self.NP = NP
         self.D = D
@@ -59,9 +66,6 @@ class ArtificialBeeColonyAlgorithm:
         self.Upper = Upper
         SolutionABC.FuncEval = staticmethod(function)
         self.Best = SolutionABC(self.D, Lower, Upper)
-
-    def reset(self):
-        self.__init__(self.NP, self.D, self.MaxCycle)
 
     def init(self):
         self.Probs = [0 for i in range(self.FoodNumber)]
