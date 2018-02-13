@@ -16,7 +16,7 @@ def Fun(D, sol):
 
 
 for i in range(10):
-    Algorithm = ArtificialBeeColonyAlgorithm(10, 40, 10000, 0.0, 2.0, Fun)
+    Algorithm = ArtificialBeeColonyAlgorithm(10, 40, 10000, -5.0, 5.0, Fun)
     Best = Algorithm.run()
 
     print(Best)
