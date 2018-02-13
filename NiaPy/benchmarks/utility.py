@@ -1,6 +1,6 @@
 """Implementation of benchmarks utility function."""
 
-from . import Rastrigin, Rosenbrock, Griewank, Sphere, Ackley, Schwefel
+from . import Rastrigin, Rosenbrock, Griewank, Sphere, Ackley
 
 __all__ = ['Utility']
 
