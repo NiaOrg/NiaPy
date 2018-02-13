@@ -21,11 +21,11 @@ __all__ = ['ParticleSwarmAlgorithm']
 class Particle(object):
     '''Defines particle for population'''
     # pylint: disable=too-many-instance-attributes
+
     def __init__(self, D, LB, UB):
         self.D = D
         self.LB = LB
         self.UB = UB
-        self.vmax = 6
         self.Solution = []
         self.Velocity = []
 
@@ -54,15 +54,11 @@ class Particle(object):
             self.bestFitness = self.Fitness
 
     def simpleBound(self):
-        for i in range(len(self.Solution)):
+        for i in range(self.D):
             if self.Solution[i] < self.LB:
                 self.Solution[i] = self.LB
             if self.Solution[i] > self.UB:
                 self.Solution[i] = self.UB
-            if self.Velocity[i] > self.vmax:
-                self.Velocity[i] = self.vmax
-            if self.Velocity[i] < -self.vmax:
-                self.Velocity[i] = -self.vmax
 
     def toString(self):
         pass
@@ -73,6 +69,7 @@ class Particle(object):
 
 class ParticleSwarmAlgorithm(object):
     # pylint: disable=too-many-instance-attributes
+
     def __init__(self, Np, D, nFES, C1, C2, w, Lower, Upper, function):
         '''Constructor'''
         self.Np = Np
@@ -84,11 +81,9 @@ class ParticleSwarmAlgorithm(object):
         self.C1 = C1
         self.C2 = C2
         self.w = w
-        self.vmax = 0.9
-        self.vmin = 0.2
         Particle.FuncEval = staticmethod(function)
 
-        self.gBest = Particle(D, Lower, Upper)
+        self.gBest = Particle(self.D, self.Lower, self.Upper)
 
     def evalSwarm(self):
         for p in self.Swarm:
@@ -112,6 +107,7 @@ class ParticleSwarmAlgorithm(object):
             p.Velocity = ([self.w * a + b + c for a, b,
                            c in zip(p.Velocity, part1, part2)])
             p.Solution = ([a + b for a, b in zip(p.Solution, p.Velocity)])
+
             p.simpleBound()
 
             p.evaluate()
