@@ -5,7 +5,6 @@ __all__ = ['Ackley']
 
 
 class Ackley(object):
-
     def __init__(self, Lower=-100, Upper=100):
         self.Lower = Lower
         self.Upper = Upper
@@ -13,6 +12,7 @@ class Ackley(object):
     @classmethod
     def function(cls):
         def evaluate(D, sol):
+            # print(sol)
 
             a = 20  # Recommended variable value
             b = 0.2  # Recommended variable value

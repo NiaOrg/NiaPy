@@ -5,50 +5,48 @@ from . import Rastrigin, Rosenbrock, Griewank, Sphere, Ackley
 __all__ = ['Utility']
 
 
-class Utility(object):
+# pylint: disable=too-many-return-statements
+class Utility:
 
     @staticmethod
-    def get_benchmark(benchmark, Upper=None, Lower=None):
+    def get_benchmark(benchmark, LowerBound=None, UpperBound=None):
         if not isinstance(benchmark, ''.__class__):
             return benchmark
         else:
-            returnBenchmark = None
             if benchmark == 'rastrigin':
-                if Upper is None and Lower is None:
-                    returnBenchmark = Rastrigin()
-                elif Upper is not None and Lower is not None:
-                    returnBenchmark = Rastrigin(Lower, Upper)
+                if UpperBound is None and LowerBound is None:
+                    return Rastrigin()
+                elif UpperBound is not None and LowerBound is not None:
+                    return Rastrigin(LowerBound, UpperBound)
                 else:
                     raise TypeError('Upper and Lower value must be defined!')
             elif benchmark == 'rosenbrock':
-                if Upper is None and Lower is None:
-                    returnBenchmark = Rosenbrock()
-                elif Upper is not None and Lower is not None:
-                    returnBenchmark = Rosenbrock(Lower, Upper)
+                if UpperBound is None and LowerBound is None:
+                    return Rosenbrock()
+                elif UpperBound is not None and LowerBound is not None:
+                    return Rosenbrock(LowerBound, UpperBound)
                 else:
                     raise TypeError('Upper and Lower value must be defined!')
             elif benchmark == 'griewank':
-                if Upper is None and Lower is None:
-                    returnBenchmark = Griewank()
-                elif Upper is not None and Lower is not None:
-                    returnBenchmark = Griewank(Lower, Upper)
+                if UpperBound is None and LowerBound is None:
+                    return Griewank()
+                elif UpperBound is not None and LowerBound is not None:
+                    return Griewank(LowerBound, UpperBound)
                 else:
                     raise TypeError('Upper and Lower value must be defined!')
             elif benchmark == 'sphere':
-                if Upper is None and Lower is None:
-                    returnBenchmark = Sphere()
-                elif Upper is not None and Lower is not None:
-                    returnBenchmark = Sphere(Lower, Upper)
+                if UpperBound is None and LowerBound is None:
+                    return Sphere()
+                elif UpperBound is not None and LowerBound is not None:
+                    return Sphere(LowerBound, UpperBound)
                 else:
                     raise TypeError('Upper and Lower value must be defined!')
             elif benchmark == 'ackley':
-                if Upper is None and Lower is None:
-                    returnBenchmark = Ackley()
-                elif Upper is not None and Lower is not None:
-                    returnBenchmark = Ackley(Lower, Upper)
+                if UpperBound is None and LowerBound is None:
+                    return Ackley()
+                elif UpperBound is not None and LowerBound is not None:
+                    return Ackley(LowerBound, UpperBound)
                 else:
                     raise TypeError('Upper and Lower value must be defined!')
             else:
                 raise TypeError('Passed benchmark is not defined!')
-
-            return returnBenchmark
