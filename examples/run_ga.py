@@ -16,7 +16,7 @@ def Fun(D, sol):
 
 
 for i in range(10):
-    Algorithm = GeneticAlgorithm(10, 40, 10000, 4, 0.0, 2.0, Fun)
+    Algorithm = GeneticAlgorithm(10, 40, 10000, 4, 0.05, 0.0, 2.0, Fun)
     Best = Algorithm.run()
 
     print(Best.toString())
