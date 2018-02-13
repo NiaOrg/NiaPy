@@ -7,7 +7,8 @@ from . import Rastrigin, Rosenbrock, Griewank, \
 __all__ = ['Utility']
 
 
-class Utility(object):
+# pylint: disable=too-many-return-statements
+class Utility:
 
     # pylint: disable=too-many-return-statements
     @staticmethod
@@ -15,7 +16,6 @@ class Utility(object):
         if not isinstance(benchmark, ''.__class__):
             return benchmark
         else:
-            returnBenchmark = None
             if benchmark == 'rastrigin':
                 if Lower is None and Upper is None:
                     return Rastrigin()

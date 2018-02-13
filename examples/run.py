@@ -12,14 +12,11 @@ logging.basicConfig()
 logger = logging.getLogger('examples')
 logger.setLevel('INFO')
 
-# For reproducive results
-random.seed(1234)
-
 
 class MyBenchmark(object):
     def __init__(self):
-        self.Lower = -11
-        self.Upper = 11
+        self.Lower = -5
+        self.Upper = 5
 
     def function(self):
         def evaluate(D, sol):
@@ -31,11 +28,7 @@ class MyBenchmark(object):
 
 
 algorithms = ['BatAlgorithm',
-              'DifferentialEvolutionAlgorithm',
-              'FireflyAlgorithm',
-              'FlowerPollinationAlgorithm',
-              'GreyWolfOptimizer',
-              'HybridBatAlgorithm']
-benchmarks = ['griewank', 'ackley', 'sphere', MyBenchmark()]
+              'DifferentialEvolutionAlgorithm', 'FireflyAlgorithm', 'FlowerPollinationAlgorithm', 'GreyWolfOptimizer', 'HybridBatAlgorithm']
+benchmarks = ['sphere', 'ackley', 'rosenbrock', 'griewank', 'rastrigin', MyBenchmark()]
 
-NiaPy.Runner(10, 40, 1000, 10, algorithms, benchmarks).run()
+NiaPy.Runner(10, 40, 10000, 10, algorithms, benchmarks).run()

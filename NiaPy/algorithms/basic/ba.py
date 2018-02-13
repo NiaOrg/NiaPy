@@ -17,7 +17,7 @@ from NiaPy.benchmarks.utility import Utility
 __all__ = ['BatAlgorithm']
 
 
-class BatAlgorithm(object):
+class BatAlgorithm:
     """Bat Algorithm implementation."""
 
     # pylint: disable=too-many-instance-attributes
@@ -132,7 +132,6 @@ class BatAlgorithm(object):
 
                 Fnew = self.Fun(self.D, S[i])
                 self.evaluations = self.evaluations + 1
-
                 rnd = random.random()
 
                 if (Fnew <= self.Fitness[i]) and (rnd < self.A):
