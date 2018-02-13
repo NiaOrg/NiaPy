@@ -7,8 +7,9 @@ Authors : Uros Mlakar
 License: MIT
 
 Reference paper: Kennedy, J. and Eberhart, R. "Particle Swarm Optimization".
-Proceedings of IEEE International Conference on Neural Networks. IV. pp. 1942–1948, 1995.
+Proceedings of IEEE International Conference on Neural Networks. IV. pp. 1942--1948, 1995.
 
+EDITED: TODO: Tests and validation! Bug in code.
 """
 
 import random as rnd
@@ -17,9 +18,9 @@ import copy
 __all__ = ['ParticleSwarmAlgorithm']
 
 
-class Particle:
+class Particle(object):
     '''Defines particle for population'''
-
+    # pylint: disable=too-many-instance-attributes
     def __init__(self, D, LB, UB):
         self.D = D
         self.LB = LB
@@ -36,10 +37,10 @@ class Particle:
 
     def generateParticle(self):
         self.Solution = [self.LB + (self.UB - self.LB)
-                         * rnd.random() for i in range(self.D)]
-        self.Velocity = [0 for i in range(self.D)]
+                         * rnd.random() for _i in range(self.D)]
+        self.Velocity = [0 for _i in range(self.D)]
 
-        self.pBestSolution = [0 for i in range(self.D)]
+        self.pBestSolution = [0 for _i in range(self.D)]
         self.bestFitness = float('inf')
 
     def evaluate(self):
@@ -70,9 +71,9 @@ class Particle:
         return self.Solution == other.Solution and self.Fitness == other.Fitness
 
 
-class ParticleSwarmAlgorithm:
-
-    def __init__(self, Np, D, nFES, Lower, Upper, function):
+class ParticleSwarmAlgorithm(object):
+    # pylint: disable=too-many-instance-attributes
+    def __init__(self, Np, D, nFES, C1, C2, w, Lower, Upper, function):
         '''Constructor'''
         self.Np = Np
         self.D = D
@@ -80,8 +81,9 @@ class ParticleSwarmAlgorithm:
         self.Swarm = []
         self.Lower = Lower
         self.Upper = Upper
-        self.C1 = 2
-        self.C2 = 2
+        self.C1 = C1
+        self.C2 = C2
+        self.w = w
         self.vmax = 0.9
         self.vmin = 0.2
         Particle.FuncEval = staticmethod(function)
@@ -95,7 +97,7 @@ class ParticleSwarmAlgorithm:
                 self.gBest = copy.deepcopy(p)
 
     def initSwarm(self):
-        for i in range(self.Np):
+        for _i in range(self.Np):
             self.Swarm.append(Particle(self.D, self.Lower, self.Upper))
 
     def moveSwarm(self, Swarm):
@@ -107,7 +109,7 @@ class ParticleSwarmAlgorithm:
             part2 = ([(a - b) * rnd.random() * self.C2 for a,
                       b in zip(self.gBest.Solution, p.Solution)])
 
-            p.Velocity = ([self.W * a + b + c for a, b,
+            p.Velocity = ([self.w * a + b + c for a, b,
                            c in zip(p.Velocity, part1, part2)])
             p.Solution = ([a + b for a, b in zip(p.Solution, p.Velocity)])
             p.simpleBound()
@@ -120,10 +122,8 @@ class ParticleSwarmAlgorithm:
         return MovedSwarm
 
     def run(self):
-        g = 1
         self.initSwarm()
         self.evalSwarm()
-        self.W = 1
         FEs = self.Np
         while FEs <= self.nFES:
             MovedSwarm = self.moveSwarm(self.Swarm)
