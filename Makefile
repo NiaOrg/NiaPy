@@ -149,6 +149,7 @@ $(MKDOCS_INDEX): mkdocs.yml docs/*.md
 	ln -sf `realpath README.md --relative-to=docs` docs/index.md
 	ln -sf `realpath CHANGELOG.md --relative-to=docs/about` docs/about/changelog.md
 	ln -sf `realpath CONTRIBUTING.md --relative-to=docs/about` docs/about/contributing.md
+	ln -sf `realpath CODE_OF_CONDUCT.md --relative-to=docs/about` docs/about/code_of_conduct.md
 	ln -sf `realpath LICENSE.md --relative-to=docs/about` docs/about/license.md
 	$(MKDOCS) build --clean --strict
 

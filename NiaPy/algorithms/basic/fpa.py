@@ -17,20 +17,22 @@ https://www.mathworks.com/matlabcentral/fileexchange/45112-flower-pollination-al
 import random
 import numpy as np
 from scipy.special import gamma as Gamma
+from NiaPy.benchmarks.utility import Utility
 
 __all__ = ['FlowerPollinationAlgorithm']
 
 
 class FlowerPollinationAlgorithm(object):
     # pylint: disable=too-many-instance-attributes
-    def __init__(self, D, NP, nFES, p, Lower, Upper, function):
+    def __init__(self, D, NP, nFES, p, benchmark):
+        self.benchmark = Utility.get_benchmark(benchmark)
         self.D = D  # dimension
         self.NP = NP  # population size
         self.nFES = nFES  # number of function evaluations
         self.p = p  # probability switch
-        self.Lower = Lower  # lower bound
-        self.Upper = Upper  # upper bound
-        self.Fun = function  # function
+        self.Lower = self.benchmark.Lower  # lower bound
+        self.Upper = self.benchmark.Upper  # upper bound
+        self.Fun = self.benchmark.function()  # function
 
         self.f_min = 0.0  # minimum fitness
 
@@ -135,3 +137,6 @@ class FlowerPollinationAlgorithm(object):
             L[j] = 0.01 * step[j]
 
         return L
+
+    def run(self):
+        return self.move_flower()

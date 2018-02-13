@@ -11,14 +11,17 @@ A comprehensive review of firefly algorithms. Swarm and Evolutionary Computation
 
 import random
 import math
+from NiaPy.benchmarks.utility import Utility
 
 __all__ = ['FireflyAlgorithm']
 
 
 class FireflyAlgorithm(object):
+    """Firefly Algorithm implementation."""
 
     # pylint: disable=too-many-instance-attributes
-    def __init__(self, D, NP, nFES, alpha, betamin, gamma, LB, UB, function):
+    def __init__(self, D, NP, nFES, alpha, betamin, gamma, benchmark):
+        self.benchmark = Utility.get_benchmark(benchmark)
         self.D = D  # dimension of the problem
         self.NP = NP  # population size
         self.nFES = nFES  # number of function evaluations
@@ -34,17 +37,17 @@ class FireflyAlgorithm(object):
         self.Fitness = [0.0] * self.NP  # fitness values
         self.Intensity = [0.0] * self.NP  # light intensity
         self.nbest = [0.0] * self.NP  # the best solution found so far
-        self.LB = LB  # lower bound
-        self.UB = UB  # upper bound
+        self.Lower = self.benchmark.Lower  # lower bound
+        self.Upper = self.benchmark.Upper  # upper bound
         self.fbest = None  # the best
         self.evaluations = 0
-        self.Fun = function
+        self.Fun = self.benchmark.function()
 
     def init_ffa(self):
         for i in range(self.NP):
             for j in range(self.D):
                 self.Fireflies[i][j] = random.uniform(
-                    0, 1) * (self.UB - self.LB) + self.LB
+                    0, 1) * (self.Upper - self.Lower) + self.Lower
             self.Fitness[i] = 1.0  # initialize attractiveness
             self.Intensity[i] = self.Fitness[i]
 
@@ -83,14 +86,14 @@ class FireflyAlgorithm(object):
 
     def FindLimits(self, k):
         for i in range(self.D):
-            if self.Fireflies[k][i] < self.LB:
-                self.Fireflies[k][i] = self.LB
-            if self.Fireflies[k][i] > self.UB:
-                self.Fireflies[k][i] = self.UB
+            if self.Fireflies[k][i] < self.Lower:
+                self.Fireflies[k][i] = self.Lower
+            if self.Fireflies[k][i] > self.Upper:
+                self.Fireflies[k][i] = self.Upper
 
     def move_ffa(self):
         for i in range(self.NP):
-            scale = abs(self.UB - self.LB)
+            scale = abs(self.Upper - self.Lower)
             for j in range(self.NP):
                 r = 0.0
                 for k in range(self.D):
@@ -108,7 +111,7 @@ class FireflyAlgorithm(object):
                             k] * (1.0 - beta) + self.Fireflies_tmp[j][k] * beta + tmpf
             self.FindLimits(i)
 
-    def Run(self):
+    def run(self):
         self.init_ffa()
 
         while True:

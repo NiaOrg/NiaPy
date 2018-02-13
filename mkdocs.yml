@@ -10,4 +10,5 @@ pages:
 - About:
   - Release Notes: about/changelog.md
   - Contributing: about/contributing.md
+  - Code Of Conduct: about/code_of_conduct.md
   - License: about/license.md

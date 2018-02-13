@@ -5,7 +5,7 @@ sys.path.append('../')
 # End of fix
 
 import logging
-from NiaPy.algorithms.basic import FireflyAlgorithm
+from NiaPy.algorithms.basic import GreyWolfOptimizer
 
 logging.basicConfig()
 logger = logging.getLogger('examples')
@@ -25,10 +25,10 @@ class MyBenchmark(object):
             return val
         return evaluate
 
+
 for i in range(10):
 
-    Algorithm = FireflyAlgorithm(
-        10, 20, 10000, 0.5, 0.2, 1.0, MyBenchmark())
+    Algorithm = GreyWolfOptimizer(10, 20, 10000, MyBenchmark())
     Best = Algorithm.run()
 
     logger.info(Best)

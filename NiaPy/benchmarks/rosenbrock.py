@@ -2,22 +2,25 @@
 
 import math
 
+__all__ = ['Rosenbrock']
 
-class Rosenbrock:
 
-    def __init__(self, D, sol):
-        self.D = D
-        self.sol = sol
+class Rosenbrock(object):
 
-    def evaluate(self):
-        val = 0.0
+    def __init__(self, Lower=-100, Upper=100):
+        self.Lower = Lower
+        self.Upper = Upper
 
-        for i in range(self.D - 1):
-            val = val + 100 * \
-                math.pow(
-                    self.sol[i + 1] - math.pow((self.sol[i]),
-                                               2),
-                    2) + math.pow((self.sol[i] - 1),
-                                  2)
+    @classmethod
+    def function(cls):
+        def evaluate(D, sol):
+            val = 0.0
 
-        return val
+            for i in range(D - 1):
+                val = val + 100 * \
+                    math.pow(sol[i + 1] - math.pow((sol[i]), 2),
+                             2) + math.pow((sol[i] - 1), 2)
+
+            return val
+
+        return evaluate
