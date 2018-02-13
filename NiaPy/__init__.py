@@ -1,3 +1,4 @@
+import logging
 from NiaPy import algorithms, benchmarks
 
 __all__ = ['algorithms', 'benchmarks']
@@ -5,6 +6,10 @@ __project__ = 'NiaPy'
 __version__ = '0.0.0'
 
 VERSION = "{0} v{1}".format(__project__, __version__)
+
+logging.basicConfig()
+logger = logging.getLogger('NiaPy')
+logger.setLevel('INFO')
 
 
 class Runner(object):
@@ -46,13 +51,16 @@ class Runner(object):
         else:
             raise TypeError('Passed benchmark is not defined!')
 
-    def run(self, export=None):
+    def __exportToLog(self):
+        logger.info(self.results)
+
+    def run(self, export='log'):
         for alg in self.useAlgorithms:
             self.results[alg] = {}
             for bench in self.useBenchmarks:
                 benchName = ''
-                if callable(bench):
-                    benchName = bench.__name__
+                if not isinstance(bench, ''.__class__):  # check if passed benchmark is class
+                    benchName = str(type(bench).__name__)  # set class name as benchmark name
                 else:
                     benchName = bench
 
@@ -61,8 +69,14 @@ class Runner(object):
                 for _i in range(self.nRuns):
                     algorithm = self.__algorithmFactory(alg, bench)
                     self.results[alg][benchName].append(algorithm.run())
-                    print self.results
 
-        if export is not None:
-            # TODO: implement export of results
+        if export == 'log':
+            self.__exportToLog()
+        elif export == 'xls':
+            # TODO: implement export to xls
             pass
+        elif export == 'latex':
+            # TODO: implement export to latex
+            pass
+        else:
+            raise TypeError('Passed export type is not supported!')
