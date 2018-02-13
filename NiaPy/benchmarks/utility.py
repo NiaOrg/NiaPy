@@ -1,4 +1,4 @@
-"""Utilities for benchmarks."""
+"""Implementation of benchmarks utility function."""
 
 from . import Rastrigin, Rosenbrock, Griewank, \
     Sphere, Ackley, Schwefel, Schwefel221, \
@@ -15,6 +15,7 @@ class Utility(object):
         if not isinstance(benchmark, ''.__class__):
             return benchmark
         else:
+            returnBenchmark = None
             if benchmark == 'rastrigin':
                 if Lower is None and Upper is None:
                     return Rastrigin()
@@ -80,6 +81,6 @@ class Utility(object):
                     self.__raiseLowerAndUpperNotDefined()
             else:
                 raise TypeError('Passed benchmark is not defined!')
-        
+
     def __raiseLowerAndUpperNotDefined(self):
         raise TypeError('Upper and Lower value must be defined!')
