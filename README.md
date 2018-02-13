@@ -24,12 +24,24 @@ Python micro framework for building nature-inspired algorithms.
 The micro framework features following algorithms:
 
 - basic:
-  - Bat Algorithm ([see example](examples/run_ba.py))
-  - Firefly Algorithm ([see example](examples/run_fa.py))
+  - Bat algorithm ([see example](examples/run_ba.py))
+  - Firefly algorithm ([see example](examples/run_fa.py))
   - Differential evolution algorithm ([see example](examples/run_de.py))
-  - Flower Pollination algorithm ([see example](examples/run_fpa.py))
+  - Flower pollination algorithm ([see example](examples/run_fpa.py))
+  - Grey wolf optimizer ([see example](examples/run_gwo.py))
 - modified:
-  - Hybrid Bat Algorithm ([see example](examples/run_hba.py))
+  - Hybrid bat algorithm ([see example](examples/run_hba.py))
+
+The following benchmark functions are included in NiaPy:
+
+- Ackley
+- Griewank
+- Rastrigin
+- Rosenbrock
+- Schwefel
+- Sphere
+
+Engineering problems
 
 # Setup
 
@@ -39,7 +51,7 @@ The micro framework features following algorithms:
 
 ## Installation
 
-Install NiaPy with pip:
+Install NiaPy with pip (will be available soon):
 
 ```sh
 $ pip install NiaPy

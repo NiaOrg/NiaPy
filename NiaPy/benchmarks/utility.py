@@ -1,6 +1,6 @@
 """Implementation of benchmarks utility function."""
 
-from . import Rastrigin, Rosenbrock, Griewank, Sphere, Ackley
+from . import Rastrigin, Rosenbrock, Griewank, Sphere, Ackley, Schwefel
 
 __all__ = ['Utility']
 
@@ -8,6 +8,7 @@ __all__ = ['Utility']
 # pylint: disable=too-many-return-statements
 class Utility:
 
+    # pylint: disable=too-many-return-statements
     @staticmethod
     def get_benchmark(benchmark, LowerBound=None, UpperBound=None):
         if not isinstance(benchmark, ''.__class__):
