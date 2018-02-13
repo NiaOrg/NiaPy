@@ -30,7 +30,12 @@ class MyBenchmark(object):
         return evaluate
 
 
-algorithms = ['BatAlgorithm', 'DifferentialEvolutionAlgorithm']
+algorithms = ['BatAlgorithm',
+              'DifferentialEvolutionAlgorithm',
+              'FireflyAlgorithm',
+              'FlowerPollinationAlgorithm',
+              'GreyWolfOptimizer',
+              'HybridBatAlgorithm']
 benchmarks = ['griewank', 'ackley', 'sphere', MyBenchmark()]
 
 NiaPy.Runner(10, 40, 1000, 10, algorithms, benchmarks).run()
