@@ -5,7 +5,7 @@ sys.path.append('../')
 # End of fix
 
 import random
-from NiaPy.algorithms.basic import DifferentialEvolutionAlgorithm
+from NiaPy.algorithms.modified import SelfAdaptiveDifferentialEvolutionAlgorithm
 
 
 def Fun(D, sol):
@@ -16,7 +16,7 @@ def Fun(D, sol):
 
 
 for i in range(10):
-    Algorithm = DifferentialEvolutionAlgorithm(10, 40, 10000, 0.5, 0.9,
+    Algorithm = SelfAdaptiveDifferentialEvolutionAlgorithm(10, 40, 10000, 0.5, 0.9,
                              0.0, 2.0, Fun)
     Best = Algorithm.run()
 
