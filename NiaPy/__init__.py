@@ -38,18 +38,32 @@ class Runner(object):
         self.results = {}
 
     def __algorithmFactory(self, name, benchmark):
+        algorithm = None
+        bench = benchmarks.utility.Utility.get_benchmark(
+            benchmark, self.Lower, self.Upper)
+
         if name == 'BatAlgorithm':
-            bench = benchmarks.utility.Utility.get_benchmark(
-                benchmark, self.Lower, self.Upper)
-            return algorithms.basic.BatAlgorithm(
+            algorithm = algorithms.basic.BatAlgorithm(
                 self.D, self.NP, self.nFES, self.A, self.r, self.Qmin, self.Qmax, bench)
         elif name == 'DifferentialEvolutionAlgorithm':
-            bench = benchmarks.utility.Utility.get_benchmark(
-                benchmark, self.Upper, self.Lower)
-            return algorithms.basic.DifferentialEvolutionAlgorithm(
+            algorithm = algorithms.basic.DifferentialEvolutionAlgorithm(
                 self.D, self.NP, self.nFES, self.F, self.CR, bench)
+        elif name == 'FireflyAlgorithm':
+            algorithm = algorithms.basic.FireflyAlgorithm(
+                self.D, self.NP, self.nFES, self.alpha, self.betamin, self.gamma, bench)
+        elif name == 'FlowerPollinationAlgorithm':
+            algorithm = algorithms.basic.FlowerPollinationAlgorithm(
+                self.D, self.NP, self.nFES, self.p, bench)
+        elif name == 'GreyWolfOptimizer':
+            algorithm = algorithms.basic.GreyWolfOptimizer(
+                self.D, self.NP, self.nFES, bench)
+        elif name == 'HybridBatAlgorithm':
+            algorithm = algorithms.modified.HybridBatAlgorithm(
+                self.D, self.NP, self.nFES, self.A, self.r, self.Qmin, self.Qmax, bench)
         else:
             raise TypeError('Passed benchmark is not defined!')
+
+        return algorithm
 
     def __exportToLog(self):
         logger.info(self.results)
@@ -59,8 +73,10 @@ class Runner(object):
             self.results[alg] = {}
             for bench in self.useBenchmarks:
                 benchName = ''
-                if not isinstance(bench, ''.__class__):  # check if passed benchmark is class
-                    benchName = str(type(bench).__name__)  # set class name as benchmark name
+                # check if passed benchmark is class
+                if not isinstance(bench, ''.__class__):
+                    # set class name as benchmark name
+                    benchName = str(type(bench).__name__)
                 else:
                     benchName = bench
 
@@ -80,3 +96,5 @@ class Runner(object):
             pass
         else:
             raise TypeError('Passed export type is not supported!')
+
+        return self.results
