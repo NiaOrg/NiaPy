@@ -1,4 +1,4 @@
-"""Differential evolution algorithm.
+"""Self-adaptive differential evolution algorithm.
 
 Date: 7. 2. 2018
 
@@ -6,9 +6,9 @@ Authors : Uros Mlakar
 
 License: MIT
 
-Reference paper: Storn, Rainer, and Kenneth Price. "Differential evolution - a simple and
-efficient heuristic for global optimization over continuous spaces." Journal of global
-optimization 11.4 (1997): 341-359.
+Reference paper: Brest, J., Greiner, S., Boskovic, B., Mernik, M., Zumer, V. Self-adapting control 
+parameters in differential evolution: A comparative study on numerical benchmark problems. 
+IEEE transactions on evolutionary computation, 10(6), 646-657, 2006.
 
 TODO
 """
@@ -31,7 +31,8 @@ class SolutionjDE(object):
         self.generateSolution()
 
     def generateSolution(self):
-        self.Solution = [self.LB + (self.UB - self.LB) * rnd.random() for _i in range(self.D)]
+        self.Solution = [self.LB + (self.UB - self.LB) * rnd.random()
+                         for _i in range(self.D)]
 
     def evaluate(self):
         self.Fitness = SolutionjDE.FuncEval(self.D, self.Solution)
@@ -74,12 +75,12 @@ class SelfAdaptiveDifferentialEvolutionAlgorithm(object):
         newPopulation = []
         for i in range(self.Np):
             newSolution = SolutionjDE(self.D, self.Lower, self.Upper)
-            
+
             if rnd.random() < self.Tao:
                 newSolution.F = rnd.random()
             else:
                 newSolution.F = Population[i].F
-                
+
             if rnd.random() < self.Tao:
                 newSolution.Cr = rnd.random()
             else:
@@ -92,8 +93,8 @@ class SelfAdaptiveDifferentialEvolutionAlgorithm(object):
 
             for j in range(self.D):
                 if rnd.random() < self.Cr or j == jrand:
-                    newSolution.Solution[j] = Population[r[0]].Solution[j] + \
-                        self.F * (Population[r[1]].Solution[j] - Population[r[2]].Solution[j])
+                    newSolution.Solution[j] = Population[r[0]].Solution[j] + self.F * (
+                        Population[r[1]].Solution[j] - Population[r[2]].Solution[j])
                 else:
                     newSolution.Solution[j] = Population[i].Solution[j]
             newSolution.repair()
