@@ -1,11 +1,11 @@
-"""Implementation of Sphere function."""
+"""Implementation of Sphere functions."""
+import math
 
 __all__ = ['Sphere']
 
 
 class Sphere(object):
-
-    def __init__(self, Lower=-100, Upper=100):
+    def __init__(self, Lower=-5.12, Upper=5.12):
         self.Lower = Lower
         self.Upper = Upper
 
@@ -14,7 +14,7 @@ class Sphere(object):
         def evaluate(D, sol):
             val = 0.0
             for i in range(D):
-                val = val + sol[i] * sol[i]
+                val += math.pow(sol[i], 2)
             return val
 
         return evaluate
