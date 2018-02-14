@@ -31,8 +31,7 @@ class MyBenchmark(object):
 
 
 for i in range(10):
-    Algorithm = DifferentialEvolutionAlgorithm(
-        10, 40, 10000, 0.5, 0.9, MyBenchmark())
+    Algorithm = DifferentialEvolutionAlgorithm(10, 40, 10000, 0.5, 0.9, MyBenchmark())
     Best = Algorithm.run()
 
     logger.info(Best)
