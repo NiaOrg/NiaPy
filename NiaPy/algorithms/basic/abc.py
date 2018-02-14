@@ -17,6 +17,7 @@ TODO: EVALUATIONS!
 
 import random as rnd
 import copy
+from NiaPy.benchmarks.utility import Utility
 
 __all__ = ['ArtificialBeeColonyAlgorithm']
 
@@ -53,19 +54,20 @@ class SolutionABC(object):
 class ArtificialBeeColonyAlgorithm(object):
     # pylint: disable=too-many-instance-attributes
 
-    def __init__(self, NP, D, nFES, Lower, Upper, function):
-        self.NP = NP
+    def __init__(self, D, NP, nFES, benchmark):
+        self.benchmark = Utility().get_benchmark(benchmark)
         self.D = D
+        self.NP = NP
         self.FoodNumber = self.NP / 2
         self.Limit = 100
         self.Trial = []
         self.Foods = []
         self.Probs = []
         self.nFES = nFES
-        self.Lower = Lower
-        self.Upper = Upper
-        SolutionABC.FuncEval = staticmethod(function)
-        self.Best = SolutionABC(self.D, Lower, Upper)
+        self.Lower = self.benchmark.Lower
+        self.Upper = self.benchmark.Upper
+        SolutionABC.FuncEval = staticmethod(self.benchmark.function())
+        self.Best = SolutionABC(self.D, self.Lower, self.Upper)
 
     def init(self):
         self.Probs = [0 for i in range(self.FoodNumber)]

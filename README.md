@@ -39,12 +39,10 @@ The following benchmark functions are included in NiaPy:
 - Rastrigin
 - Rosenbrock
 - Schwefel
+- Schwefel 2.21
+- Schwefel 2.22
 - Sphere
-- Sphere 2.21
-- Sphere 2.22
 - Whitley
-
-Engineering problems
 
 # Setup
 

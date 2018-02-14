@@ -44,6 +44,7 @@ class Ackley(object):
     @classmethod
     def function(cls):
         def evaluate(D, sol):
+            # print(sol)
 
             a = 20  # Recommended variable value
             b = 0.2  # Recommended variable value

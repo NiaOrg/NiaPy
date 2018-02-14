@@ -39,7 +39,7 @@ class BatAlgorithm(object):
 
         """
 
-        self.benchmark = Utility.get_benchmark(benchmark)
+        self.benchmark = Utility().get_benchmark(benchmark)
         self.D = D  # dimension
         self.NP = NP  # population size
         self.nFES = nFES  # number of function evaluations
@@ -132,7 +132,6 @@ class BatAlgorithm(object):
 
                 Fnew = self.Fun(self.D, S[i])
                 self.evaluations = self.evaluations + 1
-
                 rnd = random.random()
 
                 if (Fnew <= self.Fitness[i]) and (rnd < self.A):
