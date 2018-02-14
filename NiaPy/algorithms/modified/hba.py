@@ -26,8 +26,8 @@ class HybridBatAlgorithm(object):
         self.nFES = nFES  # number of function evaluations
         self.A = A  # loudness
         self.r = r  # pulse rate
-        self.F = F # scaling factor
-        self.CR = CR # crossover rate
+        self.F = F  # scaling factor
+        self.CR = CR  # crossover rate
         self.Qmin = Qmin  # frequency min
         self.Qmax = Qmax  # frequency max
         self.Lower = self.benchmark.Lower  # lower bound
@@ -47,7 +47,7 @@ class HybridBatAlgorithm(object):
         self.Fitness = [0] * self.NP  # fitness
         self.best = [0] * self.D  # best solution
         self.evaluations = 0  # evaluations counter
-        
+
     def best_bat(self):
         i = 0
         j = 0

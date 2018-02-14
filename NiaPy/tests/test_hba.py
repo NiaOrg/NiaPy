@@ -23,7 +23,7 @@ class HBATestCase(TestCase):
     def setUp(self):
 
         self.hba_custom = HybridBatAlgorithm(
-            10, 40, 1000, 0.5, 0.5, 0.0, 2.0, MyBenchmark())
+            10, 40, 1000, 0.5, 0.5, 0.5, 0.9, 0.0, 2.0, MyBenchmark())
 
     def test_custom_works_fine(self):
         self.assertTrue(self.hba_custom.run())

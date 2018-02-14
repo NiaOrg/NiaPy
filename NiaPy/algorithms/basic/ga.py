@@ -28,8 +28,8 @@ class Chromosome(object):
         self.generateSolution()
 
     def generateSolution(self):
-        self.Solution = [self.LB + (self.UB - self.LB)
-                         * rnd.random() for _i in range(self.D)]
+        self.Solution = [self.LB + (self.UB - self.LB) * rnd.random()
+                         for _i in range(self.D)]
 
     def evaluate(self):
         self.Fitness = Chromosome.FuncEval(self.D, self.Solution)
@@ -85,10 +85,10 @@ class GeneticAlgorithm(object):
                  for i in range(self.D)]
         child1 = Chromosome(self.D, self.Lower, self.Upper)
         child2 = Chromosome(self.D, self.Lower, self.Upper)
-        child1.Solution = [alpha[i] * parent1.Solution[i] + \
-            (1 - alpha[i]) * parent2.Solution[i] for i in range(self.D)]
-        child2.Solution = [alpha[i] * parent2.Solution[i] + \
-            (1 - alpha[i]) * parent1.Solution[i] for i in range(self.D)]
+        child1.Solution = [alpha[i] * parent1.Solution[i] +
+                           (1 - alpha[i]) * parent2.Solution[i] for i in range(self.D)]
+        child2.Solution = [alpha[i] * parent2.Solution[i] +
+                           (1 - alpha[i]) * parent1.Solution[i] for i in range(self.D)]
         return child1, child2
 
     def Mutate(self, child):
@@ -129,5 +129,5 @@ class GeneticAlgorithm(object):
 
             for i in range(self.NP):
                 self.checkForBest(self.Population[i])
-            print self.Best.toString()
+            print(self.Best.toString())
         return self.Best

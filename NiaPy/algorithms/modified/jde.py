@@ -6,8 +6,8 @@ Authors : Uros Mlakar
 
 License: MIT
 
-Reference paper: Brest, J., Greiner, S., Boskovic, B., Mernik, M., Zumer, V. Self-adapting control 
-parameters in differential evolution: A comparative study on numerical benchmark problems. 
+Reference paper: Brest, J., Greiner, S., Boskovic, B., Mernik, M., Zumer, V. Self-adapting control
+parameters in differential evolution: A comparative study on numerical benchmark problems.
 IEEE transactions on evolutionary computation, 10(6), 646-657, 2006.
 
 TODO
@@ -25,7 +25,7 @@ class SolutionjDE(object):
         self.LB = LB
         self.UB = UB
         self.F = 0.5
-        self.Cr = 0.9
+        self.CR = 0.9
         self.Solution = []
         self.Fitness = float('inf')
         self.generateSolution()
@@ -50,16 +50,19 @@ class SolutionjDE(object):
 
 class SelfAdaptiveDifferentialEvolutionAlgorithm(object):
     # pylint: disable=too-many-instance-attributes
-    def __init__(self, D, NP, nFES, F, Cr, Lower, Upper, function):
+    def __init__(self, D, NP, nFES, F, CR, Lower, Upper, function):
         self.D = D  # dimension of problem
         self.Np = NP  # population size
         self.nFES = nFES  # number of function evaluations
+        self.F = F  # scaling factor
+        self.CR = CR  # crossover rate
         self.Lower = Lower  # lower bound
         self.Upper = Upper  # upper bound
 
         SolutionjDE.FuncEval = staticmethod(function)
         self.Population = []
         self.bestSolution = SolutionjDE(self.D, Lower, Upper)
+        self.Tao = None  # !!!What is this???
 
     def evalPopulation(self):
         for p in self.Population:
@@ -82,9 +85,9 @@ class SelfAdaptiveDifferentialEvolutionAlgorithm(object):
                 newSolution.F = Population[i].F
 
             if rnd.random() < self.Tao:
-                newSolution.Cr = rnd.random()
+                newSolution.CR = rnd.random()
             else:
-                newSolution.Cr = Population[i].Cr
+                newSolution.CR = Population[i].CR
 
             r = rnd.sample(range(0, self.Np), 3)
             while i in r:
@@ -92,7 +95,7 @@ class SelfAdaptiveDifferentialEvolutionAlgorithm(object):
             jrand = int(rnd.random() * self.Np)
 
             for j in range(self.D):
-                if rnd.random() < self.Cr or j == jrand:
+                if rnd.random() < self.CR or j == jrand:
                     newSolution.Solution[j] = Population[r[0]].Solution[j] + self.F * (
                         Population[r[1]].Solution[j] - Population[r[2]].Solution[j])
                 else:

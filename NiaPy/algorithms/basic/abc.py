@@ -32,8 +32,8 @@ class SolutionABC(object):
         self.generateSolution()
 
     def generateSolution(self):
-        self.Solution = [self.LB + (self.UB - self.LB)
-                         * rnd.random() for _i in range(self.D)]
+        self.Solution = [self.LB + (self.UB - self.LB) * rnd.random()
+                         for _i in range(self.D)]
 
     def repair(self):
         for i in range(self.D):
@@ -94,8 +94,10 @@ class ArtificialBeeColonyAlgorithm(object):
                 newSolution = copy.deepcopy(self.Foods[i])
                 param2change = int(rnd.random() * self.D)
                 neighbor = int(self.FoodNumber * rnd.random())
-                newSolution.Solution[param2change] = self.Foods[i].Solution[param2change] + (-1 + 2 * rnd.random()) * (
-                    self.Foods[i].Solution[param2change] - self.Foods[neighbor].Solution[param2change])
+                newSolution.Solution[param2change] = self.Foods[i].Solution[param2change] \
+                    + (-1 + 2 * rnd.random()) * \
+                    (self.Foods[i].Solution[param2change] -
+                     self.Foods[neighbor].Solution[param2change])
                 newSolution.repair()
                 newSolution.evaluate()
                 if newSolution.Fitness < self.Foods[i].Fitness:
@@ -115,8 +117,10 @@ class ArtificialBeeColonyAlgorithm(object):
                     neighbor = int(self.FoodNumber * rnd.random())
                     while neighbor == s:
                         neighbor = int(self.FoodNumber * rnd.random())
-                    Solution.Solution[param2change] = self.Foods[s].Solution[param2change] + (-1 + 2 * rnd.random()) * (
-                        self.Foods[s].Solution[param2change] - self.Foods[neighbor].Solution[param2change])
+                    Solution.Solution[param2change] = self.Foods[s].Solution[param2change] \
+                        + (-1 + 2 * rnd.random()) * (
+                            self.Foods[s].Solution[param2change] -
+                            self.Foods[neighbor].Solution[param2change])
                     Solution.repair()
                     Solution.evaluate()
                     FEs += 1
