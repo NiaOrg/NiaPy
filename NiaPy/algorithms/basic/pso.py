@@ -19,9 +19,9 @@ __all__ = ['ParticleSwarmAlgorithm']
 
 
 class Particle(object):
-    '''Defines particle for population'''
-    # pylint: disable=too-many-instance-attributes
+    """Defines particle for population."""
 
+    # pylint: disable=too-many-instance-attributes
     def __init__(self, D, LB, UB):
         self.D = D
         self.LB = LB
@@ -30,14 +30,15 @@ class Particle(object):
         self.Velocity = []
 
         self.pBestPosition = []
+        self.pBestSolution = []
         self.bestFitness = float('inf')
 
         self.Fitness = float('inf')
         self.generateParticle()
 
     def generateParticle(self):
-        self.Solution = [self.LB + (self.UB - self.LB)
-                         * rnd.random() for _i in range(self.D)]
+        self.Solution = [self.LB + (self.UB - self.LB) * rnd.random()
+                         for _i in range(self.D)]
         self.Velocity = [0 for _i in range(self.D)]
 
         self.pBestSolution = [0 for _i in range(self.D)]
@@ -71,7 +72,7 @@ class ParticleSwarmAlgorithm(object):
     # pylint: disable=too-many-instance-attributes
 
     def __init__(self, Np, D, nFES, C1, C2, w, Lower, Upper, function):
-        '''Constructor'''
+        """Constructor."""
         self.Np = Np
         self.D = D
         self.nFES = nFES
