@@ -32,7 +32,7 @@ class MyBenchmark(object):
 
 for i in range(10):
     Algorithm = DifferentialEvolutionAlgorithm(
-        10, 40, 10000, 0.5, 0.9, 'whitley')
+        10, 40, 10000, -32.768, 32.768, 'griewank')
     Best = Algorithm.run()
 
     logger.info(Best)
