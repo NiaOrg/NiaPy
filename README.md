@@ -40,6 +40,9 @@ The following benchmark functions are included in NiaPy:
 - Rosenbrock
 - Schwefel
 - Sphere
+- Sphere 2.21
+- Sphere 2.22
+- Whitley
 
 Engineering problems
 
