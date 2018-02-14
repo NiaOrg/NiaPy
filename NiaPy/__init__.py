@@ -39,6 +39,7 @@ class Runner(object):
         self.Upper = Upper
         self.results = {}
 
+    # pylint: disable=too-many-return-statements
     def __algorithmFactory(self, name, benchmark):
         bench = benchmarks.utility.Utility().get_benchmark(
             benchmark, self.Lower, self.Upper)
@@ -58,6 +59,8 @@ class Runner(object):
         elif name == 'GreyWolfOptimizer':
             return algorithms.basic.GreyWolfOptimizer(
                 self.D, self.NP, self.nFES, bench)
+        elif name == 'ArtificialBeeColonyAlgorithm':
+            return algorithms.basic.ArtificialBeeColonyAlgorithm(self.D, self.NP, self.nFES, bench)
         elif name == 'HybridBatAlgorithm':
             return algorithms.modified.HybridBatAlgorithm(
                 self.D, self.NP, self.nFES, self.A, self.r, self.F, self.CR, self.Qmin, self.Qmax, bench)
@@ -66,6 +69,10 @@ class Runner(object):
 
     def __exportToLog(self):
         print(self.results)
+
+    def __exportToJson(self):
+        # TODO: implement export to JSON
+        pass
 
     def run(self, export='log'):
         for alg in self.useAlgorithms:
@@ -87,6 +94,8 @@ class Runner(object):
 
         if export == 'log':
             self.__exportToLog()
+        elif export == 'json':
+            self.__exportToJson()
         elif export == 'xls':
             # TODO: implement export to xls
             pass
