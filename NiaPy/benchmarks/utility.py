@@ -1,6 +1,8 @@
 """Utilities for benchmarks."""
 
-from . import Rastrigin, Rosenbrock, Griewank, Sphere, Ackley, Schwefel, Whitley
+from . import Rastrigin, Rosenbrock, Griewank, \
+    Sphere, Ackley, Schwefel, Schwefel221, \
+    Schwefel222, Whitley
 
 __all__ = ['Utility']
 
@@ -25,6 +27,10 @@ class Utility(object):
                 return Ackley()
             elif benchmark == 'schwefel':
                 return Schwefel()
+            elif benchmark == 'schwefel221':
+                return Schwefel221()
+            elif benchmark == 'schwefel222':
+                return Schwefel222()
             elif benchmark == 'whitley':
                 return Whitley()
             else:

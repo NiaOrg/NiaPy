@@ -2,7 +2,7 @@
 # pylint: disable=anomalous-backslash-in-string
 """Implementation of Whitley function.
 
-Date: Februar 2018
+Date: February 2018
 
 Author: Grega Vrbančič
 
@@ -14,11 +14,9 @@ Minimum:
     f(1,1,...,1) = 0
 
 LaTeX formats:
-    Equation: \begin{equation}f(x_1 \cdots x_n) =
-                \sum_{i=1}^n \sum_{j=1}^n (\frac{(100(x_i^2-x_j)^2 +
-                (1-x_j)^2)^2}{4000} -cos(100(x_i^2-x_j)^2 + (1-x_j)^2)+1)
-                \end{equation}
-    Domain: $-10.24 \leq x_i \leq 10.24$
+    Inline:
+    Equation:
+    Domain:
 
 Reference paper: http://ieeexplore.ieee.org/document/4425088/
 
