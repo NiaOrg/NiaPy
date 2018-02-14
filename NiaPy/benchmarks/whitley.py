@@ -18,10 +18,13 @@ LaTeX formats:
     Equation:
     Domain:
 
-Reference paper: http://ieeexplore.ieee.org/document/4425088/
-
-Implementation based on: http://www.cs.unm.edu/~neal.holts/dga/benchmarkFunction/whitley.html
+Reference paper:
+    Jamil, M., and Yang, X. S. (2013).
+    A literature survey of benchmark functions for global optimisation problems.
+    International Journal of Mathematical Modelling and Numerical Optimisation,
+    4(2), 150-194.
 """
+
 import math
 
 __all__ = ['Whitley']
@@ -38,7 +41,7 @@ class Whitley(object):
             val = 0.0
             for i in range(D):
                 for j in range(D):
-                    temp = 100 * (math.pow(sol[i], 2) - sol[j]) + math.pow(1 - sol[j], 2)
+                    temp = 100 * math.pow((math.pow(sol[i], 2) - sol[j]), 2) + math.pow(1 - sol[j], 2)
                     val += (float(math.pow(temp, 2)) / 4000.0) - math.cos(temp) + 1
             return val
 

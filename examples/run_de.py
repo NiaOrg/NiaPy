@@ -32,7 +32,15 @@ class MyBenchmark(object):
 
 for i in range(10):
     Algorithm = DifferentialEvolutionAlgorithm(
-        10, 40, 10000, 0.5, 0.9, MyBenchmark())
+        10, 40, 10000, 0.5, 0.9, 'whitley')
     Best = Algorithm.run()
 
     logger.info(Best)
+
+s1 = [0, 0, 0, 0, 0]
+
+from NiaPy.benchmarks.whitley import Whitley
+
+evaluate =  Whitley().function()
+print(evaluate(5, s1))
+
