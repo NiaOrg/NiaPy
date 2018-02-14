@@ -21,7 +21,7 @@ class FireflyAlgorithm(object):
 
     # pylint: disable=too-many-instance-attributes
     def __init__(self, D, NP, nFES, alpha, betamin, gamma, benchmark):
-        self.benchmark = Utility.get_benchmark(benchmark)
+        self.benchmark = Utility().get_benchmark(benchmark)
         self.D = D  # dimension of the problem
         self.NP = NP  # population size
         self.nFES = nFES  # number of function evaluations

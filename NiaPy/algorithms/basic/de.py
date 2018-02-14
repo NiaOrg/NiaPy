@@ -50,7 +50,7 @@ class DifferentialEvolutionAlgorithm(object):
 
     # pylint: disable=too-many-instance-attributes
     def __init__(self, D, NP, nFES, F, CR, benchmark):
-        self.benchmark = Utility.get_benchmark(benchmark)
+        self.benchmark = Utility().get_benchmark(benchmark)
         self.D = D  # dimension of problem
         self.Np = NP  # population size
         self.nFES = nFES  # number of function evaluations
@@ -105,7 +105,6 @@ class DifferentialEvolutionAlgorithm(object):
         self.evalPopulation()
         FEs = self.Np
         while FEs <= self.nFES:
-            # print("Generation {}".format(FEs/self.Np)),
             self.Population = self.generationStep(self.Population)
             FEs += self.Np
         return self.bestSolution.Fitness
