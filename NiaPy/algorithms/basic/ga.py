@@ -129,5 +129,4 @@ class GeneticAlgorithm(object):
 
             for i in range(self.NP):
                 self.checkForBest(self.Population[i])
-            print(self.Best.toString())
         return self.Best

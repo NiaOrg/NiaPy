@@ -51,6 +51,7 @@ class SolutionjDE(object):
 class SelfAdaptiveDifferentialEvolutionAlgorithm(object):
     # pylint: disable=too-many-instance-attributes
     def __init__(self, D, NP, nFES, F, CR, Lower, Upper, function):
+        # TODO: check for F and CR parameters!
         self.D = D  # dimension of problem
         self.Np = NP  # population size
         self.nFES = nFES  # number of function evaluations
@@ -62,7 +63,7 @@ class SelfAdaptiveDifferentialEvolutionAlgorithm(object):
         SolutionjDE.FuncEval = staticmethod(function)
         self.Population = []
         self.bestSolution = SolutionjDE(self.D, Lower, Upper)
-        self.Tao = None  # !!!What is this???
+        self.Tao = None  # EDITED: check please
 
     def evalPopulation(self):
         for p in self.Population:
