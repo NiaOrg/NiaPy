@@ -66,7 +66,7 @@ class Particle(object):
                 self.Velocity[i] = self.vMin
             if self.Velocity[i] > self.vMax:
                 self.Velocity[i] = self.vMax
-                
+
     def toString(self):
         pass
 
@@ -89,8 +89,8 @@ class ParticleSwarmAlgorithm(object):
         self.vMax = vMax
         self.Lower = Lower
         self.Upper = Upper
-        self.Swarm = [] 
-               
+        self.Swarm = []
+
         Particle.FuncEval = staticmethod(function)
 
         self.gBest = Particle(self.D, self.Lower, self.Upper, self.vMin, self.vMax)

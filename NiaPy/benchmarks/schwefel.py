@@ -117,7 +117,6 @@ class Schwefel222(object):
         Equation:
         Domain:
 
-    Implementation based on: http://www.cs.unm.edu/~neal.holts/dga/benchmarkFunction/schwefel222.html
     """
 
     def __init__(self, Lower=-10, Upper=10):
