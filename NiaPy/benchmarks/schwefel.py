@@ -28,8 +28,8 @@ class Schwefel(object):
     LaTeX formats:
         Inline: $f(\textbf{x}) = 418.9829d - \sum_{i=1}^{D} x_i sin(\sqrt{|x_i|})$
         Equation: \begin{equation} f(\textbf{x}) =
-                418.9829d - \sum_{i=1}^{D} x_i
-                sin(\sqrt{|x_i|}) \end{equation}
+                  418.9829d - \sum_{i=1}^{D} x_i
+                  sin(\sqrt{|x_i|}) \end{equation}
         Domain: $-500 \leq x_i \leq 500$
 
     Reference: https://www.sfu.ca/~ssurjano/schwef.html
@@ -68,15 +68,23 @@ class Schwefel221(object):
     Function: Schwefel 2.21 function
 
     Input domain:
+        The function can be defined on any input domain but it is usually
+        evaluated on the hypercube x_i ∈ [-100, 100], for all i = 1, 2,..., D.
 
     Global minimum:
+        f(x*) = 0, at x* = (0,...,0)
 
     LaTeX formats:
-        Inline:
-        Equation:
-        Domain:
+        Inline: $f(\mathbf{x})=\max_{i=1,...,n}|x_i|$
+        Equation: \begin{equation}f(\mathbf{x}) =
+                  \max_{i=1,...,n}|x_i| \end{equation}
+        Domain: $-100 \leq x_i \leq 100$
 
-    Implementation based on: http://www.cs.unm.edu/~neal.holts/dga/benchmarkFunction/schwefel221.html
+    Reference paper:
+        Jamil, M., and Yang, X. S. (2013).
+        A literature survey of benchmark functions for global optimisation problems.
+        International Journal of Mathematical Modelling and Numerical Optimisation,
+        4(2), 150-194.
     """
 
     def __init__(self, Lower=-100, Upper=100):
@@ -109,17 +117,26 @@ class Schwefel222(object):
     Function: Schwefel 2.22 function
 
     Input domain:
+        The function can be defined on any input domain but it is usually
+        evaluated on the hypercube x_i ∈ [-100, 100], for all i = 1, 2,..., D.
 
     Global minimum:
+        f(x*) = 0, at x* = (0,...,0)
 
     LaTeX formats:
-        Inline:
-        Equation:
-        Domain:
+        Inline: $f(\mathbf{x})=\sum_{i=1}^{D}|x_i|+\prod_{i=1}^{D}|x_i|$
+        Equation: \begin{equation}f(\mathbf{x}) =
+                  \sum_{i=1}^{D}|x_i| + \prod_{i=1}^{D}|x_i| \end{equation}
+        Domain: $-100 \leq x_i \leq 100$
 
+    Reference paper:
+        Jamil, M., and Yang, X. S. (2013).
+        A literature survey of benchmark functions for global optimisation problems.
+        International Journal of Mathematical Modelling and Numerical Optimisation,
+        4(2), 150-194.
     """
 
-    def __init__(self, Lower=-10, Upper=10):
+    def __init__(self, Lower=-100, Upper=100):
         self.Lower = Lower
         self.Upper = Upper
 
