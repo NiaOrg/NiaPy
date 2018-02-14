@@ -23,7 +23,7 @@ class GreyWolfOptimizer(object):
 
     # pylint: disable=too-many-instance-attributes
     def __init__(self, D, NP, nFES, benchmark):
-        self.benchmark = Utility.get_benchmark(benchmark)
+        self.benchmark = Utility().get_benchmark(benchmark)
         self.D = D  # dimension of the problem
         self.NP = NP  # population size; number of search agents
         self.nFES = nFES  # number of function evaluations

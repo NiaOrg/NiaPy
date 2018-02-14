@@ -4,10 +4,13 @@ import sys
 sys.path.append('../')
 # End of fix
 
-from __future__ import print_function
-
 import random
-from NiaPy.algorithms.basic import ArtificialBeeColonyAlgorithm
+import logging
+import NiaPy
+
+logging.basicConfig()
+logger = logging.getLogger('examples')
+logger.setLevel('INFO')
 
 
 class MyBenchmark(object):
@@ -24,8 +27,9 @@ class MyBenchmark(object):
         return evaluate
 
 
-for i in range(10):
-    Algorithm = ArtificialBeeColonyAlgorithm(10, 40, 10000, MyBenchmark())
-    Best = Algorithm.run()
+algorithms = ['BatAlgorithm', 'DifferentialEvolutionAlgorithm',
+              'ArtificialBeeColonyAlgorithm']
+benchmarks = ['sphere', 'ackley', 'rosenbrock', 'griewank', 'rastrigin',
+              'rosenbrock', 'schwefel', 'schwefel221', 'schwefel222', 'whitley', MyBenchmark()]
 
-    print(Best)
+NiaPy.Runner(10, 40, 10000, 10, algorithms, benchmarks).run()
