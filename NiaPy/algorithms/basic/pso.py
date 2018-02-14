@@ -23,11 +23,11 @@ class Particle(object):
 
     # pylint: disable=too-many-instance-attributes
     def __init__(self, D, LB, UB, vMin, vMax):
-        self.D = D # dimension of the problem
-        self.LB = LB # lower bound
-        self.UB = UB #upper bound 
-        self.vMin = vMin # velocity min
-        self.vMax = vMax # velocity max 
+        self.D = D  # dimension of the problem
+        self.LB = LB  # lower bound
+        self.UB = UB  # upper bound
+        self.vMin = vMin  # velocity min
+        self.vMax = vMax  # velocity max
         self.Solution = []
         self.Velocity = []
 
