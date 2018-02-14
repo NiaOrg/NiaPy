@@ -44,8 +44,6 @@ The following benchmark functions are included in NiaPy:
 - Sphere 2.22
 - Whitley
 
-Engineering problems
-
 # Setup
 
 ## Requirements
