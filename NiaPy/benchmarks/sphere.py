@@ -17,7 +17,7 @@ Global minimum:
 
 LaTeX formats:
     Inline: $f(x) = \sum_{i=1}^D x_i^2$
-    Equation: \begin{equation}f(x) = \sum_{i=1}^D x_i^2\end{equation}
+    Equation: \begin{equation}f(x) = \sum_{i=1}^D x_i^2 \end{equation}
     Domain: $0 \leq x_i \leq 10$
 
 Reference paper:
