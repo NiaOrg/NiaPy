@@ -8,10 +8,12 @@ __all__ = ['Utility']
 
 
 # pylint: disable=too-many-return-statements
-class Utility:
+class Utility(object):
 
-    # pylint: disable=too-many-return-statements
-    @staticmethod
+    def __init__(self):
+        pass
+
+    # pylint: disable=inconsistent-return-statements
     def get_benchmark(self, benchmark, Upper=None, Lower=None):
         if not isinstance(benchmark, ''.__class__):
             return benchmark
@@ -82,5 +84,6 @@ class Utility:
             else:
                 raise TypeError('Passed benchmark is not defined!')
 
-    def __raiseLowerAndUpperNotDefined(self):
+    @classmethod
+    def __raiseLowerAndUpperNotDefined(cls):
         raise TypeError('Upper and Lower value must be defined!')

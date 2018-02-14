@@ -17,7 +17,7 @@ from NiaPy.benchmarks.utility import Utility
 __all__ = ['BatAlgorithm']
 
 
-class BatAlgorithm:
+class BatAlgorithm(object):
     """Bat Algorithm implementation."""
 
     # pylint: disable=too-many-instance-attributes
@@ -39,7 +39,7 @@ class BatAlgorithm:
 
         """
 
-        self.benchmark = Utility.get_benchmark(benchmark)
+        self.benchmark = Utility().get_benchmark(benchmark)
         self.D = D  # dimension
         self.NP = NP  # population size
         self.nFES = nFES  # number of function evaluations

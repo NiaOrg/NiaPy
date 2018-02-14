@@ -1,5 +1,6 @@
+from __future__ import print_function
+
 import logging
-import copy
 from NiaPy import algorithms, benchmarks
 
 __all__ = ['algorithms', 'benchmarks']
@@ -39,7 +40,7 @@ class Runner(object):
         self.results = {}
 
     def __algorithmFactory(self, name, benchmark):
-        bench = benchmarks.utility.Utility.get_benchmark(
+        bench = benchmarks.utility.Utility().get_benchmark(
             benchmark, self.Lower, self.Upper)
 
         if name == 'BatAlgorithm':
@@ -59,7 +60,7 @@ class Runner(object):
                 self.D, self.NP, self.nFES, bench)
         elif name == 'HybridBatAlgorithm':
             return algorithms.modified.HybridBatAlgorithm(
-                self.D, self.NP, self.nFES, self.A, self.r, self.Qmin, self.Qmax, bench)
+                self.D, self.NP, self.nFES, self.A, self.r, self.F, self.CR, self.Qmin, self.Qmax, bench)
         else:
             raise TypeError('Passed benchmark is not defined!')
 

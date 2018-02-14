@@ -9,14 +9,6 @@ class Sphere(object):
         self.Lower = Lower
         self.Upper = Upper
 
-    def __init__(self, Lower=-5, Upper=5):
-        self.Lower = Lower
-        self.Upper = Upper
-
-    def __init__(self, Lower=-5, Upper=5):
-        self.Lower = Lower
-        self.Upper = Upper
-
     @classmethod
     def function(cls):
         def evaluate(D, sol):
