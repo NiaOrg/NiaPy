@@ -6,6 +6,7 @@ from NiaPy.benchmarks.griewank import Griewank
 from NiaPy.benchmarks.sphere import Sphere
 from NiaPy.benchmarks.ackley import Ackley
 from NiaPy.benchmarks.schwefel import Schwefel
+from NiaPy.benchmarks.whitley import Whitley
 
 __all__ = [
     'Rastrigin',
@@ -13,5 +14,6 @@ __all__ = [
     'Griewank',
     'Sphere',
     'Ackley',
-    'Schwefel'
+    'Schwefel',
+    'Whitley'
 ]
