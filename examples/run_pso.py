@@ -16,7 +16,7 @@ def Fun(D, sol):
 
 
 for i in range(10):
-    Algorithm = ParticleSwarmAlgorithm(40, 40, 10000, 2.0, 2.0, 0.7, -5.0, 5.0, Fun)
+    Algorithm = ParticleSwarmAlgorithm(40, 40, 10000, 2.0, 2.0, 0.7, -10, 10, -4, 4, Fun)
     Best = Algorithm.run()
 
     print(Best)

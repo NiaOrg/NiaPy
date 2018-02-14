@@ -22,10 +22,12 @@ class Particle(object):
     """Defines particle for population."""
 
     # pylint: disable=too-many-instance-attributes
-    def __init__(self, D, LB, UB):
+    def __init__(self, D, LB, UB, vMin, vMax):
         self.D = D
         self.LB = LB
         self.UB = UB
+        self.vMin = vMin
+        self.vMax = vMax
         self.Solution = []
         self.Velocity = []
 
@@ -60,7 +62,11 @@ class Particle(object):
                 self.Solution[i] = self.LB
             if self.Solution[i] > self.UB:
                 self.Solution[i] = self.UB
-
+            if self.Velocity[i] < self.vMin:
+                self.Velocity[i] = self.vMin
+            if self.Velocity[i] > self.vMax:
+                self.Velocity[i] = self.vMax
+                
     def toString(self):
         pass
 
@@ -71,20 +77,23 @@ class Particle(object):
 class ParticleSwarmAlgorithm(object):
     # pylint: disable=too-many-instance-attributes
 
-    def __init__(self, Np, D, nFES, C1, C2, w, Lower, Upper, function):
+    def __init__(self, Np, D, nFES, C1, C2, w, vMin, vMax, Lower, Upper, function):
         """Constructor."""
         self.Np = Np
         self.D = D
         self.nFES = nFES
-        self.Swarm = []
-        self.Lower = Lower
-        self.Upper = Upper
         self.C1 = C1
         self.C2 = C2
         self.w = w
+        self.vMin = vMin
+        self.vMax = vMax
+        self.Lower = Lower
+        self.Upper = Upper
+        self.Swarm = [] 
+               
         Particle.FuncEval = staticmethod(function)
 
-        self.gBest = Particle(self.D, self.Lower, self.Upper)
+        self.gBest = Particle(self.D, self.Lower, self.Upper, self.vMin, self.vMax)
 
     def evalSwarm(self):
         for p in self.Swarm:
@@ -94,7 +103,7 @@ class ParticleSwarmAlgorithm(object):
 
     def initSwarm(self):
         for _i in range(self.Np):
-            self.Swarm.append(Particle(self.D, self.Lower, self.Upper))
+            self.Swarm.append(Particle(self.D, self.Lower, self.Upper, self.vMin, self.vMax))
 
     def moveSwarm(self, Swarm):
         MovedSwarm = []
