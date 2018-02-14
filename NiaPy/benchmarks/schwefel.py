@@ -131,7 +131,7 @@ class Schwefel222(object):
             part2 = 1.0
             for i in range(D):
                 part1 += abs(sol[i])
-                part2 += abs(sol[i])
+                part2 *= abs(sol[i])
             return part1 + part2
 
         return evaluate

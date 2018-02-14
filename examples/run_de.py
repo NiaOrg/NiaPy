@@ -36,11 +36,3 @@ for i in range(10):
     Best = Algorithm.run()
 
     logger.info(Best)
-
-s1 = [0, 0, 0, 0, 0]
-
-from NiaPy.benchmarks.whitley import Whitley
-
-evaluate =  Whitley().function()
-print(evaluate(5, s1))
-

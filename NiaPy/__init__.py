@@ -1,4 +1,4 @@
-from NiaPy import algorithms
+from NiaPy import algorithms, benchmarks
 
 __all__ = ['algorithms', 'benchmarks']
 __project__ = 'NiaPy'
