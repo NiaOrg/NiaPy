@@ -52,3 +52,9 @@ Icon*
 
 # VSCODE
 .vscode/
+
+# JETBRAINS
+.idea/
+
+# Project related
+/examples/export

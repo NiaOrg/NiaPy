@@ -4,7 +4,6 @@ import sys
 sys.path.append('../')
 # End of fix
 
-import random
 import logging
 import NiaPy
 
@@ -15,8 +14,8 @@ logger.setLevel('INFO')
 
 class MyBenchmark(object):
     def __init__(self):
-        self.Lower = -5
-        self.Upper = 5
+        self.Lower = -5.12
+        self.Upper = 5.12
 
     def function(self):
         def evaluate(D, sol):
@@ -30,6 +29,6 @@ class MyBenchmark(object):
 algorithms = ['BatAlgorithm', 'DifferentialEvolutionAlgorithm',
               'ArtificialBeeColonyAlgorithm']
 benchmarks = ['sphere', 'ackley', 'rosenbrock', 'griewank', 'rastrigin',
-              'rosenbrock', 'schwefel', 'schwefel221', 'schwefel222', 'whitley', MyBenchmark()]
+              'schwefel', 'schwefel221', 'schwefel222', 'whitley', MyBenchmark()]
 
-NiaPy.Runner(10, 40, 10000, 10, algorithms, benchmarks).run()
+NiaPy.Runner(10, 40, 10000, 10, algorithms, benchmarks).run(export='json', verbose=True)
