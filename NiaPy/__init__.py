@@ -69,7 +69,8 @@ class Runner(object):
 
         return algorithm
 
-    def __createExportDir(self):
+    @classmethod
+    def __createExportDir(cls):
         if not os.path.exists('export'):
             os.makedirs('export')
 
