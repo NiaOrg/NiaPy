@@ -1,3 +1,5 @@
+# encoding=utf8
+# pylint: disable=anomalous-backslash-in-string
 """Implementation of Sphere functions.
 
 Date: 2018

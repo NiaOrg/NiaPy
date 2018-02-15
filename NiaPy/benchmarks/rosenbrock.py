@@ -1,3 +1,5 @@
+# encoding=utf8
+# pylint: disable=anomalous-backslash-in-string
 """Implementation of Rosenbrock benchmark function.
 
 Date: 2018

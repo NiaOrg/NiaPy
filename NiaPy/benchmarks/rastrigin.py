@@ -1,3 +1,5 @@
+# encoding=utf8
+# pylint: disable=anomalous-backslash-in-string
 """Implementation of Rastrigin benchmark function.
 
 Date: 2018
@@ -39,7 +41,7 @@ class Rastrigin(object):
     @classmethod
     def function(cls):
         def evaluate(D, sol):
-            
+
             val = 0.0
 
             for i in range(D):
