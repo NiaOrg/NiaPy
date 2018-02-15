@@ -4,6 +4,7 @@ import os
 import logging
 import json
 import datetime
+import xlsxwriter
 from NiaPy import algorithms, benchmarks
 
 __all__ = ['algorithms', 'benchmarks']
@@ -74,18 +75,47 @@ class Runner(object):
         if not os.path.exists('export'):
             os.makedirs('export')
 
+    @classmethod
+    def __generateExportName(cls, extension):
+        return 'export/' + str(datetime.datetime.now()) + '.' + extension
+
     def __exportToLog(self):
         print(self.results)
 
     def __exportToJson(self):
         self.__createExportDir()
-        with open('export/' + str(datetime.datetime.now()) + '.json', 'w') as outFile:
+        with open(self.__generateExportName('json'), 'w') as outFile:
             json.dump(self.results, outFile)
             logger.info('Export to JSON completed!')
 
     def __exportToXls(self):
-        # TODO: implement export to XLS
-        pass
+        workbook = xlsxwriter.Workbook(self.__generateExportName('xlsx'))
+        worksheet = workbook.add_worksheet()
+
+        row = 0
+        col = 0
+        nRuns = 0
+
+        for alg in self.results:
+            worksheet.write(row, col, alg)
+            col += 1
+
+            for bench in self.results[alg]:
+                worksheet.write(row, col, bench)
+
+                nRuns = len(self.results[alg][bench])
+
+                for i in range(len(self.results[alg][bench])):
+                    row += 1
+                    worksheet.write(row, col, self.results[alg][bench][i])
+
+                row -= len(self.results[alg][bench])  # jump back up
+                col += 1
+
+            row += 1 + nRuns  # jump down to row after previous results
+            col -= 1 + len(self.results[alg])
+
+        logger.info('Export to XLSX completed!')
 
     def __exportToLatex(self):
         # TODO: implement export to Latex
@@ -121,7 +151,7 @@ class Runner(object):
             self.__exportToLog()
         elif export == 'json':
             self.__exportToJson()
-        elif export == 'xls':
+        elif export == 'xlsx':
             self.__exportToXls()
         elif export == 'latex':
             self.__exportToLatex()
