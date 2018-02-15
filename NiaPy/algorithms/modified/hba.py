@@ -106,9 +106,9 @@ class HybridBatAlgorithm(object):
 
                 if rnd > self.r:
                     if random.random() < self.CR:
-                        naklj = random.sample(range(0, self.NP), 3)
-                        S[i][j] = S[naklj[0]][j] + self.F * \
-                            (S[naklj[1]][j] - S[naklj[2]][j])
+                        nums = random.sample(range(0, self.NP), 3)
+                        S[i][j] = S[nums[0]][j] + self.F * \
+                            (S[nums[1]][j] - S[nums[2]][j])
                         S[i][j] = self.simplebounds(S[i][j], self.Lb[j],
                                                     self.Ub[j])
 
