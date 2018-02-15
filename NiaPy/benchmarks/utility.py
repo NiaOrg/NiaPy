@@ -14,7 +14,7 @@ class Utility(object):
         pass
 
     # pylint: disable=inconsistent-return-statements
-    def get_benchmark(self, benchmark, Upper=None, Lower=None):
+    def get_benchmark(self, benchmark, Lower=None, Upper=None):
         if not isinstance(benchmark, ''.__class__):
             return benchmark
         else:

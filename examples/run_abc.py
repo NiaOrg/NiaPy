@@ -1,10 +1,9 @@
+from __future__ import print_function
 # This is temporary fix to import module from parent folder
 # It will be removed when package is published on PyPI
 import sys
 sys.path.append('../')
 # End of fix
-
-from __future__ import print_function
 
 import random
 from NiaPy.algorithms.basic import ArtificialBeeColonyAlgorithm
