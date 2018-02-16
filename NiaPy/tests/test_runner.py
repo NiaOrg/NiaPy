@@ -26,7 +26,7 @@ class RunnerTestCase(TestCase):
                            'FlowerPollinationAlgorithm',
                            'GreyWolfOptimizer',
                            'HybridBatAlgorithm']
-        self.benchmarks = ['griewank', 'ackley', 'sphere', MyBenchmark()]
+        self.benchmarks = ['griewank', MyBenchmark()]
 
     def test_runner_works_fine(self):
         self.assertTrue(NiaPy.Runner(10, 40, 1000, 10,
