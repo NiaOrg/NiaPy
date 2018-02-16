@@ -26,7 +26,9 @@ class MyBenchmark(object):
         return evaluate
 
 
-algorithms = ['ArtificialBeeColonyAlgorithm', 'DifferentialEvolutionAlgorithm']
-benchmarks = ['sphere', 'ackley', MyBenchmark()]
+algorithms = ['BatAlgorithm', 'DifferentialEvolutionAlgorithm',
+              'ArtificialBeeColonyAlgorithm']
+benchmarks = ['sphere', 'ackley', 'rosenbrock', 'griewank', 'rastrigin',
+              'rosenbrock', 'schwefel', 'schwefel221', 'schwefel222', 'whitley', 'alpine1', 'alpine2', MyBenchmark()]
 
 NiaPy.Runner(10, 40, 10000, 10, algorithms, benchmarks).run(export='xlsx', verbose=True)

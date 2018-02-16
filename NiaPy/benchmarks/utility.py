@@ -2,7 +2,7 @@
 
 from . import Rastrigin, Rosenbrock, Griewank, \
     Sphere, Ackley, Schwefel, Schwefel221, \
-    Schwefel222, Whitley
+    Schwefel222, Whitley, Alpine1, Alpine2
 
 __all__ = ['Utility']
 
@@ -13,7 +13,7 @@ class Utility(object):
     def __init__(self):
         pass
 
-    # pylint: disable=inconsistent-return-statements
+    # pylint: disable=inconsistent-return-statements,too-many-statements
     def get_benchmark(self, benchmark, Lower=None, Upper=None):
         if not isinstance(benchmark, ''.__class__):
             return benchmark
@@ -79,6 +79,20 @@ class Utility(object):
                     return Whitley()
                 elif Lower is not None and Upper is not None:
                     return Whitley(Lower, Upper)
+                else:
+                    self.__raiseLowerAndUpperNotDefined()
+            elif benchmark == 'alpine1':
+                if Lower is None and Upper is None:
+                    return Alpine1()
+                elif Lower is not None and Upper is not None:
+                    return Alpine1(Lower, Upper)
+                else:
+                    self.__raiseLowerAndUpperNotDefined()
+            elif benchmark == 'alpine2':
+                if Lower is None and Upper is None:
+                    return Alpine2()
+                elif Lower is not None and Upper is not None:
+                    return Alpine2(Lower, Upper)
                 else:
                     self.__raiseLowerAndUpperNotDefined()
             else:
