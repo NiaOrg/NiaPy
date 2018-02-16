@@ -2,7 +2,7 @@
 
 from . import Rastrigin, Rosenbrock, Griewank, \
     Sphere, Ackley, Schwefel, Schwefel221, \
-    Schwefel222, Whitley
+    Schwefel222, Whitley, Alpine1, Alpine2
 
 __all__ = ['Utility']
 
@@ -79,6 +79,20 @@ class Utility(object):
                     return Whitley()
                 elif Lower is not None and Upper is not None:
                     return Whitley(Lower, Upper)
+                else:
+                    self.__raiseLowerAndUpperNotDefined()
+            elif benchmark == 'alpine1':
+                if Lower is None and Upper is None:
+                    return Alpine1()
+                elif Lower is not None and Upper is not None:
+                    return Alpine1(Lower, Upper)
+                else:
+                    self.__raiseLowerAndUpperNotDefined()
+            elif benchmark == 'alpine2':
+                if Lower is None and Upper is None:
+                    return Alpine2()
+                elif Lower is not None and Upper is not None:
+                    return Alpine2(Lower, Upper)
                 else:
                     self.__raiseLowerAndUpperNotDefined()
             else:
