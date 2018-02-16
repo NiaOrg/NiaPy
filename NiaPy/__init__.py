@@ -122,55 +122,60 @@ class Runner(object):
     def __exportToLatex(self):
         metrics = ['Best', 'Median', 'Worst', 'Mean', 'Std.']
 
-        print('\\begin{table}[h]')
-        print('\\centering')
-        
-        begin_tabular = '\\begin{tabular}{c|c'
+        with open(self.__generateExportName('tex'), 'a') as outFile:
+            outFile.write('\\begin{table}[h]\n')
+            outFile.write('\\centering\n')
 
-        for alg in self.results:
-            for _i in range(len(self.results[alg])):
-                begin_tabular += '|c'
-            
-            firstLine = '   &'
-            
-            for benchmark in self.results[alg].keys():
-                firstLine += '  &   ' + benchmark
+            begin_tabular = '\\begin{tabular}{c|c'
 
-            firstLine += ' \\\\'
-        
-        begin_tabular += '}'
-        print(begin_tabular)
-        print('\\hline')
-        print(firstLine)
-        print('\\hline')
+            for alg in self.results:
+                for _i in range(len(self.results[alg])):
+                    begin_tabular += '|c'
 
-        for alg in self.results:
-            for metric in metrics:
-                line = ''
+                firstLine = '   &'
 
-                if metric != 'Worst':
-                    line += '   &   ' + metric
-                else:
-                    line += alg + ' &   ' + metric
+                for benchmark in self.results[alg].keys():
+                    firstLine += '  &   ' + benchmark
 
-                for benchmark in self.results[alg]:
-                    if metric == 'Best':
-                        line += '   &   ' + str(np.amin(self.results[alg][benchmark]))
-                    elif metric == 'Median':
-                        line += '   &   ' + str(np.median(self.results[alg][benchmark]))
-                    elif metric == 'Worst':
-                        line += '   &   ' + str(np.amax(self.results[alg][benchmark]))
-                    elif metric == 'Mean':
-                        line += '   &   ' + str(np.mean(self.results[alg][benchmark]))
+                firstLine += ' \\\\'
+
+                break
+
+            begin_tabular += '}\n'
+            outFile.write(begin_tabular)
+            outFile.write('\\hline\n')
+            outFile.write(firstLine + '\n')
+            outFile.write('\\hline\n')
+
+            for alg in self.results:
+                for metric in metrics:
+                    line = ''
+
+                    if metric != 'Worst':
+                        line += '   &   ' + metric
                     else:
-                        line += '   &   ' + str(np.std(self.results[alg][benchmark]))
+                        line += alg + ' &   ' + metric
 
-                line += '   \\\\'
-                print(line)
+                    for benchmark in self.results[alg]:
+                        if metric == 'Best':
+                            line += '   &   ' + str(np.amin(self.results[alg][benchmark]))
+                        elif metric == 'Median':
+                            line += '   &   ' + str(np.median(self.results[alg][benchmark]))
+                        elif metric == 'Worst':
+                            line += '   &   ' + str(np.amax(self.results[alg][benchmark]))
+                        elif metric == 'Mean':
+                            line += '   &   ' + str(np.mean(self.results[alg][benchmark]))
+                        else:
+                            line += '   &   ' + str(np.std(self.results[alg][benchmark]))
 
-            print('\\hline')
-        print('\\end{tabular}')
-        print('\\end{table}')
+                    line += '   \\\\'
+                    outFile.write(line + '\n')
+
+                outFile.write('\\hline\n')
+            outFile.write('\\end{tabular}\n')
+            outFile.write('\\end{table}\n')
+
+        logger.info('Export to Latex completed!')
 
     def run(self, export='log', verbose=False):
         for alg in self.useAlgorithms:
