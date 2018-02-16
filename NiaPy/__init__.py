@@ -5,6 +5,7 @@ import logging
 import json
 import datetime
 import xlsxwriter
+from tabulate import tabulate
 from NiaPy import algorithms, benchmarks
 
 __all__ = ['algorithms', 'benchmarks']
@@ -118,6 +119,9 @@ class Runner(object):
         logger.info('Export to XLSX completed!')
 
     def __exportToLatex(self):
+        table = [["spam", 42], ["eggs", 451], ["bacon", 0]]
+        headers = ["item", "qty"]
+        print(tabulate(table, headers, tablefmt="latex"))
         # TODO: implement export to Latex
         pass
 
