@@ -6,7 +6,6 @@ import json
 import datetime
 import xlsxwriter
 import numpy as np
-from tabulate import tabulate
 from NiaPy import algorithms, benchmarks
 
 __all__ = ['algorithms', 'benchmarks']
