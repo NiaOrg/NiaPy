@@ -24,6 +24,7 @@ Python micro framework for building nature-inspired algorithms.
 The micro framework features following algorithms:
 
 - basic:
+  - Artificial bee colony algorithm ([see example](examples/run_abc.py))
   - Bat algorithm ([see example](examples/run_ba.py))
   - Firefly algorithm ([see example](examples/run_fa.py))
   - Differential evolution algorithm ([see example](examples/run_de.py))
