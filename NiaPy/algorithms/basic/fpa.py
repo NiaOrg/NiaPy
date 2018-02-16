@@ -26,7 +26,7 @@ class FlowerPollinationAlgorithm(object):
     # pylint: disable=too-many-instance-attributes
     def __init__(self, D, NP, nFES, p, benchmark):
         """Initialize algorithm.
-        
+
         Arguments:
             D {integer} -- dimension of problem
             NP {integer} -- population size
@@ -36,9 +36,9 @@ class FlowerPollinationAlgorithm(object):
 
         Raises:
             TypeError -- Raised when given benchmark function which does not exists.
-            
+
         """
-        
+
         self.benchmark = Utility().get_benchmark(benchmark)
         self.D = D  # dimension
         self.NP = NP  # population size
