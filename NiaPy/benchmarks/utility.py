@@ -13,7 +13,7 @@ class Utility(object):
     def __init__(self):
         pass
 
-    # pylint: disable=inconsistent-return-statements
+    # pylint: disable=inconsistent-return-statements,too-many-statements
     def get_benchmark(self, benchmark, Lower=None, Upper=None):
         if not isinstance(benchmark, ''.__class__):
             return benchmark
