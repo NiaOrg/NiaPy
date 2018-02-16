@@ -18,7 +18,7 @@ LaTeX formats:
     Inline: $ f(\mathbf{x}) = {\left |\sum_{i = 1}^D {x_i}^2 -
             D \right|}^{1/4} + (0.5 \sum_{i = 1}^D {x_i}^2 +
             \sum_{i = 1}^D x_i) / D + 0.5$
-    Equation:  \begin{equation} f(\mathbf{x}) = {\left |\sum_{i = 1}^D {x_i}^2 - 
+    Equation:  \begin{equation} f(\mathbf{x}) = {\left |\sum_{i = 1}^D {x_i}^2 -
             D \right|}^{1/4} + (0.5 \sum_{i = 1}^D {x_i}^2 +
             \sum_{i = 1}^D x_i) / D + 0.5 \end{equation}
     Domain: $-100 \leq x_i \leq 100$
