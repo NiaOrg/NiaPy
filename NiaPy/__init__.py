@@ -5,6 +5,7 @@ import logging
 import json
 import datetime
 import xlsxwriter
+import numpy as np
 from tabulate import tabulate
 from NiaPy import algorithms, benchmarks
 
@@ -119,11 +120,57 @@ class Runner(object):
         logger.info('Export to XLSX completed!')
 
     def __exportToLatex(self):
-        table = [["spam", 42], ["eggs", 451], ["bacon", 0]]
-        headers = ["item", "qty"]
-        print(tabulate(table, headers, tablefmt="latex"))
-        # TODO: implement export to Latex
-        pass
+        metrics = ['Best', 'Median', 'Worst', 'Mean', 'Std.']
+
+        print('\\begin{table}[h]')
+        print('\\centering')
+        
+        begin_tabular = '\\begin{tabular}{c|c'
+
+        for alg in self.results:
+            for _i in range(len(self.results[alg])):
+                begin_tabular += '|c'
+            
+            firstLine = '   &'
+            
+            for benchmark in self.results[alg].keys():
+                firstLine += '  &   ' + benchmark
+
+            firstLine += ' \\\\'
+        
+        begin_tabular += '}'
+        print(begin_tabular)
+        print('\\hline')
+        print(firstLine)
+        print('\\hline')
+
+        for alg in self.results:
+            for metric in metrics:
+                line = ''
+
+                if metric != 'Worst':
+                    line += '   &   ' + metric
+                else:
+                    line += alg + ' &   ' + metric
+
+                for benchmark in self.results[alg]:
+                    if metric == 'Best':
+                        line += '   &   ' + str(np.amin(self.results[alg][benchmark]))
+                    elif metric == 'Median':
+                        line += '   &   ' + str(np.median(self.results[alg][benchmark]))
+                    elif metric == 'Worst':
+                        line += '   &   ' + str(np.amax(self.results[alg][benchmark]))
+                    elif metric == 'Mean':
+                        line += '   &   ' + str(np.mean(self.results[alg][benchmark]))
+                    else:
+                        line += '   &   ' + str(np.std(self.results[alg][benchmark]))
+
+                line += '   \\\\'
+                print(line)
+
+            print('\\hline')
+        print('\\end{tabular}')
+        print('\\end{table}')
 
     def run(self, export='log', verbose=False):
         for alg in self.useAlgorithms:
