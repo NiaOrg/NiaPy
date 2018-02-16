@@ -121,20 +121,30 @@ class Runner(object):
     def __exportToLatex(self):
         metrics = ['Best', 'Median', 'Worst', 'Mean', 'Std.']
 
+        def only_upper(s):
+            return "".join(c for c in s if c.isupper())
+
         with open(self.__generateExportName('tex'), 'a') as outFile:
+            outFile.write('\\documentclass{article}\n')
+            outFile.write('\\usepackage[utf8]{inputenc}\n')
+            outFile.write('\\usepackage{siunitx}\n')
+            outFile.write('\\sisetup{\n')
+            outFile.write('round-mode=places,round-precision=3}\n')
+            outFile.write('\\begin{document}\n')
             outFile.write('\\begin{table}[h]\n')
             outFile.write('\\centering\n')
 
-            begin_tabular = '\\begin{tabular}{c|c'
+            begin_tabular = '\\begin{tabular}{cc'
 
             for alg in self.results:
                 for _i in range(len(self.results[alg])):
-                    begin_tabular += '|c'
+                    begin_tabular += 'S'
 
                 firstLine = '   &'
 
                 for benchmark in self.results[alg].keys():
-                    firstLine += '  &   ' + benchmark
+                    firstLine += '  &   \\multicolumn{1}{c}{\\textbf{' + \
+                        benchmark + '}}'
 
                 firstLine += ' \\\\'
 
@@ -153,7 +163,12 @@ class Runner(object):
                     if metric != 'Worst':
                         line += '   &   ' + metric
                     else:
-                        line += alg + ' &   ' + metric
+                        shortAlg = ''
+                        if alg.endswith('Algorithm'):
+                            shortAlg = only_upper(alg[:-9])
+                        else:
+                            shortAlg = only_upper(alg)
+                        line += '\\textbf{' + shortAlg + '} &   ' + metric
 
                     for benchmark in self.results[alg]:
                         if metric == 'Best':
@@ -173,6 +188,7 @@ class Runner(object):
                 outFile.write('\\hline\n')
             outFile.write('\\end{tabular}\n')
             outFile.write('\\end{table}\n')
+            outFile.write('\\end{document}')
 
         logger.info('Export to Latex completed!')
 
