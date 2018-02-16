@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "7d6f218c18b0f3a3d87dd84801f6061772a44fa7e4e28bd8f8e01bf369f4008c"
+            "sha256": "9ef737116f4802d15ab3fd5f248527bec42cea3f47174b58dfeca97cbe12fa1b"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -89,12 +89,6 @@
                 "sha256:87ea1f11a0e9ec08c264dc64551d501fa307289460705f6fccd84cbfc7926d10"
             ],
             "version": "==1.0.0"
-        },
-        "tabulate": {
-            "hashes": [
-                "sha256:e4ca13f26d0a6be2a2915428dc21e732f1e44dad7f76d7030b2ef1ec251cf7f2"
-            ],
-            "version": "==0.8.2"
         },
         "xlsxwriter": {
             "hashes": [
