@@ -11,6 +11,7 @@ from NiaPy.benchmarks.schwefel import Schwefel222
 from NiaPy.benchmarks.whitley import Whitley
 from NiaPy.benchmarks.alpine import Alpine1
 from NiaPy.benchmarks.alpine import Alpine2
+from NiaPy.benchmarks.happyCat import HappyCat
 
 __all__ = [
     'Rastrigin',
@@ -23,5 +24,6 @@ __all__ = [
     'Schwefel222',
     'Whitley',
     'Alpine1',
-    'Alpine2'
+    'Alpine2',
+    'HappyCat'
 ]
