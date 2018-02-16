@@ -9,6 +9,8 @@ from NiaPy.benchmarks.schwefel import Schwefel
 from NiaPy.benchmarks.schwefel import Schwefel221
 from NiaPy.benchmarks.schwefel import Schwefel222
 from NiaPy.benchmarks.whitley import Whitley
+from NiaPy.benchmarks.alpine import Alpine1
+from NiaPy.benchmarks.alpine import Alpine2
 
 __all__ = [
     'Rastrigin',
@@ -19,5 +21,7 @@ __all__ = [
     'Schwefel',
     'Schwefel221',
     'Schwefel222',
-    'Whitley'
+    'Whitley',
+    'Alpine1',
+    'Alpine2'
 ]
