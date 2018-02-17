@@ -2,7 +2,7 @@
 
 from . import Rastrigin, Rosenbrock, Griewank, \
     Sphere, Ackley, Schwefel, Schwefel221, \
-    Schwefel222, Whitley, Alpine1, Alpine2, HappyCat, Ridge, ChungReynolds
+    Schwefel222, Whitley, Alpine1, Alpine2, HappyCat, Ridge, ChungReynolds, Csendes
 
 
 __all__ = ['Utility']
@@ -117,7 +117,13 @@ class Utility(object):
                     return ChungReynolds(Lower, Upper)
                 else:
                     self.__raiseLowerAndUpperNotDefined()
-
+            elif benchmark == 'csendes':
+                if Lower is None and Upper is None:
+                    return Csendes()
+                elif Lower is not None and Upper is not None:
+                    return Csendes(Lower, Upper)
+                else:
+                    self.__raiseLowerAndUpperNotDefined()
             else:
                 raise TypeError('Passed benchmark is not defined!')
 
