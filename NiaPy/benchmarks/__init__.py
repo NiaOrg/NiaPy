@@ -15,6 +15,7 @@ from NiaPy.benchmarks.happyCat import HappyCat
 from NiaPy.benchmarks.ridge import Ridge
 from NiaPy.benchmarks.chungReynolds import ChungReynolds
 
+
 __all__ = [
     'Rastrigin',
     'Rosenbrock',
