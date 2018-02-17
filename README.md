@@ -42,6 +42,7 @@ The following benchmark functions are included in NiaPy:
 - Griewank
 - Happy cat
 - Rastrigin
+- Ridge
 - Rosenbrock
 - Schwefel
 - Schwefel 2.21
