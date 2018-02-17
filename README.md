@@ -38,6 +38,7 @@ The following benchmark functions are included in NiaPy:
 - Ackley
 - Alpine1
 - Alpine2
+- Chung Reynolds
 - Griewank
 - Happy cat
 - Rastrigin
