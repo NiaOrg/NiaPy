@@ -14,6 +14,7 @@ from NiaPy.benchmarks.alpine import Alpine2
 from NiaPy.benchmarks.happyCat import HappyCat
 from NiaPy.benchmarks.ridge import Ridge
 from NiaPy.benchmarks.chungReynolds import ChungReynolds
+from NiaPy.benchmarks.csendes import Csendes
 
 
 __all__ = [
@@ -30,5 +31,6 @@ __all__ = [
     'Alpine2',
     'HappyCat',
     'Ridge',
-    'ChungReynolds'
+    'ChungReynolds',
+    'Csendes'
 ]
