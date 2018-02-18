@@ -18,9 +18,11 @@ __all__ = ['BatAlgorithm']
 
 
 class BatAlgorithm(object):
+
     """Bat Algorithm implementation."""
 
     # pylint: disable=too-many-instance-attributes
+
     def __init__(self, D, NP, nFES, A, r, Qmin, Qmax, benchmark):
         """Initialize algorithm.
 
@@ -63,6 +65,7 @@ class BatAlgorithm(object):
         self.Fitness = [0] * self.NP  # fitness
         self.best = [0] * self.D  # best solution
         self.evaluations = 0  # evaluations counter
+        self.eval_flag = True  # evaluations flag
         self.Fun = self.benchmark.function()
 
     def best_bat(self):
@@ -76,6 +79,12 @@ class BatAlgorithm(object):
         for i in range(self.D):
             self.best[i] = self.Sol[j][i]
         self.f_min = self.Fitness[j]
+
+    def eval_true(self):
+        """Check evauations."""
+
+        if self.evaluations == self.nFES:
+            self.eval_flag = False
 
     def init_bat(self):
         """Initialize bat."""
@@ -107,10 +116,7 @@ class BatAlgorithm(object):
 
         self.init_bat()
 
-        while True:
-            if self.evaluations == self.nFES:
-                break
-
+        while self.eval_flag is not False:
             for i in range(self.NP):
                 rnd = random.uniform(0, 1)
                 self.Q[i] = self.Qmin + (self.Qmin - self.Qmax) * rnd
@@ -129,6 +135,11 @@ class BatAlgorithm(object):
                         S[i][j] = self.best[j] + 0.001 * random.gauss(0, 1)
                         S[i][j] = self.simplebounds(S[i][j], self.Lb[j],
                                                     self.Ub[j])
+
+                self.eval_true()
+
+                if self.eval_flag is not True:
+                    break
 
                 Fnew = self.Fun(self.D, S[i])
                 self.evaluations = self.evaluations + 1
