@@ -2,7 +2,7 @@
 
 from . import Rastrigin, Rosenbrock, Griewank, \
     Sphere, Ackley, Schwefel, Schwefel221, \
-    Schwefel222, Whitley, Alpine1, Alpine2, HappyCat, Ridge, ChungReynolds, Csendes, Pinter, Qing, Quintic, Salomon, SchumerSteiglitz, Step, Step2, Step3
+    Schwefel222, Whitley, Alpine1, Alpine2, HappyCat, Ridge, ChungReynolds, Csendes, Pinter, Qing, Quintic, Salomon, SchumerSteiglitz, Step, Step2, Step3, Stepint
 
 
 __all__ = ['Utility']
@@ -178,6 +178,13 @@ class Utility(object):
                     return Step3()
                 elif Lower is not None and Upper is not None:
                     return Step3(Lower, Upper)
+                else:
+                    self.__raiseLowerAndUpperNotDefined()
+            elif benchmark == 'stepint':
+                if Lower is None and Upper is None:
+                    return Stepint()
+                elif Lower is not None and Upper is not None:
+                    return Stepint(Lower, Upper)
                 else:
                     self.__raiseLowerAndUpperNotDefined()
             else:

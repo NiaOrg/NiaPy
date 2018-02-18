@@ -23,6 +23,7 @@ from NiaPy.benchmarks.schumerSteiglitz import SchumerSteiglitz
 from NiaPy.benchmarks.step import Step
 from NiaPy.benchmarks.step import Step2
 from NiaPy.benchmarks.step import Step3
+from NiaPy.benchmarks.stepint import Stepint
 
 
 __all__ = [
@@ -48,5 +49,6 @@ __all__ = [
     'SchumerSteiglitz',
     'Step',
     'Step2',
-    'Step3'
+    'Step3',
+    'Stepint'
 ]
