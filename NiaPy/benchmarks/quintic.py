@@ -50,9 +50,7 @@ class Quintic(object):
             val = 0.0
 
             for i in range(D):
-                val += abs(math.pow(sol[i], 5) - 3.0 * math.pow(sol[i], 4) +
-                4.0 * math.pow(sol[i], 3) + 2.0 * math.pow(sol[i], 2) -
-                10.0 * sol[i] - 4)
+                val += abs(math.pow(sol[i], 5) - 3.0 * math.pow(sol[i], 4) + 4.0 * math.pow(sol[i], 3) + 2.0 * math.pow(sol[i], 2) - 10.0 * sol[i] - 4)
 
             return val
 
