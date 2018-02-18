@@ -141,7 +141,7 @@ class FlowerPollinationAlgorithm(object):
                     for j in range(self.D):
                         self.best[j] = S[i][j]
                     self.f_min = Fnew
-        print self.evaluations
+
         return self.f_min
 
     def Levy(self):
