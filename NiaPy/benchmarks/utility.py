@@ -4,7 +4,7 @@ from . import Rastrigin, Rosenbrock, Griewank, \
     Sphere, Ackley, Schwefel, Schwefel221, \
     Schwefel222, Whitley, Alpine1, Alpine2, HappyCat, \
     Ridge, ChungReynolds, Csendes, Pinter, Qing, Quintic, \
-    Salomon, SchumerSteiglitz, Step, Step2, Step3, Stepint, SumSquares
+    Salomon, SchumerSteiglitz, Step, Step2, Step3, Stepint, SumSquares, StyblinskiTang
 
 
 __all__ = ['Utility']
@@ -194,6 +194,13 @@ class Utility(object):
                     return SumSquares()
                 elif Lower is not None and Upper is not None:
                     return SumSquares(Lower, Upper)
+                else:
+                    self.__raiseLowerAndUpperNotDefined()
+            elif benchmark == 'styblinskiTang':
+                if Lower is None and Upper is None:
+                    return StyblinskiTang()
+                elif Lower is not None and Upper is not None:
+                    return StyblinskiTang(Lower, Upper)
                 else:
                     self.__raiseLowerAndUpperNotDefined()
             else:
