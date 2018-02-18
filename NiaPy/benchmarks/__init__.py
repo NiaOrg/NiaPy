@@ -24,6 +24,7 @@ from NiaPy.benchmarks.step import Step
 from NiaPy.benchmarks.step import Step2
 from NiaPy.benchmarks.step import Step3
 from NiaPy.benchmarks.stepint import Stepint
+from NiaPy.benchmarks.sumSquares import SumSquares
 
 
 __all__ = [
@@ -50,5 +51,6 @@ __all__ = [
     'Step',
     'Step2',
     'Step3',
-    'Stepint'
+    'Stepint',
+    'SumSquares'
 ]

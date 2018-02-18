@@ -58,6 +58,7 @@ The following benchmark functions are included in NiaPy:
 - Step2
 - Step3
 - Stepint
+- Sum Squares
 - Whitley
 
 

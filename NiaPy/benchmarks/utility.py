@@ -2,7 +2,7 @@
 
 from . import Rastrigin, Rosenbrock, Griewank, \
     Sphere, Ackley, Schwefel, Schwefel221, \
-    Schwefel222, Whitley, Alpine1, Alpine2, HappyCat, Ridge, ChungReynolds, Csendes, Pinter, Qing, Quintic, Salomon, SchumerSteiglitz, Step, Step2, Step3, Stepint
+    Schwefel222, Whitley, Alpine1, Alpine2, HappyCat, Ridge, ChungReynolds, Csendes, Pinter, Qing, Quintic, Salomon, SchumerSteiglitz, Step, Step2, Step3, Stepint, SumSquares
 
 
 __all__ = ['Utility']
@@ -185,6 +185,13 @@ class Utility(object):
                     return Stepint()
                 elif Lower is not None and Upper is not None:
                     return Stepint(Lower, Upper)
+                else:
+                    self.__raiseLowerAndUpperNotDefined()
+            elif benchmark == 'sumSquares':
+                if Lower is None and Upper is None:
+                    return SumSquares()
+                elif Lower is not None and Upper is not None:
+                    return SumSquares(Lower, Upper)
                 else:
                     self.__raiseLowerAndUpperNotDefined()
             else:
