@@ -44,6 +44,7 @@ The following benchmark functions are included in NiaPy:
 - Happy cat
 - Pintér
 - Qing
+- Quintic
 - Rastrigin
 - Ridge
 - Rosenbrock

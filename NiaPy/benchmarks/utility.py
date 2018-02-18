@@ -2,7 +2,7 @@
 
 from . import Rastrigin, Rosenbrock, Griewank, \
     Sphere, Ackley, Schwefel, Schwefel221, \
-    Schwefel222, Whitley, Alpine1, Alpine2, HappyCat, Ridge, ChungReynolds, Csendes, Pinter, Qing
+    Schwefel222, Whitley, Alpine1, Alpine2, HappyCat, Ridge, ChungReynolds, Csendes, Pinter, Qing, Quintic
 
 
 __all__ = ['Utility']
@@ -136,6 +136,13 @@ class Utility(object):
                     return Qing()
                 elif Lower is not None and Upper is not None:
                     return Qing(Lower, Upper)
+                else:
+                    self.__raiseLowerAndUpperNotDefined()
+            elif benchmark == 'quintic':
+                if Lower is None and Upper is None:
+                    return Quintic()
+                elif Lower is not None and Upper is not None:
+                    return Quintic(Lower, Upper)
                 else:
                     self.__raiseLowerAndUpperNotDefined()
             else:
