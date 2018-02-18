@@ -49,6 +49,7 @@ The following benchmark functions are included in NiaPy:
 - Ridge
 - Rosenbrock
 - Salomon
+- Schumer Steiglitz
 - Schwefel
 - Schwefel 2.21
 - Schwefel 2.22

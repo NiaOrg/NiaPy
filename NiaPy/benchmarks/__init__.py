@@ -19,6 +19,7 @@ from NiaPy.benchmarks.pinter import Pinter
 from NiaPy.benchmarks.qing import Qing
 from NiaPy.benchmarks.quintic import Quintic
 from NiaPy.benchmarks.salomon import Salomon
+from NiaPy.benchmarks.schumerSteiglitz import SchumerSteiglitz
 
 
 __all__ = [
@@ -40,5 +41,6 @@ __all__ = [
     'Pinter',
     'Qing',
     'Quintic',
-    'salomon'
+    'salomon',
+    'SchumerSteiglitz'
 ]
