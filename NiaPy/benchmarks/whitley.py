@@ -40,6 +40,7 @@ __all__ = ['Whitley']
 
 
 class Whitley(object):
+
     def __init__(self, Lower=-10.24, Upper=10.24):
         self.Lower = Lower
         self.Upper = Upper
@@ -52,9 +53,12 @@ class Whitley(object):
 
             for i in range(D):
                 for j in range(D):
-                    temp = 100 * math.pow((math.pow(sol[i], 2) - sol[j]), 2) + math.pow(1 - sol[j], 2)
-                    val += (float(math.pow(temp, 2)) / 4000.0) - math.cos(temp) + 1
-                    
+                    temp = 100 * \
+                        math.pow((math.pow(sol[i], 2) - sol[j]), 2) + math.pow(
+                            1 - sol[j], 2)
+                    val += (float(math.pow(temp, 2)) / 4000.0) - \
+                        math.cos(temp) + 1
+
             return val
 
         return evaluate

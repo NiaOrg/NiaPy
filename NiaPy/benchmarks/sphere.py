@@ -35,6 +35,7 @@ __all__ = ['Sphere']
 
 
 class Sphere(object):
+
     def __init__(self, Lower=-5.12, Upper=5.12):
         self.Lower = Lower
         self.Upper = Upper
@@ -47,7 +48,7 @@ class Sphere(object):
 
             for i in range(D):
                 val += math.pow(sol[i], 2)
-                
+
             return val
 
         return evaluate
