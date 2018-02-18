@@ -18,7 +18,6 @@ __all__ = ['BatAlgorithm']
 
 
 class BatAlgorithm(object):
-
     """Bat Algorithm implementation."""
 
     # pylint: disable=too-many-instance-attributes

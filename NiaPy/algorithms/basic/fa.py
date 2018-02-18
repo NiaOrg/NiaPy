@@ -17,7 +17,6 @@ __all__ = ['FireflyAlgorithm']
 
 
 class FireflyAlgorithm(object):
-
     """Firefly Algorithm implementation."""
 
     # pylint: disable=too-many-instance-attributes

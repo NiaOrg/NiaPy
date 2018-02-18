@@ -39,7 +39,7 @@ __all__ = ['Quintic']
 
 class Quintic(object):
 
-    def __init__(self, Lower=-10, Upper=10):
+    def __init__(self, Lower=-10.0, Upper=10.0):
         self.Lower = Lower
         self.Upper = Upper
 
@@ -50,9 +50,12 @@ class Quintic(object):
             val = 0.0
 
             for i in range(D):
-                val += abs(math.pow(sol[i], 5) - 3.0 * math.pow(sol[i], 4) + \
-                4.0 * math.pow(sol[i], 3) + 2.0 * math.pow(sol[i], 2) - \
-                10.0 * sol[i] - 4)
+                val += abs(
+                    math.pow(sol[i],
+                             5) - 3.0 * math.pow(sol[i],
+                                                 4) + 4.0 * math.pow(sol[i],
+                                                                     3) + 2.0 * math.pow(sol[i],
+                                                                                         2) - 10.0 * sol[i] - 4)
 
             return val
 
