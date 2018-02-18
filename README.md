@@ -48,6 +48,7 @@ The following benchmark functions are included in NiaPy:
 - Rastrigin
 - Ridge
 - Rosenbrock
+- Salomon
 - Schwefel
 - Schwefel 2.21
 - Schwefel 2.22
