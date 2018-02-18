@@ -19,6 +19,7 @@ __all__ = ['HybridBatAlgorithm']
 
 class HybridBatAlgorithm(object):
     # pylint: disable=too-many-instance-attributes
+
     def __init__(self, D, NP, nFES, A, r, F, CR, Qmin, Qmax, benchmark):
         self.benchmark = Utility().get_benchmark(benchmark)
         self.D = D  # dimension
@@ -32,6 +33,7 @@ class HybridBatAlgorithm(object):
         self.Qmax = Qmax  # frequency max
         self.Lower = self.benchmark.Lower  # lower bound
         self.Upper = self.benchmark.Upper  # upper bound
+        self.eval_flag = True  # evaluations flag
         self.Fun = self.benchmark.function()
 
         self.f_min = 0.0  # minimum fitness
@@ -57,6 +59,12 @@ class HybridBatAlgorithm(object):
         for i in range(self.D):
             self.best[i] = self.Sol[j][i]
         self.f_min = self.Fitness[j]
+
+    def eval_true(self):
+        """Check evauations."""
+
+        if self.evaluations == self.nFES:
+            self.eval_flag = False
 
     def init_bat(self):
         for i in range(self.D):
@@ -86,10 +94,7 @@ class HybridBatAlgorithm(object):
 
         self.init_bat()
 
-        while True:
-            if self.evaluations == self.nFES:
-                break
-
+        while self.eval_flag is not False:
             for i in range(self.NP):
                 rnd = random.uniform(0, 1)
                 self.Q[i] = self.Qmin + (self.Qmin - self.Qmax) * rnd
@@ -111,6 +116,11 @@ class HybridBatAlgorithm(object):
                             (S[nums[1]][j] - S[nums[2]][j])
                         S[i][j] = self.simplebounds(S[i][j], self.Lb[j],
                                                     self.Ub[j])
+
+                self.eval_true()
+
+                if self.eval_flag is not True:
+                    break
 
                 Fnew = self.Fun(self.D, S[i])
                 self.evaluations = self.evaluations + 1
