@@ -37,7 +37,7 @@ __all__ = ['Csendes']
 
 class Csendes(object):
 
-    def __init__(self, Lower=-1, Upper=1):
+    def __init__(self, Lower=-1.0, Upper=1.0):
         self.Lower = Lower
         self.Upper = Upper
 

@@ -38,7 +38,7 @@ __all__ = ['Rosenbrock']
 
 class Rosenbrock(object):
 
-    def __init__(self, Lower=-30, Upper=30):
+    def __init__(self, Lower=-30.0, Upper=30.0):
         self.Lower = Lower
         self.Upper = Upper
 
@@ -49,7 +49,7 @@ class Rosenbrock(object):
             val = 0.0
 
             for i in range(D - 1):
-                val += 100 * math.pow(sol[i + 1] - math.pow((sol[i]), 2), 2) + math.pow((sol[i] - 1), 2)
+                val += 100.0 * math.pow(sol[i + 1] - math.pow((sol[i]), 2), 2) + math.pow((sol[i] - 1), 2)
 
             return val
 

@@ -39,7 +39,7 @@ class Step(object):
         4(2), 150-194.
     """
 
-    def __init__(self, Lower=-100, Upper=100):
+    def __init__(self, Lower=-100.0, Upper=100.0):
         self.Lower = Lower
         self.Upper = Upper
 
@@ -88,7 +88,7 @@ class Step2(object):
         4(2), 150-194.
     """
 
-    def __init__(self, Lower=-100, Upper=100):
+    def __init__(self, Lower=-100.0, Upper=100.0):
         self.Lower = Lower
         self.Upper = Upper
 
@@ -137,7 +137,7 @@ class Step3(object):
         4(2), 150-194.
     """
 
-    def __init__(self, Lower=-100, Upper=100):
+    def __init__(self, Lower=-100.0, Upper=100.0):
         self.Lower = Lower
         self.Upper = Upper
 

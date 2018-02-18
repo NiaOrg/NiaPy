@@ -35,7 +35,7 @@ class Schwefel(object):
     Reference: https://www.sfu.ca/~ssurjano/schwef.html
     """
 
-    def __init__(self, Lower=-500, Upper=500):
+    def __init__(self, Lower=-500.0, Upper=500.0):
         self.Lower = Lower
         self.Upper = Upper
 
@@ -87,7 +87,7 @@ class Schwefel221(object):
         4(2), 150-194.
     """
 
-    def __init__(self, Lower=-100, Upper=100):
+    def __init__(self, Lower=-100.0, Upper=100.0):
         self.Lower = Lower
         self.Upper = Upper
 
@@ -136,7 +136,7 @@ class Schwefel222(object):
         4(2), 150-194.
     """
 
-    def __init__(self, Lower=-100, Upper=100):
+    def __init__(self, Lower=-100.0, Upper=100.0):
         self.Lower = Lower
         self.Upper = Upper
 

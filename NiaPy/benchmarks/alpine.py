@@ -37,7 +37,7 @@ class Alpine1(object):
         4(2), 150-194.
     """
 
-    def __init__(self, Lower=-10, Upper=10):
+    def __init__(self, Lower=-10.0, Upper=10.0):
         self.Lower = Lower
         self.Upper = Upper
 
@@ -87,7 +87,7 @@ class Alpine2(object):
         4(2), 150-194.
     """
 
-    def __init__(self, Lower=0, Upper=10):
+    def __init__(self, Lower=0.0, Upper=10.0):
         self.Lower = Lower
         self.Upper = Upper
 
