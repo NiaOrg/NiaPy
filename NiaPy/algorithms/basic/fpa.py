@@ -24,6 +24,7 @@ __all__ = ['FlowerPollinationAlgorithm']
 
 class FlowerPollinationAlgorithm(object):
     # pylint: disable=too-many-instance-attributes
+
     def __init__(self, D, NP, nFES, p, benchmark):
         """Initialize algorithm.
 
@@ -59,6 +60,7 @@ class FlowerPollinationAlgorithm(object):
                     for _j in range(self.NP)]  # population of solutions
         self.Fitness = [0] * self.NP  # fitness
         self.best = [0] * self.D  # best solution
+        self.eval_flag = True  # evaluations flag
         self.evaluations = 0  # evaluations counter
 
     def best_flower(self):
@@ -70,6 +72,12 @@ class FlowerPollinationAlgorithm(object):
         for i in range(self.D):
             self.best[i] = self.Sol[j][i]
         self.f_min = self.Fitness[j]
+
+    def eval_true(self):
+        """Check evaluations."""
+
+        if self.evaluations == self.nFES:
+            self.eval_flag = False
 
     @classmethod
     def simplebounds(cls, val, lower, upper):
@@ -97,10 +105,7 @@ class FlowerPollinationAlgorithm(object):
         S = [[0.0 for i in range(self.D)] for j in range(self.NP)]
         self.init_flower()
 
-        while True:
-            if self.evaluations == self.nFES:
-                break
-
+        while self.eval_flag is not False:
             for i in range(self.NP):
                 if random.uniform(0, 1) > self.p:  # probability switch
                     L = self.Levy()
@@ -120,6 +125,10 @@ class FlowerPollinationAlgorithm(object):
                         S[i][j] = self.simplebounds(
                             S[i][j], self.Lb[j], self.Ub[j])
 
+                self.eval_true()
+                if self.eval_flag is not True:
+                    break
+
                 Fnew = self.Fun(self.D, S[i])
                 self.evaluations = self.evaluations + 1
 
@@ -132,7 +141,7 @@ class FlowerPollinationAlgorithm(object):
                     for j in range(self.D):
                         self.best[j] = S[i][j]
                     self.f_min = Fnew
-
+        print self.evaluations
         return self.f_min
 
     def Levy(self):
