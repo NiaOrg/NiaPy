@@ -22,6 +22,7 @@ __all__ = ['GreyWolfOptimizer']
 class GreyWolfOptimizer(object):
 
     # pylint: disable=too-many-instance-attributes
+
     def __init__(self, D, NP, nFES, benchmark):
         self.benchmark = Utility().get_benchmark(benchmark)
         self.D = D  # dimension of the problem
@@ -34,6 +35,7 @@ class GreyWolfOptimizer(object):
         self.Positions = [[0 for _i in range(self.D)]  # positions of search agents
                           for _j in range(self.NP)]
 
+        self.eval_flag = True  # evaluations flag
         self.evaluations = 0  # evaluations counter
 
         # TODO: "-inf" is in the case of maximization problems
@@ -53,6 +55,12 @@ class GreyWolfOptimizer(object):
                 self.Positions[i][j] = random.random(
                 ) * (self.Upper - self.Lower) + self.Lower
 
+    def eval_true(self):
+        """Check evaluations."""
+
+        if self.evaluations == self.nFES:
+            self.eval_flag = False
+
     def bounds(self, position):
         for i in range(self.D):
             if position[i] < self.Lower:
@@ -66,12 +74,14 @@ class GreyWolfOptimizer(object):
 
         self.initialization()
 
-        while True:
-            if self.evaluations == self.nFES:
-                break
+        while self.eval_flag is not False:
 
             for i in range(self.NP):
                 self.Positions[i] = self.bounds(self.Positions[i])
+
+                self.eval_true()
+                if self.eval_flag is not True:
+                    break
 
                 Fit = self.Fun(self.D, self.Positions[i])
                 self.evaluations = self.evaluations + 1
