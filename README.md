@@ -54,6 +54,9 @@ The following benchmark functions are included in NiaPy:
 - Schwefel 2.21
 - Schwefel 2.22
 - Sphere
+- Step
+- Step2
+- Step3
 - Whitley
 
 

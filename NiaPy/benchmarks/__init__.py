@@ -20,6 +20,9 @@ from NiaPy.benchmarks.qing import Qing
 from NiaPy.benchmarks.quintic import Quintic
 from NiaPy.benchmarks.salomon import Salomon
 from NiaPy.benchmarks.schumerSteiglitz import SchumerSteiglitz
+from NiaPy.benchmarks.step import Step
+from NiaPy.benchmarks.step import Step2
+from NiaPy.benchmarks.step import Step3
 
 
 __all__ = [
@@ -42,5 +45,8 @@ __all__ = [
     'Qing',
     'Quintic',
     'salomon',
-    'SchumerSteiglitz'
+    'SchumerSteiglitz',
+    'Step',
+    'Step2',
+    'Step3'
 ]
