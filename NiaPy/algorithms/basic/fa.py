@@ -17,9 +17,11 @@ __all__ = ['FireflyAlgorithm']
 
 
 class FireflyAlgorithm(object):
+
     """Firefly Algorithm implementation."""
 
     # pylint: disable=too-many-instance-attributes
+
     def __init__(self, D, NP, nFES, alpha, betamin, gamma, benchmark):
         self.benchmark = Utility().get_benchmark(benchmark)
         self.D = D  # dimension of the problem
@@ -41,6 +43,7 @@ class FireflyAlgorithm(object):
         self.Upper = self.benchmark.Upper  # upper bound
         self.fbest = None  # the best
         self.evaluations = 0
+        self.eval_flag = True  # evaluations flag
         self.Fun = self.benchmark.function()
 
     def init_ffa(self):
@@ -54,6 +57,12 @@ class FireflyAlgorithm(object):
     def alpha_new(self, a):
         delta = 1.0 - math.pow((math.pow(10.0, -4.0) / 0.9), 1.0 / float(a))
         return (1 - delta) * self.alpha
+
+    def eval_true(self):
+        """Check evaluations."""
+
+        if self.evaluations == self.nFES:
+            self.eval_flag = False
 
     def sort_ffa(self):  # implementation of bubble sort
         for i in range(self.NP):
@@ -114,15 +123,18 @@ class FireflyAlgorithm(object):
     def run(self):
         self.init_ffa()
 
-        while True:
-            if self.evaluations == self.nFES:
-                break
+        while self.eval_flag is not False:
 
             # optional reducing of alpha
             self.alpha = self.alpha_new(self.nFES / self.NP)
 
             # evaluate new solutions
             for i in range(self.NP):
+
+                self.eval_true()
+                if self.eval_flag is not True:
+                    break
+
                 self.Fitness[i] = self.Fun(self.D, self.Fireflies[i])
                 self.evaluations = self.evaluations + 1
                 self.Intensity[i] = self.Fitness[i]
