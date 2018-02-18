@@ -16,6 +16,7 @@ from NiaPy.benchmarks.ridge import Ridge
 from NiaPy.benchmarks.chungReynolds import ChungReynolds
 from NiaPy.benchmarks.csendes import Csendes
 from NiaPy.benchmarks.pinter import Pinter
+from NiaPy.benchmarks.qing import Qing
 
 
 __all__ = [
@@ -34,5 +35,6 @@ __all__ = [
     'Ridge',
     'ChungReynolds',
     'Csendes',
-    'Pinter'
+    'Pinter',
+    'Qing'
 ]
