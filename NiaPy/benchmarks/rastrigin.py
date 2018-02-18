@@ -45,7 +45,7 @@ class Rastrigin(object):
             val = 0.0
 
             for i in range(D):
-                val += math.pow(sol[i], 2) - (10 * math.cos(2 * math.pi * sol[i]))
+                val += math.pow(sol[i], 2) - (10.0 * math.cos(2 * math.pi * sol[i]))
 
             return 10 * D + val
 

@@ -33,7 +33,7 @@ __all__ = ['SchumerSteiglitz']
 
 class SchumerSteiglitz(object):
 
-    def __init__(self, Lower=-100, Upper=100):
+    def __init__(self, Lower=-100.0, Upper=100.0):
         self.Lower = Lower
         self.Upper = Upper
 

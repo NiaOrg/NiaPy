@@ -43,7 +43,7 @@ __all__ = ['Pinter']
 
 class Pinter(object):
 
-    def __init__(self, Lower=-10, Upper=10):
+    def __init__(self, Lower=-10.0, Upper=10.0):
         self.Lower = Lower
         self.Upper = Upper
 

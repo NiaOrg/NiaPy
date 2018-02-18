@@ -42,9 +42,12 @@ class Sphere(object):
     @classmethod
     def function(cls):
         def evaluate(D, sol):
+
             val = 0.0
+
             for i in range(D):
                 val += math.pow(sol[i], 2)
+                
             return val
 
         return evaluate

@@ -33,7 +33,7 @@ __all__ = ['Ridge']
 
 class Ridge(object):
 
-    def __init__(self, Lower=-64, Upper=64):
+    def __init__(self, Lower=-64.0, Upper=64.0):
         self.Lower = Lower
         self.Upper = Upper
 

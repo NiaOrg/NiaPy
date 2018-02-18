@@ -47,11 +47,14 @@ class Whitley(object):
     @classmethod
     def function(cls):
         def evaluate(D, sol):
+
             val = 0.0
+
             for i in range(D):
                 for j in range(D):
                     temp = 100 * math.pow((math.pow(sol[i], 2) - sol[j]), 2) + math.pow(1 - sol[j], 2)
                     val += (float(math.pow(temp, 2)) / 4000.0) - math.cos(temp) + 1
+                    
             return val
 
         return evaluate

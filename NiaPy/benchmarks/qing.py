@@ -37,7 +37,7 @@ __all__ = ['Qing']
 
 class Qing(object):
 
-    def __init__(self, Lower=-500, Upper=500):
+    def __init__(self, Lower=-500.0, Upper=500.0):
         self.Lower = Lower
         self.Upper = Upper
 
