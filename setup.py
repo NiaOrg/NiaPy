@@ -48,7 +48,7 @@ setuptools.setup(
     name=read_package_variable('__project__'),
     version=read_package_variable('__version__'),
 
-    description="Python micro framework for comparing nature-inspired algorithms.",
+    description="Python micro framework for building nature-inspired algorithms.",
     url='https://github.com/NiaOrg/NiaPy',
     author='NiaOrg',
     author_email='niapy.organization@gmail.com',
