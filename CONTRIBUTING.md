@@ -32,8 +32,8 @@ If you are not so familiar with Git or/and GitHub, we suggest you take a look at
     * Mac: http://developer.apple.com/xcode
     * Linux: http://www.gnu.org/software/make
 * pipenv: http://docs.pipenv.org (run ```pip install pipenv``` command)
-* Pandoc: http://johnmacfarlane.net/pandoc/installing.html
-* Graphviz: http://www.graphviz.org/Download.php
+* Pandoc: [http://johnmacfarlane.net/pandoc/installing.html] (http://johnmacfarlane.net/pandoc/installing.html) * optional
+* Graphviz: [http://www.graphviz.org/Download.php](http://www.graphviz.org/Download.php) * optional
 
 To confirm these system dependencies are configured correctly:
 
