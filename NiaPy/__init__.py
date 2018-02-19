@@ -78,7 +78,7 @@ class Runner(object):
 
     @classmethod
     def __generateExportName(cls, extension):
-        return 'export/' + str(datetime.datetime.now()) + '.' + extension
+        return 'export/' + str(datetime.datetime.now()).replace(':', '.') + '.' + extension
 
     def __exportToLog(self):
         print(self.results)
@@ -90,6 +90,8 @@ class Runner(object):
             logger.info('Export to JSON completed!')
 
     def __exportToXls(self):
+        self.__createExportDir()
+
         workbook = xlsxwriter.Workbook(self.__generateExportName('xlsx'))
         worksheet = workbook.add_worksheet()
 
@@ -116,9 +118,12 @@ class Runner(object):
             row += 1 + nRuns  # jump down to row after previous results
             col -= 1 + len(self.results[alg])
 
+        workbook.close()
         logger.info('Export to XLSX completed!')
 
     def __exportToLatex(self):
+        self.__createExportDir()
+
         metrics = ['Best', 'Median', 'Worst', 'Mean', 'Std.']
 
         def only_upper(s):
