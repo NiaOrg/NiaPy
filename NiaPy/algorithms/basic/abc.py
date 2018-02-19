@@ -58,7 +58,7 @@ class ArtificialBeeColonyAlgorithm(object):
         self.benchmark = Utility().get_benchmark(benchmark)
         self.D = D
         self.NP = NP
-        self.FoodNumber = self.NP / 2
+        self.FoodNumber = int(self.NP / 2)
         self.Limit = 100
         self.Trial = []
         self.Foods = []

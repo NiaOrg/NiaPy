@@ -32,7 +32,6 @@ wheel = "*"
 PyInstaller = "*"
 twine = "*"
 sniffer = "*"
-pync = "*"
 MacFSEvents = {version = "*", sys_platform = "== 'darwin'"}
 "enum34" = "*"
 singledispatch = "*"
