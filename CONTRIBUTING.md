@@ -28,10 +28,10 @@ If you are not so familiar with Git or/and GitHub, we suggest you take a look at
 ### Requirements
 
 * Make:
-    * Windows: http://mingw.org/download/installer
+    * Windows: [http://mingw.org/download/installer](http://mingw.org/download/installer) [Detailed install instructions](.github/mingw_install_guide.md)
     * Mac: http://developer.apple.com/xcode
     * Linux: http://www.gnu.org/software/make
-* pipenv: http://docs.pipenv.org
+* pipenv: http://docs.pipenv.org (run ```pip install pipenv``` command)
 * Pandoc: http://johnmacfarlane.net/pandoc/installing.html
 * Graphviz: http://www.graphviz.org/Download.php
 
