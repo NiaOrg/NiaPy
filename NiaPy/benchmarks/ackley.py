@@ -16,7 +16,8 @@ class Ackley(object):
 
     Function: **Ackley function**
 
-        :math:`f(x) = -a\;exp\left(-b \sqrt{\frac{1}{D}\sum_{i=1}^D x_i^2}\right) - exp\left(\frac{1}{D}\sum_{i=1}^D \cos(c\;x_i)\right) + a + exp(1)`
+        :math:`f(\mathbf{x}) = -a\;exp\left(-b \sqrt{\frac{1}{D}\sum_{i=1}^D x_i^2}\right)
+        - exp\left(\frac{1}{D}\sum_{i=1}^D \cos(c\;x_i)\right) + a + exp(1)`
 
         **Input domain:**
         The function can be defined on any input domain but it is usually
@@ -26,12 +27,12 @@ class Ackley(object):
 
     LaTeX formats:
         Inline:
-                $f(x) = -a\;exp\left(-b \sqrt{\frac{1}{D}
+                $f(\mathbf{x}) = -a\;exp\left(-b \sqrt{\frac{1}{D}
                 \sum_{i=1}^D x_i^2}\right) - exp\left(\frac{1}{D}
                 \sum_{i=1}^D cos(c\;x_i)\right) + a + exp(1)$
 
         Equation:
-                \begin{equation}f(x) =
+                \begin{equation}f(\mathbf{x}) =
                 -a\;exp\left(-b \sqrt{\frac{1}{D} \sum_{i=1}^D x_i^2}\right) -
                 exp\left(\frac{1}{D} \sum_{i=1}^D \cos(c\;x_i)\right) +
                 a + exp(1) \end{equation}
@@ -50,7 +51,6 @@ class Ackley(object):
     def function(cls):
         """Return benchmark evaluation function."""
         def evaluate(D, sol):
-            # print(sol)
 
             a = 20  # Recommended variable value
             b = 0.2  # Recommended variable value
