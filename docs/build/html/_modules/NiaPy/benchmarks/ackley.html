@@ -85,7 +85,15 @@
               
             
             
-              <p class="caption"><span class="caption-text">API documentation:</span></p>
+              <p class="caption"><span class="caption-text">User Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting Started</a></li>
+</ul>
+<p class="caption"><span class="caption-text">About NiaPy</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../code_of_conduct.html">Code of Conduct</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developer Documentation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../algorithms.html">Algorithms</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../benchmarks.html">Benchmarks</a></li>
@@ -177,21 +185,21 @@
 <span class="sd">        The function can be defined on any input domain but it is usually</span>
 <span class="sd">        evaluated on the hypercube :math:`x_i ∈ [-32.768, 32.768]`, for all :math:`i = 1, 2,..., D`.</span>
 
-<span class="sd">        **Global minimum:** :math:`f(x*) = 0`, at  :math:`x* = (0,...,0)`  </span>
+<span class="sd">        **Global minimum:** :math:`f(x*) = 0`, at  :math:`x* = (0,...,0)`</span>
 
 <span class="sd">    LaTeX formats:</span>
-<span class="sd">        Inline: </span>
+<span class="sd">        Inline:</span>
 <span class="sd">                $f(x) = -a\;exp\left(-b \sqrt{\frac{1}{D}</span>
 <span class="sd">                \sum_{i=1}^D x_i^2}\right) - exp\left(\frac{1}{D}</span>
 <span class="sd">                \sum_{i=1}^D cos(c\;x_i)\right) + a + exp(1)$</span>
-<span class="sd">        </span>
-<span class="sd">        Equation: </span>
+
+<span class="sd">        Equation:</span>
 <span class="sd">                \begin{equation}f(x) =</span>
 <span class="sd">                -a\;exp\left(-b \sqrt{\frac{1}{D} \sum_{i=1}^D x_i^2}\right) -</span>
 <span class="sd">                exp\left(\frac{1}{D} \sum_{i=1}^D \cos(c\;x_i)\right) +</span>
 <span class="sd">                a + exp(1) \end{equation}</span>
-<span class="sd">        </span>
-<span class="sd">        Domain: </span>
+
+<span class="sd">        Domain:</span>
 <span class="sd">                $-32.768 \leq x_i \leq 32.768$</span>
 
 <span class="sd">    Reference: https://www.sfu.ca/~ssurjano/ackley.html</span>
@@ -203,7 +211,7 @@
 
 <div class="viewcode-block" id="Ackley.function"><a class="viewcode-back" href="../../../benchmarks.html#NiaPy.benchmarks.Ackley.function">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">function</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns evaluation function.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Return benchmark evaluation function.&quot;&quot;&quot;</span>
         <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">sol</span><span class="p">):</span>
             <span class="c1"># print(sol)</span>
 

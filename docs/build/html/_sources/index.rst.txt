@@ -10,10 +10,33 @@ NiaPy's documentation
 
 .. automodule:: NiaPy
 
+The main documentation is organized into a couple sections:
+
+* :ref:`user-docs`
+* :ref:`dev-docs`
+* :ref:`about-docs`
+
+.. _user-docs:
+
 .. toctree::
-   :titlesonly:
    :maxdepth: 2
-   :caption: API documentation:
+   :caption: User Documentation
+
+   getting_started
+
+.. _about-docs:
+
+.. toctree::
+   :maxdepth: 2
+   :caption: About NiaPy
+
+   code_of_conduct
+
+.. _dev-docs:
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Developer Documentation
 
    algorithms
    benchmarks
