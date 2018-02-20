@@ -90,14 +90,15 @@ class HybridBatAlgorithm(object):
         return val
 
     def move_bat(self):
-        S = [[0.0 for i in range(self.D)] for j in range(self.NP)]
-
         self.init_bat()
+
+        S = [[self.best[i] for i in range(self.D)] for j in range(self.NP)]
 
         while self.eval_flag is not False:
             for i in range(self.NP):
                 rnd = random.uniform(0, 1)
                 self.Q[i] = self.Qmin + (self.Qmin - self.Qmax) * rnd
+
                 j = None
                 for j in range(self.D):
                     self.v[i][j] = self.v[i][j] + (self.Sol[i][j] -
@@ -110,12 +111,13 @@ class HybridBatAlgorithm(object):
                 rnd = random.random()
 
                 if rnd > self.r:
-                    if random.random() < self.CR:
-                        nums = random.sample(range(0, self.NP), 3)
-                        S[i][j] = S[nums[0]][j] + self.F * \
-                            (S[nums[1]][j] - S[nums[2]][j])
-                        S[i][j] = self.simplebounds(S[i][j], self.Lb[j],
-                                                    self.Ub[j])
+                    nums = random.sample(range(0, self.NP), 4)
+                    for j in range(self.D):
+                        if random.random() < self.CR:
+                            S[i][j] = self.best[j] + self.F * \
+                                (S[nums[0]][j] + S[nums[1]][j] - S[nums[2]][j] - S[nums[3]][j])
+                            S[i][j] = self.simplebounds(
+                                S[i][j], self.Lb[j], self.Ub[j])
 
                 self.eval_true()
 
@@ -135,6 +137,7 @@ class HybridBatAlgorithm(object):
                 if Fnew <= self.f_min:
                     for j in range(self.D):
                         self.best[j] = S[i][j]
+                    # print self.best
                     self.f_min = Fnew
 
         return self.f_min
