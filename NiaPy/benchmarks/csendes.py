@@ -48,7 +48,10 @@ class Csendes(object):
             val = 0.0
 
             for i in range(D):
-                val += math.pow(sol[i], 6) * (2.0 + math.sin(1.0 / sol[i]))
+                if sol[i] != 0:
+                    val += math.pow(sol[i], 6) * (2.0 + math.sin(1.0 / sol[i]))
+                else:
+                    val += math.pow(sol[i], 6) * (2.0 + math.sin(0))  # handling division by 0 if sol[i] == 0
 
             return val
 
