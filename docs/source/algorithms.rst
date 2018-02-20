@@ -5,7 +5,7 @@ Algorithms
     :members:
     :undoc-members:
 
-----------------
+
 Basic algorithms
 ----------------
 
@@ -13,7 +13,7 @@ Basic algorithms
     :members:
     :undoc-members:
 
--------------------
+
 Modified algorithms
 -------------------
 
