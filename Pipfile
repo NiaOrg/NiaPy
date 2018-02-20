@@ -10,7 +10,7 @@ name = "pypi"
 click = "*"
 numpy = "==1.14.0"
 scipy = "==1.0.0"
-XlsxWriter = "==1.0.2"
+xlsxwriter = "==1.0.2"
 
 
 [dev-packages]
@@ -27,13 +27,15 @@ freezegun = "*"
 "coverage.space" = "*"
 mkdocs = "*"
 docutils = "*"
-Pygments = "*"
+pygments = "*"
 wheel = "*"
-PyInstaller = "*"
+pyinstaller = "*"
 twine = "*"
 sniffer = "*"
-MacFSEvents = {version = "*", sys_platform = "== 'darwin'"}
+macfsevents = {version = "*", sys_platform = "== 'darwin'"}
 "enum34" = "*"
 singledispatch = "*"
-"backports.functools_lru_cache" = "*"
+"backports.functools-lru-cache" = "*"
 configparser = "*"
+sphinx = "*"
+sphinx-rtd-theme = "*"

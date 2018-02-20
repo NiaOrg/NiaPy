@@ -129,12 +129,22 @@ read-coverage:
 # DOCUMENTATION ###############################################################
 
 PYREVERSE := pipenv run pyreverse
-MKDOCS := pipenv run mkdocs
 
-MKDOCS_INDEX := site/index.html
+SPHINXOPTS    =
+SPHINXBUILD   = sphinx-build
+SPHINXPROJ    = NiaPy
+SOURCEDIR     = docs/source
+BUILDDIR      = docs/build
 
-.PHONY: docs
-docs: uml mkdocs ## Generate documentation
+.PHONY: docs 
+docs: 
+	@$(SPHINXBUILD) -M html "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
+# MKDOCS := pipenv run mkdocs
+
+# MKDOCS_INDEX := site/index.html
+
+# .PHONY: docs
+# docs: uml mkdocs ## Generate documentation
 
 .PHONY: uml
 uml: install docs/*.png
@@ -143,20 +153,20 @@ docs/*.png: $(MODULES)
 	- mv -f classes_$(PACKAGE).png docs/classes.png
 	- mv -f packages_$(PACKAGE).png docs/packages.png
 
-.PHONY: mkdocs
-mkdocs: install $(MKDOCS_INDEX)
-$(MKDOCS_INDEX): mkdocs.yml docs/*.md
-	ln -sf `realpath README.md --relative-to=docs` docs/index.md
-	ln -sf `realpath CHANGELOG.md --relative-to=docs/about` docs/about/changelog.md
-	ln -sf `realpath CONTRIBUTING.md --relative-to=docs/about` docs/about/contributing.md
-	ln -sf `realpath CODE_OF_CONDUCT.md --relative-to=docs/about` docs/about/code_of_conduct.md
-	ln -sf `realpath LICENSE.md --relative-to=docs/about` docs/about/license.md
-	$(MKDOCS) build --clean --strict
+# .PHONY: mkdocs
+# mkdocs: install $(MKDOCS_INDEX)
+# $(MKDOCS_INDEX): mkdocs.yml docs/*.md
+# 	ln -sf `realpath README.md --relative-to=docs` docs/index.md
+#	ln -sf `realpath CHANGELOG.md --relative-to=docs/about` docs/about/changelog.md
+#	ln -sf `realpath CONTRIBUTING.md --relative-to=docs/about` docs/about/contributing.md
+#	ln -sf `realpath CODE_OF_CONDUCT.md --relative-to=docs/about` docs/about/code_of_conduct.md
+#	ln -sf `realpath LICENSE.md --relative-to=docs/about` docs/about/license.md
+#	$(MKDOCS) build --clean --strict
 
-.PHONY: mkdocs-live
-mkdocs-live: mkdocs
-	eval "sleep 3; bin/open http://127.0.0.1:8000" &
-	$(MKDOCS) serve
+#.PHONY: mkdocs-live
+#mkdocs-live: mkdocs
+#	eval "sleep 3; bin/open http://127.0.0.1:8000" &
+#	$(MKDOCS) serve
 
 # BUILD #######################################################################
 

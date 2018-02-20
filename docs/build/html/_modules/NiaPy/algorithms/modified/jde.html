@@ -1,0 +1,343 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>NiaPy.algorithms.modified.jde &mdash; NiaPy 0.0.0. documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../search.html"/>
+    <link rel="top" title="NiaPy 0.0.0. documentation" href="../../../../index.html"/>
+        <link rel="up" title="Module code" href="../../../index.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> NiaPy
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">API documentation:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../algorithms.html">Algorithms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../benchmarks.html">Benchmarks</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">NiaPy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>NiaPy.algorithms.modified.jde</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for NiaPy.algorithms.modified.jde</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Self-adaptive differential evolution algorithm.</span>
+
+<span class="sd">Date: 7. 2. 2018</span>
+
+<span class="sd">Authors : Uros Mlakar</span>
+
+<span class="sd">License: MIT</span>
+
+<span class="sd">Reference paper: Brest, J., Greiner, S., Boskovic, B., Mernik, M., Zumer, V. Self-adapting control</span>
+<span class="sd">parameters in differential evolution: A comparative study on numerical benchmark problems.</span>
+<span class="sd">IEEE transactions on evolutionary computation, 10(6), 646-657, 2006.</span>
+
+<span class="sd">TODO</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">random</span> <span class="k">as</span> <span class="nn">rnd</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;SelfAdaptiveDifferentialEvolutionAlgorithm&#39;</span><span class="p">]</span>
+
+
+<span class="k">class</span> <span class="nc">SolutionjDE</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">LB</span><span class="p">,</span> <span class="n">UB</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">D</span> <span class="o">=</span> <span class="n">D</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">LB</span> <span class="o">=</span> <span class="n">LB</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">UB</span> <span class="o">=</span> <span class="n">UB</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">F</span> <span class="o">=</span> <span class="mf">0.5</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">CR</span> <span class="o">=</span> <span class="mf">0.9</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Solution</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Fitness</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">generateSolution</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">generateSolution</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Solution</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">LB</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">UB</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">LB</span><span class="p">)</span> <span class="o">*</span> <span class="n">rnd</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
+                         <span class="k">for</span> <span class="n">_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">)]</span>
+
+    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Fitness</span> <span class="o">=</span> <span class="n">SolutionjDE</span><span class="o">.</span><span class="n">FuncEval</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Solution</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">repair</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Solution</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">UB</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">Solution</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">UB</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Solution</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">LB</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">Solution</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">LB</span>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Solution</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">Solution</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">Fitness</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">Fitness</span>
+
+
+<div class="viewcode-block" id="SelfAdaptiveDifferentialEvolutionAlgorithm"><a class="viewcode-back" href="../../../../algorithms.html#NiaPy.algorithms.modified.SelfAdaptiveDifferentialEvolutionAlgorithm">[docs]</a><span class="k">class</span> <span class="nc">SelfAdaptiveDifferentialEvolutionAlgorithm</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="c1"># pylint: disable=too-many-instance-attributes</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">NP</span><span class="p">,</span> <span class="n">nFES</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">CR</span><span class="p">,</span> <span class="n">Lower</span><span class="p">,</span> <span class="n">Upper</span><span class="p">,</span> <span class="n">function</span><span class="p">):</span>
+        <span class="c1"># TODO: check for F and CR parameters!</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">D</span> <span class="o">=</span> <span class="n">D</span>  <span class="c1"># dimension of problem</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Np</span> <span class="o">=</span> <span class="n">NP</span>  <span class="c1"># population size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nFES</span> <span class="o">=</span> <span class="n">nFES</span>  <span class="c1"># number of function evaluations</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">F</span> <span class="o">=</span> <span class="n">F</span>  <span class="c1"># scaling factor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">CR</span> <span class="o">=</span> <span class="n">CR</span>  <span class="c1"># crossover rate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Lower</span> <span class="o">=</span> <span class="n">Lower</span>  <span class="c1"># lower bound</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Upper</span> <span class="o">=</span> <span class="n">Upper</span>  <span class="c1"># upper bound</span>
+
+        <span class="n">SolutionjDE</span><span class="o">.</span><span class="n">FuncEval</span> <span class="o">=</span> <span class="nb">staticmethod</span><span class="p">(</span><span class="n">function</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Population</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bestSolution</span> <span class="o">=</span> <span class="n">SolutionjDE</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">,</span> <span class="n">Lower</span><span class="p">,</span> <span class="n">Upper</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Tao</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># EDITED: check please</span>
+
+<div class="viewcode-block" id="SelfAdaptiveDifferentialEvolutionAlgorithm.evalPopulation"><a class="viewcode-back" href="../../../../algorithms.html#NiaPy.algorithms.modified.SelfAdaptiveDifferentialEvolutionAlgorithm.evalPopulation">[docs]</a>    <span class="k">def</span> <span class="nf">evalPopulation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">Population</span><span class="p">:</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">evaluate</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">Fitness</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">bestSolution</span><span class="o">.</span><span class="n">Fitness</span><span class="p">:</span></div>
+                <span class="bp">self</span><span class="o">.</span><span class="n">bestSolution</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+
+<div class="viewcode-block" id="SelfAdaptiveDifferentialEvolutionAlgorithm.initPopulation"><a class="viewcode-back" href="../../../../algorithms.html#NiaPy.algorithms.modified.SelfAdaptiveDifferentialEvolutionAlgorithm.initPopulation">[docs]</a>    <span class="k">def</span> <span class="nf">initPopulation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Np</span><span class="p">):</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Population</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SolutionjDE</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Lower</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Upper</span><span class="p">))</span>
+
+<div class="viewcode-block" id="SelfAdaptiveDifferentialEvolutionAlgorithm.generationStep"><a class="viewcode-back" href="../../../../algorithms.html#NiaPy.algorithms.modified.SelfAdaptiveDifferentialEvolutionAlgorithm.generationStep">[docs]</a>    <span class="k">def</span> <span class="nf">generationStep</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Population</span><span class="p">):</span>
+        <span class="n">newPopulation</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Np</span><span class="p">):</span>
+            <span class="n">newSolution</span> <span class="o">=</span> <span class="n">SolutionjDE</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Lower</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Upper</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">rnd</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">Tao</span><span class="p">:</span>
+                <span class="n">newSolution</span><span class="o">.</span><span class="n">F</span> <span class="o">=</span> <span class="n">rnd</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">newSolution</span><span class="o">.</span><span class="n">F</span> <span class="o">=</span> <span class="n">Population</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">F</span>
+
+            <span class="k">if</span> <span class="n">rnd</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">Tao</span><span class="p">:</span>
+                <span class="n">newSolution</span><span class="o">.</span><span class="n">CR</span> <span class="o">=</span> <span class="n">rnd</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">newSolution</span><span class="o">.</span><span class="n">CR</span> <span class="o">=</span> <span class="n">Population</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">CR</span>
+
+            <span class="n">r</span> <span class="o">=</span> <span class="n">rnd</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Np</span><span class="p">),</span> <span class="mi">3</span><span class="p">)</span>
+            <span class="k">while</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">r</span><span class="p">:</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="n">rnd</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Np</span><span class="p">),</span> <span class="mi">3</span><span class="p">)</span>
+            <span class="n">jrand</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">rnd</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">Np</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">rnd</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">CR</span> <span class="ow">or</span> <span class="n">j</span> <span class="o">==</span> <span class="n">jrand</span><span class="p">:</span>
+                    <span class="n">newSolution</span><span class="o">.</span><span class="n">Solution</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">Population</span><span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">Solution</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">F</span> <span class="o">*</span> <span class="p">(</span>
+                        <span class="n">Population</span><span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">Solution</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">Population</span><span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span><span class="o">.</span><span class="n">Solution</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">newSolution</span><span class="o">.</span><span class="n">Solution</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">Population</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">Solution</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+            <span class="n">newSolution</span><span class="o">.</span><span class="n">repair</span><span class="p">()</span>
+            <span class="n">newSolution</span><span class="o">.</span><span class="n">evaluate</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="n">newSolution</span><span class="o">.</span><span class="n">Fitness</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">bestSolution</span><span class="o">.</span><span class="n">Fitness</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">bestSolution</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">newSolution</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">newSolution</span><span class="o">.</span><span class="n">Fitness</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">Population</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">Fitness</span><span class="p">:</span>
+                <span class="n">newPopulation</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">newSolution</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">newPopulation</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Population</span><span class="p">[</span><span class="n">i</span><span class="p">])</span></div>
+        <span class="k">return</span> <span class="n">newPopulation</span>
+
+<div class="viewcode-block" id="SelfAdaptiveDifferentialEvolutionAlgorithm.run"><a class="viewcode-back" href="../../../../algorithms.html#NiaPy.algorithms.modified.SelfAdaptiveDifferentialEvolutionAlgorithm.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initPopulation</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">evalPopulation</span><span class="p">()</span>
+        <span class="n">FEs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Np</span>
+        <span class="k">while</span> <span class="n">FEs</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nFES</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Population</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generationStep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Population</span><span class="p">)</span>
+            <span class="n">FEs</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Np</span></div></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bestSolution</span><span class="o">.</span><span class="n">Fitness</span>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, NiaOrg.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'0.0.0.',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

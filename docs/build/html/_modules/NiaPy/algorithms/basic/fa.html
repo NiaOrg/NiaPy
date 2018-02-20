@@ -1,0 +1,371 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>NiaPy.algorithms.basic.fa &mdash; NiaPy 0.0.0. documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../search.html"/>
+    <link rel="top" title="NiaPy 0.0.0. documentation" href="../../../../index.html"/>
+        <link rel="up" title="Module code" href="../../../index.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> NiaPy
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">API documentation:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../algorithms.html">Algorithms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../benchmarks.html">Benchmarks</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">NiaPy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>NiaPy.algorithms.basic.fa</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for NiaPy.algorithms.basic.fa</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Firefly algorithm.</span>
+
+<span class="sd">Date: 2016</span>
+
+<span class="sd">Authors : Iztok Fister Jr. and Iztok Fister</span>
+<span class="sd">License: MIT</span>
+
+<span class="sd">Reference paper: Fister, I., Fister Jr, I., Yang, X. S., &amp; Brest, J. (2013).</span>
+<span class="sd">A comprehensive review of firefly algorithms. Swarm and Evolutionary Computation, 13, 34-46.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">NiaPy.benchmarks.utility</span> <span class="k">import</span> <span class="n">Utility</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;FireflyAlgorithm&#39;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="FireflyAlgorithm"><a class="viewcode-back" href="../../../../algorithms.html#NiaPy.algorithms.basic.FireflyAlgorithm">[docs]</a><span class="k">class</span> <span class="nc">FireflyAlgorithm</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Firefly Algorithm implementation.&quot;&quot;&quot;</span>
+
+    <span class="c1"># pylint: disable=too-many-instance-attributes</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">NP</span><span class="p">,</span> <span class="n">nFES</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">betamin</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">benchmark</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">benchmark</span> <span class="o">=</span> <span class="n">Utility</span><span class="p">()</span><span class="o">.</span><span class="n">get_benchmark</span><span class="p">(</span><span class="n">benchmark</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">D</span> <span class="o">=</span> <span class="n">D</span>  <span class="c1"># dimension of the problem</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">NP</span> <span class="o">=</span> <span class="n">NP</span>  <span class="c1"># population size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nFES</span> <span class="o">=</span> <span class="n">nFES</span>  <span class="c1"># number of function evaluations</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">=</span> <span class="n">alpha</span>  <span class="c1"># alpha parameter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">betamin</span> <span class="o">=</span> <span class="n">betamin</span>  <span class="c1"># beta parameter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span> <span class="o">=</span> <span class="n">gamma</span>  <span class="c1"># gamma parameter</span>
+        <span class="c1"># sort of fireflies according to fitness value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Index</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">NP</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Fireflies</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">)]</span>
+                          <span class="k">for</span> <span class="n">_j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">NP</span><span class="p">)]</span>  <span class="c1"># firefly agents</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Fireflies_tmp</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">)]</span> <span class="k">for</span> <span class="n">_j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">NP</span><span class="p">)]</span>  <span class="c1"># intermediate pop</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Fitness</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">NP</span>  <span class="c1"># fitness values</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Intensity</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">NP</span>  <span class="c1"># light intensity</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nbest</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">NP</span>  <span class="c1"># the best solution found so far</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Lower</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">benchmark</span><span class="o">.</span><span class="n">Lower</span>  <span class="c1"># lower bound</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Upper</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">benchmark</span><span class="o">.</span><span class="n">Upper</span>  <span class="c1"># upper bound</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fbest</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># the best</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">evaluations</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">eval_flag</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># evaluations flag</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Fun</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">benchmark</span><span class="o">.</span><span class="n">function</span><span class="p">()</span>
+
+<div class="viewcode-block" id="FireflyAlgorithm.init_ffa"><a class="viewcode-back" href="../../../../algorithms.html#NiaPy.algorithms.basic.FireflyAlgorithm.init_ffa">[docs]</a>    <span class="k">def</span> <span class="nf">init_ffa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">NP</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">Fireflies</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span>
+                    <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Upper</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">Lower</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">Lower</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Fitness</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>  <span class="c1"># initialize attractiveness</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Intensity</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Fitness</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+<div class="viewcode-block" id="FireflyAlgorithm.alpha_new"><a class="viewcode-back" href="../../../../algorithms.html#NiaPy.algorithms.basic.FireflyAlgorithm.alpha_new">[docs]</a>    <span class="k">def</span> <span class="nf">alpha_new</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+        <span class="n">delta</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">((</span><span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="mf">10.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.0</span><span class="p">)</span> <span class="o">/</span> <span class="mf">0.9</span><span class="p">),</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">a</span><span class="p">))</span></div>
+        <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">delta</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span>
+
+<div class="viewcode-block" id="FireflyAlgorithm.eval_true"><a class="viewcode-back" href="../../../../algorithms.html#NiaPy.algorithms.basic.FireflyAlgorithm.eval_true">[docs]</a>    <span class="k">def</span> <span class="nf">eval_true</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check evaluations.&quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluations</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">nFES</span><span class="p">:</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">eval_flag</span> <span class="o">=</span> <span class="kc">False</span>
+
+<div class="viewcode-block" id="FireflyAlgorithm.sort_ffa"><a class="viewcode-back" href="../../../../algorithms.html#NiaPy.algorithms.basic.FireflyAlgorithm.sort_ffa">[docs]</a>    <span class="k">def</span> <span class="nf">sort_ffa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># implementation of bubble sort</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">NP</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Index</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">NP</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)):</span>
+            <span class="n">j</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">NP</span><span class="p">):</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Intensity</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">Intensity</span><span class="p">[</span><span class="n">j</span><span class="p">]:</span>
+                    <span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Intensity</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>  <span class="c1"># exchange attractiveness</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">Intensity</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Intensity</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">Intensity</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">z</span>
+                    <span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Fitness</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>  <span class="c1"># exchange fitness</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">Fitness</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Fitness</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">Fitness</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">z</span>
+                    <span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Index</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>  <span class="c1"># exchange indexes</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">Index</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Index</span><span class="p">[</span><span class="n">j</span><span class="p">]</span></div>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">Index</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">z</span>
+
+<div class="viewcode-block" id="FireflyAlgorithm.replace_ffa"><a class="viewcode-back" href="../../../../algorithms.html#NiaPy.algorithms.basic.FireflyAlgorithm.replace_ffa">[docs]</a>    <span class="k">def</span> <span class="nf">replace_ffa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># replace the old population according to the new Index values</span>
+        <span class="c1"># copy original population to a temporary area</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">NP</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">Fireflies_tmp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Fireflies</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+
+        <span class="c1"># generational selection in the sense of an EA</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">NP</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">):</span></div>
+                <span class="bp">self</span><span class="o">.</span><span class="n">Fireflies</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Fireflies_tmp</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">Index</span><span class="p">[</span><span class="n">i</span><span class="p">]][</span><span class="n">j</span><span class="p">]</span>
+
+<div class="viewcode-block" id="FireflyAlgorithm.FindLimits"><a class="viewcode-back" href="../../../../algorithms.html#NiaPy.algorithms.basic.FireflyAlgorithm.FindLimits">[docs]</a>    <span class="k">def</span> <span class="nf">FindLimits</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Fireflies</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">Lower</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">Fireflies</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Lower</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Fireflies</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">Upper</span><span class="p">:</span></div>
+                <span class="bp">self</span><span class="o">.</span><span class="n">Fireflies</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Upper</span>
+
+<div class="viewcode-block" id="FireflyAlgorithm.move_ffa"><a class="viewcode-back" href="../../../../algorithms.html#NiaPy.algorithms.basic.FireflyAlgorithm.move_ffa">[docs]</a>    <span class="k">def</span> <span class="nf">move_ffa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">NP</span><span class="p">):</span>
+            <span class="n">scale</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Upper</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">Lower</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">NP</span><span class="p">):</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="mf">0.0</span>
+                <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">):</span>
+                    <span class="n">r</span> <span class="o">+=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Fireflies</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">Fireflies</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">k</span><span class="p">])</span> <span class="o">*</span> \
+                        <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Fireflies</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">Fireflies</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">k</span><span class="p">])</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Intensity</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">Intensity</span><span class="p">[</span><span class="n">j</span><span class="p">]:</span>  <span class="c1"># brighter and more attractive</span>
+                    <span class="n">beta0</span> <span class="o">=</span> <span class="mf">1.0</span>
+                    <span class="n">beta</span> <span class="o">=</span> <span class="p">(</span><span class="n">beta0</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">betamin</span><span class="p">)</span> <span class="o">*</span> \
+                        <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">gamma</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">))</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">betamin</span>
+                    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">):</span>
+                        <span class="n">r</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                        <span class="n">tmpf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">*</span> <span class="p">(</span><span class="n">r</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="n">scale</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">Fireflies</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Fireflies</span><span class="p">[</span><span class="n">i</span><span class="p">][</span>
+                            <span class="n">k</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">beta</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">Fireflies_tmp</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">*</span> <span class="n">beta</span> <span class="o">+</span> <span class="n">tmpf</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">FindLimits</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+<div class="viewcode-block" id="FireflyAlgorithm.run"><a class="viewcode-back" href="../../../../algorithms.html#NiaPy.algorithms.basic.FireflyAlgorithm.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_ffa</span><span class="p">()</span>
+
+        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">eval_flag</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">False</span><span class="p">:</span>
+
+            <span class="c1"># optional reducing of alpha</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha_new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nFES</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">NP</span><span class="p">)</span>
+
+            <span class="c1"># evaluate new solutions</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">NP</span><span class="p">):</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">eval_true</span><span class="p">()</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">eval_flag</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">True</span><span class="p">:</span>
+                    <span class="k">break</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">Fitness</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Fun</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Fireflies</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">evaluations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluations</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">Intensity</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Fitness</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+            <span class="c1"># ranking fireflies by their light intensity</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sort_ffa</span><span class="p">()</span>
+            <span class="c1"># replace old population</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">replace_ffa</span><span class="p">()</span>
+            <span class="c1"># find the current best</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fbest</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Intensity</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="c1"># move all fireflies to the better locations</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">move_ffa</span><span class="p">()</span>
+</div></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fbest</span>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, NiaOrg.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'0.0.0.',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
