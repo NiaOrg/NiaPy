@@ -26,7 +26,7 @@ class Alpine1(object):
         f(x*) = 0, at x* = (0,...,0)
 
     LaTeX formats:
-        Inline: $f(x) = \sum_{i=1}^{D} |x_i sin(x_i)+0.1x_i|$
+        Inline: $f(\mathbf{x}) = \sum_{i=1}^{D} |x_i sin(x_i)+0.1x_i|$
         Equation: \begin{equation} f(x) = \sum_{i=1}^{D} |x_i sin(x_i) + 0.1x_i| \end{equation}
         Domain: $-10 \leq x_i \leq 10$
 
