@@ -137,7 +137,6 @@ class HybridBatAlgorithm(object):
                 if Fnew <= self.f_min:
                     for j in range(self.D):
                         self.best[j] = S[i][j]
-                    # print self.best
                     self.f_min = Fnew
 
         return self.f_min
