@@ -1,0 +1,572 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Algorithms &mdash; NiaPy 0.0.0. documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="NiaPy 0.0.0. documentation" href="index.html"/>
+        <link rel="next" title="Benchmarks" href="benchmarks.html"/>
+        <link rel="prev" title="NiaPy’s documentation" href="index.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> NiaPy
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">API documentation:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Algorithms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="benchmarks.html">Benchmarks</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NiaPy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Algorithms</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/algorithms.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-NiaPy.algorithms">
+<span id="algorithms"></span><h1>Algorithms<a class="headerlink" href="#module-NiaPy.algorithms" title="Permalink to this headline">¶</a></h1>
+<p>Module with implementations of basic and hybrid algorithms.</p>
+<div class="section" id="module-NiaPy.algorithms.basic">
+<span id="basic-algorithms"></span><h2>Basic algorithms<a class="headerlink" href="#module-NiaPy.algorithms.basic" title="Permalink to this headline">¶</a></h2>
+<p>Implementation of basic nature-inspired algorithms.</p>
+<dl class="class">
+<dt id="NiaPy.algorithms.basic.BatAlgorithm">
+<em class="property">class </em><code class="descclassname">NiaPy.algorithms.basic.</code><code class="descname">BatAlgorithm</code><span class="sig-paren">(</span><em>D</em>, <em>NP</em>, <em>nFES</em>, <em>A</em>, <em>r</em>, <em>Qmin</em>, <em>Qmax</em>, <em>benchmark</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/basic/ba.html#BatAlgorithm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.basic.BatAlgorithm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bat Algorithm implementation.</p>
+<dl class="method">
+<dt id="NiaPy.algorithms.basic.BatAlgorithm.best_bat">
+<code class="descname">best_bat</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/basic/ba.html#BatAlgorithm.best_bat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.basic.BatAlgorithm.best_bat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find best bat.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="NiaPy.algorithms.basic.BatAlgorithm.eval_true">
+<code class="descname">eval_true</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/basic/ba.html#BatAlgorithm.eval_true"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.basic.BatAlgorithm.eval_true" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check evauations.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="NiaPy.algorithms.basic.BatAlgorithm.init_bat">
+<code class="descname">init_bat</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/basic/ba.html#BatAlgorithm.init_bat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.basic.BatAlgorithm.init_bat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize bat.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="NiaPy.algorithms.basic.BatAlgorithm.move_bat">
+<code class="descname">move_bat</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/basic/ba.html#BatAlgorithm.move_bat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.basic.BatAlgorithm.move_bat" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="NiaPy.algorithms.basic.BatAlgorithm.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/basic/ba.html#BatAlgorithm.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.basic.BatAlgorithm.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="NiaPy.algorithms.basic.BatAlgorithm.simplebounds">
+<em class="property">classmethod </em><code class="descname">simplebounds</code><span class="sig-paren">(</span><em>val</em>, <em>lower</em>, <em>upper</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/basic/ba.html#BatAlgorithm.simplebounds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.basic.BatAlgorithm.simplebounds" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="NiaPy.algorithms.basic.FireflyAlgorithm">
+<em class="property">class </em><code class="descclassname">NiaPy.algorithms.basic.</code><code class="descname">FireflyAlgorithm</code><span class="sig-paren">(</span><em>D</em>, <em>NP</em>, <em>nFES</em>, <em>alpha</em>, <em>betamin</em>, <em>gamma</em>, <em>benchmark</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/basic/fa.html#FireflyAlgorithm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.basic.FireflyAlgorithm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Firefly Algorithm implementation.</p>
+<dl class="method">
+<dt id="NiaPy.algorithms.basic.FireflyAlgorithm.FindLimits">
+<code class="descname">FindLimits</code><span class="sig-paren">(</span><em>k</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/basic/fa.html#FireflyAlgorithm.FindLimits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.basic.FireflyAlgorithm.FindLimits" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="NiaPy.algorithms.basic.FireflyAlgorithm.alpha_new">
+<code class="descname">alpha_new</code><span class="sig-paren">(</span><em>a</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/basic/fa.html#FireflyAlgorithm.alpha_new"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.basic.FireflyAlgorithm.alpha_new" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="NiaPy.algorithms.basic.FireflyAlgorithm.eval_true">
+<code class="descname">eval_true</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/basic/fa.html#FireflyAlgorithm.eval_true"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.basic.FireflyAlgorithm.eval_true" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check evaluations.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="NiaPy.algorithms.basic.FireflyAlgorithm.init_ffa">
+<code class="descname">init_ffa</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/basic/fa.html#FireflyAlgorithm.init_ffa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.basic.FireflyAlgorithm.init_ffa" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="NiaPy.algorithms.basic.FireflyAlgorithm.move_ffa">
+<code class="descname">move_ffa</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/basic/fa.html#FireflyAlgorithm.move_ffa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.basic.FireflyAlgorithm.move_ffa" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="NiaPy.algorithms.basic.FireflyAlgorithm.replace_ffa">
+<code class="descname">replace_ffa</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/basic/fa.html#FireflyAlgorithm.replace_ffa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.basic.FireflyAlgorithm.replace_ffa" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="NiaPy.algorithms.basic.FireflyAlgorithm.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/basic/fa.html#FireflyAlgorithm.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.basic.FireflyAlgorithm.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="NiaPy.algorithms.basic.FireflyAlgorithm.sort_ffa">
+<code class="descname">sort_ffa</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/basic/fa.html#FireflyAlgorithm.sort_ffa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.basic.FireflyAlgorithm.sort_ffa" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="NiaPy.algorithms.basic.DifferentialEvolutionAlgorithm">
+<em class="property">class </em><code class="descclassname">NiaPy.algorithms.basic.</code><code class="descname">DifferentialEvolutionAlgorithm</code><span class="sig-paren">(</span><em>D</em>, <em>NP</em>, <em>nFES</em>, <em>F</em>, <em>CR</em>, <em>benchmark</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/basic/de.html#DifferentialEvolutionAlgorithm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.basic.DifferentialEvolutionAlgorithm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Differential Evolution Algorithm implementation.</p>
+<dl class="method">
+<dt id="NiaPy.algorithms.basic.DifferentialEvolutionAlgorithm.evalPopulation">
+<code class="descname">evalPopulation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/basic/de.html#DifferentialEvolutionAlgorithm.evalPopulation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.basic.DifferentialEvolutionAlgorithm.evalPopulation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="NiaPy.algorithms.basic.DifferentialEvolutionAlgorithm.generationStep">
+<code class="descname">generationStep</code><span class="sig-paren">(</span><em>Population</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/basic/de.html#DifferentialEvolutionAlgorithm.generationStep"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.basic.DifferentialEvolutionAlgorithm.generationStep" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="NiaPy.algorithms.basic.DifferentialEvolutionAlgorithm.initPopulation">
+<code class="descname">initPopulation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/basic/de.html#DifferentialEvolutionAlgorithm.initPopulation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.basic.DifferentialEvolutionAlgorithm.initPopulation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="NiaPy.algorithms.basic.DifferentialEvolutionAlgorithm.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/basic/de.html#DifferentialEvolutionAlgorithm.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.basic.DifferentialEvolutionAlgorithm.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="NiaPy.algorithms.basic.FlowerPollinationAlgorithm">
+<em class="property">class </em><code class="descclassname">NiaPy.algorithms.basic.</code><code class="descname">FlowerPollinationAlgorithm</code><span class="sig-paren">(</span><em>D</em>, <em>NP</em>, <em>nFES</em>, <em>p</em>, <em>benchmark</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/basic/fpa.html#FlowerPollinationAlgorithm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.basic.FlowerPollinationAlgorithm" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="NiaPy.algorithms.basic.FlowerPollinationAlgorithm.Levy">
+<code class="descname">Levy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/basic/fpa.html#FlowerPollinationAlgorithm.Levy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.basic.FlowerPollinationAlgorithm.Levy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="NiaPy.algorithms.basic.FlowerPollinationAlgorithm.best_flower">
+<code class="descname">best_flower</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/basic/fpa.html#FlowerPollinationAlgorithm.best_flower"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.basic.FlowerPollinationAlgorithm.best_flower" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="NiaPy.algorithms.basic.FlowerPollinationAlgorithm.eval_true">
+<code class="descname">eval_true</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/basic/fpa.html#FlowerPollinationAlgorithm.eval_true"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.basic.FlowerPollinationAlgorithm.eval_true" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check evaluations.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="NiaPy.algorithms.basic.FlowerPollinationAlgorithm.init_flower">
+<code class="descname">init_flower</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/basic/fpa.html#FlowerPollinationAlgorithm.init_flower"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.basic.FlowerPollinationAlgorithm.init_flower" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="NiaPy.algorithms.basic.FlowerPollinationAlgorithm.move_flower">
+<code class="descname">move_flower</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/basic/fpa.html#FlowerPollinationAlgorithm.move_flower"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.basic.FlowerPollinationAlgorithm.move_flower" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="NiaPy.algorithms.basic.FlowerPollinationAlgorithm.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/basic/fpa.html#FlowerPollinationAlgorithm.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.basic.FlowerPollinationAlgorithm.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="NiaPy.algorithms.basic.FlowerPollinationAlgorithm.simplebounds">
+<em class="property">classmethod </em><code class="descname">simplebounds</code><span class="sig-paren">(</span><em>val</em>, <em>lower</em>, <em>upper</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/basic/fpa.html#FlowerPollinationAlgorithm.simplebounds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.basic.FlowerPollinationAlgorithm.simplebounds" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="NiaPy.algorithms.basic.GreyWolfOptimizer">
+<em class="property">class </em><code class="descclassname">NiaPy.algorithms.basic.</code><code class="descname">GreyWolfOptimizer</code><span class="sig-paren">(</span><em>D</em>, <em>NP</em>, <em>nFES</em>, <em>benchmark</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/basic/gwo.html#GreyWolfOptimizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.basic.GreyWolfOptimizer" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="NiaPy.algorithms.basic.GreyWolfOptimizer.bounds">
+<code class="descname">bounds</code><span class="sig-paren">(</span><em>position</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/basic/gwo.html#GreyWolfOptimizer.bounds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.basic.GreyWolfOptimizer.bounds" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="NiaPy.algorithms.basic.GreyWolfOptimizer.eval_true">
+<code class="descname">eval_true</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/basic/gwo.html#GreyWolfOptimizer.eval_true"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.basic.GreyWolfOptimizer.eval_true" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check evaluations.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="NiaPy.algorithms.basic.GreyWolfOptimizer.initialization">
+<code class="descname">initialization</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/basic/gwo.html#GreyWolfOptimizer.initialization"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.basic.GreyWolfOptimizer.initialization" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="NiaPy.algorithms.basic.GreyWolfOptimizer.move">
+<code class="descname">move</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/basic/gwo.html#GreyWolfOptimizer.move"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.basic.GreyWolfOptimizer.move" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="NiaPy.algorithms.basic.GreyWolfOptimizer.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/basic/gwo.html#GreyWolfOptimizer.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.basic.GreyWolfOptimizer.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="NiaPy.algorithms.basic.GeneticAlgorithm">
+<em class="property">class </em><code class="descclassname">NiaPy.algorithms.basic.</code><code class="descname">GeneticAlgorithm</code><span class="sig-paren">(</span><em>D</em>, <em>NP</em>, <em>nFES</em>, <em>Ts</em>, <em>Mr</em>, <em>Lower</em>, <em>Upper</em>, <em>function</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/basic/ga.html#GeneticAlgorithm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.basic.GeneticAlgorithm" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="NiaPy.algorithms.basic.GeneticAlgorithm.CrossOver">
+<code class="descname">CrossOver</code><span class="sig-paren">(</span><em>parent1</em>, <em>parent2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/basic/ga.html#GeneticAlgorithm.CrossOver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.basic.GeneticAlgorithm.CrossOver" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="NiaPy.algorithms.basic.GeneticAlgorithm.Mutate">
+<code class="descname">Mutate</code><span class="sig-paren">(</span><em>child</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/basic/ga.html#GeneticAlgorithm.Mutate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.basic.GeneticAlgorithm.Mutate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="NiaPy.algorithms.basic.GeneticAlgorithm.TournamentSelection">
+<code class="descname">TournamentSelection</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/basic/ga.html#GeneticAlgorithm.TournamentSelection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.basic.GeneticAlgorithm.TournamentSelection" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="NiaPy.algorithms.basic.GeneticAlgorithm.checkForBest">
+<code class="descname">checkForBest</code><span class="sig-paren">(</span><em>pChromosome</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/basic/ga.html#GeneticAlgorithm.checkForBest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.basic.GeneticAlgorithm.checkForBest" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="NiaPy.algorithms.basic.GeneticAlgorithm.init">
+<code class="descname">init</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/basic/ga.html#GeneticAlgorithm.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.basic.GeneticAlgorithm.init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="NiaPy.algorithms.basic.GeneticAlgorithm.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/basic/ga.html#GeneticAlgorithm.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.basic.GeneticAlgorithm.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="NiaPy.algorithms.basic.ArtificialBeeColonyAlgorithm">
+<em class="property">class </em><code class="descclassname">NiaPy.algorithms.basic.</code><code class="descname">ArtificialBeeColonyAlgorithm</code><span class="sig-paren">(</span><em>D</em>, <em>NP</em>, <em>nFES</em>, <em>benchmark</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/basic/abc.html#ArtificialBeeColonyAlgorithm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.basic.ArtificialBeeColonyAlgorithm" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="NiaPy.algorithms.basic.ArtificialBeeColonyAlgorithm.CalculateProbs">
+<code class="descname">CalculateProbs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/basic/abc.html#ArtificialBeeColonyAlgorithm.CalculateProbs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.basic.ArtificialBeeColonyAlgorithm.CalculateProbs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="NiaPy.algorithms.basic.ArtificialBeeColonyAlgorithm.checkForBest">
+<code class="descname">checkForBest</code><span class="sig-paren">(</span><em>Solution</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/basic/abc.html#ArtificialBeeColonyAlgorithm.checkForBest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.basic.ArtificialBeeColonyAlgorithm.checkForBest" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="NiaPy.algorithms.basic.ArtificialBeeColonyAlgorithm.init">
+<code class="descname">init</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/basic/abc.html#ArtificialBeeColonyAlgorithm.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.basic.ArtificialBeeColonyAlgorithm.init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="NiaPy.algorithms.basic.ArtificialBeeColonyAlgorithm.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/basic/abc.html#ArtificialBeeColonyAlgorithm.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.basic.ArtificialBeeColonyAlgorithm.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="NiaPy.algorithms.basic.ParticleSwarmAlgorithm">
+<em class="property">class </em><code class="descclassname">NiaPy.algorithms.basic.</code><code class="descname">ParticleSwarmAlgorithm</code><span class="sig-paren">(</span><em>Np</em>, <em>D</em>, <em>nFES</em>, <em>C1</em>, <em>C2</em>, <em>w</em>, <em>vMin</em>, <em>vMax</em>, <em>Lower</em>, <em>Upper</em>, <em>function</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/basic/pso.html#ParticleSwarmAlgorithm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.basic.ParticleSwarmAlgorithm" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="NiaPy.algorithms.basic.ParticleSwarmAlgorithm.evalSwarm">
+<code class="descname">evalSwarm</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/basic/pso.html#ParticleSwarmAlgorithm.evalSwarm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.basic.ParticleSwarmAlgorithm.evalSwarm" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="NiaPy.algorithms.basic.ParticleSwarmAlgorithm.initSwarm">
+<code class="descname">initSwarm</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/basic/pso.html#ParticleSwarmAlgorithm.initSwarm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.basic.ParticleSwarmAlgorithm.initSwarm" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="NiaPy.algorithms.basic.ParticleSwarmAlgorithm.moveSwarm">
+<code class="descname">moveSwarm</code><span class="sig-paren">(</span><em>Swarm</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/basic/pso.html#ParticleSwarmAlgorithm.moveSwarm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.basic.ParticleSwarmAlgorithm.moveSwarm" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="NiaPy.algorithms.basic.ParticleSwarmAlgorithm.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/basic/pso.html#ParticleSwarmAlgorithm.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.basic.ParticleSwarmAlgorithm.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-NiaPy.algorithms.modified">
+<span id="modified-algorithms"></span><h2>Modified algorithms<a class="headerlink" href="#module-NiaPy.algorithms.modified" title="Permalink to this headline">¶</a></h2>
+<p>Implementation of modified nature-inspired algorithms.</p>
+<dl class="class">
+<dt id="NiaPy.algorithms.modified.HybridBatAlgorithm">
+<em class="property">class </em><code class="descclassname">NiaPy.algorithms.modified.</code><code class="descname">HybridBatAlgorithm</code><span class="sig-paren">(</span><em>D</em>, <em>NP</em>, <em>nFES</em>, <em>A</em>, <em>r</em>, <em>F</em>, <em>CR</em>, <em>Qmin</em>, <em>Qmax</em>, <em>benchmark</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/modified/hba.html#HybridBatAlgorithm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.modified.HybridBatAlgorithm" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="NiaPy.algorithms.modified.HybridBatAlgorithm.best_bat">
+<code class="descname">best_bat</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/modified/hba.html#HybridBatAlgorithm.best_bat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.modified.HybridBatAlgorithm.best_bat" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="NiaPy.algorithms.modified.HybridBatAlgorithm.eval_true">
+<code class="descname">eval_true</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/modified/hba.html#HybridBatAlgorithm.eval_true"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.modified.HybridBatAlgorithm.eval_true" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check evauations.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="NiaPy.algorithms.modified.HybridBatAlgorithm.init_bat">
+<code class="descname">init_bat</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/modified/hba.html#HybridBatAlgorithm.init_bat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.modified.HybridBatAlgorithm.init_bat" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="NiaPy.algorithms.modified.HybridBatAlgorithm.move_bat">
+<code class="descname">move_bat</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/modified/hba.html#HybridBatAlgorithm.move_bat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.modified.HybridBatAlgorithm.move_bat" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="NiaPy.algorithms.modified.HybridBatAlgorithm.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/modified/hba.html#HybridBatAlgorithm.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.modified.HybridBatAlgorithm.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="NiaPy.algorithms.modified.HybridBatAlgorithm.simplebounds">
+<em class="property">classmethod </em><code class="descname">simplebounds</code><span class="sig-paren">(</span><em>val</em>, <em>lower</em>, <em>upper</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/modified/hba.html#HybridBatAlgorithm.simplebounds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.modified.HybridBatAlgorithm.simplebounds" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="NiaPy.algorithms.modified.SelfAdaptiveDifferentialEvolutionAlgorithm">
+<em class="property">class </em><code class="descclassname">NiaPy.algorithms.modified.</code><code class="descname">SelfAdaptiveDifferentialEvolutionAlgorithm</code><span class="sig-paren">(</span><em>D</em>, <em>NP</em>, <em>nFES</em>, <em>F</em>, <em>CR</em>, <em>Lower</em>, <em>Upper</em>, <em>function</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/modified/jde.html#SelfAdaptiveDifferentialEvolutionAlgorithm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.modified.SelfAdaptiveDifferentialEvolutionAlgorithm" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="NiaPy.algorithms.modified.SelfAdaptiveDifferentialEvolutionAlgorithm.evalPopulation">
+<code class="descname">evalPopulation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/modified/jde.html#SelfAdaptiveDifferentialEvolutionAlgorithm.evalPopulation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.modified.SelfAdaptiveDifferentialEvolutionAlgorithm.evalPopulation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="NiaPy.algorithms.modified.SelfAdaptiveDifferentialEvolutionAlgorithm.generationStep">
+<code class="descname">generationStep</code><span class="sig-paren">(</span><em>Population</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/modified/jde.html#SelfAdaptiveDifferentialEvolutionAlgorithm.generationStep"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.modified.SelfAdaptiveDifferentialEvolutionAlgorithm.generationStep" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="NiaPy.algorithms.modified.SelfAdaptiveDifferentialEvolutionAlgorithm.initPopulation">
+<code class="descname">initPopulation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/modified/jde.html#SelfAdaptiveDifferentialEvolutionAlgorithm.initPopulation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.modified.SelfAdaptiveDifferentialEvolutionAlgorithm.initPopulation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="NiaPy.algorithms.modified.SelfAdaptiveDifferentialEvolutionAlgorithm.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/NiaPy/algorithms/modified/jde.html#SelfAdaptiveDifferentialEvolutionAlgorithm.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NiaPy.algorithms.modified.SelfAdaptiveDifferentialEvolutionAlgorithm.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="benchmarks.html" class="btn btn-neutral float-right" title="Benchmarks" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="NiaPy’s documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, NiaOrg.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.0.0.',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

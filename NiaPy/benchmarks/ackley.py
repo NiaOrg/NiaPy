@@ -1,41 +1,46 @@
 # encoding=utf8
 # pylint: disable=anomalous-backslash-in-string
-"""Implementation of Ackley function.
-
-Date: 2018
-
-Author: Lucija Brezočnik
-
-License: MIT
-
-Function: Ackley function
-
-Input domain:
-    The function can be defined on any input domain but it is usually
-    evaluated on the hypercube x_i ∈ [-32.768, 32.768], for all i = 1, 2,..., D.
-
-Global minimum:
-    f(x*) = 0, at x* = (0,...,0)
-
-LaTeX formats:
-    Inline: $f(x) = -a\;exp\left(-b \sqrt{\frac{1}{D}
-             \sum_{i=1}^D x_i^2}\right) - exp\left(\frac{1}{D}
-             \sum_{i=1}^D cos(c\;x_i)\right) + a + exp(1)$
-    Equation:  \begin{equation}f(x) =
-               -a\;exp\left(-b \sqrt{\frac{1}{D} \sum_{i=1}^D x_i^2}\right) -
-               exp\left(\frac{1}{D} \sum_{i=1}^D cos(c\;x_i)\right) +
-               a + exp(1) \end{equation}
-    Domain: $-32.768 \leq x_i \leq 32.768$
-
-Reference: https://www.sfu.ca/~ssurjano/ackley.html
-"""
-
 import math
 
 __all__ = ['Ackley']
 
 
 class Ackley(object):
+    r"""Implementation of Ackley function.
+
+    Date: 2018
+
+    Author: Lucija Brezočnik
+
+    License: MIT
+
+    Function: **Ackley function**
+
+        :math:`f(x) = -a\;exp\left(-b \sqrt{\frac{1}{D}\sum_{i=1}^D x_i^2}\right) - exp\left(\frac{1}{D}\sum_{i=1}^D \cos(c\;x_i)\right) + a + exp(1)`
+
+        **Input domain:**
+        The function can be defined on any input domain but it is usually
+        evaluated on the hypercube :math:`x_i ∈ [-32.768, 32.768]`, for all :math:`i = 1, 2,..., D`.
+
+        **Global minimum:** :math:`f(x*) = 0`, at  :math:`x* = (0,...,0)`
+
+    LaTeX formats:
+        Inline:
+                $f(x) = -a\;exp\left(-b \sqrt{\frac{1}{D}
+                \sum_{i=1}^D x_i^2}\right) - exp\left(\frac{1}{D}
+                \sum_{i=1}^D cos(c\;x_i)\right) + a + exp(1)$
+
+        Equation:
+                \begin{equation}f(x) =
+                -a\;exp\left(-b \sqrt{\frac{1}{D} \sum_{i=1}^D x_i^2}\right) -
+                exp\left(\frac{1}{D} \sum_{i=1}^D \cos(c\;x_i)\right) +
+                a + exp(1) \end{equation}
+
+        Domain:
+                $-32.768 \leq x_i \leq 32.768$
+
+    Reference: https://www.sfu.ca/~ssurjano/ackley.html
+    """
 
     def __init__(self, Lower=-32.768, Upper=32.768):
         self.Lower = Lower
@@ -43,6 +48,7 @@ class Ackley(object):
 
     @classmethod
     def function(cls):
+        """Return benchmark evaluation function."""
         def evaluate(D, sol):
             # print(sol)
 

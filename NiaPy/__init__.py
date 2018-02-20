@@ -1,3 +1,5 @@
+"""Python micro framework for building nature-inspired algorithms."""
+
 from __future__ import print_function  # for backward compatibility purpose
 
 import os
@@ -20,6 +22,8 @@ logger.setLevel('INFO')
 
 
 class Runner(object):
+    """Initialize Runner."""
+
     # pylint: disable=too-many-instance-attributes, too-many-locals
     def __init__(self, D, NP, nFES, nRuns, useAlgorithms, useBenchmarks,
                  A=0.5, r=0.5, Qmin=0.0, Qmax=2.0, F=0.5, CR=0.9, alpha=0.5,
