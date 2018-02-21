@@ -8,7 +8,7 @@ __all__ = ['Schwefel', 'Schwefel221', 'Schwefel222']
 
 
 class Schwefel(object):
-    """Implementation of Schewel function.
+    r"""Implementation of Schewel function.
 
     Date: 2018
 
@@ -16,21 +16,26 @@ class Schwefel(object):
 
     License: MIT
 
-    Function: Schwefel function
+    Function: **Schwefel function**
 
-    Input domain:
+        :math:`f(\textbf{x}) = 418.9829d - \sum_{i=1}^{D} x_i \sin(\sqrt{|x_i|})`
+
+        **Input domain:**
         The function can be defined on any input domain but it is usually
-        evaluated on the hypercube x_i ∈ [-500, 500], for all i = 1, 2,..., D.
+        evaluated on the hypercube :math:`x_i ∈ [-500, 500]`, for all :math:`i = 1, 2,..., D`.
 
-    Global minimum:
-        f(x*) = 0, at x* = (420.9687,...,420.9687)
+        **Global minimum:** :math:`f(x*) = 0`, at :math:`x* = (420.9687,...,420.9687)`
 
     LaTeX formats:
-        Inline: $f(\textbf{x}) = 418.9829d - \sum_{i=1}^{D} x_i sin(\sqrt{|x_i|})$
-        Equation: \begin{equation} f(\textbf{x}) =
-                  418.9829d - \sum_{i=1}^{D} x_i
-                  sin(\sqrt{|x_i|}) \end{equation}
-        Domain: $-500 \leq x_i \leq 500$
+        Inline:
+                $f(\textbf{x}) = 418.9829d - \sum_{i=1}^{D} x_i \sin(\sqrt{|x_i|})$
+
+        Equation:
+                \begin{equation} f(\textbf{x}) = 418.9829d - \sum_{i=1}^{D} x_i
+                \sin(\sqrt{|x_i|}) \end{equation}
+
+        Domain:
+                $-500 \leq x_i \leq 500$
 
     Reference: https://www.sfu.ca/~ssurjano/schwef.html
     """
@@ -44,20 +49,17 @@ class Schwefel(object):
         def evaluate(D, sol):
 
             val = 0.0
-            val1 = 0.0
 
             for i in range(D):
-                val1 += (sol[i] * math.sin(math.sqrt(abs(sol[i]))))
+                val += (sol[i] * math.sin(math.sqrt(abs(sol[i]))))
 
-            val = 418.9829 * D - val1
-
-            return val
+            return 418.9829 * D - val
 
         return evaluate
 
 
 class Schwefel221(object):
-    """Schwefel 2.21 function implementation.
+    r"""Schwefel 2.21 function implementation.
 
     Date: February 2018
 
@@ -65,20 +67,25 @@ class Schwefel221(object):
 
     Licence: MIT
 
-    Function: Schwefel 2.21 function
+    Function: **Schwefel 2.21 function**
 
-    Input domain:
+        :math:`f(\mathbf{x})=\max_{i=1,...,n}|x_i|`
+
+        **Input domain:**
         The function can be defined on any input domain but it is usually
-        evaluated on the hypercube x_i ∈ [-100, 100], for all i = 1, 2,..., D.
+        evaluated on the hypercube :math:`x_i ∈ [-100, 100]`, for all :math:`i = 1, 2,..., D`.
 
-    Global minimum:
-        f(x*) = 0, at x* = (0,...,0)
+        **Global minimum:** :math:`f(x*) = 0`, at :math:`x* = (0,...,0)`
 
     LaTeX formats:
-        Inline: $f(\mathbf{x})=\max_{i=1,...,n}|x_i|$
-        Equation: \begin{equation}f(\mathbf{x}) =
-                  \max_{i=1,...,n}|x_i| \end{equation}
-        Domain: $-100 \leq x_i \leq 100$
+        Inline:
+                $f(\mathbf{x})=\max_{i=1,...,n}|x_i|$
+
+        Equation:
+                \begin{equation}f(\mathbf{x}) = \max_{i=1,...,n}|x_i| \end{equation}
+
+        Domain:
+                $-100 \leq x_i \leq 100$
 
     Reference paper:
         Jamil, M., and Yang, X. S. (2013).
@@ -106,7 +113,7 @@ class Schwefel221(object):
 
 
 class Schwefel222(object):
-    """Schwefel 2.22 function implementation.
+    r"""Schwefel 2.22 function implementation.
 
     Date: February 2018
 
@@ -114,20 +121,26 @@ class Schwefel222(object):
 
     Licence: MIT
 
-    Function: Schwefel 2.22 function
+    Function: **Schwefel 2.22 function**
 
-    Input domain:
+        :math:`f(\mathbf{x})=\sum_{i=1}^{D}|x_i|+\prod_{i=1}^{D}|x_i|`
+
+        **Input domain:**
         The function can be defined on any input domain but it is usually
-        evaluated on the hypercube x_i ∈ [-100, 100], for all i = 1, 2,..., D.
+        evaluated on the hypercube :math:`x_i ∈ [-100, 100]`, for all :math:`i = 1, 2,..., D`.
 
-    Global minimum:
-        f(x*) = 0, at x* = (0,...,0)
+        **Global minimum:** :math:`f(x*) = 0`, at :math:`x* = (0,...,0)`
 
     LaTeX formats:
-        Inline: $f(\mathbf{x})=\sum_{i=1}^{D}|x_i|+\prod_{i=1}^{D}|x_i|$
-        Equation: \begin{equation}f(\mathbf{x}) =
-                  \sum_{i=1}^{D}|x_i| + \prod_{i=1}^{D}|x_i| \end{equation}
-        Domain: $-100 \leq x_i \leq 100$
+        Inline:
+                $f(\mathbf{x})=\sum_{i=1}^{D}|x_i|+\prod_{i=1}^{D}|x_i|$
+
+        Equation:
+                \begin{equation}f(\mathbf{x}) = \sum_{i=1}^{D}|x_i| +
+                \prod_{i=1}^{D}|x_i| \end{equation}
+
+        Domain:
+                $-100 \leq x_i \leq 100$
 
     Reference paper:
         Jamil, M., and Yang, X. S. (2013).
@@ -143,11 +156,14 @@ class Schwefel222(object):
     @classmethod
     def function(cls):
         def evaluate(D, sol):
+
             part1 = 0.0
             part2 = 1.0
+
             for i in range(D):
                 part1 += abs(sol[i])
                 part2 *= abs(sol[i])
+
             return part1 + part2
 
         return evaluate
