@@ -48,12 +48,13 @@ class FireflyAlgorithm(object):
         self.alpha = alpha  # alpha parameter
         self.betamin = betamin  # beta parameter
         self.gamma = gamma  # gamma parameter
-        # sort of fireflies according to fitness value
+
+        # sort of fireflies according to fitness values
         self.Index = [0] * self.NP
         self.Fireflies = [[0 for _i in range(self.D)]
                           for _j in range(self.NP)]  # firefly agents
         self.Fireflies_tmp = [[0 for _i in range(self.D)] for _j in range(
-            self.NP)]  # intermediate pop
+            self.NP)]  # intermediate population
         self.Fitness = [0.0] * self.NP  # fitness values
         self.Intensity = [0.0] * self.NP  # light intensity
         self.nbest = [0.0] * self.NP  # the best solution found so far
@@ -65,6 +66,7 @@ class FireflyAlgorithm(object):
         self.Fun = self.benchmark.function()
 
     def init_ffa(self):
+        """Initialization of firefly population."""
         for i in range(self.NP):
             for j in range(self.D):
                 self.Fireflies[i][j] = random.uniform(
@@ -73,6 +75,7 @@ class FireflyAlgorithm(object):
             self.Intensity[i] = self.Fitness[i]
 
     def alpha_new(self, a):
+        """Optionally recalculate the new alpha value."""
         delta = 1.0 - math.pow((math.pow(10.0, -4.0) / 0.9), 1.0 / float(a))
         return (1 - delta) * self.alpha
 
@@ -82,7 +85,8 @@ class FireflyAlgorithm(object):
         if self.evaluations == self.nFES:
             self.eval_flag = False
 
-    def sort_ffa(self):  # implementation of bubble sort
+    def sort_ffa(self):  #
+        """Implementation of bubble sort."""
         for i in range(self.NP):
             self.Index[i] = i
 
@@ -100,8 +104,8 @@ class FireflyAlgorithm(object):
                     self.Index[i] = self.Index[j]
                     self.Index[j] = z
 
-    def replace_ffa(self):  # replace the old population according to the new Index values
-        # copy original population to a temporary area
+    def replace_ffa(self):
+        """Replace the old population according to the new Index values."""
         for i in range(self.NP):
             for j in range(self.D):
                 self.Fireflies_tmp[i][j] = self.Fireflies[i][j]
@@ -119,6 +123,7 @@ class FireflyAlgorithm(object):
                 self.Fireflies[k][i] = self.Upper
 
     def move_ffa(self):
+        """Move fireflies."""
         for i in range(self.NP):
             scale = abs(self.Upper - self.Lower)
             for j in range(self.NP):
@@ -127,7 +132,8 @@ class FireflyAlgorithm(object):
                     r += (self.Fireflies[i][k] - self.Fireflies[j][k]) * \
                         (self.Fireflies[i][k] - self.Fireflies[j][k])
                 r = math.sqrt(r)
-                if self.Intensity[i] > self.Intensity[j]:  # brighter and more attractive
+                if self.Intensity[i] > self.Intensity[
+                        j]:  # brighter and more attractive
                     beta0 = 1.0
                     beta = (beta0 - self.betamin) * \
                         math.exp(-self.gamma * math.pow(r, 2.0)) + self.betamin
