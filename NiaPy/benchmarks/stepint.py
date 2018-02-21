@@ -22,7 +22,7 @@ class Stepint(object):
         The function can be defined on any input domain but it is usually
         evaluated on the hypercube :math:`x_i ∈ [-5.12, 5.12]`, for all :math:`i = 1, 2,..., D`.
 
-        **Global minimum:** :math:`f(x*) = 0`, at :math:`x* = (0,...,0)`
+        **Global minimum:** :math:`f(x*) = 0`, at :math:`x* = (-5.12,...,-5.12)`
 
     LaTeX formats:
         Inline:
