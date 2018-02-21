@@ -31,6 +31,8 @@ The main documentation is organized into a couple sections:
    :caption: User Documentation
 
    getting_started
+   guides
+   support
 
 .. _dev-docs:
 
@@ -38,8 +40,10 @@ The main documentation is organized into a couple sections:
    :maxdepth: 2
    :caption: Developer Documentation
 
-   algorithms
-   benchmarks
+   changelog
+   installation
+   testing
+   api/index
 
 .. _about-docs:
 
@@ -47,4 +51,6 @@ The main documentation is organized into a couple sections:
    :maxdepth: 2
    :caption: About NiaPy
 
+   about
+   contributing_to_niapy
    code_of_conduct
