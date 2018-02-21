@@ -16,17 +16,17 @@ class Pinter(object):
 
     Function: **Pintér function**
 
-        :math:'f(\mathbf{x}) =
-                  \sum_{i=1}^D ix_i^2 + \sum_{i=1}^D 20i \sin^2 A + \sum_{i=1}^D i
-                  \log_{10} (1 + iB^2);
-                  A = (x_{i-1}sin(x_i)+sin(x_{i+1}))\quad \text{and} \quad
-                  B = (x_{i-1}^2 - 2x_i + 3x_{i+1} - cos(x_i) + 1)'
+        :math:`f(\mathbf{x}) =
+        \sum_{i=1}^D ix_i^2 + \sum_{i=1}^D 20i \sin^2 A + \sum_{i=1}^D i
+        \log_{10} (1 + iB^2);`
+        :math:`A = (x_{i-1}sin(x_i)+sin(x_{i+1}))\quad \text{and} \quad`
+        :math:`B = (x_{i-1}^2 - 2x_i + 3x_{i+1} - cos(x_i) + 1)`
 
         **Input domain:**
         The function can be defined on any input domain but it is usually
-        evaluated on the hypercube :math:'x_i ∈ [-10, 10]', for all :math:'i = 1, 2,..., D'.
+        evaluated on the hypercube :math:`x_i ∈ [-10, 10]`, for all :math:`i = 1, 2,..., D`.
 
-        **Global minimum:** :math:'f(x*) = 0', at :math:'x* = (0,...,0)'
+        **Global minimum:** :math:`f(x*) = 0', at :math:'x* = (0,...,0)`
 
     LaTeX formats:
         Inline:

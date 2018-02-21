@@ -16,13 +16,11 @@ class HappyCat(object):
 
     Function: **Happy cat function**
 
-        :math:'f(\mathbf{x}) = {\left |\sum_{i = 1}^D {x_i}^2 -
-                D \right|}^{1/4} + (0.5 \sum_{i = 1}^D {x_i}^2 +
-                \sum_{i = 1}^D x_i) / D + 0.5'
+        :math:`f(\mathbf{x}) = {\left |\sum_{i = 1}^D {x_i}^2 - D \right|}^{1/4} + (0.5 \sum_{i = 1}^D {x_i}^2 + \sum_{i = 1}^D x_i) / D + 0.5`
 
         **Input domain:**
         The function can be defined on any input domain but it is usually
-        evaluated on the hypercube :math:'x_i ∈ [-100, 100]', for all :math:'i = 1, 2,..., D'.
+        evaluated on the hypercube :math:`x_i ∈ [-100, 100]`, for all :math:`i = 1, 2,..., D`.
 
     LaTeX formats:
         Inline:
