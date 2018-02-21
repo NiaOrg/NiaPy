@@ -16,14 +16,14 @@ class Quintic(object):
 
     Function: **Quintic function**
 
-        :math:'f(\mathbf{x}) = \sum_{i=1}^D \left| x_i^5 - 3x_i^4 +
-                4x_i^3 + 2x_i^2 - 10x_i - 4\right|'
+        :math:`f(\mathbf{x}) = \sum_{i=1}^D \left| x_i^5 - 3x_i^4 +
+        4x_i^3 + 2x_i^2 - 10x_i - 4\right|`
 
         **Input domain:**
         The function can be defined on any input domain but it is usually
-        evaluated on the hypercube :math:'x_i ∈ [-10, 10]', for all :math:'i = 1, 2,..., D'.
+        evaluated on the hypercube :math:`x_i ∈ [-10, 10]`, for all :math:`i = 1, 2,..., D`.
 
-        **Global minimum:** :math:'f(x*) = 0, at x* = f(-1 or 2)'
+        **Global minimum:** :math:`f(x*) = 0`, at :math:`x* = f(-1 or 2)`
 
     LaTeX formats:
         Inline:
