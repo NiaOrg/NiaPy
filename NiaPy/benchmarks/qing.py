@@ -26,7 +26,7 @@ class Qing(object):
 
     LaTeX formats:
         Inline:
-                $f(\mathbf{x}) = \sum_{i=1}^D \left{(x_i^2 - i\right)}^2$
+                $f(\mathbf{x}) = \sum_{i=1}^D \left (x_i^2 - i\right)^2$
 
         Equation:
                 \begin{equation} f(\mathbf{x}) =
