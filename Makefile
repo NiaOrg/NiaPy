@@ -136,8 +136,9 @@ SPHINXPROJ    = NiaPy
 SOURCEDIR     = docs/source
 BUILDDIR      = docs/build
 
-.PHONY: docs 
-docs: 
+.PHONY: docs
+docs:
+	- rm -rf $(BUILDDIR)
 	@$(SPHINXBUILD) -M html "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 # MKDOCS := pipenv run mkdocs
 
