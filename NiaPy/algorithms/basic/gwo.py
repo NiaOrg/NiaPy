@@ -15,9 +15,7 @@ class GreyWolfOptimizer(object):
 
     Reference paper: Mirjalili, Seyedali, Seyed Mohammad Mirjalili, and Andrew Lewis.
     "Grey wolf optimizer." Advances in engineering software 69 (2014): 46-61.
-    #& Grey Wold Optimizer (GWO) source codes version 1.0 (MATLAB)
-
-    TODO: Validation must be conducted! More tests are required!
+    & Grey Wold Optimizer (GWO) source code version 1.0 (MATLAB) from MathWorks
     """
 
     # pylint: disable=too-many-instance-attributes
@@ -52,7 +50,6 @@ class GreyWolfOptimizer(object):
         self.eval_flag = True  # evaluations flag
         self.evaluations = 0  # evaluations counter
 
-        # TODO: "-inf" is in the case of maximization problems
         self.Alpha_pos = [0] * self.D  # init of alpha
         self.Alpha_score = float("inf")
 
@@ -63,7 +60,7 @@ class GreyWolfOptimizer(object):
         self.Delta_score = float("inf")
 
     def initialization(self):
-        # initialization of positions
+        """Initialization of positions."""
         for i in range(self.NP):
             for j in range(self.D):
                 self.Positions[i][j] = random.random(
