@@ -1,18 +1,3 @@
-"""Grey wolf optimizer.
-
-Date: 11.2.2018
-
-Author : Iztok Fister Jr.
-
-License: MIT
-
-Reference paper: Mirjalili, Seyedali, Seyed Mohammad Mirjalili, and Andrew Lewis.
-"Grey wolf optimizer." Advances in engineering software 69 (2014): 46-61.
-#& Grey Wold Optimizer (GWO) source codes version 1.0 (MATLAB)
-
-TODO: Validation must be conducted! More tests are required!
-"""
-
 import random
 from NiaPy.benchmarks.utility import Utility
 
@@ -20,10 +5,39 @@ __all__ = ['GreyWolfOptimizer']
 
 
 class GreyWolfOptimizer(object):
+    """Grey wolf optimizer.
+
+    Date: 11.2.2018
+
+    Author : Iztok Fister Jr.
+
+    License: MIT
+
+    Reference paper: Mirjalili, Seyedali, Seyed Mohammad Mirjalili, and Andrew Lewis.
+    "Grey wolf optimizer." Advances in engineering software 69 (2014): 46-61.
+    #& Grey Wold Optimizer (GWO) source codes version 1.0 (MATLAB)
+
+    TODO: Validation must be conducted! More tests are required!
+    """
 
     # pylint: disable=too-many-instance-attributes
-
     def __init__(self, D, NP, nFES, benchmark):
+        """**__init__(self, D, NP, nFES, benchmark)**.
+
+        Arguments:
+            D {integer} -- dimension of problem
+
+            NP {integer} -- population size
+
+            nFES {integer} -- number of function evaluations
+
+            benchmark {object} -- benchmark implementation object
+
+        Raises:
+            TypeError -- Raised when given benchmark function which does not exists.
+
+        """
+
         self.benchmark = Utility().get_benchmark(benchmark)
         self.D = D  # dimension of the problem
         self.NP = NP  # population size; number of search agents

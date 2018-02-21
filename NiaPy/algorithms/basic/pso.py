@@ -1,17 +1,3 @@
-"""Particle Swarm Optimization algorithm.
-
-Date: 12. 2. 2018
-
-Authors : Uros Mlakar
-
-License: MIT
-
-Reference paper: Kennedy, J. and Eberhart, R. "Particle Swarm Optimization".
-Proceedings of IEEE International Conference on Neural Networks. IV. pp. 1942--1948, 1995.
-
-EDITED: TODO: Tests and validation! Bug in code.
-"""
-
 import random as rnd
 import copy
 
@@ -75,8 +61,21 @@ class Particle(object):
 
 
 class ParticleSwarmAlgorithm(object):
-    # pylint: disable=too-many-instance-attributes
+    """Particle Swarm Optimization algorithm.
 
+    Date: 12. 2. 2018
+
+    Authors : Uros Mlakar
+
+    License: MIT
+
+    Reference paper: Kennedy, J. and Eberhart, R. "Particle Swarm Optimization".
+    Proceedings of IEEE International Conference on Neural Networks. IV. pp. 1942--1948, 1995.
+
+    EDITED: TODO: Tests and validation! Bug in code.
+    """
+
+    # pylint: disable=too-many-instance-attributes
     def __init__(self, Np, D, nFES, C1, C2, w, vMin, vMax, Lower, Upper, function):
         """Constructor."""
         self.Np = Np

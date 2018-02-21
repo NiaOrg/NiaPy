@@ -1,15 +1,3 @@
-"""Genetic algorithm - BUG is somewhere in code.
-
-Date: 12. 2. 2018
-
-Authors : Uros Mlakar
-
-License: MIT
-
-Reference paper: TODO.
-
-"""
-
 import random as rnd
 import copy
 
@@ -49,6 +37,18 @@ class Chromosome(object):
 
 
 class GeneticAlgorithm(object):
+    """Genetic algorithm - BUG is somewhere in code.
+
+    Date: 12. 2. 2018
+
+    Authors : Uros Mlakar
+
+    License: MIT
+
+    Reference paper: TODO.
+
+    """
+
     # pylint: disable=too-many-instance-attributes
     def __init__(self, D, NP, nFES, Ts, Mr, Lower, Upper, function):
         self.NP = NP

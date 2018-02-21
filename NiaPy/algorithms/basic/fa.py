@@ -1,14 +1,3 @@
-"""Firefly algorithm.
-
-Date: 2016
-
-Authors : Iztok Fister Jr. and Iztok Fister
-License: MIT
-
-Reference paper: Fister, I., Fister Jr, I., Yang, X. S., & Brest, J. (2013).
-A comprehensive review of firefly algorithms. Swarm and Evolutionary Computation, 13, 34-46.
-"""
-
 import random
 import math
 from NiaPy.benchmarks.utility import Utility
@@ -17,11 +6,41 @@ __all__ = ['FireflyAlgorithm']
 
 
 class FireflyAlgorithm(object):
-    """Firefly Algorithm implementation."""
+    """Firefly algorithm.
+
+    Date: 2016
+
+    Authors : Iztok Fister Jr. and Iztok Fister
+    License: MIT
+
+    Reference paper: Fister, I., Fister Jr, I., Yang, X. S., & Brest, J. (2013).
+    A comprehensive review of firefly algorithms. Swarm and Evolutionary Computation, 13, 34-46.
+    """
 
     # pylint: disable=too-many-instance-attributes
-
     def __init__(self, D, NP, nFES, alpha, betamin, gamma, benchmark):
+        """**__init__(self, D, NP, nFES, alpha, betamin, gamma, benchmark)**.
+
+        Arguments:
+            D {integer} -- dimension of problem
+
+            NP {integer} -- population size
+
+            nFES {integer} -- number of function evaluations
+
+            alpha {decimal} -- alpha parameter
+
+            betamin {decimal} -- betamin parameter
+
+            gamma {decimal} -- gamma parameter
+
+            benchmark {object} -- benchmark implementation object
+
+        Raises:
+            TypeError -- Raised when given benchmark function which does not exists.
+
+        """
+
         self.benchmark = Utility().get_benchmark(benchmark)
         self.D = D  # dimension of the problem
         self.NP = NP  # population size

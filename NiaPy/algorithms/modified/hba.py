@@ -18,9 +18,44 @@ __all__ = ['HybridBatAlgorithm']
 
 
 class HybridBatAlgorithm(object):
-    # pylint: disable=too-many-instance-attributes
+    """Hybrid bat algorithm.
 
+    Date: 2018
+
+    Authors : Grega Vrbancic
+
+    License: MIT
+
+    Reference paper: Fister Jr., Iztok and Fister, Dusan and Yang, Xin-She.
+    "A Hybrid Bat Algorithm". Elektrotehniski vestnik, 2013. 1-7.
+    """
+
+    # pylint: disable=too-many-instance-attributes
     def __init__(self, D, NP, nFES, A, r, F, CR, Qmin, Qmax, benchmark):
+        """**__init__(self, D, NP, nFES, A, r, Qmin, Qmax, benchmark)**.
+
+        Arguments:
+            D {integer} -- dimension of problem
+
+            NP {integer} -- population size
+
+            nFES {integer} -- number of function evaluations
+
+            A {decimal} -- loudness
+
+            r {decimal} -- pulse rate
+
+            Qmin {decimal} -- minimum frequency
+
+            Qmax {decimal } -- maximum frequency
+
+            benchmark {object} -- benchmark implementation object
+
+        Raises:
+            TypeError -- Raised when given benchmark function which does not exists.
+
+        """
+
         self.benchmark = Utility().get_benchmark(benchmark)
         self.D = D  # dimension
         self.NP = NP  # population size
