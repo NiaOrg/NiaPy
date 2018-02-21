@@ -19,3 +19,4 @@ sphinx-rtd-theme==0.2.4
 sphinxcontrib-websupport==1.0.1
 urllib3==1.22
 XlsxWriter==1.0.2
+numpy==1.14.0
