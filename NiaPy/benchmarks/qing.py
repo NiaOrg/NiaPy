@@ -16,7 +16,7 @@ class Qing(object):
 
     Function: **Qing function**
 
-        :math:`f(\mathbf{x}) = \sum_{i=1}^D \left{(x_i^2 - i\right)}^2`
+        :math:`f(\mathbf{x}) = \sum_{i=1}^D \left(x_i^2 - i\right)^2`
 
         **Input domain:**
         The function can be defined on any input domain but it is usually

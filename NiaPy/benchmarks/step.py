@@ -8,7 +8,7 @@ __all__ = ['Step', 'Step2', 'Step3']
 
 
 class Step(object):
-    """Implementation of Step function.
+    r"""Implementation of Step function.
 
     Date: 2018
 
@@ -16,21 +16,28 @@ class Step(object):
 
     License: MIT
 
-    Function: Step function
+    Function: **Step function**
 
-    Input domain:
+        :math:`f(\mathbf{x}) = \sum_{i=1}^D \left( \lfloor \left |
+                x_i \right | \rfloor \right)`
+
+        **Input domain:**
         The function can be defined on any input domain but it is usually
-        evaluated on the hypercube x_i ∈ [-100, 100], for all i = 1, 2,..., D.
+        evaluated on the hypercube :math:`x_i ∈ [-100, 100]`, for all :math:`i = 1, 2,..., D`.
 
-    Global minimum:
-        f(x*) = 0, at x* = (0,...,0)
+        **Global minimum:** :math:`f(x*) = 0`, at :math:`x* = (0,...,0)`
 
     LaTeX formats:
-        Inline: $f(\mathbf{x}) = \sum_{i=1}^D \left( \lfloor \left |
+        Inline:
+                $f(\mathbf{x}) = \sum_{i=1}^D \left( \lfloor \left |
                 x_i \right | \rfloor \right)$
-        Equation: \begin{equation} f(\mathbf{x}) = \sum_{i=1}^D \left(
-                  \lfloor \left | x_i \right | \rfloor \right) \end{equation}
-        Domain: $-100 \leq x_i \leq 100$
+
+        Equation:
+                \begin{equation} f(\mathbf{x}) = \sum_{i=1}^D \left(
+                \lfloor \left | x_i \right | \rfloor \right) \end{equation}
+
+        Domain:
+                $-100 \leq x_i \leq 100$
 
     Reference paper:
         Jamil, M., and Yang, X. S. (2013).
@@ -58,7 +65,7 @@ class Step(object):
 
 
 class Step2(object):
-    """Step2 function implementation.
+    r"""Step2 function implementation.
 
     Date: 2018
 
@@ -66,20 +73,26 @@ class Step2(object):
 
     Licence: MIT
 
-    Function: Step2 function
+    Function: **Step2 function**
 
-    Input domain:
+        :math:`f(\mathbf{x}) = \sum_{i=1}^D \left( \lfloor x_i + 0.5 \rfloor \right)^2`
+
+        **Input domain:**
         The function can be defined on any input domain but it is usually
-        evaluated on the hypercube x_i ∈ [-100, 100], for all i = 1, 2,..., D.
+        evaluated on the hypercube :math:`x_i ∈ [-100, 100]`, for all :math:`i = 1, 2,..., D`.
 
-    Global minimum:
-        f(x*) = 0, at x* = (0.5,...,0.5)
+        **lobal minimum:** :math:`f(x*) = 0`, at :math:`x* = (0.5,...,0.5)`
 
     LaTeX formats:
-        Inline: $f(\mathbf{x}) = \sum_{i=1}^D \left( \lfloor x_i + 0.5 \rfloor \right)^2$
-        Equation: \begin{equation}f(\mathbf{x}) = \sum_{i=1}^D \left(
-                  \lfloor x_i + 0.5 \rfloor \right)^2 \end{equation}
-        Domain: $-100 \leq x_i \leq 100$
+        Inline:
+                $f(\mathbf{x}) = \sum_{i=1}^D \left( \lfloor x_i + 0.5 \rfloor \right)^2$
+
+        Equation:
+                \begin{equation}f(\mathbf{x}) = \sum_{i=1}^D \left(
+                \lfloor x_i + 0.5 \rfloor \right)^2 \end{equation}
+
+        Domain:
+                $-100 \leq x_i \leq 100$
 
     Reference paper:
         Jamil, M., and Yang, X. S. (2013).
@@ -107,7 +120,7 @@ class Step2(object):
 
 
 class Step3(object):
-    """Step3 function implementation.
+    r"""Step3 function implementation.
 
     Date: 2018
 
@@ -115,20 +128,26 @@ class Step3(object):
 
     Licence: MIT
 
-    Function: Step3 function
+    Function: **Step3 function**
 
-    Input domain:
+        :math:`f(\mathbf{x}) = \sum_{i=1}^D \left( \lfloor x_i^2 \rfloor \right)`
+
+        **Input domain:**
         The function can be defined on any input domain but it is usually
-        evaluated on the hypercube x_i ∈ [-100, 100], for all i = 1, 2,..., D.
+        evaluated on the hypercube :math:`x_i ∈ [-100, 100]`, for all :math:`i = 1, 2,..., D`.
 
-    Global minimum:
-        f(x*) = 0, at x* = (0,...,0)
+        **Global minimum:** :math:`f(x*) = 0`, at :math:`x* = (0,...,0)`
 
     LaTeX formats:
-        Inline: $f(\mathbf{x}) = \sum_{i=1}^D \left( \lfloor x_i^2 \rfloor \right)$
-        Equation: \begin{equation}f(\mathbf{x}) =
-                  \sum_{i=1}^D \left( \lfloor x_i^2 \rfloor \right)\end{equation}
-        Domain: $-100 \leq x_i \leq 100$
+        Inline:
+                $f(\mathbf{x}) = \sum_{i=1}^D \left( \lfloor x_i^2 \rfloor \right)$
+
+        Equation:
+                \begin{equation}f(\mathbf{x}) = \sum_{i=1}^D \left(
+                \lfloor x_i^2 \rfloor \right)\end{equation}
+
+        Domain:
+                $-100 \leq x_i \leq 100$
 
     Reference paper:
         Jamil, M., and Yang, X. S. (2013).
