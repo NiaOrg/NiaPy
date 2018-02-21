@@ -72,7 +72,7 @@ class BatAlgorithm(object):
         self.Fun = self.benchmark.function()
 
     def best_bat(self):
-        """Find best bat."""
+        """Find the best bat."""
 
         i = 0
         j = 0
@@ -84,13 +84,13 @@ class BatAlgorithm(object):
         self.f_min = self.Fitness[j]
 
     def eval_true(self):
-        """Check evauations."""
+        """Check evaluations."""
 
         if self.evaluations == self.nFES:
             self.eval_flag = False
 
     def init_bat(self):
-        """Initialize bat."""
+        """Initialize population."""
 
         for i in range(self.D):
             self.Lb[i] = self.Lower
@@ -115,6 +115,7 @@ class BatAlgorithm(object):
         return val
 
     def move_bat(self):
+        """Move bats in search space."""
         S = [[0.0 for i in range(self.D)] for j in range(self.NP)]
 
         self.init_bat()
