@@ -19,13 +19,13 @@ class Step(object):
     Function: **Step function**
 
         :math:`f(\mathbf{x}) = \sum_{i=1}^D \left( \lfloor \left |
-                x_i \right | \rfloor \right)`
+        x_i \right | \rfloor \right)`
 
         **Input domain:**
         The function can be defined on any input domain but it is usually
         evaluated on the hypercube :math:`x_i ∈ [-100, 100]`, for all :math:`i = 1, 2,..., D`.
 
-        **Global minimum:** :math:`f(x*) = 0`, at :math:`x* = (0,...,0)`
+        **Global minimum:** :math:`f(x^*) = 0`, at :math:`x^* = (0,...,0)`
 
     LaTeX formats:
         Inline:
@@ -81,7 +81,7 @@ class Step2(object):
         The function can be defined on any input domain but it is usually
         evaluated on the hypercube :math:`x_i ∈ [-100, 100]`, for all :math:`i = 1, 2,..., D`.
 
-        **lobal minimum:** :math:`f(x*) = 0`, at :math:`x* = (-0.5,...,-0.5)`
+        **lobal minimum:** :math:`f(x^*) = 0`, at :math:`x^* = (-0.5,...,-0.5)`
 
     LaTeX formats:
         Inline:
@@ -136,7 +136,7 @@ class Step3(object):
         The function can be defined on any input domain but it is usually
         evaluated on the hypercube :math:`x_i ∈ [-100, 100]`, for all :math:`i = 1, 2,..., D`.
 
-        **Global minimum:** :math:`f(x*) = 0`, at :math:`x* = (0,...,0)`
+        **Global minimum:** :math:`f(x^*) = 0`, at :math:`x^* = (0,...,0)`
 
     LaTeX formats:
         Inline:

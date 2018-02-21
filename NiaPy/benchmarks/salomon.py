@@ -16,23 +16,23 @@ class Salomon(object):
 
     Function: **Salomon function**
 
-        :math:`f(\mathbf{x}) = 1 - cos\left(2\pi\sqrt{\sum_{i=1}^D x_i^2}
+        :math:`f(\mathbf{x}) = 1 - \cos\left(2\pi\sqrt{\sum_{i=1}^D x_i^2}
         \right)+ 0.1 \sqrt{\sum_{i=1}^D x_i^2}`
 
         **Input domain:**
         The function can be defined on any input domain but it is usually
         evaluated on the hypercube :math:`x_i ∈ [-100, 100]`, for all :math:`i = 1, 2,..., D`.
 
-        **Global minimum:** :math:`f(x*) = 0`, at :math:`x* = f(0, 0)`
+        **Global minimum:** :math:`f(x^*) = 0`, at :math:`x^* = f(0, 0)`
 
     LaTeX formats:
         Inline:
-                $f(\mathbf{x}) = 1 - cos\left(2\pi\sqrt{\sum_{i=1}^D x_i^2}
+                $f(\mathbf{x}) = 1 - \cos\left(2\pi\sqrt{\sum_{i=1}^D x_i^2}
                 \right)+ 0.1 \sqrt{\sum_{i=1}^D x_i^2}$
 
         Equation:
                 \begin{equation} f(\mathbf{x}) =
-                1 - cos\left(2\pi\sqrt{\sum_{i=1}^D x_i^2}
+                1 - \cos\left(2\pi\sqrt{\sum_{i=1}^D x_i^2}
                 \right)+ 0.1 \sqrt{\sum_{i=1}^D x_i^2} \end{equation}
 
         Domain:

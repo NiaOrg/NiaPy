@@ -18,20 +18,20 @@ class Alpine1(object):
 
     Function: **Alpine1 function**
 
-        :math:`f(\mathbf{x}) = \sum_{i=1}^{D} |x_i sin(x_i)+0.1x_i|`
+        :math:`f(\mathbf{x}) = \sum_{i=1}^{D} |x_i \sin(x_i)+0.1x_i|`
 
         **Input domain:**
         The function can be defined on any input domain but it is usually
         evaluated on the hypercube :math:`x_i ∈ [-10, 10]`, for all :math:`i = 1, 2,..., D`.
 
-        **Global minimum:** :math:`f(x*) = 0`, at :math:`x* = (0,...,0)`
+        **Global minimum:** :math:`f(x^*) = 0`, at :math:`x^* = (0,...,0)`
 
     LaTeX formats:
         Inline:
-                $f(\mathbf{x}) = \sum_{i=1}^{D} \left |x_i sin(x_i)+0.1x_i \right|$
+                $f(\mathbf{x}) = \sum_{i=1}^{D} \left |x_i \sin(x_i)+0.1x_i \right|$
 
         Equation:
-                \begin{equation} f(x) = \sum_{i=1}^{D} \left|x_i sin(x_i) + 0.1x_i \right| \end{equation}
+                \begin{equation} f(x) = \sum_{i=1}^{D} \left|x_i \sin(x_i) + 0.1x_i \right| \end{equation}
 
         Domain:
                 $-10 \leq x_i \leq 10$
@@ -72,21 +72,21 @@ class Alpine2(object):
 
     Function: **Alpine2 function**
 
-        :math:`f(\mathbf{x}) = \prod_{i=1}^{D} \sqrt{x_i} sin(x_i)`
+        :math:`f(\mathbf{x}) = \prod_{i=1}^{D} \sqrt{x_i} \sin(x_i)`
 
         **Input domain:**
         The function can be defined on any input domain but it is usually
         evaluated on the hypercube :math:`x_i ∈ [0, 10]`, for all :math:`i = 1, 2,..., D`.
 
-        **Global minimum:** :math:`f(x*) = 2.808^D`, at :math:`x* = (7.917,...,7.917)`
+        **Global minimum:** :math:`f(x^*) = 2.808^D`, at :math:`x^* = (7.917,...,7.917)`
 
     LaTeX formats:
         Inline:
-                $f(\mathbf{x}) = \prod_{i=1}^{D} \sqrt{x_i} sin(x_i)$
+                $f(\mathbf{x}) = \prod_{i=1}^{D} \sqrt{x_i} \sin(x_i)$
 
         Equation:
                 \begin{equation} f(\mathbf{x}) =
-                \prod_{i=1}^{D} \sqrt{x_i} sin(x_i) \end{equation}
+                \prod_{i=1}^{D} \sqrt{x_i} \sin(x_i) \end{equation}
 
         Domain:
                 $0 \leq x_i \leq 10$

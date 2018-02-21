@@ -47,7 +47,7 @@ __all__ = [
     'Pinter',
     'Qing',
     'Quintic',
-    'salomon',
+    'Salomon',
     'SchumerSteiglitz',
     'Step',
     'Step2',

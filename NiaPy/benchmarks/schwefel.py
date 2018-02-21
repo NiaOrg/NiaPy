@@ -24,7 +24,7 @@ class Schwefel(object):
         The function can be defined on any input domain but it is usually
         evaluated on the hypercube :math:`x_i ∈ [-500, 500]`, for all :math:`i = 1, 2,..., D`.
 
-        **Global minimum:** :math:`f(x*) = 0`, at :math:`x* = (420.968746,...,420.968746)`
+        **Global minimum:** :math:`f(x^*) = 0`, at :math:`x^* = (420.968746,...,420.968746)`
 
     LaTeX formats:
         Inline:
@@ -61,7 +61,7 @@ class Schwefel(object):
 class Schwefel221(object):
     r"""Schwefel 2.21 function implementation.
 
-    Date: February 2018
+    Date: 2018
 
     Author: Grega Vrbančič
 
@@ -69,20 +69,20 @@ class Schwefel221(object):
 
     Function: **Schwefel 2.21 function**
 
-        :math:`f(\mathbf{x})=\max_{i=1,...,n}|x_i|`
+        :math:`f(\mathbf{x})=\max_{i=1,...,D}|x_i|`
 
         **Input domain:**
         The function can be defined on any input domain but it is usually
         evaluated on the hypercube :math:`x_i ∈ [-100, 100]`, for all :math:`i = 1, 2,..., D`.
 
-        **Global minimum:** :math:`f(x*) = 0`, at :math:`x* = (0,...,0)`
+        **Global minimum:** :math:`f(x^*) = 0`, at :math:`x^* = (0,...,0)`
 
     LaTeX formats:
         Inline:
-                $f(\mathbf{x})=\max_{i=1,...,n}|x_i|$
+                $f(\mathbf{x})=\max_{i=1,...,D}|x_i|$
 
         Equation:
-                \begin{equation}f(\mathbf{x}) = \max_{i=1,...,n}|x_i| \end{equation}
+                \begin{equation}f(\mathbf{x}) = \max_{i=1,...,D}|x_i| \end{equation}
 
         Domain:
                 $-100 \leq x_i \leq 100$
@@ -115,7 +115,7 @@ class Schwefel221(object):
 class Schwefel222(object):
     r"""Schwefel 2.22 function implementation.
 
-    Date: February 2018
+    Date: 2018
 
     Author: Grega Vrbančič
 
@@ -129,7 +129,7 @@ class Schwefel222(object):
         The function can be defined on any input domain but it is usually
         evaluated on the hypercube :math:`x_i ∈ [-100, 100]`, for all :math:`i = 1, 2,..., D`.
 
-        **Global minimum:** :math:`f(x*) = 0`, at :math:`x* = (0,...,0)`
+        **Global minimum:** :math:`f(x^*) = 0`, at :math:`x^* = (0,...,0)`
 
     LaTeX formats:
         Inline:
