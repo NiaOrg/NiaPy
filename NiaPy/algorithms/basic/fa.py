@@ -66,7 +66,7 @@ class FireflyAlgorithm(object):
         self.Fun = self.benchmark.function()
 
     def init_ffa(self):
-        """Initialization of firefly population."""
+        """Initialize firefly population."""
         for i in range(self.NP):
             for j in range(self.D):
                 self.Fireflies[i][j] = random.uniform(
@@ -86,7 +86,7 @@ class FireflyAlgorithm(object):
             self.eval_flag = False
 
     def sort_ffa(self):  #
-        """Implementation of bubble sort."""
+        """Implement bubble sort."""
         for i in range(self.NP):
             self.Index[i] = i
 
