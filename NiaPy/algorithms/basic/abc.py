@@ -1,20 +1,3 @@
-"""Artificial Bee Colony algorithm.
-
-Date: 12. 2. 2018
-
-Authors : Uros Mlakar
-
-License: MIT
-
-Reference paper: Karaboga, D., and Bahriye B. "A powerful
-and efficient algorithm for numerical function optimization: artificial
-bee colony (ABC) algorithm." Journal of global optimization 39.3 (2007): 459-471.
-
-EDITED - TODO: More tests are required! Validation!
-
-TODO: EVALUATIONS!
-"""
-
 import random as rnd
 import copy
 from NiaPy.benchmarks.utility import Utility
@@ -52,9 +35,41 @@ class SolutionABC(object):
 
 
 class ArtificialBeeColonyAlgorithm(object):
-    # pylint: disable=too-many-instance-attributes
+    """Artificial Bee Colony algorithm.
 
+    Date: 12. 2. 2018
+
+    Authors : Uros Mlakar
+
+    License: MIT
+
+    Reference paper: Karaboga, D., and Bahriye B. "A powerful
+    and efficient algorithm for numerical function optimization: artificial
+    bee colony (ABC) algorithm." Journal of global optimization 39.3 (2007): 459-471.
+
+    EDITED - TODO: More tests are required! Validation!
+
+    TODO: EVALUATIONS!
+    """
+
+    # pylint: disable=too-many-instance-attributes
     def __init__(self, D, NP, nFES, benchmark):
+        """**__init__(self, D, NP, nFES, benchmark)**.
+
+        Arguments:
+            D {integer} -- dimension of problem
+
+            NP {integer} -- population size
+
+            nFES {integer} -- number of function evaluations
+
+            benchmark {object} -- benchmark implementation object
+
+        Raises:
+            TypeError -- Raised when given benchmark function which does not exists.
+
+        """
+
         self.benchmark = Utility().get_benchmark(benchmark)
         self.D = D
         self.NP = NP
