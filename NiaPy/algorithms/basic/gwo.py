@@ -60,7 +60,7 @@ class GreyWolfOptimizer(object):
         self.Delta_score = float("inf")
 
     def initialization(self):
-        """Initialization of positions."""
+        """Initialize positions."""
         for i in range(self.NP):
             for j in range(self.D):
                 self.Positions[i][j] = random.random(
