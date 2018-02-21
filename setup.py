@@ -71,9 +71,9 @@ setuptools.setup(
 
     install_requires=[
         # TODO: Add your library's requirements here
-        "click ~= 6.0",
-        "numpy ~= 1.14.0",
-        "scipy ~= 1.0.0",
-        "xlsxwriter ~= 1.0.2"
+        'click ~= 6.0',
+        'numpy ~= 1.14.0',
+        'scipy ~= 1.0.0',
+        'xlsxwriter ~= 1.0.2'
     ]
 )
