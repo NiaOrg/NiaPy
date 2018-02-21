@@ -23,7 +23,7 @@ class StyblinskiTang(object):
         The function can be defined on any input domain but it is usually
         evaluated on the hypercube :math:`x_i ∈ [-5, 5]`, for all :math:`i = 1, 2,..., D`.
 
-        **Global minimum:** :math:`f(x*) = -78.332`, at :math:`x* = (-2.903534,...,-2.903534)`
+        **Global minimum:** :math:`f(x^*) = -78.332`, at :math:`x^* = (-2.903534,...,-2.903534)`
 
     LaTeX formats:
         Inline:
