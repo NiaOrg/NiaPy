@@ -1,4 +1,5 @@
 from unittest import TestCase
+import math
 
 from NiaPy.benchmarks.utility import Utility
 
@@ -11,10 +12,13 @@ class TestBenchmarkFunctions(TestCase):
         self.array = [0, 0, 0, 0, 0]
         self.array2 = [1, 1, 1, 1, 1]
         self.array3 = [420.968746, 420.968746, 420.968746, 420.968746, 420.968746]
-        self.array4 = [-2.903534, -2.903534, -2.903534, -2.903534, -2.903534]
-        self.array5 = [0.5, 0.5, 0.5, 0.5, 0.5]
+        self.array4 = [-2.903534, -2.903534]
+        self.array5 = [-0.5, -0.5, -0.5, -0.5, -0.5]
         self.array6 = [-1, -1, -1, -1, -1]
         self.array7 = [2, 2, 2, 2, 2]
+        self.array8 = [7.9170526982459462172, 7.9170526982459462172,
+                       7.9170526982459462172, 7.9170526982459462172, 7.9170526982459462172]
+        self.array9 = [-5.12, -5.12, -5.12, -5.12, -5.12]
 
     def test_rastrigin(self):
         rastrigin = Utility().get_benchmark('rastrigin')
@@ -39,12 +43,12 @@ class TestBenchmarkFunctions(TestCase):
     def test_ackley(self):
         ackley = Utility().get_benchmark('ackley')
         fun = ackley.function()
-        self.assertEqual(round(fun(self.D, self.array)), 0.0)
+        self.assertAlmostEqual(fun(self.D, self.array), 0.0, places=10)
 
     def test_schwefel(self):
         schwefel = Utility().get_benchmark('schwefel')
         fun = schwefel.function()
-        self.assertEqual(round(fun(self.D, self.array3)), 0.0)
+        self.assertAlmostEqual(fun(self.D, self.array3), 0.0, places=3)
 
     def test_schwefel221(self):
         schwefel221 = Utility().get_benchmark('schwefel221')
@@ -64,7 +68,7 @@ class TestBenchmarkFunctions(TestCase):
     def test_styblinskiTang(self):
         styblinskiTang = Utility().get_benchmark('styblinskiTang')
         fun = styblinskiTang.function()
-        self.assertTrue(fun(self.D, self.array4) < -78.332)
+        self.assertAlmostEqual(fun(2, self.array4), -78.332, places=3)
 
     def test_sumSquares(self):
         sumSquares = Utility().get_benchmark('sumSquares')
@@ -74,7 +78,7 @@ class TestBenchmarkFunctions(TestCase):
     def test_stepint(self):
         stepint = Utility().get_benchmark('stepint')
         fun = stepint.function()
-        self.assertEqual(fun(self.D, self.array), 25.0)
+        self.assertEqual(fun(self.D, self.array9), 25.0 - 6 * self.D)
 
     def test_step(self):
         step = Utility().get_benchmark('step')
@@ -84,7 +88,7 @@ class TestBenchmarkFunctions(TestCase):
     def test_step2(self):
         step2 = Utility().get_benchmark('step2')
         fun = step2.function()
-        self.assertEqual(fun(self.D, self.array5), 5.0)
+        self.assertEqual(fun(self.D, self.array5), 0.0)
 
     def test_step3(self):
         step3 = Utility().get_benchmark('step3')
@@ -114,4 +118,24 @@ class TestBenchmarkFunctions(TestCase):
     def test_pinter(self):
         pinter = Utility().get_benchmark('pinter')
         fun = pinter.function()
+        self.assertEqual(fun(self.D, self.array), 0.0)
+
+    def test_alpine1(self):
+        alpine1 = Utility().get_benchmark('alpine1')
+        fun = alpine1.function()
+        self.assertEqual(fun(self.D, self.array), 0.0)
+
+    def test_alpine2(self):
+        alpine2 = Utility().get_benchmark('alpine2')
+        fun = alpine2.function()
+        self.assertEqual(fun(self.D, self.array8), math.pow(2.8081311800070053291, self.D))
+
+    def test_chungReynolds(self):
+        chungReynolds = Utility().get_benchmark('chungReynolds')
+        fun = chungReynolds.function()
+        self.assertEqual(fun(self.D, self.array), 0.0)
+
+    def test_csendes(self):
+        csendes = Utility().get_benchmark('csendes')
+        fun = csendes.function()
         self.assertEqual(fun(self.D, self.array), 0.0)

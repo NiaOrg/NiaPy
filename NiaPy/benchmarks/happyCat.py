@@ -49,9 +49,10 @@ class HappyCat(object):
 
             val1 = 0.0
             val2 = 0.0
+            alpha = 0.125
 
             for i in range(D):
-                val1 += math.pow(abs(math.pow(sol[i], 2) - D), 0.25)
+                val1 += math.pow(abs(math.pow(sol[i], 2) - D), alpha)
                 val2 += (0.5 * math.pow(sol[i], 2) + sol[i]) / D
 
             return val1 + val2 + 0.5

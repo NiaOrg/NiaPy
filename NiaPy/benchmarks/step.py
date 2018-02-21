@@ -81,7 +81,7 @@ class Step2(object):
         The function can be defined on any input domain but it is usually
         evaluated on the hypercube :math:`x_i ∈ [-100, 100]`, for all :math:`i = 1, 2,..., D`.
 
-        **lobal minimum:** :math:`f(x*) = 0`, at :math:`x* = (0.5,...,0.5)`
+        **lobal minimum:** :math:`f(x*) = 0`, at :math:`x* = (-0.5,...,-0.5)`
 
     LaTeX formats:
         Inline:
