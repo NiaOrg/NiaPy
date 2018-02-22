@@ -1,18 +1,3 @@
-"""Self-adaptive differential evolution algorithm.
-
-Date: 7. 2. 2018
-
-Authors : Uros Mlakar
-
-License: MIT
-
-Reference paper: Brest, J., Greiner, S., Boskovic, B., Mernik, M., Zumer, V. Self-adapting control
-parameters in differential evolution: A comparative study on numerical benchmark problems.
-IEEE transactions on evolutionary computation, 10(6), 646-657, 2006.
-
-TODO
-"""
-
 import random as rnd
 import copy
 
@@ -49,8 +34,27 @@ class SolutionjDE(object):
 
 
 class SelfAdaptiveDifferentialEvolutionAlgorithm(object):
+
     # pylint: disable=too-many-instance-attributes
     def __init__(self, D, NP, nFES, Lower, Upper, function):
+
+    """Self-adaptive differential evolution algorithm.
+
+    Date: 7. 2. 2018
+
+    Authors : Uros Mlakar
+
+    License: MIT
+
+    Reference paper: Brest, J., Greiner, S., Boskovic, B., Mernik, M., Zumer, V. Self-adapting control
+    parameters in differential evolution: A comparative study on numerical benchmark problems.
+    IEEE transactions on evolutionary computation, 10(6), 646-657, 2006.
+
+    TODO
+    """
+
+    def __init__(self, D, NP, nFES, F, CR, Lower, Upper, function):
+
         # TODO: check for F and CR parameters!
         self.D = D  # dimension of problem
         self.Np = NP  # population size

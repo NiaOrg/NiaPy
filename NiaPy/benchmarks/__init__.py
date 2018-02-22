@@ -1,4 +1,4 @@
-"""Module with implementations of benchmarks."""
+"""Module with implementations of benchmark functions."""
 
 from NiaPy.benchmarks.rastrigin import Rastrigin
 from NiaPy.benchmarks.rosenbrock import Rosenbrock
@@ -47,7 +47,7 @@ __all__ = [
     'Pinter',
     'Qing',
     'Quintic',
-    'salomon',
+    'Salomon',
     'SchumerSteiglitz',
     'Step',
     'Step2',

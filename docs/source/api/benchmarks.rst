@@ -1,6 +1,5 @@
-Benchmarks
-==========
-
+:mod:`NiaPy.benchmarks`
+============================
 .. automodule:: NiaPy.benchmarks
     :members:
     :undoc-members:

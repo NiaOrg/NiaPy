@@ -22,14 +22,16 @@ class HappyCat(object):
         The function can be defined on any input domain but it is usually
         evaluated on the hypercube :math:`x_i ∈ [-100, 100]`, for all :math:`i = 1, 2,..., D`.
 
+        **Global minimum:** :math:`f(x^*) = 0`, at :math:`x^* = (-1,...,-1)`
+
     LaTeX formats:
         Inline:
-                $f(\mathbf{x}) = {\left |\sum_{i = 1}^D {x_i}^2 -
+                $f(\mathbf{x}) = {\left|\sum_{i = 1}^D {x_i}^2 -
                 D \right|}^{1/4} + (0.5 \sum_{i = 1}^D {x_i}^2 +
                 \sum_{i = 1}^D x_i) / D + 0.5$
 
         Equation:
-                \begin{equation} f(\mathbf{x}) = {\left |\sum_{i = 1}^D {x_i}^2 -
+                \begin{equation} f(\mathbf{x}) = {\left| \sum_{i = 1}^D {x_i}^2 -
                 D \right|}^{1/4} + (0.5 \sum_{i = 1}^D {x_i}^2 +
                 \sum_{i = 1}^D x_i) / D + 0.5 \end{equation}
 
@@ -49,9 +51,10 @@ class HappyCat(object):
 
             val1 = 0.0
             val2 = 0.0
+            alpha = 0.125
 
             for i in range(D):
-                val1 += math.pow(abs(math.pow(sol[i], 2) - D), 0.25)
+                val1 += math.pow(abs(math.pow(sol[i], 2) - D), alpha)
                 val2 += (0.5 * math.pow(sol[i], 2) + sol[i]) / D
 
             return val1 + val2 + 0.5

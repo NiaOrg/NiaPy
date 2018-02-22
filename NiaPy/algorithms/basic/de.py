@@ -1,16 +1,3 @@
-"""Differential evolution algorithm.
-
-Date: 7. 2. 2018
-
-Authors : Uros Mlakar
-
-License: MIT
-
-Reference paper: Storn, Rainer, and Kenneth Price. "Differential evolution - a simple and
-efficient heuristic for global optimization over continuous spaces." Journal of global
-optimization 11.4 (1997): 341-359.
-"""
-
 import random as rnd
 import copy
 from NiaPy.benchmarks.utility import Utility
@@ -46,10 +33,40 @@ class SolutionDE(object):
 
 
 class DifferentialEvolutionAlgorithm(object):
-    """Differential Evolution Algorithm implementation."""
+    """Differential evolution algorithm.
 
-    # pylint: disable=too-many-instance-attributes
+    Date: 7. 2. 2018
+
+    Authors : Uros Mlakar
+
+    License: MIT
+
+    Reference paper: Storn, Rainer, and Kenneth Price. "Differential evolution - a simple and
+    efficient heuristic for global optimization over continuous spaces." Journal of global
+    optimization 11.4 (1997): 341-359.
+    """
+
     def __init__(self, D, NP, nFES, F, CR, benchmark):
+        """**__init__(self, D, NP, nFES, F, CR, benchmark)**.
+
+        Arguments:
+            D {integer} -- dimension of problem
+
+            NP {integer} -- population size
+
+            nFES {integer} -- number of function evaluations
+
+            F {decimal} -- scaling factor
+
+            CR {decimal} -- crossover rate
+
+            benchmark {object} -- benchmark implementation object
+
+        Raises:
+            TypeError -- Raised when given benchmark function which does not exists.
+
+        """
+
         self.benchmark = Utility().get_benchmark(benchmark)
         self.D = D  # dimension of problem
         self.Np = NP  # population size

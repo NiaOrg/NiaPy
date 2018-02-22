@@ -1,16 +1,3 @@
-"""Bat algorithm.
-
-Date: 2015
-
-Authors : Iztok Fister Jr. and Marko Burjek
-
-License: MIT
-
-Reference paper: Yang, Xin-She. "A new metaheuristic bat-inspired algorithm."
-Nature inspired cooperative strategies for optimization (NICSO 2010).
-Springer, Berlin, Heidelberg, 2010. 65-74.
-"""
-
 import random
 from NiaPy.benchmarks.utility import Utility
 
@@ -18,21 +5,37 @@ __all__ = ['BatAlgorithm']
 
 
 class BatAlgorithm(object):
-    """Bat Algorithm implementation."""
+    """Bat algorithm.
 
-    # pylint: disable=too-many-instance-attributes
+    Date: 2015
+
+    Authors : Iztok Fister Jr. and Marko Burjek
+
+    License: MIT
+
+    Reference paper: Yang, Xin-She. "A new metaheuristic bat-inspired algorithm."
+    Nature inspired cooperative strategies for optimization (NICSO 2010).
+    Springer, Berlin, Heidelberg, 2010. 65-74.
+    """
 
     def __init__(self, D, NP, nFES, A, r, Qmin, Qmax, benchmark):
-        """Initialize algorithm.
+        """**__init__(self, D, NP, nFES, A, r, Qmin, Qmax, benchmark)**.
 
         Arguments:
             D {integer} -- dimension of problem
+
             NP {integer} -- population size
+
             nFES {integer} -- number of function evaluations
+
             A {decimal} -- loudness
+
             r {decimal} -- pulse rate
+
             Qmin {decimal} -- minimum frequency
+
             Qmax {decimal } -- maximum frequency
+
             benchmark {object} -- benchmark implementation object
 
         Raises:
@@ -68,7 +71,7 @@ class BatAlgorithm(object):
         self.Fun = self.benchmark.function()
 
     def best_bat(self):
-        """Find best bat."""
+        """Find the best bat."""
 
         i = 0
         j = 0
@@ -80,13 +83,13 @@ class BatAlgorithm(object):
         self.f_min = self.Fitness[j]
 
     def eval_true(self):
-        """Check evauations."""
+        """Check evaluations."""
 
         if self.evaluations == self.nFES:
             self.eval_flag = False
 
     def init_bat(self):
-        """Initialize bat."""
+        """Initialize population."""
 
         for i in range(self.D):
             self.Lb[i] = self.Lower
@@ -111,6 +114,7 @@ class BatAlgorithm(object):
         return val
 
     def move_bat(self):
+        """Move bats in search space."""
         S = [[0.0 for i in range(self.D)] for j in range(self.NP)]
 
         self.init_bat()
@@ -157,4 +161,8 @@ class BatAlgorithm(object):
         return self.f_min
 
     def run(self):
+        """Run algorithm with initialized parameters.
+
+        Return {decimal} - best
+        """
         return self.move_bat()

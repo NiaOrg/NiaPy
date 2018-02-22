@@ -16,22 +16,22 @@ class Griewank(object):
 
     Function: **Griewank function**
 
-        :math:`f(\mathbf{x}) = \sum_{i=1}^D \frac{x_i^2}{4000} - \prod_{i=1}^D cos(\frac{x_i}{\sqrt{i}}) + 1`
+        :math:`f(\mathbf{x}) = \sum_{i=1}^D \frac{x_i^2}{4000} - \prod_{i=1}^D \cos(\frac{x_i}{\sqrt{i}}) + 1`
 
         **Input domain:**
         The function can be defined on any input domain but it is usually
         evaluated on the hypercube :math:`x_i ∈ [-100, 100]`, for all :math:`i = 1, 2,..., D`.
 
-        **Global minimum:** :math:`f(x*) = 0, at x* = (0,...,0)`
+        **Global minimum:** :math:`f(x^*) = 0`, at :math:`x^* = (0,...,0)`
 
     LaTeX formats:
         Inline:
                 $f(\mathbf{x}) = \sum_{i=1}^D \frac{x_i^2}{4000} -
-                \prod_{i=1}^D cos(\frac{x_i}{\sqrt{i}}) + 1$
+                \prod_{i=1}^D \cos(\frac{x_i}{\sqrt{i}}) + 1$
 
         Equation:
                 \begin{equation} f(\mathbf{x}) = \sum_{i=1}^D \frac{x_i^2}{4000} -
-                \prod_{i=1}^D cos(\frac{x_i}{\sqrt{i}}) + 1 \end{equation}
+                \prod_{i=1}^D \cos(\frac{x_i}{\sqrt{i}}) + 1 \end{equation}
 
         Domain:
                 $-100 \leq x_i \leq 100$
