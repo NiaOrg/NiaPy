@@ -20,7 +20,6 @@ __all__ = ['ParticleSwarmAlgorithm']
 
 class Particle(object):
     """Defines particle for population."""
-
     # pylint: disable=too-many-instance-attributes
     def __init__(self, D, LB, UB, vMin, vMax):
         self.D = D  # dimension of the problem
@@ -38,6 +37,7 @@ class Particle(object):
         self.Fitness = float('inf')
         self.generateParticle()
 
+
     def generateParticle(self):
         self.Solution = [self.LB + (self.UB - self.LB) * rnd.random()
                          for _i in range(self.D)]
@@ -47,7 +47,6 @@ class Particle(object):
         self.bestFitness = float('inf')
 
     def evaluate(self):
-
         self.Fitness = Particle.FuncEval(self.D, self.Solution)
         self.checkPersonalBest()
 
@@ -55,6 +54,7 @@ class Particle(object):
         if self.Fitness < self.bestFitness:
             self.pBestSolution = self.Solution
             self.bestFitness = self.Fitness
+            
 
     def simpleBound(self):
         for i in range(self.D):
@@ -81,7 +81,6 @@ class ParticleSwarmAlgorithm(object):
         """Constructor."""
         self.Np = Np
         self.D = D
-        self.nFES = nFES
         self.C1 = C1
         self.C2 = C2
         self.w = w
@@ -90,7 +89,9 @@ class ParticleSwarmAlgorithm(object):
         self.Lower = Lower
         self.Upper = Upper
         self.Swarm = []
-
+        self.nFES = nFES
+        self.FEs = 0
+        self.Done = False
         Particle.FuncEval = staticmethod(function)
 
         self.gBest = Particle(self.D, self.Lower, self.Upper, self.vMin, self.vMax)
@@ -104,6 +105,13 @@ class ParticleSwarmAlgorithm(object):
     def initSwarm(self):
         for _i in range(self.Np):
             self.Swarm.append(Particle(self.D, self.Lower, self.Upper, self.vMin, self.vMax))
+
+    def tryEval(self,p):
+        if self.FEs <= self.nFES:
+            p.evaluate()
+            self.FEs+=1
+        else:
+            self.Done = True
 
     def moveSwarm(self, Swarm):
         MovedSwarm = []
@@ -119,8 +127,7 @@ class ParticleSwarmAlgorithm(object):
             p.Solution = ([a + b for a, b in zip(p.Solution, p.Velocity)])
 
             p.simpleBound()
-
-            p.evaluate()
+            self.tryEval(p)
             if p.Fitness < self.gBest.Fitness:
                 self.gBest = copy.deepcopy(p)
 
@@ -130,9 +137,9 @@ class ParticleSwarmAlgorithm(object):
     def run(self):
         self.initSwarm()
         self.evalSwarm()
-        FEs = self.Np
-        while FEs <= self.nFES:
+        self.FEs += self.Np
+        while not self.Done:
             MovedSwarm = self.moveSwarm(self.Swarm)
             self.Swarm = MovedSwarm
-            FEs += self.Np
+
         return self.gBest.Fitness

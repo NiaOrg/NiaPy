@@ -66,6 +66,10 @@ class ArtificialBeeColonyAlgorithm(object):
         self.nFES = nFES
         self.Lower = self.benchmark.Lower
         self.Upper = self.benchmark.Upper
+
+        self.FEs = 0
+        self.Done = False
+
         SolutionABC.FuncEval = staticmethod(self.benchmark.function())
         self.Best = SolutionABC(self.D, self.Lower, self.Upper)
 
@@ -87,10 +91,17 @@ class ArtificialBeeColonyAlgorithm(object):
         if Solution.Fitness <= self.Best.Fitness:
             self.Best = copy.deepcopy(Solution)
 
+    def tryEval(self,b):
+        if self.FEs <= self.nFES:
+            b.evaluate()
+            self.FEs+=1
+        else:
+            self.Done = True
+
     def run(self):
         self.init()
-        FEs = self.FoodNumber
-        while FEs < self.nFES:
+        self.FEs = self.FoodNumber
+        while not self.Done:
             self.Best.toString()
             for i in range(self.FoodNumber):
                 newSolution = copy.deepcopy(self.Foods[i])
@@ -101,14 +112,14 @@ class ArtificialBeeColonyAlgorithm(object):
                     (self.Foods[i].Solution[param2change] -
                      self.Foods[neighbor].Solution[param2change])
                 newSolution.repair()
-                newSolution.evaluate()
+                self.tryEval(newSolution)
                 if newSolution.Fitness < self.Foods[i].Fitness:
                     self.checkForBest(newSolution)
                     self.Foods[i] = newSolution
                     self.Trial[i] = 0
                 else:
                     self.Trial[i] += 1
-            FEs += self.FoodNumber
+
             self.CalculateProbs()
             t, s = 0, 0
             while t < self.FoodNumber:
@@ -124,8 +135,7 @@ class ArtificialBeeColonyAlgorithm(object):
                             self.Foods[s].Solution[param2change] -
                             self.Foods[neighbor].Solution[param2change])
                     Solution.repair()
-                    Solution.evaluate()
-                    FEs += 1
+                    self.tryEval(Solution)
                     if Solution.Fitness < self.Foods[s].Fitness:
                         self.checkForBest(newSolution)
                         self.Foods[s] = Solution
@@ -139,7 +149,6 @@ class ArtificialBeeColonyAlgorithm(object):
             mi = self.Trial.index(max(self.Trial))
             if self.Trial[mi] >= self.Limit:
                 self.Foods[mi] = SolutionABC(self.D, self.Lower, self.Upper)
-                self.Foods[mi].evaluate()
-                FEs += 1
+                self.tryEval(self.Foods[mi])
                 self.Trial[mi] = 0
         return self.Best.Fitness

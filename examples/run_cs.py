@@ -5,7 +5,7 @@ sys.path.append('../')
 # End of fix
 
 import random
-from NiaPy.algorithms.modified import SelfAdaptiveDifferentialEvolutionAlgorithm
+from NiaPy.algorithms.basic import CuckooSearchAlgorithm
 
 
 def Fun(D, sol):
@@ -16,8 +16,7 @@ def Fun(D, sol):
 
 
 for i in range(10):
-    Algorithm = SelfAdaptiveDifferentialEvolutionAlgorithm(10, 40, 10000,
-                             0.0, 2.0, Fun)
+    Algorithm = CuckooSearchAlgorithm(40,40, 10000, 0.25,0.01,-4, 4, Fun)
     Best = Algorithm.run()
 
     print(Best)

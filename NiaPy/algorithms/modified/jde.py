@@ -50,18 +50,18 @@ class SolutionjDE(object):
 
 class SelfAdaptiveDifferentialEvolutionAlgorithm(object):
     # pylint: disable=too-many-instance-attributes
-    def __init__(self, D, NP, nFES, F, CR, Lower, Upper, function):
+    def __init__(self, D, NP, nFES, Lower, Upper, function):
         # TODO: check for F and CR parameters!
         self.D = D  # dimension of problem
         self.Np = NP  # population size
         self.nFES = nFES  # number of function evaluations
-        self.F = F  # scaling factor
-        self.CR = CR  # crossover rate
         self.Lower = Lower  # lower bound
         self.Upper = Upper  # upper bound
 
         SolutionjDE.FuncEval = staticmethod(function)
         self.Population = []
+        self.FEs = 0
+        self.Done = False
         self.bestSolution = SolutionjDE(self.D, Lower, Upper)
         self.Tao = None  # EDITED: check please
 
@@ -74,6 +74,13 @@ class SelfAdaptiveDifferentialEvolutionAlgorithm(object):
     def initPopulation(self):
         for _i in range(self.Np):
             self.Population.append(SolutionjDE(self.D, self.Lower, self.Upper))
+
+    def tryEval(self,v):
+        if self.FEs <= self.nFES:
+            v.evaluate()
+            self.FEs+=1
+        else:
+            self.Done = True
 
     def generationStep(self, Population):
         newPopulation = []
@@ -96,13 +103,13 @@ class SelfAdaptiveDifferentialEvolutionAlgorithm(object):
             jrand = int(rnd.random() * self.Np)
 
             for j in range(self.D):
-                if rnd.random() < self.CR or j == jrand:
-                    newSolution.Solution[j] = Population[r[0]].Solution[j] + self.F * (
+                if rnd.random() < newSolution.CR or j == jrand:
+                    newSolution.Solution[j] = Population[r[0]].Solution[j] + newSolution.F * (
                         Population[r[1]].Solution[j] - Population[r[2]].Solution[j])
                 else:
                     newSolution.Solution[j] = Population[i].Solution[j]
             newSolution.repair()
-            newSolution.evaluate()
+            self.tryEval(newSolution)
 
             if newSolution.Fitness < self.bestSolution.Fitness:
                 self.bestSolution = copy.deepcopy(newSolution)
@@ -115,8 +122,7 @@ class SelfAdaptiveDifferentialEvolutionAlgorithm(object):
     def run(self):
         self.initPopulation()
         self.evalPopulation()
-        FEs = self.Np
-        while FEs <= self.nFES:
+        self.FEs = self.Np
+        while not self.Done:
             self.Population = self.generationStep(self.Population)
-            FEs += self.Np
         return self.bestSolution.Fitness
