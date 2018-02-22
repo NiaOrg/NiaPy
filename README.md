@@ -30,12 +30,16 @@ The micro framework features following algorithms:
 - basic:
   - Artificial bee colony algorithm ([see example](examples/run_abc.py))
   - Bat algorithm ([see example](examples/run_ba.py))
-  - Firefly algorithm ([see example](examples/run_fa.py))
+  - Cuckoo Search algorithm ([see example](examples/run_cs.py))
   - Differential evolution algorithm ([see example](examples/run_de.py))
+  - Firefly algorithm ([see example](examples/run_fa.py))
   - Flower pollination algorithm ([see example](examples/run_fpa.py))
+  - Genetic algorithm ([see example](examples/run_ga.py))
   - Grey wolf optimizer ([see example](examples/run_gwo.py))
+  - Particle swarm optimization ([see example](examples/run_pso.py))
 - modified:
   - Hybrid bat algorithm ([see example](examples/run_hba.py))
+  - Self-adaptive differential evolution algorithm ([see example](examples7run_jde.py))
 
 The following benchmark functions are included in NiaPy:
 
