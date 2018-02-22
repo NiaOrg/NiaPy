@@ -1,3 +1,4 @@
+# encoding=utf8
 import random as rnd
 import copy
 import numpy as npx
@@ -39,7 +40,7 @@ class Cuckoo(object):
 
 
 class CuckooSearchAlgorithm(object):
-    """Cuckoo Search algorithm.
+    r"""Cuckoo Search algorithm.
 
     Date: 12. 2. 2018
 
@@ -47,8 +48,8 @@ class CuckooSearchAlgorithm(object):
 
     License: MIT
 
-    Reference paper: Yang, Xin-She, and Suash Deb. "Cuckoo search via Lévy flights." 
-    Nature & Biologically Inspired Computing, 2009. NaBIC 2009. 
+    Reference paper: Yang, Xin-She, and Suash Deb. "Cuckoo search via Lévy flights."
+    Nature & Biologically Inspired Computing, 2009. NaBIC 2009.
 
     TODO: Tests and validation!
     """
