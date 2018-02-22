@@ -49,7 +49,6 @@ class SelfAdaptiveDifferentialEvolutionAlgorithm(object):
     TODO
     """
 
-    # pylint: disable=too-many-instance-attributes
     def __init__(self, D, NP, nFES, F, CR, Lower, Upper, function):
         # TODO: check for F and CR parameters!
         self.D = D  # dimension of problem

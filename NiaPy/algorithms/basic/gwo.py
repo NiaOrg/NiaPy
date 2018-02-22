@@ -18,7 +18,6 @@ class GreyWolfOptimizer(object):
     & Grey Wold Optimizer (GWO) source code version 1.0 (MATLAB) from MathWorks
     """
 
-    # pylint: disable=too-many-instance-attributes
     def __init__(self, D, NP, nFES, benchmark):
         """**__init__(self, D, NP, nFES, benchmark)**.
 

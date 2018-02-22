@@ -52,7 +52,6 @@ class ArtificialBeeColonyAlgorithm(object):
     TODO: EVALUATIONS!
     """
 
-    # pylint: disable=too-many-instance-attributes
     def __init__(self, D, NP, nFES, benchmark):
         """**__init__(self, D, NP, nFES, benchmark)**.
 

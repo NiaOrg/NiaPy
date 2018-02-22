@@ -75,7 +75,6 @@ class ParticleSwarmAlgorithm(object):
     EDITED: TODO: Tests and validation! Bug in code.
     """
 
-    # pylint: disable=too-many-instance-attributes
     def __init__(self, Np, D, nFES, C1, C2, w, vMin, vMax, Lower, Upper, function):
         """Constructor."""
         self.Np = Np

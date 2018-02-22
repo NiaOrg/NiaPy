@@ -46,7 +46,6 @@ class DifferentialEvolutionAlgorithm(object):
     optimization 11.4 (1997): 341-359.
     """
 
-    # pylint: disable=too-many-instance-attributes
     def __init__(self, D, NP, nFES, F, CR, benchmark):
         """**__init__(self, D, NP, nFES, F, CR, benchmark)**.
 
