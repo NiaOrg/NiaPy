@@ -39,7 +39,7 @@ The micro framework features following algorithms:
   - Particle swarm optimization ([see example](examples/run_pso.py))
 - modified:
   - Hybrid bat algorithm ([see example](examples/run_hba.py))
-  - Self-adaptive differential evolution algorithm ([see example](examples7run_jde.py))
+  - Self-adaptive differential evolution algorithm ([see example](examples/run_jde.py))
 
 The following benchmark functions are included in NiaPy:
 
