@@ -19,7 +19,7 @@ class MyBenchmark(object):
         return evaluate
 
 
-class BATestCase(TestCase):
+class CSTestCase(TestCase):
 
     def setUp(self):
         self.cs_custom = CuckooSearchAlgorithm(
