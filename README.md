@@ -44,8 +44,9 @@ The micro framework features following algorithms:
 The following benchmark functions are included in NiaPy:
 
 - Ackley
-- Alpine1
-- Alpine2
+- Alpine
+  - Alpine1
+  - Alpine2
 - Chung Reynolds
 - Csendes
 - Griewank
@@ -59,12 +60,12 @@ The following benchmark functions are included in NiaPy:
 - Salomon
 - Schumer Steiglitz
 - Schwefel
-- Schwefel 2.21
-- Schwefel 2.22
+  - Schwefel 2.21
+  - Schwefel 2.22
 - Sphere
 - Step
-- Step2
-- Step3
+  - Step2
+  - Step3
 - Stepint
 - Styblinski-Tang
 - Sum Squares
