@@ -47,9 +47,10 @@ class CuckooSearchAlgorithm(object):
 
     License: MIT
 
-    Reference paper: .
+    Reference paper: Yang, Xin-She, and Suash Deb. "Cuckoo search via Lévy flights." 
+    Nature & Biologically Inspired Computing, 2009. NaBIC 2009. 
 
-    EDITED: TODO: Tests and validation! Bug in code.
+    TODO: Tests and validation!
     """
 
     def __init__(self, Np, D, nFES, Pa, Alpha, Lower, Upper, function):
