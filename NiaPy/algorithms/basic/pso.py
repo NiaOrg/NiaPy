@@ -6,7 +6,7 @@ __all__ = ['ParticleSwarmAlgorithm']
 
 class Particle(object):
     """Defines particle for population."""
-    # pylint: disable=too-many-instance-attributes
+
     def __init__(self, D, LB, UB, vMin, vMax):
         self.D = D  # dimension of the problem
         self.LB = LB  # lower bound
@@ -22,7 +22,6 @@ class Particle(object):
 
         self.Fitness = float('inf')
         self.generateParticle()
-
 
     def generateParticle(self):
         self.Solution = [self.LB + (self.UB - self.LB) * rnd.random()
@@ -40,7 +39,6 @@ class Particle(object):
         if self.Fitness < self.bestFitness:
             self.pBestSolution = self.Solution
             self.bestFitness = self.Fitness
-            
 
     def simpleBound(self):
         for i in range(self.D):
@@ -104,10 +102,10 @@ class ParticleSwarmAlgorithm(object):
         for _i in range(self.Np):
             self.Swarm.append(Particle(self.D, self.Lower, self.Upper, self.vMin, self.vMax))
 
-    def tryEval(self,p):
+    def tryEval(self, p):
         if self.FEs <= self.nFES:
             p.evaluate()
-            self.FEs+=1
+            self.FEs += 1
         else:
             self.Done = True
 

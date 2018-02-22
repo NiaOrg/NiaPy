@@ -1,16 +1,3 @@
-"""Cuckoo Search algorithm.
-
-Date: 12. 2. 2018
-
-Authors : Uros Mlakar
-
-License: MIT
-
-Reference paper: .
-
-EDITED: TODO: Tests and validation! Bug in code.
-"""
-
 import random as rnd
 import copy
 import numpy as npx
@@ -20,7 +7,7 @@ __all__ = ['CuckooSearchAlgorithm']
 
 class Cuckoo(object):
     """Defines cuckoo for population."""
-    # pylint: disable=too-many-instance-attributes
+
     def __init__(self, D, LB, UB):
         self.D = D  # dimension of the problem
         self.LB = LB  # lower bound
@@ -30,13 +17,12 @@ class Cuckoo(object):
         self.Fitness = float('inf')
         self.generateCuckoo()
 
-
     def generateCuckoo(self):
         self.Solution = [self.LB + (self.UB - self.LB) * rnd.random()
                          for _i in range(self.D)]
 
     def evaluate(self):
-        self.Fitness = Cuckoo.FuncEval(self.D, self.Solution)            
+        self.Fitness = Cuckoo.FuncEval(self.D, self.Solution)
 
     def simpleBound(self):
         for i in range(self.D):
@@ -53,7 +39,18 @@ class Cuckoo(object):
 
 
 class CuckooSearchAlgorithm(object):
-    # pylint: disable=too-many-instance-attributes
+    """Cuckoo Search algorithm.
+
+    Date: 12. 2. 2018
+
+    Authors : Uros Mlakar
+
+    License: MIT
+
+    Reference paper: .
+
+    EDITED: TODO: Tests and validation! Bug in code.
+    """
 
     def __init__(self, Np, D, nFES, Pa, Alpha, Lower, Upper, function):
         self.Np = Np
@@ -81,20 +78,19 @@ class CuckooSearchAlgorithm(object):
         for _i in range(self.Np):
             self.Nests.append(Cuckoo(self.D, self.Lower, self.Upper))
 
-    def levyFlight(self,c):
-        
+    def levyFlight(self, c):
         sigma = 0.6966
-        u = npx.random.randn(1,self.D)*sigma
-        v = npx.random.randn(1,self.D)
-        step = u/(abs(v)**(1/self.Beta))
-        stepsize = self.Alpha*step*(npx.array(c.Solution)-npx.array(self.gBest.Solution)).flatten().tolist()
-        
-        c.Solution = (npx.array(c.Solution) + npx.array(stepsize) * npx.random.randn(1,self.D)).flatten().tolist()        
-            
-    def tryEval(self,c):
+        u = npx.random.randn(1, self.D) * sigma
+        v = npx.random.randn(1, self.D)
+        step = u / (abs(v)**(1 / self.Beta))
+        stepsize = self.Alpha * step * (npx.array(c.Solution) - npx.array(self.gBest.Solution)).flatten().tolist()
+
+        c.Solution = (npx.array(c.Solution) + npx.array(stepsize) * npx.random.randn(1, self.D)).flatten().tolist()
+
+    def tryEval(self, c):
         if self.FEs <= self.nFES:
             c.evaluate()
-            self.FEs+=1
+            self.FEs += 1
         else:
             self.Done = True
 
@@ -110,14 +106,15 @@ class CuckooSearchAlgorithm(object):
 
             MovedNests.append(c)
         return MovedNests
-    
-    def resetNests(self,MovedNests):
+
+    def resetNests(self, MovedNests):
         for _i in range(self.Np):
             if rnd.random() < self.Pa:
-                m = rnd.randint(0,self.Np-1)
-                n = rnd.randint(0,self.Np-1)
+                m = rnd.randint(0, self.Np - 1)
+                n = rnd.randint(0, self.Np - 1)
 
-                newSolution = npx.array(MovedNests[_i].Solution) + (rnd.random() * (npx.array(MovedNests[m].Solution)-npx.array(MovedNests[n].Solution))).flatten().tolist()
+                newSolution = npx.array(MovedNests[_i].Solution) + (
+                    rnd.random() * (npx.array(MovedNests[m].Solution) - npx.array(MovedNests[n].Solution))).flatten().tolist()
                 MovedNests[_i].Solution = newSolution
                 MovedNests[_i].simpleBound()
                 self.tryEval(MovedNests[_i])

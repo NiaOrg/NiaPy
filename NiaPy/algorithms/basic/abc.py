@@ -105,10 +105,10 @@ class ArtificialBeeColonyAlgorithm(object):
         if Solution.Fitness <= self.Best.Fitness:
             self.Best = copy.deepcopy(Solution)
 
-    def tryEval(self,b):
+    def tryEval(self, b):
         if self.FEs <= self.nFES:
             b.evaluate()
-            self.FEs+=1
+            self.FEs += 1
         else:
             self.Done = True
 
