@@ -10,7 +10,7 @@
 ## About
 Nature-inspired algorithms are a very popular tool for solving optimization problems. Since the beginning of their era, numerous variants of [nature-inspired algorithms were developed](https://arxiv.org/abs/1307.4186). To prove their versatility, those were tested in various domains on various applications, especially when they are hybridized, modified or adapted. However, implementation of nature-inspired algorithms is sometimes difficult, complex and tedious task. In order to break this wall, NiaPy is intended for simple and quick use, without spending a time for implementing algorithms from scratch.
 
-<p style="text-align:center;">![NiaPy](.github/imgs/NiaPyLogo.png "NiaPyLogo")</p>
+<p align="center"><img src=".github/imgs/NiaPyLogo.png" alt="NiaPy" title="NiaPy"/></p>
 
 ## Mission
 Our mission is to build a collection of nature-inspired algorithms and create a simple interface for managing the optimization process along with statistical evaluation. NiaPy will offer:
