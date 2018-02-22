@@ -10,7 +10,6 @@ from . import Rastrigin, Rosenbrock, Griewank, \
 __all__ = ['Utility']
 
 
-# pylint: disable=too-many-return-statements
 class Utility(object):
 
     def __init__(self):
@@ -43,7 +42,6 @@ class Utility(object):
             'whitley': Whitley
         }
 
-    # pylint: disable=inconsistent-return-statements,too-many-statements
     def get_benchmark(self, benchmark):
         if not isinstance(benchmark, ''.__class__):
             return benchmark

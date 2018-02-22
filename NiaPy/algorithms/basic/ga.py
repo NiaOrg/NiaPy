@@ -49,7 +49,6 @@ class GeneticAlgorithm(object):
 
     """
 
-    # pylint: disable=too-many-instance-attributes
     def __init__(self, D, NP, nFES, Ts, Mr, Lower, Upper, function):
         self.NP = NP
         self.D = D

@@ -18,7 +18,6 @@ class BatAlgorithm(object):
     Springer, Berlin, Heidelberg, 2010. 65-74.
     """
 
-    # pylint: disable=too-many-instance-attributes
     def __init__(self, D, NP, nFES, A, r, Qmin, Qmax, benchmark):
         """**__init__(self, D, NP, nFES, A, r, Qmin, Qmax, benchmark)**.
 

@@ -30,7 +30,6 @@ class HybridBatAlgorithm(object):
     "A Hybrid Bat Algorithm". Elektrotehniski vestnik, 2013. 1-7.
     """
 
-    # pylint: disable=too-many-instance-attributes
     def __init__(self, D, NP, nFES, A, r, F, CR, Qmin, Qmax, benchmark):
         """**__init__(self, D, NP, nFES, A, r, Qmin, Qmax, benchmark)**.
 

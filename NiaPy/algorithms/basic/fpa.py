@@ -23,7 +23,6 @@ class FlowerPollinationAlgorithm(object):
     https://www.mathworks.com/matlabcentral/fileexchange/45112-flower-pollination-algorithm?requestedDomain=true
     """
 
-    # pylint: disable=too-many-instance-attributes
     def __init__(self, D, NP, nFES, p, benchmark):
         """**__init__(self, D, NP, nFES, p, benchmark)**.
 

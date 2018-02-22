@@ -17,7 +17,6 @@ class FireflyAlgorithm(object):
     A comprehensive review of firefly algorithms. Swarm and Evolutionary Computation, 13, 34-46.
     """
 
-    # pylint: disable=too-many-instance-attributes
     def __init__(self, D, NP, nFES, alpha, betamin, gamma, benchmark):
         """**__init__(self, D, NP, nFES, alpha, betamin, gamma, benchmark)**.
 
