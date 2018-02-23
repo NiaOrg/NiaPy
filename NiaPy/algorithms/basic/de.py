@@ -6,6 +6,7 @@ __all__ = ['DifferentialEvolutionAlgorithm']
 
 
 class SolutionDE(object):
+
     def __init__(self, D, LB, UB):
         self.D = D
         self.LB = LB
@@ -16,7 +17,8 @@ class SolutionDE(object):
         self.generateSolution()
 
     def generateSolution(self):
-        self.Solution = [self.LB + (self.UB - self.LB) * rnd.random() for _i in range(self.D)]
+        self.Solution = [self.LB + (self.UB - self.LB) * rnd.random()
+                         for _i in range(self.D)]
 
     def evaluate(self):
         self.Fitness = SolutionDE.FuncEval(self.D, self.Solution)
@@ -33,6 +35,7 @@ class SolutionDE(object):
 
 
 class DifferentialEvolutionAlgorithm(object):
+
     """Differential evolution algorithm.
 
     Date: 7. 2. 2018
@@ -82,7 +85,7 @@ class DifferentialEvolutionAlgorithm(object):
 
     def evalPopulation(self):
         """Evaluate population."""
-        
+
         for p in self.Population:
             p.evaluate()
             if p.Fitness < self.bestSolution.Fitness:
@@ -90,13 +93,13 @@ class DifferentialEvolutionAlgorithm(object):
 
     def initPopulation(self):
         """Initialize population."""
-        
+
         for _i in range(self.Np):
             self.Population.append(SolutionDE(self.D, self.Lower, self.Upper))
 
     def generationStep(self, Population):
         """Main step."""
-        
+
         newPopulation = []
         for i in range(self.Np):
             newSolution = SolutionDE(self.D, self.Lower, self.Upper)
@@ -108,8 +111,7 @@ class DifferentialEvolutionAlgorithm(object):
 
             for j in range(self.D):
                 if rnd.random() < self.CR or j == jrand:
-                    newSolution.Solution[j] = Population[r[0]].Solution[j] + \
-                        self.F * (Population[r[1]].Solution[j] - Population[r[2]].Solution[j])
+                    newSolution.Solution[j] = Population[r[0]].Solution[j] + self.F * (Population[r[1]].Solution[j] - Population[r[2]].Solution[j])
                 else:
                     newSolution.Solution[j] = Population[i].Solution[j]
             newSolution.repair()
