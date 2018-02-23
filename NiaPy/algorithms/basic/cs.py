@@ -59,39 +59,54 @@ class CuckooSearchAlgorithm(object):
         self.benchmark = Utility().get_benchmark(benchmark)
         self.Np = Np
         self.D = D
+        self.nFES = nFES
         self.Pa = Pa
+        self.Alpha = Alpha
         self.Lower = self.benchmark.Lower
         self.Upper = self.benchmark.Upper
         self.Nests = []
-        self.nFES = nFES
         self.FEs = 0
         self.Done = False
-        self.Alpha = Alpha
         self.Beta = 1.5
         Cuckoo.FuncEval = staticmethod(self.benchmark.function())
 
         self.gBest = Cuckoo(self.D, self.Lower, self.Upper)
 
     def evalNests(self):
+        """Evaluate nests."""
+
         for c in self.Nests:
             c.evaluate()
             if c.Fitness < self.gBest.Fitness:
                 self.gBest = copy.deepcopy(c)
 
     def initNests(self):
+        """Initialize nests."""
+
         for _i in range(self.Np):
             self.Nests.append(Cuckoo(self.D, self.Lower, self.Upper))
 
     def levyFlight(self, c):
+        """Levy flights."""
+
         sigma = 0.6966
         u = npx.random.randn(1, self.D) * sigma
         v = npx.random.randn(1, self.D)
         step = u / (abs(v)**(1 / self.Beta))
-        stepsize = self.Alpha * step * (npx.array(c.Solution) - npx.array(self.gBest.Solution)).flatten().tolist()
+        stepsize = self.Alpha * step * \
+            (npx.array(c.Solution) - npx.array(self.gBest.Solution)).flatten().tolist()
 
-        c.Solution = (npx.array(c.Solution) + npx.array(stepsize) * npx.random.randn(1, self.D)).flatten().tolist()
+        c.Solution = (
+            npx.array(
+                c.Solution) +
+            npx.array(stepsize) *
+            npx.random.randn(
+                1,
+                self.D)).flatten().tolist()
 
     def tryEval(self, c):
+        """Check evaluations."""
+
         if self.FEs <= self.nFES:
             c.evaluate()
             self.FEs += 1
@@ -99,6 +114,8 @@ class CuckooSearchAlgorithm(object):
             self.Done = True
 
     def moveNests(self, Nests):
+        """Move nests."""
+
         MovedNests = []
         for c in Nests:
             self.levyFlight(c)
@@ -117,8 +134,8 @@ class CuckooSearchAlgorithm(object):
                 m = rnd.randint(0, self.Np - 1)
                 n = rnd.randint(0, self.Np - 1)
 
-                newSolution = npx.array(MovedNests[_i].Solution) + (
-                    rnd.random() * (npx.array(MovedNests[m].Solution) - npx.array(MovedNests[n].Solution))).flatten().tolist()
+                newSolution = npx.array(MovedNests[_i].Solution) + (rnd.random() * (npx.array(
+                    MovedNests[m].Solution) - npx.array(MovedNests[n].Solution))).flatten().tolist()
                 MovedNests[_i].Solution = newSolution
                 MovedNests[_i].simpleBound()
                 self.tryEval(MovedNests[_i])
