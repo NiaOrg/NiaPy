@@ -5,6 +5,9 @@
 
 .. _reference:
 
+.. image:: _static/NiaPyLogo.png
+    :align: center
+
 NiaPy's documentation
 =================================
 
