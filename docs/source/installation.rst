@@ -27,7 +27,7 @@ To confirm these system dependencies are configured correctly:
 Installation of development dependencies
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-List of dependecies:
+List of NiaPy's dependecies:
 
 ==========  =======  ======== 
 Package     Version  Platform
