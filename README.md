@@ -13,13 +13,14 @@ Nature-inspired algorithms are a very popular tool for solving optimization prob
 <p align="center"><img src=".github/imgs/NiaPyLogo.png" alt="NiaPy" title="NiaPy"/></p>
 
 ## Mission
-Our mission is to build a collection of nature-inspired algorithms and create a simple interface for managing the optimization process along with statistical evaluation. NiaPy will offer:
+Our mission is to build a collection of nature-inspired algorithms and create a simple interface for managing the optimization process.
+NiaPy will offer:
 
 
 - numerous benchmark functions implementations,
 - use of various nature-inspired algorithms without struggle and effort with a simple interface,
 - easy comparison between nature-inspired algorithms and
-- statistical tests.
+- export of results in various formats (Latex, JSON, Excel).
 
 # Overview
 
