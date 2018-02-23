@@ -77,6 +77,7 @@ The following benchmark functions are included in NiaPy:
 ## Requirements
 
 * Python 3.6+ (backward compatibility with 2.7.14)
+* Pip
 
 ## Installation
 

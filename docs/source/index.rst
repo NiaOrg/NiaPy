@@ -5,6 +5,9 @@
 
 .. _reference:
 
+.. image:: _static/NiaPyLogo.png
+    :align: center
+
 NiaPy's documentation
 =================================
 
@@ -31,7 +34,7 @@ The main documentation is organized into a couple sections:
    :caption: User Documentation
 
    getting_started
-   guides
+   guides/index
    support
 
 .. _dev-docs:
