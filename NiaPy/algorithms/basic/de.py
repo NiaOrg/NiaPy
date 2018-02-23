@@ -81,16 +81,22 @@ class DifferentialEvolutionAlgorithm(object):
         self.bestSolution = SolutionDE(self.D, self.Lower, self.Upper)
 
     def evalPopulation(self):
+        """Evaluate population."""
+        
         for p in self.Population:
             p.evaluate()
             if p.Fitness < self.bestSolution.Fitness:
                 self.bestSolution = copy.deepcopy(p)
 
     def initPopulation(self):
+        """Initialize population."""
+        
         for _i in range(self.Np):
             self.Population.append(SolutionDE(self.D, self.Lower, self.Upper))
 
     def generationStep(self, Population):
+        """Main step."""
+        
         newPopulation = []
         for i in range(self.Np):
             newSolution = SolutionDE(self.D, self.Lower, self.Upper)
