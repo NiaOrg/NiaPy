@@ -25,5 +25,11 @@ class CSTestCase(TestCase):
         self.cs_custom = CuckooSearchAlgorithm(
             40, 40, 10000, 0.25, 0.01, MyBenchmark())
 
+        self.cs_sphere = CuckooSearchAlgorithm(
+            40, 40, 10000, 0.25, 0.01, 'sphere')
+
     def test_custom_works_fine(self):
         self.assertTrue(self.cs_custom.run())
+
+    def test_sphere_works_fine(self):
+        self.assertTrue(self.cs_sphere.run())
