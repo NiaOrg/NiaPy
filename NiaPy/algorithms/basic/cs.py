@@ -2,6 +2,7 @@
 import random as rnd
 import copy
 import numpy as npx
+from NiaPy.benchmarks.utility import Utility
 
 __all__ = ['CuckooSearchAlgorithm']
 
@@ -51,22 +52,23 @@ class CuckooSearchAlgorithm(object):
     Reference paper: Yang, Xin-She, and Suash Deb. "Cuckoo search via Lévy flights."
     Nature & Biologically Inspired Computing, 2009. NaBIC 2009.
 
-    TODO: Tests and validation!
+    TODO: Tests and validation!!!!
     """
 
-    def __init__(self, Np, D, nFES, Pa, Alpha, Lower, Upper, function):
+    def __init__(self, Np, D, nFES, Pa, Alpha, benchmark):
+        self.benchmark = Utility().get_benchmark(benchmark)
         self.Np = Np
         self.D = D
         self.Pa = Pa
-        self.Lower = Lower
-        self.Upper = Upper
+        self.Lower = self.benchmark.Lower
+        self.Upper = self.benchmark.Upper
         self.Nests = []
         self.nFES = nFES
         self.FEs = 0
         self.Done = False
         self.Alpha = Alpha
         self.Beta = 1.5
-        Cuckoo.FuncEval = staticmethod(function)
+        Cuckoo.FuncEval = staticmethod(self.benchmark.function())
 
         self.gBest = Cuckoo(self.D, self.Lower, self.Upper)
 

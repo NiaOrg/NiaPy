@@ -23,7 +23,7 @@ class CSTestCase(TestCase):
 
     def setUp(self):
         self.cs_custom = CuckooSearchAlgorithm(
-            40, 40, 10000, 0.25, 0.01, -5.12, 5.12, MyBenchmark())
+            40, 40, 10000, 0.25, 0.01, MyBenchmark())
 
     def test_custom_works_fine(self):
         self.assertTrue(self.cs_custom.run())
