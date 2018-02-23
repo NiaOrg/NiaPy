@@ -84,8 +84,8 @@ class ParticleSwarmAlgorithm(object):
         self.w = w
         self.vMin = vMin
         self.vMax = vMax
-        self.Lower = self.Lower
-        self.Upper = self.Upper
+        self.Lower = self.benchmark.Lower
+        self.Upper = self.benchmark.Upper
         self.Swarm = []
         self.nFES = nFES
         self.FEs = 0
