@@ -35,17 +35,20 @@ class SolutionABC(object):
 
 
 class ArtificialBeeColonyAlgorithm(object):
-    """Artificial Bee Colony algorithm.
+    r"""Implementation of Artificial Bee Colony algorithm.
 
-    Date: 12. 2. 2018
+    **Algorithm:** Artificial Bee Colony algorithm
 
-    Authors : Uros Mlakar
+    **Date:** 2018
 
-    License: MIT
+    **Author:** Uros Mlakar
 
-    Reference paper: Karaboga, D., and Bahriye B. "A powerful
-    and efficient algorithm for numerical function optimization: artificial
-    bee colony (ABC) algorithm." Journal of global optimization 39.3 (2007): 459-471.
+    **License:** MIT
+
+    **Reference paper:**
+        Karaboga, D., and Bahriye B. "A powerful and efficient algorithm for
+        numerical function optimization: artificial bee colony (ABC) algorithm."
+        Journal of global optimization 39.3 (2007): 459-471.
 
     EDITED - TODO: More tests are required! Validation!
 
