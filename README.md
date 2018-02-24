@@ -20,7 +20,7 @@ NiaPy will offer:
 - numerous benchmark functions implementations,
 - use of various nature-inspired algorithms without struggle and effort with a simple interface,
 - easy comparison between nature-inspired algorithms and
-- export of results in various formats (Latex, JSON, Excel).
+- export of results in various formats (LaTeX, JSON, Excel).
 
 # Overview
 

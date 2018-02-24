@@ -5,21 +5,23 @@ __all__ = ['BatAlgorithm']
 
 
 class BatAlgorithm(object):
-    """Bat algorithm.
+    r"""
+    **Algorithm:** Bat algorithm
 
-    Date: 2015
+    **Date:** 2015
 
-    Authors : Iztok Fister Jr. and Marko Burjek
+    **Authors:** Iztok Fister Jr. and Marko Burjek
 
-    License: MIT
+    **License:** MIT
 
-    Reference paper: Yang, Xin-She. "A new metaheuristic bat-inspired algorithm."
-    Nature inspired cooperative strategies for optimization (NICSO 2010).
-    Springer, Berlin, Heidelberg, 2010. 65-74.
+    **Reference paper:**
+        Yang, Xin-She. "A new metaheuristic bat-inspired algorithm."
+        Nature inspired cooperative strategies for optimization (NICSO 2010).
+        Springer, Berlin, Heidelberg, 2010. 65-74.
     """
 
     def __init__(self, D, NP, nFES, A, r, Qmin, Qmax, benchmark):
-        """**__init__(self, D, NP, nFES, A, r, Qmin, Qmax, benchmark)**.
+        r"""**__init__(self, D, NP, nFES, A, r, Qmin, Qmax, benchmark)**.
 
         Arguments:
             D {integer} -- dimension of problem
