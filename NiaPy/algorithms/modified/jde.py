@@ -40,7 +40,6 @@ class SolutionjDE(object):
 
 
 class SelfAdaptiveDifferentialEvolutionAlgorithm(object):
-
     r"""Implementation of Self-adaptive differential evolution algorithm.
 
     **Algorithm:** Self-adaptive differential evolution algorithm
