@@ -35,7 +35,8 @@ class SolutionABC(object):
 
 
 class ArtificialBeeColonyAlgorithm(object):
-    r"""
+    r"""Implementation of Artificial Bee Colony algorithm.
+
     **Algorithm:** Artificial Bee Colony algorithm
 
     **Date:** 2018
