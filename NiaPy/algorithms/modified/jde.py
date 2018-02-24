@@ -7,12 +7,12 @@ __all__ = ['SelfAdaptiveDifferentialEvolutionAlgorithm']
 
 class SolutionjDE(object):
 
-    def __init__(self, D, LB, UB):
+    def __init__(self, D, LB, UB, F, CR):
         self.D = D
         self.LB = LB
         self.UB = UB
-        self.F = 0.5
-        self.CR = 0.9
+        self.F = F
+        self.CR = CR
         self.Solution = []
         self.Fitness = float('inf')
         self.generateSolution()
@@ -40,6 +40,7 @@ class SolutionjDE(object):
 
 
 class SelfAdaptiveDifferentialEvolutionAlgorithm(object):
+
     r"""Implementation of Self-adaptive differential evolution algorithm.
 
     **Algorithm:** Self-adaptive differential evolution algorithm
@@ -57,12 +58,13 @@ class SelfAdaptiveDifferentialEvolutionAlgorithm(object):
         IEEE transactions on evolutionary computation, 10(6), 646-657, 2006.
     """
 
-    def __init__(self, D, NP, nFES, benchmark):
-        # TODO: check for F and CR parameters!
+    def __init__(self, D, NP, nFES, F, CR, benchmark):
         self.benchmark = Utility().get_benchmark(benchmark)
         self.D = D  # dimension of problem
         self.Np = NP  # population size
         self.nFES = nFES  # number of function evaluations
+        self.F = F  # scaling factor
+        self.CR = CR  # crossover rate
         self.Lower = self.benchmark.Lower  # lower bound
         self.Upper = self.benchmark.Upper  # upper bound
 
@@ -70,8 +72,13 @@ class SelfAdaptiveDifferentialEvolutionAlgorithm(object):
         self.Population = []
         self.FEs = 0
         self.Done = False
-        self.bestSolution = SolutionjDE(self.D, self.Lower, self.Upper)
-        self.Tao = None
+        self.bestSolution = SolutionjDE(
+            self.D,
+            self.Lower,
+            self.Upper,
+            self.F,
+            self.CR)
+        self.Tao = 0.2
 
     def evalPopulation(self):
         """Evaluate population."""
@@ -85,7 +92,12 @@ class SelfAdaptiveDifferentialEvolutionAlgorithm(object):
         """Initialize population."""
 
         for _i in range(self.Np):
-            self.Population.append(SolutionjDE(self.D, self.Lower, self.Upper))
+            self.Population.append(
+                SolutionjDE(self.D,
+                            self.Lower,
+                            self.Upper,
+                            self.F,
+                            self.CR))
 
     def tryEval(self, v):
         if self.FEs <= self.nFES:
@@ -99,7 +111,12 @@ class SelfAdaptiveDifferentialEvolutionAlgorithm(object):
 
         newPopulation = []
         for i in range(self.Np):
-            newSolution = SolutionjDE(self.D, self.Lower, self.Upper)
+            newSolution = SolutionjDE(
+                self.D,
+                self.Lower,
+                self.Upper,
+                self.F,
+                self.CR)
 
             if rnd.random() < self.Tao:
                 newSolution.F = rnd.random()
