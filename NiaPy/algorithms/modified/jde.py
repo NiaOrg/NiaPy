@@ -1,5 +1,6 @@
 import random as rnd
 import copy
+from NiaPy.benchmarks.utility import Utility
 
 __all__ = ['SelfAdaptiveDifferentialEvolutionAlgorithm']
 
@@ -52,19 +53,20 @@ class SelfAdaptiveDifferentialEvolutionAlgorithm(object):
     IEEE transactions on evolutionary computation, 10(6), 646-657, 2006.
     """
 
-    def __init__(self, D, NP, nFES, Lower, Upper, function):
+    def __init__(self, D, NP, nFES, benchmark):
         # TODO: check for F and CR parameters!
+        self.benchmark = Utility().get_benchmark(benchmark)
         self.D = D  # dimension of problem
         self.Np = NP  # population size
         self.nFES = nFES  # number of function evaluations
-        self.Lower = Lower  # lower bound
-        self.Upper = Upper  # upper bound
+        self.Lower = self.benchmark.Lower  # lower bound
+        self.Upper = self.benchmark.Upper  # upper bound
 
-        SolutionjDE.FuncEval = staticmethod(function)
+        SolutionjDE.FuncEval = staticmethod(self.benchmark.function())
         self.Population = []
         self.FEs = 0
         self.Done = False
-        self.bestSolution = SolutionjDE(self.D, Lower, Upper)
+        self.bestSolution = SolutionjDE(self.D, self.Lower, self.Upper)
         self.Tao = None
 
     def evalPopulation(self):

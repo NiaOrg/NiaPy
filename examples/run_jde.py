@@ -8,16 +8,8 @@ import random
 from NiaPy.algorithms.modified import SelfAdaptiveDifferentialEvolutionAlgorithm
 
 
-def Fun(D, sol):
-    val = 0.0
-    for i in range(D):
-        val = val + sol[i] * sol[i]
-    return val
-
-
 for i in range(10):
-    Algorithm = SelfAdaptiveDifferentialEvolutionAlgorithm(10, 40, 10000,
-                             0.0, 2.0, Fun)
+    Algorithm = SelfAdaptiveDifferentialEvolutionAlgorithm(10, 40, 10000, 'sphere')
     Best = Algorithm.run()
 
     print(Best)
