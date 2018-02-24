@@ -12,8 +12,8 @@ class Particle(object):
         self.D = D  # dimension of the problem
         self.LB = LB  # lower bound
         self.UB = UB  # upper bound
-        self.vMin = vMin  # velocity min
-        self.vMax = vMax  # velocity max
+        self.vMin = vMin  # minimal velocity
+        self.vMax = vMax  # maximal velocity
         self.Solution = []
         self.Velocity = []
 
@@ -79,6 +79,29 @@ class ParticleSwarmAlgorithm(object):
     """
 
     def __init__(self, Np, D, nFES, C1, C2, w, vMin, vMax, benchmark):
+        r"""**__init__(self, Np, D, nFES, C1, C2, w, vMin, vMax, benchmark)**.
+
+        Arguments:
+            NP {integer} -- population size
+
+            D {integer} -- dimension of problem
+
+            nFES {integer} -- number of function evaluations
+
+            C1 {decimal} -- cognitive component
+
+            C2 {decimal} -- social component
+
+            w {decimal} -- inertia weight
+
+            vMin {decimal} -- minimal velocity
+
+            vMax {decimal} -- maximal velocity
+
+            benchmark {object} -- benchmark implementation object
+
+        """
+
         self.benchmark = Utility().get_benchmark(benchmark)
         self.Np = Np  # population size; number of search agents
         self.D = D  # dimension of the problem
