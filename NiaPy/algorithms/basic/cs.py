@@ -41,16 +41,19 @@ class Cuckoo(object):
 
 
 class CuckooSearchAlgorithm(object):
-    r"""Cuckoo Search algorithm.
+    r"""Implementation of Cuckoo Search algorithm.
 
-    Date: 12. 2. 2018
+    **Algorithm:** Cuckoo Search algorithm
 
-    Authors : Uros Mlakar
+    **Date:** 2018
 
-    License: MIT
+    **Author:** Uros Mlakar
 
-    Reference paper: Yang, Xin-She, and Suash Deb. "Cuckoo search via Lévy flights."
-    Nature & Biologically Inspired Computing, 2009. NaBIC 2009.
+    **License:** MIT
+
+    **Reference paper:**
+        Yang, Xin-She, and Suash Deb. "Cuckoo search via Lévy flights."
+        Nature & Biologically Inspired Computing, 2009. NaBIC 2009.
 
     TODO: Tests and validation!!!!
     """
