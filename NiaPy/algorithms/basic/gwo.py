@@ -5,21 +5,24 @@ __all__ = ['GreyWolfOptimizer']
 
 
 class GreyWolfOptimizer(object):
-    """Grey wolf optimizer.
+    r"""Implementation of Grey wolf optimizer.
 
-    Date: 11.2.2018
+    **Algorithm:** Grey wolf optimizer
 
-    Author : Iztok Fister Jr.
+    **Date:** 2018
 
-    License: MIT
+    **Author:** Iztok Fister Jr.
 
-    Reference paper: Mirjalili, Seyedali, Seyed Mohammad Mirjalili, and Andrew Lewis.
-    "Grey wolf optimizer." Advances in engineering software 69 (2014): 46-61.
-    & Grey Wold Optimizer (GWO) source code version 1.0 (MATLAB) from MathWorks
+    **License:** MIT
+
+    **Reference paper:**
+        Mirjalili, Seyedali, Seyed Mohammad Mirjalili, and Andrew Lewis.
+        "Grey wolf optimizer." Advances in engineering software 69 (2014): 46-61.
+        & Grey Wold Optimizer (GWO) source code version 1.0 (MATLAB) from MathWorks
     """
 
     def __init__(self, D, NP, nFES, benchmark):
-        """**__init__(self, D, NP, nFES, benchmark)**.
+        r"""**__init__(self, D, NP, nFES, benchmark)**.
 
         Arguments:
             D {integer} -- dimension of problem
