@@ -39,17 +39,21 @@ class SolutionjDE(object):
 
 
 class SelfAdaptiveDifferentialEvolutionAlgorithm(object):
-    """Self-adaptive differential evolution algorithm.
+    r"""Implementation of Self-adaptive differential evolution algorithm.
 
-    Date: 7. 2. 2018
+    **Algorithm:** Self-adaptive differential evolution algorithm
 
-    Authors : Uros Mlakar
+    **Date:** 2018
 
-    License: MIT
+    **Author:** Uros Mlakar
 
-    Reference paper: Brest, J., Greiner, S., Boskovic, B., Mernik, M., Zumer, V. Self-adapting control
-    parameters in differential evolution: A comparative study on numerical benchmark problems.
-    IEEE transactions on evolutionary computation, 10(6), 646-657, 2006.
+    **License:** MIT
+
+    **Reference paper:**
+        Brest, J., Greiner, S., Boskovic, B., Mernik, M., Zumer, V.
+        Self-adapting control parameters in differential evolution:
+        A comparative study on numerical benchmark problems.
+        IEEE transactions on evolutionary computation, 10(6), 646-657, 2006.
     """
 
     def __init__(self, D, NP, nFES, Lower, Upper, function):

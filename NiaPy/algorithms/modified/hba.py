@@ -1,16 +1,3 @@
-"""Hybrid bat algorithm.
-
-Date: 2018
-
-Authors : Grega Vrbancic
-
-License: MIT
-
-Reference paper: Fister Jr., Iztok and Fister, Dusan and Yang, Xin-She.
-"A Hybrid Bat Algorithm". Elektrotehniski vestnik, 2013. 1-7.
-"""
-
-
 import random
 from NiaPy.benchmarks.utility import Utility
 
@@ -18,20 +5,23 @@ __all__ = ['HybridBatAlgorithm']
 
 
 class HybridBatAlgorithm(object):
-    """Hybrid bat algorithm.
+    r"""Implementation of Hybrid bat algorithm.
 
-    Date: 2018
+    **Algorithm:** Hybrid bat algorithm
 
-    Authors : Grega Vrbancic
+    **Date:** 2018
 
-    License: MIT
+    **Author:** Grega Vrbancic
 
-    Reference paper: Fister Jr., Iztok and Fister, Dusan and Yang, Xin-She.
-    "A Hybrid Bat Algorithm". Elektrotehniski vestnik, 2013. 1-7.
+    **License:** MIT
+
+    **Reference paper:**
+        Fister Jr., Iztok and Fister, Dusan and Yang, Xin-She.
+        "A Hybrid Bat Algorithm". Elektrotehniski vestnik, 2013. 1-7.
     """
 
     def __init__(self, D, NP, nFES, A, r, F, CR, Qmin, Qmax, benchmark):
-        """**__init__(self, D, NP, nFES, A, r, Qmin, Qmax, benchmark)**.
+        r"""**__init__(self, D, NP, nFES, A, r, Qmin, Qmax, benchmark)**.
 
         Arguments:
             D {integer} -- dimension of problem
