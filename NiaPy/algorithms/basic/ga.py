@@ -1,5 +1,6 @@
 import random as rnd
 import copy
+from NiaPy.benchmarks.utility import Utility
 
 __all__ = ['GeneticAlgorithm']
 
@@ -52,18 +53,19 @@ class GeneticAlgorithm(object):
     TODO:  - BUG is somewhere in code
     """
 
-    def __init__(self, D, NP, nFES, Ts, Mr, Lower, Upper, function):
+    def __init__(self, D, NP, nFES, Ts, Mr, benchmark):
+        self.benchmark = Utility().get_benchmark(benchmark)
         self.NP = NP
         self.D = D
         self.Ts = Ts
         self.Mr = Mr
-        self.Lower = Lower
-        self.Upper = Upper
+        self.Lower = self.benchmark.Lower
+        self.Upper = self.benchmark.Upper
         self.Population = []
         self.nFES = nFES
-        Chromosome.FuncEval = staticmethod(function)
+        Chromosome.FuncEval = staticmethod(self.benchmark.function())
 
-        self.Best = Chromosome(self.D, Lower, Upper)
+        self.Best = Chromosome(self.D, self.Lower, self.Upper)
 
     def checkForBest(self, pChromosome):
         if pChromosome.Fitness <= self.Best.Fitness:
