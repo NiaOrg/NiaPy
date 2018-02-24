@@ -57,13 +57,14 @@ class SelfAdaptiveDifferentialEvolutionAlgorithm(object):
         IEEE transactions on evolutionary computation, 10(6), 646-657, 2006.
     """
 
-    def __init__(self, D, NP, nFES, F, CR, benchmark):
+    def __init__(self, D, NP, nFES, F, CR, Tao, benchmark):
         self.benchmark = Utility().get_benchmark(benchmark)
         self.D = D  # dimension of problem
         self.Np = NP  # population size
         self.nFES = nFES  # number of function evaluations
         self.F = F  # scaling factor
         self.CR = CR  # crossover rate
+        self.Tao = Tao
         self.Lower = self.benchmark.Lower  # lower bound
         self.Upper = self.benchmark.Upper  # upper bound
 
@@ -77,7 +78,6 @@ class SelfAdaptiveDifferentialEvolutionAlgorithm(object):
             self.Upper,
             self.F,
             self.CR)
-        self.Tao = 0.2
 
     def evalPopulation(self):
         """Evaluate population."""
