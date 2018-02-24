@@ -60,33 +60,37 @@ class Particle(object):
 
 
 class ParticleSwarmAlgorithm(object):
-    """Particle Swarm Optimization algorithm.
+    r"""Implementation of Particle Swarm Optimization algorithm.
 
-    Date: 12. 2. 2018
+    **Algorithm:** Particle Swarm Optimization algorithm
 
-    Authors : Uros Mlakar
+    **Date:** 2018
 
-    License: MIT
+    **Author:** Uros Mlakar
 
-    Reference paper: Kennedy, J. and Eberhart, R. "Particle Swarm Optimization".
-    Proceedings of IEEE International Conference on Neural Networks. IV. pp. 1942--1948, 1995.
+    **License:** MIT
+
+    **Reference paper:**
+        Kennedy, J. and Eberhart, R. "Particle Swarm Optimization".
+        Proceedings of IEEE International Conference on Neural Networks.
+        IV. pp. 1942--1948, 1995.
 
     EDITED: TODO: Tests and validation! Bug in code.
     """
 
     def __init__(self, Np, D, nFES, C1, C2, w, vMin, vMax, benchmark):
         self.benchmark = Utility().get_benchmark(benchmark)
-        self.Np = Np
-        self.D = D
-        self.C1 = C1
-        self.C2 = C2
-        self.w = w
-        self.vMin = vMin
-        self.vMax = vMax
-        self.Lower = self.benchmark.Lower
-        self.Upper = self.benchmark.Upper
+        self.Np = Np  # population size; number of search agents
+        self.D = D  # dimension of the problem
+        self.C1 = C1  # cognitive component
+        self.C2 = C2  # social component
+        self.w = w  # inertia weight
+        self.vMin = vMin  # minimal velocity
+        self.vMax = vMax  # maximal velocity
+        self.Lower = self.benchmark.Lower  # lower bound
+        self.Upper = self.benchmark.Upper  # upper bound
         self.Swarm = []
-        self.nFES = nFES
+        self.nFES = nFES  # number of function evaluations
         self.FEs = 0
         self.Done = False
         Particle.FuncEval = staticmethod(self.benchmark.function())

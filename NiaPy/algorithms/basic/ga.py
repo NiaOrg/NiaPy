@@ -37,16 +37,19 @@ class Chromosome(object):
 
 
 class GeneticAlgorithm(object):
-    """Genetic algorithm - BUG is somewhere in code.
+    r"""Implementation of Genetic algorithm.
 
-    Date: 12. 2. 2018
+    **Algorithm:** Genetic algorithm
 
-    Authors : Uros Mlakar
+    **Date:** 2018
 
-    License: MIT
+    **Author:** Uros Mlakar
 
-    Reference paper: TODO.
+    **License:** MIT
 
+    **Reference paper:** TODO.
+
+    TODO:  - BUG is somewhere in code
     """
 
     def __init__(self, D, NP, nFES, Ts, Mr, Lower, Upper, function):
