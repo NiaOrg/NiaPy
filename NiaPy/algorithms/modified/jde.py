@@ -39,7 +39,6 @@ class SolutionjDE(object):
 
 
 class SelfAdaptiveDifferentialEvolutionAlgorithm(object):
-
     """Self-adaptive differential evolution algorithm.
 
     Date: 7. 2. 2018
@@ -90,7 +89,7 @@ class SelfAdaptiveDifferentialEvolutionAlgorithm(object):
             self.Done = True
 
     def generationStep(self, Population):
-        """Main DE/jDE step."""
+        """Implement main DE/jDE step."""
 
         newPopulation = []
         for i in range(self.Np):

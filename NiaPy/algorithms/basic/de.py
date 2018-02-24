@@ -35,7 +35,6 @@ class SolutionDE(object):
 
 
 class DifferentialEvolutionAlgorithm(object):
-
     """Differential evolution algorithm.
 
     Date: 7. 2. 2018
@@ -98,7 +97,7 @@ class DifferentialEvolutionAlgorithm(object):
             self.Population.append(SolutionDE(self.D, self.Lower, self.Upper))
 
     def generationStep(self, Population):
-        """Main step."""
+        """Implement main generation step."""
 
         newPopulation = []
         for i in range(self.Np):
