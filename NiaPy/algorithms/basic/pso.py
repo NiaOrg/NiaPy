@@ -60,7 +60,6 @@ class Particle(object):
 
 
 class ParticleSwarmAlgorithm(object):
-
     """Particle Swarm Optimization algorithm.
 
     Date: 12. 2. 2018
