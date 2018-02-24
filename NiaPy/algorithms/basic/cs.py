@@ -59,10 +59,27 @@ class CuckooSearchAlgorithm(object):
     """
 
     def __init__(self, Np, D, nFES, Pa, Alpha, benchmark):
+        r"""**__init__(self, D, NP, nFES, Pa, Alpha, benchmark)**.
+
+        Arguments:
+            D {integer} -- dimension of problem
+
+            NP {integer} -- population size
+
+            nFES {integer} -- number of function evaluations
+
+            Pa {decimal} -- probability
+
+            Alpha {decimal} -- alpha
+
+            benchmark {object} -- benchmark implementation object
+
+        """
+
         self.benchmark = Utility().get_benchmark(benchmark)
-        self.Np = Np
-        self.D = D
-        self.nFES = nFES
+        self.Np = Np  # population size
+        self.D = D  # dimension
+        self.nFES = nFES  # number of function evaluations
         self.Pa = Pa
         self.Alpha = Alpha
         self.Lower = self.benchmark.Lower
