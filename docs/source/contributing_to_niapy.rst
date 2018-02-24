@@ -7,7 +7,7 @@ Code of Conduct
 ---------------
 This project and everyone participating in it is governed by the :doc:`/code_of_conduct`. 
 By participating, you are expected to uphold this code. Please report unacceptable behavior 
-to :email:`niapy.organization@gmail.com`.
+to niapy.organization@gmail.com.
 
 How Can I Contribute?
 ---------------------

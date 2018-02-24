@@ -5,6 +5,7 @@ __all__ = ['SelfAdaptiveDifferentialEvolutionAlgorithm']
 
 
 class SolutionjDE(object):
+
     def __init__(self, D, LB, UB):
         self.D = D
         self.LB = LB
@@ -16,10 +17,14 @@ class SolutionjDE(object):
         self.generateSolution()
 
     def generateSolution(self):
+        """Generate solution."""
+
         self.Solution = [self.LB + (self.UB - self.LB) * rnd.random()
                          for _i in range(self.D)]
 
     def evaluate(self):
+        """Evaluate solution."""
+
         self.Fitness = SolutionjDE.FuncEval(self.D, self.Solution)
 
     def repair(self):
@@ -60,15 +65,19 @@ class SelfAdaptiveDifferentialEvolutionAlgorithm(object):
         self.FEs = 0
         self.Done = False
         self.bestSolution = SolutionjDE(self.D, Lower, Upper)
-        self.Tao = None  # EDITED: check please
+        self.Tao = None
 
     def evalPopulation(self):
+        """Evaluate population."""
+
         for p in self.Population:
             p.evaluate()
             if p.Fitness < self.bestSolution.Fitness:
                 self.bestSolution = copy.deepcopy(p)
 
     def initPopulation(self):
+        """Initialize population."""
+
         for _i in range(self.Np):
             self.Population.append(SolutionjDE(self.D, self.Lower, self.Upper))
 
@@ -80,6 +89,8 @@ class SelfAdaptiveDifferentialEvolutionAlgorithm(object):
             self.Done = True
 
     def generationStep(self, Population):
+        """Implement main DE/jDE step."""
+
         newPopulation = []
         for i in range(self.Np):
             newSolution = SolutionjDE(self.D, self.Lower, self.Upper)

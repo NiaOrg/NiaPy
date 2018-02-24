@@ -1,5 +1,6 @@
 import random as rnd
 import copy
+from NiaPy.benchmarks.utility import Utility
 
 __all__ = ['ParticleSwarmAlgorithm']
 
@@ -73,8 +74,8 @@ class ParticleSwarmAlgorithm(object):
     EDITED: TODO: Tests and validation! Bug in code.
     """
 
-    def __init__(self, Np, D, nFES, C1, C2, w, vMin, vMax, Lower, Upper, function):
-        """Constructor."""
+    def __init__(self, Np, D, nFES, C1, C2, w, vMin, vMax, benchmark):
+        self.benchmark = Utility().get_benchmark(benchmark)
         self.Np = Np
         self.D = D
         self.C1 = C1
@@ -82,15 +83,20 @@ class ParticleSwarmAlgorithm(object):
         self.w = w
         self.vMin = vMin
         self.vMax = vMax
-        self.Lower = Lower
-        self.Upper = Upper
+        self.Lower = self.benchmark.Lower
+        self.Upper = self.benchmark.Upper
         self.Swarm = []
         self.nFES = nFES
         self.FEs = 0
         self.Done = False
-        Particle.FuncEval = staticmethod(function)
+        Particle.FuncEval = staticmethod(self.benchmark.function())
 
-        self.gBest = Particle(self.D, self.Lower, self.Upper, self.vMin, self.vMax)
+        self.gBest = Particle(
+            self.D,
+            self.Lower,
+            self.Upper,
+            self.vMin,
+            self.vMax)
 
     def evalSwarm(self):
         for p in self.Swarm:
@@ -100,7 +106,12 @@ class ParticleSwarmAlgorithm(object):
 
     def initSwarm(self):
         for _i in range(self.Np):
-            self.Swarm.append(Particle(self.D, self.Lower, self.Upper, self.vMin, self.vMax))
+            self.Swarm.append(
+                Particle(self.D,
+                         self.Lower,
+                         self.Upper,
+                         self.vMin,
+                         self.vMax))
 
     def tryEval(self, p):
         if self.FEs <= self.nFES:

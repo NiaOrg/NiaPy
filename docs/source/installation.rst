@@ -13,7 +13,7 @@ Requirements
     - Windows: `download <http://mingw.org/download/installer>`_ [:doc:`/guides/mingw_installation`] 
     - Mac: `download <http://developer.apple.com/xcode>`_
     - Linux: `download <http://www.gnu.org/software/make>`_
-- pipenv: `docs <http://docs.pipenv.org>`_ (run ``pip install pipenv`` command) * Not available for Windows
+- pipenv: `docs <http://docs.pipenv.org>`_ (run ``pip install pipenv`` command)
 - Pandoc: `installation docs <http://johnmacfarlane.net/pandoc/installing.html>`_ * optional
 - Graphviz: `download <http://www.graphviz.org/Download.php>`_ * optional
 
