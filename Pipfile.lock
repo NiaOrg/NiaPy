@@ -1,20 +1,20 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "4e11470e100afabacad1d81fcf941c56ef04ae6f9cb7ddafa66f3d1d430fe76d"
+            "sha256": "d3e2ffbfdd2712d0c3ea07faaff27849f4a8a87a304c49748996255ff7b1de8b"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
-            "implementation_version": "3.6.3",
+            "implementation_version": "3.6.4",
             "os_name": "posix",
             "platform_machine": "x86_64",
             "platform_python_implementation": "CPython",
-            "platform_release": "4.8.0-53-generic",
-            "platform_system": "Linux",
-            "platform_version": "#56~16.04.1-Ubuntu SMP Tue May 16 01:18:56 UTC 2017",
-            "python_full_version": "3.6.3",
+            "platform_release": "17.4.0",
+            "platform_system": "Darwin",
+            "platform_version": "Darwin Kernel Version 17.4.0: Sun Dec 17 09:19:54 PST 2017; root:xnu-4570.41.2~1/RELEASE_X86_64",
+            "python_full_version": "3.6.4",
             "python_version": "3.6",
-            "sys_platform": "linux"
+            "sys_platform": "darwin"
         },
         "pipfile-spec": 6,
         "requires": {},
@@ -260,26 +260,11 @@
             ],
             "version": "==0.3.9"
         },
-        "funcsigs": {
-            "hashes": [
-                "sha256:330cc27ccbf7f1e992e69fef78261dc7c6569012cf397db8d3de0234e6c937ca",
-                "sha256:a7bb0f2cf3a3fd1ab2732cb49eba4252c2af4240442415b4abce3b87022a8f50"
-            ],
-            "markers": "python_version < '3.0'",
-            "version": "==1.0.2"
-        },
         "future": {
             "hashes": [
                 "sha256:e39ced1ab767b5936646cedba8bcce582398233d6a627067d4c6a454c90cfedb"
             ],
             "version": "==0.16.0"
-        },
-        "futures": {
-            "hashes": [
-                "sha256:c4884a65654a7c45435063e14ae85280eb1f111d94e542396717ba9828c4337f",
-                "sha256:51ecb45f0add83c806c68e4b06106f90db260585b25ef2abfcda0bd95c0132fd"
-            ],
-            "version": "==3.1.1"
         },
         "idna": {
             "hashes": [
@@ -564,10 +549,10 @@
         },
         "sphinx": {
             "hashes": [
-                "sha256:a0b16810d1d1413dec006ce2b08b5c895b2aaa7dce18d579d3ef79c03d461b22",
-                "sha256:278b7923f3f4ed2a1d1359f0ae94d89ac90ddd4189e8362f4b4d3baa2afe6b4a"
+                "sha256:41ae26acc6130ccf6ed47e5cca73742b80d55a134f0ab897c479bba8d3640b8e",
+                "sha256:da987de5fcca21a4acc7f67a86a363039e67ac3e8827161e61b91deb131c0ee8"
             ],
-            "version": "==1.7.0"
+            "version": "==1.7.1"
         },
         "sphinx-rtd-theme": {
             "hashes": [
@@ -575,13 +560,6 @@
                 "sha256:2df74b8ff6fae6965c527e97cca6c6c944886aae474b490e17f92adfbe843417"
             ],
             "version": "==0.2.4"
-        },
-        "sphinxcontrib-email": {
-            "hashes": [
-                "sha256:668620104dedc84c0c56c12f16b173e03d1a5f3db739778ce2ec3adcc531fd5e",
-                "sha256:1967333fb575549b6e1e3afeac1c73b58e1f5fffcd5eea0e38110ba13c2c372a"
-            ],
-            "version": "==0.1"
         },
         "sphinxcontrib-websupport": {
             "hashes": [
@@ -603,15 +581,6 @@
                 "sha256:caa45b7987fc96321258cd7668e3be2ff34064f5c66d2d975b641adca659c1ab"
             ],
             "version": "==1.9.1"
-        },
-        "typing": {
-            "hashes": [
-                "sha256:b2c689d54e1144bbcfd191b0832980a21c2dbcf7b5ff7a66248a60c90e951eb8",
-                "sha256:3a887b021a77b292e151afb75323dea88a7bc1b3dfa92176cff8e44c8b68bddf",
-                "sha256:d400a9344254803a2368533e4533a4200d21eb7b6b729c173bc38201a74db3f2"
-            ],
-            "markers": "python_version < '3.5'",
-            "version": "==3.6.4"
         },
         "urllib3": {
             "hashes": [
