@@ -35,21 +35,24 @@ class SolutionDE(object):
 
 
 class DifferentialEvolutionAlgorithm(object):
-    """Differential evolution algorithm.
+    r"""Implementation of Differential evolution algorithm.
 
-    Date: 7. 2. 2018
+    **Algorithm:** Differential evolution algorithm
 
-    Authors : Uros Mlakar
+    **Date:** 2018
 
-    License: MIT
+    **Author:** Uros Mlakar
 
-    Reference paper: Storn, Rainer, and Kenneth Price. "Differential evolution - a simple and
-    efficient heuristic for global optimization over continuous spaces." Journal of global
-    optimization 11.4 (1997): 341-359.
+    **License:** MIT
+
+    **Reference paper:**
+        Storn, Rainer, and Kenneth Price. "Differential evolution - a simple and
+        efficient heuristic for global optimization over continuous spaces."
+        Journal of global optimization 11.4 (1997): 341-359.
     """
 
     def __init__(self, D, NP, nFES, F, CR, benchmark):
-        """**__init__(self, D, NP, nFES, F, CR, benchmark)**.
+        r"""**__init__(self, D, NP, nFES, F, CR, benchmark)**.
 
         Arguments:
             D {integer} -- dimension of problem

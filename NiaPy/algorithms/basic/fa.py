@@ -6,19 +6,24 @@ __all__ = ['FireflyAlgorithm']
 
 
 class FireflyAlgorithm(object):
-    """Firefly algorithm.
+    r"""Implementation of Firefly algorithm.
 
-    Date: 2016
+    **Algorithm:** Firefly algorithm
 
-    Authors : Iztok Fister Jr. and Iztok Fister
-    License: MIT
+    **Date:** 2016
 
-    Reference paper: Fister, I., Fister Jr, I., Yang, X. S., & Brest, J. (2013).
-    A comprehensive review of firefly algorithms. Swarm and Evolutionary Computation, 13, 34-46.
+    **Authors:** Iztok Fister Jr. and Iztok Fister
+
+    **License:** MIT
+
+    **Reference paper:**
+        Fister, I., Fister Jr, I., Yang, X. S., & Brest, J. (2013).
+        A comprehensive review of firefly algorithms.
+        Swarm and Evolutionary Computation, 13, 34-46.
     """
 
     def __init__(self, D, NP, nFES, alpha, betamin, gamma, benchmark):
-        """**__init__(self, D, NP, nFES, alpha, betamin, gamma, benchmark)**.
+        r"""**__init__(self, D, NP, nFES, alpha, betamin, gamma, benchmark)**.
 
         Arguments:
             D {integer} -- dimension of problem

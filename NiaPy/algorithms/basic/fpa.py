@@ -7,24 +7,27 @@ __all__ = ['FlowerPollinationAlgorithm']
 
 
 class FlowerPollinationAlgorithm(object):
-    """Flower Pollination algorithm.
+    r"""Implementation of Flower Pollination algorithm.
 
-    Date: February 2018
+    **Algorithm:** Flower Pollination algorithm
 
-    Authors : Dusan Fister & Iztok Fister Jr.
+    **Date:** 2018
 
-    License: MIT
+    **Authors:** Dusan Fister & Iztok Fister Jr.
 
-    Reference paper: Yang, Xin-She. "Flower pollination algorithm for
-    global optimization." International conference on unconventional
-    computing and natural computation. Springer, Berlin, Heidelberg, 2012.
+    **License:** MIT
+
+    **Reference paper:**
+        Yang, Xin-She. "Flower pollination algorithm for global optimization."
+        International conference on unconventional computing and natural computation.
+        Springer, Berlin, Heidelberg, 2012.
 
     Implementation is based on the following MATLAB code:
     https://www.mathworks.com/matlabcentral/fileexchange/45112-flower-pollination-algorithm?requestedDomain=true
     """
 
     def __init__(self, D, NP, nFES, p, benchmark):
-        """**__init__(self, D, NP, nFES, p, benchmark)**.
+        r"""**__init__(self, D, NP, nFES, p, benchmark)**.
 
         Arguments:
             D {integer} -- dimension of problem
