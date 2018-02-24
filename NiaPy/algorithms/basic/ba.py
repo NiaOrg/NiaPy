@@ -6,7 +6,7 @@ __all__ = ['BatAlgorithm']
 
 class BatAlgorithm(object):
     r"""Implementation of Bat algorithm.
-    
+
     **Algorithm:** Bat algorithm
 
     **Date:** 2015
