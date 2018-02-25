@@ -24,6 +24,11 @@ class HBATestCase(TestCase):
 
         self.hba_custom = HybridBatAlgorithm(
             10, 40, 1000, 0.5, 0.5, 0.5, 0.9, 0.0, 2.0, MyBenchmark())
+        self.hba_griewank = HybridBatAlgorithm(
+            10, 40, 1000, 0.5, 0.5, 0.5, 0.9, 0.0, 2.0, 'griewank')
 
     def test_custom_works_fine(self):
         self.assertTrue(self.hba_custom.run())
+
+    def test_griewank_works_fine(self):
+        self.assertTrue(self.hba_griewank.run())
