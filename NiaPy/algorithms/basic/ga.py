@@ -53,7 +53,7 @@ class GeneticAlgorithm(object):
     TODO:  - BUG is somewhere in code
     """
 
-    def __init__(self, D, NP, nFES, Ts, Mr,gamma, benchmark):
+    def __init__(self, D, NP, nFES, Ts, Mr, gamma, benchmark):
 	self.benchmark = Utility().get_benchmark(benchmark)
 	self.NP = NP
 	self.D = D
