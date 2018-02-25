@@ -58,7 +58,7 @@ class GeneticAlgorithm(object):
         self.NP = NP
         self.D = D
         self.Ts = Ts
-        self.Mr = Mr
+	self.Mr = Mr
 	self.gamma = gamma
         self.Lower = self.benchmark.Lower
         self.Upper = self.benchmark.Upper
