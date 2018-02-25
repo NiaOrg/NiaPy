@@ -54,21 +54,21 @@ class GeneticAlgorithm(object):
     """
 
     def __init__(self, D, NP, nFES, Ts, Mr,gamma, benchmark):
-        self.benchmark = Utility().get_benchmark(benchmark)
-        self.NP = NP
-        self.D = D
-        self.Ts = Ts
+	self.benchmark = Utility().get_benchmark(benchmark)
+	self.NP = NP
+	self.D = D
+	self.Ts = Ts
 	self.Mr = Mr
 	self.gamma = gamma
-        self.Lower = self.benchmark.Lower
-        self.Upper = self.benchmark.Upper
-        self.Population = []
-        self.nFES = nFES
+	self.Lower = self.benchmark.Lower
+	self.Upper = self.benchmark.Upper
+	self.Population = []
+	self.nFES = nFES
 	self.FEs = 0
 	self.Done = False
-        Chromosome.FuncEval = staticmethod(self.benchmark.function())
+	Chromosome.FuncEval = staticmethod(self.benchmark.function())
 
-        self.Best = Chromosome(self.D, self.Lower, self.Upper)
+	self.Best = Chromosome(self.D, self.Lower, self.Upper)
 
     def checkForBest(self, pChromosome):
         if pChromosome.Fitness <= self.Best.Fitness:
