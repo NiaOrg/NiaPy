@@ -12,7 +12,7 @@ When package is successfully installed you are ready to write you first example.
 
 Basic example
 -------------
-In this example, let's say, we want to try out Gray Wolf Optimizer algorithm against Happy Cat benchmark function.
+In this example, let's say, we want to try out Gray Wolf Optimizer algorithm against Pintér benchmark function.
 Firstly we have to create new file, with name, for example *basic_example.py*. Then we have to import chosen 
 algorithm from NiaPy, so we can use it. Afterwards we initialize GreyWolfOptimizer class instance and run the algorithm.
 Given bellow is complete source code of basic example.
@@ -21,13 +21,13 @@ Given bellow is complete source code of basic example.
 
     from NiaPy.algorithms.basic import GreyWolfOptimizer
 
-    # we will run 10 repetitions of Grey Wolf Optimizer against Happy Cat benchmark function
+    # we will run 10 repetitions of Grey Wolf Optimizer against Pinter benchmark function
     for i in range(10):
         # first parameter takes dimension of problem
         # second parameter is population size
         # third parameter takes the number of function evaluations
         # fourth parameter is benchmark function 
-        algorithm = GreyWolfOptimizer(10, 20 , 10000, 'happyCat')
+        algorithm = GreyWolfOptimizer(10, 20 , 10000, 'pinter')
         
         # running algorithm returns best found minimum
         best = algorithm.run()
@@ -41,40 +41,40 @@ following:
 
 .. code:: bash
 
-    13.1095974106
-    12.8951270391
-    12.6417964475
-    13.1649512824
-    13.063469323
-    13.0658606621
-    13.1183215055
-    13.0705185396
-    13.1548021233
-    13.1005420808
+    5.00762243998e-61
+    2.67621982742e-57
+    1.07156289063e-65
+    8.43622715953e-61
+    1.20903733381e-57
+    6.32743651354e-62
+    8.5819291808e-59
+    8.10197009706e-59
+    2.91642600474e-66
+    5.73888425977e-54
 
 
 Customize benchmark bounds
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
-By default, Happy Cat benchmark has the bound set to -100 and 100. We can simply override those predefined
-values very easily. We will modify our basic example to run Grey Wolf Optimizer agains Happy Cat benchmark
-function with custom benchmark bounds set to -50 and 50. Given bellow is complete source code of customized 
+By default, Pintér benchmark has the bound set to -10 and 10. We can simply override those predefined
+values very easily. We will modify our basic example to run Grey Wolf Optimizer agains Pintér benchmark
+function with custom benchmark bounds set to -5 and 5. Given bellow is complete source code of customized 
 basic example.
 
 .. code:: python
 
     from NiaPy.algorithms.basic import GreyWolfOptimizer
-    from NiaPy.benchmarks import HappyCat
+    from NiaPy.benchmarks import Pinter
 
-    # initialize Happy Cat benchamrk with custom bound
-    happyCatCustom = HappyCat(-50, 50)
+    # initialize Pinter benchamrk with custom bound
+    pinterCustom = Pinter(-5, 5)
 
-    # we will run 10 repetitions of Grey Wolf Optimizer against Happy Cat benchmark function
+    # we will run 10 repetitions of Grey Wolf Optimizer against Pinter benchmark function
     for i in range(10):
         # first parameter takes dimension of problem
         # second parameter is population size
         # third parameter takes the number of function evaluations
         # fourth parameter is benchmark function 
-        algorithm = GreyWolfOptimizer(10, 20 , 10000, happyCatCustom)
+        algorithm = GreyWolfOptimizer(10, 20 , 10000, pinterCustom)
         
         # running algorithm returns best found minimum
         best = algorithm.run()
@@ -87,16 +87,16 @@ following:
 
 .. code:: bash
 
-    13.0881497505
-    13.069617262
-    13.0877362486
-    12.8001641457
-    13.2408156324
-    12.468605096
-    13.3455444885
-    13.1141313309
-    12.9026073735
-    13.0850542642
+    7.43266143347e-64
+    1.45053917474e-58
+    1.01835349035e-55
+    6.50410738064e-59
+    2.18186445002e-61
+    3.20274657669e-63
+    3.23728585089e-62
+    1.78481271215e-63
+    7.81043837076e-66
+    7.30943390302e-64
 
 Advanced example
 ---------------
