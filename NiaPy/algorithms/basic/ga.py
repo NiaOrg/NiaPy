@@ -6,7 +6,6 @@ __all__ = ['GeneticAlgorithm']
 
 
 class Chromosome(object):
-    # pylint: disable=too-many-instance-attributes
     def __init__(self, D, LB, UB):
         self.D = D
         self.LB = LB
@@ -53,16 +52,19 @@ class GeneticAlgorithm(object):
     TODO:  - BUG is somewhere in code
     """
 
-    def __init__(self, D, NP, nFES, Ts, Mr, benchmark):
+    def __init__(self, D, NP, nFES, Ts, Mr, gamma, benchmark):
         self.benchmark = Utility().get_benchmark(benchmark)
         self.NP = NP
         self.D = D
         self.Ts = Ts
         self.Mr = Mr
+        self.gamma = gamma
         self.Lower = self.benchmark.Lower
         self.Upper = self.benchmark.Upper
         self.Population = []
         self.nFES = nFES
+        self.FEs = 0
+        self.Done = False
         Chromosome.FuncEval = staticmethod(self.benchmark.function())
 
         self.Best = Chromosome(self.D, self.Lower, self.Upper)
@@ -84,8 +86,7 @@ class GeneticAlgorithm(object):
         return tPop[0], tPop[1]
 
     def CrossOver(self, parent1, parent2):
-        gamma = 0.4
-        alpha = [-gamma + (1 + 2 * gamma) * rnd.random()
+        alpha = [-self.gamma + (1 + 2 * self.gamma) * rnd.random()
                  for i in range(self.D)]
         child1 = Chromosome(self.D, self.Lower, self.Upper)
         child2 = Chromosome(self.D, self.Lower, self.Upper)
@@ -108,10 +109,17 @@ class GeneticAlgorithm(object):
             self.Population[i].evaluate()
             self.checkForBest(self.Population[i])
 
+    def tryEval(self, c):
+        if self.FEs < self.nFES:
+            self.FEs += 1
+            c.evaluate()
+        else:
+            self.Done = True
+
     def run(self):
         self.init()
-        FEs = self.NP
-        while FEs <= self.nFES:
+        self.FEs = self.NP
+        while not self.Done:
             for _k in range(self.NP / 2):
                 parent1, parent2 = self.TournamentSelection()
                 child1, child2 = self.CrossOver(parent1, parent2)
@@ -122,9 +130,8 @@ class GeneticAlgorithm(object):
                 child1.repair()
                 child2.repair()
 
-                child1.evaluate()
-                child2.evaluate()
-                FEs += 2
+                self.tryEval(child1)
+                self.tryEval(child2)
 
                 tPop = [parent1, parent2, child1, child2]
                 tPop.sort(key=lambda x: x.Fitness)
@@ -133,4 +140,4 @@ class GeneticAlgorithm(object):
 
             for i in range(self.NP):
                 self.checkForBest(self.Population[i])
-        return self.Best
+        return self.Best.Fitness
