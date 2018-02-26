@@ -182,7 +182,7 @@ build: dist
 
 .PHONY: dist
 dist: install $(DIST_FILES)
-$(DIST_FILES): $(MODULES) README.rst CHANGELOG.rst
+$(DIST_FILES): $(MODULES) README.rst
 	rm -f $(DIST_FILES)
 	pipenv run $(PYTHON) setup.py check --restructuredtext --strict --metadata
 	pipenv run $(PYTHON) setup.py sdist
@@ -231,7 +231,7 @@ clean-all: clean
 
 .PHONY: .clean-docs
 .clean-docs:
-	rm -rf *.rst docs/apidocs *.html docs/*.png site
+	rm -rf docs/apidocs *.html docs/*.png site
 
 .PHONY: .clean-build
 .clean-build:

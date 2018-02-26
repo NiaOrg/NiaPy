@@ -160,6 +160,10 @@ fits your purposes or that it is bug-free. Use it at your own risk!
 Revision History
 ================
 
+0.1.2a4
+
+-  fixes problem with build scripts
+
 0.1.2a3
 -------
 
