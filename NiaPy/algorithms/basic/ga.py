@@ -6,7 +6,6 @@ __all__ = ['GeneticAlgorithm']
 
 
 class Chromosome(object):
-    # pylint: disable=too-many-instance-attributes
     def __init__(self, D, LB, UB):
         self.D = D
         self.LB = LB
@@ -54,21 +53,21 @@ class GeneticAlgorithm(object):
     """
 
     def __init__(self, D, NP, nFES, Ts, Mr, gamma, benchmark):
-	self.benchmark = Utility().get_benchmark(benchmark)
-	self.NP = NP
-	self.D = D
-	self.Ts = Ts
-	self.Mr = Mr
-	self.gamma = gamma
-	self.Lower = self.benchmark.Lower
-	self.Upper = self.benchmark.Upper
-	self.Population = []
-	self.nFES = nFES
-	self.FEs = 0
-	self.Done = False
-	Chromosome.FuncEval = staticmethod(self.benchmark.function())
+        self.benchmark = Utility().get_benchmark(benchmark)
+        self.NP = NP
+        self.D = D
+        self.Ts = Ts
+        self.Mr = Mr
+        self.gamma = gamma
+        self.Lower = self.benchmark.Lower
+        self.Upper = self.benchmark.Upper
+        self.Population = []
+        self.nFES = nFES
+        self.FEs = 0
+        self.Done = False
+        Chromosome.FuncEval = staticmethod(self.benchmark.function())
 
-	self.Best = Chromosome(self.D, self.Lower, self.Upper)
+        self.Best = Chromosome(self.D, self.Lower, self.Upper)
 
     def checkForBest(self, pChromosome):
         if pChromosome.Fitness <= self.Best.Fitness:
@@ -110,12 +109,12 @@ class GeneticAlgorithm(object):
             self.Population[i].evaluate()
             self.checkForBest(self.Population[i])
 
-    def tryEval(self,c):
-	if self.FEs < self.nFES:
-	    self.FEs += 1
-	    c.evaluate()
-	else:
-	    self.Done = True
+    def tryEval(self, c):
+        if self.FEs < self.nFES:
+            self.FEs += 1
+            c.evaluate()
+        else:
+            self.Done = True
 
     def run(self):
         self.init()
@@ -133,7 +132,6 @@ class GeneticAlgorithm(object):
 
                 self.tryEval(child1)
                 self.tryEval(child2)
-                
 
                 tPop = [parent1, parent2, child1, child2]
                 tPop.sort(key=lambda x: x.Fitness)
