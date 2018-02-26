@@ -160,11 +160,16 @@ fits your purposes or that it is bug-free. Use it at your own risk!
 Revision History
 ================
 
-0.1.3a1
+0.1.3a2
+-------
+-  fixes PyPI project description style
 
+0.1.3a1
+-------
 -  fixes image issue in PyPI project description
 
 0.1.2a4
+-------
 -  fixes problem with build scripts
 
 0.1.2a3
