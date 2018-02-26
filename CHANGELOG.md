@@ -1,5 +1,7 @@
 # Revision History
 
+## 0.1.3a2
+-  fixes PyPI project description style
 ## 0.1.3a1
 
 -  fixes image issue in PyPI project description
