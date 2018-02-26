@@ -74,7 +74,7 @@ class GeneticAlgorithm(object):
             self.Best = copy.deepcopy(pChromosome)
 
     def TournamentSelection(self):
-        indices = range(self.NP)
+        indices = list(range(self.NP))
         rnd.shuffle(indices)
         tPop = []
         for i in range(self.Ts):
@@ -120,7 +120,7 @@ class GeneticAlgorithm(object):
         self.init()
         self.FEs = self.NP
         while not self.Done:
-            for _k in range(self.NP / 2):
+            for _k in range(int(self.NP / 2)):
                 parent1, parent2 = self.TournamentSelection()
                 child1, child2 = self.CrossOver(parent1, parent2)
 
