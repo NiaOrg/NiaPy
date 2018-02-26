@@ -35,11 +35,12 @@ def build_description():
     """Build a description for the project from documentation files."""
     try:
         readme = open("README.rst").read()
-        changelog = open("CHANGELOG.rst").read()
+        # changelog = open("CHANGELOG.rst").read()
     except IOError:
         return "<placeholder>"
     else:
-        return readme + '\n' + changelog
+        # return readme + '\n' + changelog
+        return readme
 
 
 check_python_version()

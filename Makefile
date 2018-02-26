@@ -188,8 +188,8 @@ $(DIST_FILES): $(MODULES) README.rst CHANGELOG.rst
 	pipenv run $(PYTHON) setup.py sdist
 	pipenv run $(PYTHON) setup.py bdist_wheel
 
-%.rst: %.md
-	pandoc -f markdown_github -t rst -o $@ $<
+#%.rst: %.md
+#	pandoc -f markdown_github -t rst -o $@ $<
 
 .PHONY: exe
 exe: install $(EXE_FILES)
