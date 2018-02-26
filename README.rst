@@ -21,7 +21,7 @@ quick use, without spending time for implementing algorithms from
 scratch.
 
 
-.. image:: .github/imgs/NiaPyLogo.png
+.. image:: http://c1.staticflickr.com/5/4757/26625486258_41ea6d95e0.jpg
     :align: center
 
 Mission
@@ -160,13 +160,15 @@ fits your purposes or that it is bug-free. Use it at your own risk!
 Revision History
 ================
 
-0.1.2a4
+0.1.3a1
 
+-  fixes image issue in PyPI project description
+
+0.1.2a4
 -  fixes problem with build scripts
 
 0.1.2a3
 -------
-
 -  fixes PyPI project description
 -  alpha3 version
 
