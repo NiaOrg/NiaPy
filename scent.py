@@ -64,23 +64,23 @@ def run_targets(*args):
     return True
 
 
-def call(command, title, retry):
-    """Run a command-line program and display the result."""
-    if Options.rerun_args:
-        command, title, retry = Options.rerun_args
-        Options.rerun_args = None
-        success = call(command, title, retry)
-        if not success:
-            return False
+# def call(command, title, retry):
+#     """Run a command-line program and display the result."""
+#     if Options.rerun_args:
+#         command, title, retry = Options.rerun_args
+#         Options.rerun_args = None
+#         success = call(command, title, retry)
+#         if not success:
+#             return False
 
-    print("")
-    print("$ %s" % ' '.join(command))
-    failure = subprocess.call(command)
+#     print("")
+#     print("$ %s" % ' '.join(command))
+#     failure = subprocess.call(command)
 
-    if failure and retry:
-        Options.rerun_args = command, title, retry
+#     if failure and retry:
+#         Options.rerun_args = command, title, retry
 
-    return not failure
+#     return not failure
 
 
 def show_notification(message, title):
