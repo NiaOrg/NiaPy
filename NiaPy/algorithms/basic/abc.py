@@ -50,9 +50,6 @@ class ArtificialBeeColonyAlgorithm(object):
         numerical function optimization: artificial bee colony (ABC) algorithm."
         Journal of global optimization 39.3 (2007): 459-471.
 
-    EDITED - TODO: More tests are required! Validation!
-
-    TODO: EVALUATIONS!
     """
 
     def __init__(self, D, NP, nFES, benchmark):
