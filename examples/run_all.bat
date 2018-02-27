@@ -1,1 +1,0 @@
-for %%i in (%cd%\*) do python %%i
