@@ -1,3 +1,4 @@
+# encoding=utf8
 import random
 import numpy
 from NiaPy.benchmarks.utility import Utility
