@@ -26,9 +26,23 @@ class MyBenchmark(object):
         return evaluate
 
 
-algorithms = ['DifferentialEvolutionAlgorithm',
+algorithms = ['BatAlgorithm',
+              'DifferentialEvolutionAlgorithm',
+              'FireflyAlgorithm',
+              'FlowerPollinationAlgorithm',
+              'GreyWolfOptimizer',
               'ArtificialBeeColonyAlgorithm',
-              'GreyWolfOptimizer']
-benchmarks = ['ackley', 'whitley', 'alpine2', MyBenchmark()]
+              'CuckooSearchAlgorithm',
+              'GeneticAlgorithm',
+              'ParticleSwarmAlgorithm',
+              'HybridBatAlgorithm',
+              'SelfAdaptiveDifferentialEvolutionAlgorithm']
+benchmarks = ['ackley', 'alpine1', 'alpine2', 'chungReynolds',
+              'csendes', 'griewank', 'happyCat', 'pinter',
+              'quing', 'quintic', 'rastrigin', 'ridge',
+              'rosenbrock', 'salomon', 'schumerSteiglitz', 'schwefel',
+              'schwefel221', 'schwefel222', 'sphere', 'step',
+              'step2', 'step3', 'stepint', 'styblinskiTang',
+              'sumSquares', 'whitley', MyBenchmark()]
 
-NiaPy.Runner(10, 40, 10000, 10, algorithms, benchmarks).run(export='latex', verbose=True)
+NiaPy.Runner(10, 40, 1000, 3, algorithms, benchmarks).run(export='json', verbose=True)

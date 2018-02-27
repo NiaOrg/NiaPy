@@ -60,3 +60,5 @@ Icon*
 
 # Project related
 /examples/export
+
+.python-version

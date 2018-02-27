@@ -22,12 +22,74 @@ logger.setLevel('INFO')
 
 
 class Runner(object):
-    """Initialize Runner."""
+    """Runner utility feature.
 
-    # pylint: disable=too-many-instance-attributes, too-many-locals
-    def __init__(self, D, NP, nFES, nRuns, useAlgorithms, useBenchmarks,
-                 A=0.5, r=0.5, Qmin=0.0, Qmax=2.0, F=0.5, CR=0.9, alpha=0.5,
-                 betamin=0.2, gamma=1.0, p=0.5):
+    Feature which enables running multiple algorithms with multiple benchmarks.
+    It also support exporting results in various formats (e.g. LaTeX, Excel, JSON)
+
+    """
+
+    def __init__(self, D, NP, nFES, nRuns, useAlgorithms, useBenchmarks, A=0.5, r=0.5,
+                 Qmin=0.0, Qmax=2.0, Pa=0.25, F=0.5, CR=0.9, alpha=0.5, betamin=0.2, gamma=1.0,
+                 p=0.5, Ts=4, Mr=0.05, C1=2.0, C2=2.0, w=0.7, vMin=-4, vMax=4, Tao=0.1):
+        r"""Initialize Runner.
+
+        **__init__(self, D, NP, nFES, nRuns, useAlgorithms, useBenchmarks, A=0.5, r=0.5,
+                   Qmin=0.0, Qmax=2.0, Pa=0.25, F=0.5, CR=0.9, alpha=0.5, betamin=0.2, gamma=1.0,
+                   p=0.5, Ts=4, Mr=0.05, C1=2.0, C2=2.0, w=0.7, vMin=-4, vMax=4, Tao=0.1)**
+
+        Arguments:
+            D {integer} -- dimension of problem
+
+            NP {integer} -- population size
+
+            nFES {integer} -- number of function evaluations
+
+            nRuns {integer} -- number of repetitions
+
+            useAlgorithms [] -- array of algorithms to run
+
+            useBenchmarks [] -- array of benchmarks to run
+
+            A {decimal} -- laudness
+
+            r {decimal} -- pulse rate
+
+            Qmin {decimal} -- minimum frequency
+
+            Qmax {decimal} -- maximum frequency
+
+            Pa {decimal} -- probability
+
+            F {decimal} -- scalling factor
+
+            CR {decimal} -- crossover rate
+
+            alpha {decimal} -- alpha parameter
+
+            betamin {decimal} -- betamin parameter
+
+            gamma {decimal} -- gamma parameter
+
+            p {decimal} -- probability switch
+
+            Ts {decimal}
+
+            Mr {decimal}
+
+            C1 {decimal} -- cognitive component
+
+            C2 {decimal} -- social component
+
+            w {decimal} -- inertia weight
+
+            vMin {decimal} -- minimal velocity
+
+            vMax {decimal} -- maximal velocity
+
+            Tao {decimal}
+        """
+
         self.D = D
         self.NP = NP
         self.nFES = nFES
@@ -38,12 +100,21 @@ class Runner(object):
         self.r = r
         self.Qmin = Qmin
         self.Qmax = Qmax
+        self.Pa = Pa
         self.F = F
         self.CR = CR
         self.alpha = alpha
         self.betamin = betamin
         self.gamma = gamma
         self.p = p
+        self.Ts = Ts
+        self.Mr = Mr
+        self.C1 = C1
+        self.C2 = C2
+        self.w = w
+        self.vMin = vMin
+        self.vMax = vMax
+        self.Tao = Tao
         self.results = {}
 
     def __algorithmFactory(self, name, benchmark):
@@ -66,10 +137,23 @@ class Runner(object):
             algorithm = algorithms.basic.GreyWolfOptimizer(
                 self.D, self.NP, self.nFES, bench)
         elif name == 'ArtificialBeeColonyAlgorithm':
-            algorithm = algorithms.basic.ArtificialBeeColonyAlgorithm(self.D, self.NP, self.nFES, bench)
+            algorithm = algorithms.basic.ArtificialBeeColonyAlgorithm(
+                self.D, self.NP, self.nFES, bench)
+        elif name == 'CuckooSearchAlgorithm':
+            algorithm = algorithms.basic.CuckooSearchAlgorithm(
+                self.D, self.NP, self.nFES, self.Pa, self.alpha, bench)
+        elif name == 'GeneticAlgorithm':
+            algorithm = algorithms.basic.GeneticAlgorithm(
+                self.D, self.NP, self.nFES, self.Ts, self.Mr, self.gamma, bench)
+        elif name == 'ParticleSwarmAlgorithm':
+            algorithm = algorithms.basic.ParticleSwarmAlgorithm(
+                self.D, self.NP, self.nFES, self.C1, self.C2, self.w, self.vMin, self.vMax, bench)
         elif name == 'HybridBatAlgorithm':
             algorithm = algorithms.modified.HybridBatAlgorithm(
                 self.D, self.NP, self.nFES, self.A, self.r, self.F, self.CR, self.Qmin, self.Qmax, bench)
+        elif name == 'SelfAdaptiveDifferentialEvolutionAlgorithm':
+            algorithm = algorithms.modified.SelfAdaptiveDifferentialEvolutionAlgorithm(
+                self.D, self.NP, self.nFES, self.F, self.CR, self.Tao, bench)
         else:
             raise TypeError('Passed benchmark is not defined!')
 
@@ -181,15 +265,20 @@ class Runner(object):
 
                     for benchmark in self.results[alg]:
                         if metric == 'Best':
-                            line += '   &   ' + str(np.amin(self.results[alg][benchmark]))
+                            line += '   &   ' + \
+                                str(np.amin(self.results[alg][benchmark]))
                         elif metric == 'Median':
-                            line += '   &   ' + str(np.median(self.results[alg][benchmark]))
+                            line += '   &   ' + \
+                                str(np.median(self.results[alg][benchmark]))
                         elif metric == 'Worst':
-                            line += '   &   ' + str(np.amax(self.results[alg][benchmark]))
+                            line += '   &   ' + \
+                                str(np.amax(self.results[alg][benchmark]))
                         elif metric == 'Mean':
-                            line += '   &   ' + str(np.mean(self.results[alg][benchmark]))
+                            line += '   &   ' + \
+                                str(np.mean(self.results[alg][benchmark]))
                         else:
-                            line += '   &   ' + str(np.std(self.results[alg][benchmark]))
+                            line += '   &   ' + \
+                                str(np.std(self.results[alg][benchmark]))
 
                     line += '   \\\\'
                     outFile.write(line + '\n')
@@ -202,6 +291,20 @@ class Runner(object):
         logger.info('Export to Latex completed!')
 
     def run(self, export='log', verbose=False):
+        """Execute runner.
+
+        Keyword Arguments:
+            export  {string}  -- takes export type (e.g. log, json, xlsx, latex) (default: 'log')
+            verbose {boolean} -- switch for verbose logging (default: {False})
+
+        Raises:
+            TypeError -- Raises TypeError if export type is not supported
+
+        Returns:
+            Dictionary -- Returns dictionary of results
+
+        """
+
         for alg in self.useAlgorithms:
             self.results[alg] = {}
             if verbose:
@@ -216,7 +319,8 @@ class Runner(object):
                     benchName = bench
 
                 if verbose:
-                    logger.info('Running %s algorithm on %s benchmark...', alg, benchName)
+                    logger.info(
+                        'Running %s algorithm on %s benchmark...', alg, benchName)
 
                 self.results[alg][benchName] = []
 
@@ -225,7 +329,8 @@ class Runner(object):
                     self.results[alg][benchName].append(algorithm.run())
 
             if verbose:
-                logger.info('---------------------------------------------------')
+                logger.info(
+                    '---------------------------------------------------')
 
         if export == 'log':
             self.__exportToLog()

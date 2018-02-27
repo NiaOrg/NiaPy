@@ -77,6 +77,7 @@ List of development dependecies:
 |sphinx                         | Any     | Any      |
 |sphinx-rtd-theme               | Any     | Any      |
 |sphinxcontrib-email            | Any     | Any      |
+|funcsigs                       | Any     | Any      |
 
 To confirm these system dependencies are configured correctly:
 

@@ -58,7 +58,7 @@ class CuckooSearchAlgorithm(object):
     TODO: Tests and validation!!!!
     """
 
-    def __init__(self, Np, D, nFES, Pa, Alpha, benchmark):
+    def __init__(self, D, Np, nFES, Pa, Alpha, benchmark):
         r"""**__init__(self, D, NP, nFES, Pa, Alpha, benchmark)**.
 
         Arguments:

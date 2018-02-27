@@ -2,10 +2,8 @@ environment:
   global:
     RANDOM_SEED: 0
   matrix:
-    - PYTHON_MAJOR: 2
-      PYTHON_MINOR: 7
-    - PYTHON_MAJOR: 3
-      PYTHON_MINOR: 6
+    - PYTHON: "C:\\Python27-x64"
+    - PYTHON: "C:\\Python36-x64"
 
 cache:
   - .venv -> Makefile
@@ -14,8 +12,8 @@ install:
   # Add Make and Python to the PATH
   - copy C:\MinGW\bin\mingw32-make.exe C:\MinGW\bin\make.exe
   - set PATH=%PATH%;C:\MinGW\bin
-  - set PATH=C:\Python%PYTHON_MAJOR%%PYTHON_MINOR%;%PATH%
-  - set PATH=C:\Python%PYTHON_MAJOR%%PYTHON_MINOR%\Scripts;%PATH%
+  - set PATH=%PYTHON%;%PATH%
+  - set PATH=%PYTHON%\Scripts;%PATH%
   # Install system dependencies
   - pip install pipenv
   - make doctor
