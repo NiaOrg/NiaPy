@@ -1,8 +1,8 @@
 # encoding=utf8
 import random as rnd
 import copy
-import math
 import numpy as npx
+from scipy.special import gamma as Gamma
 
 from NiaPy.benchmarks.utility import Utility
 
@@ -130,9 +130,9 @@ class CuckooSearchAlgorithm(object):
         """Move nests."""
 
         MovedNests = []
-        sigma = (math.gamma(1 + self.Beta) * math.sin(math.pi * self.Beta / 2) / (
-            math.gamma((1 + self.Beta) / 2) * self.Beta * 2**((self.Beta - 1) / 2)))**(1 / self.Beta)
-
+        sigma = (Gamma(1 + self.Beta) * npx.sin(npx.pi * self.Beta / 2) /
+                 (Gamma((1 + self.Beta) / 2) * self.Beta * 2**((self.Beta - 1) / 2)))**(1 / self.Beta)
+        
         for i in range(self.Np):
             c = Nests[i]
             u = npx.random.randn(self.D) * sigma
@@ -146,9 +146,10 @@ class CuckooSearchAlgorithm(object):
 
     def emptyNests(self, NewNests):
 
-        tempnest = npx.zeros((self.Np, self.D))
-        nest = npx.zeros((self.Np, self.D))
-        K = npx.random.uniform(0, 1, (self.Np, self.D)) > self.Pa
+
+        tNest=npx.zeros((self.Np,self.D))
+        Nest=npx.zeros((self.Np,self.D))
+        K=npx.random.uniform(0,1,(self.Np,self.D))>self.Pa
         Nests = []
 
         for i, c in enumerate(NewNests):
@@ -160,7 +161,7 @@ class CuckooSearchAlgorithm(object):
         tempnest = nest + stepsize * K
 
         for i in range(self.Np):
-            Nests[i].Solution = tempnest[i].tolist()
+            Nests[i].Solution = tNest[i].tolist()
             Nests[i].simpleBound()
         return Nests
 
