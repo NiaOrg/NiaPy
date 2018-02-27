@@ -19,8 +19,8 @@ random.seed(1234)
 
 class MyBenchmark(object):
     def __init__(self):
-        self.Lower = -11
-        self.Upper = 11
+        self.Lower = -5.12
+        self.Upper = 5.12
 
     def function(self):
         def evaluate(D, sol):

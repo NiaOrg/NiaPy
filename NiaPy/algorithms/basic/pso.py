@@ -51,9 +51,11 @@ class ParticleSwarmAlgorithm(object):
         self.D = D  # dimension of the problem
         self.C1 = C1  # cognitive component
         self.C2 = C2  # social component
-        self.w = w  # inertia weight
-        self.vMin = vMin  # minimal velocity
-        self.vMax = vMax  # maximal velocity
+        self.w = w  # initial inertia weight
+        self.wMin = weightMin 
+        self.wMax = weightMax
+        self.vMin = velocityMin  # minimal velocity
+        self.vMax = velocityMax  # maximal velocity
         self.Lower = self.benchmark.Lower  # lower bound
         self.Upper = self.benchmark.Upper  # upper bound
         self.nFES = nFES  # number of function evaluations

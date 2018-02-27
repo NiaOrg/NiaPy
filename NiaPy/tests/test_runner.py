@@ -20,14 +20,10 @@ class MyBenchmark(object):
 
 class RunnerTestCase(TestCase):
     def setUp(self):
-        self.algorithms = ['BatAlgorithm',
-                           'DifferentialEvolutionAlgorithm',
-                           'FireflyAlgorithm',
-                           'FlowerPollinationAlgorithm',
-                           'GreyWolfOptimizer',
-                           'HybridBatAlgorithm']
+        self.algorithms = ['DifferentialEvolutionAlgorithm',
+                           'GreyWolfOptimizer']
         self.benchmarks = ['griewank', MyBenchmark()]
 
     def test_runner_works_fine(self):
-        self.assertTrue(NiaPy.Runner(10, 40, 1000, 10,
+        self.assertTrue(NiaPy.Runner(10, 40, 1000, 3,
                                      self.algorithms, self.benchmarks).run())

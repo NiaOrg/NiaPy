@@ -9,7 +9,7 @@ from NiaPy.algorithms.basic import CuckooSearchAlgorithm
 
 
 for i in range(10):
-    Algorithm = CuckooSearchAlgorithm(40, 40, 10000, 0.25, 0.01, 'sphere')
+    Algorithm = CuckooSearchAlgorithm(40, 10, 10000, 0.25, 0.01, 'sphere')
     Best = Algorithm.run()
 
     print(Best)

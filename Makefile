@@ -140,12 +140,6 @@ BUILDDIR      = docs/build
 docs:
 	- rm -rf $(BUILDDIR)
 	@$(SPHINXBUILD) -M html "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
-# MKDOCS := pipenv run mkdocs
-
-# MKDOCS_INDEX := site/index.html
-
-# .PHONY: docs
-# docs: uml mkdocs ## Generate documentation
 
 .PHONY: uml
 uml: install docs/*.png
@@ -153,23 +147,6 @@ docs/*.png: $(MODULES)
 	$(PYREVERSE) $(PACKAGE) -p $(PACKAGE) -a 1 -f ALL -o png --ignore tests
 	- mv -f classes_$(PACKAGE).png docs/classes.png
 	- mv -f packages_$(PACKAGE).png docs/packages.png
-
-# .PHONY: mkdocs
-# mkdocs: install $(MKDOCS_INDEX)
-# $(MKDOCS_INDEX): mkdocs.yml docs/*.md
-# 	ln -sf `realpath README.md --relative-to=docs` docs/index.md
-#	ln -sf `realpath CHANGELOG.md --relative-to=docs/about` docs/about/changelog.md
-#	ln -sf `realpath CONTRIBUTING.md --relative-to=docs/about` docs/about/contributing.md
-#	ln -sf `realpath CODE_OF_CONDUCT.md --relative-to=docs/about` docs/about/code_of_conduct.md
-#	ln -sf `realpath LICENSE.md --relative-to=docs/about` docs/about/license.md
-#	$(MKDOCS) build --clean --strict
-
-#.PHONY: mkdocs-live
-#mkdocs-live: mkdocs
-#	eval "sleep 3; bin/open http://127.0.0.1:8000" &
-#	$(MKDOCS) serve
-
-# BUILD #######################################################################
 
 PYINSTALLER := pipenv run pyinstaller
 PYINSTALLER_MAKESPEC := pipenv run pyi-makespec
@@ -182,14 +159,11 @@ build: dist
 
 .PHONY: dist
 dist: install $(DIST_FILES)
-$(DIST_FILES): $(MODULES) README.rst CHANGELOG.rst
+$(DIST_FILES): $(MODULES) README.rst
 	rm -f $(DIST_FILES)
 	pipenv run $(PYTHON) setup.py check --restructuredtext --strict --metadata
 	pipenv run $(PYTHON) setup.py sdist
 	pipenv run $(PYTHON) setup.py bdist_wheel
-
-%.rst: %.md
-	pandoc -f markdown_github -t rst -o $@ $<
 
 .PHONY: exe
 exe: install $(EXE_FILES)
@@ -231,7 +205,7 @@ clean-all: clean
 
 .PHONY: .clean-docs
 .clean-docs:
-	rm -rf *.rst docs/apidocs *.html docs/*.png site
+	rm -rf docs/apidocs *.html docs/*.png site
 
 .PHONY: .clean-build
 .clean-build:
