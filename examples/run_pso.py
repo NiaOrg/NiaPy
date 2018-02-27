@@ -9,8 +9,9 @@ from NiaPy.algorithms.basic import ParticleSwarmAlgorithm
 
 
 for i in range(10):
-    #def __init__(self, Np, D, nFES, C1, C2, w, vMin, vMax, benchmark):
-    Algorithm = ParticleSwarmAlgorithm(40, 10, 10000, 2.0, 2.0, 0.7, -6, 6,0,0, 'sphere')
+    Algorithm = ParticleSwarmAlgorithm(
+        50, 40, 40000, 2.0, 2.0, 0.5, -5, 5, 'sphere')
+
     Best = Algorithm.run()
 
     print(Best)
