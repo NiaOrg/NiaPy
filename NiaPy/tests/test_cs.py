@@ -29,7 +29,7 @@ class CSTestCase(TestCase):
             40, 40, 10000, 0.25, 0.01, 'sphere')
 
     def test_custom_works_fine(self):
-        self.assertTrue(self.cs_custom.run())
+        self.assertTrue(self.cs_custom.run() == 0.0)
 
     def test_sphere_works_fine(self):
-        self.assertTrue(self.cs_sphere.run())
+        self.assertTrue(self.cs_sphere.run() == 0.0)

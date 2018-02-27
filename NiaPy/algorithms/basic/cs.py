@@ -132,7 +132,7 @@ class CuckooSearchAlgorithm(object):
         MovedNests = []
         sigma = (Gamma(1 + self.Beta) * npx.sin(npx.pi * self.Beta / 2) /
                  (Gamma((1 + self.Beta) / 2) * self.Beta * 2**((self.Beta - 1) / 2)))**(1 / self.Beta)
-        
+
         for i in range(self.Np):
             c = Nests[i]
             u = npx.random.randn(self.D) * sigma
@@ -145,20 +145,18 @@ class CuckooSearchAlgorithm(object):
         return MovedNests
 
     def emptyNests(self, NewNests):
-
-
-        tNest=npx.zeros((self.Np,self.D))
-        Nest=npx.zeros((self.Np,self.D))
-        K=npx.random.uniform(0,1,(self.Np,self.D))>self.Pa
+        tNest = npx.zeros((self.Np, self.D))
+        Nest = npx.zeros((self.Np, self.D))
+        # K = npx.random.uniform(0, 1, (self.Np, self.D)) > self.Pa
         Nests = []
 
         for i, c in enumerate(NewNests):
             Nests.append(Cuckoo(self.D, self.Lower, self.Upper))
             for j in range(self.D):
-                nest[i, j] = c.Solution[j]
+                Nest[i, j] = c.Solution[j]
 
-        stepsize = rnd.random() * (nest[npx.random.permutation(self.Np), :] - nest[npx.random.permutation(self.Np), :])
-        tempnest = nest + stepsize * K
+        # stepsize = rnd.random() * (Nest[npx.random.permutation(self.Np), :] - Nest[npx.random.permutation(self.Np), :])
+        # tempnest = Nest + stepsize * K
 
         for i in range(self.Np):
             Nests[i].Solution = tNest[i].tolist()
