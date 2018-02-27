@@ -78,7 +78,7 @@ class ParticleSwarmAlgorithm(object):
     EDITED: TODO: Tests and validation! Bug in code.
     """
 
-    def __init__(self, Np, D, nFES, C1, C2, w, vMin, vMax, benchmark):
+    def __init__(self, Np, D, nFES, C1, C2, w, velocityMin,velocityMax, weightMin, weightMax, benchmark):
         r"""**__init__(self, Np, D, nFES, C1, C2, w, vMin, vMax, benchmark)**.
 
         Arguments:
@@ -107,9 +107,11 @@ class ParticleSwarmAlgorithm(object):
         self.D = D  # dimension of the problem
         self.C1 = C1  # cognitive component
         self.C2 = C2  # social component
-        self.w = w  # inertia weight
-        self.vMin = vMin  # minimal velocity
-        self.vMax = vMax  # maximal velocity
+        self.w = w  # initial inertia weight
+        self.wMin = weightMin 
+        self.wMax = weightMax
+        self.vMin = velocityMin  # minimal velocity
+        self.vMax = velocityMax  # maximal velocity
         self.Lower = self.benchmark.Lower  # lower bound
         self.Upper = self.benchmark.Upper  # upper bound
         self.Swarm = []
@@ -172,8 +174,12 @@ class ParticleSwarmAlgorithm(object):
         self.initSwarm()
         self.evalSwarm()
         self.FEs += self.Np
+        NumIters = int(self.nFES / self.Np)
+        CurrentIter=0
         while not self.Done:
             MovedSwarm = self.moveSwarm(self.Swarm)
             self.Swarm = MovedSwarm
+            self.w=self.wMax-CurrentIter*((self.wMax-self.wMin)/NumIters)
+            CurrentIter += 1
 
         return self.gBest.Fitness
