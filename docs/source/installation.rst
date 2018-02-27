@@ -66,7 +66,8 @@ backports.functools-lru-cache  Any      Any
 configparser                   Any      Any
 sphinx                         Any      Any
 sphinx-rtd-theme               Any      Any
-sphinxcontrib-email            Any      Any           
+sphinxcontrib-email            Any      Any  
+funcsigs                       Any      Any         
 =============================  =======  ========
 
 Install project dependencies into a virtual environment:
