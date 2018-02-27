@@ -76,7 +76,7 @@ class CuckooSearchAlgorithm(object):
             benchmark {object} -- benchmark implementation object
 
         """
-
+        print(benchmark)
         self.benchmark = Utility().get_benchmark(benchmark)
         self.Np = Np  # population size
         self.D = D  # dimension
