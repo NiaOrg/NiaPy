@@ -22,7 +22,7 @@ logger.setLevel('INFO')
 
 
 class Runner(object):
-    """Runner utility feature.
+    r"""Runner utility feature.
 
     Feature which enables running multiple algorithms with multiple benchmarks.
     It also support exporting results in various formats (e.g. LaTeX, Excel, JSON)
@@ -34,9 +34,7 @@ class Runner(object):
                  p=0.5, Ts=4, Mr=0.05, C1=2.0, C2=2.0, w=0.7, vMin=-4, vMax=4, Tao=0.1):
         r"""Initialize Runner.
 
-        **__init__(self, D, NP, nFES, nRuns, useAlgorithms, useBenchmarks, A=0.5, r=0.5,
-                   Qmin=0.0, Qmax=2.0, Pa=0.25, F=0.5, CR=0.9, alpha=0.5, betamin=0.2, gamma=1.0,
-                   p=0.5, Ts=4, Mr=0.05, C1=2.0, C2=2.0, w=0.7, vMin=-4, vMax=4, Tao=0.1)**
+        **__init__(self, D, NP, nFES, nRuns, useAlgorithms, useBenchmarks, ...)**
 
         Arguments:
             D {integer} -- dimension of problem
@@ -88,6 +86,7 @@ class Runner(object):
             vMax {decimal} -- maximal velocity
 
             Tao {decimal}
+
         """
 
         self.D = D

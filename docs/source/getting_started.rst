@@ -99,7 +99,7 @@ following:
     7.30943390302e-64
 
 Advanced example
----------------
+----------------
 In this example we will show you how to implement your own benchamark function and use it with any of 
 implemented algorithms. First let's create new file named advanced_example.py. As in the previous examples
 we wil import algorithm we want to use from NiaPy module. 
