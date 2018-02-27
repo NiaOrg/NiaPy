@@ -2,7 +2,7 @@
 import random as rnd
 import copy
 import numpy as npx
-import math
+from scipy.special import gamma as Gamma
 from NiaPy.benchmarks.utility import Utility
 
 __all__ = ['CuckooSearchAlgorithm']
@@ -133,7 +133,8 @@ class CuckooSearchAlgorithm(object):
         """Move nests."""
 
         MovedNests = []
-        sigma=(math.gamma(1+self.Beta)*math.sin(math.pi*self.Beta/2)/(math.gamma((1+self.Beta)/2)*self.Beta*2**((self.Beta-1)/2)))**(1/self.Beta);   
+        sigma = (Gamma(1 + self.Beta) * npx.sin(npx.pi * self.Beta / 2) /
+                 (Gamma((1 + self.Beta) / 2) * self.Beta * 2**((self.Beta - 1) / 2)))**(1 / self.Beta) 
          
         
         for i in range(self.Np):
@@ -149,21 +150,21 @@ class CuckooSearchAlgorithm(object):
 
     def emptyNests(self, NewNests):
 
-        tempnest=npx.zeros((self.Np,self.D))
-        nest=npx.zeros((self.Np,self.D))
+        tNest=npx.zeros((self.Np,self.D))
+        Nest=npx.zeros((self.Np,self.D))
         K=npx.random.uniform(0,1,(self.Np,self.D))>self.Pa
         Nests = []
         
         for i,c in enumerate(NewNests):
             Nests.append(Cuckoo(self.D,self.Lower,self.Upper))
             for j in range(self.D):
-                nest[i,j] = c.Solution[j]
+                Nest[i,j] = c.Solution[j]
 
-        stepsize=rnd.random()*(nest[npx.random.permutation(self.Np),:]-nest[npx.random.permutation(self.Np),:])
-        tempnest=nest+stepsize*K
+        stepsize=rnd.random()*(Nest[npx.random.permutation(self.Np),:]-Nest[npx.random.permutation(self.Np),:])
+        tNest=Nest+stepsize*K
 
         for i in range(self.Np):
-            Nests[i].Solution = tempnest[i].tolist()
+            Nests[i].Solution = tNest[i].tolist()
             Nests[i].simpleBound()
         return Nests
         
@@ -172,9 +173,9 @@ class CuckooSearchAlgorithm(object):
         self.initNests()
         self.evalNests()
         while not self.Done:
-            MovedNests = self.performLevyFlights(self.Nests) #OK
-            self.Nests = self.findBest(MovedNests) #OK vrstica 127
-            ResetNests = self.emptyNests(MovedNests) #OK
-            self.Nests = self.findBest(ResetNests) #OK
+            MovedNests = self.performLevyFlights(self.Nests)
+            self.Nests = self.findBest(MovedNests)
+            ResetNests = self.emptyNests(MovedNests)
+            self.Nests = self.findBest(ResetNests)
 
         return self.gBest.Fitness
