@@ -13,7 +13,7 @@ class ParticleSwarmAlgorithm(object):
 
     **Date:** 2018
 
-    **Author:** Lucija Brezočnik, Grega Vrbančič, and Iztok Fister Jr.
+    **Authors:** Lucija Brezočnik, Grega Vrbančič, and Iztok Fister Jr.
 
     **License:** MIT
 
@@ -61,7 +61,7 @@ class ParticleSwarmAlgorithm(object):
         self.eval_flag = True  # evaluations flag
         self.evaluations = 0  # evaluations counter
         self.Fun = self.benchmark.function()
-        
+
         self.Solution = numpy.zeros((self.NP, self.D))  # positions of search agents
         self.Velocity = numpy.zeros((self.NP, self.D))  # velocities of search agents
 
