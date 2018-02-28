@@ -45,28 +45,25 @@ Python micro framework for building nature-inspired algorithms.
 The micro framework features following algorithms:
 
 -  basic:
--  Artificial bee colony algorithm (`see
-   example <examples/run_abc.py>`__)
--  Bat algorithm (`see example <examples/run_ba.py>`__)
--  Cuckoo Search algorithm (`see example <examples/run_cs.py>`__)
--  Differential evolution algorithm (`see
-   example <examples/run_de.py>`__)
--  Firefly algorithm (`see example <examples/run_fa.py>`__)
--  Flower pollination algorithm (`see example <examples/run_fpa.py>`__)
--  Genetic algorithm (`see example <examples/run_ga.py>`__)
--  Grey wolf optimizer (`see example <examples/run_gwo.py>`__)
--  Particle swarm optimization (`see example <examples/run_pso.py>`__)
+    -  Artificial bee colony algorithm
+    -  Bat algorithm
+    -  Cuckoo Search algorithm
+    -  Differential evolution algorithm
+    -  Firefly algorithm
+    -  Flower pollination algorithm
+    -  Genetic algorithm
+    -  Grey wolf optimizer
+    -  Particle swarm optimization
 -  modified:
--  Hybrid bat algorithm (`see example <examples/run_hba.py>`__)
--  Self-adaptive differential evolution algorithm (`see
-   example <examples/run_jde.py>`__)
+    -  Hybrid bat algorithm
+    -  Self-adaptive differential evolution algorithm
 
 The following benchmark functions are included in NiaPy:
 
 -  Ackley
 -  Alpine
--  Alpine1
--  Alpine2
+    -  Alpine1
+    -  Alpine2
 -  Chung Reynolds
 -  Csendes
 -  Griewank
@@ -80,12 +77,12 @@ The following benchmark functions are included in NiaPy:
 -  Salomon
 -  Schumer Steiglitz
 -  Schwefel
--  Schwefel 2.21
--  Schwefel 2.22
+    -  Schwefel 2.21
+    -  Schwefel 2.22
 -  Sphere
 -  Step
--  Step2
--  Step3
+    -  Step2
+    -  Step3
 -  Stepint
 -  Styblinski-Tang
 -  Sum Squares
