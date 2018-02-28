@@ -1,6 +1,10 @@
 # Revision History
 
-## 1.0.0rc2 (Geb 28, 2018)
+## 1.0.0 (Feb 28, 2018)
+
+- stable release 1.0.0
+
+## 1.0.0rc2 (Feb 28, 2018)
 
 - fix PyPI build
 ## 1.0.0rc1 (Feb 28, 2018)

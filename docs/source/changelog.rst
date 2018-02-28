@@ -3,6 +3,10 @@ Changelog
 
 We are using `semantic versioning <https://semver.org/>`_.
 
+1.0.0 (Feb 28, 2018)
+--------------------
+- stable release 1.0.0
+
 1.0.0rc2 (Feb 28, 2018)
 -----------------------
 - fix PyPI build

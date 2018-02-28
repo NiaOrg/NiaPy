@@ -40,7 +40,7 @@ Mission
 Overview
 ========
 
-Python micro framework for building nature-inspired algorithms.
+Python micro framework for building nature-inspired algorithms. Official documentation is available `here <http://niapy.readthedocs.io/en/1.0.0>`_.
 
 The micro framework features following algorithms:
 
@@ -99,7 +99,7 @@ Requirements
 Installation
 ------------
 
-Install NiaPy with pip (will be available soon):
+Install NiaPy with pip:
 
 .. code:: sh
 
@@ -155,6 +155,10 @@ fits your purposes or that it is bug-free. Use it at your own risk!
 
 Revision History
 ================
+
+1.0.0 (Feb 28, 2018)
+--------------------
+- stable release 1.0.0
 
 1.0.0rc2 (Feb 28, 2018)
 -----------------------

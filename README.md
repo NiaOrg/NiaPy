@@ -24,7 +24,7 @@ NiaPy will offer:
 
 # Overview
 
-Python micro framework for building nature-inspired algorithms.
+Python micro framework for building nature-inspired algorithms. Official documentation is available [here](http://niapy.readthedocs.io/en/1.0.0).
 
 The micro framework features following algorithms:
 
@@ -81,7 +81,7 @@ The following benchmark functions are included in NiaPy:
 
 ## Installation
 
-Install NiaPy with pip (will be available soon):
+Install NiaPy with pip:
 
 ```sh
 $ pip install NiaPy
