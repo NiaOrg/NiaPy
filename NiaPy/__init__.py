@@ -71,9 +71,9 @@ class Runner(object):
 
             p {decimal} -- probability switch
 
-            Ts {decimal}
+            Ts {decimal} -- tournament selection
 
-            Mr {decimal}
+            Mr {decimal} -- mutation rate
 
             C1 {decimal} -- cognitive component
 
