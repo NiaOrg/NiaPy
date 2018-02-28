@@ -47,7 +47,6 @@ The micro framework features following algorithms:
 -  basic:
     -  Artificial bee colony algorithm
     -  Bat algorithm
-    -  Cuckoo Search algorithm
     -  Differential evolution algorithm
     -  Firefly algorithm
     -  Flower pollination algorithm
