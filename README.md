@@ -31,7 +31,6 @@ The micro framework features following algorithms:
 - basic:
   - Artificial bee colony algorithm ([see example](examples/run_abc.py))
   - Bat algorithm ([see example](examples/run_ba.py))
-  - Cuckoo Search algorithm ([see example](examples/run_cs.py))
   - Differential evolution algorithm ([see example](examples/run_de.py))
   - Firefly algorithm ([see example](examples/run_fa.py))
   - Flower pollination algorithm ([see example](examples/run_fpa.py))

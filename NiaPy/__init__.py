@@ -138,9 +138,6 @@ class Runner(object):
         elif name == 'ArtificialBeeColonyAlgorithm':
             algorithm = algorithms.basic.ArtificialBeeColonyAlgorithm(
                 self.D, self.NP, self.nFES, bench)
-        elif name == 'CuckooSearchAlgorithm':
-            algorithm = algorithms.basic.CuckooSearchAlgorithm(
-                self.D, self.NP, self.nFES, self.Pa, self.alpha, bench)
         elif name == 'GeneticAlgorithm':
             algorithm = algorithms.basic.GeneticAlgorithm(
                 self.D, self.NP, self.nFES, self.Ts, self.Mr, self.gamma, bench)

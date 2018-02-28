@@ -8,7 +8,6 @@ from NiaPy.algorithms.basic.gwo import GreyWolfOptimizer
 from NiaPy.algorithms.basic.ga import GeneticAlgorithm
 from NiaPy.algorithms.basic.abc import ArtificialBeeColonyAlgorithm
 from NiaPy.algorithms.basic.pso import ParticleSwarmAlgorithm
-from NiaPy.algorithms.basic.cs import CuckooSearchAlgorithm
 
 
 __all__ = [
@@ -19,6 +18,5 @@ __all__ = [
     'GreyWolfOptimizer',
     'GeneticAlgorithm',
     'ArtificialBeeColonyAlgorithm',
-    'ParticleSwarmAlgorithm',
-    'CuckooSearchAlgorithm'
+    'ParticleSwarmAlgorithm'
 ]
