@@ -16,7 +16,7 @@ Before creating bug reports, please check existing issues list as you might find
 
 ### Pull requests
 
-If you are not so familiar with Git or/and GitHub, we suggest you take a look at our [begginer's guide](.github/begginers_guide.md). 
+If you are not so familiar with Git or/and GitHub, we suggest you take a look at our [beginner's guide](.github/beginners_guide.md). 
 
 - Fill in the [reqired template](.github/pull_request_template.md)
 - Document new code
@@ -37,9 +37,9 @@ If you are not so familiar with Git or/and GitHub, we suggest you take a look at
 * Pandoc: [http://johnmacfarlane.net/pandoc/installing.html] (http://johnmacfarlane.net/pandoc/installing.html) * optional
 * Graphviz: [http://www.graphviz.org/Download.php](http://www.graphviz.org/Download.php) * optional
 
-### Development dependecies
+### Development dependencies
 
-List of NiaPy's dependecies:
+List of NiaPy's dependencies:
 
 | Package    | Version | Platform |
 | ---------- |:-------:|:--------:|
@@ -49,7 +49,7 @@ List of NiaPy's dependecies:
 | xlsxwriter | 1.0.2   | All      |
 
 
-List of development dependecies:
+List of development dependencies:
  
 | Package                       | Version | Platform |
 | ----------------------------- |:-------:|:--------:|
@@ -93,7 +93,7 @@ Install project dependencies into a virtual environment:
 $ make install
 ```
 
-To enter created virtual environment with all installed dependecies run:
+To enter created virtual environment with all installed dependencies run:
 
 ```sh
 $ pipenv shell

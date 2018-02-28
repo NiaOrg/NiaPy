@@ -1,9 +1,9 @@
 Guides
 ======
 
-Here are gethered together user guides.
+Here are gathered together user guides.
 
 .. toctree::
 
-    git_begginers
+    git_beginners
     mingw_installation

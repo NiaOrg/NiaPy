@@ -1,4 +1,4 @@
-# Begginer's guide on how to contribute to open source community
+# Beginner's guide on how to contribute to open source community
 
 > If you don't have any previous experience with using Git, we recommend you take a [15 minutes long Git Tutorial](https://try.github.io).
 

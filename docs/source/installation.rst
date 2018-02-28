@@ -27,7 +27,7 @@ To confirm these system dependencies are configured correctly:
 Installation of development dependencies
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-List of NiaPy's dependecies:
+List of NiaPy's dependencies:
 
 ==========  =======  ======== 
 Package     Version  Platform
@@ -38,7 +38,7 @@ scipy       1.0.0    All
 xlsxwriter  1.0.2    All 
 ==========  =======  ========
 
-List of development dependecies:
+List of development dependencies:
 
 =============================  =======  ======== 
 Package                        Version  Platform
@@ -76,7 +76,7 @@ Install project dependencies into a virtual environment:
 
     make install
 
-To enter created virtual enviroment with all installed development dependecies run: 
+To enter created virtual environment with all installed development dependencies run: 
 
 .. code-block:: bash
 
