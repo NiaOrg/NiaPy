@@ -58,6 +58,28 @@ class SelfAdaptiveDifferentialEvolutionAlgorithm(object):
     """
 
     def __init__(self, D, NP, nFES, F, CR, Tao, benchmark):
+        r"""**__init__(self, D, NP, nFES, F, CR, Tao, benchmark)**.
+
+        Arguments:
+            D {integer} -- dimension of problem
+
+            NP {integer} -- population size
+
+            nFES {integer} -- number of function evaluations
+
+            F {decimal} -- scaling factor
+
+            CR {decimal} -- crossover rate
+
+            Tao {decimal}
+
+            benchmark {object} -- benchmark implementation object
+
+        Raises:
+            TypeError -- Raised when given benchmark function which does not exists.
+
+        """
+
         self.benchmark = Utility().get_benchmark(benchmark)
         self.D = D  # dimension of problem
         self.Np = NP  # population size

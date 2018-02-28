@@ -46,13 +46,30 @@ class GeneticAlgorithm(object):
     **Author:** Uros Mlakar
 
     **License:** MIT
-
-    **Reference paper:** TODO.
-
-    TODO:  - BUG is somewhere in code
     """
 
     def __init__(self, D, NP, nFES, Ts, Mr, gamma, benchmark):
+        r"""**__init__(self, D, NP, nFES, Ts, Mr, gamma, benchmark)**.
+
+        Arguments:
+            D {integer} -- dimension of problem
+
+            NP {integer} -- population size
+
+            nFES {integer} -- number of function evaluations
+
+            Ts {decimal} -- tournament selection
+
+            Mr {decimal} -- mutation rate
+
+            gamma {decimal} -- minimum frequency
+
+            benchmark {object} -- benchmark implementation object
+
+        Raises:
+            TypeError -- Raised when given benchmark function which does not exists.
+
+        """
         self.benchmark = Utility().get_benchmark(benchmark)
         self.NP = NP
         self.D = D
