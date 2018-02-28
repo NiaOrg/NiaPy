@@ -13,7 +13,7 @@ When package is successfully installed you are ready to write you first example.
 Basic example
 -------------
 In this example, let's say, we want to try out Gray Wolf Optimizer algorithm against Pintér benchmark function.
-Firstly we have to create new file, with name, for example *basic_example.py*. Then we have to import chosen 
+Firstly, we have to create new file, with name, for example *basic_example.py*. Then we have to import chosen 
 algorithm from NiaPy, so we can use it. Afterwards we initialize GreyWolfOptimizer class instance and run the algorithm.
 Given bellow is complete source code of basic example.
 
@@ -56,7 +56,7 @@ following:
 Customize benchmark bounds
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 By default, Pintér benchmark has the bound set to -10 and 10. We can simply override those predefined
-values very easily. We will modify our basic example to run Grey Wolf Optimizer agains Pintér benchmark
+values very easily. We will modify our basic example to run Grey Wolf Optimizer against Pintér benchmark
 function with custom benchmark bounds set to -5 and 5. Given bellow is complete source code of customized 
 basic example.
 
@@ -99,15 +99,15 @@ following:
     7.30943390302e-64
 
 Advanced example
----------------
-In this example we will show you how to implement your own benchamark function and use it with any of 
+----------------
+In this example we will show you how to implement your own benchmark function and use it with any of 
 implemented algorithms. First let's create new file named advanced_example.py. As in the previous examples
 we wil import algorithm we want to use from NiaPy module. 
 
-For our custom benchmark function we have to create new class. Let's name it *MyBenchmark*. In the initialization
-method of *MyBenchmark* class we have to set *Lower* and *Upper* bounds of the function. Aftewards we have to
-implement a funciton which returns evaulation function which takes two parameters *D* (as dimension of problem)
-and *sol* (as solution of problem). Now we should have something simmilar as is shown in code snippet bellow.
+For our custom benchmark function, we have to create new class. Let's name it *MyBenchmark*. In the initialization
+method of *MyBenchmark* class we have to set *Lower* and *Upper* bounds of the function. Afterwards we have to
+implement a function which returns evaluation function which takes two parameters *D* (as dimension of problem)
+and *sol* (as solution of problem). Now we should have something similar as is shown in code snippet bellow.
 
 .. code:: python
 
@@ -144,7 +144,7 @@ instance of our *MyBenchmark* class.
         print(best)
 
 Now we can run our advanced example with following command python advanced_example.py. The results should be
-simmilar to those bellow.
+similar to those bellow.
 
 .. code:: bash
 
@@ -161,9 +161,9 @@ simmilar to those bellow.
 
 Runner example
 --------------
-For easier comparison between many different algorithms and benchmarks, we developed a usefull feature called
+For easier comparison between many different algorithms and benchmarks, we developed a useful feature called
 *Runner*. Runner can take an array of algorithms and an array of benchmarks to compare and run all combinations
-for you. We also provide an exatra feature, which lets you easily exports those results in many different formats 
+for you. We also provide an extra feature, which lets you easily exports those results in many different formats 
 (LaTeX, Excell, JSON).
 
 Below is given a usage example of our *Runner*, which will run three given algorithms and four given benchmark

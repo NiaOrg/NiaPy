@@ -1,7 +1,7 @@
-Git Begginers Guide
+Git Beginners Guide
 ===================
 
-Begginer's guide on how to contribute to open source community
+Beginner's guide on how to contribute to open source community
 
 .. note::
 
@@ -14,7 +14,7 @@ Unfortunately, it's quite easy to make mistakes or not know what you should do w
 initially learning the process. I know that I certainly had considerable initial trouble 
 with it, and I found a lot of the information on GitHub and around the internet to be 
 rather piecemeal and incomplete - part of the process described here, another there, common 
-hangups in a different place, and so on.
+hang-ups in a different place, and so on.
 
 This short tutorial is fairly standard procedure for creating a fork, doing your work, 
 issuing a pull request, and merging that pull request back into the original project.
@@ -77,7 +77,7 @@ Doing your work
 Create a Branch
 ~~~~~~~~~~~~~~~
 
-Whenever you begin work on a new feature or bugfix, it's important that you create a new branch. 
+Whenever you begin work on a new feature or bug fix, it's important that you create a new branch. 
 Not only is it proper git workflow, but it also keeps your changes organized and separated from the master 
 branch so that you can easily submit and manage multiple pull requests for every task you complete.
 
@@ -139,7 +139,7 @@ select your development branch, and click the pull request button. If you need t
 your pull request, just push the updates to GitHub. Your pull request will automatically track the changes 
 on your development branch and update.
 
-When pull request is successfuly created, make sure you follow activity on your pull request. It may occour 
+When pull request is successfully created, make sure you follow activity on your pull request. It may occur 
 that the maintainer of project will ask you to do some more changes or fix something on your pull request 
 before merging it to master branch. 
 
