@@ -58,7 +58,7 @@ setuptools.setup(
     license='MIT',
     classifiers=[
         # TODO: update this list to match your application: https://pypi.python.org/pypi?%3Aaction=list_classifiers
-        'Development Status :: 2 - Pre-Alpha',
+        'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         'Intended Audience :: Science/Research',
         'Natural Language :: English',

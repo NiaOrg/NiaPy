@@ -1,15 +1,8 @@
 # Revision History
 
-## 0.1.3a2
--  fixes PyPI project description style
-## 0.1.3a1
+## 1.0.0rc1 (Feb 28, 2018)
 
--  fixes image issue in PyPI project description
-## 0.1.2a4
-
--  fixes problem with build scripts
-
-## 0.1.2a3
- 
--  fixes PyPI project description
--  alpha3 version
+- version 1.0.0 release candidate 1
+- added 10 algorithms
+- added 26 benchmark functions
+- added Runner utility with export functionality
