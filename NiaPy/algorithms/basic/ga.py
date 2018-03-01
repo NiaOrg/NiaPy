@@ -58,7 +58,7 @@ class GeneticAlgorithm(object):
 
             nFES {integer} -- number of function evaluations
 
-            Ts {decimal} -- tournament selection
+            Ts {integer} -- tournament selection
 
             Mr {decimal} -- mutation rate
 
@@ -95,7 +95,7 @@ class GeneticAlgorithm(object):
         rnd.shuffle(indices)
         tPop = []
         for i in range(self.Ts):
-            tPop.append(self.Population[i])
+            tPop.append(self.Population[indices[i]])
         tPop.sort(key=lambda x: x.Fitness)
 
         self.Population.remove(tPop[0])
