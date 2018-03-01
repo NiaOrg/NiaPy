@@ -35,6 +35,7 @@ Nature-inspired algorithms are a very popular tool for solving optimization prob
 Currently, the framework consists of algorithms, benchmark functions and supporting features. There are 8 basic implemented algorithms: Artificial Bee Colony algorithm, Bat algorithm, Differential Evolution algorithm, Firefly algorithm, Flower Pollination algorithm, Genetic algorithm, Grey Wolf Optimizer, Particle Swarm Optimization and 2 hybrid variants: Hybrid Bat algorithm, self-adaptive Differential Evolution algorithm. The following benchmark functions are also included in framework: Ackley, Alpine, Alpine1, Alpine2, Chung Reynolds, Csendes, Griewank, Happy cat, Pintér, Qing, Quintic, Rastrigin, Ridge, Rosenbrock, Salomon, Schumer Steiglitz, Schwefel, Schwefel 2.21, Schwefel 2.22, Sphere, Step, Step2, Step3, Stepint, Styblinski-Tang, Sum Squares, Whitley. A supporting feature consists of a runner utility that allows users to run selected algorithms easily, along with predefined or customized benchmark functions. By the same token, it also allows export to various formats, such as, for example, LaTeX, JSON, and Excel.
 
 Key features of NiaPy:
+
 - Since it is a very extensible framework, new algorithms can be integrated into it easily.
 - Good documentation.
 - Practitioner friendly. Users do not need to implement algorithms from scratch.
