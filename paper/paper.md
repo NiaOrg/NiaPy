@@ -1,5 +1,5 @@
 ---
-title: 'NiaPy: Python micro framework for building nature-inspired algorithms'
+title: 'NiaPy: Python microframework for building nature-inspired algorithms'
 tags:
   - nature-inspired algorithms
   - microframework
@@ -48,7 +48,5 @@ Key features of NiaPy:
 ![NiaPy architecture](NiaPyDiagram.png)
 
 In conclusion, NiaPy is a new microframework for building and using nature-inspired algorithms in Python. Stepping stones for the design and implementation of NiaPy were the limitations of existing software, that were mostly limited in documentation, number of algorithms, inconsistent stopping criteria, non-modular software architecture. In the future, more algorithms will be added to the current collection, while support will also be developed for constraint optimization problems.
-
-[//]: # "EFAshiny is a user-friendly web application for exploratory factor analysis"
 
 # References
