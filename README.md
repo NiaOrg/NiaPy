@@ -79,6 +79,14 @@ The following benchmark functions are included in NiaPy:
 * Python 3.6+ (backward compatibility with 2.7.14)
 * Pip
 
+### Dependencies
+
+*  click == *
+*  numpy == 1.14.0
+*  scipy == 1.0.0
+*  xlsxwriter == 1.0.2
+
+List of development dependencies and requirements can be found [here](CONTRIBUTING.md#development-dependencies).
 ## Installation
 
 Install NiaPy with pip:
