@@ -110,6 +110,7 @@ class BatAlgorithm(object):
 
     @classmethod
     def simplebounds(cls, val, lower, upper):
+        """Keep it within bounds."""
         if val < lower:
             val = lower
         if val > upper:

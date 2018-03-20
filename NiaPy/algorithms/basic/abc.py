@@ -70,16 +70,16 @@ class ArtificialBeeColonyAlgorithm(object):
         """
 
         self.benchmark = Utility().get_benchmark(benchmark)
-        self.D = D
-        self.NP = NP
+        self.D = D  # dimension of the problem
+        self.NP = NP  # population size; number of search agents
         self.FoodNumber = int(self.NP / 2)
         self.Limit = 100
-        self.Trial = []
-        self.Foods = []
-        self.Probs = []
-        self.nFES = nFES
-        self.Lower = self.benchmark.Lower
-        self.Upper = self.benchmark.Upper
+        self.Trial = []  # trials
+        self.Foods = []  # foods
+        self.Probs = []  # probs
+        self.nFES = nFES  # number of function evaluations
+        self.Lower = self.benchmark.Lower  # lower bound
+        self.Upper = self.benchmark.Upper  # upper bound
 
         self.FEs = 0
         self.Done = False
@@ -88,6 +88,7 @@ class ArtificialBeeColonyAlgorithm(object):
         self.Best = SolutionABC(self.D, self.Lower, self.Upper)
 
     def init(self):
+        """Initialize positions."""
         self.Probs = [0 for i in range(self.FoodNumber)]
         self.Trial = [0 for i in range(self.FoodNumber)]
         for i in range(self.FoodNumber):
@@ -96,16 +97,19 @@ class ArtificialBeeColonyAlgorithm(object):
             self.checkForBest(self.Foods[i])
 
     def CalculateProbs(self):
+        """Calculate probs."""
         self.Probs = [1.0 / (self.Foods[i].Fitness + 0.01)
                       for i in range(self.FoodNumber)]
         s = sum(self.Probs)
         self.Probs = [self.Probs[i] / s for i in range(self.FoodNumber)]
 
     def checkForBest(self, Solution):
+        """Check best solution."""
         if Solution.Fitness <= self.Best.Fitness:
             self.Best = copy.deepcopy(Solution)
 
     def tryEval(self, b):
+        """Check evaluations."""
         if self.FEs <= self.nFES:
             b.evaluate()
             self.FEs += 1
@@ -113,6 +117,7 @@ class ArtificialBeeColonyAlgorithm(object):
             self.Done = True
 
     def run(self):
+        """Run."""
         self.init()
         self.FEs = self.FoodNumber
         while not self.Done:

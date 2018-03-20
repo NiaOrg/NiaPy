@@ -113,7 +113,8 @@ class DifferentialEvolutionAlgorithm(object):
 
             for j in range(self.D):
                 if rnd.random() < self.CR or j == jrand:
-                    newSolution.Solution[j] = Population[r[0]].Solution[j] + self.F * (Population[r[1]].Solution[j] - Population[r[2]].Solution[j])
+                    newSolution.Solution[j] = Population[r[0]].Solution[j] + self.F * \
+                        (Population[r[1]].Solution[j] - Population[r[2]].Solution[j])
                 else:
                     newSolution.Solution[j] = Population[i].Solution[j]
             newSolution.repair()
@@ -128,6 +129,7 @@ class DifferentialEvolutionAlgorithm(object):
         return newPopulation
 
     def run(self):
+        """Run."""
         self.initPopulation()
         self.evalPopulation()
         FEs = self.Np

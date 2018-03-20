@@ -75,6 +75,7 @@ class GreyWolfOptimizer(object):
             self.eval_flag = False
 
     def bounds(self, position):
+        """Keep it within bounds."""
         for i in range(self.D):
             if position[i] < self.Lower:
                 position[i] = self.Lower
@@ -84,7 +85,7 @@ class GreyWolfOptimizer(object):
 
     # pylint: disable=too-many-locals
     def move(self):
-
+        """Move wolves in search space."""
         self.initialization()
 
         while self.eval_flag is not False:
@@ -151,4 +152,5 @@ class GreyWolfOptimizer(object):
         return self.Alpha_score
 
     def run(self):
+        """Run."""
         return self.move()
