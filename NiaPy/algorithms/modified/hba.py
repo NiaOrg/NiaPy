@@ -110,6 +110,7 @@ class HybridBatAlgorithm(object):
 
     @classmethod
     def simplebounds(cls, val, lower, upper):
+        """Keep it within bounds."""
         if val < lower:
             val = lower
         if val > upper:
@@ -170,4 +171,5 @@ class HybridBatAlgorithm(object):
         return self.f_min
 
     def run(self):
+        """Run."""
         return self.move_bat()

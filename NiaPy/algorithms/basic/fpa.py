@@ -69,6 +69,7 @@ class FlowerPollinationAlgorithm(object):
         self.evaluations = 0  # evaluations counter
 
     def best_flower(self):
+        """Check best solution."""
         i = 0
         j = 0
         for i in range(self.NP):
@@ -86,6 +87,7 @@ class FlowerPollinationAlgorithm(object):
 
     @classmethod
     def simplebounds(cls, val, lower, upper):
+        """Keep it within bounds."""
         if val < lower:
             val = lower
         if val > upper:
@@ -93,6 +95,7 @@ class FlowerPollinationAlgorithm(object):
         return val
 
     def init_flower(self):
+        """Initialize flowers."""
         for i in range(self.D):
             self.Lb[i] = self.Lower
             self.Ub[i] = self.Upper
@@ -107,6 +110,7 @@ class FlowerPollinationAlgorithm(object):
         self.best_flower()
 
     def move_flower(self):
+        """Move in search space."""
         S = [[0.0 for i in range(self.D)] for j in range(self.NP)]
         self.init_flower()
 
@@ -150,6 +154,7 @@ class FlowerPollinationAlgorithm(object):
         return self.f_min
 
     def Levy(self):
+        """Levy flight."""
         beta = 1.5
         sigma = (Gamma(1 + beta) * np.sin(np.pi * beta / 2) /
                  (Gamma((1 + beta) / 2) * beta * 2**((beta - 1) / 2)))**(1 / beta)
@@ -167,4 +172,5 @@ class FlowerPollinationAlgorithm(object):
         return L
 
     def run(self):
+        """Run."""
         return self.move_flower()

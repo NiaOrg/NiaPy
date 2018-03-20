@@ -120,6 +120,7 @@ class FireflyAlgorithm(object):
                 self.Fireflies[i][j] = self.Fireflies_tmp[self.Index[i]][j]
 
     def FindLimits(self, k):
+        """Find limits."""
         for i in range(self.D):
             if self.Fireflies[k][i] < self.Lower:
                 self.Fireflies[k][i] = self.Lower
@@ -149,6 +150,7 @@ class FireflyAlgorithm(object):
             self.FindLimits(i)
 
     def run(self):
+        """Run."""
         self.init_ffa()
 
         while self.eval_flag is not False:

@@ -121,6 +121,7 @@ class SelfAdaptiveDifferentialEvolutionAlgorithm(object):
                             self.CR))
 
     def tryEval(self, v):
+        """Check evaluations."""
         if self.FEs <= self.nFES:
             v.evaluate()
             self.FEs += 1
@@ -172,6 +173,7 @@ class SelfAdaptiveDifferentialEvolutionAlgorithm(object):
         return newPopulation
 
     def run(self):
+        """Run."""
         self.initPopulation()
         self.evalPopulation()
         self.FEs = self.Np

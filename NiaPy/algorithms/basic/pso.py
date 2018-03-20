@@ -86,6 +86,7 @@ class ParticleSwarmAlgorithm(object):
             self.eval_flag = False
 
     def bounds(self, position):
+        """Keep it within bounds."""
         for i in range(self.D):
             if position[i] < self.Lower:
                 position[i] = self.Lower
@@ -94,7 +95,7 @@ class ParticleSwarmAlgorithm(object):
         return position
 
     def move_particles(self):
-
+        """Move particles in search space."""
         self.init()
 
         while self.eval_flag is not False:
@@ -133,4 +134,5 @@ class ParticleSwarmAlgorithm(object):
         return self.gBestFitness
 
     def run(self):
+        """Run."""
         return self.move_particles()

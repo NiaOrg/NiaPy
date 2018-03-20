@@ -71,26 +71,28 @@ class GeneticAlgorithm(object):
 
         """
         self.benchmark = Utility().get_benchmark(benchmark)
-        self.NP = NP
-        self.D = D
-        self.Ts = Ts
-        self.Mr = Mr
-        self.gamma = gamma
-        self.Lower = self.benchmark.Lower
-        self.Upper = self.benchmark.Upper
+        self.NP = NP  # population size; number of search agents
+        self.D = D  # dimension of the problem
+        self.Ts = Ts  # tournament selection
+        self.Mr = Mr  # mutation rate
+        self.gamma = gamma  # minimum frequency
+        self.Lower = self.benchmark.Lower  # lower bound
+        self.Upper = self.benchmark.Upper  # upper bound
         self.Population = []
-        self.nFES = nFES
-        self.FEs = 0
+        self.nFES = nFES  # number of function evaluations
+        self.FEs = 0  # function evaluations
         self.Done = False
         Chromosome.FuncEval = staticmethod(self.benchmark.function())
 
         self.Best = Chromosome(self.D, self.Lower, self.Upper)
 
     def checkForBest(self, pChromosome):
+        """Check best solution."""
         if pChromosome.Fitness <= self.Best.Fitness:
             self.Best = copy.deepcopy(pChromosome)
 
     def TournamentSelection(self):
+        """Tournament selection."""
         indices = list(range(self.NP))
         rnd.shuffle(indices)
         tPop = []
@@ -103,6 +105,7 @@ class GeneticAlgorithm(object):
         return tPop[0], tPop[1]
 
     def CrossOver(self, parent1, parent2):
+        """Crossover."""
         alpha = [-self.gamma + (1 + 2 * self.gamma) * rnd.random()
                  for i in range(self.D)]
         child1 = Chromosome(self.D, self.Lower, self.Upper)
@@ -114,6 +117,7 @@ class GeneticAlgorithm(object):
         return child1, child2
 
     def Mutate(self, child):
+        """Mutation."""
         for i in range(self.D):
             if rnd.random() < self.Mr:
                 sigma = 0.20 * float(child.UB - child.LB)
@@ -121,12 +125,14 @@ class GeneticAlgorithm(object):
                     max(rnd.gauss(child.Solution[i], sigma), child.LB), child.UB)
 
     def init(self):
+        """Initialize population."""
         for i in range(self.NP):
             self.Population.append(Chromosome(self.D, self.Lower, self.Upper))
             self.Population[i].evaluate()
             self.checkForBest(self.Population[i])
 
     def tryEval(self, c):
+        """Check evaluations."""
         if self.FEs < self.nFES:
             self.FEs += 1
             c.evaluate()
@@ -134,6 +140,7 @@ class GeneticAlgorithm(object):
             self.Done = True
 
     def run(self):
+        """Run."""
         self.init()
         self.FEs = self.NP
         while not self.Done:
