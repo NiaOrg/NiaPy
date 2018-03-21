@@ -53,6 +53,6 @@ In conclusion, NiaPy is a new microframework for building and using nature-inspi
 
 # Acknowledgement
 
-The authors acknowledge the financial support from the Slovenian Research Agency (research core funding No. P2-0057)
+The authors acknowledge the financial support from the Slovenian Research Agency (research core funding No. P2-0057).
 
 # References
