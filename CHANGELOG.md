@@ -1,5 +1,13 @@
 # Revision History
 
+## 1.0.1 (Mar 21, 2018)
+
+This release reflects the changes from Journal of Open Source Software (JOSS) review:
+
+- Better API Documentation
+- Clarification of set-up requirements in README
+- Improved paper
+
 ## 1.0.0 (Feb 28, 2018)
 
 - stable release 1.0.0
