@@ -118,6 +118,46 @@ $ python
 
 For more usage examples please look at **examples** folder.
 
+# Cite us
+
+Are you using NiaPy in your project or research? Please cite us!
+
+Vrbančič, G., Brezočnik, L., Mlakar, U., Fister, D., & Fister Jr., I. (2018). NiaPy: Python microframework for building nature-inspired algorithms. Journal of Open Source Software, 3(23), 613. https://doi.org/10.21105/joss.00613
+
+* Bibtex format
+
+.. code-block:: bibtex
+
+    @article{NiaPyJOSS2018,
+        author  = {Vrban{\v{c}}i{\v{c}}, Grega and Brezo{\v{c}}nik, Lucija and Mlakar, Uro{\v{s}} and Fister, Du{\v{s}}an and {Fister Jr.}, Iztok},
+        title   = {{NiaPy: Python microframework for building nature-inspired algorithms}},
+        journal = {{Journal of Open Source Software}},
+        year    = {2018},
+        volume  = {3},
+        issue   = {23},
+        issn    = {2475-9066},
+        doi     = {10.21105/joss.00613},
+        url     = {https://doi.org/10.21105/joss.00613}
+    }
+
+* RIS format
+
+```
+    TY  - JOUR
+    T1  - NiaPy: Python microframework for building nature-inspired algorithms
+    AU  - Vrbančič, Grega
+    AU  - Brezočnik, Lucija
+    AU  - Mlakar, Uroš
+    AU  - Fister, Dušan
+    AU  - Fister Jr., Iztok
+    PY  - 2018
+    JF  - Journal of Open Source Software
+    VL  - 3
+    IS  - 23
+    DO  - 10.21105/joss.00613
+    UR  - http://joss.theoj.org/papers/10.21105/joss.00613
+```
+
 ## Contributing
 
 [![Open Source Helpers](https://www.codetriage.com/niaorg/niapy/badges/users.svg)](https://www.codetriage.com/niaorg/niapy)
