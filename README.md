@@ -123,14 +123,20 @@ For more usage examples please look at **examples** folder.
 
 Are you using NiaPy in your project or research? Please cite us!
 
-Vrbančič, G., Brezočnik, L., Mlakar, U., Fister, D., & Fister Jr., I. (2018). NiaPy: Python microframework for building nature-inspired algorithms. Journal of Open Source Software, 3(23), 613\. <https://doi.org/10.21105/joss.00613>
+- Plain format
+
+```
+      Vrbančič, G., Brezočnik, L., Mlakar, U., Fister, D., & Fister Jr., I. (2018).
+      NiaPy: Python microframework for building nature-inspired algorithms.
+      Journal of Open Source Software, 3(23), 613\. <https://doi.org/10.21105/joss.00613>
+```
 
 - Bibtex format
 
 ```
     @article{NiaPyJOSS2018,
-        author  = {Vrban{\v{c}}i{\v{c}}, Grega and Brezo{\v{c}}nik, Lucija and
-                  Mlakar, Uro{\v{s}} and Fister, Du{\v{s}}an and {Fister Jr.}, Iztok},
+        author  = {Vrban{\v{c}}i{\v{c}}, Grega and Brezo{\v{c}}nik, Lucija
+                  and Mlakar, Uro{\v{s}} and Fister, Du{\v{s}}an and {Fister Jr.}, Iztok},
         title   = {{NiaPy: Python microframework for building nature-inspired algorithms}},
         journal = {{Journal of Open Source Software}},
         year    = {2018},
@@ -169,10 +175,10 @@ We encourage you to contribute to NiaPy! Please check out the [Contributing to N
 Everyone interacting in NiaPy's codebases, issue trackers, chat rooms and mailing lists is expected to follow the NiaPy [code of conduct](CODE_OF_CONDUCT.md).
 
 ## Contributors
+[<img alt="GregaVrbancic" src="https://avatars0.githubusercontent.com/u/1894788?v=4&s=117" width="117">](https://github.com/GregaVrbancic) |[<img alt="firefly-cpp" src="https://avatars2.githubusercontent.com/u/1633361?v=4&s=117" width="117">](https://github.com/firefly-cpp) |[<img alt="lucijabrezocnik" src="https://avatars2.githubusercontent.com/u/36370699?v=4&s=117" width="117">](https://github.com/lucijabrezocnik) |[<img alt="mlaky88" src="https://avatars1.githubusercontent.com/u/23091578?v=4&s=117" width="117">](https://github.com/mlaky88) |[<img alt="rhododendrom" src="https://avatars1.githubusercontent.com/u/3198785?v=4&s=117" width="117">](https://github.com/rhododendrom) |
+:---: |:---: |:---: |:---: |:---: |
+[GregaVrbancic](https://github.com/GregaVrbancic) |[firefly-cpp](https://github.com/firefly-cpp) |[lucijabrezocnik](https://github.com/lucijabrezocnik) |[mlaky88](https://github.com/mlaky88) |[rhododendrom](https://github.com/rhododendrom)
 
-[![GregaVrbancic](https://avatars0.githubusercontent.com/u/1894788?v=4&s=117)](https://github.com/GregaVrbancic) | [![firefly-cpp](https://avatars2.githubusercontent.com/u/1633361?v=4&s=117)](https://github.com/firefly-cpp) | [![lucijabrezocnik](https://avatars2.githubusercontent.com/u/36370699?v=4&s=117)](https://github.com/lucijabrezocnik) | [![mlaky88](https://avatars1.githubusercontent.com/u/23091578?v=4&s=117)](https://github.com/mlaky88) | [![rhododendrom](https://avatars1.githubusercontent.com/u/3198785?v=4&s=117)](https://github.com/rhododendrom)
-:--------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------:
-                               [GregaVrbancic](https://github.com/GregaVrbancic)                                 |                                [firefly-cpp](https://github.com/firefly-cpp)                                 |                                 [lucijabrezocnik](https://github.com/lucijabrezocnik)                                 |                                 [mlaky88](https://github.com/mlaky88)                                 |                                [rhododendrom](https://github.com/rhododendrom)                                 |
 
 ## Licence
 
