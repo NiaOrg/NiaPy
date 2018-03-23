@@ -6,7 +6,7 @@
 
 Nature-inspired algorithms are a very popular tool for solving optimization problems. Numerous variants of [nature-inspired algorithms have been developed](https://arxiv.org/abs/1307.4186) since the beginning of their era. To prove their versatility, those were tested in various domains on various applications, especially when they are hybridized, modified or adapted. However, implementation of nature-inspired algorithms is sometimes a difficult, complex and tedious task. In order to break this wall, NiaPy is intended for simple and quick use, without spending time for implementing algorithms from scratch.
 
-![NiaPy](.github/imgs/NiaPyLogo.png "NiaPy")
+<p align="center"><img src=".github/imgs/NiaPyLogo.png" alt="NiaPy" title="NiaPy"/></p>
 
 # Mission
 
@@ -24,7 +24,6 @@ Python micro framework for building nature-inspired algorithms. Official documen
 The micro framework features following algorithms:
 
 - basic:
-
   - Artificial bee colony algorithm ([see example](examples/run_abc.py))
   - Bat algorithm ([see example](examples/run_ba.py))
   - Differential evolution algorithm ([see example](examples/run_de.py))
@@ -33,9 +32,7 @@ The micro framework features following algorithms:
   - Genetic algorithm ([see example](examples/run_ga.py))
   - Grey wolf optimizer ([see example](examples/run_gwo.py))
   - Particle swarm optimization ([see example](examples/run_pso.py))
-
 - modified:
-
   - Hybrid bat algorithm ([see example](examples/run_hba.py))
   - Self-adaptive differential evolution algorithm ([see example](examples/run_jde.py))
 
@@ -43,10 +40,8 @@ The following benchmark functions are included in NiaPy:
 
 - Ackley
 - Alpine
-
   - Alpine1
   - Alpine2
-
 - Chung Reynolds
 - Csendes
 - Griewank
@@ -60,16 +55,12 @@ The following benchmark functions are included in NiaPy:
 - Salomon
 - Schumer Steiglitz
 - Schwefel
-
   - Schwefel 2.21
   - Schwefel 2.22
-
 - Sphere
 - Step
-
   - Step2
   - Step3
-
 - Stepint
 - Styblinski-Tang
 - Sum Squares
