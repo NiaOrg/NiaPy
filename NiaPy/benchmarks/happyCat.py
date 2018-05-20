@@ -38,7 +38,9 @@ class HappyCat(object):
         Domain:
                 $-100 \leq x_i \leq 100$
 
-    Reference: http://bee22.com/manual/tf_images/Liang%20CEC2014.pdf
+    Reference: http://bee22.com/manual/tf_images/Liang%20CEC2014.pdf &
+    Beyer, H. G., & Finck, S. (2012). HappyCat - A Simple Function Class Where Well-Known Direct Search Algorithms Do Fail.
+    In International Conference on Parallel Problem Solving from Nature (pp. 367-376). Springer, Berlin, Heidelberg.
     """
 
     def __init__(self, Lower=-100.0, Upper=100.0):
