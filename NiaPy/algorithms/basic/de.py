@@ -82,6 +82,8 @@ class DifferentialEvolutionAlgorithm(object):
         self.Upper = self.benchmark.Upper  # upper bound
 
         SolutionDE.FuncEval = staticmethod(self.benchmark.function())
+        self.FEs = 0
+        self.Done = False
         self.Population = []
         self.bestSolution = SolutionDE(self.D, self.Lower, self.Upper)
 
@@ -98,6 +100,14 @@ class DifferentialEvolutionAlgorithm(object):
 
         for _i in range(self.Np):
             self.Population.append(SolutionDE(self.D, self.Lower, self.Upper))
+
+    def tryEval(self, v):
+        """Check evaluations."""
+        if self.FEs <= self.nFES:
+            v.evaluate()
+            self.FEs += 1
+        else:
+            self.Done = True
 
     def generationStep(self, Population):
         """Implement main generation step."""
@@ -118,7 +128,7 @@ class DifferentialEvolutionAlgorithm(object):
                 else:
                     newSolution.Solution[j] = Population[i].Solution[j]
             newSolution.repair()
-            newSolution.evaluate()
+            self.tryEval(newSolution)
 
             if newSolution.Fitness < self.bestSolution.Fitness:
                 self.bestSolution = copy.deepcopy(newSolution)
@@ -132,8 +142,7 @@ class DifferentialEvolutionAlgorithm(object):
         """Run."""
         self.initPopulation()
         self.evalPopulation()
-        FEs = self.Np
-        while FEs <= self.nFES:
+        self.FEs = self.Np
+        while not self.Done:
             self.Population = self.generationStep(self.Population)
-            FEs += self.Np
         return self.bestSolution.Fitness
