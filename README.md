@@ -110,6 +110,8 @@ $ python
 
 For more usage examples please look at **examples** folder.
 
+More advanced examples can also be found in the [NiaPy-examples repository](https://github.com/NiaOrg/NiaPy-examples).
+
 # Cite us
 
 Are you using NiaPy in your project or research? Please cite us!
