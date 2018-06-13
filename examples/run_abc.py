@@ -1,4 +1,3 @@
-from __future__ import print_function
 # This is temporary fix to import module from parent folder
 # It will be removed when package is published on PyPI
 import sys
@@ -6,7 +5,15 @@ sys.path.append('../')
 # End of fix
 
 import random
+import logging
 from NiaPy.algorithms.basic import ArtificialBeeColonyAlgorithm
+
+logging.basicConfig()
+logger = logging.getLogger('examples')
+logger.setLevel('INFO')
+
+# For reproducive results
+random.seed(1234)
 
 
 class MyBenchmark(object):
@@ -27,4 +34,4 @@ for i in range(10):
     Algorithm = ArtificialBeeColonyAlgorithm(10, 40, 10000, MyBenchmark())
     Best = Algorithm.run()
 
-    print(Best)
+    logger.info(Best)
