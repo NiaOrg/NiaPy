@@ -6,6 +6,7 @@ sys.path.append('../')
 
 import random
 import logging
+import matplotlib.pyplot as plt
 from NiaPy.algorithms.basic import FireflyAlgorithm
 
 logging.basicConfig()
@@ -14,6 +15,8 @@ logger.setLevel('INFO')
 
 # For reproducive results
 random.seed(1234)
+
+global_vector = []
 
 
 class MyBenchmark(object):
@@ -26,6 +29,7 @@ class MyBenchmark(object):
             val = 0.0
             for i in range(D):
                 val = val + sol[i] * sol[i]
+            global_vector.append(val)
             return val
         return evaluate
 
@@ -33,5 +37,13 @@ class MyBenchmark(object):
 for i in range(10):
     Algorithm = FireflyAlgorithm(10, 20, 10000, 0.5, 0.2, 1.0, MyBenchmark())
     Best = Algorithm.run()
+    
+    plt.plot(global_vector)
+    global_vector = []
 
     logger.info(Best)
+    
+plt.xlabel('Number of evaluations')
+plt.ylabel('Fitness function value')
+plt.title('Convergence plot')
+plt.show()
