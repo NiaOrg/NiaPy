@@ -12,12 +12,18 @@ class Utility(object):
 			'ackley': Ackley,
 			'alpine1': Alpine1,
 			'alpine2': Alpine2,
+			'bentcigar': BentCigar,
 			'chungReynolds': ChungReynolds,
 			'csendes': Csendes,
+			'discus': Discus,
+			'conditionedellptic': Elliptic,
+			'elliptic': Elliptic,
 			'expandedgriewankplusrosenbrock': ExpandedGriewankPlusRosenbrock,
 			'expandedscaffer': ExpandedScaffer,
 			'griewank': Griewank,
 			'happyCat': HappyCat,
+			'hgbat': HGBat,
+			'katsuura': Katsuura,
 			'modifiedscwefel': ModifiedSchwefel,
 			'pinter': Pinter,
 			'quing': Qing,
@@ -37,6 +43,7 @@ class Utility(object):
 			'stepint': Stepint,
 			'styblinskiTang': StyblinskiTang,
 			'sumSquares': SumSquares,
+			'weierstrass': Weierstrass,
 			'whitley': Whitley
 		}
 

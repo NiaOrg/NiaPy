@@ -44,10 +44,15 @@ The following benchmark functions are included in NiaPy:
 - Alpine
   - Alpine1
   - Alpine2
+- Bent Cigar
 - Chung Reynolds
 - Csendes
+- Discus
+- Elliptic
 - Griewank
 - Happy cat
+- HGBat
+- Katsuura
 - Pintér
 - Qing
 - Quintic
@@ -66,6 +71,7 @@ The following benchmark functions are included in NiaPy:
 - Stepint
 - Styblinski-Tang
 - Sum Squares
+- Weierstrass
 - Whitley
 
 # Setup
