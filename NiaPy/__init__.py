@@ -29,9 +29,7 @@ class Runner(object):
 
     """
 
-    def __init__(self, D, NP, nFES, nRuns, useAlgorithms, useBenchmarks, A=0.5, r=0.5,
-                 Qmin=0.0, Qmax=2.0, Pa=0.25, F=0.5, CR=0.9, alpha=0.5, betamin=0.2, gamma=1.0,
-                 p=0.5, Ts=4, Mr=0.05, C1=2.0, C2=2.0, w=0.7, vMin=-4, vMax=4, Tao=0.1):
+    def __init__(self, D, NP, nFES, nRuns, useAlgorithms, useBenchmarks, A=0.5, r=0.5, Qmin=0.0, Qmax=2.0, Pa=0.25, F=0.5, CR=0.9, alpha=0.5, betamin=0.2, gamma=1.0, p=0.5, Ts=4, Mr=0.05, C1=2.0, C2=2.0, w=0.7, vMin=-4, vMax=4, Tao=0.1, omega=0.25, mu=0.5, n=10, S_init=10, E_init=10, T_min=-10, T_max=10, C_a=2, C_r=0.5):
         r"""Initialize Runner.
 
         **__init__(self, D, NP, nFES, nRuns, useAlgorithms, useBenchmarks, ...)**
@@ -87,6 +85,24 @@ class Runner(object):
 
             Tao {decimal}
 
+            n {integer} -- number of sparks
+
+            mu {decimal} -- mu parameter
+
+            omega {decimal} -- TODO
+
+            S_init {decimal} -- initial supply for camel
+
+            E_init {decimal} -- initial endurance for camel
+
+            T_min {decimal} -- minimal temperature
+
+            T_max {decimal} -- maximal temperature
+
+            C_a {decimal} -- Amplification factor
+
+            C_r {decimal} -- Reduction factor
+
         """
 
         self.D = D
@@ -114,6 +130,14 @@ class Runner(object):
         self.vMin = vMin
         self.vMax = vMax
         self.Tao = Tao
+        self.omega = omega
+        self.mu = mu
+        self.E_init = E_init
+        self.S_init = S_init
+        self.T_min = T_min
+        self.T_max = T_max
+        self.C_a = C_a
+        self.C_r = C_r
         self.results = {}
 
     def __algorithmFactory(self, name, benchmark):
@@ -150,6 +174,10 @@ class Runner(object):
         elif name == 'SelfAdaptiveDifferentialEvolutionAlgorithm':
             algorithm = algorithms.modified.SelfAdaptiveDifferentialEvolutionAlgorithm(
                 self.D, self.NP, self.nFES, self.F, self.CR, self.Tao, bench)
+        elif name == 'CamelAlgorithm':
+            algorithm = algorithms.basic.CamelAlgorithm(self.NP, self.D, self.nGEN, self.nFES, self.omega, self.mu, self.alpha, self.S_init, self.E_init, self.T_min, self.T_max, bench)
+        elif name == 'BareBonesFireworksAlgorithm':
+            algorithm = algorithm.basic.BareBonesFireworksAlgorithm(self.D, self.nFES, self.n, self.C_a, self.C_r, bench)
         else:
             raise TypeError('Passed benchmark is not defined!')
 
