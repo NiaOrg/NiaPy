@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation
+# pylint: disable=mixed-indentation, multiple-statements
 
 __all__ = ['Algorithm']
 
@@ -21,7 +21,7 @@ class Algorithm(object):
 
 	def run(self): pass
 
-	def runTask(self, task): 
+	def runTask(self, task):
 		r"""runTask(self, task)
 		**Arguments**
 			task {Task} -- Task with bounds and objective function for optimization

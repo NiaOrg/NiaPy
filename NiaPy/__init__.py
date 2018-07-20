@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation
+# pylint: disable=mixed-indentation, line-too-long, multiple-statements
 """Python micro framework for building nature-inspired algorithms."""
 
 from __future__ import print_function  # for backward compatibility purpose
@@ -175,7 +175,7 @@ class Runner(object):
 		return algorithm
 
 	@classmethod
-	def __createExportDir(cls): 
+	def __createExportDir(cls):
 		if not os.path.exists('export'): os.makedirs('export')
 
 	@classmethod
@@ -216,7 +216,7 @@ class Runner(object):
 		workbook.close()
 		logger.info('Export to XLSX completed!')
 
-	def __exportToLatex(self): 
+	def __exportToLatex(self):
 		self.__createExportDir()
 		metrics = ['Best', 'Median', 'Worst', 'Mean', 'Std.']
 
@@ -267,7 +267,7 @@ class Runner(object):
 				outFile.write('\\end{table}\n')
 				outFile.write('\\end{document}')
 		logger.info('Export to Latex completed!')
-	
+
 	def run(self, export='log', verbose=False):
 		"""Execute runner.
 		Keyword Arguments:
@@ -276,7 +276,7 @@ class Runner(object):
 
 		Raises:
 		TypeError -- Raises TypeError if export type is not supported
-		
+
 		Returns:
 		Dictionary -- Returns dictionary of results
 		"""

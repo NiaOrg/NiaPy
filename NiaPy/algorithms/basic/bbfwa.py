@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation
+# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, unused-argument
 import numpy as np
 from NiaPy.algorithms.algorithm import Algorithm
 from NiaPy.benchmarks.utility import Task

@@ -144,7 +144,7 @@ class TestBenchmarkFunctions(TestCase):
 
 	def test_bentcigar(self):
 		bentcigar = Utility().get_benchmark('bentcigar')
-		fun = bentcigar.functions()
+		fun = bentcigar.function()
 		# TODO some test
 		self.assertEqual()
 

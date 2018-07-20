@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, line-too-long, singleton'comparison, multiple-statements, unused-argument
+# pylint: disable=mixed-indentation, line-too-long, singleton-comparison, multiple-statements, unused-argument, attribute-defined-outside-init, no-self-use
 import numpy as np
 from NiaPy.algorithms.algorithm import Algorithm
 from NiaPy.benchmarks.utility import Task
@@ -95,8 +95,7 @@ class CamelAlgorithm(Algorithm):
 		if c.nextX(c_best.x, task):
 			c.next()
 			return c, task.eval(c.x)
-		else:
-			return c, fit
+		return c, fit
 
 	def oasis(self, c, rn, fit, fitn, alpha):
 		if rn > 1 - alpha and fit < fitn: c.refill(Camel.S_init, Camel.E_init)
