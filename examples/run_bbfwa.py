@@ -28,7 +28,7 @@ class MyBenchmark(object):
 		return evaluate
 
 for i in range(10):
-	Algorithm = BareBonesFireworksAlgorithm(50, 500000, 15, 2, 0.4, MyBenchmark())
+	Algorithm = BareBonesFireworksAlgorithm(D=50, nFES=500000, n=15, C_a=2, C_r=0.4, MyBenchmark())
 	Best = Algorithm.run()
 	logger.info('%s %s' % (Best[0], Best[1]))
 

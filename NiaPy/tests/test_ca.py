@@ -17,9 +17,8 @@ class MyBenchmark(object):
 
 class CSTestCase(TestCase):
 	def setUp(self):
-		# TODO set parameters
-		self.ca_custom = CamelAlgorithm(40, 10000, , MyBenchmark())
-		self.ca_griewank = CamelAlgorithm(40, 10000, , 'griewank')
+		self.ca_custom = CamelAlgorithm(NP=40, D=40, nGEN=10000, nFES=4000000, MyBenchmark())
+		self.ca_griewank = CamelAlgorithm(NP=40, D=40, nGEN=10000, nFES=4000000, 'griewank')
 
 	def test_custom_works_fine(self): self.assertTrue(self.pso_custom.run())
 

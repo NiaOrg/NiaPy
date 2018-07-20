@@ -37,13 +37,13 @@ class BareBonesFireworksAlgorithm(Algorithm):
 		self.__setParams(kwargs.get('n', 10), kwargs.get('C_a', 1.5), kwargs.get('C_r', 0.5))
 
 	def __setParams(self, n, C_a, C_r):
-		r"""
+		r"""Function that sets the argumets of an algorithm
 		**Arguments**:
 		n {integer} -- number of sparks
 		C_a {real} -- amplification coefficient > 1
 		C_r {real} -- reduction coefficient < 1
 		"""
-		self.n, self.C_a, self.C_r = kwargs['n'], kwargs['C_a'], kwargs['C_r
+		self.n, self.C_a, self.C_r = n, C_a, C_r
 	
 	def runTask(self, task):
 		x, A = np.random.uniform(task.Lower, task.Upper, task.D), task.bRange
