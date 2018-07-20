@@ -1,7 +1,8 @@
-from unittest import TestCase
+# encoding=utf8
 # pylint: disable=mixed-indentation
+from unittest import TestCase
+from NiaPy.benchmarks.griewank import Griewank
 from NiaPy.algorithms.basic import CamelAlgorithm
-from NiaPy.benchmark.griewank import Griewank
 
 class MyBenchmark(object):
 	def __init__(self):

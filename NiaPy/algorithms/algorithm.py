@@ -9,15 +9,13 @@ class Algorithm(object):
 	**Author:** Klemen Berkovič
 	**License:** MIT
 	"""
-	def __init__(self, **kwargs): pass
-
-	def __init__(self, name, sName): 
+	def __init__(self, **kwargs):
 		r"""__init__(self, name, shortName)
 		**Arguments**:
 		name {string} -- Full name of algorithm
 		shortName {string} -- Short name of algorithm
 		"""
-		self.name, self.sName = name, sName
+		self.name, self.sName = kwargs.get('name', 'Algorith'), kwargs.get('sName', 'algo')
 
 	def setParameters(self, **kwargs): pass
 

@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation
+# pylint: disable=mixed-indentation, line-too-long, singleton'comparison, multiple-statements, unused-argument
 import numpy as np
 from NiaPy.algorithms.algorithm import Algorithm
 from NiaPy.benchmarks.utility import Task
@@ -35,17 +35,16 @@ class Camel(object):
 		if not task.isFisible(self.x):
 			self.x = self.x_past
 			return False
-		else: 
-			return True
+		return True
 
 	def next(self):
 		self.x_past, self.E_past, self.S_past = self.x, self.E, self.S
 		self.steps += 1
 
-	def refill(self, S = None, E = None):
+	def refill(self, S=None, E=None):
 		self.S = Camel.S_init if S == None else S
 		self.E = Camel.E_init if E == None else E
-	
+
 	def __getitem__(self, i): return self.x[i]
 
 class CamelAlgorithm(Algorithm):
@@ -67,7 +66,7 @@ class CamelAlgorithm(Algorithm):
 		benchmark {object} -- benchmark implementation object
 		**See**: CamelAlgorithm.setParameters
 		"""
-		super().__init__('CamelAlgorithm', 'CA')
+		super().__init__(name='CamelAlgorithm', sName='CA')
 		task = kwargs.get('task', None)
 		self.task = task if task != None else Task(kwargs.get('D', 10), kwargs.get('nFES', 100000), kwargs.get('nGEN', 10000), kwargs.get('benchmark', 'ackley'))
 		self.setParameters(**kwargs)
@@ -96,10 +95,10 @@ class CamelAlgorithm(Algorithm):
 		if c.nextX(c_best.x, task):
 			c.next()
 			return c, task.eval(c.x)
-		else: 
+		else:
 			return c, fit
 
-	def oasis(self, c, rn, fit, fitn, alpha): 
+	def oasis(self, c, rn, fit, fitn, alpha):
 		if rn > 1 - alpha and fit < fitn: c.refill(Camel.S_init, Camel.E_init)
 		return c
 
@@ -107,8 +106,7 @@ class CamelAlgorithm(Algorithm):
 		if fit < mu * fitn:
 			cn = Camel(c.rand(task.D) * task.bRange, c.rand)
 			return cn, task.eval(cn.x)
-		else:
-			return c, fitn
+		return c, fitn
 
 	def runTask(self, task):
 		Camel.E_init, Camel.S_init, rand = self.E_init, self.S_init, np.random.RandomState().rand
