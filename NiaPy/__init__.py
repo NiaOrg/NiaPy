@@ -145,35 +145,25 @@ class Runner(object):
         algorithm = None
 
         if name == 'BatAlgorithm':
-            algorithm = algorithms.basic.BatAlgorithm(
-                self.D, self.NP, self.nFES, self.A, self.r, self.Qmin, self.Qmax, bench)
+            algorithm = algorithms.basic.BatAlgorithm(self.D, self.NP, self.nFES, self.A, self.r, self.Qmin, self.Qmax, bench)
         elif name == 'DifferentialEvolutionAlgorithm':
-            algorithm = algorithms.basic.DifferentialEvolutionAlgorithm(
-                self.D, self.NP, self.nFES, self.F, self.CR, bench)
+            algorithm = algorithms.basic.DifferentialEvolutionAlgorithm(self.D, self.NP, self.nFES, self.F, self.CR, bench)
         elif name == 'FireflyAlgorithm':
-            algorithm = algorithms.basic.FireflyAlgorithm(
-                self.D, self.NP, self.nFES, self.alpha, self.betamin, self.gamma, bench)
+            algorithm = algorithms.basic.FireflyAlgorithm(self.D, self.NP, self.nFES, self.alpha, self.betamin, self.gamma, bench)
         elif name == 'FlowerPollinationAlgorithm':
-            algorithm = algorithms.basic.FlowerPollinationAlgorithm(
-                self.D, self.NP, self.nFES, self.p, bench)
+            algorithm = algorithms.basic.FlowerPollinationAlgorithm(self.D, self.NP, self.nFES, self.p, bench)
         elif name == 'GreyWolfOptimizer':
-            algorithm = algorithms.basic.GreyWolfOptimizer(
-                self.D, self.NP, self.nFES, bench)
+            algorithm = algorithms.basic.GreyWolfOptimizer(self.D, self.NP, self.nFES, bench)
         elif name == 'ArtificialBeeColonyAlgorithm':
-            algorithm = algorithms.basic.ArtificialBeeColonyAlgorithm(
-                self.D, self.NP, self.nFES, bench)
+            algorithm = algorithms.basic.ArtificialBeeColonyAlgorithm(self.D, self.NP, self.nFES, bench)
         elif name == 'GeneticAlgorithm':
-            algorithm = algorithms.basic.GeneticAlgorithm(
-                self.D, self.NP, self.nFES, self.Ts, self.Mr, self.gamma, bench)
+            algorithm = algorithms.basic.GeneticAlgorithm(self.D, self.NP, self.nFES, self.Ts, self.Mr, self.gamma, bench)
         elif name == 'ParticleSwarmAlgorithm':
-            algorithm = algorithms.basic.ParticleSwarmAlgorithm(
-                self.D, self.NP, self.nFES, self.C1, self.C2, self.w, self.vMin, self.vMax, bench)
+            algorithm = algorithms.basic.ParticleSwarmAlgorithm(self.D, self.NP, self.nFES, self.C1, self.C2, self.w, self.vMin, self.vMax, bench)
         elif name == 'HybridBatAlgorithm':
-            algorithm = algorithms.modified.HybridBatAlgorithm(
-                self.D, self.NP, self.nFES, self.A, self.r, self.F, self.CR, self.Qmin, self.Qmax, bench)
+            algorithm = algorithms.modified.HybridBatAlgorithm(self.D, self.NP, self.nFES, self.A, self.r, self.F, self.CR, self.Qmin, self.Qmax, bench)
         elif name == 'SelfAdaptiveDifferentialEvolutionAlgorithm':
-            algorithm = algorithms.modified.SelfAdaptiveDifferentialEvolutionAlgorithm(
-                self.D, self.NP, self.nFES, self.F, self.CR, self.Tao, bench)
+            algorithm = algorithms.modified.SelfAdaptiveDifferentialEvolutionAlgorithm(self.D, self.NP, self.nFES, self.F, self.CR, self.Tao, bench)
         elif name == 'CamelAlgorithm':
             algorithm = algorithms.basic.CamelAlgorithm(self.NP, self.D, self.nGEN, self.nFES, self.omega, self.mu, self.alpha, self.S_init, self.E_init, self.T_min, self.T_max, bench)
         elif name == 'BareBonesFireworksAlgorithm':
