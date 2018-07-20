@@ -70,13 +70,13 @@ class CamelAlgorithm(Algorithm):
 		super().__init__('CamelAlgorithm', 'CA')
 		task = kwargs.get('task', None)
 		self.task = task if task != None else Task(kwargs.get('D', 10), kwargs.get('nFES', 100000), kwargs.get('nGEN', 10000), kwargs.get('benchmark', 'ackley'))
-		self.setParameters(kwargs)
+		self.setParameters(**kwargs)
 
 	def setParameters(self, **kwargs):
 		r"""**See**:CamelAlgorithm.__setParams"""
-		self.__setParams(kwargs.get('NP', 50), kwargs.get('omega', 0.25), kwargs.get('mu', 0.5), kwargs.get('alpha', 0.5), kwargs.get('S_init', 10), kwargs.get('E_init', 10), kwargs.get('T_min', -10)), kwargs.get('T_max', 10))
+		self.__setParams(**kwargs)
 
-	def __setParams(self, NP, omega, mu, alpha, S_init, E_init, T_min, T_max):
+	def __setParams(self, NP=50, omega=0.25, mu=0.5, alpha=0.5, S_init=10, E_init=10, T_min=-10, T_max=10, **ukwargs):
 		r"""Function that sets the arguments of an algorithm
 		**Arguments**:
 		NP {integer} -- population size

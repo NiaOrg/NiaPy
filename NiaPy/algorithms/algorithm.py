@@ -17,7 +17,7 @@ class Algorithm(object):
 		name {string} -- Full name of algorithm
 		shortName {string} -- Short name of algorithm
 		"""
-		self.name, self.sName
+		self.name, self.sName = name, sName
 
 	def setParameters(self, **kwargs): pass
 

@@ -1,6 +1,7 @@
 from unittest import TestCase
 # pylint: disable=mixed-indentation
 from NiaPy.algorithms.basic import CamelAlgorithm
+from NiaPy.benchmark.griewank import Griewank
 
 class MyBenchmark(object):
 	def __init__(self):
@@ -17,11 +18,20 @@ class MyBenchmark(object):
 
 class CSTestCase(TestCase):
 	def setUp(self):
-		self.ca_custom = CamelAlgorithm(NP=40, D=40, nGEN=10000, nFES=4000000, MyBenchmark())
-		self.ca_griewank = CamelAlgorithm(NP=40, D=40, nGEN=10000, nFES=4000000, 'griewank')
+		self.D = 40
+		self.ca_custom = CamelAlgorithm(NP=40, D=self.D, nGEN=10000, nFES=4000000, benchmark=MyBenchmark())
+		self.ca_griewank = CamelAlgorithm(NP=40, D=self.D, nGEN=10000, nFES=4000000, benchmark=Griewank())
 
-	def test_custom_works_fine(self): self.assertTrue(self.pso_custom.run())
+	def test_custom_works_fine(self): 
+		fun = MyBenchmark().function
+		x = ca_custom.run()
+		self.assertTrue(x)
+		self.assertEqual(fun(self.D, x[0]), x[1])
 
-	def test_griewank_works_fine(self): self.assertTrue(self.pso_griewank.run())
+	def test_griewank_works_fine(self):
+		fun = Griewank().function
+		x = ca_griewank.run()
+		self.assertTrue(x)
+		self.assertEqual(fun(self.D, x[0]), x[1])
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

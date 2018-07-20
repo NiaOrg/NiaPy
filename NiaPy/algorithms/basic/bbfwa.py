@@ -30,13 +30,13 @@ class BareBonesFireworksAlgorithm(Algorithm):
 		super().__init__('BareBonesFireworksAlgorithm', 'BBFA')
 		task = kwargs.get('task', None)
 		self.task = task if task != None else Task(kwargs.get('D', 10), kwargs.get('nFES', 100000), None, kwargs.get('benchmark', 'ackley'))
-		self.setParameters(kwargs)
+		self.setParameters(**kwargs)
 	
 	def setParameters(self, **kwargs):
 		r"""**See**: BareBonesFireworksAlgorithm.__setParams"""
-		self.__setParams(kwargs.get('n', 10), kwargs.get('C_a', 1.5), kwargs.get('C_r', 0.5))
+		self.__setParams(**kwargs)
 
-	def __setParams(self, n, C_a, C_r):
+	def __setParams(self, n=10, C_a=1.5, C_r=0.5, **ukwargs):
 		r"""Function that sets the argumets of an algorithm
 		**Arguments**:
 		n {integer} -- number of sparks

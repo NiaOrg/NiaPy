@@ -30,7 +30,7 @@ class Runner(object):
 	It also support exporting results in various formats (e.g. LaTeX, Excel, JSON)
 
 	"""
-	def __init__(self, D, NP, nFES, nRuns, useAlgorithms, useBenchmarks, A=0.5, r=0.5, Qmin=0.0, Qmax=2.0, Pa=0.25, F=0.5, CR=0.9, alpha=0.5, betamin=0.2, gamma=1.0, p=0.5, Ts=4, Mr=0.05, C1=2.0, C2=2.0, w=0.7, vMin=-4, vMax=4, Tao=0.1, n=10, omega=0.25, mu=0.5, n=10, S_init=10, E_init=10, T_min=-10, T_max=10, C_a=2, C_r=0.5):
+	def __init__(self, D, NP, nFES, nRuns, useAlgorithms, useBenchmarks, **kwargs):
 		r"""Initialize Runner.
 
 		**__init__(self, D, NP, nFES, nRuns, useAlgorithms, useBenchmarks, ...)**
@@ -111,34 +111,34 @@ class Runner(object):
 		self.nRuns = nRuns
 		self.useAlgorithms = useAlgorithms
 		self.useBenchmarks = useBenchmarks
-		self.A = A
-		self.r = r
-		self.Qmin = Qmin
-		self.Qmax = Qmax
-		self.Pa = Pa
-		self.F = F
-		self.CR = CR
-		self.alpha = alpha
-		self.betamin = betamin
-		self.gamma = gamma
-		self.p = p
-		self.Ts = Ts
-		self.Mr = Mr
-		self.C1 = C1
-		self.C2 = C2
-		self.w = w
-		self.vMin = vMin
-		self.vMax = vMax
-		self.Tao = Tao
-		self.n = n
-		self.omega = omega
-		self.mu = mu
-		self.E_init = E_init
-		self.S_init = S_init
-		self.T_min = T_min
-		self.T_max = T_max
-		self.C_a = C_a
-		self.C_r = C_r
+		self.A = kwargs.get('A', 0.5)
+		self.r = kwargs.get('r', 0.5)
+		self.Qmin = kwargs.get('Qmin', 0.0)
+		self.Qmax = kwargs.get('Qmax', 2.0)
+		self.Pa = kwargs.get('Pa', 0.25)
+		self.F = kwargs.get('F', 0.5)
+		self.CR = kwargs.get('CR', 0.9)
+		self.alpha = kwargs.get('alpha', 0.5)
+		self.betamin = kwargs.get('betamin', 0.2)
+		self.gamma = kwargs.get('gamma', 1.0)
+		self.p = kwargs.get('p', 0.5)
+		self.Ts = kwargs.get('Ts', 4)
+		self.Mr = kwargs.get('Mr', 0.05)
+		self.C1 = kwargs.get('C1', 2.0)
+		self.C2 = kwargs.get('C2', 2.0)
+		self.w = kwargs.get('w', 0.7)
+		self.vMin = kwargs.get('vMin', -4)
+		self.vMax = kwargs.get('vMax', 4)
+		self.Tao = kwargs.get('Tao', 0.1)
+		self.n = kwargs.get('n', 10)
+		self.omega = kwargs.get('omega', 0.25)
+		self.mu = kwargs.get('mu', 0.5)
+		self.E_init = kwargs.get('E_init', 10)
+		self.S_init = kwargs.get('S_init', 10)
+		self.T_min = kwargs.get('T_min', -10)
+		self.T_max = kwargs.get('T_max', 10)
+		self.C_a = kwargs.get('C_a', 2)
+		self.C_r = kwargs.get('C_r', 0.5)
 		self.results = {}
 
 	def __algorithmFactory(self, name, benchmark):
@@ -172,7 +172,7 @@ class Runner(object):
 		else:
 			raise TypeError('Passed benchmark is not defined!')
 
-	  return algorithm
+		return algorithm
 
 	@classmethod
 	def __createExportDir(cls): 

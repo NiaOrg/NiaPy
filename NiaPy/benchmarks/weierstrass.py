@@ -39,7 +39,7 @@ class Weierstrass(object):
 
 	@classmethod
 	def function(cls):
-		def f(D, sol, a=self.a, b=self.b, k_max=self.k_max):
+		def f(D, sol, a=cls.a, b=cls.b, k_max=cls.k_max):
 			val1 = 0.0
 			for i in range(D):
 				val = 0.0

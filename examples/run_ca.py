@@ -28,7 +28,7 @@ class MyBenchmark(object):
 		return evaluate
 
 for i in range(10):
-	Algorithm = CamelAlgorithm(NP=50, D=50, nGEN=50000, nFES=500000, omega=0.25, alpha=0.15, mu=0.5, S_init=1, E_init=1, T_min=0, T_max=100, MyBenchmark())
+	Algorithm = CamelAlgorithm(NP=50, D=50, nGEN=50000, nFES=500000, omega=0.25, alpha=0.15, mu=0.5, S_init=1, E_init=1, T_min=0, T_max=100, benchmark=MyBenchmark())
 	Best = Algorithm.run()
 	logger.info('%s %s' % (Best[0], Best[1]))
 
