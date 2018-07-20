@@ -1,4 +1,5 @@
 # encoding=utf8
+# pylint: disable=mixed-indentation
 """Implementations of HGBat functions."""
 
 from math import fabs

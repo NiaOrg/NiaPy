@@ -1,4 +1,5 @@
 # encoding=utf8
+# pylint: disable=mixed-indentation
 """Implementations of Bent Cigar functions."""
 
 __all__ = ['BentCigar']

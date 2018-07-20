@@ -1,4 +1,5 @@
 # encoding=utf8
+# pylint: disable=mixed-indentation
 import numpy as np
 from NiaPy.algorithms.algorithm import Algorithm
 from NiaPy.benchmarks.utility import Task

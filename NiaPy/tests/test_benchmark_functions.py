@@ -1,3 +1,5 @@
+# encoding=utf8
+# pylint: disable=mixed-indentation
 from unittest import TestCase
 import math
 

@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=anomalous-backslash-in-string
+# pylint: disable=anomalous-backslash-in-string,mixed-indentation
 import math
 
 __all__ = ['Griewank', 'ExpandedGriewankPlusRosenbrock']

@@ -1,4 +1,5 @@
 # encoding=utf8
+# pylint: disable=mixed-indentation
 from unittest import TestCase
 from NiaPy.algorithms.basic import BareBonesFireworksAlgorithm
 

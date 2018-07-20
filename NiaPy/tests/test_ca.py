@@ -1,4 +1,5 @@
 from unittest import TestCase
+# pylint: disable=mixed-indentation
 from NiaPy.algorithms.basic import CamelAlgorithm
 
 class MyBenchmark(object):

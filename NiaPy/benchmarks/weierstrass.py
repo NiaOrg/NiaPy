@@ -1,4 +1,5 @@
 # encoding=utf8
+# pylint: disable=mixed-indentation
 """Implementations of Weierstrass functions."""
 
 from math import pi, cos

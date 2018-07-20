@@ -1,4 +1,5 @@
 # encoding=utf8
+# pylint: disable=mixed-indentation
 """Implementations of High Conditioned Elliptic functions."""
 
 __all__ = ['Elliptic']

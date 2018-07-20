@@ -1,4 +1,5 @@
 # encoding=utf8
+# pylint: disable=mixed-indentation
 """Implementations of Discus functions."""
 
 __all__ = ['Discus']
