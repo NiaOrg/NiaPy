@@ -17,34 +17,34 @@ class BareBonesFireworksAlgorithm(Algorithm):
 	**Reference paper:**
 		Junzhi Li, Ying Tan, The bare bones fireworks algorithm: A minimalist global optimizer, Applied Soft Computing, Volume 62, 2018, Pages 454-462, ISSN 1568-4946, https://doi.org/10.1016/j.asoc.2017.10.046.
 	"""
-	def __init__(self, D, nFES, n, C_a, C_r, benchmark):
-		r"""**__init__(self, NP, D, nFES, T_min, T_max, omega, S_init, E_init, benchmark)**.
-		Arguments:
+	def __init__(self, **kwargs):
+		r"""**Arguments**:
 		NP {integer} -- population size
 		D {integer} -- dimension of problem
 		nGEN {integer} -- nuber of generation/iterations
 		nFES {integer} -- number of function evaluations
+		benchmark {object} -- benchmark implementation object
+		task {Task} -- task to perform optimization on
+		**See**: BareBonesFireworksAlgorithm.setParameters
+		"""
+		super().__init__('BareBonesFireworksAlgorithm', 'BBFA')
+		task = kwargs.get('task', None)
+		self.task = task if task != None else Task(kwargs.get('D', 10), kwargs.get('nFES', 100000), None, kwargs.get('benchmark', 'ackley'))
+		self.setParameters(kwargs)
+	
+	def setParameters(self, **kwargs):
+		r"""**See**: BareBonesFireworksAlgorithm.__setParams"""
+		self.__setParams(kwargs.get('n', 10), kwargs.get('C_a', 1.5), kwargs.get('C_r', 0.5))
+
+	def __setParams(self, n, C_a, C_r):
+		r"""
+		**Arguments**:
 		n {integer} -- number of sparks
 		C_a {real} -- amplification coefficient > 1
 		C_r {real} -- reduction coefficient < 1
-		benchmark {object} -- benchmark implementation object
 		"""
-		super().__init__('BareBonesFireworksAlgorithm', 'BBFA')
-		self.n, self.C_a, self.C_r = n, C_a, C_r
-		self.task = Task(D, nFES, None, benchmark)
-
-	def __init__(self, **kwargs):
-		# TODO
-		pass
-
-	def __init__(self, task, **kwargs):
-		# TODO
-		pass
-
-	def setParameters(self, **kwargs):
-		# TODO
-		pass
-
+		self.n, self.C_a, self.C_r = kwargs['n'], kwargs['C_a'], kwargs['C_r
+	
 	def runTask(self, task):
 		x, A = np.random.uniform(task.Lower, task.Upper, task.D), task.bRange
 		x_fit = task.eval(x)

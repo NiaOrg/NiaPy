@@ -9,18 +9,15 @@ class Algorithm(object):
 	**Author:** Klemen Berkovič
 	**License:** MIT
 	"""
-	def __init__(self, name, shortName): 
+	def __init__(self, **kwargs): pass
+
+	def __init__(self, name, sName): 
 		r"""__init__(self, name, shortName)
+		**Arguments**:
 		name {string} -- Full name of algorithm
 		shortName {string} -- Short name of algorithm
 		"""
 		self.name, self.sName
-
-	def __init__(self): pass
-
-	def __init__(self, **kwargs): pass
-
-	def __init__(self, task, **kwargs): pass
 
 	def setParameters(self, **kwargs): pass
 

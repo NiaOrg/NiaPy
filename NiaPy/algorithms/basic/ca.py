@@ -59,36 +59,35 @@ class CamelAlgorithm(Algorithm):
 	**Reference paper:**
 		Ali, Ramzy. (2016). Novel Optimization Algorithm Inspired by Camel Traveling Behavior. Iraq J. Electrical and Electronic Engineering. 12. 167-177.
 	"""
-	def __init__(self, NP, D, nGEN, nFES, omega, mu, alpha, S_init, E_init, T_min, T_max, benchmark):
-		r"""**__init__(self, NP, D, nFES, T_min, T_max, omega, S_init, E_init, benchmark)**.
-		Arguments:
-		NP {integer} -- population size
+	def __init__(self, **kwargs):
+		r"""**Arguments**:
 		D {integer} -- dimension of problem
 		nGEN {integer} -- nuber of generation/iterations
 		nFES {integer} -- number of function evaluations
+		benchmark {object} -- benchmark implementation object
+		**See**: CamelAlgorithm.setParameters
+		"""
+		super().__init__('CamelAlgorithm', 'CA')
+		task = kwargs.get('task', None)
+		self.task = task if task != None else Task(kwargs.get('D', 10), kwargs.get('nFES', 100000), kwargs.get('nGEN', 10000), kwargs.get('benchmark', 'ackley'))
+		self.setParameters(kwargs)
+
+	def setParameters(self, **kwargs):
+		r"""**See**:CamelAlgorithm.__setParams"""
+		self.__setParams(kwargs.get('NP', 50), kwargs.get('omega', 0.25), kwargs.get('mu', 0.5), kwargs.get('alpha', 0.5), kwargs.get('S_init', 10), kwargs.get('E_init', 10), kwargs.get('T_min', -10)), kwargs.get('T_max', 10))
+
+	def __setParams(self, NP, omega, mu, alpha, S_init, E_init, T_min, T_max):
+		r"""Function that sets the arguments of an algorithm
+		**Arguments**:
+		NP {integer} -- population size
 		T_min {real} -- minimum temperature
 		T_max {real} -- maximum temperature
 		omega {real} -- (0, 1] -- burden factor
 		mu {real} -- [0, 1) -- dying rate
 		S_init {real} -- (0, inf) -- initial supply
 		E_init {real} -- (0, inf) -- initial endurance
-		benchmark {object} -- benchmark implementation object
 		"""
-		super().__init__('CamelAlgorithm', 'CA')
 		self.NP, self.omega, self.mu, self.alpha, self.S_init, self.E_init, self.T_min, self.T_max = NP, omega, mu, alpha, S_init, E_init, T_min, T_max
-		self.task = Task(D, nFES, nGEN, benchmark)
-
-	def __init__(self, **kwargs):
-		# TODO
-		pass
-
-	def __init__(self, taks, **kwargs):
-		# TODO
-		pass
-
-	def setParameters(self, **kwargs):
-		# TODO
-		pass
 
 	def walk(self, c, fit, task, omega, c_best):
 		c.nextT()
