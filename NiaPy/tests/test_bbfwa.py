@@ -27,12 +27,12 @@ class CSTestCase(TestCase):
 		fun = MyBenchmark().function()
 		x = self.bbfa_custom.run()
 		self.assertTrue(x)
-		self.assertEqual(fun(self.D, x[0]), x[1])
+		self.assertAlmostEqual(fun(self.D, x[0]), x[1])
 
 	def test_griewank_works_fine(self):
 		fun = Griewank().function()
 		x = self.bbfa_griewank.run()
 		self.assertTrue(x)
-		self.assertEqual(fun(self.D, x[0]), x[1])
+		self.assertAlmostEqual(fun(self.D, x[0]), x[1])
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

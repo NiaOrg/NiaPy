@@ -71,7 +71,7 @@ class CamelAlgorithm(Algorithm):
 		benchmark {object} -- benchmark implementation object
 		**See**: CamelAlgorithm.setParameters
 		"""
-		super().__init__(name='CamelAlgorithm', sName='CA')
+		super(CamelAlgorithm, self).__init__(name='CamelAlgorithm', sName='CA')
 		task = kwargs.get('task', None)
 		self.task = task if task != None else Task(kwargs.get('D', 10), kwargs.get('nFES', 100000), kwargs.get('nGEN', 10000), kwargs.get('benchmark', 'ackley'))
 		self.setParameters(**kwargs)

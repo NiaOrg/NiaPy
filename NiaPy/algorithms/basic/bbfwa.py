@@ -32,7 +32,7 @@ class BareBonesFireworksAlgorithm(Algorithm):
 		task {Task} -- task to perform optimization on
 		**See**: BareBonesFireworksAlgorithm.setParameters
 		"""
-		super().__init__(name='BareBonesFireworksAlgorithm', sName='BBFA')
+		super(BareBonesFireworksAlgorithm, self).__init__(name='BareBonesFireworksAlgorithm', sName='BBFA')
 		task = kwargs.get('task', None)
 		self.task = task if task != None else Task(kwargs.get('D', 10), kwargs.get('nFES', 100000), None, kwargs.get('benchmark', 'ackley'))
 		self.setParameters(**kwargs)

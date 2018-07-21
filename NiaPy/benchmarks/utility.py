@@ -67,7 +67,7 @@ class Task(Utility):
 		o {array} --
 		M {matrix} --
 		"""
-		super().__init__()
+		super(Task, self).__init__()
 		self.benchmark = self.get_benchmark(benchmark) if benchmark != None else None
 		self.D = D  # dimension of the problem
 		self.Iters, self.nGEN = 0, nGEN
