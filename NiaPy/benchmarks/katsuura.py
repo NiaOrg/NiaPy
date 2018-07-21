@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation
+# pylint: disable=mixed-indentation, line-too-long, multiple-statements
 """Implementations of Katsuura functions."""
 
 from math import fabs
@@ -34,17 +34,17 @@ class Katsuura(object):
 
 	Reference: http://www5.zzu.edu.cn/__local/A/69/BC/D3B5DFE94CD2574B38AD7CD1D12_C802DAFE_BC0C0.pdf
 	"""
-	def __init__(self, Lower=-100.0, Upper=100.0): self.Lower, self.Upper = Lower, Upper 
+	def __init__(self, Lower=-100.0, Upper=100.0): self.Lower, self.Upper = Lower, Upper
 
 	@classmethod
 	def function(cls):
 		def f(D, x):
 			val = 1.0
-			for i in range(D): 
+			for i in range(D):
 				valt = 1.0
 				for j in range(1, 33): valt += fabs(2 ** j * x[i] - round(2 ** j * x[i])) / 2 ** j
 				val *= (1 + (i + 1) * valt) ** (10 / D ** 1.2) - (10 / D ** 2)
-			return 10 / d ** 2 * val
+			return 10 / D ** 2 * val
 		return f
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

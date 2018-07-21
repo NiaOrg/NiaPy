@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation
+# pylint: disable=mixed-indentation, multiple-statements
 """Implementations of Discus functions."""
 
 __all__ = ['Discus']
@@ -32,7 +32,7 @@ class Discus(object):
 
 	Reference: http://www5.zzu.edu.cn/__local/A/69/BC/D3B5DFE94CD2574B38AD7CD1D12_C802DAFE_BC0C0.pdf
 	"""
-	def __init__(self, Lower=-100.0, Upper=100.0): self.Lower, self.Upper = Lower, Upper 
+	def __init__(self, Lower=-100.0, Upper=100.0): self.Lower, self.Upper = Lower, Upper
 
 	@classmethod
 	def function(cls):

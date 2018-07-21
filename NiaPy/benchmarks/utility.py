@@ -1,10 +1,9 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, line-too-long
+# pylint: disable=mixed-indentation, line-too-long, bad-continuation, multiple-statements, singleton-comparison
 """Implementation of benchmarks utility function."""
 
-from . import Rastrigin, Rosenbrock, Griewank, Sphere, Ackley, Schwefel, Schwefel221, Schwefel222, Whitley, Alpine1, Alpine2, HappyCat, Ridge, ChungReynolds, Csendes, Pinter, Qing, Quintic, Salomon, SchumerSteiglitz, Step, Step2, Step3, Stepint, SumSquares, StyblinskiTang, BentCigar, Discus, Elliptic, ExpandedGriewankPlusRosenbrock, HGBat, Katsuura, ExpandedScaffer, ModifiedSchwefel, Weierstrass
-
 import numpy as np
+from . import Rastrigin, Rosenbrock, Griewank, Sphere, Ackley, Schwefel, Schwefel221, Schwefel222, Whitley, Alpine1, Alpine2, HappyCat, Ridge, ChungReynolds, Csendes, Pinter, Qing, Quintic, Salomon, SchumerSteiglitz, Step, Step2, Step3, Stepint, SumSquares, StyblinskiTang, BentCigar, Discus, Elliptic, ExpandedGriewankPlusRosenbrock, HGBat, Katsuura, ExpandedScaffer, ModifiedSchwefel, Weierstrass
 
 __all__ = ['Utility', 'Task']
 
@@ -80,9 +79,9 @@ class Task(Utility):
 
 	def __initBounds(self):
 		Lower, Upper = self.benchmark.Lower, self.benchmark.Upper
-		if isinstance(Lower, int) or isinstance(Lower, float): self.Lower = np.full(self.D, Lower)
+		if isinstance(Lower, (int, float)): self.Lower = np.full(self.D, Lower)
 		else: self.Lower = Lower if isinstance(Lower, np.ndarray) else np.asarray(Lower)
-		if isinstance(Upper, int) or isinstance(Upper, float): self.Upper = np.full(self.D, Upper)
+		if isinstance(Upper, (int, float)): self.Upper = np.full(self.D, Upper)
 		else: self.Upper = Upper if isinstance(Upper, np.ndarray) else np.asarray(Upper)
 		self.bRange = self.Upper - self.Lower
 

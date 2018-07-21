@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=anomalous-backslash-in-string,mixed-indentation
+# pylint: disable=anomalous-backslash-in-string, mixed-indentation, multiple-statements, line-too-long
 """Implementations of Schwefels functions."""
 
 from math import sin, fmod, fabs, sqrt
@@ -47,16 +47,11 @@ class Schwefel(object):
 	@classmethod
 	def function(cls):
 		def evaluate(D, sol):
-
 			val = 0.0
-
 			for i in range(D):
 				val += (sol[i] * sin(sqrt(abs(sol[i]))))
-
 			return 418.9829 * D - val
-
 		return evaluate
-
 
 class Schwefel221(object):
 	r"""Schwefel 2.21 function implementation.
@@ -93,7 +88,6 @@ class Schwefel221(object):
 	International Journal of Mathematical Modelling and Numerical Optimisation,
 	4(2), 150-194.
 	"""
-
 	def __init__(self, Lower=-100.0, Upper=100.0):
 		self.Lower = Lower
 		self.Upper = Upper
@@ -102,15 +96,11 @@ class Schwefel221(object):
 	def function(cls):
 		def evaluate(D, sol):
 			maximum = 0.0
-
 			for i in range(D):
 				if abs(sol[i]) > maximum:
 					maximum = abs(sol[i])
-
 			return maximum
-
 		return evaluate
-
 
 class Schwefel222(object):
 	r"""Schwefel 2.22 function implementation.
@@ -148,7 +138,6 @@ class Schwefel222(object):
 	International Journal of Mathematical Modelling and Numerical Optimisation,
 	4(2), 150-194.
 	"""
-
 	def __init__(self, Lower=-100.0, Upper=100.0):
 		self.Lower = Lower
 		self.Upper = Upper
@@ -156,16 +145,12 @@ class Schwefel222(object):
 	@classmethod
 	def function(cls):
 		def evaluate(D, sol):
-
 			part1 = 0.0
 			part2 = 1.0
-
 			for i in range(D):
 				part1 += abs(sol[i])
 				part2 *= abs(sol[i])
-
 			return part1 + part2
-
 		return evaluate
 
 class ModifiedSchwefel(object):
@@ -174,7 +159,7 @@ class ModifiedSchwefel(object):
 	Author: Klemen Berkovič
 	License: MIT
 	Function: **Modified Schwefel Function**
-	
+
 	:math:`f(\textbf{x}) = 418.9829 \cdot D - \sum_{i=1}^D h(x_i) \\ h(x) = g(x + 420.9687462275036)  \\ g(z) = \begin{cases} z \sin \left( | z |^{\frac{1}{2}} \right) &\quad | z | \leq 500 \\ \left( 500 - \mod (z, 500) \right) \sin \left( \sqrt{| 500 - \mod (z, 500) |} \right) - \frac{ \left( z - 500 \right)^2 }{ 10000 D }  &\quad z > 500 \\ \left( \mod (| z |, 500) - 500 \right) \sin \left( \sqrt{| \mod (|z|, 500) - 500 |} \right) + \frac{ \left( z - 500 \right)^2 }{ 10000 D } &\quad z < -500\end{cases}`
 
 	**Input domain:**
@@ -201,9 +186,9 @@ class ModifiedSchwefel(object):
 	@classmethod
 	def function(cls):
 		def g(z, D):
-			if fabs(z) <= 500: return z * sin(fabs(z) ** (1 / 2))
-			elif z > 500: return (500 - fmod(z, 500)) * sin(sqrt(fabs(500 - fmod(z, 500)))) - (z - 500) ** 2 / (10000 * D)
+			if z > 500: return (500 - fmod(z, 500)) * sin(sqrt(fabs(500 - fmod(z, 500)))) - (z - 500) ** 2 / (10000 * D)
 			elif z < -500: return (fmod(z, 500) - 500) * sin(sqrt(fabs(fmod(z, 500) - 500))) + (z - 500) ** 2 / (10000 * D)
+			return z * sin(fabs(z) ** (1 / 2))
 		def h(x, D): return g(x + 420.9687462275036, D)
 		def f(D, sol):
 			val = 0.0
@@ -217,7 +202,7 @@ class ExpandedScaffer(object):
 	Author: Klemen Berkovič
 	License: MIT
 	Function: **High Conditioned Elliptic Function**
-	
+
 	:math:`f(\textbf{x}) = g(x_D, x_1) + \sum_{i=2}^D g(x_{i - 1}, x_i) \\ g(x, y) = 0.5 + \frac{\sin \left(\sqrt{x^2 + y^2} \right)^2 - 0.5}{\left( 1 + 0.001 (x^2 + y^2) \right)}^2`
 
 	**Input domain:**
@@ -244,7 +229,7 @@ class ExpandedScaffer(object):
 	@classmethod
 	def function(cls):
 		def g(x, y): return 0.5 + (sin(sqrt(x ** 2 + y ** 2)) ** 2 - 0.5) / (1 + 0.001 * (x ** 2 + y ** 2)) ** 2
-		def f(D, sol):
+		def f(D, x):
 			val = 0.0
 			for i in range(1, D): val += g(x[i - 1], x[i])
 			return g(x[D - 1], x[0]) + val

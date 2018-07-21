@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation
+# pylint: disable=mixed-indentation, line-too-long, multiple-statements
 """Implementations of Weierstrass functions."""
 
 from math import pi, cos
@@ -35,7 +35,11 @@ class Weierstrass(object):
 
 	Reference: http://www5.zzu.edu.cn/__local/A/69/BC/D3B5DFE94CD2574B38AD7CD1D12_C802DAFE_BC0C0.pdf
 	"""
-	def __init__(self, Lower=-100.0, Upper=100.0, a=0.5, b=3, k_max=20): self.Lower, self.Upper, self.a, self.b, self.k_max = Lower, Upper, a, b, k_max
+	a, b, k_max = 0.5, 3, 20
+
+	def __init__(self, Lower=-100.0, Upper=100.0, a=0.5, b=3, k_max=20):
+		self.Lower, self.Upper = Lower, Upper
+		Weierstrass.a, Weierstrass.b, Weierstrass.k_max = a, b, k_max
 
 	@classmethod
 	def function(cls):
@@ -48,6 +52,6 @@ class Weierstrass(object):
 			val2 = 0.0
 			for k in range(k_max): val2 += a ** k * cos(2 * pi * b ** k * 0.5)
 			return val1 - D * val2
-		return f 
+		return f
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

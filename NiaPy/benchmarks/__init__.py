@@ -40,7 +40,7 @@ __all__ = [
     'Rastrigin',
     'Rosenbrock',
     'Griewank',
-    'ExpandedGriewankPlusRosenbrock'
+    'ExpandedGriewankPlusRosenbrock',
     'Sphere',
     'Ackley',
     'Schwefel',

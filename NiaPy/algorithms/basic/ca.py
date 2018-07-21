@@ -1,8 +1,13 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, line-too-long, singleton-comparison, multiple-statements, unused-argument, attribute-defined-outside-init, no-self-use
+# pylint: disable=mixed-indentation, line-too-long, singleton-comparison, multiple-statements, attribute-defined-outside-init, no-self-use, logging-not-lazy
+import logging
 import numpy as np
 from NiaPy.algorithms.algorithm import Algorithm
 from NiaPy.benchmarks.utility import Task
+
+logging.basicConfig()
+logger = logging.getLogger('NiaPy.algorithms.basic')
+logger.setLevel('INFO')
 
 __all__ = ['CamelAlgorithm']
 
@@ -87,6 +92,7 @@ class CamelAlgorithm(Algorithm):
 		E_init {real} -- (0, inf) -- initial endurance
 		"""
 		self.NP, self.omega, self.mu, self.alpha, self.S_init, self.E_init, self.T_min, self.T_max = NP, omega, mu, alpha, S_init, E_init, T_min, T_max
+		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def walk(self, c, fit, task, omega, c_best):
 		c.nextT()

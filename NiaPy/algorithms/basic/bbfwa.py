@@ -1,8 +1,13 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, unused-argument
+# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy
+import logging
 import numpy as np
 from NiaPy.algorithms.algorithm import Algorithm
 from NiaPy.benchmarks.utility import Task
+
+logging.basicConfig()
+logger = logging.getLogger('NiaPy.algorithms.basic')
+logger.setLevel('INFO')
 
 __all__ = ['BareBonesFireworksAlgorithm']
 
@@ -44,6 +49,7 @@ class BareBonesFireworksAlgorithm(Algorithm):
 		C_r {real} -- reduction coefficient < 1
 		"""
 		self.n, self.C_a, self.C_r = n, C_a, C_r
+		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 	
 	def runTask(self, task):
 		x, A = np.random.uniform(task.Lower, task.Upper, task.D), task.bRange
