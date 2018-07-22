@@ -155,18 +155,21 @@ class Schwefel222(object):
 
 class ModifiedSchwefel(object):
 	r"""Implementations of Modified Schwefel functions.
-	Date: 2018
-	Author: Klemen Berkovič
-	License: MIT
-	Function: **Modified Schwefel Function**
 
+	Date: 2018
+
+	Author: Klemen Berkovič
+
+	License: MIT
+
+	Function:
+	**Modified Schwefel Function**
 	:math:`f(\textbf{x}) = 418.9829 \cdot D - \sum_{i=1}^D h(x_i) \\ h(x) = g(x + 420.9687462275036)  \\ g(z) = \begin{cases} z \sin \left( | z |^{\frac{1}{2}} \right) &\quad | z | \leq 500 \\ \left( 500 - \mod (z, 500) \right) \sin \left( \sqrt{| 500 - \mod (z, 500) |} \right) - \frac{ \left( z - 500 \right)^2 }{ 10000 D }  &\quad z > 500 \\ \left( \mod (| z |, 500) - 500 \right) \sin \left( \sqrt{| \mod (|z|, 500) - 500 |} \right) + \frac{ \left( z - 500 \right)^2 }{ 10000 D } &\quad z < -500\end{cases}`
 
 	**Input domain:**
 	The function can be defined on any input domain but it is usually
 	evaluated on the hypercube :math:`x_i ∈ [-100, 100]`, for all :math:`i = 1, 2,..., D`.
 
-	# TODO test
 	**Global minimum:** :math:`f(x^*) = 0`, at :math:`x^* = (420.968746,...,420.968746)`
 
 	LaTeX formats:
@@ -176,10 +179,11 @@ class ModifiedSchwefel(object):
 	Equation:
 	\begin{equation} f(\textbf{x}) = 418.9829 \cdot D - \sum_{i=1}^D h(x_i) \\ h(x) = g(x + 420.9687462275036)  \\ g(z) = \begin{cases} z \sin \left( | z |^{\frac{1}{2}} \right) &\quad | z | \leq 500 \\ \left( 500 - \mod (z, 500) \right) \sin \left( \sqrt{| 500 - \mod (z, 500) |} \right) - \frac{ \left( z - 500 \right)^2 }{ 10000 D }  &\quad z > 500 \\ \left( \mod (| z |, 500) - 500 \right) \sin \left( \sqrt{| \mod (|z|, 500) - 500 |} \right) + \frac{ \left( z - 500 \right)^2 }{ 10000 D } &\quad z < -500\end{cases} \end{equation}
 
-	 Domain:
-	 $-100 \leq x_i \leq 100$
+	Domain:
+	$-100 \leq x_i \leq 100$
 
-	 Reference: http://www5.zzu.edu.cn/__local/A/69/BC/D3B5DFE94CD2574B38AD7CD1D12_C802DAFE_BC0C0.pdf
+	Reference:
+	http://www5.zzu.edu.cn/__local/A/69/BC/D3B5DFE94CD2574B38AD7CD1D12_C802DAFE_BC0C0.pdf
 	"""
 	def __init__(self, Lower=-100.0, Upper=100.0): self.Lower, self.Upper = Lower, Upper
 
@@ -198,18 +202,21 @@ class ModifiedSchwefel(object):
 
 class ExpandedScaffer(object):
 	r"""Implementations of High Conditioned Elliptic functions.
-	Date: 2018
-	Author: Klemen Berkovič
-	License: MIT
-	Function: **High Conditioned Elliptic Function**
 
+	Date: 2018
+
+	Author: Klemen Berkovič
+
+	License: MIT
+
+	Function:
+	**High Conditioned Elliptic Function**
 	:math:`f(\textbf{x}) = g(x_D, x_1) + \sum_{i=2}^D g(x_{i - 1}, x_i) \\ g(x, y) = 0.5 + \frac{\sin \left(\sqrt{x^2 + y^2} \right)^2 - 0.5}{\left( 1 + 0.001 (x^2 + y^2) \right)}^2`
 
 	**Input domain:**
 	The function can be defined on any input domain but it is usually
 	evaluated on the hypercube :math:`x_i ∈ [-100, 100]`, for all :math:`i = 1, 2,..., D`.
 
-	# TODO test
 	**Global minimum:** :math:`f(x^*) = 0`, at :math:`x^* = (420.968746,...,420.968746)`
 
 	LaTeX formats:
@@ -219,10 +226,11 @@ class ExpandedScaffer(object):
 	Equation:
 	\begin{equation} f(\textbf{x}) = g(x_D, x_1) + \sum_{i=2}^D g(x_{i - 1}, x_i) \\ g(x, y) = 0.5 + \frac{\sin \left(\sqrt{x^2 + y^2} \right)^2 - 0.5}{\left( 1 + 0.001 (x^2 + y^2) \right)}^2 \end{equation}
 
-	 Domain:
-	 $-100 \leq x_i \leq 100$
+	Domain:
+	$-100 \leq x_i \leq 100$
 
-	 Reference: http://www5.zzu.edu.cn/__local/A/69/BC/D3B5DFE94CD2574B38AD7CD1D12_C802DAFE_BC0C0.pdf
+	Reference:
+	http://www5.zzu.edu.cn/__local/A/69/BC/D3B5DFE94CD2574B38AD7CD1D12_C802DAFE_BC0C0.pdf
 	"""
 	def __init__(self, Lower=-100.0, Upper=100.0): self.Lower, self.Upper = Lower, Upper
 

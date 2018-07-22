@@ -13,9 +13,13 @@ __all__ = ['CamelAlgorithm']
 
 class Camel(object):
 	r"""Implementation of population individual that is a camel for Camel algorithm.
+
 	**Algorithm:** Camel algorithm
+
 	**Date:** 2018
+
 	**Authors:** Klemen Berkovič
+
 	**License:** MIT
 	"""
 	E_init, S_init = 1, 1
@@ -54,21 +58,30 @@ class Camel(object):
 
 class CamelAlgorithm(Algorithm):
 	r"""Implementation of Camel traveling behavior.
+
 	**Algorithm:** Camel algorithm
+
 	**Date:** 2018
+
 	**Authors:** Klemen Berkovič
+
 	**License:** MIT
+
 	**Reference URL:**
-		https://www.iasj.net/iasj?func=fulltext&aId=118375
+	https://www.iasj.net/iasj?func=fulltext&aId=118375
+
 	**Reference paper:**
-		Ali, Ramzy. (2016). Novel Optimization Algorithm Inspired by Camel Traveling Behavior. Iraq J. Electrical and Electronic Engineering. 12. 167-177.
+	Ali, Ramzy. (2016). Novel Optimization Algorithm Inspired by Camel Traveling Behavior. Iraq J. Electrical and Electronic Engineering. 12. 167-177.
 	"""
 	def __init__(self, **kwargs):
-		r"""**Arguments**:
+		r"""Initialization of Camel algorithm class.
+		
+		**Arguments**:
 		D {integer} -- dimension of problem
 		nGEN {integer} -- nuber of generation/iterations
 		nFES {integer} -- number of function evaluations
 		benchmark {object} -- benchmark implementation object
+
 		**See**: CamelAlgorithm.setParameters
 		"""
 		super(CamelAlgorithm, self).__init__(name='CamelAlgorithm', sName='CA')
@@ -77,19 +90,23 @@ class CamelAlgorithm(Algorithm):
 		self.setParameters(**kwargs)
 
 	def setParameters(self, **kwargs):
-		r"""**See**:CamelAlgorithm.__setParams"""
+		r"""Method for setting algorithm parameters.
+		
+		**See**: CamelAlgorithm.__setParams
+		"""
 		self.__setParams(**kwargs)
 
 	def __setParams(self, NP=50, omega=0.25, mu=0.5, alpha=0.5, S_init=10, E_init=10, T_min=-10, T_max=10, **ukwargs):
-		r"""Function that sets the arguments of an algorithm
+		r"""Function that sets the arguments of an algorithm.
+
 		**Arguments**:
-		NP {integer} -- population size
-		T_min {real} -- minimum temperature
-		T_max {real} -- maximum temperature
-		omega {real} -- (0, 1] -- burden factor
-		mu {real} -- [0, 1) -- dying rate
-		S_init {real} -- (0, inf) -- initial supply
-		E_init {real} -- (0, inf) -- initial endurance
+		NP {integer} -- population size $\in [1, \infty)$
+		T_min {real} -- minimum temperature, must be true $T_{min} < T_{max}$
+		T_max {real} -- maximum temperature, must be true $T_{min} < T_{max}$
+		omega {real} -- burden factor $\in [0, 1]$
+		mu {real} -- dying rate $\in [0, 1]$
+		S_init {real} -- initial supply $\in (0, \infty)$
+		E_init {real} -- initial endurance $\in (0, \infty)$
 		"""
 		self.NP, self.omega, self.mu, self.alpha, self.S_init, self.E_init, self.T_min, self.T_max = NP, omega, mu, alpha, S_init, E_init, T_min, T_max
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
@@ -128,7 +145,5 @@ class CamelAlgorithm(Algorithm):
 			c_fits = c_fitsn
 			task.nextIter()
 		return c_best.x, c_best_fit
-
-	def run(self): return self.runTask(self.task)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

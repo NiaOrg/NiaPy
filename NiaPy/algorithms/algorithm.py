@@ -4,13 +4,15 @@
 __all__ = ['Algorithm']
 
 class Algorithm(object):
-	r"""
+	r"""Class for implementing algorithms.
+
 	**Data:** 2018
 	**Author:** Klemen Berkovič
 	**License:** MIT
 	"""
 	def __init__(self, **kwargs):
-		r"""__init__(self, name, shortName)
+		r"""Initialization of algorithm, that creates name for an algorithm
+
 		**Arguments**:
 		name {string} -- Full name of algorithm
 		shortName {string} -- Short name of algorithm
@@ -19,16 +21,17 @@ class Algorithm(object):
 
 	def setParameters(self, **kwargs): pass
 
-	def run(self): pass
+	def run(self): self.runTask(self.task)
 
 	def runTask(self, task):
-		r"""runTask(self, task)
+		r"""Method that start the optimization.
+
 		**Arguments**
-			task {Task} -- Task with bounds and objective function for optimization
+		task {Task} -- Task with bounds and objective function for optimization
 
 		**Return**
-			solution {array} -- point of best solution
-			fitnes {real} -- fitnes value of best solution
+		solution {array} -- point of best solution
+		fitnes {real} -- fitnes value of best solution
 		"""
 		pass
 

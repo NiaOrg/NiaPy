@@ -25,10 +25,8 @@ logger.setLevel('INFO')
 
 class Runner(object):
 	r"""Runner utility feature.
-
 	Feature which enables running multiple algorithms with multiple benchmarks.
 	It also support exporting results in various formats (e.g. LaTeX, Excel, JSON)
-
 	"""
 	def __init__(self, D, NP, nFES, nRuns, useAlgorithms, useBenchmarks, **kwargs):
 		r"""Initialize Runner.
@@ -270,6 +268,7 @@ class Runner(object):
 
 	def run(self, export='log', verbose=False):
 		"""Execute runner.
+
 		Keyword Arguments:
 		export  {string}  -- takes export type (e.g. log, json, xlsx, latex) (default: 'log')
 		verbose {boolean} -- switch for verbose logging (default: {False})
