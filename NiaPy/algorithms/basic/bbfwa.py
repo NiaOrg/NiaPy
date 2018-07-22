@@ -3,7 +3,6 @@
 import logging
 import numpy as np
 from NiaPy.algorithms.algorithm import Algorithm
-from NiaPy.benchmarks.utility import Task
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.basic')
@@ -41,9 +40,7 @@ class BareBonesFireworksAlgorithm(Algorithm):
 
 		**See**: BareBonesFireworksAlgorithm.setParameters
 		"""
-		super(BareBonesFireworksAlgorithm, self).__init__(name='BareBonesFireworksAlgorithm', sName='BBFA')
-		task = kwargs.get('task', None)
-		self.task = task if task != None else Task(kwargs.get('D', 10), kwargs.get('nFES', 100000), None, kwargs.get('benchmark', 'ackley'))
+		super(BareBonesFireworksAlgorithm, self).__init__(name='BareBonesFireworksAlgorithm', sName='BBFA', **kwargs)
 		self.setParameters(**kwargs)
 
 	def setParameters(self, **kwargs):

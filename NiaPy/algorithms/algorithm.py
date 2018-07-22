@@ -1,5 +1,6 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, multiple-statements
+from NiaPy.benchmarks.utility import Task
 
 __all__ = ['Algorithm']
 
@@ -18,6 +19,8 @@ class Algorithm(object):
 		shortName {string} -- Short name of algorithm
 		"""
 		self.name, self.sName, self.task = kwargs.get('name', 'Algorith'), kwargs.get('sName', 'algo'), None
+		task = kwargs.get('task', None)
+		self.task = task if task != None else Task(kwargs.get('D', 10), kwargs.get('nFES', 100000), None, kwargs.get('benchmark', 'ackley'))
 
 	def setParameters(self, **kwargs): pass
 

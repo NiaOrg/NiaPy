@@ -3,7 +3,6 @@
 import logging
 import numpy as np
 from NiaPy.algorithms.algorithm import Algorithm
-from NiaPy.benchmarks.utility import Task
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.basic')
@@ -84,9 +83,7 @@ class CamelAlgorithm(Algorithm):
 
 		**See**: CamelAlgorithm.setParameters
 		"""
-		super(CamelAlgorithm, self).__init__(name='CamelAlgorithm', sName='CA')
-		task = kwargs.get('task', None)
-		self.task = task if task != None else Task(kwargs.get('D', 10), kwargs.get('nFES', 100000), kwargs.get('nGEN', 10000), kwargs.get('benchmark', 'ackley'))
+		super(CamelAlgorithm, self).__init__(name='CamelAlgorithm', sName='CA', **kwargs)
 		self.setParameters(**kwargs)
 
 	def setParameters(self, **kwargs):
