@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, line-too-long, singleton-comparison, multiple-statements, attribute-defined-outside-init, no-self-use, logging-not-lazy
+# pylint: disable=mixed-indentation, line-too-long, singleton-comparison, multiple-statements, attribute-defined-outside-init, no-self-use, logging-not-lazy, unused-variable
 import logging
 import numpy as np
 from NiaPy.algorithms.algorithm import Algorithm
@@ -73,7 +73,7 @@ class CamelAlgorithm(Algorithm):
 	Ali, Ramzy. (2016). Novel Optimization Algorithm Inspired by Camel Traveling Behavior. Iraq J. Electrical and Electronic Engineering. 12. 167-177.
 	"""
 	def __init__(self, **kwargs):
-		r"""Initialization of Camel algorithm class.
+		r"""Initialize Camel algorithm class.
 
 		**Arguments**:
 		D {integer} -- dimension of problem

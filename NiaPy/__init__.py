@@ -25,6 +25,7 @@ logger.setLevel('INFO')
 
 class Runner(object):
 	r"""Runner utility feature.
+
 	Feature which enables running multiple algorithms with multiple benchmarks.
 	It also support exporting results in various formats (e.g. LaTeX, Excel, JSON)
 	"""
@@ -142,7 +143,6 @@ class Runner(object):
 	def __algorithmFactory(self, name, benchmark):
 		bench = benchmarks.utility.Utility().get_benchmark(benchmark)
 		algorithm = None
-
 		if name == 'BatAlgorithm':
 			algorithm = algorithms.basic.BatAlgorithm(self.D, self.NP, self.nFES, self.A, self.r, self.Qmin, self.Qmax, bench)
 		elif name == 'DifferentialEvolutionAlgorithm':
@@ -169,7 +169,6 @@ class Runner(object):
 			algorithm = algorithm.basic.BareBonesFireworksAlgorithm(D=self.D, nFES=self.nFES, n=self.n, C_a=self.C_a, C_r=self.C_r, benchmark=bench)
 		else:
 			raise TypeError('Passed benchmark is not defined!')
-
 		return algorithm
 
 	@classmethod
@@ -189,14 +188,11 @@ class Runner(object):
 
 	def __exportToXls(self):
 		self.__createExportDir()
-
 		workbook = xlsxwriter.Workbook(self.__generateExportName('xlsx'))
 		worksheet = workbook.add_worksheet()
-
 		row = 0
 		col = 0
 		nRuns = 0
-
 		for alg in self.results:
 			worksheet.write(row, col, alg)
 			col += 1
@@ -210,16 +206,13 @@ class Runner(object):
 				col += 1
 			row += 1 + nRuns  # jump down to row after previous results
 			col -= 1 + len(self.results[alg])
-
 		workbook.close()
 		logger.info('Export to XLSX completed!')
 
 	def __exportToLatex(self):
 		self.__createExportDir()
 		metrics = ['Best', 'Median', 'Worst', 'Mean', 'Std.']
-
 		def only_upper(s): return "".join(c for c in s if c.isupper())
-
 		with open(self.__generateExportName('tex'), 'a') as outFile:
 			outFile.write('\\documentclass{article}\n')
 			outFile.write('\\usepackage[utf8]{inputenc}\n')
@@ -242,7 +235,6 @@ class Runner(object):
 			outFile.write('\\hline\n')
 			outFile.write(firstLine + '\n')
 			outFile.write('\\hline\n')
-
 			for alg in self.results:
 				for metric in metrics:
 					line = ''

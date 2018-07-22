@@ -12,7 +12,7 @@ class Algorithm(object):
 	**License:** MIT
 	"""
 	def __init__(self, **kwargs):
-		r"""Initialization of algorithm, that creates name for an algorithm
+		r"""Initialize algorithm and create name for an algorithm
 
 		**Arguments**:
 		name {string} -- Full name of algorithm

@@ -59,7 +59,7 @@ class Utility(object):
 
 class Task(Utility):
 	def __init__(self, D, nFES, nGEN, benchmark=None, o=None, fo=None, M=None, fM=None, optF=None):
-		r"""Initialization of task to optimize.
+		r"""Initialize task class for optimization.
 
 		Arguments:
 		D {integer} -- Number of dimensions
