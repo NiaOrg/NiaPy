@@ -55,7 +55,7 @@ class Griewank(object):
 		return evaluate
 
 class ExpandedGriewankPlusRosenbrock(object):
-	r"""Implementations of Expanded Griewank's plus Rosenbrock function.
+	r"""Implementation of Expanded Griewank's plus Rosenbrock function.
 
 	Date: 2018
 

@@ -28,7 +28,7 @@ class BareBonesFireworksAlgorithm(Algorithm):
 	Junzhi Li, Ying Tan, The bare bones fireworks algorithm: A minimalist global optimizer, Applied Soft Computing, Volume 62, 2018, Pages 454-462, ISSN 1568-4946, https://doi.org/10.1016/j.asoc.2017.10.046.
 	"""
 	def __init__(self, **kwargs):
-		r"""Default initialization for Bare Bones Fireworks algorithm.
+		r"""Initialize Bare Bones Fireworks algorithm class.
 
 		**Arguments**:
 		NP {integer} -- population size
@@ -44,14 +44,14 @@ class BareBonesFireworksAlgorithm(Algorithm):
 		self.setParameters(**kwargs)
 
 	def setParameters(self, **kwargs):
-		r"""Method for settings algorithm parameters.
+		r"""Set the algorithm parameters/arguments.
 
 		**See**: BareBonesFireworksAlgorithm.__setParams
 		"""
 		self.__setParams(**kwargs)
 
 	def __setParams(self, n=10, C_a=1.5, C_r=0.5, **ukwargs):
-		r"""Function that sets the argumets of an algorithm.
+		r"""Set the arguments of an algorithm.
 
 		**Arguments**:
 		n {integer} -- number of sparks $\in [1, \infty)$

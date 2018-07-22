@@ -12,7 +12,7 @@ class Algorithm(object):
 	**License:** MIT
 	"""
 	def __init__(self, **kwargs):
-		r"""Initialize algorithm and create name for an algorithm
+		r"""Initialize algorithm and create name for an algorithm.
 
 		**Arguments**:
 		name {string} -- Full name of algorithm
@@ -25,7 +25,7 @@ class Algorithm(object):
 	def setParameters(self, **kwargs): pass
 
 	def run(self):
-		r"""Method that start the optimization
+		r"""Start the optimization.
 
 		**See**:
 		Algorithm.runTask(self, taks)
@@ -33,7 +33,7 @@ class Algorithm(object):
 		return self.runTask(self.task)
 
 	def runTask(self, task):
-		r"""Method that start the optimization.
+		r"""Start the optimization.
 
 		**Arguments**
 		task {Task} -- Task with bounds and objective function for optimization

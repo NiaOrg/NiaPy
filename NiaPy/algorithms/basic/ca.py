@@ -87,14 +87,14 @@ class CamelAlgorithm(Algorithm):
 		self.setParameters(**kwargs)
 
 	def setParameters(self, **kwargs):
-		r"""Method for setting algorithm parameters.
+		r"""Set the algorithm parameters.
 
 		**See**: CamelAlgorithm.__setParams
 		"""
 		self.__setParams(**kwargs)
 
 	def __setParams(self, NP=50, omega=0.25, mu=0.5, alpha=0.5, S_init=10, E_init=10, T_min=-10, T_max=10, **ukwargs):
-		r"""Function that sets the arguments of an algorithm.
+		r"""Set the arguments of an algorithm.
 
 		**Arguments**:
 		NP {integer} -- population size $\in [1, \infty)$
