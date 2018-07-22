@@ -58,23 +58,29 @@ class Utility(object):
 	def __raiseLowerAndUpperNotDefined(cls): raise TypeError('Upper and Lower value must be defined!')
 
 class Task(Utility):
-	def __init__(self, D, nFES, nGEN, benchmark=None, o=None, M=None):
-		r"""__init__(self, D, nFES, nGEN, benchmark=None, o, M)
-		D {integer} --
-		nFES {integer} --
-		nGEN {integer} --
-		benchmark {class} or {string} --
-		o {array} --
-		M {matrix} --
+	def __init__(self, D, nFES, nGEN, benchmark=None, o=None, fo=None, M=None, fM=None, optF=None):
+		r"""Initialization of task to optimize.
+
+		Arguments:
+		D {integer} -- Number of dimensions
+		nFES {integer} -- Number of function evaluations
+		nGEN {integer} -- Number of generation or iterations
+		benchmark {class} or {string} -- Problem to solve
+		o {array} -- Array for shifting
+		of {function} -- Function applied on shifted input
+		M {matrix} -- Matrix for rotating
+		fM {function} -- Function applied after rotating
+		optF {real} -- Value added to benchmark function return
 		"""
 		super(Task, self).__init__()
 		self.benchmark = self.get_benchmark(benchmark) if benchmark != None else None
 		self.D = D  # dimension of the problem
-		self.Iters, self.nGEN = 0, nGEN
+		self.Iters, self.nGEN = 0, nGEN if nGEN != None else 10000
 		self.Evals, self.nFES = 0, nFES
 		self.Fun = self.benchmark.function() if benchmark != None else None
 		self.o = o if isinstance(o, np.ndarray) or o == None else np.asarray(o)
 		self.M = M if isinstance(M, np.ndarray) or M == None else np.asarray(M)
+		self.fo, self.fM, self.optF = fo, fM, optF
 		self.__initBounds()
 
 	def __initBounds(self):
@@ -88,14 +94,13 @@ class Task(Utility):
 	def stopCond(self): return self.Evals >= self.nFES or (False if self.nGEN == None else self.Iters >= self.nGEN)
 
 	def eval(self, A):
-		# TODO add solustions to storage for anaysis
-		if self.stopCond(): return np.inf
+		if self.stopCond() or not self.isFisible(A): return np.inf
 		self.Evals += 1
-		# Shift
 		X = A - self.o if self.o != None else A
-		# rotate
+		X = self.fo(X) if self.fo != None else X
 		X = np.dot(X, self.M) if self.M != None else X
-		return self.Fun(self.D, X)
+		X = self.fM(X) if self.fM != None else X
+		return self.Fun(self.D, X) + self.optF if self.optF != None else 0
 
 	def nextIter(self): self.Iters += 1
 

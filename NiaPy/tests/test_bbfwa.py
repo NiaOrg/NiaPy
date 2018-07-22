@@ -20,8 +20,8 @@ class MyBenchmark(object):
 class CSTestCase(TestCase):
 	def setUp(self):
 		self.D = 40
-		self.bbfa_custom = BareBonesFireworksAlgorithm(D=self.D, nFES=100000, n=10, C_a=2, C_r=0.5, benchmark=MyBenchmark())
-		self.bbfa_griewank = BareBonesFireworksAlgorithm(D=self.D, nFES=100000, n=10, C_a=5, C_r=0.5, benchmark=Griewank())
+		self.bbfa_custom = BareBonesFireworksAlgorithm(D=self.D, nFES=1000, n=10, C_a=2, C_r=0.5, benchmark=MyBenchmark())
+		self.bbfa_griewank = BareBonesFireworksAlgorithm(D=self.D, nFES=1000, n=10, C_a=5, C_r=0.5, benchmark=Griewank())
 
 	def test_custom_works_fine(self):
 		fun = MyBenchmark().function()

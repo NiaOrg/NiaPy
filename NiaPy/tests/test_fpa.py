@@ -23,10 +23,10 @@ class FPATestCase(TestCase):
 
     def setUp(self):
         self.fpa_custom = FlowerPollinationAlgorithm(
-            10, 20, 10000, 0.5, MyBenchmark())
+            10, 20, 1000, 0.5, MyBenchmark())
 
         self.fpa_griewank = FlowerPollinationAlgorithm(
-            10, 20, 10000, 0.5, 'griewank')
+            10, 20, 1000, 0.5, 'griewank')
 
     def test_custom_works_fine(self):
         self.assertTrue(self.fpa_custom.run())

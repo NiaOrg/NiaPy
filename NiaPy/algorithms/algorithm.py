@@ -18,13 +18,19 @@ class Algorithm(object):
 		name {string} -- Full name of algorithm
 		shortName {string} -- Short name of algorithm
 		"""
-		self.name, self.sName, self.task = kwargs.get('name', 'Algorith'), kwargs.get('sName', 'algo'), None
 		task = kwargs.get('task', None)
+		self.name, self.sName, = kwargs.get('name', 'Algorith'), kwargs.get('sName', 'algo')
 		self.task = task if task != None else Task(kwargs.get('D', 10), kwargs.get('nFES', 100000), None, kwargs.get('benchmark', 'ackley'))
 
 	def setParameters(self, **kwargs): pass
 
-	def run(self): self.runTask(self.task)
+	def run(self):
+		r"""Method that start the optimization
+
+		**See**:
+		Algorithm.runTask(self, taks)
+		"""
+		return self.runTask(self.task)
 
 	def runTask(self, task):
 		r"""Method that start the optimization.
