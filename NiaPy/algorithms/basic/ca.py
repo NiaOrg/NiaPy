@@ -75,7 +75,7 @@ class CamelAlgorithm(Algorithm):
 	"""
 	def __init__(self, **kwargs):
 		r"""Initialization of Camel algorithm class.
-		
+
 		**Arguments**:
 		D {integer} -- dimension of problem
 		nGEN {integer} -- nuber of generation/iterations
@@ -91,7 +91,7 @@ class CamelAlgorithm(Algorithm):
 
 	def setParameters(self, **kwargs):
 		r"""Method for setting algorithm parameters.
-		
+
 		**See**: CamelAlgorithm.__setParams
 		"""
 		self.__setParams(**kwargs)

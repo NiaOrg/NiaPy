@@ -17,7 +17,7 @@ class Algorithm(object):
 		name {string} -- Full name of algorithm
 		shortName {string} -- Short name of algorithm
 		"""
-		self.name, self.sName = kwargs.get('name', 'Algorith'), kwargs.get('sName', 'algo')
+		self.name, self.sName, self.task = kwargs.get('name', 'Algorith'), kwargs.get('sName', 'algo'), None
 
 	def setParameters(self, **kwargs): pass
 
