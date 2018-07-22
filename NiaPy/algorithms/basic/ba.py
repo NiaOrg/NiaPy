@@ -126,14 +126,12 @@ class BatAlgorithm(object):
         while self.eval_flag is not False:
             for i in range(self.NP):
                 rnd = random.uniform(0, 1)
-                self.Q[i] = self.Qmin + (self.Qmax-self.Qmin) * rnd
+                self.Q[i] = self.Qmin + (self.Qmax - self.Qmin) * rnd
                 for j in range(self.D):
-                    self.v[i][j] = self.v[i][j] + (self.Sol[i][j] -
-                                                   self.best[j]) * self.Q[i]
+                    self.v[i][j] = self.v[i][j] + (self.Sol[i][j] - self.best[j]) * self.Q[i]
                     S[i][j] = self.Sol[i][j] + self.v[i][j]
 
-                    S[i][j] = self.simplebounds(S[i][j], self.Lb[j],
-                                                self.Ub[j])
+                    S[i][j] = self.simplebounds(S[i][j], self.Lb[j], self.Ub[j])
 
                 rnd = random.random()
 

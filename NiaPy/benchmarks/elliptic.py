@@ -38,7 +38,7 @@ class Elliptic(object):
 	def function(cls):
 		def evaluate(D, sol):
 			val = 0.0
-			for i in range(D): val += (10 ** 6) ** (i /(D - 1)) * sol[i]
+			for i in range(D): val += (10 ** 6) ** (i / (D - 1)) * sol[i]
 			return val
 		return evaluate
 

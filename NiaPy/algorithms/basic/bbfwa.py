@@ -36,7 +36,7 @@ class BareBonesFireworksAlgorithm(Algorithm):
 		task = kwargs.get('task', None)
 		self.task = task if task != None else Task(kwargs.get('D', 10), kwargs.get('nFES', 100000), None, kwargs.get('benchmark', 'ackley'))
 		self.setParameters(**kwargs)
-	
+
 	def setParameters(self, **kwargs):
 		r"""**See**: BareBonesFireworksAlgorithm.__setParams"""
 		self.__setParams(**kwargs)
@@ -50,7 +50,7 @@ class BareBonesFireworksAlgorithm(Algorithm):
 		"""
 		self.n, self.C_a, self.C_r = n, C_a, C_r
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
-	
+
 	def runTask(self, task):
 		x, A = np.random.uniform(task.Lower, task.Upper, task.D), task.bRange
 		x_fit = task.eval(x)
