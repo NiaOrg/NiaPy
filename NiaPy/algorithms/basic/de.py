@@ -10,47 +10,53 @@ logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.basic')
 logger.setLevel('INFO')
 
-def Rand1(pop, ic, f, cr):
-	# TODO
-	return None
+def Rand1(pop, ic, f, cr, rnd):
+	j = rnd.randint(len(pop[0]))
+	r = rnd.choice(len(pop), 3, replace=False)
+	x = [pop[r[0]].Solution[i] + f * (pop[r[1]].Solution[i] - pop[r[2]].Solution[i]) if rnd.rand() < cr or i == j else pop[ic].Solution[i] for i in len(pop[ic])]
+	return SolutionDE(Solution=x)
 
-def Best1(pop, ic, f, cr):
+def Best1(pop, ic, f, cr, rnd):
 	# TODO
-	return None
+	return SolutionDE(Solution=x)
 
-def Rand2(pop, ic, f, cr):
+def Rand2(pop, ic, f, cr, rnd):
 	# TODO
-	return None
+	return SolutionDE(Solution=x)
 
-def Best2(pop, ic, f, cr):
+def Best2(pop, ic, f, cr, rnd):
 	# TODO
-	return None
+	return SolutionDE(Solution=x)
 
-def Curr2Rand1(pop, ic, f, cr):
+def Curr2Rand1(pop, ic, f, cr, rnd):
 	# TODO
-	return None
+	return SolutionDE(Solution=x)
 
-def Curr2Best1(pop, ic, f, cr):
+def Curr2Best1(pop, ic, f, cr, rnd):
 	# TODO
-	return None
+	return SolutionDE(Solution=x)
 
 class SolutionDE(object):
-	def __init__(self, task):
-		self.Solution = []
+	def __init__(self, **kwargs):
+		if kwargs.get('Solution', None) != None:
+			self.x = kwargs['Solution']
+		else:
+			task = kwargs['task']
+			self.x = []
+			self.generateSolution(task)
 		self.Fitness = float('inf')
-		self.generateSolution(task)
 
-	def generateSolution(self, task): self.Solution = task.Lower +  task.bRange * rnd.rand(task.D)
+	def generateSolution(self, task): self.x = task.Lower +  task.bRange * rnd.rand(task.D)
 
-	def evaluate(self, task): self.Fitness = task.eval(self.Solution)
+	def evaluate(self, task): self.Fitness = task.eval(self.x)
 
 	def repair(self, task):
-		ir = where(self.Solution > task.Upper)
-		self.Solution[ir] = task.Upper[ir]
-		ir = where(self.Solution < task.Lower)
-		self.Solution[ir] = task.Lower[ir]
+		ir = where(self.x > task.Upper)
+		self.x[ir] = task.Upper[ir]
+		ir = where(self.x < task.Lower)
+		self.x[ir] = task.Lower[ir]
 
-	def __eq__(self, other): return self.Solution == other.Solution and self.Fitness == other.Fitness
+	def __eq__(self, other): return self.x == other.x and self.Fitness == other.Fitness
 
 class DifferentialEvolutionAlgorithm(Algorithm):
 	r"""Implementation of Differential evolution algorithm.
@@ -79,19 +85,19 @@ class DifferentialEvolutionAlgorithm(Algorithm):
 
 	def setParameters(self, **kwargs): self.__setParams(**kwargs)
 
-	def __setParams(self, NP=25, F=2, CR=0.2, **ukwargs):
+	def __setParams(self, NP=25, F=2, CR=0.2, Mutation=Rand1, **ukwargs):
 		r"""Set the algorithm parameters.
 
 		Arguments:
 		NP {integer} -- population size
 		F {decimal} -- scaling factor
 		CR {decimal} -- crossover rate
-		Mutation {function} -- mutation stratgy
+		Mutation {function} -- mutation strategy
 		"""
 		self.Np = NP  # population size
 		self.F = F  # scaling factor
 		self.CR = CR  # crossover rate
-		self.Mutation
+		self.Mutation = Mutation # mutation strategy
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def evalPopulation(self, x, x_old, task):
@@ -101,17 +107,16 @@ class DifferentialEvolutionAlgorithm(Algorithm):
 
 	def runTask(self, taks):
 		"""Run."""
-		pop = [SolutionDE(task) for _i in range(self.Np)]
+		pop = [SolutionDE(task=task) for _i in range(self.Np)]
 		pop = vectorize(self.evalPopulation)(pop, pop, task)
 		ix_b = argmin([x.Fitness for x in pop])
 		x_best = pop[ix_best]
 		while not task.stopCond():
-			# FIXME popravi mutacijo
-			npop = [self.Mutation(pop, i, self.F, self.CR) for i in range(self.Np)]
+			npop = [self.Mutation(pop, i, self.F, self.CR, self.rand) for i in range(self.Np)]
 			npop = [x.repair() for x in npop]
 			pop = vectorize(self.evalPopulation)(npop, pop, task)
 			ix_b = argmin([x.Fitness for x in pop])
 			if x_best.Fitness < pop[ix_b].Fitness: x_best = pop[ix_best]
-		return x_best.Solution, x_best.Fitness
+		return x_best.x, x_best.Fitness
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
