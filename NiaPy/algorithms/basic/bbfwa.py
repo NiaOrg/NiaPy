@@ -57,13 +57,12 @@ class BareBonesFireworksAlgorithm(Algorithm):
 	def runTask(self, task):
 		x, A = self.rand.uniform(task.Lower, task.Upper, task.D), task.bRange
 		x_fit = task.eval(x)
-		S = None
 		while not task.stopCond():
 			S = self.rand.uniform(x - A, x + A, [self.n, task.D])
 			S_fit = apply_along_axis(task.eval, 1, S)
 			iS = argmin(S_fit)
 			if S_fit[iS] < x_fit: x, x_fit, A = S[iS], S_fit[iS], self.C_a * A
 			else: A = self.C_r * A
-		return x, x_fit, S
+		return x, x_fit
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
