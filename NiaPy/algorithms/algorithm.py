@@ -1,5 +1,6 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, multiple-statements
+from numpy.random import RandomState
 from NiaPy.benchmarks.utility import Task
 
 __all__ = ['Algorithm']
@@ -28,7 +29,7 @@ class Algorithm(object):
 		Algorithm.setParameters(self, **kwargs)
 		"""
 		task = kwargs.get('task', None)
-		self.name, self.sName, = kwargs.get('name', 'Algorith'), kwargs.get('sName', 'algo')
+		self.name, self.sName, self.rand = kwargs.get('name', 'Algorith'), kwargs.get('sName', 'algo'), RandomState(kwargs.get('seed', 1))
 		self.task = task if task != None else Task(kwargs.get('D', 10), kwargs.get('nFES', 100000), None, kwargs.get('benchmark', 'ackley'))
 		self.setParameters(**kwargs)
 

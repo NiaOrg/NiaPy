@@ -1,7 +1,8 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, line-too-long, singleton-comparison, multiple-statements, attribute-defined-outside-init, no-self-use, logging-not-lazy, unused-variable
 import logging
-import numpy as np
+from numpy import vectorize, argmin, exp
+from numpy.random import RandomState
 from NiaPy.algorithms.algorithm import Algorithm
 
 logging.basicConfig()
@@ -39,8 +40,8 @@ class Camel(object):
 
 	def nextX(self, x_best, task):
 		delta = -1 + self.rand() * 2
-		self.x = self.x_past + delta * (1 - (self.E / Camel.E_init)) * np.exp(1 - self.S / Camel.S_init) * (x_best - self.x_past)
-		if not task.isFisible(self.x):
+		self.x = self.x_past + delta * (1 - (self.E / Camel.E_init)) * exp(1 - self.S / Camel.S_init) * (x_best - self.x_past)
+		if not task.isFisible(self.x) and task.stopCond():
 			self.x = self.x_past
 			return False
 		return True
@@ -129,18 +130,17 @@ class CamelAlgorithm(Algorithm):
 		return c, fitn
 
 	def runTask(self, task):
-		Camel.E_init, Camel.S_init, rand = self.E_init, self.S_init, np.random.RandomState().rand
-		ccaravan = [Camel(np.random.uniform(task.Lower, task.Upper, [task.D]), rand) for i in range(self.NP)]
+		Camel.E_init, Camel.S_init, rand = self.E_init, self.S_init, RandomState().rand
+		ccaravan = [Camel(self.rand.uniform(task.Lower, task.Upper, [task.D]), rand) for i in range(self.NP)]
 		c_fits = [task.eval(c.x) for c in ccaravan]
-		ic_b = np.argmin(c_fits)
+		ic_b = argmin(c_fits)
 		c_best, c_best_fit = ccaravan[ic_b], c_fits[ic_b]
 		while not task.stopCond():
-			ccaravan, c_fitsn = np.vectorize(self.walk)(ccaravan, c_fits, task, self.omega, c_best)
-			ccaravan = np.vectorize(self.oasis)(ccaravan, np.random.randn(self.NP), c_fits, c_fitsn, self.alpha)
-			ci_b = np.argmin(c_fitsn)
-			if c_fits[ci_b] < c_best_fit: c_best, c_best_fit = ccaravan[ci_b], c_fits[ci_b]
-			ccaravan, c_fitsn = np.vectorize(self.lifeCycle)(ccaravan, c_fits, c_fitsn, self.mu, task)
-			c_fits = c_fitsn
+			ccaravan, c_fitsn = vectorize(self.walk)(ccaravan, c_fits, task, self.omega, c_best)
+			ccaravan = vectorize(self.oasis)(ccaravan, self.rand.randn(self.NP), c_fits, c_fitsn, self.alpha)
+			ci_b = argmin(c_fitsn)
+			if c_fitsn[ci_b] < c_best_fit: c_best, c_best_fit = ccaravan[ci_b], c_fits[ci_b]
+			ccaravan, c_fits = vectorize(self.lifeCycle)(ccaravan, c_fits, c_fitsn, self.mu, task)
 			task.nextIter()
 		return c_best.x, c_best_fit
 

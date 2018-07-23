@@ -1,7 +1,7 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy
 import logging
-import numpy as np
+from numpy import apply_along_axis, argmin
 from NiaPy.algorithms.algorithm import Algorithm
 
 logging.basicConfig()
@@ -48,21 +48,22 @@ class BareBonesFireworksAlgorithm(Algorithm):
 
 		**Arguments**:
 		n {integer} -- number of sparks $\in [1, \infty)$
-		C_a {real} -- amplification coefficient $\in (1, \infty)$
+		C_a {real} -- amplification coefficient $\in [1, \infty)$
 		C_r {real} -- reduction coefficient $\in (0, 1)$
 		"""
 		self.n, self.C_a, self.C_r = n, C_a, C_r
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def runTask(self, task):
-		x, A = np.random.uniform(task.Lower, task.Upper, task.D), task.bRange
+		x, A = self.rand.uniform(task.Lower, task.Upper, task.D), task.bRange
 		x_fit = task.eval(x)
+		S = None
 		while not task.stopCond():
-			S = np.random.uniform(x - A, x + A, [self.n, task.D])
-			S_fit = np.apply_along_axis(task.eval, 1, S)
-			iS = np.argmin(S_fit)
+			S = self.rand.uniform(x - A, x + A, [self.n, task.D])
+			S_fit = apply_along_axis(task.eval, 1, S)
+			iS = argmin(S_fit)
 			if S_fit[iS] < x_fit: x, x_fit, A = S[iS], S_fit[iS], self.C_a * A
 			else: A = self.C_r * A
-		return x, x_fit
+		return x, x_fit, S
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

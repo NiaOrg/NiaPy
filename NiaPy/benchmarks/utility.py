@@ -2,7 +2,7 @@
 # pylint: disable=mixed-indentation, line-too-long, bad-continuation, multiple-statements, singleton-comparison
 """Implementation of benchmarks utility function."""
 
-import numpy as np
+from numpy import ndarray, asarray, full, inf, dot
 from . import Rastrigin, Rosenbrock, Griewank, Sphere, Ackley, Schwefel, Schwefel221, Schwefel222, Whitley, Alpine1, Alpine2, HappyCat, Ridge, ChungReynolds, Csendes, Pinter, Qing, Quintic, Salomon, SchumerSteiglitz, Step, Step2, Step3, Stepint, SumSquares, StyblinskiTang, BentCigar, Discus, Elliptic, ExpandedGriewankPlusRosenbrock, HGBat, Katsuura, ExpandedScaffer, ModifiedSchwefel, Weierstrass
 
 __all__ = ['Utility', 'Task']
@@ -49,7 +49,9 @@ class Utility(object):
 		}
 
 	def get_benchmark(self, benchmark):
-		if not isinstance(benchmark, ''.__class__): return benchmark
+		if not isinstance(benchmark, ''.__class__):
+			if not callable(benchmark): return benchmark
+			else:	raise TypeError('Passed benchmark is not defined!')
 		else:
 			if benchmark in self.classes:	return self.classes[benchmark]()
 			else:	raise TypeError('Passed benchmark is not defined!')
@@ -78,29 +80,29 @@ class Task(Utility):
 		self.Iters, self.nGEN = 0, nGEN if nGEN != None else 10000
 		self.Evals, self.nFES = 0, nFES
 		self.Fun = self.benchmark.function() if benchmark != None else None
-		self.o = o if isinstance(o, np.ndarray) or o == None else np.asarray(o)
-		self.M = M if isinstance(M, np.ndarray) or M == None else np.asarray(M)
+		self.o = o if isinstance(o, ndarray) or o == None else asarray(o)
+		self.M = M if isinstance(M, ndarray) or M == None else asarray(M)
 		self.fo, self.fM, self.optF = fo, fM, optF
 		self.__initBounds()
 
 	def __initBounds(self):
 		Lower, Upper = self.benchmark.Lower, self.benchmark.Upper
-		if isinstance(Lower, (int, float)): self.Lower = np.full(self.D, Lower)
-		else: self.Lower = Lower if isinstance(Lower, np.ndarray) else np.asarray(Lower)
-		if isinstance(Upper, (int, float)): self.Upper = np.full(self.D, Upper)
-		else: self.Upper = Upper if isinstance(Upper, np.ndarray) else np.asarray(Upper)
+		if isinstance(Lower, (int, float)): self.Lower = full(self.D, Lower)
+		else: self.Lower = Lower if isinstance(Lower, ndarray) else asarray(Lower)
+		if isinstance(Upper, (int, float)): self.Upper = full(self.D, Upper)
+		else: self.Upper = Upper if isinstance(Upper, ndarray) else asarray(Upper)
 		self.bRange = self.Upper - self.Lower
 
 	def stopCond(self): return self.Evals >= self.nFES or (False if self.nGEN == None else self.Iters >= self.nGEN)
 
 	def eval(self, A):
 		self.Evals += 1
-		if self.stopCond() or not self.isFisible(A): return np.inf
+		if self.stopCond() or not self.isFisible(A): return inf
 		X = A - self.o if self.o != None else A
 		X = self.fo(X) if self.fo != None else X
-		X = np.dot(X, self.M) if self.M != None else X
+		X = dot(X, self.M) if self.M != None else X
 		X = self.fM(X) if self.fM != None else X
-		return self.Fun(self.D, X) + self.optF if self.optF != None else 0
+		return self.Fun(self.D, X) + (self.optF if self.optF != None else 0)
 
 	def nextIter(self): self.Iters += 1
 
