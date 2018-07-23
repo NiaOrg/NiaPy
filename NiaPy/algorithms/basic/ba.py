@@ -1,3 +1,4 @@
+# encoding=utf8
 import random
 from NiaPy.benchmarks.utility import Utility
 
@@ -168,3 +169,5 @@ class BatAlgorithm(object):
         Return {decimal} - best
         """
         return self.move_bat()
+
+# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
