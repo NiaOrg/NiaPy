@@ -1,8 +1,8 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation
-from unittest import TestCase
 import math
-
+from numpy import asarray
+from unittest import TestCase
 from NiaPy.benchmarks.utility import Utility
 
 
@@ -11,15 +11,16 @@ class TestBenchmarkFunctions(TestCase):
 	# pylint: disable=too-many-instance-attributes,too-many-public-methods
 	def setUp(self):
 		self.D = 5
-		self.array = [0, 0, 0, 0, 0]
-		self.array2 = [1, 1, 1, 1, 1]
-		self.array3 = [420.968746, 420.968746, 420.968746, 420.968746, 420.968746]
-		self.array4 = [-2.903534, -2.903534]
-		self.array5 = [-0.5, -0.5, -0.5, -0.5, -0.5]
-		self.array6 = [-1, -1, -1, -1, -1]
-		self.array7 = [2, 2, 2, 2, 2]
-		self.array8 = [7.9170526982459462172, 7.9170526982459462172, 7.9170526982459462172, 7.9170526982459462172, 7.9170526982459462172]
-		self.array9 = [-5.12, -5.12, -5.12, -5.12, -5.12]
+		self.array = asarray([0, 0, 0, 0, 0])
+		self.array2 = asarray([1, 1, 1, 1, 1])
+		self.array3 = asarray([420.968746, 420.968746, 420.968746, 420.968746, 420.968746])
+		self.array4 = asarray([-2.903534, -2.903534])
+		self.array5 = asarray([-0.5, -0.5, -0.5, -0.5, -0.5])
+		self.array6 = asarray([-1, -1, -1, -1, -1])
+		self.array7 = asarray([2, 2, 2, 2, 2])
+		self.array8 = asarray([7.9170526982459462172, 7.9170526982459462172, 7.9170526982459462172, 7.9170526982459462172, 7.9170526982459462172])
+		self.array9 = asarray([-5.12, -5.12, -5.12, -5.12, -5.12])
+		self.array10 = asarray([1, 2, 3, 4, 5])
 
 	def test_rastrigin(self):
 		rastrigin = Utility().get_benchmark('rastrigin')
@@ -168,46 +169,46 @@ class TestBenchmarkFunctions(TestCase):
 	def test_bentcigar(self):
 		fun = Utility().get_benchmark('bentcigar').function()
 		self.assertTrue(callable(fun))
-		self.assertAlmostEqual(fun(self.D, [1, 2, 3, 4, 5]), 54000001.0, delta=1e-4)
+		self.assertAlmostEqual(fun(self.D, self.array10), 54000001.0, delta=1e-4)
 
 	def test_discus(self):
 		fun = Utility().get_benchmark('discus').function()
 		self.assertTrue(callable(fun))
-		self.assertAlmostEqual(fun(self.D, [1, 2, 3, 4, 5]), 1000054.0, delta=1e-4)
+		self.assertAlmostEqual(fun(self.D, self.array10), 1000054.0, delta=1e-4)
 
 	def test_elliptic(self):
 		fun = Utility().get_benchmark('elliptic').function()
 		self.assertTrue(callable(fun))
-		self.assertAlmostEqual(fun(self.D, [1, 2, 3, 4, 5]), 5129555.351959938, delta=2e6)
+		self.assertAlmostEqual(fun(self.D, self.array10), 5129555.351959938, delta=2e6)
 
 	def test_expanded_griewank_plus_rosnbrock(self):
 		fun = Utility().get_benchmark('expandedgriewankplusrosenbrock').function()
 		self.assertTrue(callable(fun))
-		self.assertAlmostEqual(fun(self.D, [1, 2, 3, 4, 5]), 854123.5271421941, delta=1e2)
+		self.assertAlmostEqual(fun(self.D, self.array10), 854123.5271421941, delta=1e2)
 
 	def test_expanded_scaffer(self):
 		fun = Utility().get_benchmark('expandedscaffer').function()
 		self.assertTrue(callable(fun))
-		self.assertAlmostEqual(fun(self.D, [1, 2, 3, 4, 5]), 2.616740208857464, delta=1e-4)
+		self.assertAlmostEqual(fun(self.D, self.array10), 2.616740208857464, delta=1e-4)
 
 	def test_hgbat(self):
 		fun = Utility().get_benchmark('hgbat').function()
 		self.assertTrue(callable(fun))
-		self.assertAlmostEqual(fun(self.D, [1, 2, 3, 4, 5]), 61.91502622129181, delta=60)
+		self.assertAlmostEqual(fun(self.D, self.array10), 61.91502622129181, delta=60)
 
 	def test_katsuura(self):
 		fun = Utility().get_benchmark('katsuura').function()
 		self.assertTrue(callable(fun))
-		self.assertAlmostEqual(fun(self.D, [1, 2, 3, 4, 5]), 3837.4739882594373, delta=4000)
+		self.assertAlmostEqual(fun(self.D, self.array10), 3837.4739882594373, delta=4000)
 
 	def test_modifiedscwefel(self):
 		fun = Utility().get_benchmark('modifiedscwefel').function()
 		self.assertTrue(callable(fun))
-		self.assertAlmostEqual(fun(self.D, [1, 2, 3, 4, 5]), 6.9448853328785844, delta=350)
+		self.assertAlmostEqual(fun(self.D, self.array10), 6.9448853328785844, delta=350)
 
 	def test_weierstrass(self):
 		fun = Utility().get_benchmark('weierstrass').function()
 		self.assertTrue(callable(fun))
-		self.assertAlmostEqual(fun(self.D, [1, 2, 3, 4, 5]), 0.0, delta=1e-4)
+		self.assertAlmostEqual(fun(self.D, self.array10), 0.0, delta=1e-4)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

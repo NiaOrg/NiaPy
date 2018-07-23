@@ -87,13 +87,7 @@ class CamelAlgorithm(Algorithm):
 		"""
 		super(CamelAlgorithm, self).__init__(name='CamelAlgorithm', sName='CA', **kwargs)
 
-	def setParameters(self, **kwargs):
-		r"""Set the algorithm parameters.
-
-		**See**:
-		CamelAlgorithm.__setParams(self, NP=50, omega=0.25, mu=0.5, alpha=0.5, S_init=10, E_init=10, T_min=-10, T_max=10, **ukwargs)
-		"""
-		self.__setParams(**kwargs)
+	def setParameters(self, **kwargs): self.__setParams(**kwargs)
 
 	def __setParams(self, NP=50, omega=0.25, mu=0.5, alpha=0.5, S_init=10, E_init=10, T_min=-10, T_max=10, **ukwargs):
 		r"""Set the arguments of an algorithm.

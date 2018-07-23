@@ -21,10 +21,8 @@ class MyBenchmark(object):
 
 class BATestCase(TestCase):
     def setUp(self):
-        self.ba_custom = BatAlgorithm(
-            10, 20, 1000, 0.5, 0.5, 0.0, 2.0, MyBenchmark())
-        self.ba_griewank = BatAlgorithm(
-            10, 40, 1000, 0.5, 0.5, 0.0, 2.0, 'griewank')
+        self.ba_custom = BatAlgorithm(D=10, NP=20, nFES=1000, A=0.5, r=0.5, Qmin=0.0, Qmax=2.0, benchmark=MyBenchmark())
+        self.ba_griewank = BatAlgorithm(NP=10, D=40, nFES=1000, A=0.5, r=0.5, Qmin=0.0, Qmax=2.0, benchmark='griewank')
 
     def test_custom_works_fine(self):
         self.assertTrue(self.ba_custom.run())

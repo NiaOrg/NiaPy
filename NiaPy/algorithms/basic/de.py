@@ -1,116 +1,80 @@
-import random as rnd
+# encoding=utf8
 import copy
-from NiaPy.benchmarks.utility import Utility
+import logging
+from NiaPy.algorithms.algorithm import Algorithm
 
 __all__ = ['DifferentialEvolutionAlgorithm']
 
+logging.basicConfig()
+logger = logging.getLogger('NiaPy.algorithms.basic')
+logger.setLevel('INFO')
 
 class SolutionDE(object):
+	def __init__(self, task):
+		self.Solution = []
+		self.Fitness = float('inf')
+		self.generateSolution(task)
 
-    def __init__(self, D, LB, UB):
-        self.D = D
-        self.LB = LB
-        self.UB = UB
+	def generateSolution(self): self.Solution = [self.LB + (self.UB - self.LB) * rnd.random() for _i in range(self.D)]
 
-        self.Solution = []
-        self.Fitness = float('inf')
-        self.generateSolution()
+	def evaluate(self, task): self.Fitness = task.eval(self.Solution)
 
-    def generateSolution(self):
-        self.Solution = [self.LB + (self.UB - self.LB) * rnd.random()
-                         for _i in range(self.D)]
+	def repair(self, task):
+		ir = where(self.Solution > task.Upper)
+		self.Solution[ir] = task.Upper[ir]
+		ir = where(self.Solution < task.Lower)
+		self.Solution[ir] = task.Lower[ir]
 
-    def evaluate(self):
-        self.Fitness = SolutionDE.FuncEval(self.D, self.Solution)
+	def __eq__(self, other): return self.Solution == other.Solution and self.Fitness == other.Fitness
 
-    def repair(self):
-        for i in range(self.D):
-            if self.Solution[i] > self.UB:
-                self.Solution[i] = self.UB
-            if self.Solution[i] < self.LB:
-                self.Solution[i] = self.LB
+class DifferentialEvolutionAlgorithm(Algorithm):
+	r"""Implementation of Differential evolution algorithm.
 
-    def __eq__(self, other):
-        return self.Solution == other.Solution and self.Fitness == other.Fitness
+	**Algorithm:** Differential evolution algorithm
 
+	**Date:** 2018
 
-class DifferentialEvolutionAlgorithm(object):
-    r"""Implementation of Differential evolution algorithm.
+	**Author:** Uros Mlakar
 
-    **Algorithm:** Differential evolution algorithm
+	**License:** MIT
 
-    **Date:** 2018
+	**Reference paper:**
+	Storn, Rainer, and Kenneth Price. "Differential evolution - a simple and
+	efficient heuristic for global optimization over continuous spaces."
+	Journal of global optimization 11.4 (1997): 341-359.
+	"""
 
-    **Author:** Uros Mlakar
+	def __init__(self, D, NP, nFES, F, CR, benchmark):
+		r"""**__init__(self, D, NP, nFES, F, CR, benchmark)**.
 
-    **License:** MIT
+				Raises:
+		TypeError -- Raised when given benchmark function which does not exists.
+		"""
+		super(DifferentialEvolutionAlgorithm, self).__init__(kwargs)
 
-    **Reference paper:**
-        Storn, Rainer, and Kenneth Price. "Differential evolution - a simple and
-        efficient heuristic for global optimization over continuous spaces."
-        Journal of global optimization 11.4 (1997): 341-359.
-    """
+	def setParameters(self, **kwargs): self.__setParams(**kwargs)
 
-    def __init__(self, D, NP, nFES, F, CR, benchmark):
-        r"""**__init__(self, D, NP, nFES, F, CR, benchmark)**.
+	def __setParams(self, NP=25, F=2, CR=0.2, **ukwargs):
+		r"""Set the algorithm parameters.
 
-        Arguments:
-            D {integer} -- dimension of problem
+		Arguments:
+		NP {integer} -- population size
+		F {decimal} -- scaling factor
+		CR {decimal} -- crossover rate
+		"""
+		self.Np = NP  # population size
+		self.F = F  # scaling factor
+		self.CR = CR  # crossover rate
+		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-            NP {integer} -- population size
+	def evalPopulation(self, x):
+		"""Evaluate population."""
+		for p in self.Population:
+			p.evaluate()
+			if p.Fitness < self.bestSolution.Fitness: self.bestSolution = copy.deepcopy(p)
 
-            nFES {integer} -- number of function evaluations
-
-            F {decimal} -- scaling factor
-
-            CR {decimal} -- crossover rate
-
-            benchmark {object} -- benchmark implementation object
-
-        Raises:
-            TypeError -- Raised when given benchmark function which does not exists.
-
-        """
-
-        self.benchmark = Utility().get_benchmark(benchmark)
-        self.D = D  # dimension of problem
-        self.Np = NP  # population size
-        self.nFES = nFES  # number of function evaluations
-        self.F = F  # scaling factor
-        self.CR = CR  # crossover rate
-        self.Lower = self.benchmark.Lower  # lower bound
-        self.Upper = self.benchmark.Upper  # upper bound
-
-        SolutionDE.FuncEval = staticmethod(self.benchmark.function())
-        self.FEs = 0
-        self.Done = False
-        self.Population = []
-        self.bestSolution = SolutionDE(self.D, self.Lower, self.Upper)
-
-    def evalPopulation(self):
-        """Evaluate population."""
-
-        for p in self.Population:
-            p.evaluate()
-            if p.Fitness < self.bestSolution.Fitness:
-                self.bestSolution = copy.deepcopy(p)
-
-    def initPopulation(self):
-        """Initialize population."""
-
-        for _i in range(self.Np):
-            self.Population.append(SolutionDE(self.D, self.Lower, self.Upper))
-
-    def tryEval(self, v):
-        """Check evaluations."""
-        if self.FEs <= self.nFES:
-            v.evaluate()
-            self.FEs += 1
-        else:
-            self.Done = True
-
-    def generationStep(self, Population):
-        """Implement main generation step."""
+	def generationStep(self, Population):
+		"""Implement main generation step."""
 
         newPopulation = []
         for i in range(self.Np):
@@ -138,11 +102,12 @@ class DifferentialEvolutionAlgorithm(object):
                 newPopulation.append(Population[i])
         return newPopulation
 
-    def run(self):
-        """Run."""
-        self.initPopulation()
-        self.evalPopulation()
-        self.FEs = self.Np
-        while not self.Done:
-            self.Population = self.generationStep(self.Population)
-        return self.bestSolution.Fitness
+	def runTask(self, taks):
+		"""Run."""
+		pop = self.rand.uniform(task.Lower, task.Upper, [self.Np, task.D])
+		self.evalPopulation(task)
+		while not task.stopCond(): 
+			self.Population = self.generationStep(self.Population)
+		return self.bestSolution.Solution, self.bestSolution.Fitness
+
+# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

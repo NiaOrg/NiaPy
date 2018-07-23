@@ -35,13 +35,7 @@ class BareBonesFireworksAlgorithm(Algorithm):
 		"""
 		super(BareBonesFireworksAlgorithm, self).__init__(name='BareBonesFireworksAlgorithm', sName='BBFA', **kwargs)
 
-	def setParameters(self, **kwargs):
-		r"""Set the algorithm parameters/arguments.
-
-		**See**:
-		BareBonesFireworksAlgorithm.__setparams(self, n=10, c_a=1.5, c_r=0.5, **ukwargs)
-		"""
-		self.__setParams(**kwargs)
+	def setParameters(self, **kwargs): self.__setParams(**kwargs)
 
 	def __setParams(self, n=10, C_a=1.5, C_r=0.5, **ukwargs):
 		r"""Set the arguments of an algorithm.

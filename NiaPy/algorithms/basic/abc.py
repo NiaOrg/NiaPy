@@ -4,7 +4,6 @@ import copy
 import logging
 from numpy import random as rnd, where
 from NiaPy.algorithms.algorithm import Algorithm
-from NiaPy.benchmarks.utility import Utility
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.basic')
@@ -66,7 +65,7 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 		"""
 		self.__setParams(**kwargs)
 
-	def __setParams(self, NP=10, Limit=100, **kwargs):
+	def __setParams(self, NP=10, Limit=100, **ukwargs):
 		r"""Set the arguments of an algorithm.
 
 		**Arguments**:
@@ -79,6 +78,7 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 		self.Trial = []  # trials
 		self.Foods = []  # foods
 		self.Probs = []  # probs
+		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def init(self, task):
 		"""Initialize positions."""
@@ -106,9 +106,9 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 		while not task.stopCond():
 			for i in range(self.FoodNumber):
 				newSolution = copy.deepcopy(self.Foods[i])
-				param2change = int(rnd.rand() * task.D)
-				neighbor = int(self.FoodNumber * rnd.rand())
-				newSolution.Solution[param2change] = self.Foods[i].Solution[param2change] + (-1 + 2 * rnd.rand()) * (self.Foods[i].Solution[param2change] - self.Foods[neighbor].Solution[param2change])
+				param2change = int(self.rand.rand() * task.D)
+				neighbor = int(self.FoodNumber * self.rand.rand())
+				newSolution.Solution[param2change] = self.Foods[i].Solution[param2change] + (-1 + 2 * self.rand.rand()) * (self.Foods[i].Solution[param2change] - self.Foods[neighbor].Solution[param2change])
 				newSolution.eval(task)
 				if newSolution.Fitness < self.Foods[i].Fitness:
 					self.checkForBest(newSolution)
@@ -118,13 +118,13 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 			self.CalculateProbs()
 			t, s = 0, 0
 			while t < self.FoodNumber:
-				if rnd.rand() < self.Probs[s]:
+				if self.rand.rand() < self.Probs[s]:
 					t += 1
 					Solution = copy.deepcopy(self.Foods[s])
-					param2change = int(rnd.rand() * task.D)
-					neighbor = int(self.FoodNumber * rnd.rand())
-					while neighbor == s: neighbor = int(self.FoodNumber * rnd.rand())
-					Solution.Solution[param2change] = self.Foods[s].Solution[param2change] + (-1 + 2 * rnd.rand()) * (self.Foods[s].Solution[param2change] - self.Foods[neighbor].Solution[param2change])
+					param2change = int(self.rand.rand() * task.D)
+					neighbor = int(self.FoodNumber * self.rand.rand())
+					while neighbor == s: neighbor = int(self.FoodNumber * self.rand.rand())
+					Solution.Solution[param2change] = self.Foods[s].Solution[param2change] + (-1 + 2 * self.rand.rand()) * (self.Foods[s].Solution[param2change] - self.Foods[neighbor].Solution[param2change])
 					Solution.eval(task)
 					if Solution.Fitness < self.Foods[s].Fitness:
 						self.checkForBest(newSolution)
