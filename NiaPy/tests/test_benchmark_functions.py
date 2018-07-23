@@ -183,7 +183,7 @@ class TestBenchmarkFunctions(TestCase):
 	def test_expanded_griewank_plus_rosnbrock(self):
 		fun = Utility().get_benchmark('expandedgriewankplusrosenbrock').function()
 		self.assertTrue(callable(fun))
-		self.assertAlmostEqual(fun(self.D, [1, 2, 3, 4, 5]), 854123.5271421941, delta=1)
+		self.assertAlmostEqual(fun(self.D, [1, 2, 3, 4, 5]), 854123.5271421941, delta=1e2)
 
 	def test_expanded_scaffer(self):
 		fun = Utility().get_benchmark('expandedscaffer').function()
