@@ -94,8 +94,8 @@ class Task(Utility):
 	def stopCond(self): return self.Evals >= self.nFES or (False if self.nGEN == None else self.Iters >= self.nGEN)
 
 	def eval(self, A):
-		if self.stopCond() or not self.isFisible(A): return np.inf
 		self.Evals += 1
+		if self.stopCond() or not self.isFisible(A): return np.inf
 		X = A - self.o if self.o != None else A
 		X = self.fo(X) if self.fo != None else X
 		X = np.dot(X, self.M) if self.M != None else X
@@ -104,6 +104,6 @@ class Task(Utility):
 
 	def nextIter(self): self.Iters += 1
 
-	def isFisible(self, A): return False if True in (A < self.Lower) or True in (A > self.Upper) else True
+	def isFisible(self, A): return (False if True in (A < self.Lower) else True) or (False if True in (A > self.Upper) else True)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

@@ -17,10 +17,20 @@ class Algorithm(object):
 		**Arguments**:
 		name {string} -- Full name of algorithm
 		shortName {string} -- Short name of algorithm
+		NP {integer} -- population size
+		D {integer} -- dimension of problem
+		nGEN {integer} -- nuber of generation/iterations
+		nFES {integer} -- number of function evaluations
+		benchmark {object} -- benchmark implementation object
+		task {Task} -- task to perform optimization on
+
+		**See**:
+		Algorithm.setParameters(self, **kwargs)
 		"""
 		task = kwargs.get('task', None)
 		self.name, self.sName, = kwargs.get('name', 'Algorith'), kwargs.get('sName', 'algo')
 		self.task = task if task != None else Task(kwargs.get('D', 10), kwargs.get('nFES', 100000), None, kwargs.get('benchmark', 'ackley'))
+		self.setParameters(**kwargs)
 
 	def setParameters(self, **kwargs): pass
 

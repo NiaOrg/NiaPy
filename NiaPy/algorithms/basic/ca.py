@@ -81,15 +81,16 @@ class CamelAlgorithm(Algorithm):
 		nFES {integer} -- number of function evaluations
 		benchmark {object} -- benchmark implementation object
 
-		**See**: CamelAlgorithm.setParameters
+		**See**:
+		Algorithm.__init__(self, **kwargs)
 		"""
 		super(CamelAlgorithm, self).__init__(name='CamelAlgorithm', sName='CA', **kwargs)
-		self.setParameters(**kwargs)
 
 	def setParameters(self, **kwargs):
 		r"""Set the algorithm parameters.
 
-		**See**: CamelAlgorithm.__setParams
+		**See**:
+		CamelAlgorithm.__setParams(self, NP=50, omega=0.25, mu=0.5, alpha=0.5, S_init=10, E_init=10, T_min=-10, T_max=10, **ukwargs)
 		"""
 		self.__setParams(**kwargs)
 

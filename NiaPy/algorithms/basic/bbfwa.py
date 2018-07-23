@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, unused-variable
+# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy
 import logging
 import numpy as np
 from NiaPy.algorithms.algorithm import Algorithm
@@ -30,23 +30,16 @@ class BareBonesFireworksAlgorithm(Algorithm):
 	def __init__(self, **kwargs):
 		r"""Initialize Bare Bones Fireworks algorithm class.
 
-		**Arguments**:
-		NP {integer} -- population size
-		D {integer} -- dimension of problem
-		nGEN {integer} -- nuber of generation/iterations
-		nFES {integer} -- number of function evaluations
-		benchmark {object} -- benchmark implementation object
-		task {Task} -- task to perform optimization on
-
-		**See**: BareBonesFireworksAlgorithm.setParameters
+		**See**:
+		Algorithm.__init__(self, **kwargs)
 		"""
 		super(BareBonesFireworksAlgorithm, self).__init__(name='BareBonesFireworksAlgorithm', sName='BBFA', **kwargs)
-		self.setParameters(**kwargs)
 
 	def setParameters(self, **kwargs):
 		r"""Set the algorithm parameters/arguments.
 
-		**See**: BareBonesFireworksAlgorithm.__setParams
+		**See**:
+		BareBonesFireworksAlgorithm.__setparams(self, n=10, c_a=1.5, c_r=0.5, **ukwargs)
 		"""
 		self.__setParams(**kwargs)
 
@@ -65,10 +58,10 @@ class BareBonesFireworksAlgorithm(Algorithm):
 		x, A = np.random.uniform(task.Lower, task.Upper, task.D), task.bRange
 		x_fit = task.eval(x)
 		while not task.stopCond():
-			S = [np.random.uniform(x - A, x + A) for i in range(self.n)]
+			S = np.random.uniform(x - A, x + A, [self.n, task.D])
 			S_fit = np.apply_along_axis(task.eval, 1, S)
-			is_min = np.argmin(S_fit)
-			if S_fit[is_min] < x_fit: x, x_fit, A = S[is_min], S_fit[is_min], self.C_a * A
+			iS = np.argmin(S_fit)
+			if S_fit[iS] < x_fit: x, x_fit, A = S[iS], S_fit[iS], self.C_a * A
 			else: A = self.C_r * A
 		return x, x_fit
 
