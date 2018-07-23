@@ -1,5 +1,4 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy
 import copy
 import logging
 from numpy import random as rnd, where

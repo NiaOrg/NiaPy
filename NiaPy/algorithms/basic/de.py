@@ -1,6 +1,7 @@
 # encoding=utf8
 import copy
 import logging
+from numpy import vectorize, argmin
 from NiaPy.algorithms.algorithm import Algorithm
 
 __all__ = ['DifferentialEvolutionAlgorithm']
@@ -9,13 +10,37 @@ logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.basic')
 logger.setLevel('INFO')
 
+def Rand1(pop, ic, f, cr):
+	# TODO
+	return None
+
+def Best1(pop, ic, f, cr):
+	# TODO
+	return None
+
+def Rand2(pop, ic, f, cr):
+	# TODO
+	return None
+
+def Best2(pop, ic, f, cr):
+	# TODO
+	return None
+
+def Curr2Rand1(pop, ic, f, cr):
+	# TODO
+	return None
+
+def Curr2Best1(pop, ic, f, cr):
+	# TODO
+	return None
+
 class SolutionDE(object):
 	def __init__(self, task):
 		self.Solution = []
 		self.Fitness = float('inf')
 		self.generateSolution(task)
 
-	def generateSolution(self): self.Solution = [self.LB + (self.UB - self.LB) * rnd.random() for _i in range(self.D)]
+	def generateSolution(self, task): self.Solution = task.Lower +  task.bRange * rnd.rand(task.D)
 
 	def evaluate(self, task): self.Fitness = task.eval(self.Solution)
 
@@ -34,7 +59,7 @@ class DifferentialEvolutionAlgorithm(Algorithm):
 
 	**Date:** 2018
 
-	**Author:** Uros Mlakar
+	**Author:** Uros Mlakar and Klemen Berkoivč
 
 	**License:** MIT
 
@@ -44,13 +69,13 @@ class DifferentialEvolutionAlgorithm(Algorithm):
 	Journal of global optimization 11.4 (1997): 341-359.
 	"""
 
-	def __init__(self, D, NP, nFES, F, CR, benchmark):
+	def __init__(self, **kwargs):
 		r"""**__init__(self, D, NP, nFES, F, CR, benchmark)**.
 
 				Raises:
 		TypeError -- Raised when given benchmark function which does not exists.
 		"""
-		super(DifferentialEvolutionAlgorithm, self).__init__(kwargs)
+		super(DifferentialEvolutionAlgorithm, self).__init__(name='DifferentialEvolutionAlgorithm', sName='DE', **kwargs)
 
 	def setParameters(self, **kwargs): self.__setParams(**kwargs)
 
@@ -61,53 +86,32 @@ class DifferentialEvolutionAlgorithm(Algorithm):
 		NP {integer} -- population size
 		F {decimal} -- scaling factor
 		CR {decimal} -- crossover rate
+		Mutation {function} -- mutation stratgy
 		"""
 		self.Np = NP  # population size
 		self.F = F  # scaling factor
 		self.CR = CR  # crossover rate
+		self.Mutation
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def evalPopulation(self, x):
-		"""Evaluate population."""
-		for p in self.Population:
-			p.evaluate()
-			if p.Fitness < self.bestSolution.Fitness: self.bestSolution = copy.deepcopy(p)
-
-	def generationStep(self, Population):
-		"""Implement main generation step."""
-
-        newPopulation = []
-        for i in range(self.Np):
-            newSolution = SolutionDE(self.D, self.Lower, self.Upper)
-
-            r = rnd.sample(range(0, self.Np), 3)
-            while i in r:
-                r = rnd.sample(range(0, self.Np), 3)
-            jrand = int(rnd.random() * self.Np)
-
-            for j in range(self.D):
-                if rnd.random() < self.CR or j == jrand:
-                    newSolution.Solution[j] = Population[r[0]].Solution[j] + self.F * \
-                        (Population[r[1]].Solution[j] - Population[r[2]].Solution[j])
-                else:
-                    newSolution.Solution[j] = Population[i].Solution[j]
-            newSolution.repair()
-            self.tryEval(newSolution)
-
-            if newSolution.Fitness < self.bestSolution.Fitness:
-                self.bestSolution = copy.deepcopy(newSolution)
-            if newSolution.Fitness < self.Population[i].Fitness:
-                newPopulation.append(newSolution)
-            else:
-                newPopulation.append(Population[i])
-        return newPopulation
+	def evalPopulation(self, x, x_old, task):
+		"""Evaluate element."""
+		x.evaluate(task)
+		return x if x.Fitness < x_old.Fitness else x_old
 
 	def runTask(self, taks):
 		"""Run."""
-		pop = self.rand.uniform(task.Lower, task.Upper, [self.Np, task.D])
-		self.evalPopulation(task)
-		while not task.stopCond(): 
-			self.Population = self.generationStep(self.Population)
-		return self.bestSolution.Solution, self.bestSolution.Fitness
+		pop = [SolutionDE(task) for _i in range(self.Np)]
+		pop = vectorize(self.evalPopulation)(pop, pop, task)
+		ix_b = argmin([x.Fitness for x in pop])
+		x_best = pop[ix_best]
+		while not task.stopCond():
+			# FIXME popravi mutacijo
+			npop = [self.Mutation(pop, i, self.F, self.CR) for i in range(self.Np)]
+			npop = [x.repair() for x in npop]
+			pop = vectorize(self.evalPopulation)(npop, pop, task)
+			ix_b = argmin([x.Fitness for x in pop])
+			if x_best.Fitness < pop[ix_b].Fitness: x_best = pop[ix_best]
+		return x_best.Solution, x_best.Fitness
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
