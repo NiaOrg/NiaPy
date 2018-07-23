@@ -22,8 +22,8 @@ class MyBenchmark(object):
 class GWOTestCase(TestCase):
 
     def setUp(self):
-        self.gwo_custom = GreyWolfOptimizer(10, 20, 10000, MyBenchmark())
-        self.gwo_sphere = GreyWolfOptimizer(10, 20, 10000, 'sphere')
+        self.gwo_custom = GreyWolfOptimizer(10, 20, 1000, MyBenchmark())
+        self.gwo_sphere = GreyWolfOptimizer(10, 20, 1000, 'sphere')
 
     def test_custom_works_fine(self):
         self.assertTrue(self.gwo_custom.run())

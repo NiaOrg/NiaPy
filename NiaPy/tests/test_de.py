@@ -22,9 +22,9 @@ class MyBenchmark(object):
 class DETestCase(TestCase):
     def setUp(self):
         self.de_custom = DifferentialEvolutionAlgorithm(
-            10, 40, 10000, 0.5, 0.9, MyBenchmark())
+            10, 40, 1000, 0.5, 0.9, MyBenchmark())
         self.de_griewank = DifferentialEvolutionAlgorithm(
-            10, 40, 10000, 0.5, 0.9, 'griewank')
+            10, 40, 1000, 0.5, 0.9, 'griewank')
 
     def test_Custom_works_fine(self):
         self.assertTrue(self.de_custom.run())

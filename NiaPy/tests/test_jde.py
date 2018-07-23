@@ -22,9 +22,9 @@ class MyBenchmark(object):
 class jDETestCase(TestCase):
     def setUp(self):
         self.jde_custom = SelfAdaptiveDifferentialEvolutionAlgorithm(
-            10, 40, 10000, 0.5, 0.9, 0.1, MyBenchmark())
+            10, 40, 1000, 0.5, 0.9, 0.1, MyBenchmark())
         self.jde_griewank = SelfAdaptiveDifferentialEvolutionAlgorithm(
-            10, 40, 10000, 0.5, 0.9, 0.1, 'griewank')
+            10, 40, 1000, 0.5, 0.9, 0.1, 'griewank')
 
     def test_custom_works_fine(self):
         self.assertTrue(self.jde_custom.run())

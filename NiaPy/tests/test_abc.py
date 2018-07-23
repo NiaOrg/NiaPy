@@ -23,9 +23,9 @@ class ABCTestCase(TestCase):
 
     def setUp(self):
         self.abc_custom = ArtificialBeeColonyAlgorithm(
-            10, 40, 10000, MyBenchmark())
+            10, 40, 4000, MyBenchmark())
         self.abc_griewank = ArtificialBeeColonyAlgorithm(
-            10, 40, 10000, 'griewank')
+            10, 40, 4000, 'griewank')
 
     def test_custom_works_fine(self):
         self.assertTrue(self.abc_custom.run())

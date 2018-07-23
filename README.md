@@ -26,6 +26,8 @@ The micro framework features following algorithms:
 - basic:
   - Artificial bee colony algorithm ([see example](examples/run_abc.py))
   - Bat algorithm ([see example](examples/run_ba.py))
+  - Bare bones fireworks algorithm ([see example](examples/run_bbfwa.py))
+  - Camel algorithm ([see example](example/run_ca.py))
   - Differential evolution algorithm ([see example](examples/run_de.py))
   - Firefly algorithm ([see example](examples/run_fa.py))
   - Flower pollination algorithm ([see example](examples/run_fpa.py))
@@ -42,10 +44,15 @@ The following benchmark functions are included in NiaPy:
 - Alpine
   - Alpine1
   - Alpine2
+- Bent Cigar
 - Chung Reynolds
 - Csendes
+- Discus
+- Elliptic
 - Griewank
 - Happy cat
+- HGBat
+- Katsuura
 - Pintér
 - Qing
 - Quintic
@@ -64,6 +71,7 @@ The following benchmark functions are included in NiaPy:
 - Stepint
 - Styblinski-Tang
 - Sum Squares
+- Weierstrass
 - Whitley
 
 # Setup
@@ -168,9 +176,9 @@ We encourage you to contribute to NiaPy! Please check out the [Contributing to N
 Everyone interacting in NiaPy's codebases, issue trackers, chat rooms and mailing lists is expected to follow the NiaPy [code of conduct](CODE_OF_CONDUCT.md).
 
 ## Contributors
-[<img alt="GregaVrbancic" src="https://avatars0.githubusercontent.com/u/1894788?v=4&s=117" width="117">](https://github.com/GregaVrbancic) |[<img alt="firefly-cpp" src="https://avatars2.githubusercontent.com/u/1633361?v=4&s=117" width="117">](https://github.com/firefly-cpp) |[<img alt="lucijabrezocnik" src="https://avatars2.githubusercontent.com/u/36370699?v=4&s=117" width="117">](https://github.com/lucijabrezocnik) |[<img alt="mlaky88" src="https://avatars1.githubusercontent.com/u/23091578?v=4&s=117" width="117">](https://github.com/mlaky88) |[<img alt="rhododendrom" src="https://avatars1.githubusercontent.com/u/3198785?v=4&s=117" width="117">](https://github.com/rhododendrom) |
-:---: |:---: |:---: |:---: |:---: |
-[GregaVrbancic](https://github.com/GregaVrbancic) |[firefly-cpp](https://github.com/firefly-cpp) |[lucijabrezocnik](https://github.com/lucijabrezocnik) |[mlaky88](https://github.com/mlaky88) |[rhododendrom](https://github.com/rhododendrom)
+[<img alt="GregaVrbancic" src="https://avatars0.githubusercontent.com/u/1894788?v=4&s=117" width="117">](https://github.com/GregaVrbancic) |[<img alt="firefly-cpp" src="https://avatars2.githubusercontent.com/u/1633361?v=4&s=117" width="117">](https://github.com/firefly-cpp) |[<img alt="lucijabrezocnik" src="https://avatars2.githubusercontent.com/u/36370699?v=4&s=117" width="117">](https://github.com/lucijabrezocnik) |[<img alt="mlaky88" src="https://avatars1.githubusercontent.com/u/23091578?v=4&s=117" width="117">](https://github.com/mlaky88) |[<img alt="rhododendrom" src="https://avatars1.githubusercontent.com/u/3198785?v=4&s=117" width="117">](https://github.com/rhododendrom) |[<img alt="kb2623" src="https://avatars3.githubusercontent.com/u/7480221?s=460&v=4" width="117">](https://github.com/kb2623)
+:---: |:---: |:---: |:---: |:---: |:---: |
+[GregaVrbancic](https://github.com/GregaVrbancic) |[firefly-cpp](https://github.com/firefly-cpp) |[lucijabrezocnik](https://github.com/lucijabrezocnik) |[mlaky88](https://github.com/mlaky88) |[rhododendrom](https://github.com/rhododendrom) |[kb2623](https://github.com/kb2623)
 
 
 ## Licence

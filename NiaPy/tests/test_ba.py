@@ -22,9 +22,9 @@ class MyBenchmark(object):
 class BATestCase(TestCase):
     def setUp(self):
         self.ba_custom = BatAlgorithm(
-            10, 20, 10000, 0.5, 0.5, 0.0, 2.0, MyBenchmark())
+            10, 20, 1000, 0.5, 0.5, 0.0, 2.0, MyBenchmark())
         self.ba_griewank = BatAlgorithm(
-            10, 40, 10000, 0.5, 0.5, 0.0, 2.0, 'griewank')
+            10, 40, 1000, 0.5, 0.5, 0.0, 2.0, 'griewank')
 
     def test_custom_works_fine(self):
         self.assertTrue(self.ba_custom.run())

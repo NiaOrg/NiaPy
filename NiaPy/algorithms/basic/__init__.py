@@ -8,7 +8,8 @@ from NiaPy.algorithms.basic.gwo import GreyWolfOptimizer
 from NiaPy.algorithms.basic.ga import GeneticAlgorithm
 from NiaPy.algorithms.basic.abc import ArtificialBeeColonyAlgorithm
 from NiaPy.algorithms.basic.pso import ParticleSwarmAlgorithm
-
+from NiaPy.algorithms.basic.ca import CamelAlgorithm
+from NiaPy.algorithms.basic.bbfwa import BareBonesFireworksAlgorithm
 
 __all__ = [
     'BatAlgorithm',
@@ -18,5 +19,7 @@ __all__ = [
     'GreyWolfOptimizer',
     'GeneticAlgorithm',
     'ArtificialBeeColonyAlgorithm',
-    'ParticleSwarmAlgorithm'
+    'ParticleSwarmAlgorithm',
+    'BareBonesFireworksAlgorithm',
+    'CamelAlgorithm'
 ]
