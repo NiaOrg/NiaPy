@@ -41,7 +41,7 @@ class Camel(object):
 	def nextX(self, x_best, task):
 		delta = -1 + self.rand() * 2
 		self.x = self.x_past + delta * (1 - (self.E / Camel.E_init)) * exp(1 - self.S / Camel.S_init) * (x_best - self.x_past)
-		if not task.isFisible(self.x) and task.stopCond():
+		if not task.isFeasible(self.x) and task.stopCond():
 			self.x = self.x_past
 			return False
 		return True
