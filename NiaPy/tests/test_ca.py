@@ -1,6 +1,7 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, multiple-statements
 from unittest import TestCase
+from numpy import asarray
 from NiaPy.benchmarks.griewank import Griewank
 from NiaPy.algorithms.basic import CamelAlgorithm
 
@@ -27,12 +28,12 @@ class CSTestCase(TestCase):
 		fun = MyBenchmark().function()
 		x = self.ca_custom.run()
 		self.assertTrue(x)
-		self.assertAlmostEqual(fun(self.D, x[0]), x[1], delta=1e2)
+		self.assertAlmostEqual(fun(self.D, asarray(x[0])), x[1], delta=1e2)
 
 	def test_griewank_works_fine(self):
 		fun = Griewank().function()
 		x = self.ca_griewank.run()
 		self.assertTrue(x)
-		self.assertAlmostEqual(fun(self.D, x[0]), x[1], delta=1e2)
+		self.assertAlmostEqual(fun(self.D, asarray(x[0])), x[1], delta=1e2)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

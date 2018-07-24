@@ -103,6 +103,8 @@ class Runner(object):
 
 		C_r {decimal} -- Reduction factor
 
+		Limit {integer} -- Limit
+
 		"""
 		self.D = D
 		self.NP = NP
@@ -138,15 +140,16 @@ class Runner(object):
 		self.T_max = kwargs.get('T_max', 10)
 		self.C_a = kwargs.get('C_a', 2)
 		self.C_r = kwargs.get('C_r', 0.5)
+		self.Limit = kwargs.get('Limit', 100)
 		self.results = {}
 
 	def __algorithmFactory(self, name, benchmark):
 		bench = benchmarks.utility.Utility().get_benchmark(benchmark)
 		algorithm = None
 		if name == 'BatAlgorithm':
-			algorithm = algorithms.basic.BatAlgorithm(self.D, self.NP, self.nFES, self.A, self.r, self.Qmin, self.Qmax, bench)
+			algorithm = algorithms.basic.BatAlgorithm(D=self.D, NP=self.NP, nFES=self.nFES, A=self.A, r=self.r, Qmin=self.Qmin, Qmax=self.Qmax, benchmark=bench)
 		elif name == 'DifferentialEvolutionAlgorithm':
-			algorithm = algorithms.basic.DifferentialEvolutionAlgorithm(self.D, self.NP, self.nFES, self.F, self.CR, bench)
+			algorithm = algorithms.basic.DifferentialEvolutionAlgorithm(D=self.D, NP=self.NP, nFES=self.nFES, F=self.F, CR=self.CR, benchmark=bench)
 		elif name == 'FireflyAlgorithm':
 			algorithm = algorithms.basic.FireflyAlgorithm(self.D, self.NP, self.nFES, self.alpha, self.betamin, self.gamma, bench)
 		elif name == 'FlowerPollinationAlgorithm':
@@ -154,7 +157,7 @@ class Runner(object):
 		elif name == 'GreyWolfOptimizer':
 			algorithm = algorithms.basic.GreyWolfOptimizer(self.D, self.NP, self.nFES, bench)
 		elif name == 'ArtificialBeeColonyAlgorithm':
-			algorithm = algorithms.basic.ArtificialBeeColonyAlgorithm(self.D, self.NP, self.nFES, bench)
+			algorithm = algorithms.basic.ArtificialBeeColonyAlgorithm(D=self.D, NP=self.NP, nFES=self.nFES, Limit=self.Limit, benchmark=bench)
 		elif name == 'GeneticAlgorithm':
 			algorithm = algorithms.basic.GeneticAlgorithm(self.D, self.NP, self.nFES, self.Ts, self.Mr, self.gamma, bench)
 		elif name == 'ParticleSwarmAlgorithm':

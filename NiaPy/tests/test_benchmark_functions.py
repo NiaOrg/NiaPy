@@ -1,8 +1,8 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation
-import math
-from numpy import asarray
+# pylint: disable=mixed-indentation, redefined-builtin
+from math import pow
 from unittest import TestCase
+from numpy import asarray
 from NiaPy.benchmarks.utility import Utility
 
 
@@ -152,7 +152,7 @@ class TestBenchmarkFunctions(TestCase):
 		alpine2 = Utility().get_benchmark('alpine2')
 		fun = alpine2.function()
 		self.assertTrue(callable(fun))
-		self.assertEqual(fun(self.D, self.array8), math.pow(2.8081311800070053291, self.D))
+		self.assertEqual(fun(self.D, self.array8), pow(2.8081311800070053291, self.D))
 
 	def test_chungReynolds(self):
 		chungReynolds = Utility().get_benchmark('chungReynolds')

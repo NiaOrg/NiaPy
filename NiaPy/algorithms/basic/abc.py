@@ -1,4 +1,5 @@
 # encoding=utf8
+# pylint: disable=mixed-indentation, line-too-long, multiple-statements, attribute-defined-outside-init, logging-not-lazy
 import copy
 import logging
 from numpy import random as rnd, where
@@ -16,7 +17,7 @@ class SolutionABC(object):
 		self.Fitness = float('inf')
 		self.generateSolution(task)
 
-	def generateSolution(self, task): self.Solution = task.Lower +  task.bRange * rnd.rand(task.D)
+	def generateSolution(self, task): self.Solution = task.Lower + task.bRange * rnd.rand(task.D)
 
 	def repair(self, task):
 		ir = where(self.Solution > task.Upper)
@@ -51,8 +52,8 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 	def __init__(self, **kwargs):
 		"""**__init__(self, D, NP, nFES, benchmark)**.
 
-		Raises:
-		TypeError -- Raised when given benchmark function which does not exists.
+		**See**:
+		Algorithm.__init__(self, **kwargs)
 		"""
 		super(ArtificialBeeColonyAlgorithm, self).__init__(name='ArtificialBeeColonyAlgorithm', sName='ABC', **kwargs)
 

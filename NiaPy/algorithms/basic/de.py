@@ -1,5 +1,5 @@
 # encoding=utf8
-import copy
+# pylint: disable=mixed-indentation, multiple-statements, line-too-long, unused-argument, no-self-use, no-self-use, attribute-defined-outside-init, logging-not-lazy
 import logging
 from numpy import where, argmin, asarray, ndarray, random as rand
 from NiaPy.algorithms.algorithm import Algorithm
@@ -53,9 +53,9 @@ class SolutionDE(object):
 		rnd = kwargs.get('rand', rand)
 		x = kwargs.get('x', None)
 		if x != None: self.x = x if isinstance(x, ndarray) else asarray(x)
-		else: self.generateSolution(task, rand)
+		else: self.generateSolution(task, rnd)
 
-	def generateSolution(self, task, rnd): self.x = task.Lower +  task.bRange * rnd.rand(task.D)
+	def generateSolution(self, task, rnd): self.x = task.Lower + task.bRange * rnd.rand(task.D)
 
 	def evaluate(self, task): self.Fitness = task.eval(self.x)
 
@@ -107,10 +107,7 @@ class DifferentialEvolutionAlgorithm(Algorithm):
 		CR {decimal} -- crossover rate
 		CrossMutt {function} -- crossover and mutation strategy
 		"""
-		self.Np = NP  # population size
-		self.F = F  # scaling factor
-		self.CR = CR  # crossover rate
-		self.CrossMutt = CrossMutt # crossover and mutation  strategy
+		self.Np, self.F, self.CR, self.CrossMutt = NP, F, CR, CrossMutt
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def evalPopulation(self, x, x_old, task):

@@ -1,4 +1,5 @@
 # encoding=utf8
+# pylint: disable=mixed-indentation, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use
 import logging
 from numpy import full, apply_along_axis, argmin, where
 from NiaPy.algorithms.algorithm import Algorithm
@@ -28,11 +29,11 @@ class BatAlgorithm(Algorithm):
 	def __init__(self, **kwargs):
 		r"""**__init__(self, D, NP, nFES, A, r, Qmin, Qmax, benchmark)**.
 
-		Raises:
-		TypeError -- Raised when given benchmark function which does not exists.
+		**See**:
+		Algorithm.__init__(self, **kwargs)
 		"""
-		super(BatAlgorithm, self).__init__(**kwargs)
-		
+		super(BatAlgorithm, self).__init__(name='BatAlgorithm', sName='BA', **kwargs)
+
 	def setParameters(self, **kwargs): self.__setParams(**kwargs)
 
 	def __setParams(self, NP, A, r, Qmin, Qmax, **ukwargs):
