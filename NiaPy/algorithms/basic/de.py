@@ -126,7 +126,7 @@ class DifferentialEvolutionAlgorithm(Algorithm):
 			npop = [self.CrossMutt(pop, i, x_b, self.F, self.CR, self.rand) for i in range(self.Np)]
 			pop = [self.evalPopulation(npop[i], pop[i], task) for i in range(self.Np)]
 			ix_b = argmin([x.Fitness for x in pop])
-			if x_b.Fitness < pop[ix_b].Fitness: x_b = pop[ix_b]
+			if x_b.Fitness > pop[ix_b].Fitness: x_b = pop[ix_b]
 		return x_b.x, x_b.Fitness
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

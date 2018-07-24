@@ -22,10 +22,8 @@ class MyBenchmark(object):
 class CSTestCase(TestCase):
 
     def setUp(self):
-        self.pso_custom = ParticleSwarmAlgorithm(
-            40, 40, 1000, 2.0, 2.0, 0.7, -4, 4, MyBenchmark())
-        self.pso_griewank = ParticleSwarmAlgorithm(
-            40, 40, 1000, 2.0, 2.0, 0.7, -4, 4, 'griewank')
+        self.pso_custom = ParticleSwarmAlgorithm(NP=40, D=40, nFES=1000, C1=2.0, C2=2.0, w=0.7, vMin=-4, vMax=4, benchmark=MyBenchmark())
+        self.pso_griewank = ParticleSwarmAlgorithm(NP=40, D=40, nFES=1000, C1=2.0, C2=2.0, w=0.7, vMin=-4, vMax=4, benchmark='griewank')
 
     def test_custom_works_fine(self):
         self.assertTrue(self.pso_custom.run())

@@ -17,7 +17,7 @@ class BatAlgorithm(Algorithm):
 
 	**Date:** 2015
 
-	**Authors:** Iztok Fister Jr. and Marko Burjek
+	**Authors:** Iztok Fister Jr., Marko Burjek and Klemen Berkovič
 
 	**License:** MIT
 
