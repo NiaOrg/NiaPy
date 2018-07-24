@@ -1,9 +1,9 @@
+# encoding=utf8
 import random as rnd
 import copy
-from NiaPy.benchmarks.utility import Utility
+from NiaPy.algorithms.algorithm import Algorithm
 
 __all__ = ['GeneticAlgorithm']
-
 
 class Chromosome(object):
     def __init__(self, D, LB, UB):
@@ -165,3 +165,5 @@ class GeneticAlgorithm(object):
             for i in range(self.NP):
                 self.checkForBest(self.Population[i])
         return self.Best.Fitness
+
+# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
