@@ -1,6 +1,6 @@
 # encoding=utf8
 import logging
-from numpy import where, argmin, argsort, asarray, ndarray, pow, random as rand
+from numpy import argsort, power as pow, sqrt, sum, exp, random as rand, apply_along_axis, where, asarray
 from NiaPy.algorithms.algorithm import Algorithm
 
 __all__ = ['FireflyAlgorithm']
@@ -28,7 +28,7 @@ class FireflyAlgorithm(Algorithm):
 
 	def setParameters(self, **kwargs): self.__setParams(**kwargs)
 
-	def __setParams(self, NP=25, alpha=1, betamin=1, gamma=2, **kwargs):
+	def __setParams(self, NP=25, alpha=1, betamin=1, gamma=2, **ukwargs):
 		r"""Set the parameters of the algorithm.
 
 		**Arguments**:
@@ -40,12 +40,7 @@ class FireflyAlgorithm(Algorithm):
 		self.NP, self.alpha, self.betamin, self.gamma = NP, alpha, betamin, gamma
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def alpha_new(self, a, alpha):
-		"""Optionally recalculate the new alpha value."""
-		delta = 1.0 - pow((pow(10.0, -4.0) / 0.9), 1.0 / float(a))
-		return (1 - delta) * alpha
-
-	def FindLimits(self, x, task):
+	def repair(self, x, task):
 		"""Find limits."""
 		ir = where(x > task.Upper)
 		x[ir] = task.Upper[ir]
@@ -53,36 +48,33 @@ class FireflyAlgorithm(Algorithm):
 		x[ir] = task.Lower[ir]
 		return x
 
-	def move_ffa(self):
+	def alpha_new(self, a, alpha):
+		"""Optionally recalculate the new alpha value."""
+		delta = 1.0 - pow(pow(10.0, -4.0) / 0.9, 1.0 / float(a))
+		return (1 - delta) * alpha
+
+	def move_ffa(self, i, Fireflies, Intensity, oFireflies, task):
 		"""Move fireflies."""
-		for i in range(self.NP):
-			scale = abs(self.Upper - self.Lower)
-			for j in range(self.NP):
-				r = 0.0
-				for k in range(self.D): r += (self.Fireflies[i][k] - self.Fireflies[j][k]) * (self.Fireflies[i][k] - self.Fireflies[j][k])
-					r = math.sqrt(r)
-				if self.Intensity[i] > self.Intensity[j]: 
-					beta = (1.0 - self.betamin) * math.exp(-self.gamma * math.pow(r, 2.0)) + self.betamin
-					for k in range(self.D):
-						r = random.uniform(0, 1)
-						tmpf = self.alpha * (r - 0.5) * scale
-						self.Fireflies[i][k] = self.Fireflies[i][k] * (1.0 - beta) + self.Fireflies_tmp[j][k] * beta + tmpf
-			self.FindLimits(i)
+		for j in range(self.NP):
+			r = sqrt(sum((Fireflies[i] - Fireflies[j]) * (Fireflies[i] - Fireflies[j])))
+			if Intensity[i] > Intensity[j]: 
+				beta = (1.0 - self.betamin) * exp(-self.gamma * pow(r, 2.0)) + self.betamin
+				tmpf = self.alpha * (self.rand.uniform(0, 1, task.D) - 0.5) * task.bRange
+				Fireflies[i] = Fireflies[i] * (1.0 - beta) + oFireflies[j] * beta + tmpf
+		self.repair(Fireflies[i], task)
+		return Fireflies[i]
 
 	def runTask(self, task):
 		"""Run."""
 		Fireflies = self.rand.uniform(task.Lower, task.Upper, [self.NP, task.D])
-		Fitness = apply_along_axis(task.eval, 1, S)
-		Intensity = Fitness
+		Intensity = apply_along_axis(task.eval, 1, Fireflies)
 		alpha = self.alpha
-		while not taks.stopCond():
+		while not task.stopCond():
 			alpha = self.alpha_new(task.nFES / self.NP, alpha)
 			Index = argsort(Intensity)
-			self.replace_ffa()
-			self.fbest = self.Intensity[0]
-			self.move_ffa()
-			Fitness = apply_along_axis(task.eval, 1, S)
-			Intensity = Fitness
-		return self.fbest
+			nFireflies, nIntensity = Fireflies[Index], Intensity[Index]
+			Fireflies = asarray([self.move_ffa(i, nFireflies, nIntensity, Fireflies, task) for i in range(self.NP)])
+			Intensity = apply_along_axis(task.eval, 1, Fireflies)
+		return Fireflies[0], Intensity[0]
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

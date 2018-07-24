@@ -35,12 +35,10 @@ class MyBenchmark(object):
 
 
 for i in range(10):
-    Algorithm = FireflyAlgorithm(10, 20, 10000, 0.5, 0.2, 1.0, MyBenchmark())
+    Algorithm = FireflyAlgorithm(D=10, NP=20, nFES=1000, alpha=0.5, betamin=0.2, gamma=1.0, benchmark=MyBenchmark())
     Best = Algorithm.run()
-    
     plt.plot(global_vector)
     global_vector = []
-
     logger.info(Best)
     
 plt.xlabel('Number of evaluations')

@@ -70,14 +70,11 @@ class GeneticAlgorithm(object):
             TypeError -- Raised when given benchmark function which does not exists.
 
         """
-        self.benchmark = Utility().get_benchmark(benchmark)
         self.NP = NP  # population size; number of search agents
         self.D = D  # dimension of the problem
         self.Ts = Ts  # tournament selection
         self.Mr = Mr  # mutation rate
         self.gamma = gamma  # minimum frequency
-        self.Lower = self.benchmark.Lower  # lower bound
-        self.Upper = self.benchmark.Upper  # upper bound
         self.Population = []
         self.nFES = nFES  # number of function evaluations
         self.FEs = 0  # function evaluations
