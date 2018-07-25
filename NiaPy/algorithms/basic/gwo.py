@@ -1,7 +1,7 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy
+# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use
 import logging
-from numpy import apply_along_axis, argmin, argsort, fabs, inf, where
+from numpy import fabs, inf, where
 from NiaPy.algorithms.algorithm import Algorithm
 
 logging.basicConfig()

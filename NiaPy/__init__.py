@@ -159,7 +159,7 @@ class Runner(object):
 		elif name == 'ArtificialBeeColonyAlgorithm':
 			algorithm = algorithms.basic.ArtificialBeeColonyAlgorithm(D=self.D, NP=self.NP, nFES=self.nFES, Limit=self.Limit, benchmark=bench)
 		elif name == 'GeneticAlgorithm':
-			algorithm = algorithms.basic.GeneticAlgorithm(D=self.D, NP=self.NP, nFES=self.nFES, Ts=self.Ts, Mr=self.Mr, Cr=self.Cr, benchmark=bench)
+			algorithm = algorithms.basic.GeneticAlgorithm(D=self.D, NP=self.NP, nFES=self.nFES, Ts=self.Ts, Mr=self.Mr, Cr=self.CR, benchmark=bench)
 		elif name == 'ParticleSwarmAlgorithm':
 			algorithm = algorithms.basic.ParticleSwarmAlgorithm(D=self.D, NP=self.NP, nFES=self.nFES, C1=self.C1, C2=self.C2, w=self.w, vMin=self.vMin, vMax=self.vMax, benchmark=bench)
 		elif name == 'HybridBatAlgorithm':
