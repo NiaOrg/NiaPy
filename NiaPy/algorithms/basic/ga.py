@@ -1,32 +1,87 @@
 # encoding=utf8
-import random as rnd
-import copy
+# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, unused-argument
+import logging
+from numpy import random as rand, inf, where, argmin, ndarray, asarray, sort
 from NiaPy.algorithms.algorithm import Algorithm
 
-__all__ = ['GeneticAlgorithm']
+logging.basicConfig()
+logger = logging.getLogger('NiaPy.algorithms.basic')
+logger.setLevel('INFO')
+
+__all__ = ['GeneticAlgorithm', 'TurnamentSelection', 'BackerSelection', 'LinearSelection', 'NonlinearSelection', 'TwoPointCrossover', 'MultiPointCrossover', 'UniformCrossover', 'UniformMutation', 'CreepMutation']
+
+def TurnamentSelection(pop, ts, rnd=rand):
+	comps = [pop[i] for i in rand.choice(len(pop), ts)]
+	return comps[argmin([c.f for c in comps])]
+
+def BackerSelection(pop, p, rnd=rand):
+	pass
+
+def LinearSelection(pop, p, rnd=rand):
+	pass
+
+def NonlinearSelection(pop, p, rnd=rand):
+	pass
+
+def TwoPointCrossover(pop, ic, cr, rnd=rand):
+	io = ic
+	while io != ic: io = rnd.randint(len(pop))
+	r = sort(rnd.choice(len(pop[ic]), 2))
+	x = pop[ic].x
+	x[r[0]:r[1]] = pop[io].x[r[0]:r[1]]
+	return Chromosome(x=x)
+
+def MultiPointCrossover(pop, ic, n, rnd=rand):
+	io = ic
+	while io != ic: io = rnd.randint(len(pop))
+	r = sort(rnd.choice(len(pop[ic]), 2 * n))
+	x = pop[ic].x
+	for i in range(n): x[r[2 * i]:r[2 * i + 1]] = pop[io].x[r[2 * i]:r[2 * i + 1]]
+	return Chromosome(x=x)
+
+def UniformCrossover(pop, ic, cr, rnd=rand):
+	io = ic
+	while io != ic: io = rnd.randint(len(pop))
+	j = rnd.randint(len(pop[ic]))
+	x = [pop[io][i] if rnd.rand() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
+	return Chromosome(x=x)
+
+def UniformMutation(pop, ic, cr, task, rnd=rand):
+	j = rnd.randint(task.D)
+	nx = [rnd.uniform(task.Upper[i], task.Lower[i]) if rnd.rand() < cr or i == j else pop[ic][i] for i in range(task.D)]
+	return Chromosome(x=nx)
+
+def CreepMutation(pop, ic, cr, task, rnd=rand):
+	ic, j = rnd.randint(len(pop)), rnd.randint(task.D)
+	nx = [rnd.uniform(task.Upper[i], task.Lower[i]) if rnd.rand() < cr or i == j else pop[ic][i] for i in range(task.D)]
+	return Chromosome(x=nx)
 
 class Chromosome(object):
-	def __init__(self, D, LB, UB):
-		self.D = D
-		self.LB = LB
-		self.UB = UB
+	def __init__(self, **kwargs):
+		self.f = inf
+		task, rnd, x = kwargs.get('task', None), kwargs.get('rand', rand), kwargs.get('x', None)
+		if x != None: self.x = x if isinstance(x, ndarray) else asarray(x)
+		else: self.generateSolution(task, rnd)
 
-		self.Solution = []
-		self.Fitness = float('inf')
-		self.generateSolution()
+	def generateSolution(self, task, rnd):
+		self.x = task.Lower + task.bRange * rnd.rand(task.D)
+		self.evaluate(task)
 
-	def generateSolution(self): self.Solution = [self.LB + (self.UB - self.LB) * rnd.random() for _i in range(self.D)]
+	def evaluate(self, task): self.f = task.eval(self.x)
 
-	def evaluate(self): self.Fitness = Chromosome.FuncEval(self.D, self.Solution)
+	def repair(self, task):
+		ir = where(self.x > task.Upper)
+		self.x[ir] = task.Upper[ir]
+		ir = where(self.x < task.Lower)
+		self.x[ir] = task.Lower[ir]
 
-	def repair(self):
-		for i in range(self.D):
-			if self.Solution[i] > self.UB: self.Solution[i] = self.UB
-			if self.Solution[i] < self.LB: self.Solution[i] = self.LB
+	def __eq__(self, other): return self.x == other.x and self.f == other.f
 
-	def __eq__(self, other): return self.Solution == other.Solution and self.Fitness == other.Fitness
+	def toString(self): return '%s -> %s' % (self.x, self.f)
 
-	def toString(self): print([i for i in self.Solution])
+	def __getitem__(self, i): return self.x[i]
+
+	def __len__(self): return len(self.x)
 
 class GeneticAlgorithm(Algorithm):
 	r"""Implementation of Genetic algorithm.
@@ -35,7 +90,7 @@ class GeneticAlgorithm(Algorithm):
 
 	**Date:** 2018
 
-	**Author:** Uros Mlakar
+	**Author:** Uros Mlakar and Klemen Berkovič
 
 	**License:** MIT
 	"""
@@ -43,63 +98,29 @@ class GeneticAlgorithm(Algorithm):
 
 	def setParameters(self, **kwargs): self.__setParams(**kwargs)
 
-	def __setParams(self, NP=25, Ts=5, Mr=0.25, gamma=0.2, **ukwargs):
+	def __setParams(self, NP=25, Ts=5, Mr=0.25, Cr=0.25, Selection=TurnamentSelection, Crossover=UniformCrossover, Mutation=UniformMutation, **ukwargs):
 		r"""Set the parameters of the algorithm.
 
 		Arguments:
 		NP {integer} -- population size
 		Ts {integer} -- tournament selection
 		Mr {decimal} -- mutation rate
-		gamma {decimal} -- minimum frequency
+		Cr {decimal} -- crossover rate
 		"""
-		self.NP, self.Ts, self.Mr, self.gamma = NP, Ts, Mr, gamma
+		self.NP, self.Ts, self.Mr, self.Cr = NP, Ts, Mr, Cr
+		self.Selection, self.Crossover, self.Mutation = Selection, Crossover, Mutation
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def TournamentSelection(self):
-		"""Tournament selection."""
-		indices = list(range(self.NP))
-		rnd.shuffle(indices)
-		tPop = []
-		for i in range(self.Ts): tPop.append(self.Population[indices[i]])
-		tPop.sort(key=lambda x: x.Fitness)
-		self.Population.remove(tPop[0])
-		self.Population.remove(tPop[1])
-		return tPop[0], tPop[1]
-
-	def CrossOver(self, parent1, parent2):
-		"""Crossover."""
-		alpha = [-self.gamma + (1 + 2 * self.gamma) * rnd.random() for i in range(self.D)]
-		child1 = Chromosome(self.D, self.Lower, self.Upper)
-		child2 = Chromosome(self.D, self.Lower, self.Upper)
-		child1.Solution = [alpha[i] * parent1.Solution[i] + (1 - alpha[i]) * parent2.Solution[i] for i in range(self.D)]
-		child2.Solution = [alpha[i] * parent2.Solution[i] + (1 - alpha[i]) * parent1.Solution[i] for i in range(self.D)]
-		return child1, child2
-
-	def Mutate(self, child):
-		"""Mutation."""
-		for i in range(self.D):
-			if rnd.random() < self.Mr:
-				sigma = 0.20 * float(child.UB - child.LB)
-				child.Solution[i] = min(max(rnd.gauss(child.Solution[i], sigma), child.LB), child.UB)
-
 	def runTask(self, task):
-		"""Run."""
-		self.init()
+		pop = [Chromosome(task=task, rand=self.rand) for _i in range(self.NP)]
+		x_b = pop[0]
 		while not task.stopCond():
-			for _k in range(int(self.NP / 2)):
-				parent1, parent2 = self.TournamentSelection()
-				child1, child2 = self.CrossOver(parent1, parent2)
-				self.Mutate(child1)
-				self.Mutate(child2)
-				child1.repair()
-				child2.repair()
-				self.tryEval(child1)
-				self.tryEval(child2)
-				tPop = [parent1, parent2, child1, child2]
-				tPop.sort(key=lambda x: x.Fitness)
-				self.Population.append(tPop[0])
-				self.Population.append(tPop[1])
-			for i in range(self.NP): self.checkForBest(self.Population[i])
-		return self.Best.Fitness
+			npop = [self.Selection(pop, self.Ts, self.rand) for _i in range(self.NP)]
+			npop = [self.Crossover(pop, i, self.Cr, self.rand) for i in range(self.NP)]
+			pop = [self.Mutation(npop, i, self.Cr, task, self.rand) for i in range(self.NP)]
+			for c in pop: c.evaluate(task)
+			ix_b = argmin([c.f for c in pop])
+			if x_b.f > pop[ix_b].f: x_b = pop[ix_b]
+		return x_b.x, x_b.f
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

@@ -1,6 +1,7 @@
 # encoding=utf8
+# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, redefined-builtin
 import logging
-from numpy import argsort, power as pow, sqrt, sum, exp, random as rand, apply_along_axis, where, asarray
+from numpy import argsort, power as pow, sqrt, sum, exp, apply_along_axis, where, asarray
 from NiaPy.algorithms.algorithm import Algorithm
 
 __all__ = ['FireflyAlgorithm']
@@ -57,7 +58,7 @@ class FireflyAlgorithm(Algorithm):
 		"""Move fireflies."""
 		for j in range(self.NP):
 			r = sqrt(sum((Fireflies[i] - Fireflies[j]) * (Fireflies[i] - Fireflies[j])))
-			if Intensity[i] > Intensity[j]: 
+			if Intensity[i] > Intensity[j]:
 				beta = (1.0 - self.betamin) * exp(-self.gamma * pow(r, 2.0)) + self.betamin
 				tmpf = self.alpha * (self.rand.uniform(0, 1, task.D) - 0.5) * task.bRange
 				Fireflies[i] = Fireflies[i] * (1.0 - beta) + oFireflies[j] * beta + tmpf

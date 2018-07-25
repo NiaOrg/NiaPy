@@ -31,7 +31,7 @@ class MyBenchmark(object):
 
 
 for i in range(10):
-    Algorithm = GeneticAlgorithm(10, 40, 10000, 4, 0.05, 0.4, MyBenchmark())
+    Algorithm = GeneticAlgorithm(D=10, NP=40, nFES=100000, Ts=5, Mr=0.5, Cr=0.4, benchmark=MyBenchmark())
     Best = Algorithm.run()
 
     logger.info(Best)

@@ -151,17 +151,17 @@ class Runner(object):
 		elif name == 'DifferentialEvolutionAlgorithm':
 			algorithm = algorithms.basic.DifferentialEvolutionAlgorithm(D=self.D, NP=self.NP, nFES=self.nFES, F=self.F, CR=self.CR, benchmark=bench)
 		elif name == 'FireflyAlgorithm':
-			algorithm = algorithms.basic.FireflyAlgorithm(self.D, self.NP, self.nFES, self.alpha, self.betamin, self.gamma, bench)
+			algorithm = algorithms.basic.FireflyAlgorithm(D=self.D, NP=self.NP, nFES=self.nFES, alpha=self.alpha, betamin=self.betamin, gamma=self.gamma, benchmark=bench)
 		elif name == 'FlowerPollinationAlgorithm':
 			algorithm = algorithms.basic.FlowerPollinationAlgorithm(self.D, self.NP, self.nFES, self.p, bench)
 		elif name == 'GreyWolfOptimizer':
-			algorithm = algorithms.basic.GreyWolfOptimizer(self.D, self.NP, self.nFES, bench)
+			algorithm = algorithms.basic.GreyWolfOptimizer(D=self.D, NP=self.NP, nFES=self.nFES, benchmark=bench)
 		elif name == 'ArtificialBeeColonyAlgorithm':
 			algorithm = algorithms.basic.ArtificialBeeColonyAlgorithm(D=self.D, NP=self.NP, nFES=self.nFES, Limit=self.Limit, benchmark=bench)
 		elif name == 'GeneticAlgorithm':
-			algorithm = algorithms.basic.GeneticAlgorithm(self.D, self.NP, self.nFES, self.Ts, self.Mr, self.gamma, bench)
+			algorithm = algorithms.basic.GeneticAlgorithm(D=self.D, NP=self.NP, nFES=self.nFES, Ts=self.Ts, Mr=self.Mr, Cr=self.Cr, benchmark=bench)
 		elif name == 'ParticleSwarmAlgorithm':
-			algorithm = algorithms.basic.ParticleSwarmAlgorithm(self.D, self.NP, self.nFES, self.C1, self.C2, self.w, self.vMin, self.vMax, bench)
+			algorithm = algorithms.basic.ParticleSwarmAlgorithm(D=self.D, NP=self.NP, nFES=self.nFES, C1=self.C1, C2=self.C2, w=self.w, vMin=self.vMin, vMax=self.vMax, benchmark=bench)
 		elif name == 'HybridBatAlgorithm':
 			algorithm = algorithms.modified.HybridBatAlgorithm(self.D, self.NP, self.nFES, self.A, self.r, self.F, self.CR, self.Qmin, self.Qmax, bench)
 		elif name == 'SelfAdaptiveDifferentialEvolutionAlgorithm':

@@ -4,7 +4,8 @@ from unittest import TestCase
 from numpy import asarray
 from NiaPy.benchmarks.griewank import Griewank
 from NiaPy.benchmarks.ackley import Ackley
-from NiaPy.algorithms.basic import DifferentialEvolutionAlgorithm, CrossRand1, CrossRand2, CrossBest1, CrossBest2, CrossCurr2Rand1, CrossCurr2Best1
+from NiaPy.algorithms.basic import DifferentialEvolutionAlgorithm
+from NiaPy.algorithms.basic.de import CrossRand1, CrossRand2, CrossBest1, CrossBest2, CrossCurr2Rand1, CrossCurr2Best1
 
 class MyBenchmark(object):
 	def __init__(self):

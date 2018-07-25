@@ -1,7 +1,7 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, multiple-statements, line-too-long, unused-argument, no-self-use, no-self-use, attribute-defined-outside-init, logging-not-lazy
 import logging
-from numpy import where, argmin, asarray, ndarray, random as rand
+from numpy import where, argmin, asarray, ndarray, random as rand, inf
 from NiaPy.algorithms.algorithm import Algorithm
 
 __all__ = ['DifferentialEvolutionAlgorithm', 'CrossRand1', 'CrossBest2', 'CrossBest1', 'CrossBest2', 'CrossCurr2Rand1', 'CrossCurr2Best1']
@@ -48,16 +48,18 @@ def CrossCurr2Best1(pop, ic, x_b, f, cr, rnd):
 
 class SolutionDE(object):
 	def __init__(self, **kwargs):
-		self.Fitness = float('inf')
+		self.f = inf
 		task = kwargs.get('task', None)
 		rnd = kwargs.get('rand', rand)
 		x = kwargs.get('x', None)
 		if x != None: self.x = x if isinstance(x, ndarray) else asarray(x)
 		else: self.generateSolution(task, rnd)
 
-	def generateSolution(self, task, rnd): self.x = task.Lower + task.bRange * rnd.rand(task.D)
+	def generateSolution(self, task, rnd):
+		self.x = task.Lower + task.bRange * rnd.rand(task.D)
+		self.evaluate(task)
 
-	def evaluate(self, task): self.Fitness = task.eval(self.x)
+	def evaluate(self, task): self.f = task.eval(self.x)
 
 	def repair(self, task):
 		ir = where(self.x > task.Upper)
@@ -65,7 +67,7 @@ class SolutionDE(object):
 		ir = where(self.x < task.Lower)
 		self.x[ir] = task.Lower[ir]
 
-	def __eq__(self, other): return self.x == other.x and self.Fitness == other.Fitness
+	def __eq__(self, other): return self.x == other.x and self.f == other.f
 
 	def __len__(self): return len(self.x)
 
@@ -114,19 +116,17 @@ class DifferentialEvolutionAlgorithm(Algorithm):
 		"""Evaluate element."""
 		x.repair(task)
 		x.evaluate(task)
-		return x if x.Fitness < x_old.Fitness else x_old
+		return x if x.f < x_old.f else x_old
 
 	def runTask(self, task):
 		"""Run."""
 		pop = [SolutionDE(task=task) for _i in range(self.Np)]
-		pop = [self.evalPopulation(pop[i], pop[i], task) for i in range(self.Np)]
-		ix_b = argmin([x.Fitness for x in pop])
-		x_b = pop[ix_b]
+		x_b = pop[argmin([x.f for x in pop])]
 		while not task.stopCond():
 			npop = [self.CrossMutt(pop, i, x_b, self.F, self.CR, self.rand) for i in range(self.Np)]
 			pop = [self.evalPopulation(npop[i], pop[i], task) for i in range(self.Np)]
-			ix_b = argmin([x.Fitness for x in pop])
-			if x_b.Fitness > pop[ix_b].Fitness: x_b = pop[ix_b]
-		return x_b.x, x_b.Fitness
+			ix_b = argmin([x.f for x in pop])
+			if x_b.f > pop[ix_b].f: x_b = pop[ix_b]
+		return x_b.x, x_b.f
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
