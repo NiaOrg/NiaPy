@@ -1,23 +1,25 @@
-import random as rnd
+# encoding=utf8
+import logging
 import copy
-from NiaPy.benchmarks.utility import Utility
+from NiaPy.algorithms.algorithm import Algorithm
+from NiaPy.algorithms.basic.de import SolutionDE
+
+logging.basicConfig()
+logger = logging.getLogger('NiaPy.algorithms.basic')
+logger.setLevel('INFO')
 
 __all__ = ['SelfAdaptiveDifferentialEvolutionAlgorithm']
 
 
-class SolutionjDE(object):
-
-    def __init__(self, D, LB, UB, F, CR):
-        self.D = D
-        self.LB = LB
-        self.UB = UB
+class SolutionjDE(SolutionDE):
+    def __init__(self, task, F, CR):
         self.F = F
         self.CR = CR
         self.Solution = []
         self.Fitness = float('inf')
-        self.generateSolution()
+        self.generateSolution(task)
 
-    def generateSolution(self):
+    def generateSolution(self, task):
         """Generate solution."""
 
         self.Solution = [self.LB + (self.UB - self.LB) * rnd.random()
@@ -39,14 +41,14 @@ class SolutionjDE(object):
         return self.Solution == other.Solution and self.Fitness == other.Fitness
 
 
-class SelfAdaptiveDifferentialEvolutionAlgorithm(object):
+class SelfAdaptiveDifferentialEvolutionAlgorithm(Algorithm):
     r"""Implementation of Self-adaptive differential evolution algorithm.
 
     **Algorithm:** Self-adaptive differential evolution algorithm
 
     **Date:** 2018
 
-    **Author:** Uros Mlakar
+    **Author:** Uros Mlakar and Klemen Berkvoič
 
     **License:** MIT
 
@@ -176,7 +178,8 @@ class SelfAdaptiveDifferentialEvolutionAlgorithm(object):
         """Run."""
         self.initPopulation()
         self.evalPopulation()
-        self.FEs = self.Np
         while not self.Done:
             self.Population = self.generationStep(self.Population)
         return self.bestSolution.Fitness
+
+# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

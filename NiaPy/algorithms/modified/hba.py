@@ -1,8 +1,13 @@
+# encoding=utf8
+import logging
 import random
-from NiaPy.benchmarks.utility import Utility
+from NiaPy.algorithms.algorithm import Algorithm
+
+logging.basicConfig()
+logger = logging.getLogger('NiaPy.algorithms.basic')
+logger.setLevel('INFO')
 
 __all__ = ['HybridBatAlgorithm']
-
 
 class HybridBatAlgorithm(object):
     r"""Implementation of Hybrid bat algorithm.
@@ -11,7 +16,7 @@ class HybridBatAlgorithm(object):
 
     **Date:** 2018
 
-    **Author:** Grega Vrbancic
+    **Author:** Grega Vrbancic and Klemen Berkovič
 
     **License:** MIT
 

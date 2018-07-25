@@ -31,7 +31,6 @@ class MyBenchmark(object):
 
     
 for i in range(10):
-    Algorithm = FlowerPollinationAlgorithm(10, 20, 10000, 0.5, MyBenchmark())
+    Algorithm = FlowerPollinationAlgorithm(NP=10, D=20, nFES=10000, p=0.5, benchmark=MyBenchmark())
     Best = Algorithm.run()
-
     logger.info(Best)

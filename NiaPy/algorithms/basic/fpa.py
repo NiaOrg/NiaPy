@@ -1,176 +1,74 @@
-import random
-import numpy as np
+# encoding=utf8
+import logging
 from scipy.special import gamma as Gamma
-from NiaPy.benchmarks.utility import Utility
+from numpy import where, argmin, asarray, apply_along_axis, full, sin, fabs, pi
+from NiaPy.algorithms.algorithm import Algorithm
+
+logging.basicConfig()
+logger = logging.getLogger('NiaPy.algorithms.basic')
+logger.setLevel('INFO')
 
 __all__ = ['FlowerPollinationAlgorithm']
 
+class FlowerPollinationAlgorithm(Algorithm):
+	r"""Implementation of Flower Pollination algorithm.
 
-class FlowerPollinationAlgorithm(object):
-    r"""Implementation of Flower Pollination algorithm.
+	**Algorithm:** Flower Pollination algorithm
 
-    **Algorithm:** Flower Pollination algorithm
+	**Date:** 2018
 
-    **Date:** 2018
+	**Authors:** Dusan Fister, Iztok Fister Jr. and Klemen Berkovič
 
-    **Authors:** Dusan Fister & Iztok Fister Jr.
+	**License:** MIT
 
-    **License:** MIT
+	**Reference paper:**
+	Yang, Xin-She. "Flower pollination algorithm for global optimization. International conference on unconventional computing and natural computation. Springer, Berlin, Heidelberg, 2012.
 
-    **Reference paper:**
-        Yang, Xin-She. "Flower pollination algorithm for global optimization."
-        International conference on unconventional computing and natural computation.
-        Springer, Berlin, Heidelberg, 2012.
+	Implementation is based on the following MATLAB code:
+	https://www.mathworks.com/matlabcentral/fileexchange/45112-flower-pollination-algorithm?requestedDomain=true
+	"""
+	def __init__(self, **kwargs): super(FlowerPollinationAlgorithm, self).__init__(name='FlowerPollinationAlgorithm', sName='FPA', **kwargs)
 
-    Implementation is based on the following MATLAB code:
-    https://www.mathworks.com/matlabcentral/fileexchange/45112-flower-pollination-algorithm?requestedDomain=true
-    """
+	def setParameters(self, **kwargs): self.__setParams(**kwargs)
 
-    def __init__(self, D, NP, nFES, p, benchmark):
-        r"""**__init__(self, D, NP, nFES, p, benchmark)**.
+	def __setParams(self, NP=25, p=0.35, beta=1.5, **ukwargs):
+		r"""**__init__(self, D, NP, nFES, p, benchmark)**.
 
-        Arguments:
-            D {integer} -- dimension of problem
+		Arguments:
+		NP {integer} -- population size
+		p {decimal} -- probability switch
+		"""
+		self.NP, self.p, self.beta = NP, p, beta
+		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-            NP {integer} -- population size
+	def repair(self, x, task):
+		"""Find limits."""
+		ir = where(x > task.Upper)
+		x[ir] = task.Upper[ir]
+		ir = where(x < task.Lower)
+		x[ir] = task.Lower[ir]
+		return x
 
-            nFES {integer} -- number of function evaluations
+	def levy(self, task):
+		sigma = (Gamma(1 + self.beta) * sin(pi * self.beta / 2) / (Gamma(1 + self.beta) * self.beta * 2 ** ((self.beta - 1) / 2))) ** (1 / self.beta)
+		return 0.01 * (self.rand.normal(0, 1) * sigma / fabs(self.rand.normal(0, 1)) ** (1 / self.beta))
 
-            p {decimal} -- probability switch
+	def runTask(self, task):
+		Sol = self.rand.uniform(task.Lower, task.Upper, [self.NP, task.D])
+		Sol_f = apply_along_axis(task.eval, 1, Sol)
+		ib = argmin(Sol_f)
+		solb, solb_f = Sol[ib], Sol_f[ib]
+		S, dS = full([self.NP, task.D], 0.0), full([self.NP, task.D], 0.0)
+		while not task.stopCond():
+			for i in range(self.NP):
+				if self.rand.uniform(0, 1) > self.p: S[i] += self.levy(task) * (Sol[i] - solb)
+				else: 
+					JK = self.rand.permutation(self.NP)
+					S[i] += self.rand.uniform(0, 1) * (Sol[JK[0]] - Sol[JK[1]])
+				S[i] = self.repair(S[i], task)
+				f_i = task.eval(S[i])
+				if f_i <= Sol_f[i]: Sol[i], Sol_f[i] = S[i], f_i
+				if f_i <= solb_f: solb, solb_f = S[i], f_i
+		return solb, solb_f
 
-            benchmark {object} -- benchmark implementation object
-
-        Raises:
-            TypeError -- Raised when given benchmark function which does not exists.
-
-        """
-
-        self.benchmark = Utility().get_benchmark(benchmark)
-        self.D = D  # dimension
-        self.NP = NP  # population size
-        self.nFES = nFES  # number of function evaluations
-        self.p = p  # probability switch
-        self.Lower = self.benchmark.Lower  # lower bound
-        self.Upper = self.benchmark.Upper  # upper bound
-        self.Fun = self.benchmark.function()  # function
-
-        self.f_min = 0.0  # minimum fitness
-
-        self.Lb = [0] * self.D  # lower bound
-        self.Ub = [0] * self.D  # upper bound
-
-        self.dS = [[0 for _i in range(self.D)]
-                   for _j in range(self.NP)]  # differential
-        self.Sol = [[0 for _i in range(self.D)]
-                    for _j in range(self.NP)]  # population of solutions
-        self.Fitness = [0] * self.NP  # fitness
-        self.best = [0] * self.D  # best solution
-        self.eval_flag = True  # evaluations flag
-        self.evaluations = 0  # evaluations counter
-
-    def best_flower(self):
-        """Check best solution."""
-        i = 0
-        j = 0
-        for i in range(self.NP):
-            if self.Fitness[i] < self.Fitness[j]:
-                j = i
-        for i in range(self.D):
-            self.best[i] = self.Sol[j][i]
-        self.f_min = self.Fitness[j]
-
-    def eval_true(self):
-        """Check evaluations."""
-
-        if self.evaluations == self.nFES:
-            self.eval_flag = False
-
-    @classmethod
-    def simplebounds(cls, val, lower, upper):
-        """Keep it within bounds."""
-        if val < lower:
-            val = lower
-        if val > upper:
-            val = upper
-        return val
-
-    def init_flower(self):
-        """Initialize flowers."""
-        for i in range(self.D):
-            self.Lb[i] = self.Lower
-            self.Ub[i] = self.Upper
-
-        for i in range(self.NP):
-            for j in range(self.D):
-                rnd = random.uniform(0, 1)
-                self.dS[i][j] = 0.0
-                self.Sol[i][j] = self.Lb[j] + (self.Ub[j] - self.Lb[j]) * rnd
-            self.Fitness[i] = self.Fun(self.D, self.Sol[i])
-            self.evaluations = self.evaluations + 1
-        self.best_flower()
-
-    def move_flower(self):
-        """Move in search space."""
-        S = [[0.0 for i in range(self.D)] for j in range(self.NP)]
-        self.init_flower()
-
-        while self.eval_flag is not False:
-            for i in range(self.NP):
-                if random.uniform(0, 1) > self.p:  # probability switch
-                    L = self.Levy()
-                    for j in range(self.D):
-                        self.dS[i][j] = L[j] * (self.Sol[i][j] - self.best[j])
-                        S[i][j] = self.Sol[i][j] + self.dS[i][j]
-
-                        S[i][j] = self.simplebounds(
-                            S[i][j], self.Lb[j], self.Ub[j])
-                else:
-                    epsilon = random.uniform(0, 1)
-                    JK = np.random.permutation(self.NP)
-
-                    for j in range(self.D):
-                        S[i][j] = S[i][j] + epsilon * \
-                            (self.Sol[JK[0]][j] - self.Sol[JK[1]][j])
-                        S[i][j] = self.simplebounds(
-                            S[i][j], self.Lb[j], self.Ub[j])
-
-                self.eval_true()
-                if self.eval_flag is not True:
-                    break
-
-                Fnew = self.Fun(self.D, S[i])
-                self.evaluations = self.evaluations + 1
-
-                if Fnew <= self.Fitness[i]:
-                    for j in range(self.D):
-                        self.Sol[i][j] = S[i][j]
-                    self.Fitness[i] = Fnew
-
-                if Fnew <= self.f_min:
-                    for j in range(self.D):
-                        self.best[j] = S[i][j]
-                    self.f_min = Fnew
-
-        return self.f_min
-
-    def Levy(self):
-        """Levy flight."""
-        beta = 1.5
-        sigma = (Gamma(1 + beta) * np.sin(np.pi * beta / 2) /
-                 (Gamma((1 + beta) / 2) * beta * 2**((beta - 1) / 2)))**(1 / beta)
-        u = [[0] for j in range(self.D)]
-        v = [[0] for j in range(self.D)]
-        step = [[0] for j in range(self.D)]
-        L = [[0] for j in range(self.D)]
-
-        for j in range(self.D):
-            u[j] = np.random.normal(0, 1) * sigma
-            v[j] = np.random.normal(0, 1)
-            step[j] = u[j] / abs(v[j])**(1 / beta)
-            L[j] = 0.01 * step[j]
-
-        return L
-
-    def run(self):
-        """Run."""
-        return self.move_flower()
+# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
