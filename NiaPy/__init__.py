@@ -59,6 +59,10 @@ class Runner(object):
 
 		F {decimal} -- scalling factor
 
+		F_l {decimal} -- lower limit of scalling factor
+
+		F_u {decimal} -- upper limit of scalling factor
+
 		CR {decimal} -- crossover rate
 
 		alpha {decimal} -- alpha parameter
@@ -83,7 +87,9 @@ class Runner(object):
 
 		vMax {decimal} -- maximal velocity
 
-		Tao {decimal}
+		Tao1 {decimal} --
+
+		Tao2 {decimal} --
 
 		n {integer} -- number of sparks
 
@@ -118,6 +124,8 @@ class Runner(object):
 		self.Qmax = kwargs.get('Qmax', 2.0)
 		self.Pa = kwargs.get('Pa', 0.25)
 		self.F = kwargs.get('F', 0.5)
+		self.F_l = kwargs.get('F_l', 0.0)
+		self.F_u = kwargs.get('F_u', 2.0)
 		self.CR = kwargs.get('CR', 0.9)
 		self.alpha = kwargs.get('alpha', 0.5)
 		self.betamin = kwargs.get('betamin', 0.2)
@@ -130,7 +138,8 @@ class Runner(object):
 		self.w = kwargs.get('w', 0.7)
 		self.vMin = kwargs.get('vMin', -4)
 		self.vMax = kwargs.get('vMax', 4)
-		self.Tao = kwargs.get('Tao', 0.1)
+		self.Tao1 = kwargs.get('Tao1', 0.43)
+		self.Tao2 = kwargs.get('Tao2', 0.1)
 		self.n = kwargs.get('n', 10)
 		self.omega = kwargs.get('omega', 0.25)
 		self.mu = kwargs.get('mu', 0.5)
@@ -165,7 +174,7 @@ class Runner(object):
 		elif name == 'HybridBatAlgorithm':
 			algorithm = algorithms.modified.HybridBatAlgorithm(self.D, self.NP, self.nFES, self.A, self.r, self.F, self.CR, self.Qmin, self.Qmax, bench)
 		elif name == 'SelfAdaptiveDifferentialEvolutionAlgorithm':
-			algorithm = algorithms.modified.SelfAdaptiveDifferentialEvolutionAlgorithm(self.D, self.NP, self.nFES, self.F, self.CR, self.Tao, bench)
+			algorithm = algorithms.modified.SelfAdaptiveDifferentialEvolutionAlgorithm(D=self.D, NP=self.NP, nFES=self.nFES, F=self.F, F_l=self.F_l, F_u=self.F_u, Tao1=self.Tao1, CR=self.CR, Tao2=self.Tao2, benchmark=bench)
 		elif name == 'CamelAlgorithm':
 			algorithm = algorithms.basic.CamelAlgorithm(NP=self.NP, D=self.D, nGEN=self.nRuns, nFES=self.nFES, omega=self.omega, mu=self.mu, alpha=self.alpha, S_init=self.S_init, E_init=self.E_init, T_min=self.T_min, T_max=self.T_max, benchmark=bench)
 		elif name == 'BareBonesFireworksAlgorithm':

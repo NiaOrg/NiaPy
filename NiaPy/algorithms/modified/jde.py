@@ -1,8 +1,7 @@
 # encoding=utf8
 import logging
-import copy
-from NiaPy.algorithms.algorithm import Algorithm
-from NiaPy.algorithms.basic.de import SolutionDE
+from numpy import argmin 
+from NiaPy.algorithms.basic.de import SolutionDE, DifferentialEvolutionAlgorithm
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.basic')
@@ -12,174 +11,60 @@ __all__ = ['SelfAdaptiveDifferentialEvolutionAlgorithm']
 
 
 class SolutionjDE(SolutionDE):
-    def __init__(self, task, F, CR):
-        self.F = F
-        self.CR = CR
-        self.Solution = []
-        self.Fitness = float('inf')
-        self.generateSolution(task)
+	def __init__(self, **kwargs):
+		super(SolutionjDE, self).__init__(**kwargs)
+		self.F, self.CR = kwargs.get('F', 2), kwargs.get('CR', 0.5)
 
-    def generateSolution(self, task):
-        """Generate solution."""
+class SelfAdaptiveDifferentialEvolutionAlgorithm(DifferentialEvolutionAlgorithm):
+	r"""Implementation of Self-adaptive differential evolution algorithm.
 
-        self.Solution = [self.LB + (self.UB - self.LB) * rnd.random()
-                         for _i in range(self.D)]
+	**Algorithm:** Self-adaptive differential evolution algorithm
 
-    def evaluate(self):
-        """Evaluate solution."""
+	**Date:** 2018
 
-        self.Fitness = SolutionjDE.FuncEval(self.D, self.Solution)
+	**Author:** Uros Mlakar and Klemen Berkvoič
 
-    def repair(self):
-        for i in range(self.D):
-            if self.Solution[i] > self.UB:
-                self.Solution[i] = self.UB
-            if self.Solution[i] < self.LB:
-                self.Solution[i] = self.LB
+	**License:** MIT
 
-    def __eq__(self, other):
-        return self.Solution == other.Solution and self.Fitness == other.Fitness
+	**Reference paper:**
+	Brest, J., Greiner, S., Boskovic, B., Mernik, M., Zumer, V.
+	Self-adapting control parameters in differential evolution:
+	A comparative study on numerical benchmark problems.
+	IEEE transactions on evolutionary computation, 10(6), 646-657, 2006.
+	"""
+	def __init__(self, **kwargs): super(SelfAdaptiveDifferentialEvolutionAlgorithm, self).__init__(name='SelfAdaptiveDifferentialEvolutionAlgorithm', sName='jDE', **kwargs)
 
+	def setParameters(self, **kwargs):
+		super(SelfAdaptiveDifferentialEvolutionAlgorithm, self).setParameters(**kwargs)
+		self.__setParams(**kwargs)
 
-class SelfAdaptiveDifferentialEvolutionAlgorithm(Algorithm):
-    r"""Implementation of Self-adaptive differential evolution algorithm.
+	def __setParams(self, F_l=0.0, F_u=2.0, Tao1=0.4, Tao2=0.6, **ukwargs):
+		r"""Set the parameters of an algorithm.
 
-    **Algorithm:** Self-adaptive differential evolution algorithm
+		Arguments:
+		F_l {decimal} -- scaling factor
+		F_u {decimal} -- scaling factor
+		Tao1 {decimal} --
+		Tao2 {decimal} --
+		"""
+		self.F_l, self.F_u, self.Tao1, self.Tao2 = F_l, F_u, Tao1, Tao2
+		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-    **Date:** 2018
+	def AdaptiveGen(self, x):
+		f = self.F_l + self.rand.rand() * (self.F_u - self.F_l) if self.rand.rand() < self.Tao1 else x.F
+		cr = self.rand.rand() if self.rand.rand() < self.Tao2 else x.CR
+		return SolutionjDE(x=x.x, F=f, CR=cr)
 
-    **Author:** Uros Mlakar and Klemen Berkvoič
-
-    **License:** MIT
-
-    **Reference paper:**
-        Brest, J., Greiner, S., Boskovic, B., Mernik, M., Zumer, V.
-        Self-adapting control parameters in differential evolution:
-        A comparative study on numerical benchmark problems.
-        IEEE transactions on evolutionary computation, 10(6), 646-657, 2006.
-    """
-
-    def __init__(self, D, NP, nFES, F, CR, Tao, benchmark):
-        r"""**__init__(self, D, NP, nFES, F, CR, Tao, benchmark)**.
-
-        Arguments:
-            D {integer} -- dimension of problem
-
-            NP {integer} -- population size
-
-            nFES {integer} -- number of function evaluations
-
-            F {decimal} -- scaling factor
-
-            CR {decimal} -- crossover rate
-
-            Tao {decimal}
-
-            benchmark {object} -- benchmark implementation object
-
-        Raises:
-            TypeError -- Raised when given benchmark function which does not exists.
-
-        """
-
-        self.benchmark = Utility().get_benchmark(benchmark)
-        self.D = D  # dimension of problem
-        self.Np = NP  # population size
-        self.nFES = nFES  # number of function evaluations
-        self.F = F  # scaling factor
-        self.CR = CR  # crossover rate
-        self.Tao = Tao
-        self.Lower = self.benchmark.Lower  # lower bound
-        self.Upper = self.benchmark.Upper  # upper bound
-
-        SolutionjDE.FuncEval = staticmethod(self.benchmark.function())
-        self.Population = []
-        self.FEs = 0
-        self.Done = False
-        self.bestSolution = SolutionjDE(
-            self.D,
-            self.Lower,
-            self.Upper,
-            self.F,
-            self.CR)
-
-    def evalPopulation(self):
-        """Evaluate population."""
-
-        for p in self.Population:
-            p.evaluate()
-            if p.Fitness < self.bestSolution.Fitness:
-                self.bestSolution = copy.deepcopy(p)
-
-    def initPopulation(self):
-        """Initialize population."""
-
-        for _i in range(self.Np):
-            self.Population.append(
-                SolutionjDE(self.D,
-                            self.Lower,
-                            self.Upper,
-                            self.F,
-                            self.CR))
-
-    def tryEval(self, v):
-        """Check evaluations."""
-        if self.FEs <= self.nFES:
-            v.evaluate()
-            self.FEs += 1
-        else:
-            self.Done = True
-
-    def generationStep(self, Population):
-        """Implement main DE/jDE step."""
-
-        newPopulation = []
-        for i in range(self.Np):
-            newSolution = SolutionjDE(
-                self.D,
-                self.Lower,
-                self.Upper,
-                self.F,
-                self.CR)
-
-            if rnd.random() < self.Tao:
-                newSolution.F = rnd.random()
-            else:
-                newSolution.F = Population[i].F
-
-            if rnd.random() < self.Tao:
-                newSolution.CR = rnd.random()
-            else:
-                newSolution.CR = Population[i].CR
-
-            r = rnd.sample(range(0, self.Np), 3)
-            while i in r:
-                r = rnd.sample(range(0, self.Np), 3)
-            jrand = int(rnd.random() * self.Np)
-
-            for j in range(self.D):
-                if rnd.random() < newSolution.CR or j == jrand:
-                    newSolution.Solution[j] = Population[r[0]].Solution[j] + newSolution.F * (
-                        Population[r[1]].Solution[j] - Population[r[2]].Solution[j])
-                else:
-                    newSolution.Solution[j] = Population[i].Solution[j]
-            newSolution.repair()
-            self.tryEval(newSolution)
-
-            if newSolution.Fitness < self.bestSolution.Fitness:
-                self.bestSolution = copy.deepcopy(newSolution)
-            if newSolution.Fitness < self.Population[i].Fitness:
-                newPopulation.append(newSolution)
-            else:
-                newPopulation.append(Population[i])
-        return newPopulation
-
-    def run(self):
-        """Run."""
-        self.initPopulation()
-        self.evalPopulation()
-        while not self.Done:
-            self.Population = self.generationStep(self.Population)
-        return self.bestSolution.Fitness
+	def runTask(self, task):
+		pop = [SolutionjDE(task=task, F=self.F, CR=self.CR) for _i in range(self.Np)]
+		pop = [self.evalPopulation(pop[i], pop[i], task) for i in range(self.Np)]
+		x_b = pop[argmin([x.f for x in pop])]
+		while not task.stopCond():
+			npop = [self.AdaptiveGen(pop[i]) for i in range(self.Np)]
+			npop = [SolutionjDE(x=self.CrossMutt(npop, i, x_b, self.F, self.CR, self.rand), F=npop[i].F, CR=npop[i].CR) for i in range(self.Np)]
+			pop = [self.evalPopulation(npop[i], pop[i], task) for i in range(self.Np)]
+			ix_b = argmin([x.f for x in pop])
+			if x_b.f > pop[ix_b].f: x_b = pop[ix_b]
+		return x_b.x, x_b.f
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
