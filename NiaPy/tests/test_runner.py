@@ -20,8 +20,7 @@ class MyBenchmark(object):
 
 class RunnerTestCase(TestCase):
     def setUp(self):
-        self.algorithms = ['DifferentialEvolutionAlgorithm',
-                           'GreyWolfOptimizer']
+        self.algorithms = ['DifferentialEvolutionAlgorithm', 'GreyWolfOptimizer', 'GeneticAlgorithm', 'ParticleSwarmAlgorithm', 'HybridBatAlgorithm', 'SelfAdaptiveDifferentialEvolutionAlgorithm', 'CamelAlgorithm', 'BareBonesFireworksAlgorithm']
         self.benchmarks = ['griewank', MyBenchmark()]
 
     def test_runner_works_fine(self):
