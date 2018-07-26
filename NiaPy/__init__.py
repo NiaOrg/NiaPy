@@ -172,7 +172,7 @@ class Runner(object):
 		elif name == 'ParticleSwarmAlgorithm':
 			algorithm = algorithms.basic.ParticleSwarmAlgorithm(D=self.D, NP=self.NP, nFES=self.nFES, C1=self.C1, C2=self.C2, w=self.w, vMin=self.vMin, vMax=self.vMax, benchmark=bench)
 		elif name == 'HybridBatAlgorithm':
-			algorithm = algorithms.modified.HybridBatAlgorithm(self.D, self.NP, self.nFES, self.A, self.r, self.F, self.CR, self.Qmin, self.Qmax, bench)
+			algorithm = algorithms.modified.HybridBatAlgorithm(D=self.D, NP=self.NP, nFES=self.nFES, A=self.A, r=self.r, F=self.F, CR=self.CR, Qmin=self.Qmin, Qmax=self.Qmax, benchmark=bench)
 		elif name == 'SelfAdaptiveDifferentialEvolutionAlgorithm':
 			algorithm = algorithms.modified.SelfAdaptiveDifferentialEvolutionAlgorithm(D=self.D, NP=self.NP, nFES=self.nFES, F=self.F, F_l=self.F_l, F_u=self.F_u, Tao1=self.Tao1, CR=self.CR, Tao2=self.Tao2, benchmark=bench)
 		elif name == 'CamelAlgorithm':

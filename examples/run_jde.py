@@ -33,5 +33,4 @@ class MyBenchmark(object):
 for i in range(10):
     Algorithm = SelfAdaptiveDifferentialEvolutionAlgorithm(NP=10, D=40, nFES=10000, F=0.5, F_l=-1, F_u=2.0, Tao1=0.1, CR=0.45, Tao2=0.25, benchmark=MyBenchmark())
     Best = Algorithm.run()
-
     logger.info(Best)

@@ -46,27 +46,8 @@ class BatAlgorithm(Algorithm):
 		Qmin {decimal} -- minimum frequency
 		Qmax {decimal} -- maximum frequency
 		"""
-		self.NP = NP  # population size
-		self.A = A  # loudness
-		self.r = r  # pulse rate
-		self.Qmin = Qmin  # frequency min
-		self.Qmax = Qmax  # frequency max
+		self.NP, self.A, self.r, self.Qmin, self.Qmax = NP, A, r, Qmin, Qmax
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
-
-	def best_bat(self):
-		"""Find the best bat."""
-		j = argmin(self.Fitness)
-		self.best = self.Sol[j]
-		self.f_min = self.Fitness[j]
-
-	def init_bat(self, task):
-		"""Initialize population."""
-		self.Q = full(self.NP, 0)
-		self.v = full([self.NP, task.D], 0)
-		self.Sol = task.Lower + task.bRange * self.rand.uniform(0, 1, [self.NP, task.D])
-		self.Fitness = apply_along_axis(task.eval, 1, self.Sol)
-		self.best = full(task.D, 0)
-		self.best_bat()
 
 	def repair(self, val, task):
 		"""Keep it within bounds."""
@@ -76,31 +57,30 @@ class BatAlgorithm(Algorithm):
 		val[ir] = task.Lower[ir]
 		return val
 
-	def move_bat(self, task):
-		"""Move bats in search space."""
-		S = full([self.NP, task.D], 0)
-		self.init_bat(task)
-		while not task.stopCond():
-			for i in range(self.NP):
-				self.Q[i] = self.Qmin + (self.Qmax - self.Qmin) * self.rand.uniform(0, 1)
-				self.v[i] = self.v[i] + (self.Sol[i] - self.best) * self.Q[i]
-				S[i] = self.Sol[i] + self.v[i]
-				S[i] = self.repair(S[i], task)
-				if self.rand.rand() > self.r:
-					S[i] = self.best + 0.001 * self.rand.normal(0, 1, task.D)
-					S[i] = self.repair(S[i], task)
-				Fnew = task.eval(S[i])
-				if (Fnew <= self.Fitness[i]) and (self.rand.rand() < self.A): self.Sol[i], self.Fitness[i] = S[i], Fnew
-				if Fnew <= self.f_min: self.best, self.f_min = S[i], Fnew
-		return self.best, self.f_min
-
 	def runTask(self, task):
-		"""Run algorithm with initialized parameters.
+		r"""Run algorithm with initialized parameters.
 
 		Return:
 		{decimal} -- coordinates of minimal found objective funciton
 		{decimal} -- minimal value found of objective function
 		"""
-		return self.move_bat(task)
+		S, Q, v = full([self.NP, task.D], 0.0), full(self.NP, 0.0), full([self.NP, task.D], 0.0)
+		Sol = task.Lower + task.bRange * self.rand.uniform(0, 1, [self.NP, task.D])
+		Fitness = apply_along_axis(task.eval, 1, Sol)
+		j = argmin(Fitness)
+		best, f_min = Sol[j], Fitness[j]
+		while not task.stopCond():
+			for i in range(self.NP):
+				Q[i] = Qmin + (Qmax - Qmin) * self.rand.uniform(0, 1)
+				v[i] = v[i] + (Sol[i] - best) * Q[i]
+				S[i] = Sol[i] + v[i]
+				S[i] = self.repair(S[i], task)
+				if self.rand.rand() > self.r:
+					S[i] = best + 0.001 * self.rand.normal(0, 1, task.D)
+					S[i] = self.repair(S[i], task)
+				Fnew = task.eval(S[i])
+				if (Fnew <= Fitness[i]) and (self.rand.rand() < self.A): Sol[i], Fitness[i] = S[i], Fnew
+				if Fnew <= f_min: best, f_min = S[i], Fnew
+		return best, f_min
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

@@ -31,7 +31,6 @@ class MyBenchmark(object):
 
 for i in range(10):
     Algorithm = HybridBatAlgorithm(
-        10, 40, 10000, 0.9, 0.1, 0.001, 0.9, 0.0, 2.0, MyBenchmark())
+        D=10, NP=40, nFES=10000, A=0.9, r=0.1, F=0.001, CR=0.9, Qmin=0.0, Qmax=2.0, benchmark=MyBenchmark())
     Best = Algorithm.run()
-    
     logger.info(Best)

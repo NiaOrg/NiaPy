@@ -4,7 +4,7 @@ from numpy import argmin
 from NiaPy.algorithms.basic.de import SolutionDE, DifferentialEvolutionAlgorithm
 
 logging.basicConfig()
-logger = logging.getLogger('NiaPy.algorithms.basic')
+logger = logging.getLogger('NiaPy.algorithms.modified')
 logger.setLevel('INFO')
 
 __all__ = ['SelfAdaptiveDifferentialEvolutionAlgorithm']

@@ -1,180 +1,72 @@
 # encoding=utf8
 import logging
-import random
-from NiaPy.algorithms.algorithm import Algorithm
+from numpy import full, where, apply_along_axis, argmin, asarray
+from NiaPy.algorithms.basic import BatAlgorithm
+from NiaPy.algorithms.basic.de import CrossBest1
 
 logging.basicConfig()
-logger = logging.getLogger('NiaPy.algorithms.basic')
+logger = logging.getLogger('NiaPy.algorithms.modified')
 logger.setLevel('INFO')
 
 __all__ = ['HybridBatAlgorithm']
 
-class HybridBatAlgorithm(object):
-    r"""Implementation of Hybrid bat algorithm.
+class HybridBatAlgorithm(BatAlgorithm):
+	r"""Implementation of Hybrid bat algorithm.
 
-    **Algorithm:** Hybrid bat algorithm
+	**Algorithm:** Hybrid bat algorithm
 
-    **Date:** 2018
+	**Date:** 2018
 
-    **Author:** Grega Vrbancic and Klemen Berkovič
+	**Author:** Grega Vrbancic and Klemen Berkovič
 
-    **License:** MIT
+	**License:** MIT
 
-    **Reference paper:**
-        Fister Jr., Iztok and Fister, Dusan and Yang, Xin-She.
-        "A Hybrid Bat Algorithm". Elektrotehniski vestnik, 2013. 1-7.
-    """
+	**Reference paper:**
+	Fister Jr., Iztok and Fister, Dusan and Yang, Xin-She.
+	"A Hybrid Bat Algorithm". Elektrotehniski vestnik, 2013. 1-7.
+	"""
+	def __init__(self, **kwargs): super(HybridBatAlgorithm, self).__init__(**kwargs)
 
-    def __init__(self, D, NP, nFES, A, r, F, CR, Qmin, Qmax, benchmark):
-        r"""**__init__(self, D, NP, nFES, A, r, Qmin, Qmax, benchmark)**.
+	def setParameters(self, **kwargs):
+		super(HybridBatAlgorithm, self).setParameters(**kwargs)
+		self.__setParams(**kwargs)
 
-        Arguments:
-            D {integer} -- dimension of problem
+	def __setParams(self, F=0.78, CR=0.35, CrossMutt=CrossBest1, **ukwargs):
+		r"""**__init__(self, D, NP, nFES, A, r, Qmin, Qmax, benchmark)**.
 
-            NP {integer} -- population size
+		Arguments:
+		F {decimal} -- scaling factor
+		CR {decimal} -- crossover
+		"""
+		self.F, self.CR, self.CrossMutt = F, CR, CrossMutt
+		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-            nFES {integer} -- number of function evaluations
+	def repair(self, val, task):
+		"""Keep it within bounds."""
+		ir = where(val > task.Upper)
+		val[ir] = task.Upper[ir]
+		ir = where(val < task.Lower)
+		val[ir] = task.Lower[ir]
+		return val
 
-            A {decimal} -- loudness
+	def runTask(self, task):
+		v, Sol = full([self.NP, task.D], 0.0), task.Lower + task.bRange * self.rand.rand(self.NP, task.D)
+		Fitness = apply_along_axis(task.eval, 1, Sol)
+		ib = argmin(Fitness)
+		best, f_min = Sol[ib], Fitness[ib]
+		while not task.stopCond():
+			Q = self.Qmin + (self.Qmax - self.Qmin) * self.rand.uniform(0, 1, self.NP)
+			for i in range(self.NP):
+				v[i] = v[i] + (Sol[i] - best) * Q[i]
+				S = self.repair(Sol[i] + v[i], task)
+				if self.rand.rand() > self.r: S[i] = self.repair(self.CrossMutt(Sol, i, best, self.F, self.CR, self.rand), task)
+				f_new = task.eval(S)
+				if Fitness[i] <= f_new and self.rand.rand() < self.A:
+					Sol[i] = S
+					Fitness[i] = f_new
+				if f_new < f_min:
+					best = S
+					f_min = f_new
+		return best, f_min
 
-            r {decimal} -- pulse rate
-
-            Qmin {decimal} -- minimum frequency
-
-            Qmax {decimal } -- maximum frequency
-
-            benchmark {object} -- benchmark implementation object
-
-        Raises:
-            TypeError -- Raised when given benchmark function which does not exists.
-
-        """
-
-        self.benchmark = Utility().get_benchmark(benchmark)
-        self.D = D  # dimension
-        self.NP = NP  # population size
-        self.nFES = nFES  # number of function evaluations
-        self.A = A  # loudness
-        self.r = r  # pulse rate
-        self.F = F  # scaling factor
-        self.CR = CR  # crossover rate
-        self.Qmin = Qmin  # frequency min
-        self.Qmax = Qmax  # frequency max
-        self.Lower = self.benchmark.Lower  # lower bound
-        self.Upper = self.benchmark.Upper  # upper bound
-        self.eval_flag = True  # evaluations flag
-        self.Fun = self.benchmark.function()
-
-        self.f_min = 0.0  # minimum fitness
-
-        self.Lb = [0] * self.D  # lower bound
-        self.Ub = [0] * self.D  # upper bound
-        self.Q = [0] * self.NP  # frequency
-
-        self.v = [[0 for _i in range(self.D)]
-                  for _j in range(self.NP)]  # velocity
-        self.Sol = [[0 for _i in range(self.D)] for _j in range(
-            self.NP)]  # population of solutions
-        self.Fitness = [0] * self.NP  # fitness
-        self.best = [0] * self.D  # best solution
-        self.evaluations = 0  # evaluations counter
-
-    def best_bat(self):
-        """Find the best bat."""
-        i = 0
-        j = 0
-        for i in range(self.NP):
-            if self.Fitness[i] < self.Fitness[j]:
-                j = i
-        for i in range(self.D):
-            self.best[i] = self.Sol[j][i]
-        self.f_min = self.Fitness[j]
-
-    def eval_true(self):
-        """Check evauations."""
-
-        if self.evaluations == self.nFES:
-            self.eval_flag = False
-
-    def init_bat(self):
-        """Initialize population."""
-
-        for i in range(self.D):
-            self.Lb[i] = self.Lower
-            self.Ub[i] = self.Upper
-
-        for i in range(self.NP):
-            self.Q[i] = 0
-            for j in range(self.D):
-                rnd = random.uniform(0, 1)
-                self.v[i][j] = 0.0
-                self.Sol[i][j] = self.Lb[j] + (self.Ub[j] - self.Lb[j]) * rnd
-            self.Fitness[i] = self.Fun(self.D, self.Sol[i])
-            self.evaluations = self.evaluations + 1
-        self.best_bat()
-
-    @classmethod
-    def simplebounds(cls, val, lower, upper):
-        """Keep it within bounds."""
-        if val < lower:
-            val = lower
-        if val > upper:
-            val = upper
-        return val
-
-    def move_bat(self):
-        """Move bats in search space."""
-        self.init_bat()
-
-        S = [[self.best[i] for i in range(self.D)] for j in range(self.NP)]
-
-        while self.eval_flag is not False:
-            for i in range(self.NP):
-                rnd = random.uniform(0, 1)
-                self.Q[i] = self.Qmin + (self.Qmin - self.Qmax) * rnd
-
-                j = None
-                for j in range(self.D):
-                    self.v[i][j] = self.v[i][j] + (self.Sol[i][j] -
-                                                   self.best[j]) * self.Q[i]
-                    S[i][j] = self.Sol[i][j] + self.v[i][j]
-
-                    S[i][j] = self.simplebounds(S[i][j], self.Lb[j],
-                                                self.Ub[j])
-
-                rnd = random.random()
-
-                if rnd > self.r:
-                    nums = random.sample(range(0, self.NP), 4)  # DE step
-                    for j in range(self.D):
-                        if random.random() < self.CR:
-                            S[i][j] = self.best[j] + self.F * \
-                                (S[nums[0]][j] + S[nums[1]][j] - S[nums[2]][j] - S[nums[3]][j])
-                            S[i][j] = self.simplebounds(
-                                S[i][j], self.Lb[j], self.Ub[j])
-
-                self.eval_true()
-
-                if self.eval_flag is not True:
-                    break
-
-                Fnew = self.Fun(self.D, S[i])
-                self.evaluations = self.evaluations + 1
-
-                rnd = random.random()
-
-                if (Fnew <= self.Fitness[i]) and (rnd < self.A):
-                    for j in range(self.D):
-                        self.Sol[i][j] = S[i][j]
-                    self.Fitness[i] = Fnew
-
-                if Fnew <= self.f_min:
-                    for j in range(self.D):
-                        self.best[j] = S[i][j]
-                    self.f_min = Fnew
-
-        return self.f_min
-
-    def run(self):
-        """Run."""
-        return self.move_bat()
+# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
