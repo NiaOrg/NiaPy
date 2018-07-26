@@ -1,6 +1,7 @@
 # encoding=utf8
+# pylint: disable=mixed-indentation, multiple-statements, logging-not-lazy, attribute-defined-outside-init
 import logging
-from numpy import full, where, apply_along_axis, argmin, asarray
+from numpy import full, where, apply_along_axis, argmin
 from NiaPy.algorithms.basic import BatAlgorithm
 from NiaPy.algorithms.basic.de import CrossBest1
 
@@ -25,7 +26,7 @@ class HybridBatAlgorithm(BatAlgorithm):
 	Fister Jr., Iztok and Fister, Dusan and Yang, Xin-She.
 	"A Hybrid Bat Algorithm". Elektrotehniski vestnik, 2013. 1-7.
 	"""
-	def __init__(self, **kwargs): super(HybridBatAlgorithm, self).__init__(**kwargs)
+	def __init__(self, **kwargs): super(HybridBatAlgorithm, self).__init__(name='HybridBatAlgorithm', sName='HBA', **kwargs)
 
 	def setParameters(self, **kwargs):
 		super(HybridBatAlgorithm, self).setParameters(**kwargs)
@@ -59,7 +60,7 @@ class HybridBatAlgorithm(BatAlgorithm):
 			for i in range(self.NP):
 				v[i] = v[i] + (Sol[i] - best) * Q[i]
 				S = self.repair(Sol[i] + v[i], task)
-				if self.rand.rand() > self.r: S[i] = self.repair(self.CrossMutt(Sol, i, best, self.F, self.CR, self.rand), task)
+				if self.rand.rand() > self.r: S = self.repair(self.CrossMutt(Sol, i, best, self.F, self.CR, self.rand), task)
 				f_new = task.eval(S)
 				if Fitness[i] <= f_new and self.rand.rand() < self.A:
 					Sol[i] = S

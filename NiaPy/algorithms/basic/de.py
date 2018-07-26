@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, line-too-long, unused-argument, no-self-use, no-self-use, attribute-defined-outside-init, logging-not-lazy
+# pylint: disable=mixed-indentation, multiple-statements, line-too-long, unused-argument, no-self-use, no-self-use, attribute-defined-outside-init, logging-not-lazy, len-as-condition, singleton-comparison
 import logging
 from numpy import where, argmin, asarray, ndarray, random as rand, inf
 from NiaPy.algorithms.algorithm import Algorithm
@@ -11,40 +11,40 @@ logger = logging.getLogger('NiaPy.algorithms.basic')
 logger.setLevel('INFO')
 
 def CrossRand1(pop, ic, x_b, f, cr, rnd):
-	j = rnd.randint(len(pop[0].x))
+	j = rnd.randint(len(pop[0]))
 	r = rnd.choice(len(pop), 3, replace=False)
 	x = [pop[r[0]][i] + f * (pop[r[1]][i] - pop[r[2]][i]) if rnd.rand() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
-	return x
+	return asarray(x)
 
 def CrossBest1(pop, ic, x_b, f, cr, rnd):
-	j = rnd.randint(len(pop[0].x))
+	j = rnd.randint(len(pop[0]))
 	r = rnd.choice(len(pop), 2, replace=False)
 	x = [x_b[i] + f * (pop[r[0]][i] - pop[r[1]][i]) if rnd.rand() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
-	return x
+	return asarray(x)
 
 def CrossRand2(pop, ic, x_b, f, cr, rnd):
-	j = rnd.randint(len(pop[0].x))
+	j = rnd.randint(len(pop[0]))
 	r = rnd.choice(len(pop), 5, replace=False)
 	x = [pop[r[0]][i] + f * (pop[r[1]][i] - pop[r[2]][i]) + f * (pop[r[3]][i] - pop[r[4]][i]) if rnd.rand() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
-	return x
+	return asarray(x)
 
 def CrossBest2(pop, ic, x_b, f, cr, rnd):
-	j = rnd.randint(len(pop[0].x))
+	j = rnd.randint(len(pop[0]))
 	r = rnd.choice(len(pop), 4, replace=False)
 	x = [x_b[i] + f * (pop[r[0]][i] - pop[r[1]][i]) + f * (pop[r[2]][i] - pop[r[3]][i]) if rnd.rand() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
-	return x
+	return asarray(x)
 
 def CrossCurr2Rand1(pop, ic, x_b, f, cr, rnd):
-	j = rnd.randint(len(pop[0].x))
+	j = rnd.randint(len(pop[0]))
 	r = rnd.choice(len(pop), 4, replace=False)
 	x = [pop[ic][i] + f * (pop[r[0]][i] - pop[r[1]][i]) + f * (pop[r[2]][i] - pop[r[3]][i]) if rnd.rand() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
-	return x
+	return asarray(x)
 
 def CrossCurr2Best1(pop, ic, x_b, f, cr, rnd):
-	j = rnd.randint(len(pop[0].x))
+	j = rnd.randint(len(pop[0]))
 	r = rnd.choice(len(pop), 3, replace=False)
 	x = [pop[ic][i] + f * (x_b[i] - pop[r[0]][i]) + f * (pop[r[1]][i] - pop[r[2]][i]) if rnd.rand() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
-	return x
+	return asarray(x)
 
 class SolutionDE(object):
 	def __init__(self, **kwargs):

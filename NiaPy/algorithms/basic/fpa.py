@@ -1,7 +1,8 @@
 # encoding=utf8
+# pylint: disable=mixed-indentation, multiple-statements, line-too-long, logging-not-lazy, no-self-use, attribute-defined-outside-init
 import logging
 from scipy.special import gamma as Gamma
-from numpy import where, argmin, asarray, apply_along_axis, full, sin, fabs, pi
+from numpy import where, argmin, sin, fabs, pi, apply_along_axis, full
 from NiaPy.algorithms.algorithm import Algorithm
 
 logging.basicConfig()
@@ -49,7 +50,7 @@ class FlowerPollinationAlgorithm(Algorithm):
 		x[ir] = task.Lower[ir]
 		return x
 
-	def levy(self, task):
+	def levy(self):
 		sigma = (Gamma(1 + self.beta) * sin(pi * self.beta / 2) / (Gamma(1 + self.beta) * self.beta * 2 ** ((self.beta - 1) / 2))) ** (1 / self.beta)
 		return 0.01 * (self.rand.normal(0, 1) * sigma / fabs(self.rand.normal(0, 1)) ** (1 / self.beta))
 
@@ -58,17 +59,17 @@ class FlowerPollinationAlgorithm(Algorithm):
 		Sol_f = apply_along_axis(task.eval, 1, Sol)
 		ib = argmin(Sol_f)
 		solb, solb_f = Sol[ib], Sol_f[ib]
-		S, dS = full([self.NP, task.D], 0.0), full([self.NP, task.D], 0.0)
 		while not task.stopCond():
 			for i in range(self.NP):
-				if self.rand.uniform(0, 1) > self.p: S[i] += self.levy(task) * (Sol[i] - solb)
-				else: 
+				S = full(task.D, 0.0)
+				if self.rand.uniform(0, 1) > self.p: S += self.levy() * (Sol[i] - solb)
+				else:
 					JK = self.rand.permutation(self.NP)
-					S[i] += self.rand.uniform(0, 1) * (Sol[JK[0]] - Sol[JK[1]])
-				S[i] = self.repair(S[i], task)
-				f_i = task.eval(S[i])
-				if f_i <= Sol_f[i]: Sol[i], Sol_f[i] = S[i], f_i
-				if f_i <= solb_f: solb, solb_f = S[i], f_i
+					S += self.rand.uniform(0, 1) * (Sol[JK[0]] - Sol[JK[1]])
+				S = self.repair(S, task)
+				f_i = task.eval(S)
+				if f_i <= Sol_f[i]: Sol[i], Sol_f[i] = S, f_i
+				if f_i <= solb_f: solb, solb_f = S, f_i
 		return solb, solb_f
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

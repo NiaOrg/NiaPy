@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use
+# pylint: disable=mixed-indentation, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, line-too-long, singleton-comparison
 import logging
 from numpy import full, apply_along_axis, argmin, where
 from NiaPy.algorithms.algorithm import Algorithm
@@ -32,7 +32,8 @@ class BatAlgorithm(Algorithm):
 		**See**:
 		Algorithm.__init__(self, **kwargs)
 		"""
-		super(BatAlgorithm, self).__init__(name='BatAlgorithm', sName='BA', **kwargs)
+		if kwargs.get('name', None) == None: super(BatAlgorithm, self).__init__(name=kwargs.get('name', 'BatAlgorithm'), sName=kwargs.get('sName', 'BA'), **kwargs)
+		else: super(BatAlgorithm, self).__init__(**kwargs)
 
 	def setParameters(self, **kwargs): self.__setParams(**kwargs)
 
@@ -71,7 +72,7 @@ class BatAlgorithm(Algorithm):
 		best, f_min = Sol[j], Fitness[j]
 		while not task.stopCond():
 			for i in range(self.NP):
-				Q[i] = Qmin + (Qmax - Qmin) * self.rand.uniform(0, 1)
+				Q[i] = self.Qmin + (self.Qmax - self.Qmin) * self.rand.uniform(0, 1)
 				v[i] = v[i] + (Sol[i] - best) * Q[i]
 				S[i] = Sol[i] + v[i]
 				S[i] = self.repair(S[i], task)

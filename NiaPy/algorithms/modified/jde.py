@@ -1,6 +1,7 @@
 # encoding=utf8
+# pylint: disable=mixed-indentation, multiple-statements, logging-not-lazy, attribute-defined-outside-init, line-too-long
 import logging
-from numpy import argmin 
+from numpy import argmin
 from NiaPy.algorithms.basic.de import SolutionDE, DifferentialEvolutionAlgorithm
 
 logging.basicConfig()

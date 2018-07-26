@@ -22,7 +22,7 @@ class GATestCase(TestCase):
 		self.ga_custom = GeneticAlgorithm(D=10, NP=40, nFES=1000, Ts=4, Mr=0.05, Cr=0.4, benchmark=MyBenchmark())
 		self.ga_griewank = GeneticAlgorithm(D=10, NP=40, nFES=1000, Ts=4, Mr=0.05, Cr=0.4, benchmark='griewank')
 		self.ga_tpcr = GeneticAlgorithm(D=10, NP=40, nFES=1000, Ts=4, Mr=0.05, Cr=0.4, Crossover=TwoPointCrossover, benchmark='griewank')
-		self.ga_mpcr = GeneticAlgorithm(D=10, NP=40, nFES=1000, Ts=4, Mr=0.05, Cr=0.4, Crossover=MultiPointCrossover, benchmark='griewank')
+		self.ga_mpcr = GeneticAlgorithm(D=10, NP=40, nFES=1000, Ts=4, Mr=0.05, Cr=4, Crossover=MultiPointCrossover, benchmark='griewank')
 		self.ga_crmt = GeneticAlgorithm(D=10, NP=40, nFES=1000, Ts=4, Mr=0.05, Cr=0.4, Mutation=CreepMutation, benchmark='griewank')
 
 	def test_custom_works_fine(self):

@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, unused-argument, line-too-long
+# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, unused-argument, line-too-long, len-as-condition
 import logging
 from numpy import random as rand, inf, where, argmin, ndarray, asarray, sort
 from NiaPy.algorithms.algorithm import Algorithm
@@ -59,8 +59,8 @@ def CreepMutation(pop, ic, cr, task, rnd=rand):
 class Chromosome(object):
 	def __init__(self, **kwargs):
 		self.f = inf
-		task, rnd, x = kwargs.get('task', None), kwargs.get('rand', rand), kwargs.get('x', None)
-		if x != None: self.x = x if isinstance(x, ndarray) else asarray(x)
+		task, rnd, x = kwargs.get('task', None), kwargs.get('rand', rand), kwargs.get('x', [])
+		if len(x) > 0: self.x = x if isinstance(x, ndarray) else asarray(x)
 		else: self.generateSolution(task, rnd)
 
 	def generateSolution(self, task, rnd):

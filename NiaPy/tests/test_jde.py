@@ -1,3 +1,5 @@
+# encoding=utf8
+# pylint: disable=line-too-long
 from unittest import TestCase
 
 from NiaPy.algorithms.modified import SelfAdaptiveDifferentialEvolutionAlgorithm

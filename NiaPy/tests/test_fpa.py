@@ -32,5 +32,5 @@ class FPATestCase(TestCase):
     def test_griewank_works_fine(self):
         self.assertTrue(self.fpa_griewank.run())
 
-    def test_griewank_works_fine(self):
+    def test_griewank_works_fine_with_beta(self):
         self.assertTrue(self.fpa_beta_griewank.run())
