@@ -181,7 +181,7 @@ class TestBenchmarkFunctions(TestCase):
 	def test_expanded_griewank_plus_rosnbrock(self):
 		fun = self.assertBounds('expandedgriewankplusrosenbrock', -100, 100)
 		self.assertTrue(callable(fun))
-		self.assertAlmostEqual(fun(self.D, self.array10), 854123.5271421941, delta=1e2)
+		self.assertAlmostEqual(fun(self.D, self.array), 2.2997, delta=1e2)
 
 	def test_expanded_scaffer(self):
 		fun = self.assertBounds('expandedscaffer', -100, 100)

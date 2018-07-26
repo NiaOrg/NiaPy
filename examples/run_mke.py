@@ -7,7 +7,7 @@ sys.path.append('../')
 
 import random
 import logging
-from NiaPy.algorithms.basic import BareBonesFireworksAlgorithm
+from NiaPy.algorithms.basic import MonkeyKingEvolutionV1
 
 logging.basicConfig()
 logger = logging.getLogger('examples')
@@ -29,7 +29,7 @@ class MyBenchmark(object):
 		return evaluate
 
 for i in range(10):
-	algo = BareBonesFireworksAlgorithm(D=50, nFES=50000, n=15, C_a=1, C_r=0.5, benchmark=MyBenchmark())
+	algo = MonkeyKingEvolutionV1(D=50, nFES=50000, NP=25, C=3, F=0.5, FC=0.5, R=0.4, benchmark=MyBenchmark())
 	best = algo.run()
 	logger.info('%s %s' % (best[0], best[1]))
 

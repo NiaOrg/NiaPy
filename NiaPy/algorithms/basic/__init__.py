@@ -10,6 +10,7 @@ from NiaPy.algorithms.basic.abc import ArtificialBeeColonyAlgorithm
 from NiaPy.algorithms.basic.pso import ParticleSwarmAlgorithm
 from NiaPy.algorithms.basic.ca import CamelAlgorithm
 from NiaPy.algorithms.basic.bbfwa import BareBonesFireworksAlgorithm
+from NiaPy.algorithms.basic.mke import MonkeyKingEvolutionV1, MonkeyKingEvolutionV2, MonkeyKingEvolutionV3
 
 __all__ = [
     'BatAlgorithm',
@@ -21,5 +22,8 @@ __all__ = [
     'ArtificialBeeColonyAlgorithm',
     'ParticleSwarmAlgorithm',
     'BareBonesFireworksAlgorithm',
-    'CamelAlgorithm'
+    'CamelAlgorithm',
+    'MonkeyKingEvolutionV1',
+    'MonkeyKingEvolutionV2',
+    'MonkeyKingEvolutionV3'
 ]
