@@ -1,7 +1,7 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, len-as-condition
 import logging
-from numpy import apply_along_axis, argmin, inf, where, asarray, ndarray, random as rand
+from numpy import apply_along_axis, argmin, inf, where, asarray, ndarray, random as rand, ones, tril
 from NiaPy.algorithms.algorithm import Algorithm
 
 logging.basicConfig()
@@ -169,7 +169,7 @@ class MonkeyKingEvolutionV2(MonkeyKingEvolutionV1):
 			else: self.movePartice(p, p_b, task)
 			p.uPersonalBest()
 
-class MonkeyKingEvolutionV3(Algorithm):
+class MonkeyKingEvolutionV3(MonkeyKingEvolutionV1):
 	r"""Implementation of monkey king evolution algorithm version 1.
 
 	**Algorithm:** Monkey King Evolution version 1
@@ -216,7 +216,7 @@ class MonkeyKingEvolutionV3(Algorithm):
 		while not task.stopCond():
 			r = self.rand.choice(self.NP, 2, replace=False)
 			dx = pop[r[0]].x - pop[f[1]].x
-			# TODO
+			
 		return None, None
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
