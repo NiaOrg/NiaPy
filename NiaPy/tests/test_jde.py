@@ -1,3 +1,5 @@
+# encoding=utf8
+# pylint: disable=line-too-long
 from unittest import TestCase
 
 from NiaPy.algorithms.modified import SelfAdaptiveDifferentialEvolutionAlgorithm
@@ -21,10 +23,8 @@ class MyBenchmark(object):
 
 class jDETestCase(TestCase):
     def setUp(self):
-        self.jde_custom = SelfAdaptiveDifferentialEvolutionAlgorithm(
-            10, 40, 1000, 0.5, 0.9, 0.1, MyBenchmark())
-        self.jde_griewank = SelfAdaptiveDifferentialEvolutionAlgorithm(
-            10, 40, 1000, 0.5, 0.9, 0.1, 'griewank')
+        self.jde_custom = SelfAdaptiveDifferentialEvolutionAlgorithm(D=10, NP=40, nFES=1000, F=0.5, F_l=0.0, F_u=2.0, Tao1=0.9, CR=0.1, Tao2=0.45, benchmark=MyBenchmark())
+        self.jde_griewank = SelfAdaptiveDifferentialEvolutionAlgorithm(D=10, NP=40, nFES=1000, F=0.5, F_l=0.0, F_u=2.0, Tao1=0.9, CR=0.1, Tao2=0.45, benchmark='griewank')
 
     def test_custom_works_fine(self):
         self.assertTrue(self.jde_custom.run())

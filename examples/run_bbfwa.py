@@ -32,10 +32,5 @@ for i in range(10):
 	algo = BareBonesFireworksAlgorithm(D=50, nFES=50000, n=15, C_a=1, C_r=0.5, benchmark=MyBenchmark())
 	best = algo.run()
 	logger.info('%s %s' % (best[0], best[1]))
-	# dodatek
-	# import numpy as np
-	# logger.info('%s' % (MyBenchmark().function()(50, best[0])))
-	# print (best[2])
-	# logger.info('%s' % np.apply_along_axis(lambda x: np.sum(x ** 2), 1, best[2]))
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

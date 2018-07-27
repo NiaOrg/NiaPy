@@ -31,7 +31,6 @@ class MyBenchmark(object):
 
 
 for i in range(10):
-    Algorithm = GreyWolfOptimizer(10, 20, 10000, MyBenchmark())
+    Algorithm = GreyWolfOptimizer(D=10, NP=20, nFES=10000, benchmark=MyBenchmark())
     Best = Algorithm.run()
-
     logger.info(Best)

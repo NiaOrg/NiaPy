@@ -15,7 +15,6 @@ logger.setLevel('INFO')
 # For reproducive results
 random.seed(1234)
 
-
 class MyBenchmark(object):
     def __init__(self):
         self.Lower = -5.12
@@ -31,7 +30,6 @@ class MyBenchmark(object):
 
 
 for i in range(10):
-    Algorithm = DifferentialEvolutionAlgorithm(10, 40, 10000, 0.5, 0.9, MyBenchmark())
+    Algorithm = DifferentialEvolutionAlgorithm(D=10, NP=40, nFES=10000, F=0.5, CR=0.9, benchmark=MyBenchmark())
     Best = Algorithm.run()
-
     logger.info(Best)

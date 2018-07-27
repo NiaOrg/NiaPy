@@ -31,7 +31,6 @@ class MyBenchmark(object):
 
 
 for i in range(10):
-    Algorithm = ParticleSwarmAlgorithm(50, 40, 40000, 2.0, 2.0, 0.5, -5, 5, MyBenchmark())
+    Algorithm = ParticleSwarmAlgorithm(NP=50, D=40, nFES=40000, C1=2.0, C2=2.0, w=0.5, vMin=-5, vMax=5, benchmark=MyBenchmark())
     Best = Algorithm.run()
-
     logger.info(Best)

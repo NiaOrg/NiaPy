@@ -27,7 +27,7 @@ class Utility(object):
 			'katsuura': Katsuura,
 			'modifiedscwefel': ModifiedSchwefel,
 			'pinter': Pinter,
-			'quing': Qing,
+			'qing': Qing,
 			'quintic': Quintic,
 			'rastrigin': Rastrigin,
 			'ridge': Ridge,

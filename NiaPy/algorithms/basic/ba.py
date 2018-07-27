@@ -1,170 +1,87 @@
-import random
-from NiaPy.benchmarks.utility import Utility
+# encoding=utf8
+# pylint: disable=mixed-indentation, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, line-too-long, singleton-comparison
+import logging
+from numpy import full, apply_along_axis, argmin, where
+from NiaPy.algorithms.algorithm import Algorithm
+
+logging.basicConfig()
+logger = logging.getLogger('NiaPy.algorithms.basic')
+logger.setLevel('INFO')
 
 __all__ = ['BatAlgorithm']
 
+class BatAlgorithm(Algorithm):
+	r"""Implementation of Bat algorithm.
 
-class BatAlgorithm(object):
-    r"""Implementation of Bat algorithm.
+	**Algorithm:** Bat algorithm
 
-    **Algorithm:** Bat algorithm
+	**Date:** 2015
 
-    **Date:** 2015
+	**Authors:** Iztok Fister Jr., Marko Burjek and Klemen Berkovič
 
-    **Authors:** Iztok Fister Jr. and Marko Burjek
+	**License:** MIT
 
-    **License:** MIT
+	**Reference paper:**
+	Yang, Xin-She. "A new metaheuristic bat-inspired algorithm."
+	Nature inspired cooperative strategies for optimization (NICSO 2010).
+	Springer, Berlin, Heidelberg, 2010. 65-74.
+	"""
+	def __init__(self, **kwargs):
+		r"""**__init__(self, D, NP, nFES, A, r, Qmin, Qmax, benchmark)**.
 
-    **Reference paper:**
-        Yang, Xin-She. "A new metaheuristic bat-inspired algorithm."
-        Nature inspired cooperative strategies for optimization (NICSO 2010).
-        Springer, Berlin, Heidelberg, 2010. 65-74.
-    """
+		**See**:
+		Algorithm.__init__(self, **kwargs)
+		"""
+		if kwargs.get('name', None) == None: super(BatAlgorithm, self).__init__(name=kwargs.get('name', 'BatAlgorithm'), sName=kwargs.get('sName', 'BA'), **kwargs)
+		else: super(BatAlgorithm, self).__init__(**kwargs)
 
-    def __init__(self, D, NP, nFES, A, r, Qmin, Qmax, benchmark):
-        r"""**__init__(self, D, NP, nFES, A, r, Qmin, Qmax, benchmark)**.
+	def setParameters(self, **kwargs): self.__setParams(**kwargs)
 
-        Arguments:
-            D {integer} -- dimension of problem
+	def __setParams(self, NP, A, r, Qmin, Qmax, **ukwargs):
+		r"""Set the parameters of the algorithm.
 
-            NP {integer} -- population size
+		Arguments:
+		NP {integer} -- population size
+		A {decimal} -- loudness
+		r {decimal} -- pulse rate
+		Qmin {decimal} -- minimum frequency
+		Qmax {decimal} -- maximum frequency
+		"""
+		self.NP, self.A, self.r, self.Qmin, self.Qmax = NP, A, r, Qmin, Qmax
+		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-            nFES {integer} -- number of function evaluations
+	def repair(self, val, task):
+		"""Keep it within bounds."""
+		ir = where(val > task.Upper)
+		val[ir] = task.Upper[ir]
+		ir = where(val < task.Lower)
+		val[ir] = task.Lower[ir]
+		return val
 
-            A {decimal} -- loudness
+	def runTask(self, task):
+		r"""Run algorithm with initialized parameters.
 
-            r {decimal} -- pulse rate
+		Return:
+		{decimal} -- coordinates of minimal found objective funciton
+		{decimal} -- minimal value found of objective function
+		"""
+		S, Q, v = full([self.NP, task.D], 0.0), full(self.NP, 0.0), full([self.NP, task.D], 0.0)
+		Sol = task.Lower + task.bRange * self.rand.uniform(0, 1, [self.NP, task.D])
+		Fitness = apply_along_axis(task.eval, 1, Sol)
+		j = argmin(Fitness)
+		best, f_min = Sol[j], Fitness[j]
+		while not task.stopCond():
+			for i in range(self.NP):
+				Q[i] = self.Qmin + (self.Qmax - self.Qmin) * self.rand.uniform(0, 1)
+				v[i] = v[i] + (Sol[i] - best) * Q[i]
+				S[i] = Sol[i] + v[i]
+				S[i] = self.repair(S[i], task)
+				if self.rand.rand() > self.r:
+					S[i] = best + 0.001 * self.rand.normal(0, 1, task.D)
+					S[i] = self.repair(S[i], task)
+				Fnew = task.eval(S[i])
+				if (Fnew <= Fitness[i]) and (self.rand.rand() < self.A): Sol[i], Fitness[i] = S[i], Fnew
+				if Fnew <= f_min: best, f_min = S[i], Fnew
+		return best, f_min
 
-            Qmin {decimal} -- minimum frequency
-
-            Qmax {decimal } -- maximum frequency
-
-            benchmark {object} -- benchmark implementation object
-
-        Raises:
-            TypeError -- Raised when given benchmark function which does not exists.
-
-        """
-
-        self.benchmark = Utility().get_benchmark(benchmark)
-        self.D = D  # dimension
-        self.NP = NP  # population size
-        self.nFES = nFES  # number of function evaluations
-        self.A = A  # loudness
-        self.r = r  # pulse rate
-        self.Qmin = Qmin  # frequency min
-        self.Qmax = Qmax  # frequency max
-        self.Lower = self.benchmark.Lower  # lower bound
-        self.Upper = self.benchmark.Upper  # upper bound
-
-        self.f_min = 0.0  # minimum fitness
-
-        self.Lb = [0] * self.D  # lower bound
-        self.Ub = [0] * self.D  # upper bound
-        self.Q = [0] * self.NP  # frequency
-
-        self.v = [[0 for _i in range(self.D)]
-                  for _j in range(self.NP)]  # velocity
-        self.Sol = [[0 for _i in range(self.D)] for _j in range(
-            self.NP)]  # population of solutions
-        self.Fitness = [0] * self.NP  # fitness
-        self.best = [0] * self.D  # best solution
-        self.evaluations = 0  # evaluations counter
-        self.eval_flag = True  # evaluations flag
-        self.Fun = self.benchmark.function()
-
-    def best_bat(self):
-        """Find the best bat."""
-
-        i = 0
-        j = 0
-        for i in range(self.NP):
-            if self.Fitness[i] < self.Fitness[j]:
-                j = i
-        for i in range(self.D):
-            self.best[i] = self.Sol[j][i]
-        self.f_min = self.Fitness[j]
-
-    def eval_true(self):
-        """Check evaluations."""
-
-        if self.evaluations == self.nFES:
-            self.eval_flag = False
-
-    def init_bat(self):
-        """Initialize population."""
-
-        for i in range(self.D):
-            self.Lb[i] = self.Lower
-            self.Ub[i] = self.Upper
-
-        for i in range(self.NP):
-            self.Q[i] = 0
-            for j in range(self.D):
-                rnd = random.uniform(0, 1)
-                self.v[i][j] = 0.0
-                self.Sol[i][j] = self.Lb[j] + (self.Ub[j] - self.Lb[j]) * rnd
-            self.Fitness[i] = self.Fun(self.D, self.Sol[i])
-            self.evaluations = self.evaluations + 1
-        self.best_bat()
-
-    @classmethod
-    def simplebounds(cls, val, lower, upper):
-        """Keep it within bounds."""
-        if val < lower:
-            val = lower
-        if val > upper:
-            val = upper
-        return val
-
-    def move_bat(self):
-        """Move bats in search space."""
-        S = [[0.0 for i in range(self.D)] for j in range(self.NP)]
-
-        self.init_bat()
-
-        while self.eval_flag is not False:
-            for i in range(self.NP):
-                rnd = random.uniform(0, 1)
-                self.Q[i] = self.Qmin + (self.Qmax - self.Qmin) * rnd
-                for j in range(self.D):
-                    self.v[i][j] = self.v[i][j] + (self.Sol[i][j] - self.best[j]) * self.Q[i]
-                    S[i][j] = self.Sol[i][j] + self.v[i][j]
-
-                    S[i][j] = self.simplebounds(S[i][j], self.Lb[j], self.Ub[j])
-
-                rnd = random.random()
-
-                if rnd > self.r:
-                    for j in range(self.D):
-                        S[i][j] = self.best[j] + 0.001 * random.gauss(0, 1)
-                        S[i][j] = self.simplebounds(S[i][j], self.Lb[j],
-                                                    self.Ub[j])
-
-                self.eval_true()
-
-                if self.eval_flag is not True:
-                    break
-
-                Fnew = self.Fun(self.D, S[i])
-                self.evaluations = self.evaluations + 1
-                rnd = random.random()
-
-                if (Fnew <= self.Fitness[i]) and (rnd < self.A):
-                    for j in range(self.D):
-                        self.Sol[i][j] = S[i][j]
-                    self.Fitness[i] = Fnew
-
-                if Fnew <= self.f_min:
-                    for j in range(self.D):
-                        self.best[j] = S[i][j]
-                    self.f_min = Fnew
-
-        return self.f_min
-
-    def run(self):
-        """Run algorithm with initialized parameters.
-
-        Return {decimal} - best
-        """
-        return self.move_bat()
+# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

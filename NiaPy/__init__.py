@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, line-too-long, multiple-statements
+# pylint: disable=mixed-indentation, line-too-long, multiple-statements, too-many-function-args
 """Python micro framework for building nature-inspired algorithms."""
 
 from __future__ import print_function  # for backward compatibility purpose
@@ -59,6 +59,10 @@ class Runner(object):
 
 		F {decimal} -- scalling factor
 
+		F_l {decimal} -- lower limit of scalling factor
+
+		F_u {decimal} -- upper limit of scalling factor
+
 		CR {decimal} -- crossover rate
 
 		alpha {decimal} -- alpha parameter
@@ -83,7 +87,9 @@ class Runner(object):
 
 		vMax {decimal} -- maximal velocity
 
-		Tao {decimal}
+		Tao1 {decimal} --
+
+		Tao2 {decimal} --
 
 		n {integer} -- number of sparks
 
@@ -103,6 +109,8 @@ class Runner(object):
 
 		C_r {decimal} -- Reduction factor
 
+		Limit {integer} -- Limit
+
 		"""
 		self.D = D
 		self.NP = NP
@@ -116,6 +124,8 @@ class Runner(object):
 		self.Qmax = kwargs.get('Qmax', 2.0)
 		self.Pa = kwargs.get('Pa', 0.25)
 		self.F = kwargs.get('F', 0.5)
+		self.F_l = kwargs.get('F_l', 0.0)
+		self.F_u = kwargs.get('F_u', 2.0)
 		self.CR = kwargs.get('CR', 0.9)
 		self.alpha = kwargs.get('alpha', 0.5)
 		self.betamin = kwargs.get('betamin', 0.2)
@@ -128,7 +138,8 @@ class Runner(object):
 		self.w = kwargs.get('w', 0.7)
 		self.vMin = kwargs.get('vMin', -4)
 		self.vMax = kwargs.get('vMax', 4)
-		self.Tao = kwargs.get('Tao', 0.1)
+		self.Tao1 = kwargs.get('Tao1', 0.43)
+		self.Tao2 = kwargs.get('Tao2', 0.1)
 		self.n = kwargs.get('n', 10)
 		self.omega = kwargs.get('omega', 0.25)
 		self.mu = kwargs.get('mu', 0.5)
@@ -138,35 +149,38 @@ class Runner(object):
 		self.T_max = kwargs.get('T_max', 10)
 		self.C_a = kwargs.get('C_a', 2)
 		self.C_r = kwargs.get('C_r', 0.5)
+		self.Limit = kwargs.get('Limit', 100)
 		self.results = {}
 
 	def __algorithmFactory(self, name, benchmark):
 		bench = benchmarks.utility.Utility().get_benchmark(benchmark)
 		algorithm = None
 		if name == 'BatAlgorithm':
-			algorithm = algorithms.basic.BatAlgorithm(self.D, self.NP, self.nFES, self.A, self.r, self.Qmin, self.Qmax, bench)
+			algorithm = algorithms.basic.BatAlgorithm(D=self.D, NP=self.NP, nFES=self.nFES, A=self.A, r=self.r, Qmin=self.Qmin, Qmax=self.Qmax, benchmark=bench)
 		elif name == 'DifferentialEvolutionAlgorithm':
-			algorithm = algorithms.basic.DifferentialEvolutionAlgorithm(self.D, self.NP, self.nFES, self.F, self.CR, bench)
+			algorithm = algorithms.basic.DifferentialEvolutionAlgorithm(D=self.D, NP=self.NP, nFES=self.nFES, F=self.F, CR=self.CR, benchmark=bench)
 		elif name == 'FireflyAlgorithm':
-			algorithm = algorithms.basic.FireflyAlgorithm(self.D, self.NP, self.nFES, self.alpha, self.betamin, self.gamma, bench)
+			algorithm = algorithms.basic.FireflyAlgorithm(D=self.D, NP=self.NP, nFES=self.nFES, alpha=self.alpha, betamin=self.betamin, gamma=self.gamma, benchmark=bench)
 		elif name == 'FlowerPollinationAlgorithm':
 			algorithm = algorithms.basic.FlowerPollinationAlgorithm(self.D, self.NP, self.nFES, self.p, bench)
 		elif name == 'GreyWolfOptimizer':
-			algorithm = algorithms.basic.GreyWolfOptimizer(self.D, self.NP, self.nFES, bench)
+			algorithm = algorithms.basic.GreyWolfOptimizer(D=self.D, NP=self.NP, nFES=self.nFES, benchmark=bench)
 		elif name == 'ArtificialBeeColonyAlgorithm':
-			algorithm = algorithms.basic.ArtificialBeeColonyAlgorithm(self.D, self.NP, self.nFES, bench)
+			algorithm = algorithms.basic.ArtificialBeeColonyAlgorithm(D=self.D, NP=self.NP, nFES=self.nFES, Limit=self.Limit, benchmark=bench)
 		elif name == 'GeneticAlgorithm':
-			algorithm = algorithms.basic.GeneticAlgorithm(self.D, self.NP, self.nFES, self.Ts, self.Mr, self.gamma, bench)
+			algorithm = algorithms.basic.GeneticAlgorithm(D=self.D, NP=self.NP, nFES=self.nFES, Ts=self.Ts, Mr=self.Mr, Cr=self.CR, benchmark=bench)
 		elif name == 'ParticleSwarmAlgorithm':
-			algorithm = algorithms.basic.ParticleSwarmAlgorithm(self.D, self.NP, self.nFES, self.C1, self.C2, self.w, self.vMin, self.vMax, bench)
+			algorithm = algorithms.basic.ParticleSwarmAlgorithm(D=self.D, NP=self.NP, nFES=self.nFES, C1=self.C1, C2=self.C2, w=self.w, vMin=self.vMin, vMax=self.vMax, benchmark=bench)
 		elif name == 'HybridBatAlgorithm':
-			algorithm = algorithms.modified.HybridBatAlgorithm(self.D, self.NP, self.nFES, self.A, self.r, self.F, self.CR, self.Qmin, self.Qmax, bench)
+			algorithm = algorithms.modified.HybridBatAlgorithm(D=self.D, NP=self.NP, nFES=self.nFES, A=self.A, r=self.r, F=self.F, CR=self.CR, Qmin=self.Qmin, Qmax=self.Qmax, benchmark=bench)
 		elif name == 'SelfAdaptiveDifferentialEvolutionAlgorithm':
-			algorithm = algorithms.modified.SelfAdaptiveDifferentialEvolutionAlgorithm(self.D, self.NP, self.nFES, self.F, self.CR, self.Tao, bench)
+			algorithm = algorithms.modified.SelfAdaptiveDifferentialEvolutionAlgorithm(D=self.D, NP=self.NP, nFES=self.nFES, F=self.F, F_l=self.F_l, F_u=self.F_u, Tao1=self.Tao1, CR=self.CR, Tao2=self.Tao2, benchmark=bench)
 		elif name == 'CamelAlgorithm':
 			algorithm = algorithms.basic.CamelAlgorithm(NP=self.NP, D=self.D, nGEN=self.nRuns, nFES=self.nFES, omega=self.omega, mu=self.mu, alpha=self.alpha, S_init=self.S_init, E_init=self.E_init, T_min=self.T_min, T_max=self.T_max, benchmark=bench)
 		elif name == 'BareBonesFireworksAlgorithm':
-			algorithm = algorithm.basic.BareBonesFireworksAlgorithm(D=self.D, nFES=self.nFES, n=self.n, C_a=self.C_a, C_r=self.C_r, benchmark=bench)
+			algorithm = algorithms.basic.BareBonesFireworksAlgorithm(D=self.D, nFES=self.nFES, n=self.n, C_a=self.C_a, C_r=self.C_r, benchmark=bench)
+		elif name == 'MonkeyKingEvolutionV1':
+			algorithm = algorithms.basic.MonkeyKingEvolutionV1(benchmark=bench)
 		else:
 			raise TypeError('Passed benchmark is not defined!')
 		return algorithm

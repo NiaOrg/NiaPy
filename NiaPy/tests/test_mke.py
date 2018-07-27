@@ -1,9 +1,8 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, multiple-statements
 from unittest import TestCase
-from numpy import asarray
 from NiaPy.benchmarks.griewank import Griewank
-from NiaPy.algorithms.basic import CamelAlgorithm
+from NiaPy.algorithms.basic import BareBonesFireworksAlgorithm
 
 class MyBenchmark(object):
 	def __init__(self):
@@ -21,19 +20,19 @@ class MyBenchmark(object):
 class CSTestCase(TestCase):
 	def setUp(self):
 		self.D = 40
-		self.ca_custom = CamelAlgorithm(NP=40, D=self.D, nGEN=10, nFES=4000, benchmark=MyBenchmark())
-		self.ca_griewank = CamelAlgorithm(NP=40, D=self.D, nGEN=10, nFES=4000, benchmark=Griewank())
+		self.bbfa_custom = BareBonesFireworksAlgorithm(D=self.D, nFES=1000, n=10, C_a=2, C_r=0.5, benchmark=MyBenchmark())
+		self.bbfa_griewank = BareBonesFireworksAlgorithm(D=self.D, nFES=1000, n=10, C_a=5, C_r=0.5, benchmark=Griewank())
 
 	def test_custom_works_fine(self):
 		fun = MyBenchmark().function()
-		x = self.ca_custom.run()
+		x = self.bbfa_custom.run()
 		self.assertTrue(x)
-		self.assertAlmostEqual(fun(self.D, asarray(x[0])), x[1], delta=1e3)
+		self.assertAlmostEqual(fun(self.D, x[0]), x[1], delta=1e2)
 
 	def test_griewank_works_fine(self):
 		fun = Griewank().function()
-		x = self.ca_griewank.run()
+		x = self.bbfa_griewank.run()
 		self.assertTrue(x)
-		self.assertAlmostEqual(fun(self.D, asarray(x[0])), x[1], delta=1e3)
+		self.assertAlmostEqual(fun(self.D, x[0]), x[1], delta=1e2)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

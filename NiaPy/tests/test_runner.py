@@ -1,29 +1,28 @@
+# encoding=utf8
+# pylint: disable=mixed-indentation, line-too-long, multiple-statements
 from unittest import TestCase
-
 import NiaPy
 
-
 class MyBenchmark(object):
-    def __init__(self):
-        self.Lower = -11
-        self.Upper = 11
+	def __init__(self):
+		self.Lower = -11
+		self.Upper = 11
 
-    @classmethod
-    def function(cls):
-        def evaluate(D, sol):
-            val = 0.0
-            for i in range(D):
-                val = val + sol[i] * sol[i]
-            return val
-        return evaluate
+	@classmethod
+	def function(cls):
+		def evaluate(D, sol):
+			val = 0.0
+			for i in range(D): val = val + sol[i] * sol[i]
+			return val
+		return evaluate
 
 
 class RunnerTestCase(TestCase):
-    def setUp(self):
-        self.algorithms = ['DifferentialEvolutionAlgorithm',
-                           'GreyWolfOptimizer']
-        self.benchmarks = ['griewank', MyBenchmark()]
+	def setUp(self):
+		self.algorithms = ['DifferentialEvolutionAlgorithm', 'GreyWolfOptimizer', 'GeneticAlgorithm', 'ParticleSwarmAlgorithm', 'HybridBatAlgorithm', 'SelfAdaptiveDifferentialEvolutionAlgorithm', 'CamelAlgorithm', 'BareBonesFireworksAlgorithm']
+		self.benchmarks = ['griewank', MyBenchmark()]
 
-    def test_runner_works_fine(self):
-        self.assertTrue(NiaPy.Runner(10, 40, 1000, 3,
-                                     self.algorithms, self.benchmarks).run())
+	def test_runner_works_fine(self):
+		self.assertTrue(NiaPy.Runner(10, 40, 1000, 3, self.algorithms, self.benchmarks).run())
+
+# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
