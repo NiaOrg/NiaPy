@@ -1,7 +1,7 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy
+# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, len-as-condition
 import logging
-from numpy import apply_along_axis, argmin, inf, full, where, random as rand
+from numpy import apply_along_axis, argmin, inf, where, asarray, ndarray, random as rand
 from NiaPy.algorithms.algorithm import Algorithm
 
 logging.basicConfig()
@@ -49,30 +49,50 @@ class MonkeyKingEvolutionV1(Algorithm):
 	**Authors:** Klemen Berkovič
 
 	**License:** MIT
+
 	**Reference URL:**
+	https://www.sciencedirect.com/science/article/pii/S0950705116000198
+
 	**Reference paper:**
+	Zhenyu Meng, Jeng-Shyang Pan, Monkey King Evolution: A new memetic evolutionary algorithm and its application in vehicle fuel consumption optimization, Knowledge-Based Systems, Volume 97, 2016, Pages 144-157, ISSN 0950-7051, https://doi.org/10.1016/j.knosys.2016.01.009.
 	"""
-	def __init__(self, **kwargs): super(MonkeyKingEvolutionV1, self).__init__(name='MonkeyKingEvolutionV1', sName='MKEv1', **kwargs)
+	def __init__(self, **kwargs): 
+		if kwargs.get('name', None) == None: super(MonkeyKingEvolutionV1, self).__init__(name='MonkeyKingEvolutionV1', sName='MKEv1', **kwargs)
+		else: super(MonkeyKingEvolutionV1, self).__init__(**kwargs)
 
 	def setParameters(self, **kwargs): self.__setParams(**kwargs)
 
 	def __setParams(self, NP=40, F=0.7, R=0.3, C=3, FC=0.5, **ukwargs):
+		r"""Set the algorithm parameters.
+
+		Arguments:
+		NP {integer} -- Size of population
+		F {real} -- 
+		R {real} --
+		C {real} --
+		FC {real} -- 
+		"""
 		self.NP, self.F, self.R, self.C, self.FC = NP, F, R, C, FC
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def repair(self, x, task):
-		# FIXME for reparing matirxes
 		ir = where(x > task.Upper)
 		x[ir] = task.Upper[ir]
 		ir = where(x < task.Lower)
 		x[ir] = task.Lower[ir]
 		return x
 
-	def movePartice(self, p, p_b, task): p.x = self.repair(p_b.x + self.F * self.rand.rand(task.D) * (p_b.x - p.x), task)
+	def moveP(self, x, x_b, task): return x + self.F * self.rand.rand(task.D) * (x_b - x)
+
+	def moveMK(self, x, task): return x + self.FC * self.rand.rand(int(self.C * task.D), task.D) * x
+
+	def movePartice(self, p, p_b, task): 
+		p.x = self.repair(self.moveP(p.x, p_b.x, task), task)
+		p.evaluate(task)
 
 	def moveMokeyKingPartice(self, p, task):
 		p.MonkeyKing = False
-		A = self.repair(p.x + self.FC * self.rand.rand(int(self.C * task.D), task.D) * p.x, task)
+		A = apply_along_axis(self.repair, 1, self.moveMK(p.x, task), task)
 		A_f = apply_along_axis(task.eval, 1, A)
 		ib = argmin(A_f)
 		p.x, p.f = A[ib], A_f[ib]
@@ -90,12 +110,12 @@ class MonkeyKingEvolutionV1(Algorithm):
 		for i in self.rand.choice(self.NP, int(self.R * len(pop)), replace=False): pop[i].MonkeyKing = True
 		while not task.stopCond():
 			self.movePopulation(pop, p_b, task)
-			ib = argmin([x.f for x in pop])
 			for i in self.rand.choice(self.NP, int(self.R * len(pop)), replace=False): pop[i].MonkeyKing = True
+			ib = argmin([x.f for x in pop])
 			if pop[ib].f < p_b.f: p_b = pop[ib]
 		return p_b.x, p_b.f
 
-class MonkeyKingEvolutionV2(Algorithm):
+class MonkeyKingEvolutionV2(MonkeyKingEvolutionV1):
 	r"""Implementation of monkey king evolution algorithm version 1.
 
 	**Algorithm:** Monkey King Evolution version 1
@@ -105,16 +125,47 @@ class MonkeyKingEvolutionV2(Algorithm):
 	**Authors:** Klemen Berkovič
 
 	**License:** MIT
+
 	**Reference URL:**
+	https://www.sciencedirect.com/science/article/pii/S0950705116000198
+
 	**Reference paper:**
+	Zhenyu Meng, Jeng-Shyang Pan, Monkey King Evolution: A new memetic evolutionary algorithm and its application in vehicle fuel consumption optimization, Knowledge-Based Systems, Volume 97, 2016, Pages 144-157, ISSN 0950-7051, https://doi.org/10.1016/j.knosys.2016.01.009.
 	"""
-	def __init__(self, **kwargs): super(MonkeyKingEvolutionV1, self).__init__(name='MonkeyKingEvolutionV2', sName='MKEv2', **kwargs)
+	def __init__(self, **kwargs): super(MonkeyKingEvolutionV2, self).__init__(name='MonkeyKingEvolutionV2', sName='MKEv2', **kwargs)
 
 	def setParameters(self, **kwargs): self.__setParams(**kwargs)
 
-	def __setParams(self, F, R, C, FC, **ukwargs): pass
+	def __setParams(self, NP=40, F=0.7, R=0.3, C=3, FC=2.0, **ukwargs):
+		r"""Set the parameters of the algorithm.
 
-	def runTask(self, task): pass
+		Arguments:
+		NP {integer} -- Size of population
+		F {real} -- 
+		R {real} --
+		C {real} --
+		FC {real} -- 
+		"""
+		self.NP, self.F, self.R, self.C, self.FC = NP, F, R, C, FC
+		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
+
+	def moveMK(self, x, dx, task): x - self.FC * dx
+
+	def moveMokeyKingPartice(self, p, pop, task):
+		p.MonkeyKing = False
+		p_b, p_f = None, inf
+		for i in range(int(self.C * self.NP)):
+			r = self.rand.choice(self.NP, 2, replace=False)
+			a = self.repair(self.moveMK(p.x, pop[r[0]].x - pop[r[1]].x, task), task)
+			a_f = task.eval(a)
+			if a_f < p_f: p_b, p_f = a, a_f
+		p.x, p.f = p_b, p_f
+
+	def movePopulation(self, pop, p_b, task):
+		for p in pop:
+			if p.MonkeyKing: self.moveMokeyKingPartice(p, pop, task)
+			else: self.movePartice(p, p_b, task)
+			p.uPersonalBest()
 
 class MonkeyKingEvolutionV3(Algorithm):
 	r"""Implementation of monkey king evolution algorithm version 1.
@@ -126,10 +177,14 @@ class MonkeyKingEvolutionV3(Algorithm):
 	**Authors:** Klemen Berkovič
 
 	**License:** MIT
+
 	**Reference URL:**
+	https://www.sciencedirect.com/science/article/pii/S0950705116000198
+
 	**Reference paper:**
+	Zhenyu Meng, Jeng-Shyang Pan, Monkey King Evolution: A new memetic evolutionary algorithm and its application in vehicle fuel consumption optimization, Knowledge-Based Systems, Volume 97, 2016, Pages 144-157, ISSN 0950-7051, https://doi.org/10.1016/j.knosys.2016.01.009.
 	"""
-	def __init__(self, **kwargs): super(MonkeyKingEvolutionV1, self).__init__(name='MonkeyKingEvolutionV3', sName='MKEv3', **kwargs)
+	def __init__(self, **kwargs): super(MonkeyKingEvolutionV3, self).__init__(name='MonkeyKingEvolutionV3', sName='MKEv3', **kwargs)
 
 	def setParameters(self, **kwargs): self.__setParams(**kwargs)
 

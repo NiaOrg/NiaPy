@@ -7,7 +7,7 @@ sys.path.append('../')
 
 import random
 import logging
-from NiaPy.algorithms.basic import MonkeyKingEvolutionV1
+from NiaPy.algorithms.basic import MonkeyKingEvolutionV1, MonkeyKingEvolutionV2
 
 logging.basicConfig()
 logger = logging.getLogger('examples')
@@ -30,6 +30,11 @@ class MyBenchmark(object):
 
 for i in range(10):
 	algo = MonkeyKingEvolutionV1(D=50, nFES=50000, NP=25, C=3, F=0.5, FC=0.5, R=0.4, benchmark=MyBenchmark())
+	best = algo.run()
+	logger.info('%s %s' % (best[0], best[1]))
+
+for i in range(10):
+	algo = MonkeyKingEvolutionV2(D=50, nFES=50000, NP=25, C=3, F=0.5, FC=0.5, R=0.4, benchmark=MyBenchmark())
 	best = algo.run()
 	logger.info('%s %s' % (best[0], best[1]))
 
