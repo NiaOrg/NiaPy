@@ -20,7 +20,9 @@ class MkeSolution(object):
 		if len(x) > 0: self.x = x if isinstance(x, ndarray) else asarray(x)
 		else: self.generateSolution(task, rnd)
 
-	def generateSolution(self, task, rnd): self.x = task.Lower + task.bRange * rnd.rand(task.D)
+	def generateSolution(self, task, rnd): 
+		self.x = task.Lower + task.bRange * rnd.rand(task.D)
+		self.x_pb = self.x
 
 	def evaluate(self, task): self.f = task.eval(self.x)
 
@@ -82,12 +84,12 @@ class MonkeyKingEvolutionV1(Algorithm):
 		x[ir] = task.Lower[ir]
 		return x
 
-	def moveP(self, x, x_b, task): return x + self.F * self.rand.rand(task.D) * (x_b - x)
+	def moveP(self, x, x_pb, x_b, task): return x_pb + self.F * self.rand.rand(task.D) * (x_b - x)
 
 	def moveMK(self, x, task): return x + self.FC * self.rand.rand(int(self.C * task.D), task.D) * x
 
 	def movePartice(self, p, p_b, task): 
-		p.x = self.repair(self.moveP(p.x, p_b.x, task), task)
+		p.x = self.repair(self.moveP(p.x, p.x_pb, p_b.x, task), task)
 		p.evaluate(task)
 
 	def moveMokeyKingPartice(self, p, task):
@@ -188,8 +190,33 @@ class MonkeyKingEvolutionV3(Algorithm):
 
 	def setParameters(self, **kwargs): self.__setParams(**kwargs)
 
-	def __setParams(self, NP, F, **ukwargs): pass
+	def __setParams(self, NP, F, **ukwargs):
+		r"""Set the algorithm parameters.
 
-	def runTask(self, task): pass
+		Arguments:
+		NP {integer} -- Size of the population
+		F {real} --
+		"""
+		self.NP, self.F = NP, F
+
+	def moveM(self, x, m, b): return x * m + b
+
+	def moveB(self, x, d): return x + self.F * d
+
+	def movePopulation(self, pop, task):
+		for p in pop:
+			# TODO
+			p.uPersonalBest()
+
+	def runTask(self, task):
+		pop = [MkeSolution(task=task) for i in range(self.NP)]
+		for p in pop: p.evaluate(task)
+		p_b = pop[argmin([x.f for x in pop])]
+		K = self.NP / taks.D
+		while not task.stopCond():
+			r = self.rand.choice(self.NP, 2, replace=False)
+			dx = pop[r[0]].x - pop[f[1]].x
+			# TODO
+		return None, None
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

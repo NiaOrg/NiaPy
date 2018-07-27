@@ -17,7 +17,7 @@ class MyBenchmark(object):
 			return val
 		return evaluate
 
-class CSTestCase(TestCase):
+class BBFWATestCase(TestCase):
 	def setUp(self):
 		self.D = 40
 		self.bbfa_custom = BareBonesFireworksAlgorithm(D=self.D, nFES=1000, n=10, C_a=2, C_r=0.5, benchmark=MyBenchmark())

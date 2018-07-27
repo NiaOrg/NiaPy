@@ -181,6 +181,10 @@ class Runner(object):
 			algorithm = algorithms.basic.BareBonesFireworksAlgorithm(D=self.D, nFES=self.nFES, n=self.n, C_a=self.C_a, C_r=self.C_r, benchmark=bench)
 		elif name == 'MonkeyKingEvolutionV1':
 			algorithm = algorithms.basic.MonkeyKingEvolutionV1(benchmark=bench)
+		elif name == 'MonkeyKingEvolutionV2':
+			algorithm = algorithms.basic.MonkeyKingEvolutionV2(benchmark=bench)
+		elif name == 'MonkeyKingEvolutionV3':
+			algorithm = algorithms.basic.MonkeyKingEvolutionV3(benchmark=bench)
 		else:
 			raise TypeError('Passed benchmark is not defined!')
 		return algorithm

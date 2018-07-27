@@ -18,7 +18,7 @@ class MyBenchmark(object):
 			return val
 		return evaluate
 
-class CSTestCase(TestCase):
+class CATestCase(TestCase):
 	def setUp(self):
 		self.D = 40
 		self.ca_custom = CamelAlgorithm(NP=40, D=self.D, nGEN=10, nFES=4000, benchmark=MyBenchmark())
