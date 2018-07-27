@@ -149,11 +149,11 @@ class MonkeyKingEvolutionV2(MonkeyKingEvolutionV1):
 		self.NP, self.F, self.R, self.C, self.FC = NP, F, R, C, FC
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def moveMK(self, x, dx, task): x - self.FC * dx
+	def moveMK(self, x, dx, task): return x - self.FC * dx
 
 	def moveMokeyKingPartice(self, p, pop, task):
 		p.MonkeyKing = False
-		p_b, p_f = None, inf
+		p_b, p_f = p.x, p.f
 		for i in range(int(self.C * self.NP)):
 			r = self.rand.choice(self.NP, 2, replace=False)
 			a = self.repair(self.moveMK(p.x, pop[r[0]].x - pop[r[1]].x, task), task)
@@ -188,7 +188,7 @@ class MonkeyKingEvolutionV3(Algorithm):
 
 	def setParameters(self, **kwargs): self.__setParams(**kwargs)
 
-	def __setParams(self, F, R, C, FC, **ukwargs): pass
+	def __setParams(self, NP, F, **ukwargs): pass
 
 	def runTask(self, task): pass
 
