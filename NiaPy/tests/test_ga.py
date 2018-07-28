@@ -2,7 +2,7 @@
 # pylint: disable=mixed-indentation, function-redefined, multiple-statements
 from unittest import TestCase
 from NiaPy.algorithms.basic import GeneticAlgorithm
-from NiaPy.algorithms.basic.ga import TwoPointCrossover, MultiPointCrossover, CreepMutation
+from NiaPy.algorithms.basic.ga import TwoPointCrossover, MultiPointCrossover, CreepMutation, Chromosome
 
 class MyBenchmark(object):
 	def __init__(self):
@@ -16,6 +16,24 @@ class MyBenchmark(object):
 			for i in range(D): val = val + sol[i] * sol[i]
 			return val
 		return evaluate
+
+class ChromosomeTestCase(TestCase):
+	def setUp(self):
+		self.x = None
+
+	def test_generateSolutin_fine(self): pass
+
+	def test_evaluate_fine(self): pass
+
+	def test_repair_fine(self): pass
+
+	def test_eq_fine(self): pass
+
+	def test_toString_fine(self): pass
+
+	def test_getitem_fine(self): pass
+
+	def test_len_fine(self): pass
 
 class GATestCase(TestCase):
 	def setUp(self):

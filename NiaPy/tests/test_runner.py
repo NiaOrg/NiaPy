@@ -23,6 +23,6 @@ class RunnerTestCase(TestCase):
 		self.benchmarks = ['griewank', MyBenchmark()]
 
 	def test_runner_works_fine(self):
-		self.assertTrue(NiaPy.Runner(10, 40, 1000, 3, self.algorithms, self.benchmarks).run())
+		self.assertTrue(NiaPy.Runner(10, 40, 10, 3, self.algorithms, self.benchmarks).run())
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

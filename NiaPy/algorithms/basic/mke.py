@@ -2,7 +2,7 @@
 # pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, len-as-condition
 import logging
 from math import ceil
-from numpy import apply_along_axis, argmin, inf, where, asarray, ndarray, random as rand, ones, tril
+from numpy import apply_along_axis, vectorize, argmin, inf, where, asarray, ndarray, random as rand, ones, tril
 from NiaPy.algorithms.algorithm import Algorithm
 
 logging.basicConfig()
@@ -24,6 +24,7 @@ class MkeSolution(object):
 	def generateSolution(self, task, rnd): 
 		self.x = task.Lower + task.bRange * rnd.rand(task.D)
 		self.x_pb = self.x
+		self.evaluate(task)
 
 	def evaluate(self, task): self.f = task.eval(self.x)
 
@@ -108,7 +109,6 @@ class MonkeyKingEvolutionV1(Algorithm):
 
 	def runTask(self, task):
 		pop = [MkeSolution(task=task) for i in range(self.NP)]
-		for p in pop: p.evaluate(task)
 		p_b = pop[argmin([x.f for x in pop])]
 		for i in self.rand.choice(self.NP, int(self.R * len(pop)), replace=False): pop[i].MonkeyKing = True
 		while not task.stopCond():
@@ -136,21 +136,6 @@ class MonkeyKingEvolutionV2(MonkeyKingEvolutionV1):
 	Zhenyu Meng, Jeng-Shyang Pan, Monkey King Evolution: A new memetic evolutionary algorithm and its application in vehicle fuel consumption optimization, Knowledge-Based Systems, Volume 97, 2016, Pages 144-157, ISSN 0950-7051, https://doi.org/10.1016/j.knosys.2016.01.009.
 	"""
 	def __init__(self, **kwargs): super(MonkeyKingEvolutionV2, self).__init__(name='MonkeyKingEvolutionV2', sName='MKEv2', **kwargs)
-
-	def setParameters(self, **kwargs): self.__setParams(**kwargs)
-
-	def __setParams(self, NP=40, F=0.7, R=0.3, C=3, FC=2.0, **ukwargs):
-		r"""Set the parameters of the algorithm.
-
-		Arguments:
-		NP {integer} -- Size of population
-		F {real} -- 
-		R {real} --
-		C {real} --
-		FC {real} -- 
-		"""
-		self.NP, self.F, self.R, self.C, self.FC = NP, F, R, C, FC
-		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def moveMK(self, x, dx, task): return x - self.FC * dx
 
@@ -189,37 +174,26 @@ class MonkeyKingEvolutionV3(MonkeyKingEvolutionV1):
 	"""
 	def __init__(self, **kwargs): super(MonkeyKingEvolutionV3, self).__init__(name='MonkeyKingEvolutionV3', sName='MKEv3', **kwargs)
 
-	def setParameters(self, **kwargs): self.__setParams(**kwargs)
+	def eval(self, X, x, x_f, task):
+		X_f = apply_along_axis(task.eval, 1, X)
+		igb = argmin(X_f)
+		if X_f[igb] <= x_f: x, x_f = X[igb], X_f[igb]
+		return x, x_f
 
-	def __setParams(self, NP, F, **ukwargs):
-		r"""Set the algorithm parameters.
-
-		Arguments:
-		NP {integer} -- Size of the population
-		F {real} --
-		"""
-		self.NP, self.F = NP, F
-
-	def moveM(self, x, m, b): return x * m + b
-
-	def moveB(self, x, d): return x + self.F * d
-
-	def movePopulation(self, pop, task):
-		for p in pop:
-			# TODO
-			p.uPersonalBest()
+	def neg(self, x): return 0.0 if x == 1 else 1.0
 
 	def runTask(self, task):
-		pop = [MkeSolution(task=task) for i in range(self.NP)]
-		for p in pop: p.evaluate(task)
-		p_b = pop[argmin([x.f for x in pop])]
-		K = ceil(self.NP / taks.D)
+		X = task.Lower + task.bRange * self.rand.rand(self.NP, task.D)
+		x_gb, x_f_gb = self.eval(X, None, inf, task)
+		k, c = ceil(self.NP / task.D), ceil(self.C * task.D)
 		while not task.stopCond():
-			A = ones([self.NP, task.D])
-			for i in range(K): A[i * task.D:(i + 1) * task.D] = tril(A[i * task.D:(i + 1) * taks.D])
-			for i in range(self.NP): self.rand.shuffle(A[i])
-			r = self.rand.choice(self.NP, 2, replace=False)
-			dx = pop[r[0]].x - pop[f[1]].x
-		return None, None
+			X_gb = x_gb + self.FC * X[self.rand.choice(len(X), k)] - X[self.rand.choice(len(X), k)]
+			x_gb, x_f_gb = self.eval(X_gb, x_gb, x_f_gb, task)
+			M = ones([self.NP, task.D])
+			for i in range(k): M[i * task.D:(i + 1) * task.D] = tril(M[i * task.D:(i + 1) * task.D])
+			for i in range(self.NP): self.rand.shuffle(M[i])
+			X = M * X + vectorize(self.neg)(M) * x_gb
+			x_gb, x_f_gb = self.eval(X, x_gb, x_f_gb, task)
+		return x_gb, x_f_gb
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

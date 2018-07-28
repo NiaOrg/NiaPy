@@ -1,8 +1,11 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, multiple-statements
 from unittest import TestCase
-from NiaPy.benchmarks.griewank import Griewank
+from numpy import random as rnd, inf, asarray
+from NiaPy.benchmarks import Griewank
+from NiaPy.benchmarks.utility import Task
 from NiaPy.algorithms.basic import MonkeyKingEvolutionV1, MonkeyKingEvolutionV2, MonkeyKingEvolutionV3
+from NiaPy.algorithms.basic.mke import MkeSolution
 
 class MyBenchmark(object):
 	def __init__(self):
@@ -16,6 +19,44 @@ class MyBenchmark(object):
 			for i in range(D): val = val + sol[i] * sol[i]
 			return val
 		return evaluate
+
+class MkeSolutionTestCase(TestCase):
+	def setUp(self):
+		self.D = 20
+		self.x, self.task = rnd.uniform(-2, 2, self.D), Task(self.D, 230, None, MyBenchmark())
+		self.sol1, self.sol2, self.sol3 = MkeSolution(x=self.x), MkeSolution(self.task), MkeSolution(x=self.x)
+
+	def test_x_fine(self):
+		self.assertTrue(not False in (self.x == self.sol1.x))
+
+	def test_f_fine(self):
+		self.assertAlmostEqual(self.sol2.f, task.eval(self.sol2.x))
+		self.assertEquals(self.sol1.f, inf)
+
+	def test_uPersonalBest_fine(self):
+		self.sol2.uPersonalBest()
+		self.assertTrue(not False in (self.sol2.x == self.sol2.x_pb))
+		self.assertEquals(self.sol2.f_pb, self.sol2.f)
+		self.sol3.evaluate(self.task)
+		self.sol3.x = full(self.task.D, -5.11)
+		self.sol3.evaluate(self.task)
+		self.sol3.uPersonalBest()
+		self.assertTrue(False in (self.sol3.x == self.sol3.x_pb))
+		self.assertEquals(self.sol2.f_pb, self.task.eval(self.x))
+
+	def test_len_fine(self):
+		self.assertEquals(len(self.sol1), len(self.x))
+		self.assertEquals(len(self.sol2), self.D)
+
+	def test_getitem_fine(self):
+		for r in range(self.D): self.assertEquals(self.sol1[r], self.x[r])
+
+	def test_generate_solution_fine(self):
+		self.assertTrue(task.isFeasible(self.sol2))
+
+	def test_eq_fine(self):
+		self.assertFalse(self.sol1 == self.sol2)
+		self.assertTrue(self.sol1 == self.sol1)
 
 class MKEv1TestCase(TestCase):
 	def setUp(self):

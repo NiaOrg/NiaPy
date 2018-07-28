@@ -5,7 +5,7 @@ from numpy import asarray
 from NiaPy.benchmarks.griewank import Griewank
 from NiaPy.benchmarks.ackley import Ackley
 from NiaPy.algorithms.basic import DifferentialEvolutionAlgorithm
-from NiaPy.algorithms.basic.de import CrossRand1, CrossRand2, CrossBest1, CrossBest2, CrossCurr2Rand1, CrossCurr2Best1
+from NiaPy.algorithms.basic.de import CrossRand1, CrossRand2, CrossBest1, CrossBest2, CrossCurr2Rand1, CrossCurr2Best1, SolutionDE
 
 class MyBenchmark(object):
 	def __init__(self):
@@ -19,6 +19,24 @@ class MyBenchmark(object):
 			for i in range(D): val = val + sol[i] * sol[i]
 			return val
 		return evaluate
+
+class SolutionDETestCase(TestCase):
+	def setUp(self):
+		self.x = None
+
+	def test_generateSolutin_fine(self): pass
+
+	def test_evaluate_fine(self): pass
+
+	def test_repair_fine(self): pass
+
+	def test_eq_fine(self): pass
+
+	def test_toString_fine(self): pass
+
+	def test_getitem_fine(self): pass
+
+	def test_len_fine(self): pass
 
 class DETestCase(TestCase):
 	def setUp(self):

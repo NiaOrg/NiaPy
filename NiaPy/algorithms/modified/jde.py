@@ -43,10 +43,10 @@ class SelfAdaptiveDifferentialEvolutionAlgorithm(DifferentialEvolutionAlgorithm)
 		r"""Set the parameters of an algorithm.
 
 		Arguments:
-		F_l {decimal} -- scaling factor
-		F_u {decimal} -- scaling factor
-		Tao1 {decimal} --
-		Tao2 {decimal} --
+		F_l {decimal} -- scaling factor lower limit
+		F_u {decimal} -- scaling factor upper limit
+		Tao1 {decimal} -- change rate for F parameter update
+		Tao2 {decimal} -- change rate for CR parameter update
 		"""
 		self.F_l, self.F_u, self.Tao1, self.Tao2 = F_l, F_u, Tao1, Tao2
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
