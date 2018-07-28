@@ -1,6 +1,7 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, len-as-condition
 import logging
+from math import ceil
 from numpy import apply_along_axis, argmin, inf, where, asarray, ndarray, random as rand, ones, tril
 from NiaPy.algorithms.algorithm import Algorithm
 
@@ -212,11 +213,13 @@ class MonkeyKingEvolutionV3(MonkeyKingEvolutionV1):
 		pop = [MkeSolution(task=task) for i in range(self.NP)]
 		for p in pop: p.evaluate(task)
 		p_b = pop[argmin([x.f for x in pop])]
-		K = self.NP / taks.D
+		K = ceil(self.NP / taks.D)
 		while not task.stopCond():
+			A = ones([self.NP, task.D])
+			for i in range(K): A[i * task.D:(i + 1) * task.D] = tril(A[i * task.D:(i + 1) * taks.D])
+			for i in range(self.NP): self.rand.shuffle(A[i])
 			r = self.rand.choice(self.NP, 2, replace=False)
 			dx = pop[r[0]].x - pop[f[1]].x
-			
 		return None, None
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
