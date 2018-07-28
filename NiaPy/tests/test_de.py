@@ -1,7 +1,7 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, multiple-statements
 from unittest import TestCase
-from numpy import random as rnd, full, asarray, inf
+from numpy import random as rnd, full, asarray, inf, array_equal
 from NiaPy.benchmarks.utility import Task
 from NiaPy.benchmarks.griewank import Griewank
 from NiaPy.benchmarks.ackley import Ackley
@@ -28,7 +28,7 @@ class SolutionDETestCase(TestCase):
 		self.s1, self.s2, self.s3 = SolutionDE(x=self.x), SolutionDE(task=self.task, rand=rnd), SolutionDE(task=self.task)
 
 	def test_x_fine(self):
-		self.assertTrue(False not in self.x == self.s1.x)
+		self.assertTrue(array_equal(self.x, self.s1.x))
 
 	def test_generateSolutin_fine(self):
 		self.assertTrue(self.task.isFeasible(self.s2))

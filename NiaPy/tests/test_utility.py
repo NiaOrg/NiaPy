@@ -28,9 +28,9 @@ class UtilityTestCase(TestCase):
 		self.u = Utility()
 
 	def test_get_bad_benchmark_fine(self):
-		self.assertRaises(TypeError, self.u.get_benchmark('hihihihihihihihihi'))
-		self.assertRaises(TypeError, self.u.get_benchmark(MyBenchmark))
-		self.assertRaises(TypeError, self.u.get_benchmark(NoLimits))
+		self.assertRaises(TypeError, lambda: self.u.get_benchmark('hihihihihihihihihi'))
+		self.assertRaises(TypeError, lambda: self.u.get_benchmark(MyBenchmark))
+		self.assertRaises(TypeError, lambda: self.u.get_benchmark(NoLimits))
 
 class TaskTestCase(TestCase):
 	def setUp(self):
@@ -84,16 +84,18 @@ class TaskTestCase(TestCase):
 
 	def test_stopCond_evals_fine(self):
 		x = full(self.D, 0.0)
-		for i in range(self.nFES):
+		for i in range(self.nFES - 1):
 			self.t.eval(x)
 			self.assertFalse(self.t.stopCond())
+		self.t.eval(x)
 		self.assertTrue(self.t.stopCond())
 
 	def test_stopCond_iters_fine(self):
 		x = full(self.D, 0.0)
-		for i in range(self.nGEN):
+		for i in range(self.nGEN - 1):
 			self.t.nextIter()
 			self.assertFalse(self.t.stopCond())
+		self.t.nextIter()
 		self.assertTrue(self.t.stopCond())
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

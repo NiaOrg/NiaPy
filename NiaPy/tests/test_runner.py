@@ -16,13 +16,12 @@ class MyBenchmark(object):
 			return val
 		return evaluate
 
-
 class RunnerTestCase(TestCase):
 	def setUp(self):
 		self.algorithms = ['DifferentialEvolutionAlgorithm', 'GreyWolfOptimizer', 'GeneticAlgorithm', 'ParticleSwarmAlgorithm', 'HybridBatAlgorithm', 'SelfAdaptiveDifferentialEvolutionAlgorithm', 'CamelAlgorithm', 'BareBonesFireworksAlgorithm', 'MonkeyKingEvolutionV1', 'MonkeyKingEvolutionV2', 'MonkeyKingEvolutionV3']
 		self.benchmarks = ['griewank', MyBenchmark()]
 
 	def test_runner_works_fine(self):
-		self.assertTrue(NiaPy.Runner(10, 40, 10, 3, self.algorithms, self.benchmarks).run())
+		self.assertTrue(NiaPy.Runner(4, 10, 10, 3, self.algorithms, self.benchmarks).run())
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

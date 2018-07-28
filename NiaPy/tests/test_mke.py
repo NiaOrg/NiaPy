@@ -42,7 +42,7 @@ class MkeSolutionTestCase(TestCase):
 		self.sol3.evaluate(self.task)
 		self.sol3.uPersonalBest()
 		self.assertTrue(array_equal(self.sol3.x, self.sol3.x_pb))
-		self.assertEqual(self.sol2.f_pb, self.task.eval(self.x))
+		self.assertEqual(self.sol3.f_pb, self.sol3.f)
 
 	def test_len_fine(self):
 		self.assertEqual(len(self.sol1), len(self.x))

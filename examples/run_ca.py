@@ -7,6 +7,7 @@ sys.path.append('../')
 import random
 import logging
 from NiaPy.algorithms.basic import CamelAlgorithm
+from NiaPy.benchmarks.utility import TaskConvPrint, TaskConvPlot
 
 logging.basicConfig()
 logger = logging.getLogger('examples')
@@ -27,9 +28,27 @@ class MyBenchmark(object):
 			return val
 		return evaluate
 
-for i in range(10):
-	Algorithm = CamelAlgorithm(NP=50, D=50, nGEN=50000, nFES=500000, omega=0.25, alpha=0.15, mu=0.5, S_init=1, E_init=1, T_min=0, T_max=100, benchmark=MyBenchmark())
-	Best = Algorithm.run()
-	logger.info('%s %s' % (Best[0], Best[1]))
+def simple_example(runs=10):
+	for i in range(10):
+		Algorithm = CamelAlgorithm(NP=50, D=50, nGEN=50000, nFES=500000, omega=0.25, alpha=0.15, mu=0.5, S_init=1, E_init=1, T_min=0, T_max=100, benchmark=MyBenchmark())
+		Best = Algorithm.run()
+		logger.info('%s %s' % (Best[0], Best[1]))
+
+def logging_example():
+	task = TaskConvPrint(D=50, nFES=50000, nGEN=50000, benchmark=MyBenchmark())
+	algo = CamelAlgorithm(NP=50,  omega=0.25, alpha=0.15, mu=0.5, S_init=1, E_init=1, T_min=0, T_max=100, task=task)
+	best = algo.run()
+	logger.info('%s %s' % (best[0], best[1]))
+
+def plot_example():
+	task = TaskConvPlot(D=50, nFES=50000, nGEN=10000, benchmark=MyBenchmark())
+	algo = CamelAlgorithm(NP=50,  omega=0.25, alpha=0.15, mu=0.5, S_init=1, E_init=1, T_min=0, T_max=100, task=task)
+	best = algo.run()
+	logger.info('%s %s' % (best[0], best[1]))
+	input('Press [enter] to continue')
+
+# simple_example()
+# logging_example()
+plot_example()
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
