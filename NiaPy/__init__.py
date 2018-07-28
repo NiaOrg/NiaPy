@@ -185,6 +185,8 @@ class Runner(object):
 			algorithm = algorithms.basic.MonkeyKingEvolutionV2(benchmark=bench)
 		elif name == 'MonkeyKingEvolutionV3':
 			algorithm = algorithms.basic.MonkeyKingEvolutionV3(benchmark=bench)
+		elif name == 'EvolutionStrategy':
+			algorithm = algorithms.basic.EvolutionStrategy(benchmark=bench)
 		else:
 			raise TypeError('Passed benchmark is not defined!')
 		return algorithm
