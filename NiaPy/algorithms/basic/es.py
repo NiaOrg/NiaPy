@@ -1,8 +1,8 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy
+# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, unused-argument
 import logging
-from numpy import apply_along_axis, argmin, where
-from NiaPy.algorithms.algorithm import Algorithm
+from numpy import argmin
+from NiaPy.algorithms.algorithm import Algorithm, Individual
 from NiaPy.algorithms.basic.ga import TurnamentSelection
 
 logging.basicConfig()
@@ -11,7 +11,7 @@ logger.setLevel('INFO')
 
 __all__ = ['EvolutionStrategy']
 
-def PlusStrategy(pop_1, pop_2): return pop_1.append(pop_2)
+def PlusStrategy(pop_1, pop_2): return pop_1.copy().extend(pop_2)
 
 def NormalStrategy(pop_1, pop_2): return pop_2
 
@@ -36,7 +36,7 @@ class EvolutionStrategy(Algorithm):
 		**See**:
 		Algorithm.__init__(self, **kwargs)
 		"""
-		super(BareBonesFireworksAlgorithm, self).__init__(name='EvolutionStrategy', sName='ES', **kwargs)
+		super(EvolutionStrategy, self).__init__(name='EvolutionStrategy', sName='ES', **kwargs)
 
 	def setParameters(self, **kwargs): self.__setParams(**kwargs)
 
@@ -54,27 +54,21 @@ class EvolutionStrategy(Algorithm):
 		self.mi, self.l, self.rho, self.n, self.Strategy, self.Selection = mi, l, rho, n, Strategy, Selection
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def repair(self, x, task):
-		ir = where(x > task.Upper)
-		x[ir] = task.Upper[ir]
-		ir = where(x < task.Lower)
-		x[ir] = task.Lower[ir]
+	def mutate(self, x, task):
+		x.x = x.x + self.rand.normal(self.rho, 1)
+		x.repair(task)
+		x.evaluate(task)
 		return x
 
-	def mutate(self, x, task): return self.repair(x + self.rand.normal(self.rho, 1), task)
-
 	def runTask(self, task):
-		pop = task.Lower + task.bRange * self.rand.rand(self.mi, task.D)
-		pop_f = apply_along_axis(task.eval, 1, pop)
-		ib = argmin(pop_f)
-		xb, xb_f = pop[ib], pop_f[ib]
+		pop = [Individual(task=task, rand=self.rand) for _i in range(self.mi)]
+		x_b = pop[argmin([i.f for i in pop])]
 		while not task.stopCond():
-			npop = self.Strategy(pop, task.Lower + task.bRange * self.rand.rand(self.mi, task.D))
-			npop = apply_along_axis(self.mutate, 1, npop)
-			npop_f = apply_along_axis(task.eval, 1, npop)
-			npop = self.Selection(npop, self.n, self.rand)
-			ib = argmin(pop_f)
-			xb, xb_f = pop[ib], pop_f[ib]
-		return xb, xb_f
+			npop = self.Strategy(pop, [Individual(task=task, rand=self.rand, e=False) for _i in range(self.l)])
+			npop = [self.mutate(i, task) for i in npop]
+			pop = [self.Selection(npop, self.n, self.rand) for _i in range(self.mi)]
+			x_pb = pop[argmin([i.f for i in pop])]
+			if x_pb.f < x_b.f: x_b = x_pb
+		return x_b.x, x_b.f
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

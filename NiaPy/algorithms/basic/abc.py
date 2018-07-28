@@ -11,7 +11,7 @@ logger.setLevel('INFO')
 
 __all__ = ['ArtificialBeeColonyAlgorithm']
 
-class SolutionABC(object):
+class SolutionABC:
 	def __init__(self, task):
 		self.Solution = None
 		self.Fitness = float('inf')

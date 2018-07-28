@@ -3,7 +3,7 @@
 import logging
 from math import ceil
 from numpy import apply_along_axis, vectorize, argmin, inf, where, asarray, ndarray, random as rand, ones, tril, array_equal
-from NiaPy.algorithms.algorithm import Algorithm
+from NiaPy.algorithms.algorithm import Algorithm, Individual
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.basic')
@@ -11,7 +11,7 @@ logger.setLevel('INFO')
 
 __all__ = ['MonkeyKingEvolutionV1', 'MonkeyKingEvolutionV2', 'MonkeyKingEvolutionV3']
 
-class MkeSolution(object):
+class MkeSolution(Individual):
 	def __init__(self, **kwargs):
 		self.f, self.f_pb, self.x_pb = inf, inf, None
 		self.MonkeyKing = False

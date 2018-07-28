@@ -8,6 +8,7 @@ name = "pypi"
 [packages]
 
 click = "*"
+matplotlib = "*"
 numpy = "==1.14.0"
 scipy = "==1.0.0"
 xlsxwriter = "==1.0.2"

@@ -1,8 +1,8 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, multiple-statements, line-too-long, unused-argument, no-self-use, no-self-use, attribute-defined-outside-init, logging-not-lazy, len-as-condition, singleton-comparison
 import logging
-from numpy import where, argmin, asarray, ndarray, random as rand, inf, array_equal
-from NiaPy.algorithms.algorithm import Algorithm
+from numpy import where, argmin, asarray
+from NiaPy.algorithms.algorithm import Algorithm, Individual
 
 __all__ = ['DifferentialEvolutionAlgorithm', 'CrossRand1', 'CrossBest2', 'CrossBest1', 'CrossBest2', 'CrossCurr2Rand1', 'CrossCurr2Best1']
 
@@ -46,32 +46,10 @@ def CrossCurr2Best1(pop, ic, x_b, f, cr, rnd):
 	x = [pop[ic][i] + f * (x_b[i] - pop[r[0]][i]) + f * (pop[r[1]][i] - pop[r[2]][i]) if rnd.rand() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
 	return asarray(x)
 
-class SolutionDE(object):
+class SolutionDE(Individual):
 	def __init__(self, **kwargs):
-		self.f = inf
-		task = kwargs.get('task', None)
-		rnd = kwargs.get('rand', rand)
-		x = kwargs.get('x', [])
-		if len(x) > 0: self.x = x if isinstance(x, ndarray) else asarray(x)
-		else: self.generateSolution(task, rnd)
-
-	def generateSolution(self, task, rnd): self.x = task.Lower + task.bRange * rnd.rand(task.D)
-
-	def evaluate(self, task): self.f = task.eval(self.x)
-
-	def repair(self, task):
-		ir = where(self.x > task.Upper)
-		self.x[ir] = task.Upper[ir]
-		ir = where(self.x < task.Lower)
-		self.x[ir] = task.Lower[ir]
-
-	def __eq__(self, other): return array_equal(self.x, other.x) and self.f == other.f
-
-	def __len__(self): return len(self.x)
-
-	def __getitem__(self, i): return self.x[i]
-
-	def __str__(self): return '%s -> %s' % (self.x, self.f)
+		kwargs.pop('e', None)
+		super(SolutionDE, self).__init__(**kwargs)
 
 class DifferentialEvolutionAlgorithm(Algorithm):
 	r"""Implementation of Differential evolution algorithm.

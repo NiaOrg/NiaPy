@@ -1,7 +1,7 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements
-from numpy import full, random as rnd, inf
+# pylint: disable=mixed-indentation, multiple-statements, unused-variable
 from unittest import TestCase
+from numpy import full, random as rnd, inf
 from NiaPy.benchmarks.utility import Utility, Task
 
 class NoLimits(object):

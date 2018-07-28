@@ -11,7 +11,7 @@ logger.setLevel('INFO')
 
 __all__ = ['CamelAlgorithm']
 
-class Camel(object):
+class Camel:
 	r"""Implementation of population individual that is a camel for Camel algorithm.
 
 	**Algorithm:** Camel algorithm

@@ -1,8 +1,8 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, unused-argument, line-too-long, len-as-condition
+# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, unused-argument, line-too-long, len-as-condition, useless-super-delegation
 import logging
-from numpy import random as rand, inf, where, argmin, ndarray, asarray, sort, array_equal
-from NiaPy.algorithms.algorithm import Algorithm
+from numpy import argmin, sort
+from NiaPy.algorithms.algorithm import Algorithm, Individual
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.basic')
@@ -56,32 +56,8 @@ def CreepMutation(pop, ic, cr, task, rnd=rand):
 	nx = [rnd.uniform(task.Upper[i], task.Lower[i]) if rnd.rand() < cr or i == j else pop[ic][i] for i in range(task.D)]
 	return Chromosome(x=nx)
 
-class Chromosome(object):
-	def __init__(self, **kwargs):
-		self.f = inf
-		task, rnd, x = kwargs.get('task', None), kwargs.get('rand', rand), kwargs.get('x', [])
-		if len(x) > 0: self.x = x if isinstance(x, ndarray) else asarray(x)
-		else: self.generateSolution(task, rnd)
-
-	def generateSolution(self, task, rnd):
-		self.x = task.Lower + task.bRange * rnd.rand(task.D)
-		self.evaluate(task)
-
-	def evaluate(self, task): self.f = task.eval(self.x)
-
-	def repair(self, task):
-		ir = where(self.x > task.Upper)
-		self.x[ir] = task.Upper[ir]
-		ir = where(self.x < task.Lower)
-		self.x[ir] = task.Lower[ir]
-
-	def __eq__(self, other): return array_equal(self.x, other.x) and self.f == other.f
-
-	def __str__(self): return '%s -> %s' % (self.x, self.f)
-
-	def __getitem__(self, i): return self.x[i]
-
-	def __len__(self): return len(self.x)
+class Chromosome(Individual):
+	def __init__(self, **kwargs): super(Chromosome, self).__init__(**kwargs)
 
 class GeneticAlgorithm(Algorithm):
 	r"""Implementation of Genetic algorithm.
@@ -113,7 +89,7 @@ class GeneticAlgorithm(Algorithm):
 
 	def runTask(self, task):
 		pop = [Chromosome(task=task, rand=self.rand) for _i in range(self.NP)]
-		x_b = pop[0]
+		x_b = pop[argmin([c.f for c in pop])]
 		while not task.stopCond():
 			npop = [self.Selection(pop, self.Ts, self.rand) for _i in range(self.NP)]
 			npop = [self.Crossover(pop, i, self.Cr, self.rand) for i in range(self.NP)]

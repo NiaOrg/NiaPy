@@ -31,13 +31,13 @@ class MyBenchmark(object):
 
 def simple_example(runs=10):
 	for i in range(runs):
-		algo = EvolutionStrategy(D=50, nFES=50000, n=15, C_a=1, C_r=0.5, benchmark=MyBenchmark())
+		algo = EvolutionStrategy(mi=50, l=50, rho=0, n=5, D=50, nFES=50000, benchmark=MyBenchmark())
 		best = algo.run()
 		logger.info('%s %s' % (best[0], best[1]))
 
 def logging_example():
 	task = TaskConvPrint(D=50, nFES=50000, nGEN=10000, benchmark=MyBenchmark())
-	algo = EvolutionStrategy(task=task, n=15, C_a=1, C_r=0.5)
+	algo = EvolutionStrategy(mi=50, l=50, rho=0, n=5, task=task)
 	best = algo.run()
 	logger.info('%s %s' % (best[0], best[1]))
 
@@ -49,7 +49,7 @@ def plot_example():
 	input('Press [enter] to continue')
 
 # simple_example()
-# logging_example()
-plot_example()
+logging_example()
+# plot_example()
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

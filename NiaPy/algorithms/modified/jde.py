@@ -10,7 +10,6 @@ logger.setLevel('INFO')
 
 __all__ = ['SelfAdaptiveDifferentialEvolutionAlgorithm']
 
-
 class SolutionjDE(SolutionDE):
 	def __init__(self, **kwargs):
 		super(SolutionjDE, self).__init__(**kwargs)
