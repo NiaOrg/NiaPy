@@ -74,13 +74,13 @@ class TaskTestCase(TestCase):
 		x = full(self.D, 0.0)
 		for i in range(self.nFES):
 			self.t.eval(x)
-			self.assertEqual(self.t.Evals, i + 1)
+			self.assertEqual(self.t.Evals, i + 1, 'Error at %s. evaluation' % (i + 1))
 
 	def test_nGEN_count_fine(self):
 		x = full(self.D, 0.0)
 		for i in range(self.nGEN):
 			self.t.nextIter()
-			self.assertEqual(self.t.Iters, i + 1)
+			self.assertEqual(self.t.Iters, i + 1, 'Error at %s. iteration' % (i + 1))
 
 	def test_stopCond_evals_fine(self):
 		x = full(self.D, 0.0)

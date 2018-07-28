@@ -1,7 +1,7 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, function-redefined, multiple-statements
 from unittest import TestCase
-from numpy import random as rnd, full, inf
+from numpy import random as rnd, full, inf, array_equal
 from NiaPy.benchmarks.utility import Task
 from NiaPy.algorithms.basic import GeneticAlgorithm
 from NiaPy.algorithms.basic.ga import TwoPointCrossover, MultiPointCrossover, CreepMutation, Chromosome
@@ -26,7 +26,7 @@ class ChromosomeTestCase(TestCase):
 		self.s1, self.s2, self.s3 = Chromosome(x=self.x), Chromosome(task=self.task, rand=rnd), Chromosome(task=self.task)
 
 	def test_x_fine(self):
-		self.assertTrue(False not in self.x == self.s1.x)
+		self.assertTrue(array_equal(self.x, self.s1.x))
 
 	def test_generateSolutin_fine(self):
 		self.assertTrue(self.task.isFeasible(self.s2))
