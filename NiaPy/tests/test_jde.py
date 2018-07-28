@@ -1,7 +1,8 @@
 # encoding=utf8
-# pylint: disable=line-too-long
+# pylint: disable=line-too-long, mixed-indentation, multiple-statements
 from unittest import TestCase
-
+from numpy import random as rnd
+from NiaPy.benchmarks.utility import Task
 from NiaPy.algorithms.modified import SelfAdaptiveDifferentialEvolutionAlgorithm
 from NiaPy.algorithms.modified.jde import SolutionjDE
 
@@ -22,11 +23,17 @@ class MyBenchmark(object):
 
 class SolutionjDETestCase(TestCase):
 	def setUp(self):
-		self.x = None
+		self.D, self.F, self.CR = 10, 0.9, 0.3
+		self.x, self.task = rnd.uniform(10, 50, self.D), Task(self.D, 230, None, MyBenchmark())
+		self.s1, self.s2 = SolutionjDE(task=self.task), SolutionjDE(x=self.x, CR=self.CR, F=self.F)
 
-	def test_F_fine(self): pass
+	def test_F_fine(self):
+		self.assertAlmostEqual(self.s1.F, 2)
+		self.assertAlmostEqual(self.s2.F, self.F)
 
-	def test_cr_fine(self): pass
+	def test_cr_fine(self):
+		self.assertAlmostEqual(self.s1.CR, 0.5)
+		self.assertAlmostEqual(self.s2.CR, self.CR)
 
 class jDETestCase(TestCase):
 	def setUp(self):

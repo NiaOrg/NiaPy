@@ -1,7 +1,7 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, multiple-statements, line-too-long, unused-argument, no-self-use, no-self-use, attribute-defined-outside-init, logging-not-lazy, len-as-condition, singleton-comparison
 import logging
-from numpy import where, argmin, asarray, ndarray, random as rand, inf
+from numpy import where, argmin, asarray, ndarray, random as rand, inf, array_equal
 from NiaPy.algorithms.algorithm import Algorithm
 
 __all__ = ['DifferentialEvolutionAlgorithm', 'CrossRand1', 'CrossBest2', 'CrossBest1', 'CrossBest2', 'CrossCurr2Rand1', 'CrossCurr2Best1']
@@ -65,11 +65,13 @@ class SolutionDE(object):
 		ir = where(self.x < task.Lower)
 		self.x[ir] = task.Lower[ir]
 
-	def __eq__(self, other): return self.x == other.x and self.f == other.f
+	def __eq__(self, other): return array_equal(self.x, other.x) and self.f == other.f
 
 	def __len__(self): return len(self.x)
 
 	def __getitem__(self, i): return self.x[i]
+
+	def __str__(self): return '%s -> %s' % (self.x, self.f)
 
 class DifferentialEvolutionAlgorithm(Algorithm):
 	r"""Implementation of Differential evolution algorithm.

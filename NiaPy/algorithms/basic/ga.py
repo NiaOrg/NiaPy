@@ -1,7 +1,7 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, unused-argument, line-too-long, len-as-condition
 import logging
-from numpy import random as rand, inf, where, argmin, ndarray, asarray, sort
+from numpy import random as rand, inf, where, argmin, ndarray, asarray, sort, array_equal
 from NiaPy.algorithms.algorithm import Algorithm
 
 logging.basicConfig()
@@ -75,9 +75,9 @@ class Chromosome(object):
 		ir = where(self.x < task.Lower)
 		self.x[ir] = task.Lower[ir]
 
-	def __eq__(self, other): return self.x == other.x and self.f == other.f
+	def __eq__(self, other): return array_equal(self.x, other.x) and self.f == other.f
 
-	def toString(self): return '%s -> %s' % (self.x, self.f)
+	def __str__(self): return '%s -> %s' % (self.x, self.f)
 
 	def __getitem__(self, i): return self.x[i]
 

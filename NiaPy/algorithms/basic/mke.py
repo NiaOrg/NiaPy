@@ -1,8 +1,8 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, len-as-condition
+# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, len-as-condition, singleton-comparison, arguments-differ
 import logging
 from math import ceil
-from numpy import apply_along_axis, vectorize, argmin, inf, where, asarray, ndarray, random as rand, ones, tril
+from numpy import apply_along_axis, vectorize, argmin, inf, where, asarray, ndarray, random as rand, ones, tril, array_equal
 from NiaPy.algorithms.algorithm import Algorithm
 
 logging.basicConfig()
@@ -21,7 +21,7 @@ class MkeSolution(object):
 		if len(x) > 0: self.x = x if isinstance(x, ndarray) else asarray(x)
 		else: self.generateSolution(task, rnd)
 
-	def generateSolution(self, task, rnd): 
+	def generateSolution(self, task, rnd):
 		self.x = task.Lower + task.bRange * rnd.rand(task.D)
 		self.x_pb = self.x
 		self.evaluate(task)
@@ -37,7 +37,7 @@ class MkeSolution(object):
 		ir = where(self.x < task.Lower)
 		self.x[ir] = task.Lower[ir]
 
-	def __eq__(self, other): return self.x == other.x and self.f == other.f
+	def __eq__(self, other): return array_equal(self.x, other.x) and self.f == other.f
 
 	def __len__(self): return len(self.x)
 
@@ -60,7 +60,7 @@ class MonkeyKingEvolutionV1(Algorithm):
 	**Reference paper:**
 	Zhenyu Meng, Jeng-Shyang Pan, Monkey King Evolution: A new memetic evolutionary algorithm and its application in vehicle fuel consumption optimization, Knowledge-Based Systems, Volume 97, 2016, Pages 144-157, ISSN 0950-7051, https://doi.org/10.1016/j.knosys.2016.01.009.
 	"""
-	def __init__(self, **kwargs): 
+	def __init__(self, **kwargs):
 		if kwargs.get('name', None) == None: super(MonkeyKingEvolutionV1, self).__init__(name='MonkeyKingEvolutionV1', sName='MKEv1', **kwargs)
 		else: super(MonkeyKingEvolutionV1, self).__init__(**kwargs)
 
@@ -71,10 +71,10 @@ class MonkeyKingEvolutionV1(Algorithm):
 
 		Arguments:
 		NP {integer} -- Size of population
-		F {real} -- 
-		R {real} --
-		C {real} --
-		FC {real} -- 
+		F {real} -- param
+		R {real} -- param
+		C {real} -- param
+		FC {real} -- param
 		"""
 		self.NP, self.F, self.R, self.C, self.FC = NP, F, R, C, FC
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
@@ -90,7 +90,7 @@ class MonkeyKingEvolutionV1(Algorithm):
 
 	def moveMK(self, x, task): return x + self.FC * self.rand.rand(int(self.C * task.D), task.D) * x
 
-	def movePartice(self, p, p_b, task): 
+	def movePartice(self, p, p_b, task):
 		p.x = self.repair(self.moveP(p.x, p.x_pb, p_b.x, task), task)
 		p.evaluate(task)
 
@@ -142,7 +142,7 @@ class MonkeyKingEvolutionV2(MonkeyKingEvolutionV1):
 	def moveMokeyKingPartice(self, p, pop, task):
 		p.MonkeyKing = False
 		p_b, p_f = p.x, p.f
-		for i in range(int(self.C * self.NP)):
+		for _i in range(int(self.C * self.NP)):
 			r = self.rand.choice(self.NP, 2, replace=False)
 			a = self.repair(self.moveMK(p.x, pop[r[0]].x - pop[r[1]].x, task), task)
 			a_f = task.eval(a)
@@ -187,7 +187,7 @@ class MonkeyKingEvolutionV3(MonkeyKingEvolutionV1):
 		x_gb, x_f_gb = self.eval(X, None, inf, task)
 		k, c = ceil(self.NP / task.D), ceil(self.C * task.D)
 		while not task.stopCond():
-			X_gb = x_gb + self.FC * X[self.rand.choice(len(X), k)] - X[self.rand.choice(len(X), k)]
+			X_gb = x_gb + self.FC * X[self.rand.choice(len(X), c)] - X[self.rand.choice(len(X), c)]
 			x_gb, x_f_gb = self.eval(X_gb, x_gb, x_f_gb, task)
 			M = ones([self.NP, task.D])
 			for i in range(k): M[i * task.D:(i + 1) * task.D] = tril(M[i * task.D:(i + 1) * task.D])
