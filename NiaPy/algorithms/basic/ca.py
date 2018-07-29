@@ -129,13 +129,12 @@ class CamelAlgorithm(Algorithm):
 		c_fits = [task.eval(c.x) for c in ccaravan]
 		ic_b = argmin(c_fits)
 		c_best, c_best_fit = ccaravan[ic_b], c_fits[ic_b]
-		while not task.stopCond():
+		while not task.stopCondI():
 			ccaravan, c_fitsn = vectorize(self.walk)(ccaravan, c_fits, task, self.omega, c_best)
 			ccaravan = vectorize(self.oasis)(ccaravan, self.rand.randn(self.NP), c_fits, c_fitsn, self.alpha)
 			ci_b = argmin(c_fitsn)
 			if c_fitsn[ci_b] < c_best_fit: c_best, c_best_fit = ccaravan[ci_b], c_fits[ci_b]
 			ccaravan, c_fits = vectorize(self.lifeCycle)(ccaravan, c_fits, c_fitsn, self.mu, task)
-			task.nextIter()
 		return c_best.x, c_best_fit
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

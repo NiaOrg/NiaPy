@@ -38,6 +38,7 @@ class FlowerPollinationAlgorithm(Algorithm):
 		Arguments:
 		NP {integer} -- population size
 		p {decimal} -- probability switch
+		beta {real} --
 		"""
 		self.NP, self.p, self.beta = NP, p, beta
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))

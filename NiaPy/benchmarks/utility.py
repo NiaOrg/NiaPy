@@ -54,6 +54,11 @@ class Utility:
 		}
 
 	def get_benchmark(self, benchmark):
+		r"""Get the optimization problem.
+
+		Arguments:
+		benchmark {string} or {class} -- String or class that represent the optimization problem
+		"""
 		if not isinstance(benchmark, str) and not callable(benchmark): return benchmark
 		elif benchmark in self.classes:	return self.classes[benchmark]()
 		raise TypeError('Passed benchmark is not defined!')
@@ -95,9 +100,22 @@ class Task(Utility):
 		else: self.Upper = Upper if isinstance(Upper, ndarray) else asarray(Upper)
 		self.bRange = self.Upper - self.Lower
 
-	def stopCond(self): return self.Evals >= self.nFES or (False if self.nGEN == None else self.Iters >= self.nGEN)
+	def stopCond(self):
+		r"""Check if stoping condition reached."""
+		return self.Evals >= self.nFES or (False if self.nGEN == None else self.Iters >= self.nGEN)
+
+	def stopCondI(self):
+		r"""Check if stoping condition reached and incrise number of iterations."""
+		r = self.Evals >= self.nFES or (False if self.nGEN == None else self.Iters >= self.nGEN)
+		self.Iters += 1
+		return r
 
 	def eval(self, A):
+		r"""Evaluate the solution A.
+
+		Arguments:
+		A {array} -- Solution to evaluate
+		"""
 		if self.stopCond() or not self.isFeasible(A): return inf
 		self.Evals += 1
 		X = A - self.o if self.o != None else A
@@ -106,9 +124,17 @@ class Task(Utility):
 		X = self.fM(X) if self.fM != None else X
 		return self.Fun(self.D, X) + (self.optF if self.optF != None else 0)
 
-	def nextIter(self): self.Iters += 1
+	def nextIter(self):
+		r"""Increase the number of generation/iterations of algorithms main loop."""
+		self.Iters += 1
 
-	def isFeasible(self, A): return (False if True in (A < self.Lower) else True) and (False if True in (A > self.Upper) else True)
+	def isFeasible(self, A):
+		r"""Check if the solution is in bounds and is feasible.
+
+		Arguments:
+		A {array} -- Solution to check
+		"""
+		return (False if True in (A < self.Lower) else True) and (False if True in (A > self.Upper) else True)
 
 class TaskConvPrint(Task):
 	def __init__(self, **kwargs):

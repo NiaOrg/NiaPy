@@ -49,6 +49,17 @@ class TaskTestCase(TestCase):
 		x = full(self.D, 20)
 		self.assertFalse(self.t.isFeasible(x))
 
+	def test_nextIter_fine(self):
+		for i in range(self.nGEN):
+			self.assertFalse(self.t.stopCond())
+			self.t.nextIter()
+		self.assertTrue(self.t.stopCond())
+
+	def test_stopCondI(self):
+		for i in range(self.nGEN):
+			self.assertFalse(self.t.stopCondI())
+		self.assertTrue(self.t.stopCondI())
+
 	def test_eval_fine(self):
 		x = full(self.D, 0.0)
 		for i in range(self.nFES): self.assertAlmostEqual(self.t.eval(x), 0.0)
