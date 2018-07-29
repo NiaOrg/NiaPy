@@ -1,13 +1,13 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, multiple-statements, too-many-function-args
 from unittest import TestCase
-from numpy import random as rnd, inf, full, array_equal
+from numpy import random as rnd, full, array_equal
 from NiaPy.benchmarks import Griewank
 from NiaPy.benchmarks.utility import Task
 from NiaPy.algorithms.basic import MonkeyKingEvolutionV1, MonkeyKingEvolutionV2, MonkeyKingEvolutionV3
 from NiaPy.algorithms.basic.mke import MkeSolution
 
-class MyBenchmark(object):
+class MyBenchmark:
 	def __init__(self):
 		self.Lower = -5.12
 		self.Upper = 5.12
@@ -26,13 +26,6 @@ class MkeSolutionTestCase(TestCase):
 		self.x, self.task = rnd.uniform(-2, 2, self.D), Task(self.D, 230, None, MyBenchmark())
 		self.sol1, self.sol2, self.sol3 = MkeSolution(x=self.x), MkeSolution(task=self.task), MkeSolution(x=self.x)
 
-	def test_x_fine(self):
-		self.assertTrue(array_equal(self.x, self.sol1.x))
-
-	def test_f_fine(self):
-		self.assertAlmostEqual(self.sol2.f, self.task.eval(self.sol2.x))
-		self.assertEqual(self.sol1.f, inf)
-
 	def test_uPersonalBest_fine(self):
 		self.sol2.uPersonalBest()
 		self.assertTrue(array_equal(self.sol2.x, self.sol2.x_pb))
@@ -43,20 +36,6 @@ class MkeSolutionTestCase(TestCase):
 		self.sol3.uPersonalBest()
 		self.assertTrue(array_equal(self.sol3.x, self.sol3.x_pb))
 		self.assertEqual(self.sol3.f_pb, self.sol3.f)
-
-	def test_len_fine(self):
-		self.assertEqual(len(self.sol1), len(self.x))
-		self.assertEqual(len(self.sol2), self.D)
-
-	def test_getitem_fine(self):
-		for r in range(self.D): self.assertEqual(self.sol1[r], self.x[r])
-
-	def test_generate_solution_fine(self):
-		self.assertTrue(self.task.isFeasible(self.sol2))
-
-	def test_eq_fine(self):
-		self.assertFalse(self.sol1 == self.sol2)
-		self.assertTrue(self.sol1 == self.sol1)
 
 class MKEv1TestCase(TestCase):
 	def setUp(self):

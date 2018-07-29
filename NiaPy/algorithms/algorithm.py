@@ -1,6 +1,6 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, line-too-long, expression-not-assigned
-from numpy import random as rand, inf, ndarray, asarray, where
+# pylint: disable=mixed-indentation, multiple-statements, line-too-long, expression-not-assigned, singleton-comparison, len-as-condition
+from numpy import random as rand, inf, ndarray, asarray, where, array_equal
 from NiaPy.benchmarks.utility import Task
 
 __all__ = ['Algorithm', 'Individual']
@@ -58,7 +58,11 @@ class Algorithm:
 		pass
 
 class Individual:
-	r"""
+	r"""Class that represent one solution in population of solutions.
+
+	**Data:** 2018
+	**Author:** Klemen Berkovič
+	**License:** MIT
 	"""
 	def __init__(self, **kwargs):
 		self.f = inf
@@ -78,7 +82,7 @@ class Individual:
 		self.x = task.Lower + task.bRange * rnd.rand(task.D)
 
 	def evaluate(self, task):
-		r"""Evalue the solution.
+		r"""Evaluate the solution.
 
 		Arguments:
 		task {Task} -- Object with objective function for optimization
@@ -98,11 +102,11 @@ class Individual:
 		self.x[ir] = task.Lower[ir]
 
 	def __eq__(self, other):
-		r"""Compares the individuals if they are one of the same."""
+		r"""Compare the individuals if they are one of the same."""
 		return array_equal(self.x, other.x) and self.f == other.f
 
 	def __str__(self):
-		r"""Prints the individula with the solution and objective value."""
+		r"""Print the individula with the solution and objective value."""
 		return '%s -> %s' % (self.x, self.f)
 
 	def __getitem__(self, i):

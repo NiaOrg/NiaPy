@@ -3,7 +3,7 @@
 from unittest import TestCase
 import NiaPy
 
-class MyBenchmark(object):
+class MyBenchmark:
 	def __init__(self):
 		self.Lower = -11
 		self.Upper = 11

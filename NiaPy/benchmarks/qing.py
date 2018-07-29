@@ -5,7 +5,7 @@ import math
 __all__ = ['Qing']
 
 
-class Qing(object):
+class Qing:
     r"""Implementation of Qing function.
 
     Date: 2018

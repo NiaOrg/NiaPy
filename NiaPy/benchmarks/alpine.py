@@ -7,7 +7,7 @@ import math
 __all__ = ['Alpine1', 'Alpine2']
 
 
-class Alpine1(object):
+class Alpine1:
     r"""Implementation of Alpine1 function.
 
     Date: 2018
@@ -61,7 +61,7 @@ class Alpine1(object):
         return evaluate
 
 
-class Alpine2(object):
+class Alpine2:
     r"""Implementation of Alpine2 function.
 
     Date: 2018

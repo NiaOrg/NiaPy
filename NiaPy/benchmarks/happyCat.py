@@ -5,7 +5,7 @@ import math
 __all__ = ['HappyCat']
 
 
-class HappyCat(object):
+class HappyCat:
     r"""Implementation of Happy cat function.
 
     Date: 2018

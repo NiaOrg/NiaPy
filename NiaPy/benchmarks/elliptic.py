@@ -4,7 +4,7 @@
 
 __all__ = ['Elliptic']
 
-class Elliptic(object):
+class Elliptic:
 	r"""Implementations of High Conditioned Elliptic functions.
 
 	Date: 2018

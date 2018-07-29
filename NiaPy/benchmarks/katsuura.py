@@ -6,7 +6,7 @@ from math import fabs
 
 __all__ = ['Katsuura']
 
-class Katsuura(object):
+class Katsuura:
 	r"""Implementations of Katsuura functions.
 
 	Date: 2018

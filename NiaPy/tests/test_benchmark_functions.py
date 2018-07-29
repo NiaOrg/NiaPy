@@ -1,14 +1,11 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, redefined-builtin
+# pylint: disable=mixed-indentation, redefined-builtin, too-many-instance-attributes,too-many-public-methods
 from math import pow
 from unittest import TestCase
 from numpy import asarray
 from NiaPy.benchmarks.utility import Utility
 
-
 class TestBenchmarkFunctions(TestCase):
-
-	# pylint: disable=too-many-instance-attributes,too-many-public-methods
 	def setUp(self):
 		self.D = 5
 		self.array = asarray([0, 0, 0, 0, 0])

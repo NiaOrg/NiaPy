@@ -4,7 +4,7 @@ from unittest import TestCase
 from NiaPy.benchmarks.griewank import Griewank
 from NiaPy.algorithms.basic import EvolutionStrategy
 
-class MyBenchmark(object):
+class MyBenchmark:
 	def __init__(self):
 		self.Lower = -5.12
 		self.Upper = 5.12
@@ -17,7 +17,7 @@ class MyBenchmark(object):
 			return val
 		return evaluate
 
-class BBFWATestCase(TestCase):
+class ESTestCase(TestCase):
 	def setUp(self):
 		self.D = 40
 		self.es_custom = EvolutionStrategy(D=self.D, nFES=1000, n=10, C_a=2, C_r=0.5, benchmark=MyBenchmark())

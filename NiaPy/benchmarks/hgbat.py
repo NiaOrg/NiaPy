@@ -6,7 +6,7 @@ from math import fabs
 
 __all__ = ['HGBat']
 
-class HGBat(object):
+class HGBat:
 	r"""Implementations of HGBat functions.
 
 	Date: 2018

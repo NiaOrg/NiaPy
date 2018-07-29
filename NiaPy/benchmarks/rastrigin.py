@@ -5,7 +5,7 @@ import math
 __all__ = ['Rastrigin']
 
 
-class Rastrigin(object):
+class Rastrigin:
     r"""Implementation of Rastrigin benchmark function.
 
     Date: 2018

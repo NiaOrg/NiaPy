@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, line-too-long, bad-continuation, multiple-statements, singleton-comparison, unused-argument, no-self-use
+# pylint: disable=mixed-indentation, line-too-long, bad-continuation, multiple-statements, singleton-comparison, unused-argument, no-self-use, trailing-comma-tuple, logging-not-lazy, no-else-return
 """Implementation of benchmarks utility function."""
 import logging
 from numpy import ndarray, asarray, full, inf, dot
@@ -12,7 +12,7 @@ logger.setLevel('INFO')
 
 __all__ = ['Utility', 'Task', 'TaskConvPrint', 'TaskConvPlot']
 
-class Utility(object):
+class Utility:
 	def __init__(self):
 		self.classes = {
 			'ackley': Ackley,
@@ -54,12 +54,9 @@ class Utility(object):
 		}
 
 	def get_benchmark(self, benchmark):
-		if not isinstance(benchmark, ''.__class__):
-			if not callable(benchmark): return benchmark
-			else:	raise TypeError('Passed benchmark is not defined!')
-		else:
-			if benchmark in self.classes:	return self.classes[benchmark]()
-			else:	raise TypeError('Passed benchmark is not defined!')
+		if not isinstance(benchmark, str) and not callable(benchmark): return benchmark
+		elif benchmark in self.classes:	return self.classes[benchmark]()
+		raise TypeError('Passed benchmark is not defined!')
 
 	@classmethod
 	def __raiseLowerAndUpperNotDefined(cls): raise TypeError('Upper and Lower value must be defined!')

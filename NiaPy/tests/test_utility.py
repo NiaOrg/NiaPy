@@ -1,16 +1,16 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, unused-variable
+# pylint: disable=mixed-indentation, multiple-statements, unused-variable, unused-argument
 from unittest import TestCase
 from numpy import full, random as rnd, inf
 from NiaPy.benchmarks.utility import Utility, Task
 
-class NoLimits(object):
+class NoLimits:
 	@classmethod
 	def function(cls):
 		def evaluate(D, x): return 0
 		return evaluate
 
-class MyBenchmark(object):
+class MyBenchmark:
 	def __init__(self):
 		self.Lower = -10.0
 		self.Upper = 10

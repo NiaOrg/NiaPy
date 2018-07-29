@@ -1,7 +1,7 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, multiple-statements, line-too-long, unused-argument, no-self-use, no-self-use, attribute-defined-outside-init, logging-not-lazy, len-as-condition, singleton-comparison
 import logging
-from numpy import where, argmin, asarray
+from numpy import argmin, asarray
 from NiaPy.algorithms.algorithm import Algorithm, Individual
 
 __all__ = ['DifferentialEvolutionAlgorithm', 'CrossRand1', 'CrossBest2', 'CrossBest1', 'CrossBest2', 'CrossCurr2Rand1', 'CrossCurr2Best1']
@@ -45,11 +45,6 @@ def CrossCurr2Best1(pop, ic, x_b, f, cr, rnd):
 	r = rnd.choice(len(pop), 3, replace=False)
 	x = [pop[ic][i] + f * (x_b[i] - pop[r[0]][i]) + f * (pop[r[1]][i] - pop[r[2]][i]) if rnd.rand() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
 	return asarray(x)
-
-class SolutionDE(Individual):
-	def __init__(self, **kwargs):
-		kwargs.pop('e', None)
-		super(SolutionDE, self).__init__(**kwargs)
 
 class DifferentialEvolutionAlgorithm(Algorithm):
 	r"""Implementation of Differential evolution algorithm.
@@ -99,11 +94,11 @@ class DifferentialEvolutionAlgorithm(Algorithm):
 
 	def runTask(self, task):
 		"""Run."""
-		pop = [SolutionDE(task=task) for _i in range(self.Np)]
+		pop = [Individual(task=task) for _i in range(self.Np)]
 		pop = [self.evalPopulation(pop[i], pop[i], task) for i in range(self.Np)]
 		x_b = pop[argmin([x.f for x in pop])]
 		while not task.stopCond():
-			npop = [SolutionDE(x=self.CrossMutt(pop, i, x_b, self.F, self.CR, self.rand)) for i in range(self.Np)]
+			npop = [Individual(x=self.CrossMutt(pop, i, x_b, self.F, self.CR, self.rand)) for i in range(self.Np)]
 			pop = [self.evalPopulation(npop[i], pop[i], task) for i in range(self.Np)]
 			ix_b = argmin([x.f for x in pop])
 			if x_b.f > pop[ix_b].f: x_b = pop[ix_b]

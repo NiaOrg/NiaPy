@@ -4,7 +4,7 @@
 
 __all__ = ['BentCigar']
 
-class BentCigar(object):
+class BentCigar:
 	r"""Implementations of Bent Cigar functions.
 
 	Date: 2018

@@ -40,18 +40,18 @@ class EvolutionStrategy(Algorithm):
 
 	def setParameters(self, **kwargs): self.__setParams(**kwargs)
 
-	def __setParams(self, mi=50, l=50, rho=0.0, n=5, Strategy=NormalStrategy, Selection=TurnamentSelection, **ukwargs):
+	def __setParams(self, mi=50, lam=50, rho=0.0, n=5, Strategy=NormalStrategy, Selection=TurnamentSelection, **ukwargs):
 		r"""Set the arguments of an algorithm.
 
 		**Arguments**:
 		mi {integer} -- number of parent population
-		l {integer} -- or lambda, number of children population
+		lam {integer} -- or lambda, number of children population
 		rho {real} -- parameter for gayssian distribution
-		n {integer} -- or lambda, number of children population
+		n {integer} -- parameter for selection
 		Strategy {function} --
 		Selection {function} --
 		"""
-		self.mi, self.l, self.rho, self.n, self.Strategy, self.Selection = mi, l, rho, n, Strategy, Selection
+		self.mi, self.lam, self.rho, self.n, self.Strategy, self.Selection = mi, lam, rho, n, Strategy, Selection
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def mutate(self, x, task): return x + self.rand.normal(self.rho, 1)
@@ -60,7 +60,7 @@ class EvolutionStrategy(Algorithm):
 		pop = [Individual(task=task, rand=self.rand) for _i in range(self.mi)]
 		x_b = pop[argmin([i.f for i in pop])]
 		while not task.stopCond():
-			npop = self.Strategy(pop, [Individual(x=self.mutate(pop[self.rand.randint(self.mi)].x, task), task=task) for _i in range(self.l)])
+			npop = self.Strategy(pop, [Individual(x=self.mutate(pop[self.rand.randint(self.mi)].x, task), task=task) for _i in range(self.lam)])
 			pop = [self.Selection(npop, self.n, self.rand) for _i in range(self.mi)]
 			x_pb = pop[argmin([i.f for i in pop])]
 			if x_pb.f < x_b.f: x_b = x_pb

@@ -5,7 +5,7 @@ from math import sqrt, cos
 __all__ = ['Griewank', 'ExpandedGriewankPlusRosenbrock']
 
 
-class Griewank(object):
+class Griewank:
 	r"""Implementation of Griewank function.
 
 	Date: 2018
@@ -54,7 +54,7 @@ class Griewank(object):
 			return val1 - val2 + 1.0
 		return evaluate
 
-class ExpandedGriewankPlusRosenbrock(object):
+class ExpandedGriewankPlusRosenbrock:
 	r"""Implementation of Expanded Griewank's plus Rosenbrock function.
 
 	Date: 2018

@@ -4,7 +4,7 @@
 
 __all__ = ['Discus']
 
-class Discus(object):
+class Discus:
 	r"""Implementations of Discus functions.
 
 	Date: 2018

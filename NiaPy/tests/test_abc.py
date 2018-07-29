@@ -3,7 +3,7 @@
 from unittest import TestCase
 from NiaPy.algorithms.basic import ArtificialBeeColonyAlgorithm
 
-class MyBenchmark(object):
+class MyBenchmark:
 	def __init__(self):
 		self.Lower = -5.12
 		self.Upper = 5.12
@@ -18,7 +18,6 @@ class MyBenchmark(object):
 		return evaluate
 
 class ABCTestCase(TestCase):
-
 	def setUp(self):
 		self.abc_custom = ArtificialBeeColonyAlgorithm(NP=10, D=40, nFES=4000, benchmark=MyBenchmark())
 		self.abc_griewank = ArtificialBeeColonyAlgorithm(NP=10, D=40, nFES=4000, benchmark='griewank')

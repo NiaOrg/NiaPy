@@ -2,7 +2,8 @@
 # pylint: disable=mixed-indentation, multiple-statements, logging-not-lazy, attribute-defined-outside-init, line-too-long
 import logging
 from numpy import argmin
-from NiaPy.algorithms.basic.de import SolutionDE, DifferentialEvolutionAlgorithm
+from NiaPy.algorithms.algorithm import Individual
+from NiaPy.algorithms.basic.de import DifferentialEvolutionAlgorithm
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.modified')
@@ -10,7 +11,7 @@ logger.setLevel('INFO')
 
 __all__ = ['SelfAdaptiveDifferentialEvolutionAlgorithm']
 
-class SolutionjDE(SolutionDE):
+class SolutionjDE(Individual):
 	def __init__(self, **kwargs):
 		super(SolutionjDE, self).__init__(**kwargs)
 		self.F, self.CR = kwargs.get('F', 2), kwargs.get('CR', 0.5)

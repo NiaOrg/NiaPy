@@ -5,7 +5,7 @@ import math
 __all__ = ['Whitley']
 
 
-class Whitley(object):
+class Whitley:
     r"""Implementation of Whitley function.
 
     Date: 2018

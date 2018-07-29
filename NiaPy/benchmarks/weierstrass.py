@@ -6,7 +6,7 @@ from math import pi, cos
 
 __all__ = ['Weierstrass']
 
-class Weierstrass(object):
+class Weierstrass:
 	r"""Implementations of Weierstrass functions.
 
 	Date: 2018

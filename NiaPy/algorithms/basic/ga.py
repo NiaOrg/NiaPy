@@ -29,7 +29,7 @@ def TwoPointCrossover(pop, ic, cr, rnd=rand):
 	r = sort(rnd.choice(len(pop[ic]), 2))
 	x = pop[ic].x
 	x[r[0]:r[1]] = pop[io].x[r[0]:r[1]]
-	return Chromosome(x=x)
+	return Individual(x=x)
 
 def MultiPointCrossover(pop, ic, n, rnd=rand):
 	io = ic
@@ -37,27 +37,24 @@ def MultiPointCrossover(pop, ic, n, rnd=rand):
 	r = sort(rnd.choice(len(pop[ic]), 2 * n))
 	x = pop[ic].x
 	for i in range(n): x[r[2 * i]:r[2 * i + 1]] = pop[io].x[r[2 * i]:r[2 * i + 1]]
-	return Chromosome(x=x)
+	return Individual(x=x)
 
 def UniformCrossover(pop, ic, cr, rnd=rand):
 	io = ic
 	while io != ic: io = rnd.randint(len(pop))
 	j = rnd.randint(len(pop[ic]))
 	x = [pop[io][i] if rnd.rand() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
-	return Chromosome(x=x)
+	return Individual(x=x)
 
 def UniformMutation(pop, ic, cr, task, rnd=rand):
 	j = rnd.randint(task.D)
 	nx = [rnd.uniform(task.Upper[i], task.Lower[i]) if rnd.rand() < cr or i == j else pop[ic][i] for i in range(task.D)]
-	return Chromosome(x=nx)
+	return Individual(x=nx)
 
 def CreepMutation(pop, ic, cr, task, rnd=rand):
 	ic, j = rnd.randint(len(pop)), rnd.randint(task.D)
 	nx = [rnd.uniform(task.Upper[i], task.Lower[i]) if rnd.rand() < cr or i == j else pop[ic][i] for i in range(task.D)]
-	return Chromosome(x=nx)
-
-class Chromosome(Individual):
-	def __init__(self, **kwargs): super(Chromosome, self).__init__(**kwargs)
+	return Individual(x=nx)
 
 class GeneticAlgorithm(Algorithm):
 	r"""Implementation of Genetic algorithm.
@@ -88,7 +85,7 @@ class GeneticAlgorithm(Algorithm):
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def runTask(self, task):
-		pop = [Chromosome(task=task, rand=self.rand) for _i in range(self.NP)]
+		pop = [Individual(task=task, rand=self.rand) for _i in range(self.NP)]
 		x_b = pop[argmin([c.f for c in pop])]
 		while not task.stopCond():
 			npop = [self.Selection(pop, self.Ts, self.rand) for _i in range(self.NP)]

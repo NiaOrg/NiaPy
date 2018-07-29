@@ -2,7 +2,7 @@
 # pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, len-as-condition, singleton-comparison, arguments-differ
 import logging
 from math import ceil
-from numpy import apply_along_axis, vectorize, argmin, inf, where, asarray, ndarray, random as rand, ones, tril 
+from numpy import apply_along_axis, vectorize, argmin, inf, where, ones, tril
 from NiaPy.algorithms.algorithm import Algorithm, Individual
 
 logging.basicConfig()
@@ -14,12 +14,8 @@ __all__ = ['MonkeyKingEvolutionV1', 'MonkeyKingEvolutionV2', 'MonkeyKingEvolutio
 class MkeSolution(Individual):
 	def __init__(self, **kwargs):
 		super(MkeSolution, self).__init__(**kwargs)
-		self.f_pb, self.x_pb = inf, None
+		self.f_pb, self.x_pb = self.f, self.x
 		self.MonkeyKing = False
-
-	def generateSolution(self, task, rnd):
-		super(MkeSolution, self).generateSolution(task, rnd)
-		self.x_pb = self.x
 
 	def uPersonalBest(self):
 		if self.f < self.f_pb: self.x_pb, self.f_pb = self.x, self.f

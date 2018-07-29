@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use
+# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, chained-comparison
 import logging
 from numpy import fabs, inf, where
 from NiaPy.algorithms.algorithm import Algorithm
@@ -22,9 +22,8 @@ class GreyWolfOptimizer(Algorithm):
 	**License:** MIT
 
 	**Reference paper:**
-	Mirjalili, Seyedali, Seyed Mohammad Mirjalili, and Andrew Lewis.
-	"Grey wolf optimizer." Advances in engineering software 69 (2014): 46-61.
-	& Grey Wold Optimizer (GWO) source code version 1.0 (MATLAB) from MathWorks
+	Mirjalili, Seyedali, Seyed Mohammad Mirjalili, and Andrew Lewis. "Grey wolf optimizer." Advances in engineering software 69 (2014): 46-61.
+	Grey Wold Optimizer (GWO) source code version 1.0 (MATLAB) from MathWorks
 	"""
 	def __init__(self, **kwargs): super(GreyWolfOptimizer, self).__init__(name='GreyWolfOptimizer', sName='GWO', **kwargs)
 
