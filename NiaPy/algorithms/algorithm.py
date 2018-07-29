@@ -31,10 +31,8 @@ class Algorithm:
 		**See**:
 		Algorithm.setParameters(self, **kwargs)
 		"""
-		task = kwargs.get('task', None)
-		self.name, self.sName, self.rand = kwargs.get('name', 'Algorith'), kwargs.get('sName', 'algo'), rand.RandomState(kwargs.get('seed', 1))
-		self.task = task if task != None else Task(kwargs.get('D', 10), kwargs.get('nFES', 100000), kwargs.get('nGEN', None), kwargs.get('benchmark', 'ackley'))
-		kwargs.pop('name', None), kwargs.pop('sName', None), kwargs.pop('D', None), kwargs.pop('nFES', None), kwargs.pop('nGEN', None), kwargs.pop('benchmark', None), kwargs.pop('task', None)
+		task, self.name, self.sName, self.rand = kwargs.pop('task', None), kwargs.pop('name', 'Algorith'), kwargs.pop('sName', 'algo'), rand.RandomState(kwargs.pop('seed', 1))
+		self.task = task if task != None else Task(kwargs.pop('D', 10), kwargs.pop('nFES', 100000), kwargs.pop('nGEN', None), kwargs.pop('benchmark', 'ackley'))
 		self.setParameters(**kwargs)
 
 	def setParameters(self, **kwargs): pass
@@ -64,20 +62,20 @@ class Individual:
 	"""
 	def __init__(self, **kwargs):
 		self.f = inf
-		task, rnd, x = kwargs.get('task', None), kwargs.get('rand', rand), kwargs.get('x', [])
+		task, rnd, x = kwargs.pop('task', None), kwargs.pop('rand', rand), kwargs.pop('x', [])
 		if len(x) > 0: self.x = x if isinstance(x, ndarray) else asarray(x)
-		else: self.generateSolution(task, kwargs.get('e', True), rnd)
+		else: self.generateSolution(task, rnd)
+		if kwargs.pop('e', True) and task != None: self.evaluate(task)
 
-	def generateSolution(self, task, e=True, rnd=rand):
+	def generateSolution(self, task, rnd=rand):
 		r"""Generate new solution.
 
 		Arguments:
 		task {Task}
-		e {bool}
+		e {bool} -- Eval the solution
 		rnd {random} -- Object for generating random numbers
 		"""
 		self.x = task.Lower + task.bRange * rnd.rand(task.D)
-		if e: self.evaluate(task)
 
 	def evaluate(self, task):
 		r"""Evalue the solution.
@@ -85,6 +83,7 @@ class Individual:
 		Arguments:
 		task {Task} -- Object with objective function for optimization
 		"""
+		self.repair(task)
 		self.f = task.eval(self.x)
 
 	def repair(self, task):
@@ -99,23 +98,23 @@ class Individual:
 		self.x[ir] = task.Lower[ir]
 
 	def __eq__(self, other):
-		r"""
-		"""
+		r"""Compares the individuals if they are one of the same."""
 		return array_equal(self.x, other.x) and self.f == other.f
 
 	def __str__(self):
-		r"""
-		"""
+		r"""Prints the individula with the solution and objective value."""
 		return '%s -> %s' % (self.x, self.f)
 
 	def __getitem__(self, i):
-		r"""
+		r"""Get the value of i-th component of the solution.
+
+		Arguments:
+		i {integer} -- position of the solution component
 		"""
 		return self.x[i]
 
 	def __len__(self):
-		r"""
-		"""
+		r"""Get the length of the solution or the number of components."""
 		return len(self.x)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

@@ -2,7 +2,7 @@
 # pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, len-as-condition, singleton-comparison, arguments-differ
 import logging
 from math import ceil
-from numpy import apply_along_axis, vectorize, argmin, inf, where, asarray, ndarray, random as rand, ones, tril, array_equal
+from numpy import apply_along_axis, vectorize, argmin, inf, where, asarray, ndarray, random as rand, ones, tril 
 from NiaPy.algorithms.algorithm import Algorithm, Individual
 
 logging.basicConfig()
@@ -13,35 +13,16 @@ __all__ = ['MonkeyKingEvolutionV1', 'MonkeyKingEvolutionV2', 'MonkeyKingEvolutio
 
 class MkeSolution(Individual):
 	def __init__(self, **kwargs):
-		self.f, self.f_pb, self.x_pb = inf, inf, None
+		super(MkeSolution, self).__init__(**kwargs)
+		self.f_pb, self.x_pb = inf, None
 		self.MonkeyKing = False
-		task = kwargs.get('task', None)
-		rnd = kwargs.get('rand', rand)
-		x = kwargs.get('x', [])
-		if len(x) > 0: self.x = x if isinstance(x, ndarray) else asarray(x)
-		else: self.generateSolution(task, rnd)
 
 	def generateSolution(self, task, rnd):
-		self.x = task.Lower + task.bRange * rnd.rand(task.D)
+		super(MkeSolution, self).generateSolution(task, rnd)
 		self.x_pb = self.x
-		self.evaluate(task)
-
-	def evaluate(self, task): self.f = task.eval(self.x)
 
 	def uPersonalBest(self):
 		if self.f < self.f_pb: self.x_pb, self.f_pb = self.x, self.f
-
-	def repair(self, task):
-		ir = where(self.x > task.Upper)
-		self.x[ir] = task.Upper[ir]
-		ir = where(self.x < task.Lower)
-		self.x[ir] = task.Lower[ir]
-
-	def __eq__(self, other): return array_equal(self.x, other.x) and self.f == other.f
-
-	def __len__(self): return len(self.x)
-
-	def __getitem__(self, i): return self.x[i]
 
 class MonkeyKingEvolutionV1(Algorithm):
 	r"""Implementation of monkey king evolution algorithm version 1.

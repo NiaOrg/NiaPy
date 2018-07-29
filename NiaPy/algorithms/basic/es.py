@@ -54,18 +54,13 @@ class EvolutionStrategy(Algorithm):
 		self.mi, self.l, self.rho, self.n, self.Strategy, self.Selection = mi, l, rho, n, Strategy, Selection
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def mutate(self, x, task):
-		x.x = x.x + self.rand.normal(self.rho, 1)
-		x.repair(task)
-		x.evaluate(task)
-		return x
+	def mutate(self, x, task): return x + self.rand.normal(self.rho, 1)
 
 	def runTask(self, task):
 		pop = [Individual(task=task, rand=self.rand) for _i in range(self.mi)]
 		x_b = pop[argmin([i.f for i in pop])]
 		while not task.stopCond():
-			npop = self.Strategy(pop, [Individual(task=task, rand=self.rand, e=False) for _i in range(self.l)])
-			npop = [self.mutate(i, task) for i in npop]
+			npop = self.Strategy(pop, [Individual(x=self.mutate(pop[self.rand.randint(self.mi)].x, task), task=task) for _i in range(self.l)])
 			pop = [self.Selection(npop, self.n, self.rand) for _i in range(self.mi)]
 			x_pb = pop[argmin([i.f for i in pop])]
 			if x_pb.f < x_b.f: x_b = x_pb
