@@ -1,7 +1,7 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, trailing-whitespace, line-too-long, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use
 import logging
-from numpy import apply_along_axis, argmin, pi, inf, fabs, sin, cos
+from numpy import apply_along_axis, argmin, pi, inf, fabs, sin, cos, isnan
 from NiaPy.algorithms.algorithm import Algorithm
 
 logging.basicConfig()
@@ -24,7 +24,7 @@ class SineCosineAlgorithm(Algorithm):
 
 	def setParameters(self, **kwargs): self.__setParams(**kwargs)
 
-	def __setParams(self, NP=25, a=5, Rmin=0, Rmax=2, **ukwargs):
+	def __setParams(self, NP=25, a=3, Rmin=0, Rmax=2, **ukwargs):
 		r"""Set the arguments of an algorithm.
 
 		**Arguments**:
@@ -45,7 +45,7 @@ class SineCosineAlgorithm(Algorithm):
 			ib = argmin(P_f)
 			if P_f[ib] < x_f: x, x_f = P[ib], P_f[ib]
 			r1, r2, r3, r4 = self.a - task.Iters * (self.a / task.nGEN), self.rand.uniform(0, 2 * pi), self.rand.uniform(self.Rmin, self.Rmax), self.rand.rand()
-			P = apply_along_axis(self.nextPos, 1, P, x, r1, r2, r3, r4)
+			P = apply_along_axis(task.repair, 1, apply_along_axis(self.nextPos, 1, P, x, r1, r2, r3, r4))
 		return x, x_f
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

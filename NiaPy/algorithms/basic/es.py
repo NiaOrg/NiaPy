@@ -50,7 +50,7 @@ class EvolutionStrategy(Algorithm):
 		x_b = pop[argmin([i.f for i in pop])]
 		while not task.stopCond():
 			npop = self.Strategy(pop, [Individual(x=self.mutate(pop[self.rand.randint(self.mu)].x, task), task=task) for _i in range(self.lam)])
-			pop = [self.Selection(npop, self.n, self.rand) for _i in range(self.mu)]
+			pop = [self.Selection(npop, i, self.n, x_b, self.rand) for i in range(self.mu)]
 			x_pb = pop[argmin([i.f for i in pop])]
 			if x_pb.f < x_b.f: x_b = x_pb
 		return x_b.x, x_b.f

@@ -2,7 +2,7 @@
 # pylint: disable=mixed-indentation, line-too-long, bad-continuation, multiple-statements, singleton-comparison, unused-argument, no-self-use, trailing-comma-tuple, logging-not-lazy, no-else-return
 """Implementation of benchmarks utility function."""
 import logging
-from numpy import ndarray, asarray, full, inf, dot, where
+from numpy import ndarray, asarray, full, inf, dot, where, random as rnd
 from matplotlib import pyplot as plt, animation as anim
 from . import Rastrigin, Rosenbrock, Griewank, Sphere, Ackley, Schwefel, Schwefel221, Schwefel222, Whitley, Alpine1, Alpine2, HappyCat, Ridge, ChungReynolds, Csendes, Pinter, Qing, Quintic, Salomon, SchumerSteiglitz, Step, Step2, Step3, Stepint, SumSquares, StyblinskiTang, BentCigar, Discus, Elliptic, ExpandedGriewankPlusRosenbrock, HGBat, Katsuura, ExpandedScaffer, ModifiedSchwefel, Weierstrass
 
@@ -137,15 +137,15 @@ class Task(Utility):
 		return (False if True in (A < self.Lower) else True) and (False if True in (A > self.Upper) else True)
 
 	def repair(self, x):
-		r"""Reper solution and put the solution in the bounds of problem.
+		r"""Repair solution and put the solution in the random position inside of the bounds of problem.
 
 		Arguments:
 		x {array}
 		"""
 		ir = where(x > self.Upper)
-		x[ir] = self.Upper[ir]
+		x[ir] = rnd.uniform(self.Lower[ir], self.Upper[ir])
 		ir = where(x < self.Lower)
-		x[ir] = self.Lower[ir]
+		x[ir] = rnd.uniform(self.Lower[ir], self.Upper[ir])
 		return x
 
 class TaskConvPrint(Task):

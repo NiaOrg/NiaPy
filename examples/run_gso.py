@@ -36,7 +36,7 @@ def simple_example(runs=10):
 		logger.info('%s %s' % (best[0], best[1]))
 
 def logging_example():
-	task = TaskConvPrint(D=50, nFES=50000, nGEN=10000, benchmark=MyBenchmark())
+	task = TaskConvPrint(D=10, nFES=50000, nGEN=10000, benchmark=MyBenchmark())
 	algo = GlowwormSwarmOptimization(n=50, nt=5, sr=30, l0=5, rho=0.4, gamma=0.6, beta=0.08, s=0.03, task=task)
 	best = algo.run()
 	logger.info('%s %s' % (best[0], best[1]))

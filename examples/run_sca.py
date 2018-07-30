@@ -37,7 +37,7 @@ def simple_example(runs=10):
 
 def logging_example():
 	task = TaskConvPrint(D=50, nFES=50000, nGEN=10000, benchmark=MyBenchmark())
-	algo = SineCosineAlgorithm(NP=35, a=7, Rmin=0.1, Rmax=3, task=task)
+	algo = SineCosineAlgorithm(NP=35, a=3, Rmin=0.1, Rmax=1.1, task=task)
 	best = algo.run()
 	logger.info('%s %s' % (best[0], best[1]))
 
