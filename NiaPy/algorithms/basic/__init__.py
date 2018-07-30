@@ -13,6 +13,7 @@ from NiaPy.algorithms.basic.bbfwa import BareBonesFireworksAlgorithm
 from NiaPy.algorithms.basic.mke import MonkeyKingEvolutionV1, MonkeyKingEvolutionV2, MonkeyKingEvolutionV3
 from NiaPy.algorithms.basic.es import EvolutionStrategy
 from NiaPy.algorithms.basic.sca import SineCosineAlgorithm
+from NiaPy.algorithms.basic.gso import GlowwormSwarmOptimization
 
 __all__ = [
     'BatAlgorithm',
@@ -29,5 +30,6 @@ __all__ = [
     'MonkeyKingEvolutionV2',
     'MonkeyKingEvolutionV3',
     'EvolutionStrategy',
-    'SineCosineAlgorithm'
+    'SineCosineAlgorithm',
+    'GlowwormSwarmOptimization'
 ]

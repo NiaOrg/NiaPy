@@ -15,11 +15,8 @@ class Camel:
 	r"""Implementation of population individual that is a camel for Camel algorithm.
 
 	**Algorithm:** Camel algorithm
-
 	**Date:** 2018
-
 	**Authors:** Klemen Berkovič
-
 	**License:** MIT
 	"""
 	E_init, S_init = 1, 1
@@ -60,32 +57,15 @@ class CamelAlgorithm(Algorithm):
 	r"""Implementation of Camel traveling behavior.
 
 	**Algorithm:** Camel algorithm
-
 	**Date:** 2018
-
 	**Authors:** Klemen Berkovič
-
 	**License:** MIT
-
 	**Reference URL:**
 	https://www.iasj.net/iasj?func=fulltext&aId=118375
-
 	**Reference paper:**
 	Ali, Ramzy. (2016). Novel Optimization Algorithm Inspired by Camel Traveling Behavior. Iraq J. Electrical and Electronic Engineering. 12. 167-177.
 	"""
-	def __init__(self, **kwargs):
-		r"""Initialize Camel algorithm class.
-
-		**Arguments**:
-		D {integer} -- dimension of problem
-		nGEN {integer} -- nuber of generation/iterations
-		nFES {integer} -- number of function evaluations
-		benchmark {object} -- benchmark implementation object
-
-		**See**:
-		Algorithm.__init__(self, **kwargs)
-		"""
-		super(CamelAlgorithm, self).__init__(name='CamelAlgorithm', sName='CA', **kwargs)
+	def __init__(self, **kwargs): super(CamelAlgorithm, self).__init__(name='CamelAlgorithm', sName='CA', **kwargs)
 
 	def setParameters(self, **kwargs): self.__setParams(**kwargs)
 

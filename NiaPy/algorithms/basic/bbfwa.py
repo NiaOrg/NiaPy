@@ -14,26 +14,15 @@ class BareBonesFireworksAlgorithm(Algorithm):
 	r"""Implementation of bare bone fireworks algorithm.
 
 	**Algorithm:** Bare Bones Fireworks Algorithm
-
 	**Date:** 2018
-
 	**Authors:** Klemen Berkovič
-
 	**License:** MIT
-
 	**Reference URL:**
 	https://www.sciencedirect.com/science/article/pii/S1568494617306609
-
 	**Reference paper:**
 	Junzhi Li, Ying Tan, The bare bones fireworks algorithm: A minimalist global optimizer, Applied Soft Computing, Volume 62, 2018, Pages 454-462, ISSN 1568-4946, https://doi.org/10.1016/j.asoc.2017.10.046.
 	"""
-	def __init__(self, **kwargs):
-		r"""Initialize Bare Bones Fireworks algorithm class.
-
-		**See**:
-		Algorithm.__init__(self, **kwargs)
-		"""
-		super(BareBonesFireworksAlgorithm, self).__init__(name='BareBonesFireworksAlgorithm', sName='BBFA', **kwargs)
+	def __init__(self, **kwargs): super(BareBonesFireworksAlgorithm, self).__init__(name='BareBonesFireworksAlgorithm', sName='BBFA', **kwargs)
 
 	def setParameters(self, **kwargs): self.__setParams(**kwargs)
 

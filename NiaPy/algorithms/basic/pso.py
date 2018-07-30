@@ -14,17 +14,10 @@ class ParticleSwarmAlgorithm(Algorithm):
 	r"""Implementation of Particle Swarm Optimization algorithm.
 
 	**Algorithm:** Particle Swarm Optimization algorithm
-
 	**Date:** 2018
-
 	**Authors:** Lucija Brezočnik, Grega Vrbančič, Iztok Fister Jr. and Klemen Berkovič
-
 	**License:** MIT
-
-	**Reference paper:**
-	Kennedy, J. and Eberhart, R. "Particle Swarm Optimization".
-	Proceedings of IEEE International Conference on Neural Networks.
-	IV. pp. 1942--1948, 1995.
+	**Reference paper:** Kennedy, J. and Eberhart, R. "Particle Swarm Optimization". Proceedings of IEEE International Conference on Neural Networks. IV. pp. 1942--1948, 1995.
 	"""
 
 	def __init__(self, **kwargs):

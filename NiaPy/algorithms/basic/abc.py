@@ -37,13 +37,9 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 	r"""Implementation of Artificial Bee Colony algorithm.
 
 	**Algorithm:** Artificial Bee Colony algorithm
-
 	**Date:** 2018
-
 	**Author:** Uros Mlakar and Klemen Berkovič
-
 	**License:** MIT
-
 	**Reference paper:**
 	Karaboga, D., and Bahriye B. "A powerful and efficient algorithm for
 	numerical function optimization: artificial bee colony (ABC) algorithm."

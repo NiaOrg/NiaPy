@@ -50,13 +50,9 @@ class DifferentialEvolutionAlgorithm(Algorithm):
 	r"""Implementation of Differential evolution algorithm.
 
 	**Algorithm:** Differential evolution algorithm
-
 	**Date:** 2018
-
 	**Author:** Uros Mlakar and Klemen Berkoivč
-
 	**License:** MIT
-
 	**Reference paper:**
 	Storn, Rainer, and Kenneth Price. "Differential evolution - a simple and
 	efficient heuristic for global optimization over continuous spaces."
@@ -64,11 +60,6 @@ class DifferentialEvolutionAlgorithm(Algorithm):
 	"""
 
 	def __init__(self, **kwargs):
-		r"""**__init__(self, D, NP, nFES, F, CR, benchmark)**.
-
-		Raises:
-		TypeError -- Raised when given benchmark function which does not exists.
-		"""
 		if kwargs.get('name', None) == None: super(DifferentialEvolutionAlgorithm, self).__init__(name=kwargs.get('name', 'DifferentialEvolutionAlgorithm'), sName=kwargs.get('sName', 'DE'), **kwargs)
 		else: super(DifferentialEvolutionAlgorithm, self).__init__(**kwargs)
 
@@ -88,7 +79,6 @@ class DifferentialEvolutionAlgorithm(Algorithm):
 
 	def evalPopulation(self, x, x_old, task):
 		"""Evaluate element."""
-		x.repair(task)
 		x.evaluate(task)
 		return x if x.f < x_old.f else x_old
 

@@ -24,18 +24,11 @@ class MonkeyKingEvolutionV1(Algorithm):
 	r"""Implementation of monkey king evolution algorithm version 1.
 
 	**Algorithm:** Monkey King Evolution version 1
-
 	**Date:** 2018
-
 	**Authors:** Klemen Berkovič
-
 	**License:** MIT
-
-	**Reference URL:**
-	https://www.sciencedirect.com/science/article/pii/S0950705116000198
-
-	**Reference paper:**
-	Zhenyu Meng, Jeng-Shyang Pan, Monkey King Evolution: A new memetic evolutionary algorithm and its application in vehicle fuel consumption optimization, Knowledge-Based Systems, Volume 97, 2016, Pages 144-157, ISSN 0950-7051, https://doi.org/10.1016/j.knosys.2016.01.009.
+	**Reference URL:** https://www.sciencedirect.com/science/article/pii/S0950705116000198
+	**Reference paper:** Zhenyu Meng, Jeng-Shyang Pan, Monkey King Evolution: A new memetic evolutionary algorithm and its application in vehicle fuel consumption optimization, Knowledge-Based Systems, Volume 97, 2016, Pages 144-157, ISSN 0950-7051, https://doi.org/10.1016/j.knosys.2016.01.009.
 	"""
 	def __init__(self, **kwargs):
 		if kwargs.get('name', None) == None: super(MonkeyKingEvolutionV1, self).__init__(name='MonkeyKingEvolutionV1', sName='MKEv1', **kwargs)
@@ -96,9 +89,9 @@ class MonkeyKingEvolutionV1(Algorithm):
 		return p_b.x, p_b.f
 
 class MonkeyKingEvolutionV2(MonkeyKingEvolutionV1):
-	r"""Implementation of monkey king evolution algorithm version 1.
+	r"""Implementation of monkey king evolution algorithm version 2.
 
-	**Algorithm:** Monkey King Evolution version 1
+	**Algorithm:** Monkey King Evolution version 2
 
 	**Date:** 2018
 
@@ -133,19 +126,14 @@ class MonkeyKingEvolutionV2(MonkeyKingEvolutionV1):
 			p.uPersonalBest()
 
 class MonkeyKingEvolutionV3(MonkeyKingEvolutionV1):
-	r"""Implementation of monkey king evolution algorithm version 1.
+	r"""Implementation of monkey king evolution algorithm version 3.
 
-	**Algorithm:** Monkey King Evolution version 1
-
+	**Algorithm:** Monkey King Evolution version 3
 	**Date:** 2018
-
 	**Authors:** Klemen Berkovič
-
 	**License:** MIT
-
 	**Reference URL:**
 	https://www.sciencedirect.com/science/article/pii/S0950705116000198
-
 	**Reference paper:**
 	Zhenyu Meng, Jeng-Shyang Pan, Monkey King Evolution: A new memetic evolutionary algorithm and its application in vehicle fuel consumption optimization, Knowledge-Based Systems, Volume 97, 2016, Pages 144-157, ISSN 0950-7051, https://doi.org/10.1016/j.knosys.2016.01.009.
 	"""

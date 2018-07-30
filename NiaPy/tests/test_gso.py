@@ -2,7 +2,7 @@
 # pylint: disable=mixed-indentation, multiple-statements
 from unittest import TestCase
 from NiaPy.benchmarks.griewank import Griewank
-from NiaPy.algorithms.basic import EvolutionStrategy
+from NiaPy.algorithms.basic import GlowwormSwarmOptimization
 
 class MyBenchmark:
 	def __init__(self):
@@ -17,21 +17,21 @@ class MyBenchmark:
 			return val
 		return evaluate
 
-class ESTestCase(TestCase):
+class BBFWATestCase(TestCase):
 	def setUp(self):
 		self.D = 40
-		self.es_custom = EvolutionStrategy(D=self.D, nFES=1000, mu=35, n=10, C_a=2, C_r=0.5, benchmark=MyBenchmark())
-		self.es_griewank = EvolutionStrategy(D=self.D, nFES=1000, mu=35, n=10, C_a=5, C_r=0.5, benchmark=Griewank())
+		self.gso_custom = GlowwormSwarmOptimization(D=self.D, nFES=1000, NP=35, a=7, Rmin=0.1, Rmax=3, benchmark=MyBenchmark())
+		self.gso_griewank = GlowwormSwarmOptimization(D=self.D, nFES=1000, NP=10, a=5, Rmin=0.01, Rmax=3, benchmark=Griewank())
 
 	def test_custom_works_fine(self):
 		fun = MyBenchmark().function()
-		x = self.es_custom.run()
+		x = self.gso_custom.run()
 		self.assertTrue(x)
 		self.assertAlmostEqual(fun(self.D, x[0]), x[1], delta=1e2)
 
 	def test_griewank_works_fine(self):
 		fun = Griewank().function()
-		x = self.es_griewank.run()
+		x = self.gso_griewank.run()
 		self.assertTrue(x)
 		self.assertAlmostEqual(fun(self.D, x[0]), x[1], delta=1e2)
 

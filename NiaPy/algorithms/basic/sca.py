@@ -11,29 +11,16 @@ logger.setLevel('INFO')
 __all__ = ['SineCosineAlgorithm']
 
 class SineCosineAlgorithm(Algorithm):
-	r"""Implementation of bare bone fireworks algorithm.
+	r"""Implementation of sine cosine algorithm.
 
-	**Algorithm:** Bare Bones Fireworks Algorithm
-
+	**Algorithm:** Sine Cosine Algorithm
 	**Date:** 2018
-
 	**Authors:** Klemen Berkovič
-
 	**License:** MIT
-
-	**Reference URL:**
-	https://www.sciencedirect.com/science/article/pii/S0950705115005043
-
-	**Reference paper:**
-	Seyedali Mirjalili, SCA: A Sine Cosine Algorithm for solving optimization problems, Knowledge-Based Systems, Volume 96, 2016, Pages 120-133, ISSN 0950-7051, https://doi.org/10.1016/j.knosys.2015.12.022.
+	**Reference URL:** https://www.sciencedirect.com/science/article/pii/S0950705115005043
+	**Reference paper:** Seyedali Mirjalili, SCA: A Sine Cosine Algorithm for solving optimization problems, Knowledge-Based Systems, Volume 96, 2016, Pages 120-133, ISSN 0950-7051, https://doi.org/10.1016/j.knosys.2015.12.022.
 	"""
-	def __init__(self, **kwargs):
-		r"""Initialize Bare Bones Fireworks algorithm class.
-
-		**See**:
-		Algorithm.__init__(self, **kwargs)
-		"""
-		super(SineCosineAlgorithm, self).__init__(name='SineCosineAlgorithm', sName='SCA', **kwargs)
+	def __init__(self, **kwargs): super(SineCosineAlgorithm, self).__init__(name='SineCosineAlgorithm', sName='SCA', **kwargs)
 
 	def setParameters(self, **kwargs): self.__setParams(**kwargs)
 

@@ -60,11 +60,8 @@ class GeneticAlgorithm(Algorithm):
 	r"""Implementation of Genetic algorithm.
 
 	**Algorithm:** Genetic algorithm
-
 	**Date:** 2018
-
 	**Author:** Uros Mlakar and Klemen Berkovič
-
 	**License:** MIT
 	"""
 	def __init__(self, **kwargs): super(GeneticAlgorithm, self).__init__(name='GeneticAlgorithm', sName='GA', **kwargs)

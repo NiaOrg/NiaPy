@@ -144,6 +144,7 @@ class Runner:
 		self.n = kwargs.pop('n', 10)
 		self.omega = kwargs.pop('omega', 0.25)
 		self.mu = kwargs.pop('mu', 0.5)
+		self.muES = kwargs.pop('mu', 35)
 		self.E_init = kwargs.pop('E_init', 10)
 		self.S_init = kwargs.pop('S_init', 10)
 		self.T_min = kwargs.pop('T_min', -10)
@@ -153,7 +154,6 @@ class Runner:
 		self.Limit = kwargs.pop('Limit', 100)
 		self.Rmin = kwargs.pop('Rmin', .0)
 		self.Rmax = kwargs.pop('Rmax', 2)
-		self.mi = kwargs.pop('mi', 35)
 		self.lam = kwargs.pop('lam', 40)
 		self.C = kwargs.pop('C', 2)
 		self.FC = kwargs.pop('FC', 0.7)
@@ -194,7 +194,7 @@ class Runner:
 		elif name == 'MonkeyKingEvolutionV3':
 			algorithm = algorithms.basic.MonkeyKingEvolutionV3(D=self.D, nFES=self.nFES, C=self.C, R=self.R, FC=self.FC, benchmark=bench)
 		elif name == 'EvolutionStrategy':
-			algorithm = algorithms.basic.EvolutionStrategy(D=self.D, nFES=self.nFES, mi=self.mi, lam=self.lam, benchmark=bench)
+			algorithm = algorithms.basic.EvolutionStrategy(D=self.D, nFES=self.nFES, mu=self.muES, lam=self.lam, benchmark=bench)
 		elif name == 'SineCosineAlgorithm':
 			algorithm = algorithms.basic.SineCosineAlgorithm(D=self.D, nFES=self.nFES, nGEN=self.nRuns, NP=self.NP, a=self.a, Rmin=self.Rmin, Rmax=self.Rmax, benchmark=bench)
 		else:

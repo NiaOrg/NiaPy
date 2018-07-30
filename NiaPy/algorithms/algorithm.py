@@ -1,6 +1,6 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, multiple-statements, line-too-long, expression-not-assigned, singleton-comparison, len-as-condition
-from numpy import random as rand, inf, ndarray, asarray, where, array_equal
+from numpy import random as rand, inf, ndarray, asarray, array_equal
 from NiaPy.benchmarks.utility import Task
 
 __all__ = ['Algorithm', 'Individual']
@@ -45,6 +45,18 @@ class Algorithm:
 		"""
 		return self.runTask(self.task)
 
+	def runYield(self, task):
+		r"""Run the algorithm for only one iteration and return the gest solution.
+
+		Arguments:
+		task {Task} -- Task with bounds and objective function for optimization 
+
+		Return:
+		solution {array} -- point of best solution
+		fitness {real} -- fitness value of the best solution
+		"""
+		yield None, None
+
 	def runTask(self, task):
 		r"""Start the optimization.
 
@@ -53,9 +65,9 @@ class Algorithm:
 
 		**Return**
 		solution {array} -- point of best solution
-		fitnes {real} -- fitnes value of best solution
+		fitness {real} -- fitness value of best solution
 		"""
-		pass
+		return None, None
 
 class Individual:
 	r"""Class that represent one solution in population of solutions.
@@ -96,10 +108,7 @@ class Individual:
 		Arguments:
 		task {Task}
 		"""
-		ir = where(self.x > task.Upper)
-		self.x[ir] = task.Upper[ir]
-		ir = where(self.x < task.Lower)
-		self.x[ir] = task.Lower[ir]
+		self.x = task.repair(self.x)
 
 	def __eq__(self, other):
 		r"""Compare the individuals if they are one of the same."""

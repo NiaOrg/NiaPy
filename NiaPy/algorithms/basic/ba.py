@@ -14,13 +14,9 @@ class BatAlgorithm(Algorithm):
 	r"""Implementation of Bat algorithm.
 
 	**Algorithm:** Bat algorithm
-
 	**Date:** 2015
-
 	**Authors:** Iztok Fister Jr., Marko Burjek and Klemen Berkovič
-
 	**License:** MIT
-
 	**Reference paper:**
 	Yang, Xin-She. "A new metaheuristic bat-inspired algorithm."
 	Nature inspired cooperative strategies for optimization (NICSO 2010).
@@ -50,14 +46,6 @@ class BatAlgorithm(Algorithm):
 		self.NP, self.A, self.r, self.Qmin, self.Qmax = NP, A, r, Qmin, Qmax
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def repair(self, val, task):
-		"""Keep it within bounds."""
-		ir = where(val > task.Upper)
-		val[ir] = task.Upper[ir]
-		ir = where(val < task.Lower)
-		val[ir] = task.Lower[ir]
-		return val
-
 	def runTask(self, task):
 		r"""Run algorithm with initialized parameters.
 
@@ -75,10 +63,10 @@ class BatAlgorithm(Algorithm):
 				Q[i] = self.Qmin + (self.Qmax - self.Qmin) * self.rand.uniform(0, 1)
 				v[i] = v[i] + (Sol[i] - best) * Q[i]
 				S[i] = Sol[i] + v[i]
-				S[i] = self.repair(S[i], task)
+				S[i] = task.repair(S[i])
 				if self.rand.rand() > self.r:
 					S[i] = best + 0.001 * self.rand.normal(0, 1, task.D)
-					S[i] = self.repair(S[i], task)
+					S[i] = task.repair(S[i])
 				Fnew = task.eval(S[i])
 				if (Fnew <= Fitness[i]) and (self.rand.rand() < self.A): Sol[i], Fitness[i] = S[i], Fnew
 				if Fnew <= f_min: best, f_min = S[i], Fnew

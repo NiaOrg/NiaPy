@@ -14,17 +14,11 @@ class FireflyAlgorithm(Algorithm):
 	r"""Implementation of Firefly algorithm.
 
 	**Algorithm:** Firefly algorithm
-
 	**Date:** 2016
-
 	**Authors:** Iztok Fister Jr, Iztok Fister and Klemen Berkovič
-
 	**License:** MIT
-
-	**Reference paper:**
-	Fister, I., Fister Jr, I., Yang, X. S., & Brest, J. (2013). A comprehensive review of firefly algorithms. Swarm and Evolutionary Computation, 13, 34-46.
+	**Reference paper:** Fister, I., Fister Jr, I., Yang, X. S., & Brest, J. (2013). A comprehensive review of firefly algorithms. Swarm and Evolutionary Computation, 13, 34-46.
 	"""
-
 	def __init__(self, **kwargs): super(FireflyAlgorithm, self).__init__(name='FireflyAlgorithm', sName='FA', **kwargs)
 
 	def setParameters(self, **kwargs): self.__setParams(**kwargs)
@@ -41,14 +35,6 @@ class FireflyAlgorithm(Algorithm):
 		self.NP, self.alpha, self.betamin, self.gamma = NP, alpha, betamin, gamma
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def repair(self, x, task):
-		"""Find limits."""
-		ir = where(x > task.Upper)
-		x[ir] = task.Upper[ir]
-		ir = where(x < task.Lower)
-		x[ir] = task.Lower[ir]
-		return x
-
 	def alpha_new(self, a, alpha):
 		"""Optionally recalculate the new alpha value."""
 		delta = 1.0 - pow(pow(10.0, -4.0) / 0.9, 1.0 / float(a))
@@ -62,7 +48,7 @@ class FireflyAlgorithm(Algorithm):
 				beta = (1.0 - self.betamin) * exp(-self.gamma * pow(r, 2.0)) + self.betamin
 				tmpf = self.alpha * (self.rand.uniform(0, 1, task.D) - 0.5) * task.bRange
 				Fireflies[i] = Fireflies[i] * (1.0 - beta) + oFireflies[j] * beta + tmpf
-		self.repair(Fireflies[i], task)
+		task.repair(Fireflies[i])
 		return Fireflies[i]
 
 	def runTask(self, task):
