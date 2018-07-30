@@ -9,6 +9,7 @@ import random
 import logging
 from NiaPy.algorithms.basic import GeneticAlgorithm
 from NiaPy.benchmarks.utility import TaskConvPrint, TaskConvPlot
+from NiaPy.algorithms.basic.ga import MutationUros, CrossoverUros
 
 logging.basicConfig()
 logger = logging.getLogger('examples')
@@ -36,8 +37,9 @@ def simple_example(runs=10):
 		logger.info('%s %s' % (Best[0], Best[1]))
 
 def logging_example():
-	task = TaskConvPrint(D=50, nFES=50000, nGEN=50000, benchmark=MyBenchmark())
-	algo = GeneticAlgorithm(NP=40, Ts=5, Mr=0.5, Cr=0.4, task=task)
+	task = TaskConvPrint(D=10, nFES=50000, nGEN=50000, benchmark=MyBenchmark())
+	algo = GeneticAlgorithm(NP=40, Ts=4, Mr=0.2, Cr=0.5, Mutation=MutationUros, Crossover=CrossoverUros, seed=None, task=task)
+	# algo = GeneticAlgorithm(NP=50, Ts=10, Mr=0.5, Cr=0.5, task=task)
 	best = algo.run()
 	logger.info('%s %s' % (best[0], best[1]))
 
@@ -49,7 +51,7 @@ def plot_example():
 	input('Press [enter] to continue')
 
 # simple_example()
-# logging_example()
-plot_example()
+logging_example()
+# plot_example()
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
