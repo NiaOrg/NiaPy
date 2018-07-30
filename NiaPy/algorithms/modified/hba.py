@@ -1,7 +1,7 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, multiple-statements, logging-not-lazy, attribute-defined-outside-init
 import logging
-from numpy import full, where, apply_along_axis, argmin
+from numpy import full, apply_along_axis, argmin
 from NiaPy.algorithms.basic import BatAlgorithm
 from NiaPy.algorithms.basic.de import CrossBest1
 
@@ -42,14 +42,6 @@ class HybridBatAlgorithm(BatAlgorithm):
 		self.F, self.CR, self.CrossMutt = F, CR, CrossMutt
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def repair(self, val, task):
-		"""Keep it within bounds."""
-		ir = where(val > task.Upper)
-		val[ir] = task.Upper[ir]
-		ir = where(val < task.Lower)
-		val[ir] = task.Lower[ir]
-		return val
-
 	def runTask(self, task):
 		v, Sol = full([self.NP, task.D], 0.0), task.Lower + task.bRange * self.rand.rand(self.NP, task.D)
 		Fitness = apply_along_axis(task.eval, 1, Sol)
@@ -59,8 +51,8 @@ class HybridBatAlgorithm(BatAlgorithm):
 			Q = self.Qmin + (self.Qmax - self.Qmin) * self.rand.uniform(0, 1, self.NP)
 			for i in range(self.NP):
 				v[i] = v[i] + (Sol[i] - best) * Q[i]
-				S = self.repair(Sol[i] + v[i], task)
-				if self.rand.rand() > self.r: S = self.repair(self.CrossMutt(Sol, i, best, self.F, self.CR, self.rand), task)
+				S = task.repair(Sol[i] + v[i])
+				if self.rand.rand() > self.r: S = task.repair(self.CrossMutt(Sol, i, best, self.F, self.CR, self.rand))
 				f_new = task.eval(S)
 				if Fitness[i] <= f_new and self.rand.rand() < self.A:
 					Sol[i] = S

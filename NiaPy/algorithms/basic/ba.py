@@ -1,7 +1,7 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, line-too-long, singleton-comparison
 import logging
-from numpy import full, apply_along_axis, argmin, where
+from numpy import full, apply_along_axis, argmin
 from NiaPy.algorithms.algorithm import Algorithm
 
 logging.basicConfig()

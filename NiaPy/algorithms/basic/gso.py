@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, line-too-long, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use
+# pylint: disable=mixed-indentation, trailing-whitespace, line-too-long, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, redefined-builtin
 import logging
 from scipy.spatial.distance import euclidean
 from numpy import full, apply_along_axis, argmax, argmin, copy, sum, inf
@@ -48,8 +48,8 @@ class GlowwormSwarmOptimization(Algorithm):
 
 	def getNeighbors(self, i, r, GS, L):
 		N = list()
-		for j in range(len(GS)):
-			if i != j and self.d(GS[i], GS[j]) < r and L[i] > L[j]: N.append(j)
+		for j, gw in enumerate(GS):
+			if i != j and self.d(GS[i], gw) < r and L[i] > L[j]: N.append(j)
 		return N
 
 	def potentialShift(self, i, N, L):
@@ -63,11 +63,11 @@ class GlowwormSwarmOptimization(Algorithm):
 		while not task.stopCondI():
 			GSo, Ro, GS_f = copy(GS), copy(R), apply_along_axis(task.eval, 1, GS)
 			L = (1 - self.rho) * L + self.gamma * GS_f
-			for i in range(len(GS)):
+			for i, gw in enumerate(GSo):
 				N = self.getNeighbors(i, Ro[i], GSo, L)
 				P = self.potentialShift(i, N, L)
 				j = self.randMove(i) if not P else N[argmax(P)]
-				GS[i] = task.repair(GSo[i] + self.s * ((GSo[j] - GSo[i]) / euclidean(GSo[j], GSo[i])))
+				GS[i] = task.repair(gw + self.s * ((GSo[j] - gw) / euclidean(GSo[j], gw)))
 				R[i] = min(self.rs, max(0, Ro[i] + self.beta * (self.nt - len(N))))
 			ib = argmin(GS_f)
 			if GS_f[ib] < xb_f: xb, xb_f = GSo[ib], GS_f[ib]

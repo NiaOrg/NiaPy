@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, line-too-long, expression-not-assigned, singleton-comparison, len-as-condition
+# pylint: disable=mixed-indentation, multiple-statements, line-too-long, expression-not-assigned, singleton-comparison, len-as-condition, no-self-use, unused-argument
 from numpy import random as rand, inf, ndarray, asarray, array_equal
 from NiaPy.benchmarks.utility import Task
 
@@ -49,7 +49,7 @@ class Algorithm:
 		r"""Run the algorithm for only one iteration and return the gest solution.
 
 		Arguments:
-		task {Task} -- Task with bounds and objective function for optimization 
+		task {Task} -- Task with bounds and objective function for optimization
 
 		Return:
 		solution {array} -- point of best solution
