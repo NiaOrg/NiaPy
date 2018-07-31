@@ -29,11 +29,15 @@ The micro framework features following algorithms:
   - Bare bones fireworks algorithm ([see example](examples/run_bbfwa.py))
   - Camel algorithm ([see example](example/run_ca.py))
   - Differential evolution algorithm ([see example](examples/run_de.py))
+  - Evolution Strategy ([see example](example/run_es1p1.py), [see example](example/run_esMp1.py), [see example](example/run_esMpL.py), [see example](example/run_esML.py))
   - Firefly algorithm ([see example](examples/run_fa.py))
   - Flower pollination algorithm ([see example](examples/run_fpa.py))
   - Genetic algorithm ([see example](examples/run_ga.py))
+  - Glowworm Swarm Optimization ([see example](examples/run_gso.py))
   - Grey wolf optimizer ([see example](examples/run_gwo.py))
+  - Monkey King Evolution ([see example](example/run_mkev1.py), [see example](example/run_mkev2.py), [see example](example/run_mkev3.py))
   - Particle swarm optimization ([see example](examples/run_pso.py))
+  - Sine Cosine Algorithm ([see example](examples/run_sca.py))
 - modified:
   - Hybrid bat algorithm ([see example](examples/run_hba.py))
   - Self-adaptive differential evolution algorithm ([see example](examples/run_jde.py))
@@ -48,12 +52,17 @@ The following benchmark functions are included in NiaPy:
 - Chung Reynolds
 - Csendes
 - Discus
+- Dixon-Price
 - Elliptic
 - Griewank
 - Happy cat
 - HGBat
 - Katsuura
+- Levy
+- Michalewicz
+- Perm
 - Pintér
+- Powell
 - Qing
 - Quintic
 - Rastrigin
@@ -65,14 +74,18 @@ The following benchmark functions are included in NiaPy:
   - Schwefel 2.21
   - Schwefel 2.22
 - Sphere
+  - Sphere2 -> Sphere with different powers
+  - Sphere3 -> Rotated hyper-ellipsoid
 - Step
   - Step2
   - Step3
 - Stepint
 - Styblinski-Tang
 - Sum Squares
+- Trid
 - Weierstrass
 - Whitley
+- Zakharov
 
 # Setup
 

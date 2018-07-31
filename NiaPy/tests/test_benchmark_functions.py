@@ -2,7 +2,7 @@
 # pylint: disable=mixed-indentation, redefined-builtin, too-many-instance-attributes,too-many-public-methods
 from math import pow
 from unittest import TestCase
-from numpy import asarray
+from numpy import asarray, pi, full
 from NiaPy.benchmarks.utility import Utility
 
 class TestBenchmarkFunctions(TestCase):
@@ -220,4 +220,73 @@ class TestBenchmarkFunctions(TestCase):
 		self.assertTrue(callable(fun))
 		self.assertAlmostEqual(fun(self.D, self.array10), 371.0, delta=1e-4)
 
+	def test_michalewicz(self):
+		fun = self.assertBounds('michalewicz', 0, pi)
+		self.assertTrue(callable(fun))
+		self.assertAlmostEqual(fun(2, asarray([2.20, 1.57])), -1.8013)
+
+	def test_levy(self):
+		fun = self.assertBounds('levy', 0, pi)
+		self.assertTrue(callable(fun))
+		self.assertAlmostEqual(fun(2, full(2, 1.)), 0.0)
+		self.assertAlmostEqual(fun(10, full(10, 1.)), 0.0)
+		self.assertAlmostEqual(fun(100, full(100, 1.)), 0.0)
+
+	def test_sphere2(self):
+		fun = self.assertBounds('sphere2', -1, 1)
+		self.assertTrue(callable(fun))
+		self.assertAlmostEqual(fun(2, full(2, 0.)), 0.0)
+		self.assertAlmostEqual(fun(10, full(10, 0.)), 0.0)
+		self.assertAlmostEqual(fun(100, full(100, 0.)), 0.0)
+
+	def test_sphere3(self):
+		fun = self.assertBounds('sphere3', -65.536, 65.536)
+		self.assertTrue(callable(fun))
+		self.assertAlmostEqual(fun(2, full(2, 0.)), 0.0)
+		self.assertAlmostEqual(fun(10, full(10, 0.)), 0.0)
+		self.assertAlmostEqual(fun(100, full(100, 0.)), 0.0)
+
+	def __trid_opt(self, d): return -d * (d + 4) * (d - 1) / 6
+
+	def __trid_opt_sol(self, d): return asarray([i * (d + 1 - i) for i in range(1, d + 1)])
+
+	def test_trid(self):
+		fun = self.assertBounds('trid', -2 ** 2, 2 ** 2)
+		self.assertTrue(callable(fun))
+		self.assertAlmostEqual(fun(2, self.__trid_opt_sol(2)), self.__trid_opt(2))
+		self.assertAlmostEqual(fun(10, self.__trid_opt_sol(10)), self.__trid_opt(10))
+		self.assertAlmostEqual(fun(100, self.__trid_opt_sol(100)), self.__trid_opt(100))
+
+	def __perm_opt_sol(self, d): return asarray([1 / i for i in range(1, d + 1)])
+
+	def test_perm(self):
+		fun = self.assertBounds('perm', -10, 10)
+		self.assertTrue(callable(fun))
+		self.assertAlmostEqual(fun(2, self.__perm_opt_sol(2)), .0)
+		self.assertAlmostEqual(fun(10, self.__perm_opt_sol(10)), .0)
+		self.assertAlmostEqual(fun(100, self.__perm_opt_sol(100)), .0)
+
+	def test_zakharov(self):
+		fun = self.assertBounds('zakharov', -5, 10)
+		self.assertTrue(callable(fun))
+		self.assertAlmostEqual(fun(2, full(2, .0)), .0)
+		self.assertAlmostEqual(fun(10, full(10, .0)), .0)
+		self.assertAlmostEqual(fun(100, full(100, .0)), .0)
+	
+	def __dixonprice_opt_sol(self, d): return asarray([2 ** -((2 ** i - 2) / 2 ** i) for i in range(1, d + 1)])
+
+	def test_dixonprice(self):
+		fun = self.assertBounds('dixonprice', -10, 10)
+		self.assertTrue(callable(fun))
+		self.assertAlmostEqual(fun(2, self.__dixonprice_opt_sol(2)), .0)
+		self.assertAlmostEqual(fun(10, self.__dixonprice_opt_sol(10)), .0)
+		self.assertAlmostEqual(fun(100, self.__dixonprice_opt_sol(100)), .0)
+
+	def test_powell(self):
+		fun = self.assertBounds('powell', -4, 5)
+		self.assertTrue(callable(fun))
+		self.assertAlmostEqual(fun(2, full(2, .0)), .0)
+		self.assertAlmostEqual(fun(10, full(10, .0)), .0)
+		self.assertAlmostEqual(fun(100, full(100, .0)), .0)
+	
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

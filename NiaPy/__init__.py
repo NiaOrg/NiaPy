@@ -110,6 +110,7 @@ class Runner:
 
 		Limit {integer} -- Limit
 
+		k {integer} -- Number of runs before adaptive
 		"""
 		self.D = D
 		self.NP = NP
@@ -144,7 +145,7 @@ class Runner:
 		self.n = kwargs.pop('n', 10)
 		self.omega = kwargs.pop('omega', 0.25)
 		self.mu = kwargs.pop('mu', 0.5)
-		self.muES = kwargs.pop('mu', 35)
+		self.muES = kwargs.pop('muES', 35)
 		self.E_init = kwargs.pop('E_init', 10)
 		self.S_init = kwargs.pop('S_init', 10)
 		self.T_min = kwargs.pop('T_min', -10)
@@ -158,6 +159,7 @@ class Runner:
 		self.C = kwargs.pop('C', 2)
 		self.FC = kwargs.pop('FC', 0.7)
 		self.R = kwargs.pop('R', 0.3)
+		self.k = kwargs.pop('k', 15)
 		self.results = {}
 
 	def __algorithmFactory(self, name, benchmark):
@@ -193,8 +195,10 @@ class Runner:
 			algorithm = algorithms.basic.MonkeyKingEvolutionV2(D=self.D, nFES=self.nFES, C=self.C, R=self.R, FC=self.FC, benchmark=bench)
 		elif name == 'MonkeyKingEvolutionV3':
 			algorithm = algorithms.basic.MonkeyKingEvolutionV3(D=self.D, nFES=self.nFES, C=self.C, R=self.R, FC=self.FC, benchmark=bench)
-		elif name == 'EvolutionStrategy':
-			algorithm = algorithms.basic.EvolutionStrategy(D=self.D, nFES=self.nFES, mu=self.muES, lam=self.lam, benchmark=bench)
+		elif name == 'EvolutionStrategy1p1':
+			algorithm = algorithms.basic.EvolutionStrategy1p1(D=self.D, nFES=self.nFES, k=self.k, c_a=self.C_a, c_r=self.C_r, benchmark=bench)
+		elif name == 'EvolutionStrategyMp1':
+			algorithm = algorithms.basic.EvolutionStrategyMp1(D=self.D, nFES=self.nFES, mu=self.muES, k=self.k, c_a=self.C_a, c_r=self.C_r, benchmark=bench)
 		elif name == 'SineCosineAlgorithm':
 			algorithm = algorithms.basic.SineCosineAlgorithm(D=self.D, nFES=self.nFES, nGEN=self.nRuns, NP=self.NP, a=self.a, Rmin=self.Rmin, Rmax=self.Rmax, benchmark=bench)
 		else:

@@ -4,7 +4,7 @@
 import logging
 from numpy import ndarray, asarray, full, inf, dot, where, random as rnd
 from matplotlib import pyplot as plt, animation as anim
-from . import Rastrigin, Rosenbrock, Griewank, Sphere, Ackley, Schwefel, Schwefel221, Schwefel222, Whitley, Alpine1, Alpine2, HappyCat, Ridge, ChungReynolds, Csendes, Pinter, Qing, Quintic, Salomon, SchumerSteiglitz, Step, Step2, Step3, Stepint, SumSquares, StyblinskiTang, BentCigar, Discus, Elliptic, ExpandedGriewankPlusRosenbrock, HGBat, Katsuura, ExpandedScaffer, ModifiedSchwefel, Weierstrass
+from . import Rastrigin, Rosenbrock, Griewank, Sphere, Ackley, Schwefel, Schwefel221, Schwefel222, Whitley, Alpine1, Alpine2, HappyCat, Ridge, ChungReynolds, Csendes, Pinter, Qing, Quintic, Salomon, SchumerSteiglitz, Step, Step2, Step3, Stepint, SumSquares, StyblinskiTang, BentCigar, Discus, Elliptic, ExpandedGriewankPlusRosenbrock, HGBat, Katsuura, ExpandedScaffer, ModifiedSchwefel, Weierstrass, Michalewicz, Levy, Sphere2, Sphere3, Trid, Perm, Zakharov, DixonPrice, Powell
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.benchmarks.utility')
@@ -22,6 +22,7 @@ class Utility:
 			'chungReynolds': ChungReynolds,
 			'csendes': Csendes,
 			'discus': Discus,
+			'dixonprice': DixonPrice,
 			'conditionedellptic': Elliptic,
 			'elliptic': Elliptic,
 			'expandedgriewankplusrosenbrock': ExpandedGriewankPlusRosenbrock,
@@ -30,8 +31,12 @@ class Utility:
 			'happyCat': HappyCat,
 			'hgbat': HGBat,
 			'katsuura': Katsuura,
+			'levy': Levy,
+			'michalewicz': Michalewicz,
 			'modifiedscwefel': ModifiedSchwefel,
+			'perm': Perm,
 			'pinter': Pinter,
+			'powell': Powell,
 			'qing': Qing,
 			'quintic': Quintic,
 			'rastrigin': Rastrigin,
@@ -43,14 +48,18 @@ class Utility:
 			'schwefel221': Schwefel221,
 			'schwefel222': Schwefel222,
 			'sphere': Sphere,
+			'sphere2': Sphere2,
+			'sphere3': Sphere3,
 			'step': Step,
 			'step2': Step2,
 			'step3': Step3,
 			'stepint': Stepint,
 			'styblinskiTang': StyblinskiTang,
 			'sumSquares': SumSquares,
+			'trid': Trid,
 			'weierstrass': Weierstrass,
-			'whitley': Whitley
+			'whitley': Whitley,
+			'zakharov': Zakharov
 		}
 
 	def get_benchmark(self, benchmark):

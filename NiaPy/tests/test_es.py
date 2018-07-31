@@ -2,7 +2,7 @@
 # pylint: disable=mixed-indentation, multiple-statements
 from unittest import TestCase
 from NiaPy.benchmarks.griewank import Griewank
-from NiaPy.algorithms.basic import EvolutionStrategy
+from NiaPy.algorithms.basic import EvolutionStrategy1p1, EvolutionStrategyMp1
 
 class MyBenchmark:
 	def __init__(self):
@@ -17,11 +17,11 @@ class MyBenchmark:
 			return val
 		return evaluate
 
-class ESTestCase(TestCase):
+class ES1p1TestCase(TestCase):
 	def setUp(self):
 		self.D = 40
-		self.es_custom = EvolutionStrategy(D=self.D, nFES=1000, mu=35, n=10, C_a=2, C_r=0.5, benchmark=MyBenchmark())
-		self.es_griewank = EvolutionStrategy(D=self.D, nFES=1000, mu=35, n=10, C_a=5, C_r=0.5, benchmark=Griewank())
+		self.es_custom = EvolutionStrategy1p1(D=self.D, nFES=1000, k=10, c_a=1.5, c_r=0.42, benchmark=MyBenchmark())
+		self.es_griewank = EvolutionStrategy1p1(D=self.D, nFES=1000, k=15, c_a=1.2, c_r=0.5, benchmark=Griewank())
 
 	def test_custom_works_fine(self):
 		fun = MyBenchmark().function()
@@ -34,5 +34,24 @@ class ESTestCase(TestCase):
 		x = self.es_griewank.run()
 		self.assertTrue(x)
 		self.assertAlmostEqual(fun(self.D, x[0]), x[1], delta=1e2)
+
+class ESMp1TestCase(TestCase):
+	def setUp(self):
+		self.D = 40
+		self.es_custom = EvolutionStrategyMp1(D=self.D, nFES=1000, mu=45, k=50, c_a=1.1, c_r=0.5, benchmark=MyBenchmark())
+		self.es_griewank = EvolutionStrategyMp1(D=self.D, nFES=1000, mu=30, k=25, c_a=1.5, c_r=0.5, benchmark=Griewank())
+
+	def test_custom_works_fine(self):
+		fun = MyBenchmark().function()
+		x = self.es_custom.run()
+		self.assertTrue(x)
+		self.assertAlmostEqual(fun(self.D, x[0]), x[1], delta=1e2)
+
+	def test_griewank_works_fine(self):
+		fun = Griewank().function()
+		x = self.es_griewank.run()
+		self.assertTrue(x)
+		self.assertAlmostEqual(fun(self.D, x[0]), x[1], delta=1e2)
+
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

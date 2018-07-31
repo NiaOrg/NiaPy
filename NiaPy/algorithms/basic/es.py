@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, unused-argument
+# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, unused-argument, singleton-comparison, no-else-return
 import logging
 from numpy import argmin, random as rand, full
 from NiaPy.algorithms.algorithm import Algorithm, Individual
@@ -8,17 +8,11 @@ logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.basic')
 logger.setLevel('INFO')
 
-__all__ = ['EvolutionStrategy1p1']
+__all__ = ['EvolutionStrategy1p1', 'EvolutionStrategyMp1']
 
 def PlusStrategy(pop_1, pop_2): return pop_1.copy().extend(pop_2)
 
 def NormalStrategy(pop_1, pop_2): return pop_2
-
-def TurnamentSelection(pop, ts, rnd=rand):
-	comps = [pop[i] for i in rand.choice(len(pop), ts, replace=False)]
-	return comps[argmin([c.f for c in comps])]
-
-def ElitistSelection(xn, xn_f, x, x_f): return xn, xn_f if xn_f <= x_ else x, x_f
 
 class IndividualES(Individual):
 	def __init__(self, **kwargs):

@@ -4,9 +4,9 @@
 
 from numpy import sin, pi
 
-__all__ = ['Michalewichz']
+__all__ = ['Michalewicz']
 
-class Michalewichz:
+class Michalewicz:
 	r"""Implementations of Michalewichz's functions.
 
 	Date: 2018
@@ -22,7 +22,9 @@ class Michalewichz:
 	evaluated on the hypercube :math:`x_i ∈ [0, \pi]`, for all :math:`i = 1, 2,..., D`.
 
 	**Global minimum:**
-	:math:`f(\textbf{x}) = - \sum_{i = 1}^{D} \sin(x_i) \sin\left( \frac{ix_i^2}{\pi} \right)^{2m}`
+	at :math:`d = 2` :math:`f(\textbf{x}^*) = -1.8013` at :math:`\textbf{x}^* = (2.20, 1.57)`
+	at :math:`d = 5` :math:`f(\textbf{x}^*) = -4.687658`
+	at :math:`d = 10` :math:`f(\textbf{x}^*) = -9.66015`
 
 	LaTeX formats:
 	Inline:
@@ -34,10 +36,10 @@ class Michalewichz:
 	Domain:
 	$0 \leq x_i \leq \pi$
 
-	Reference:
+	Reference URL:
 	https://www.sfu.ca/~ssurjano/michal.html
 	"""
-	def __init__(self, Lower=0.0, Upper=2 * pi, m=10): self.Lower, self.Upper, Michalewichz.m = Lower, Upper, m
+	def __init__(self, Lower=0.0, Upper=pi, m=10): self.Lower, self.Upper, Michalewicz.m = Lower, Upper, m
 
 	@classmethod
 	def function(cls):

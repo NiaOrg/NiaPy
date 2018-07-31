@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, unused-argument, line-too-long, len-as-condition, useless-super-delegation
+# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, unused-argument, line-too-long, len-as-condition, useless-super-delegation, redefined-builtin
 import logging
 from numpy import argmin, sort, random as rand, asarray, fmin, fmax, sum
 from NiaPy.algorithms.algorithm import Algorithm, Individual
@@ -8,14 +8,14 @@ logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.basic')
 logger.setLevel('INFO')
 
-__all__ = ['GeneticAlgorithm', 'TurnamentSelection', 'BackerSelection', 'LinearSelection', 'NonlinearSelection', 'TwoPointCrossover', 'MultiPointCrossover', 'UniformCrossover', 'UniformMutation', 'CreepMutation']
+__all__ = ['GeneticAlgorithm', 'TurnamentSelection', 'TwoPointCrossover', 'MultiPointCrossover', 'UniformCrossover', 'UniformMutation', 'CreepMutation']
 
 def TurnamentSelection(pop, ic, ts, x_b, rnd=rand):
 	comps = [pop[i] for i in rand.choice(len(pop), ts, replace=False)]
 	return comps[argmin([c.f for c in comps])]
 
 def RouletteSelection(pop, ic, ts, x_b, rnd=rand):
-	f, r = sum([x.f for x in pop]), rnd.rand()
+	f = sum([x.f for x in pop])
 	qi = sum([pop[i].f / f for i in range(ic + 1)])
 	return pop[ic].x if rnd.rand() < qi else x_b.x
 
