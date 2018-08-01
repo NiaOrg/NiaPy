@@ -1,7 +1,7 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, multiple-statements, unused-variable, unused-argument
 from unittest import TestCase
-from numpy import full, random as rnd, inf
+from numpy import full, random as rnd, inf, sum
 from NiaPy.benchmarks.utility import Utility, Task
 
 class NoLimits:
@@ -17,10 +17,7 @@ class MyBenchmark:
 
 	@classmethod
 	def function(cls):
-		def evaluate(D, x):
-			val = 0.0
-			for i in range(D): val = x[i] ** 2
-			return val
+		def evaluate(D, x): return sum(x ** 2)
 		return evaluate
 
 class UtilityTestCase(TestCase):
