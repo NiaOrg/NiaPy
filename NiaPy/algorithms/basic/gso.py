@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, line-too-long, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, redefined-builtin
+# pylint: disable=mixed-indentation, trailing-whitespace, line-too-long, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, redefined-builtin, singleton-comparison, unused-argument, arguments-differ
 import logging
 from scipy.spatial.distance import euclidean
 from numpy import full, apply_along_axis, argmax, argmin, copy, sum, inf, fmax, pi
@@ -125,7 +125,7 @@ class GlowwormSwarmOptimizationV2(GlowwormSwarmOptimization):
 		self.__setParams(alpha=kwargs.pop('alpha', 0.2), **kwargs)
 		GlowwormSwarmOptimization.setParameters(self, **kwargs)
 
-	def __setParams(self, beta1=0.2, **ukwargs):
+	def __setParams(self, alpha=0.2, **ukwargs):
 		r"""Set the arguments of an algorithm.
 
 		**Arguments**:

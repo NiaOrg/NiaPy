@@ -37,7 +37,7 @@ class Trid:
 	Reference:
 	https://www.sfu.ca/~ssurjano/levy.html
 	"""
-	def __init__(self, D=2): self.Lower, self.Upper, = -D ** 2, D ** 2 
+	def __init__(self, D=2): self.Lower, self.Upper, = -D ** 2, D ** 2
 
 	@classmethod
 	def function(cls):

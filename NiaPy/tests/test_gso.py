@@ -71,7 +71,7 @@ class GSOv2TestCase(TestCase):
 		self.assertTrue(x)
 		self.assertAlmostEqual(fun(self.D, x[0]), x[1], delta=1e2)
 
-class GSOv2TestCase(TestCase):
+class GSOv3TestCase(TestCase):
 	def setUp(self):
 		self.D = 40
 		self.gso_custom = GlowwormSwarmOptimizationV3(D=self.D, nFES=1000, NP=35, a=7, Rmin=0.1, Rmax=3, benchmark=MyBenchmark())

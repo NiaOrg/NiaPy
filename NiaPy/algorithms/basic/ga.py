@@ -45,7 +45,7 @@ def CrossoverUros(pop, ic, cr, rnd=rand):
 	io = ic
 	while io != ic: io = rnd.randint(len(pop))
 	alpha = cr + (1 + 2 * cr) * rnd.rand(len(pop[ic]))
-	x = alpha * pop[ic] + (1 - alpha) * pop[io] 
+	x = alpha * pop[ic] + (1 - alpha) * pop[io]
 	return x
 
 def UniformMutation(pop, ic, mr, task, rnd=rand):
@@ -88,7 +88,7 @@ class GeneticAlgorithm(Algorithm):
 
 	def evolve(self, pop, x_b, task):
 		npop, x_bc = list(), pop[argmin([x.f for x in pop])]
-		for i in range(self.NP): 
+		for i in range(self.NP):
 			ind = Individual(x=self.Selection(pop, i, self.Ts, x_bc, self.rand), e=False)
 			ind.x = self.Crossover(pop, i, self.Cr, self.rand)
 			ind.x = self.Mutation(pop, i, self.Mr, task, self.rand)

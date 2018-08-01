@@ -35,7 +35,7 @@ class Powell:
 	Reference:
 	https://www.sfu.ca/~ssurjano/levy.html
 	"""
-	def __init__(self, Lower=-4.0, Upper=5.0): self.Lower, self.Upper, = Lower, Upper 
+	def __init__(self, Lower=-4.0, Upper=5.0): self.Lower, self.Upper, = Lower, Upper
 
 	@classmethod
 	def function(cls):

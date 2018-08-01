@@ -5,7 +5,6 @@ from NiaPy.benchmarks.alpine import Alpine1, Alpine2
 from NiaPy.benchmarks.rastrigin import Rastrigin
 from NiaPy.benchmarks.rosenbrock import Rosenbrock
 from NiaPy.benchmarks.griewank import Griewank, ExpandedGriewankPlusRosenbrock
-from NiaPy.benchmarks.sphere import Sphere
 from NiaPy.benchmarks.schwefel import Schwefel, Schwefel221, Schwefel222, ExpandedScaffer, ModifiedSchwefel
 from NiaPy.benchmarks.whitley import Whitley
 from NiaPy.benchmarks.happyCat import HappyCat

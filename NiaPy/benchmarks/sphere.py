@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=anomalous-backslash-in-string
+# pylint: disable=anomalous-backslash-in-string, mixed-indentation, redefined-builtin, multiple-statements
 
 from numpy import abs
 
@@ -57,9 +57,9 @@ class Sphere2:
 	r"""Implementation of Sphere with different powers function.
 
 	Date: 2018
-	Authors: Klemen 
+	Authors: Klemen
 	License: MIT
-	
+
 	Function: **Sun of different powers function**
 	:math:`f(\textbf{x}) = \sum_{i = 1}^D | x_i |^{i + 1}`
 
@@ -98,9 +98,9 @@ class Sphere3:
 	r"""Implementation of rotated hyper-ellipsoid function.
 
 	Date: 2018
-	Authors: Klemen 
+	Authors: Klemen
 	License: MIT
-	
+
 	Function: **Sun of rotated hyper-elliposid function**
 	:math:`f(\textbf{x}) = \sum_{i = 1}^D \sum_{j = 1}^i x_j^2`
 

@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, redefined-builtin, too-many-instance-attributes,too-many-public-methods
+# pylint: disable=mixed-indentation, redefined-builtin, too-many-instance-attributes,too-many-public-methods, multiple-statements, no-self-use
 from math import pow
 from unittest import TestCase
 from numpy import asarray, pi, full
@@ -272,7 +272,7 @@ class TestBenchmarkFunctions(TestCase):
 		self.assertAlmostEqual(fun(2, full(2, .0)), .0)
 		self.assertAlmostEqual(fun(10, full(10, .0)), .0)
 		self.assertAlmostEqual(fun(100, full(100, .0)), .0)
-	
+
 	def __dixonprice_opt_sol(self, d): return asarray([2 ** -((2 ** i - 2) / 2 ** i) for i in range(1, d + 1)])
 
 	def test_dixonprice(self):
@@ -288,5 +288,5 @@ class TestBenchmarkFunctions(TestCase):
 		self.assertAlmostEqual(fun(2, full(2, .0)), .0)
 		self.assertAlmostEqual(fun(10, full(10, .0)), .0)
 		self.assertAlmostEqual(fun(100, full(100, .0)), .0)
-	
+
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
