@@ -3,10 +3,11 @@
 """Implementations of Katsuura functions."""
 
 from math import fabs
+from NiaPy.benchmarks import Benchmark
 
 __all__ = ['Katsuura']
 
-class Katsuura:
+class Katsuura(Benchmark):
 	r"""Implementations of Katsuura functions.
 
 	Date: 2018
@@ -38,7 +39,7 @@ class Katsuura:
 	Reference:
 	http://www5.zzu.edu.cn/__local/A/69/BC/D3B5DFE94CD2574B38AD7CD1D12_C802DAFE_BC0C0.pdf
 	"""
-	def __init__(self, Lower=-100.0, Upper=100.0): self.Lower, self.Upper = Lower, Upper
+	def __init__(self, Lower=-100.0, Upper=100.0, **kwargs): Benchmark.__init__(self, Lower, Upper, **kwargs)
 
 	@classmethod
 	def function(cls):

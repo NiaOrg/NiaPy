@@ -1,5 +1,6 @@
 """Module with implementations of benchmark functions."""
 
+from NiaPy.benchmarks.benchmark import Benchmark
 from NiaPy.benchmarks.ackley import Ackley
 from NiaPy.benchmarks.alpine import Alpine1, Alpine2
 from NiaPy.benchmarks.rastrigin import Rastrigin
@@ -34,6 +35,8 @@ from NiaPy.benchmarks.perm import Perm
 from NiaPy.benchmarks.zakharov import Zakharov
 from NiaPy.benchmarks.dixonprice import DixonPrice
 from NiaPy.benchmarks.powell import Powell
+from NiaPy.benchmarks.cosinemixture import CosineMixture
+from NiaPy.benchmarks.infinity import Infinity
 
 __all__ = [
     'Rastrigin',
@@ -80,5 +83,8 @@ __all__ = [
     'Perm',
     'Zakharov',
     'DixonPrice',
-    'Powell'
+    'Powell',
+    'CosineMixture',
+    'Infinity',
+    'Benchmark'
 ]

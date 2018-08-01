@@ -1,6 +1,6 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, redefined-builtin, too-many-instance-attributes,too-many-public-methods, multiple-statements, no-self-use
-from math import pow
+from math import pow, isnan
 from unittest import TestCase
 from numpy import asarray, pi, full
 from NiaPy.benchmarks.utility import Utility
@@ -163,7 +163,9 @@ class TestBenchmarkFunctions(TestCase):
 	def test_bentcigar(self):
 		fun = self.assertBounds('bentcigar', -100, 100)
 		self.assertTrue(callable(fun))
-		self.assertAlmostEqual(fun(self.D, self.array10), 54000001.0, delta=1e-4)
+		self.assertAlmostEqual(fun(2, full(2, 0)), 0.0, delta=1e-4)
+		self.assertAlmostEqual(fun(10, full(10, 0)), 0.0, delta=1e-4)
+		self.assertAlmostEqual(fun(100, full(100, 0)), 0.0, delta=1e-4)
 
 	def test_discus(self):
 		fun = self.assertBounds('discus', -100, 100)
@@ -288,5 +290,22 @@ class TestBenchmarkFunctions(TestCase):
 		self.assertAlmostEqual(fun(2, full(2, .0)), .0)
 		self.assertAlmostEqual(fun(10, full(10, .0)), .0)
 		self.assertAlmostEqual(fun(100, full(100, .0)), .0)
+
+	def test_cosinemixture(self):
+		fun = self.assertBounds('cosinemixture', -1, 1)
+		self.assertTrue(callable(fun))
+		self.assertAlmostEqual(fun(2, full(2, .0)), -.1 * 2)
+		self.assertAlmostEqual(fun(10, full(10, .0)), -.1 * 10)
+		self.assertAlmostEqual(fun(100, full(100, .0)), -.1 * 100)
+
+	def test_infinity(self):
+		fun = self.assertBounds('infinity', -1, 1)
+		self.assertTrue(callable(fun))
+		self.assertTrue(isnan(fun(2, full(2, .0))))
+		self.assertTrue(isnan(fun(10, full(10, .0))))
+		self.assertTrue(isnan(fun(100, full(100, .0))))
+		self.assertAlmostEqual(fun(2, full(2, 1e-4)), .0)
+		self.assertAlmostEqual(fun(10, full(10, 1e-4)), .0)
+		self.assertAlmostEqual(fun(100, full(100, 1e-4)), .0)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

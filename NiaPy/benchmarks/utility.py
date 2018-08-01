@@ -4,7 +4,7 @@
 import logging
 from numpy import ndarray, asarray, full, inf, dot, where, random as rnd
 from matplotlib import pyplot as plt, animation as anim
-from . import Rastrigin, Rosenbrock, Griewank, Sphere, Ackley, Schwefel, Schwefel221, Schwefel222, Whitley, Alpine1, Alpine2, HappyCat, Ridge, ChungReynolds, Csendes, Pinter, Qing, Quintic, Salomon, SchumerSteiglitz, Step, Step2, Step3, Stepint, SumSquares, StyblinskiTang, BentCigar, Discus, Elliptic, ExpandedGriewankPlusRosenbrock, HGBat, Katsuura, ExpandedScaffer, ModifiedSchwefel, Weierstrass, Michalewicz, Levy, Sphere2, Sphere3, Trid, Perm, Zakharov, DixonPrice, Powell
+from . import Rastrigin, Rosenbrock, Griewank, Sphere, Ackley, Schwefel, Schwefel221, Schwefel222, Whitley, Alpine1, Alpine2, HappyCat, Ridge, ChungReynolds, Csendes, Pinter, Qing, Quintic, Salomon, SchumerSteiglitz, Step, Step2, Step3, Stepint, SumSquares, StyblinskiTang, BentCigar, Discus, Elliptic, ExpandedGriewankPlusRosenbrock, HGBat, Katsuura, ExpandedScaffer, ModifiedSchwefel, Weierstrass, Michalewicz, Levy, Sphere2, Sphere3, Trid, Perm, Zakharov, DixonPrice, Powell, CosineMixture, Infinity
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.benchmarks.utility')
@@ -20,6 +20,7 @@ class Utility:
 			'alpine2': Alpine2,
 			'bentcigar': BentCigar,
 			'chungReynolds': ChungReynolds,
+			'cosinemixture': CosineMixture,
 			'csendes': Csendes,
 			'discus': Discus,
 			'dixonprice': DixonPrice,
@@ -30,6 +31,7 @@ class Utility:
 			'griewank': Griewank,
 			'happyCat': HappyCat,
 			'hgbat': HGBat,
+			'infinity': Infinity,
 			'katsuura': Katsuura,
 			'levy': Levy,
 			'michalewicz': Michalewicz,
