@@ -28,8 +28,8 @@ class BatAlgorithm(Algorithm):
 		**See**:
 		Algorithm.__init__(self, **kwargs)
 		"""
-		if kwargs.get('name', None) == None: super(BatAlgorithm, self).__init__(name=kwargs.get('name', 'BatAlgorithm'), sName=kwargs.get('sName', 'BA'), **kwargs)
-		else: super(BatAlgorithm, self).__init__(**kwargs)
+		if kwargs.get('name', None) == None: Algorithm.__init__(self, name=kwargs.get('name', 'BatAlgorithm'), sName=kwargs.get('sName', 'BA'), **kwargs)
+		else: Algorithm.__init__(self, **kwargs)
 
 	def setParameters(self, **kwargs): self.__setParams(**kwargs)
 

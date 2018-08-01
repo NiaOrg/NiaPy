@@ -7,7 +7,7 @@ sys.path.append('../')
 
 import random
 import logging
-from NiaPy.algorithms.basic import EvolutionStrategy1p1
+from NiaPy.algorithms.basic import EvolutionStrategyMpL
 from NiaPy.benchmarks.utility import TaskConvPrint, TaskConvPlot
 
 logging.basicConfig()
@@ -31,19 +31,19 @@ class MyBenchmark(object):
 
 def simple_example(runs=10):
 	for i in range(runs):
-		algo = EvolutionStrategy1p1(D=50, nFES=50000, seed=None, benchmark=MyBenchmark())
+		algo = EvolutionStrategyMpL(D=50, nFES=50000, seed=None, benchmark=MyBenchmark())
 		best = algo.run()
 		logger.info('%s %s' % (best[0], best[1]))
 
 def logging_example():
-	task = TaskConvPrint(D=50, nFES=50000, nGEN=50000, benchmark=MyBenchmark())
-	algo = EvolutionStrategy1p1(k=25, c_a=1.5, c_r=0.25, seed=None, task=task)
+	task = TaskConvPrint(D=10, nFES=50000, nGEN=50000, benchmark=MyBenchmark())
+	algo = EvolutionStrategyMpL(mu=50, lam=40, k=60, c_a=1.5, c_r=0.25, seed=None, task=task)
 	best = algo.run()
 	logger.info('nFES:%s nGEN:%s\n%s %s' % (task.Evals, task.Iters, best[0], best[1]))
 
 def plot_example():
 	task = TaskConvPlot(D=50, nFES=50000, nGEN=10000, benchmark=MyBenchmark())
-	algo = EvolutionStrategy1p1(k=25, c_a=1.5, c_r=0.25, seed=None, task=task)
+	algo = EvolutionStrategyMpL(mu=65, lam=50, k=25, c_a=1.5, c_r=0.25, seed=None, task=task)
 	best = algo.run()
 	logger.info('%s %s' % (best[0], best[1]))
 	input('Press [enter] to continue')

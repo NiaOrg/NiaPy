@@ -20,13 +20,7 @@ class ParticleSwarmAlgorithm(Algorithm):
 	**Reference paper:** Kennedy, J. and Eberhart, R. "Particle Swarm Optimization". Proceedings of IEEE International Conference on Neural Networks. IV. pp. 1942--1948, 1995.
 	"""
 
-	def __init__(self, **kwargs):
-		r"""**__init__(self, NP, D, nFES, C1, C2, w, vMin, vMax, benchmark)**.
-
-		**See**:
-		Algorithm.__init__(self, **kwargs)
-		"""
-		super(ParticleSwarmAlgorithm, self).__init__(name='ParticleSwarmAlgorithm', sName='PSO', **kwargs)
+	def __init__(self, **kwargs): Algorithm.__init__(self, name='ParticleSwarmAlgorithm', sName='PSO', **kwargs)
 
 	def setParameters(self, **kwargs): self.__setParams(**kwargs)
 

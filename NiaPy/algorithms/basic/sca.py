@@ -20,7 +20,7 @@ class SineCosineAlgorithm(Algorithm):
 	**Reference URL:** https://www.sciencedirect.com/science/article/pii/S0950705115005043
 	**Reference paper:** Seyedali Mirjalili, SCA: A Sine Cosine Algorithm for solving optimization problems, Knowledge-Based Systems, Volume 96, 2016, Pages 120-133, ISSN 0950-7051, https://doi.org/10.1016/j.knosys.2015.12.022.
 	"""
-	def __init__(self, **kwargs): super(SineCosineAlgorithm, self).__init__(name='SineCosineAlgorithm', sName='SCA', **kwargs)
+	def __init__(self, **kwargs): Algorithm.__init__(self, name='SineCosineAlgorithm', sName='SCA', **kwargs)
 
 	def setParameters(self, **kwargs): self.__setParams(**kwargs)
 

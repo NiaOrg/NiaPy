@@ -21,7 +21,7 @@ class FlowerPollinationAlgorithm(Algorithm):
 	**Reference paper:** Yang, Xin-She. "Flower pollination algorithm for global optimization. International conference on unconventional computing and natural computation. Springer, Berlin, Heidelberg, 2012.
 	Implementation is based on the following MATLAB code: https://www.mathworks.com/matlabcentral/fileexchange/45112-flower-pollination-algorithm?requestedDomain=true
 	"""
-	def __init__(self, **kwargs): super(FlowerPollinationAlgorithm, self).__init__(name='FlowerPollinationAlgorithm', sName='FPA', **kwargs)
+	def __init__(self, **kwargs): Algorithm.__init__(self, name='FlowerPollinationAlgorithm', sName='FPA', **kwargs)
 
 	def setParameters(self, **kwargs): self.__setParams(**kwargs)
 

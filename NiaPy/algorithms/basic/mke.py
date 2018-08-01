@@ -13,7 +13,7 @@ __all__ = ['MonkeyKingEvolutionV1', 'MonkeyKingEvolutionV2', 'MonkeyKingEvolutio
 
 class MkeSolution(Individual):
 	def __init__(self, **kwargs):
-		super(MkeSolution, self).__init__(**kwargs)
+		Individual.__init__(self, **kwargs)
 		self.f_pb, self.x_pb = self.f, self.x
 		self.MonkeyKing = False
 
@@ -31,8 +31,8 @@ class MonkeyKingEvolutionV1(Algorithm):
 	**Reference paper:** Zhenyu Meng, Jeng-Shyang Pan, Monkey King Evolution: A new memetic evolutionary algorithm and its application in vehicle fuel consumption optimization, Knowledge-Based Systems, Volume 97, 2016, Pages 144-157, ISSN 0950-7051, https://doi.org/10.1016/j.knosys.2016.01.009.
 	"""
 	def __init__(self, **kwargs):
-		if kwargs.get('name', None) == None: super(MonkeyKingEvolutionV1, self).__init__(name='MonkeyKingEvolutionV1', sName='MKEv1', **kwargs)
-		else: super(MonkeyKingEvolutionV1, self).__init__(**kwargs)
+		if kwargs.get('name', None) == None: Algorithm.__init__(self, name='MonkeyKingEvolutionV1', sName='MKEv1', **kwargs)
+		else: Algorithm.__init__(self, **kwargs)
 
 	def setParameters(self, **kwargs): self.__setParams(**kwargs)
 
@@ -105,7 +105,7 @@ class MonkeyKingEvolutionV2(MonkeyKingEvolutionV1):
 	**Reference paper:**
 	Zhenyu Meng, Jeng-Shyang Pan, Monkey King Evolution: A new memetic evolutionary algorithm and its application in vehicle fuel consumption optimization, Knowledge-Based Systems, Volume 97, 2016, Pages 144-157, ISSN 0950-7051, https://doi.org/10.1016/j.knosys.2016.01.009.
 	"""
-	def __init__(self, **kwargs): super(MonkeyKingEvolutionV2, self).__init__(name='MonkeyKingEvolutionV2', sName='MKEv2', **kwargs)
+	def __init__(self, **kwargs): MonkeyKingEvolutionV1.__init__(self, name='MonkeyKingEvolutionV2', sName='MKEv2', **kwargs)
 
 	def moveMK(self, x, dx, task): return x - self.FC * dx
 
@@ -137,7 +137,7 @@ class MonkeyKingEvolutionV3(MonkeyKingEvolutionV1):
 	**Reference paper:**
 	Zhenyu Meng, Jeng-Shyang Pan, Monkey King Evolution: A new memetic evolutionary algorithm and its application in vehicle fuel consumption optimization, Knowledge-Based Systems, Volume 97, 2016, Pages 144-157, ISSN 0950-7051, https://doi.org/10.1016/j.knosys.2016.01.009.
 	"""
-	def __init__(self, **kwargs): super(MonkeyKingEvolutionV3, self).__init__(name='MonkeyKingEvolutionV3', sName='MKEv3', **kwargs)
+	def __init__(self, **kwargs): MonkeyKingEvolutionV1.__init__(self, name='MonkeyKingEvolutionV3', sName='MKEv3', **kwargs)
 
 	def eval(self, X, x, x_f, task):
 		X_f = apply_along_axis(task.eval, 1, X)

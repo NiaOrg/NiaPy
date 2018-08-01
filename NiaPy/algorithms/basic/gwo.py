@@ -20,7 +20,7 @@ class GreyWolfOptimizer(Algorithm):
 	**Reference paper:** Mirjalili, Seyedali, Seyed Mohammad Mirjalili, and Andrew Lewis. "Grey wolf optimizer." Advances in engineering software 69 (2014): 46-61.
 	Grey Wold Optimizer (GWO) source code version 1.0 (MATLAB) from MathWorks
 	"""
-	def __init__(self, **kwargs): super(GreyWolfOptimizer, self).__init__(name='GreyWolfOptimizer', sName='GWO', **kwargs)
+	def __init__(self, **kwargs): Algorithm.__init__(self, name='GreyWolfOptimizer', sName='GWO', **kwargs)
 
 	def setParameters(self, **kwargs): self.__setParams(**kwargs)
 

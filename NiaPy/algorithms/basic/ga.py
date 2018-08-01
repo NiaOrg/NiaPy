@@ -69,7 +69,7 @@ class GeneticAlgorithm(Algorithm):
 	**Author:** Uros Mlakar and Klemen Berkovič
 	**License:** MIT
 	"""
-	def __init__(self, **kwargs): super(GeneticAlgorithm, self).__init__(name='GeneticAlgorithm', sName='GA', **kwargs)
+	def __init__(self, **kwargs): Algorithm.__init__(self, name='GeneticAlgorithm', sName='GA', **kwargs)
 
 	def setParameters(self, **kwargs): self.__setParams(**kwargs)
 

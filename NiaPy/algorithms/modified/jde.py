@@ -13,7 +13,7 @@ __all__ = ['SelfAdaptiveDifferentialEvolutionAlgorithm']
 
 class SolutionjDE(Individual):
 	def __init__(self, **kwargs):
-		super(SolutionjDE, self).__init__(**kwargs)
+		Individual.__init__(self, **kwargs)
 		self.F, self.CR = kwargs.get('F', 2), kwargs.get('CR', 0.5)
 
 class SelfAdaptiveDifferentialEvolutionAlgorithm(DifferentialEvolutionAlgorithm):
@@ -33,7 +33,7 @@ class SelfAdaptiveDifferentialEvolutionAlgorithm(DifferentialEvolutionAlgorithm)
 	A comparative study on numerical benchmark problems.
 	IEEE transactions on evolutionary computation, 10(6), 646-657, 2006.
 	"""
-	def __init__(self, **kwargs): super(SelfAdaptiveDifferentialEvolutionAlgorithm, self).__init__(name='SelfAdaptiveDifferentialEvolutionAlgorithm', sName='jDE', **kwargs)
+	def __init__(self, **kwargs): DifferentialEvolutionAlgorithm.__init__(self, name='SelfAdaptiveDifferentialEvolutionAlgorithm', sName='jDE', **kwargs)
 
 	def setParameters(self, **kwargs):
 		super(SelfAdaptiveDifferentialEvolutionAlgorithm, self).setParameters(**kwargs)

@@ -60,8 +60,8 @@ class DifferentialEvolutionAlgorithm(Algorithm):
 	"""
 
 	def __init__(self, **kwargs):
-		if kwargs.get('name', None) == None: super(DifferentialEvolutionAlgorithm, self).__init__(name=kwargs.get('name', 'DifferentialEvolutionAlgorithm'), sName=kwargs.get('sName', 'DE'), **kwargs)
-		else: super(DifferentialEvolutionAlgorithm, self).__init__(**kwargs)
+		if kwargs.get('name', None) == None: Algorithm.__init__(self, name=kwargs.get('name', 'DifferentialEvolutionAlgorithm'), sName=kwargs.get('sName', 'DE'), **kwargs)
+		else: Algorithm.__init__(self, **kwargs)
 
 	def setParameters(self, **kwargs): self.__setParams(**kwargs)
 

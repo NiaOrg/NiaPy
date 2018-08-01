@@ -3,7 +3,7 @@
 import copy
 import logging
 from numpy import random as rnd, where
-from NiaPy.algorithms.algorithm import Algorithm
+from NiaPy.algorithms.algorithm import Algorithm, Individual
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.basic')
@@ -11,27 +11,8 @@ logger.setLevel('INFO')
 
 __all__ = ['ArtificialBeeColonyAlgorithm']
 
-class SolutionABC:
-	def __init__(self, task):
-		self.Solution = None
-		self.Fitness = float('inf')
-		self.generateSolution(task)
-
-	def generateSolution(self, task): self.Solution = task.Lower + task.bRange * rnd.rand(task.D)
-
-	def repair(self, task):
-		ir = where(self.Solution > task.Upper)
-		self.Solution[ir] = task.Upper[ir]
-		ir = where(self.Solution < task.Lower)
-		self.Solution[ir] = task.Lower[ir]
-
-	def evaluate(self, task): self.Fitness = task.eval(self.Solution)
-
-	def eval(self, task):
-		self.repair(task)
-		self.evaluate(task)
-
-	def toString(self): pass
+class SolutionABC(Individual):
+	def __init__(self, task): Individual.__init__(self, task=task, e=False)
 
 class ArtificialBeeColonyAlgorithm(Algorithm):
 	r"""Implementation of Artificial Bee Colony algorithm.
@@ -51,7 +32,7 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 		**See**:
 		Algorithm.__init__(self, **kwargs)
 		"""
-		super(ArtificialBeeColonyAlgorithm, self).__init__(name='ArtificialBeeColonyAlgorithm', sName='ABC', **kwargs)
+		Algorithm.__init__(self, name='ArtificialBeeColonyAlgorithm', sName='ABC', **kwargs)
 
 	def setParameters(self, **kwargs):
 		r"""Set the algorithm parameters/arguments.
@@ -88,13 +69,13 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 
 	def CalculateProbs(self):
 		"""Calculate probs."""
-		self.Probs = [1.0 / (self.Foods[i].Fitness + 0.01)	for i in range(self.FoodNumber)]
+		self.Probs = [1.0 / (self.Foods[i].f + 0.01)	for i in range(self.FoodNumber)]
 		s = sum(self.Probs)
 		self.Probs = [self.Probs[i] / s for i in range(self.FoodNumber)]
 
 	def checkForBest(self, Solution):
 		"""Check best solution."""
-		if Solution.Fitness <= self.Best.Fitness: self.Best = copy.deepcopy(Solution)
+		if Solution.f <= self.Best.f: self.Best = copy.deepcopy(Solution)
 
 	def runTask(self, task):
 		"""Run."""
@@ -104,9 +85,9 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 				newSolution = copy.deepcopy(self.Foods[i])
 				param2change = int(self.rand.rand() * task.D)
 				neighbor = int(self.FoodNumber * self.rand.rand())
-				newSolution.Solution[param2change] = self.Foods[i].Solution[param2change] + (-1 + 2 * self.rand.rand()) * (self.Foods[i].Solution[param2change] - self.Foods[neighbor].Solution[param2change])
-				newSolution.eval(task)
-				if newSolution.Fitness < self.Foods[i].Fitness:
+				newSolution.x[param2change] = self.Foods[i].x[param2change] + (-1 + 2 * self.rand.rand()) * (self.Foods[i].x[param2change] - self.Foods[neighbor].x[param2change])
+				newSolution.evaluate(task)
+				if newSolution.f < self.Foods[i].f:
 					self.checkForBest(newSolution)
 					self.Foods[i] = newSolution
 					self.Trial[i] = 0
@@ -120,9 +101,9 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 					param2change = int(self.rand.rand() * task.D)
 					neighbor = int(self.FoodNumber * self.rand.rand())
 					while neighbor == s: neighbor = int(self.FoodNumber * self.rand.rand())
-					Solution.Solution[param2change] = self.Foods[s].Solution[param2change] + (-1 + 2 * self.rand.rand()) * (self.Foods[s].Solution[param2change] - self.Foods[neighbor].Solution[param2change])
-					Solution.eval(task)
-					if Solution.Fitness < self.Foods[s].Fitness:
+					Solution.x[param2change] = self.Foods[s].x[param2change] + (-1 + 2 * self.rand.rand()) * (self.Foods[s].x[param2change] - self.Foods[neighbor].x[param2change])
+					Solution.evaluate(task)
+					if Solution.f < self.Foods[s].f:
 						self.checkForBest(newSolution)
 						self.Foods[s] = Solution
 						self.Trial[s] = 0
@@ -134,6 +115,6 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 				self.Foods[mi] = SolutionABC(task)
 				self.Foods[mi].evaluate(task)
 				self.Trial[mi] = 0
-		return self.Best.Solution, self.Best.Fitness
+		return self.Best.x, self.Best.f
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
