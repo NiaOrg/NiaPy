@@ -54,12 +54,8 @@ class HybridBatAlgorithm(BatAlgorithm):
 				S = task.repair(Sol[i] + v[i])
 				if self.rand.rand() > self.r: S = task.repair(self.CrossMutt(Sol, i, best, self.F, self.CR, self.rand))
 				f_new = task.eval(S)
-				if Fitness[i] <= f_new and self.rand.rand() < self.A:
-					Sol[i] = S
-					Fitness[i] = f_new
-				if f_new < f_min:
-					best = S
-					f_min = f_new
+				if Fitness[i] <= f_new and self.rand.rand() < self.A: Sol[i], Fitness[i] = S, f_new
+				if f_new < f_min: best, f_min = S, f_new
 		return best, f_min
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

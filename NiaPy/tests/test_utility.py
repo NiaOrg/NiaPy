@@ -19,7 +19,7 @@ class MyBenchmark:
 	def function(cls):
 		def evaluate(D, x):
 			val = 0.0
-			for i in range(D): val = x ** 2
+			for i in range(D): val = x[i] ** 2
 			return val
 		return evaluate
 

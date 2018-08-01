@@ -2,8 +2,6 @@
 # pylint: disable=mixed-indentation, multiple-statements
 """Implementations of Levy function."""
 
-from numpy import sin, pi
-
 __all__ = ['Trid']
 
 class Trid:
@@ -35,17 +33,17 @@ class Trid:
 	$-D^2 \leq x_i \leq D^2$
 
 	Reference:
-	https://www.sfu.ca/~ssurjano/levy.html
+	https://www.sfu.ca/~ssurjano/trid.html
 	"""
 	def __init__(self, D=2): self.Lower, self.Upper, = -D ** 2, D ** 2
 
 	@classmethod
 	def function(cls):
-		def w(x): return 1 + (x - 1) / 4
 		def f(D, X):
-			v = 0.0
-			for i in range(D - 1): v += (w(X[i]) - 1) ** 2 * (1 + 10 * sin(pi * w(X[i]) + 1) ** 2) + (w(X[-1]) - 1) ** 2 * (1 + sin(2 * pi * w(X[-1]) ** 2))
-			return sin(pi * w(X[0])) ** 2 + v
+			v1, v2 = 0.0, 0.0
+			for i in range(D): v1 += (X[i] - 1) ** 2
+			for i in range(1, D): v2 += X[i] * X[i - 1]
+			return v1 - v2
 		return f
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

@@ -45,7 +45,7 @@ class Michalewicz:
 	def function(cls):
 		def evaluate(D, X):
 			v = 0.0
-			for i in range(D): v += sin(X[i]) * sin((i * X[i] ** 2) / pi) ** (2 * cls.m)
+			for i in range(D): v += sin(X[i]) * sin(((i + 1) * X[i] ** 2) / pi) ** (2 * cls.m)
 			return -v
 		return evaluate
 

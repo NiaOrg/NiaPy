@@ -223,7 +223,7 @@ class TestBenchmarkFunctions(TestCase):
 	def test_michalewicz(self):
 		fun = self.assertBounds('michalewicz', 0, pi)
 		self.assertTrue(callable(fun))
-		self.assertAlmostEqual(fun(2, asarray([2.20, 1.57])), -1.8013)
+		self.assertAlmostEqual(fun(2, asarray([2.20, 1.57])), -1.8013, delta=1e-3)
 
 	def test_levy(self):
 		fun = self.assertBounds('levy', 0, pi)
