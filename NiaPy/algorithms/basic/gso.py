@@ -2,7 +2,7 @@
 # pylint: disable=mixed-indentation, trailing-whitespace, line-too-long, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, redefined-builtin, singleton-comparison, unused-argument, arguments-differ
 import logging
 from scipy.spatial.distance import euclidean
-from numpy import full, apply_along_axis, argmax, argmin, copy, sum, inf, fmax, pi
+from numpy import full, apply_along_axis, argmax, argmin, copy, sum, inf, fmax, pi, where
 from NiaPy.algorithms.algorithm import Algorithm
 
 logging.basicConfig()
@@ -65,16 +65,19 @@ class GlowwormSwarmOptimization(Algorithm):
 
 	def runTask(self, task):
 		rs = euclidean(full(task.D, 0), task.bRange)
-		GS, L, R = self.rand.uniform(task.Lower, task.Upper, [self.n, task.D]), full(self.n, self.l0), full(self.n, rs)
-		GS_f, xb, xb_f = full(self.n, inf), None, inf
+		GS, GS_f, L, R = self.rand.uniform(task.Lower, task.Upper, [self.n, task.D]), full(self.n, inf), full(self.n, self.l0), full(self.n, rs)
+		Mu, xb, xb_f = full(self.n, True), None, inf
 		while not task.stopCondI():
-			GSo, Ro, GS_f = copy(GS), copy(R), apply_along_axis(task.eval, 1, GS)
+			ie = where(Mu == True)
+			GSo, Ro, GS_f[ie] = copy(GS), copy(R), apply_along_axis(task.eval, 1, GS[ie])
 			L = self.calcLuciferin(L, GS_f)
 			for i, gw in enumerate(GSo):
 				N = self.getNeighbors(i, Ro[i], GSo, L)
-				P = self.potentialShift(i, N, L)
-				j = self.randMove(i) if not P else N[argmax(P)]
-				GS[i] = task.repair(gw + self.s * ((GSo[j] - gw) / euclidean(GSo[j], gw)))
+				if N:
+					Mu[i], P = self.potentialShift(i, N, L), True
+					j = N[argmax(P)]
+					GS[i] = task.repair(gw + self.s * ((GSo[j] - gw) / euclidean(GSo[j], gw)))
+				else: Mu[i] = False
 				R[i] = min(rs, max(0, self.rangeUpdate(Ro[i], N, rs)))
 			ib = argmin(GS_f)
 			if GS_f[ib] < xb_f: xb, xb_f = GSo[ib], GS_f[ib]

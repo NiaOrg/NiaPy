@@ -2,6 +2,7 @@
 # pylint: disable=mixed-indentation, line-too-long, bad-continuation, multiple-statements, singleton-comparison, unused-argument, no-self-use, trailing-comma-tuple, logging-not-lazy, no-else-return
 """Implementation of benchmarks utility function."""
 import logging
+from enum import Enum
 from numpy import ndarray, asarray, full, inf, dot, where, random as rnd
 from matplotlib import pyplot as plt, animation as anim
 from . import Rastrigin, Rosenbrock, Griewank, Sphere, Ackley, Schwefel, Schwefel221, Schwefel222, Whitley, Alpine1, Alpine2, HappyCat, Ridge, ChungReynolds, Csendes, Pinter, Qing, Quintic, Salomon, SchumerSteiglitz, Step, Step2, Step3, Stepint, SumSquares, StyblinskiTang, BentCigar, Discus, Elliptic, ExpandedGriewankPlusRosenbrock, HGBat, Katsuura, ExpandedScaffer, ModifiedSchwefel, Weierstrass, Michalewicz, Levy, Sphere2, Sphere3, Trid, Perm, Zakharov, DixonPrice, Powell, CosineMixture, Infinity
@@ -77,8 +78,12 @@ class Utility:
 	@classmethod
 	def __raiseLowerAndUpperNotDefined(cls): raise TypeError('Upper and Lower value must be defined!')
 
+class OptimizationType(Enum):
+	MINIMIZATION=0
+	MAXIMIZATION=1
+
 class Task(Utility):
-	def __init__(self, D, nFES, nGEN, benchmark=None, o=None, fo=None, M=None, fM=None, optF=None):
+	def __init__(self, D, nFES, nGEN, benchmark=None, o=None, fo=None, M=None, fM=None, optF=None, optType=OptimizationType.MINIMIZATION):
 		r"""Initialize task class for optimization.
 
 		Arguments:
@@ -102,6 +107,7 @@ class Task(Utility):
 		self.M = M if isinstance(M, ndarray) or M == None else asarray(M)
 		self.fo, self.fM, self.optF = fo, fM, optF
 		self.__initBounds()
+		self.optType = optType
 
 	def __initBounds(self):
 		Lower, Upper = self.benchmark.Lower, self.benchmark.Upper
@@ -133,7 +139,7 @@ class Task(Utility):
 		X = self.fo(X) if self.fo != None else X
 		X = dot(X, self.M) if self.M != None else X
 		X = self.fM(X) if self.fM != None else X
-		return self.Fun(self.D, X) + (self.optF if self.optF != None else 0)
+		return (1 if self.optType == OptimizationType.MINIMIZATION else -1) * self.Fun(self.D, X) + (self.optF if self.optF != None else 0)
 
 	def nextIter(self):
 		r"""Increase the number of generation/iterations of algorithms main loop."""
