@@ -79,8 +79,8 @@ class Utility:
 	def __raiseLowerAndUpperNotDefined(cls): raise TypeError('Upper and Lower value must be defined!')
 
 class OptimizationType(Enum):
-	MINIMIZATION=0
-	MAXIMIZATION=1
+	MINIMIZATION=1.0
+	MAXIMIZATION=-1.0
 
 class Task(Utility):
 	def __init__(self, D, nFES, nGEN, benchmark=None, o=None, fo=None, M=None, fM=None, optF=None, optType=OptimizationType.MINIMIZATION):
@@ -139,7 +139,7 @@ class Task(Utility):
 		X = self.fo(X) if self.fo != None else X
 		X = dot(X, self.M) if self.M != None else X
 		X = self.fM(X) if self.fM != None else X
-		return (1 if self.optType == OptimizationType.MINIMIZATION else -1) * self.Fun(self.D, X) + (self.optF if self.optF != None else 0)
+		return self.optType.value * self.Fun(self.D, X) + (self.optF if self.optF != None else 0)
 
 	def nextIter(self):
 		r"""Increase the number of generation/iterations of algorithms main loop."""
