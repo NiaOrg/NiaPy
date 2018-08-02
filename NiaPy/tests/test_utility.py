@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, unused-variable, unused-argument
+# pylint: disable=mixed-indentation, multiple-statements, unused-variable, unused-argument, redefined-builtin
 from unittest import TestCase
 from numpy import full, random as rnd, inf, sum
 from NiaPy.benchmarks.utility import Utility, Task

@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, chained-comparison, line-too-long
+# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, chained-comparison, line-too-long, arguments-differ
 import logging
 from numpy import fabs, inf, where
 from NiaPy.algorithms.algorithm import Algorithm
@@ -22,9 +22,7 @@ class GreyWolfOptimizer(Algorithm):
 	"""
 	def __init__(self, **kwargs): Algorithm.__init__(self, name='GreyWolfOptimizer', sName='GWO', **kwargs)
 
-	def setParameters(self, **kwargs): self.__setParams(**kwargs)
-
-	def __setParams(self, NP=25, **ukwargs):
+	def setParameters(self, NP=25, **ukwargs):
 		r"""Set the algorithm parameters.
 
 		Arguments:

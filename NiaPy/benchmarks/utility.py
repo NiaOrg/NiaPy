@@ -79,8 +79,8 @@ class Utility:
 	def __raiseLowerAndUpperNotDefined(cls): raise TypeError('Upper and Lower value must be defined!')
 
 class OptimizationType(Enum):
-	MINIMIZATION=1.0
-	MAXIMIZATION=-1.0
+	MINIMIZATION = 1.0
+	MAXIMIZATION = -1.0
 
 class Task(Utility):
 	def __init__(self, D, nFES, nGEN, benchmark=None, o=None, fo=None, M=None, fM=None, optF=None, optType=OptimizationType.MINIMIZATION):

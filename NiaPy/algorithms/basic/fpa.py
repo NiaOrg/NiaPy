@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, line-too-long, logging-not-lazy, no-self-use, attribute-defined-outside-init
+# pylint: disable=mixed-indentation, multiple-statements, line-too-long, logging-not-lazy, no-self-use, attribute-defined-outside-init, arguments-differ
 import logging
 from scipy.special import gamma as Gamma
 from numpy import where, argmin, sin, fabs, pi, apply_along_axis, full
@@ -23,9 +23,7 @@ class FlowerPollinationAlgorithm(Algorithm):
 	"""
 	def __init__(self, **kwargs): Algorithm.__init__(self, name='FlowerPollinationAlgorithm', sName='FPA', **kwargs)
 
-	def setParameters(self, **kwargs): self.__setParams(**kwargs)
-
-	def __setParams(self, NP=25, p=0.35, beta=1.5, **ukwargs):
+	def setParameters(self, NP=25, p=0.35, beta=1.5, **ukwargs):
 		r"""**__init__(self, D, NP, nFES, p, benchmark)**.
 
 		Arguments:

@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, line-too-long, singleton-comparison, multiple-statements, attribute-defined-outside-init, no-self-use, logging-not-lazy, unused-variable
+# pylint: disable=mixed-indentation, line-too-long, singleton-comparison, multiple-statements, attribute-defined-outside-init, no-self-use, logging-not-lazy, unused-variable, arguments-differ
 import logging
 from numpy import apply_along_axis, argmin, full, inf, where, ndarray, asarray
 from NiaPy.algorithms.algorithm import Algorithm
@@ -22,9 +22,7 @@ class ParticleSwarmAlgorithm(Algorithm):
 
 	def __init__(self, **kwargs): Algorithm.__init__(self, name='ParticleSwarmAlgorithm', sName='PSO', **kwargs)
 
-	def setParameters(self, **kwargs): self.__setParams(**kwargs)
-
-	def __setParams(self, NP=25, C1=2.0, C2=2.0, w=0.7, vMin=-4, vMax=4, **ukwargs):
+	def setParameters(self, NP=25, C1=2.0, C2=2.0, w=0.7, vMin=-4, vMax=4, **ukwargs):
 		r"""Set the parameters for the algorith.
 
 		**Arguments**:

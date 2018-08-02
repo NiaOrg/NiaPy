@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, line-too-long, singleton-comparison, multiple-statements, attribute-defined-outside-init, no-self-use, logging-not-lazy, unused-variable
+# pylint: disable=mixed-indentation, line-too-long, singleton-comparison, multiple-statements, attribute-defined-outside-init, no-self-use, logging-not-lazy, unused-variable, arguments-differ
 import logging
 from numpy import vectorize, argmin, exp
 from numpy.random import RandomState
@@ -67,9 +67,7 @@ class CamelAlgorithm(Algorithm):
 	"""
 	def __init__(self, **kwargs): Algorithm.__init__(self, name='CamelAlgorithm', sName='CA', **kwargs)
 
-	def setParameters(self, **kwargs): self.__setParams(**kwargs)
-
-	def __setParams(self, NP=50, omega=0.25, mu=0.5, alpha=0.5, S_init=10, E_init=10, T_min=-10, T_max=10, **ukwargs):
+	def setParameters(self, NP=50, omega=0.25, mu=0.5, alpha=0.5, S_init=10, E_init=10, T_min=-10, T_max=10, **ukwargs):
 		r"""Set the arguments of an algorithm.
 
 		**Arguments**:

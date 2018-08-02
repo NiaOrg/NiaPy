@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, unused-argument, line-too-long, len-as-condition, useless-super-delegation, redefined-builtin
+# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, unused-argument, line-too-long, len-as-condition, useless-super-delegation, redefined-builtin, arguments-differ
 import logging
 from numpy import argmin, sort, random as rand, asarray, fmin, fmax, sum
 from NiaPy.algorithms.algorithm import Algorithm, Individual
@@ -71,9 +71,7 @@ class GeneticAlgorithm(Algorithm):
 	"""
 	def __init__(self, **kwargs): Algorithm.__init__(self, name='GeneticAlgorithm', sName='GA', **kwargs)
 
-	def setParameters(self, **kwargs): self.__setParams(**kwargs)
-
-	def __setParams(self, NP=25, Ts=5, Mr=0.25, Cr=0.25, Selection=TurnamentSelection, Crossover=UniformCrossover, Mutation=UniformMutation, **ukwargs):
+	def setParameters(self, NP=25, Ts=5, Mr=0.25, Cr=0.25, Selection=TurnamentSelection, Crossover=UniformCrossover, Mutation=UniformMutation, **ukwargs):
 		r"""Set the parameters of the algorithm.
 
 		Arguments:

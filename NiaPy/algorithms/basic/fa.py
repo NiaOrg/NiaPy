@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, redefined-builtin, line-too-long, no-self-use
+# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, redefined-builtin, line-too-long, no-self-use, arguments-differ
 import logging
 from numpy import argsort, power as pow, sqrt, sum, exp, apply_along_axis, asarray
 from NiaPy.algorithms.algorithm import Algorithm
@@ -21,9 +21,7 @@ class FireflyAlgorithm(Algorithm):
 	"""
 	def __init__(self, **kwargs): Algorithm.__init__(self, name='FireflyAlgorithm', sName='FA', **kwargs)
 
-	def setParameters(self, **kwargs): self.__setParams(**kwargs)
-
-	def __setParams(self, NP=25, alpha=1, betamin=1, gamma=2, **ukwargs):
+	def setParameters(self, NP=25, alpha=1, betamin=1, gamma=2, **ukwargs):
 		r"""Set the parameters of the algorithm.
 
 		**Arguments**:

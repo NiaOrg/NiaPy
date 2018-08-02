@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, line-too-long, singleton-comparison
+# pylint: disable=mixed-indentation, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, line-too-long, singleton-comparison, arguments-differ
 import logging
 from numpy import full, apply_along_axis, argmin
 from NiaPy.algorithms.algorithm import Algorithm
@@ -31,9 +31,7 @@ class BatAlgorithm(Algorithm):
 		if kwargs.get('name', None) == None: Algorithm.__init__(self, name=kwargs.get('name', 'BatAlgorithm'), sName=kwargs.get('sName', 'BA'), **kwargs)
 		else: Algorithm.__init__(self, **kwargs)
 
-	def setParameters(self, **kwargs): self.__setParams(**kwargs)
-
-	def __setParams(self, NP, A, r, Qmin, Qmax, **ukwargs):
+	def setParameters(self, NP, A, r, Qmin, Qmax, **ukwargs):
 		r"""Set the parameters of the algorithm.
 
 		Arguments:

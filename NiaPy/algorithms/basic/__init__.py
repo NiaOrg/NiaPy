@@ -15,6 +15,7 @@ from NiaPy.algorithms.basic.mke import MonkeyKingEvolutionV1, MonkeyKingEvolutio
 from NiaPy.algorithms.basic.es import EvolutionStrategy1p1, EvolutionStrategyMp1, EvolutionStrategyMpL, EvolutionStrategyML
 from NiaPy.algorithms.basic.sca import SineCosineAlgorithm
 from NiaPy.algorithms.basic.gso import GlowwormSwarmOptimization, GlowwormSwarmOptimizationV1, GlowwormSwarmOptimizationV2, GlowwormSwarmOptimizationV3
+from NiaPy.algorithms.basic.hs import HarmonySearch, HarmonySearchV1
 
 __all__ = [
     'BatAlgorithm',
@@ -38,5 +39,7 @@ __all__ = [
     'GlowwormSwarmOptimization',
     'GlowwormSwarmOptimizationV1',
     'GlowwormSwarmOptimizationV2',
-    'GlowwormSwarmOptimizationV3'
+    'GlowwormSwarmOptimizationV3',
+    'HarmonySearch',
+    'HarmonySearchV1'
 ]

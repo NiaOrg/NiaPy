@@ -2,7 +2,7 @@
 # pylint: disable=mixed-indentation, multiple-statements
 """Implementations of High Conditioned Elliptic functions."""
 
-from NiaPy.benchmarks import Benchmark
+from NiaPy.benchmarks.benchmark import Benchmark
 
 __all__ = ['Elliptic']
 

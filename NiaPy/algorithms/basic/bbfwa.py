@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy
+# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, arguments-differ
 import logging
 from numpy import apply_along_axis, argmin
 from NiaPy.algorithms.algorithm import Algorithm
@@ -24,9 +24,7 @@ class BareBonesFireworksAlgorithm(Algorithm):
 	"""
 	def __init__(self, **kwargs): Algorithm.__init__(self, name='BareBonesFireworksAlgorithm', sName='BBFA', **kwargs)
 
-	def setParameters(self, **kwargs): self.__setParams(**kwargs)
-
-	def __setParams(self, n=10, C_a=1.5, C_r=0.5, **ukwargs):
+	def setParameters(self, n=10, C_a=1.5, C_r=0.5, **ukwargs):
 		r"""Set the arguments of an algorithm.
 
 		**Arguments**:

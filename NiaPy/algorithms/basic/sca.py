@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, line-too-long, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use
+# pylint: disable=mixed-indentation, trailing-whitespace, line-too-long, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, arguments-differ
 import logging
 from numpy import apply_along_axis, argmin, pi, inf, fabs, sin, cos
 from NiaPy.algorithms.algorithm import Algorithm
@@ -22,9 +22,7 @@ class SineCosineAlgorithm(Algorithm):
 	"""
 	def __init__(self, **kwargs): Algorithm.__init__(self, name='SineCosineAlgorithm', sName='SCA', **kwargs)
 
-	def setParameters(self, **kwargs): self.__setParams(**kwargs)
-
-	def __setParams(self, NP=25, a=3, Rmin=0, Rmax=2, **ukwargs):
+	def setParameters(self, NP=25, a=3, Rmin=0, Rmax=2, **ukwargs):
 		r"""Set the arguments of an algorithm.
 
 		**Arguments**:

@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, line-too-long, unused-argument, no-self-use, no-self-use, attribute-defined-outside-init, logging-not-lazy, len-as-condition, singleton-comparison
+# pylint: disable=mixed-indentation, multiple-statements, line-too-long, unused-argument, no-self-use, no-self-use, attribute-defined-outside-init, logging-not-lazy, len-as-condition, singleton-comparison, arguments-differ
 import logging
 from numpy import argmin, asarray
 from NiaPy.algorithms.algorithm import Algorithm, Individual
@@ -63,9 +63,7 @@ class DifferentialEvolutionAlgorithm(Algorithm):
 		if kwargs.get('name', None) == None: Algorithm.__init__(self, name=kwargs.get('name', 'DifferentialEvolutionAlgorithm'), sName=kwargs.get('sName', 'DE'), **kwargs)
 		else: Algorithm.__init__(self, **kwargs)
 
-	def setParameters(self, **kwargs): self.__setParams(**kwargs)
-
-	def __setParams(self, NP=25, F=2, CR=0.2, CrossMutt=CrossRand1, **ukwargs):
+	def setParameters(self, NP=25, F=2, CR=0.2, CrossMutt=CrossRand1, **ukwargs):
 		r"""Set the algorithm parameters.
 
 		Arguments:

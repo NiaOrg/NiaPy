@@ -32,9 +32,7 @@ class EvolutionStrategy1p1(Algorithm):
 		if kwargs.get('name', None) == None: Algorithm.__init__(self, name='(1+1)-EvolutionStrategy', sName='(1+1)-ES', **kwargs)
 		else: Algorithm.__init__(self, **kwargs)
 
-	def setParameters(self, **kwargs): self.__setParams(**kwargs)
-
-	def __setParams(self, mu=1, k=10, c_a=1.1, c_r=0.5, **ukwargs):
+	def setParameters(self, mu=1, k=10, c_a=1.1, c_r=0.5, **ukwargs):
 		r"""Set the arguments of an algorithm.
 
 		**Arguments**:

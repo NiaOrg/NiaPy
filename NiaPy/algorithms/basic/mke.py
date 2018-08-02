@@ -34,9 +34,7 @@ class MonkeyKingEvolutionV1(Algorithm):
 		if kwargs.get('name', None) == None: Algorithm.__init__(self, name='MonkeyKingEvolutionV1', sName='MKEv1', **kwargs)
 		else: Algorithm.__init__(self, **kwargs)
 
-	def setParameters(self, **kwargs): self.__setParams(**kwargs)
-
-	def __setParams(self, NP=40, F=0.7, R=0.3, C=3, FC=0.5, **ukwargs):
+	def setParameters(self, NP=40, F=0.7, R=0.3, C=3, FC=0.5, **ukwargs):
 		r"""Set the algorithm parameters.
 
 		Arguments:

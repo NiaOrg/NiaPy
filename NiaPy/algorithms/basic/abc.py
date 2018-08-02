@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, line-too-long, multiple-statements, attribute-defined-outside-init, logging-not-lazy
+# pylint: disable=mixed-indentation, line-too-long, multiple-statements, attribute-defined-outside-init, logging-not-lazy, arguments-differ
 import copy
 import logging
 from NiaPy.algorithms.algorithm import Algorithm, Individual
@@ -33,15 +33,7 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 		"""
 		Algorithm.__init__(self, name='ArtificialBeeColonyAlgorithm', sName='ABC', **kwargs)
 
-	def setParameters(self, **kwargs):
-		r"""Set the algorithm parameters/arguments.
-
-		**See**:
-		ArtificialBeeColonyAlgorithm.__setParams(self, NP, **kwargs)
-		"""
-		self.__setParams(**kwargs)
-
-	def __setParams(self, NP=10, Limit=100, **ukwargs):
+	def setParameters(self, NP=10, Limit=100, **ukwargs):
 		r"""Set the arguments of an algorithm.
 
 		**Arguments**:

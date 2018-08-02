@@ -25,9 +25,7 @@ class GlowwormSwarmOptimization(Algorithm):
 		if kwargs.get('name', None) == None: Algorithm.__init__(self, name='GlowwormSwarmOptimization', sName='GSO', **kwargs)
 		else: Algorithm.__init__(self, **kwargs)
 
-	def setParameters(self, **kwargs): self.__setParams(**kwargs)
-
-	def __setParams(self, n=25, l0=5, nt=5, rho=0.4, gamma=0.6, beta=0.08, s=0.03, **ukwargs):
+	def setParameters(self, n=25, l0=5, nt=5, rho=0.4, gamma=0.6, beta=0.08, s=0.03, **ukwargs):
 		r"""Set the arguments of an algorithm.
 
 		**Arguments**:
