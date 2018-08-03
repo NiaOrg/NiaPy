@@ -31,25 +31,27 @@ class MyBenchmark(object):
 
 def simple_example(runs=10):
 	for i in range(10):
-		algo = DifferentialEvolutionAlgorithm(D=10, NP=40, nFES=10000, F=0.5, CR=0.9, benchmark=MyBenchmark())
+		algo = DifferentialEvolutionAlgorithm(D=10, NP=40, nFES=10000, F=0.5, CR=0.9, seed=i, benchmark=MyBenchmark())
 		Best = algo.run()
 		logger.info('%s %s' % (Best[0], Best[1]))
 
 def logging_example():
 	task = TaskConvPrint(D=50, nFES=50000, nGEN=50000, benchmark=MyBenchmark())
-	algo = DifferentialEvolutionAlgorithm(NP=40, F=0.5, CR=0.9, task=task)
+	algo = DifferentialEvolutionAlgorithm(NP=40, F=0.5, CR=0.9, seed=None, task=task)
 	best = algo.run()
 	logger.info('%s %s' % (best[0], best[1]))
 
 def plot_example():
 	task = TaskConvPlot(D=50, nFES=50000, nGEN=10000, benchmark=MyBenchmark())
-	algo = DifferentialEvolutionAlgorithm(NP=40, F=0.5, CR=0.9, task=task)
+	algo = DifferentialEvolutionAlgorithm(NP=40, F=0.5, CR=0.9, seed=None, task=task)
 	best = algo.run()
 	logger.info('%s %s' % (best[0], best[1]))
 	input('Press [enter] to continue')
 
-# simple_example()
-# logging_example()
-plot_example()
+if __name__ == '__main__':
+	if len(sys.argv) <= 1: simple_example(1)
+	elif sys.argv[1] == 'plot': plot_example()
+	elif sys.argv[1] == 'log': logging_example()
+	else: simple_example(10)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

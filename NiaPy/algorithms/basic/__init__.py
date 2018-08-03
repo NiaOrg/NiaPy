@@ -16,6 +16,7 @@ from NiaPy.algorithms.basic.es import EvolutionStrategy1p1, EvolutionStrategyMp1
 from NiaPy.algorithms.basic.sca import SineCosineAlgorithm
 from NiaPy.algorithms.basic.gso import GlowwormSwarmOptimization, GlowwormSwarmOptimizationV1, GlowwormSwarmOptimizationV2, GlowwormSwarmOptimizationV3
 from NiaPy.algorithms.basic.hs import HarmonySearch, HarmonySearchV1
+from NiaPy.algorithms.basic.kh import KrillHerd
 
 __all__ = [
     'BatAlgorithm',
@@ -41,5 +42,6 @@ __all__ = [
     'GlowwormSwarmOptimizationV2',
     'GlowwormSwarmOptimizationV3',
     'HarmonySearch',
-    'HarmonySearchV1'
+    'HarmonySearchV1',
+    'KrillHerd'
 ]

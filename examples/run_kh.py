@@ -7,7 +7,7 @@ sys.path.append('../')
 
 import random
 import logging
-from NiaPy.algorithms.basic import EvolutionStrategy1p1
+from NiaPy.algorithms.basic import KrillHerd
 from NiaPy.benchmarks.utility import TaskConvPrint, TaskConvPlot
 
 logging.basicConfig()
@@ -31,19 +31,19 @@ class MyBenchmark(object):
 
 def simple_example(runs=10):
 	for i in range(runs):
-		algo = EvolutionStrategy1p1(D=50, nFES=50000, seed=None, benchmark=MyBenchmark())
+		algo = KrillHerd(D=50, nFES=50000, n=15, C_a=1, C_r=0.5, benchmark=MyBenchmark())
 		best = algo.run()
 		logger.info('%s %s' % (best[0], best[1]))
 
 def logging_example():
-	task = TaskConvPrint(D=50, nFES=50000, nGEN=50000, benchmark=MyBenchmark())
-	algo = EvolutionStrategy1p1(k=25, c_a=1.5, c_r=0.25, seed=None, task=task)
+	task = TaskConvPrint(D=50, nFES=50000, nGEN=10000, benchmark=MyBenchmark())
+	algo = KrillHerd(task=task, n=15, C_a=1, C_r=0.5)
 	best = algo.run()
-	logger.info('nFES:%s nGEN:%s\n%s %s' % (task.Evals, task.Iters, best[0], best[1]))
+	logger.info('%s %s' % (best[0], best[1]))
 
 def plot_example():
 	task = TaskConvPlot(D=50, nFES=50000, nGEN=10000, benchmark=MyBenchmark())
-	algo = EvolutionStrategy1p1(k=25, c_a=1.5, c_r=0.25, seed=None, task=task)
+	algo = KrillHerd(task=task, n=15, C_a=1, C_r=0.5)
 	best = algo.run()
 	logger.info('%s %s' % (best[0], best[1]))
 	input('Press [enter] to continue')

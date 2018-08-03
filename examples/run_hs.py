@@ -48,8 +48,10 @@ def plot_example():
 	logger.info('%s %s' % (best[0], best[1]))
 	input('Press [enter] to continue')
 
-# simple_example(1)
-logging_example()
-# plot_example()
+if __name__ == "__main__":
+	if len(sys.argv) <= 1: simple_example(1)
+	elif sys.argv[1] == 'plot': plot_example()
+	elif sys.argv[1] == 'log': logging_example()
+	else: simple_example(10)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
