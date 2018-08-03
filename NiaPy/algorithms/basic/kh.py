@@ -11,7 +11,7 @@ logger.setLevel('INFO')
 
 __all__ = ['KrillHerd']
 
-class KrillHerd(Algorithm):
+class KrillHerdV4(Algorithm):
 	r"""Implementation of krill herd algorithm.
 
 	**Algorithm:** Krill Herd Algorithm
@@ -23,7 +23,7 @@ class KrillHerd(Algorithm):
 	"""
 	def __init__(self, **kwargs): Algorithm.__init__(self, name='BareBonesFireworksAlgorithm', sName='BBFA', **kwargs)
 
-	def setParameters(self, NP=25, N_max=0.01, V_f=0.02, D_max=0.002, C_t=0.93, W_n=0.42, W_f=0.38, d_s=50, Cr=0.2, Mu=0.05, epsilon=1e-4, **ukwargs):
+	def setParameters(self, NP=50, N_max=0.01, V_f=0.02, D_max=0.002, C_t=0.93, W_n=0.42, W_f=0.38, d_s=2.63, Cr=0.2, Mu=0.05, epsilon=1e-4, **ukwargs):
 		r"""Set the arguments of an algorithm.
 
 		**Arguments**:
@@ -93,6 +93,7 @@ class KrillHerd(Algorithm):
 			if KH_f[ikh_b] < x_fit: x, x_fit = KH[ikh_b], KH_f[ikh_b]
 			N = asarray([self.induceNeigborsMotion(i, N[i], W_n, KH, KH_f, ikh_b, ikh_w, task) for i in range(self.N)])
 			x_food, x_food_f = self.getFoodLocation(KH, KH_f, task)
+			if x_food_f < x_fit: x, x_fit = x_food, x_food_f
 			F = asarray([self.induceFragingMotion(i, x_food, x_food_f, F[i], W_f, KH, KH_f, ikh_b, ikh_w, task) for i in range(self.N)])
 			D = asarray([self.inducePhysicalDiffusion(task) for i in range(self.N)])
 			KH_n = KH + (self.deltaT(task) * (N + F + D))
@@ -101,5 +102,16 @@ class KrillHerd(Algorithm):
 			KH_n = apply_along_axis(self.mutate, 1, KH_n, KH[ikh_b], Mu)
 			KH = apply_along_axis(task.repair, 1, KH_n)
 		return x, x_fit
+
+class KrillHerdV1(KrillHerdV4):
+	def crossover(self, x, xo, Cr): return x
+
+	def mutate(self, x, x_b, Mu): return x
+
+class KrillHerdV2(KrillHerdV4):
+	def mutate(self, x, x_b, Mu): return x
+
+class KrillHerdV3(KrillHerdV4):
+	def crossover(self, x, xo, Cr): return x
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
