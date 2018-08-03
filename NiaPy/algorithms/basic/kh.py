@@ -36,7 +36,7 @@ class KrillHerdV4(Algorithm):
 		W_f {real} or {array} -- inerta weights of the motion iduced from fraging $\in [0, 1]$
 		d_s {real} -- maximum euclidean distance for neighbors
 		"""
-		self.N, self.N_max, self.V_f, self.D_max, self.C_t, self.W_n, self.W_f, self.d_s, self.Cr, self.Mu, self.epsilon = NP, N_max, V_f, D_max, C_t, W_n, W_f, d_s, Cr, Mu, epsilon
+		self.N, self.N_max, self.V_f, self.D_max, self.C_t, self.W_n, self.W_f, self.d_s, self._Cr, self._Mu, self.epsilon = NP, N_max, V_f, D_max, C_t, W_n, W_f, d_s, Cr, Mu, epsilon
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def initWeights(self, task):
@@ -84,6 +84,10 @@ class KrillHerdV4(Algorithm):
 		x_food_f = task.eval(x_food)
 		return x_food, x_food_f
 
+	def Mu(self, xf, yf, xf_best, xf_worst): return self._Mu / self.funK(xf, yf, xf_best, xf_worst)
+
+	def Cr(self, xf, yf, xf_best, xf_worst): return self._Cr * self.funK(xf, yf, xf_best, xf_worst)
+
 	def runTask(self, task):
 		KH, N, F, x, x_fit = self.rand.uniform(task.Lower, task.Upper, [self.N, task.D]), full(self.N, .0), full(self.N, .0), None, inf
 		W_n, W_f = self.initWeights(task)
@@ -97,8 +101,9 @@ class KrillHerdV4(Algorithm):
 			F = asarray([self.induceFragingMotion(i, x_food, x_food_f, F[i], W_f, KH, KH_f, ikh_b, ikh_w, task) for i in range(self.N)])
 			D = asarray([self.inducePhysicalDiffusion(task) for i in range(self.N)])
 			KH_n = KH + (self.deltaT(task) * (N + F + D))
-			Cr, Mu = self.Cr * KH_f[ikh_b], self.Mu / KH_f[ikh_b]
+			Cr = asarray([self.Cr(KH_f[i], KH_f[ikh_b], KH_f[ikh_b], KH_f[ikh_w]) for i in range(self.N)])
 			KH_n = asarray([self.crossover(KH_n[i], KH[i], Cr) for i in range(self.N)])
+			Mu = asarray([self.Mu(KH_f[i], KH_f[ikh_b], KH_f[ikh_b], KH_f[ikh_w]) for i in range(self.N)])
 			KH_n = apply_along_axis(self.mutate, 1, KH_n, KH[ikh_b], Mu)
 			KH = apply_along_axis(task.repair, 1, KH_n)
 		return x, x_fit
