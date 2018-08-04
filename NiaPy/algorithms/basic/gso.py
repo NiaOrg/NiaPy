@@ -47,38 +47,44 @@ class GlowwormSwarmOptimization(Algorithm):
 		return j
 
 	def getNeighbors(self, i, r, GS, L):
-		N = list()
-		for j, gw in enumerate(GS):
-			if i != j and euclidean(GS[i], gw) < r and L[i] > L[j]: N.append(j)
+		N = full(self.n, 0)
+		for j, gw in enumerate(GS): N[j] = 1 if i != j and euclidean(GS[i], gw) <= r and L[i] >= L[j] else 0
 		return N
 
-	def potentialShift(self, i, N, L):
-		d, P = sum(L[N] - L[i]), list()
-		for l in L[N]: P.append((l - L[i]) / d)
+	def probabilityes(self, i, N, L):
+		d, P = sum(L[where(N == 1)] - L[i]), full(self.n, 0)
+		for j in range(self.n): P[i] = ((L[j] - L[i]) / d) if N[j] == 1 else 0
 		return P
+
+	def moveSelect(self, pb, i):
+		r, b_l, b_u = self.rand.rand(), 0, 0
+		for j in range(self.n):
+			b_l, b_u = b_u, b_u + pb[i]
+			if r > b_l and r < b_u: return j
+		return self.rand.randint(self.n)
 
 	def calcLuciferin(self, L, GS_f): return (1 - self.rho) * L + self.gamma * GS_f
 
-	def rangeUpdate(self, R, N, rs): return R + self.beta * (self.nt - len(N))
+	def rangeUpdate(self, R, N, rs): return R + self.beta * (self.nt - sum(N))
+
+	def getBest(self, GS, GS_f, xb, xb_f):
+		ib = argmin(GS_f)
+		if GS_f[ib] < xb_f: return GS[ib], GS_f[ib]
+		else: return xb, xb_f
 
 	def runTask(self, task):
 		rs = euclidean(full(task.D, 0), task.bRange)
 		GS, GS_f, L, R = self.rand.uniform(task.Lower, task.Upper, [self.n, task.D]), full(self.n, inf), full(self.n, self.l0), full(self.n, rs)
-		Mu, xb, xb_f = full(self.n, True), None, inf
+		xb, xb_f = None, inf
 		while not task.stopCondI():
-			ie = where(Mu == True)
-			GSo, Ro, GS_f[ie] = copy(GS), copy(R), apply_along_axis(task.eval, 1, GS[ie])
+			GSo, Ro, GS_f = copy(GS), copy(R), apply_along_axis(task.eval, 1, GS)
+			xb, xb_f = self.getBest(GS, GS_f, xb, xb_f)
 			L = self.calcLuciferin(L, GS_f)
-			for i, gw in enumerate(GSo):
-				N = self.getNeighbors(i, Ro[i], GSo, L)
-				if N:
-					Mu[i], P = self.potentialShift(i, N, L), True
-					j = N[argmax(P)]
-					GS[i] = task.repair(gw + self.s * ((GSo[j] - gw) / euclidean(GSo[j], gw)))
-				else: Mu[i] = False
-				R[i] = min(rs, max(0, self.rangeUpdate(Ro[i], N, rs)))
-			ib = argmin(GS_f)
-			if GS_f[ib] < xb_f: xb, xb_f = GSo[ib], GS_f[ib]
+			N = [self.getNeighbors(i, Ro[i], GSo, L) for i in range(self.n)]
+			P = [self.probabilityes(i, N[i], L) for i in range(self.n)]
+			j = [self.moveSelect(P[i], i) for i in range(self.n)]
+			for i in range(self.n): GS[i] = task.repair(GSo[i] + self.s * ((GSo[j[i]] - GSo[i]) / (euclidean(GSo[j[i]], GSo[i]) + 1e-31)))
+			for i in range(self.n): R[i] = max(0, min(rs, self.rangeUpdate(Ro[i], N[i], rs)))
 		return xb, xb_f
 
 class GlowwormSwarmOptimizationV1(GlowwormSwarmOptimization):
@@ -108,7 +114,7 @@ class GlowwormSwarmOptimizationV1(GlowwormSwarmOptimization):
 
 	def calcLuciferin(self, L, GS_f): return fmax(0, (1 - self.rho) * L + self.gamma * GS_f)
 
-	def rangeUpdate(self, R, N, rs): return rs / (1 + self.beta * (len(N) / (pi * rs ** 2)))
+	def rangeUpdate(self, R, N, rs): return rs / (1 + self.beta * (sum(N) / (pi * rs ** 2)))
 
 class GlowwormSwarmOptimizationV2(GlowwormSwarmOptimization):
 	r"""Implementation of glowwarm swarm optimization.
@@ -136,7 +142,7 @@ class GlowwormSwarmOptimizationV2(GlowwormSwarmOptimization):
 		self.alpha = alpha
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def rangeUpdate(self, P, N, rs): return self.alpha + (rs - self.alpha) / (1 + self.beta * len(N))
+	def rangeUpdate(self, P, N, rs): return self.alpha + (rs - self.alpha) / (1 + self.beta * sum(N))
 
 class GlowwormSwarmOptimizationV3(GlowwormSwarmOptimization):
 	r"""Implementation of glowwarm swarm optimization.
@@ -164,6 +170,6 @@ class GlowwormSwarmOptimizationV3(GlowwormSwarmOptimization):
 		self.beta1 = beta1
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def rangeUpdate(self, R, N, rs): return R + (self.beta * len(N)) if len(N) < self.nt else (-self.beta1 * len(N))
+	def rangeUpdate(self, R, N, rs): return R + (self.beta * sum(N)) if sum(N) < self.nt else (-self.beta1 * sum(N))
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

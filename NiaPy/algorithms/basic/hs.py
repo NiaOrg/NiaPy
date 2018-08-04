@@ -52,7 +52,7 @@ class HarmonySearch(Algorithm):
 			H = self.improvize(HM, task)
 			H_f = task.eval(task.repair(H))
 			iw = argmax(HM_f)
-			if H_f < HM_f[iw]: HM[iw], HM_f[iw] = H, H_f
+			if H_f <= HM_f[iw]: HM[iw], HM_f[iw] = H, H_f
 		ib = argmin(HM_f)
 		return HM[ib], HM_f[ib]
 

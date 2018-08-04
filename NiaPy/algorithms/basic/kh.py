@@ -9,7 +9,7 @@ logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.basic')
 logger.setLevel('INFO')
 
-__all__ = ['KrillHerd']
+__all__ = ['KrillHerdV1', 'KrillHerdV2', 'KrillHerdV3', 'KrillHerdV4']
 
 class KrillHerdV4(Algorithm):
 	r"""Implementation of krill herd algorithm.
@@ -80,11 +80,11 @@ class KrillHerdV4(Algorithm):
 	def mutate(self, x, x_b, Mu): return asarray([x[i] if self.rand.rand() < Mu else x_b[i] + self.rand.rand() for i in range(len(x))])
 
 	def getFoodLocation(self, KH, KH_f, task):
-		x_food = asarray([sum((1 / KH_f) * KH[:, i]) for i in range(task.D)]) / sum(1 / KH_f)
+		x_food = task.repair(asarray([sum(KH[:, i] / KH_f) for i in range(task.D)]) / sum(1 / KH_f))
 		x_food_f = task.eval(x_food)
 		return x_food, x_food_f
 
-	def Mu(self, xf, yf, xf_best, xf_worst): return self._Mu / self.funK(xf, yf, xf_best, xf_worst)
+	def Mu(self, xf, yf, xf_best, xf_worst): return self._Mu / (self.funK(xf, yf, xf_best, xf_worst) + 1e-31)
 
 	def Cr(self, xf, yf, xf_best, xf_worst): return self._Cr * self.funK(xf, yf, xf_best, xf_worst)
 
@@ -95,16 +95,16 @@ class KrillHerdV4(Algorithm):
 			KH_f = apply_along_axis(task.eval, 1, KH)
 			ikh_b, ikh_w = argmin(KH_f), argmax(KH_f)
 			if KH_f[ikh_b] < x_fit: x, x_fit = KH[ikh_b], KH_f[ikh_b]
-			N = asarray([self.induceNeigborsMotion(i, N[i], W_n, KH, KH_f, ikh_b, ikh_w, task) for i in range(self.N)])
 			x_food, x_food_f = self.getFoodLocation(KH, KH_f, task)
 			if x_food_f < x_fit: x, x_fit = x_food, x_food_f
+			N = asarray([self.induceNeigborsMotion(i, N[i], W_n, KH, KH_f, ikh_b, ikh_w, task) for i in range(self.N)])
 			F = asarray([self.induceFragingMotion(i, x_food, x_food_f, F[i], W_f, KH, KH_f, ikh_b, ikh_w, task) for i in range(self.N)])
 			D = asarray([self.inducePhysicalDiffusion(task) for i in range(self.N)])
 			KH_n = KH + (self.deltaT(task) * (N + F + D))
 			Cr = asarray([self.Cr(KH_f[i], KH_f[ikh_b], KH_f[ikh_b], KH_f[ikh_w]) for i in range(self.N)])
-			KH_n = asarray([self.crossover(KH_n[i], KH[i], Cr) for i in range(self.N)])
+			KH_n = asarray([self.crossover(KH_n[i], KH[i], Cr[i]) for i in range(self.N)])
 			Mu = asarray([self.Mu(KH_f[i], KH_f[ikh_b], KH_f[ikh_b], KH_f[ikh_w]) for i in range(self.N)])
-			KH_n = apply_along_axis(self.mutate, 1, KH_n, KH[ikh_b], Mu)
+			KH_n = asarray([self.mutate(KH_n[i], KH[ikh_b], Mu[i]) for i in range(self.N)])
 			KH = apply_along_axis(task.repair, 1, KH_n)
 		return x, x_fit
 

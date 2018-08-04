@@ -3,7 +3,7 @@
 """Implementation of benchmarks utility function."""
 import logging
 from enum import Enum
-from numpy import ndarray, asarray, full, inf, dot, where, random as rnd
+from numpy import ndarray, asarray, full, inf, dot, where, random as rnd, fabs
 from matplotlib import pyplot as plt, animation as anim
 from . import Rastrigin, Rosenbrock, Griewank, Sphere, Ackley, Schwefel, Schwefel221, Schwefel222, Whitley, Alpine1, Alpine2, HappyCat, Ridge, ChungReynolds, Csendes, Pinter, Qing, Quintic, Salomon, SchumerSteiglitz, Step, Step2, Step3, Stepint, SumSquares, StyblinskiTang, BentCigar, Discus, Elliptic, ExpandedGriewankPlusRosenbrock, HGBat, Katsuura, ExpandedScaffer, ModifiedSchwefel, Weierstrass, Michalewicz, Levy, Sphere2, Sphere3, Trid, Perm, Zakharov, DixonPrice, Powell, CosineMixture, Infinity
 
@@ -97,7 +97,7 @@ class Task(Utility):
 		fM {function} -- Function applied after rotating
 		optF {real} -- Value added to benchmark function return
 		"""
-		super(Task, self).__init__()
+		Utility.__init__(self)
 		self.benchmark = self.get_benchmark(benchmark) if benchmark != None else None
 		self.D = D  # dimension of the problem
 		self.Iters, self.nGEN = 0, nGEN if nGEN != None else 10000
@@ -115,7 +115,7 @@ class Task(Utility):
 		else: self.Lower = Lower if isinstance(Lower, ndarray) else asarray(Lower)
 		if isinstance(Upper, (int, float)): self.Upper = full(self.D, Upper)
 		else: self.Upper = Upper if isinstance(Upper, ndarray) else asarray(Upper)
-		self.bRange = self.Upper - self.Lower
+		self.bRange = fabs(self.Upper - self.Lower)
 
 	def stopCond(self):
 		r"""Check if stoping condition reached."""
@@ -167,19 +167,19 @@ class Task(Utility):
 
 class TaskConvPrint(Task):
 	def __init__(self, **kwargs):
-		super(TaskConvPrint, self).__init__(**kwargs)
+		Task.__init__(self, **kwargs)
 		self.x, self.x_f = None, inf
 
 	def eval(self, A):
-		x_f = super(TaskConvPrint, self).eval(A)
-		if x_f < self.x_f:
+		x_f = Task.eval(self, A)
+		if x_f <= self.x_f:
 			self.x, self.x_f = A, x_f
 			logger.info('nFES:%d nGEN:%d => %s -> %s' % (self.Evals, self.Iters, self.x, self.x_f))
 		return x_f
 
 class TaskConvPlot(Task):
 	def __init__(self, **kwargs):
-		super(TaskConvPlot, self).__init__(**kwargs)
+		Task.__init__(self, **kwargs)
 		self.x_fs, self.iters = list(), list()
 		self.fig = plt.figure()
 		self.ax = self.fig.subplots(nrows=1, ncols=1)
@@ -189,7 +189,7 @@ class TaskConvPlot(Task):
 		self.showPlot()
 
 	def eval(self, A):
-		x_f = super(TaskConvPlot, self).eval(A)
+		x_f = Task.eval(self, A)
 		if not self.x_fs: self.x_fs.append(x_f)
 		elif x_f < self.x_fs[-1]: self.x_fs.append(x_f)
 		else: self.x_fs.append(self.x_fs[-1])

@@ -29,20 +29,20 @@ class MyBenchmark(object):
 			return val
 		return evaluate
 
-def simple_example(runs=10):
+def simple_example(runs=10, D=10, nFES=50000):
 	for i in range(runs):
-		algo = HarmonySearch(D=50, nFES=50000, HMS=50, r_accept=0.7, r_pa=0.2, b_range=1.1, benchmark=MyBenchmark())
+		algo = HarmonySearch(D=D, nFES=nFES, HMS=50, r_accept=0.7, r_pa=0.2, b_range=1.1, benchmark=MyBenchmark())
 		best = algo.run()
 		logger.info('%s %s' % (best[0], best[1]))
 
-def logging_example():
-	task = TaskConvPrint(D=10, nFES=50000, nGEN=50000, benchmark=MyBenchmark())
+def logging_example(D=10, nFES=50000):
+	task = TaskConvPrint(D=D, nFES=nFES, nGEN=50000, benchmark=MyBenchmark())
 	algo = HarmonySearch(HMS=50, r_accept=0.7, r_pa=0.2, b_range=1.1, seed=None, task=task)
 	best = algo.run()
 	logger.info('%s %s' % (best[0], best[1]))
 
-def plot_example():
-	task = TaskConvPlot(D=50, nFES=50000, nGEN=50000, benchmark=MyBenchmark())
+def plot_example(D=10, nFES=50000):
+	task = TaskConvPlot(D=D, nFES=nFES, nGEN=50000, benchmark=MyBenchmark())
 	algo = HarmonySearch(HMS=50, r_accept=0.7, r_pa=0.2, b_range=1.1, task=task)
 	best = algo.run()
 	logger.info('%s %s' % (best[0], best[1]))
@@ -50,8 +50,8 @@ def plot_example():
 
 if __name__ == "__main__":
 	if len(sys.argv) <= 1: simple_example(1)
-	elif sys.argv[1] == 'plot': plot_example()
-	elif sys.argv[1] == 'log': logging_example()
-	else: simple_example(10)
+	elif sys.argv[1] == 'plot': plot_example(D=10 if len(sys.argv) <= 2 else int(sys.argv[2]), nFES=50000 if len(sys.argv) <= 3 else int(sys.argv[3]))
+	elif sys.argv[1] == 'log': logging_example(D=10 if len(sys.argv) <= 2 else int(sys.argv[2]), nFES=50000 if len(sys.argv) <= 3 else int(sys.argv[3]))
+	else: simple_example(runs=sys.argv[1], D=10 if len(sys.argv) <= 2 else int(sys.argv[2]), nFES=50000 if len(sys.argv) <= 3 else int(sys.argv[3]))
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
