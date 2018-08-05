@@ -31,11 +31,59 @@ class Algorithm:
 		**See**:
 		Algorithm.setParameters(self, **kwargs)
 		"""
-		task, self.name, self.sName, self.rand = kwargs.pop('task', None), kwargs.pop('name', 'Algorith'), kwargs.pop('sName', 'algo'), rand.RandomState(kwargs.pop('seed', 1))
+		task, self.name, self.sName, self.Rand = kwargs.pop('task', None), kwargs.pop('name', 'Algorith'), kwargs.pop('sName', 'algo'), rand.RandomState(kwargs.pop('seed', 1))
 		self.task = task if task != None else Task(kwargs.pop('D', 10), kwargs.pop('nFES', 100000), kwargs.pop('nGEN', None), kwargs.pop('benchmark', 'ackley'))
 		self.setParameters(**kwargs)
 
-	def setParameters(self, **kwargs): pass
+	def setParameters(self, **kwargs):
+		r"""Set the parameters/arguments of the algorithm.
+
+		**Arguments**:
+		kwargs {dict} -- Dictionary with values of the parametres
+		"""
+		pass
+
+	def rand(self, D=[1]):
+		r"""Get random numbers of shape D in range from 0 to 1.
+
+		**Arguments**:
+		D {array} or {int} -- Shape of return random numbers
+		"""
+		if isinstance(D, (ndarray, list)): return self.Rand.rand(*D)
+		elif D > 1: return self.Rand.rand(D)
+		else: return self.Rand.rand()
+
+	def uniform(self, Lower, Upper, D=[1]):
+		r"""Get D shape random uniform numbers in range from Lower to Upper.
+
+		**Arguments**:
+		Lower {array} or {real} or {int} -- Lower bound
+		Upper {array} or {real} or {int} -- Upper bound
+		D {array} or {int} -- Shape of returnd random uniform numbers
+		"""
+		return self.Rand.uniform(Lower, Upper, D)
+
+	def normal(self, loc, scale, D):
+		r"""Get D shape random normal distributed numbers.
+
+		**Arguments**:
+		loc {} --
+		scale {} --
+		D {array} or {int} -- Shape of returnd random uniform numbers
+		"""
+		return self.Rand.normal(loc, scale, D)
+
+	def randint(self, Nmax, Nmin=0, D=1):
+		r"""Get D shape random full numbers in range Nmin to Nmax.
+
+		**Arguments**:
+		Nmin {integer} --
+		Nmax {integer} --
+		D {array} or {int} -- Shape of returnd random uniform numbers
+		"""
+		if isinstance(D, (list, ndarray)): return self.Rand.randint(Nmin, Nmax, D)
+		elif D > 1: return self.Rand.randint(Nmin, Nmax, D)
+		else: return self.Rand.randint(Nmin, Nmax)
 
 	def run(self):
 		r"""Start the optimization.

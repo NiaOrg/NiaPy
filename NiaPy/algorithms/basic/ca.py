@@ -102,14 +102,14 @@ class CamelAlgorithm(Algorithm):
 		return c, fitn
 
 	def runTask(self, task):
-		Camel.E_init, Camel.S_init, rand = self.E_init, self.S_init, RandomState().rand
-		ccaravan = [Camel(self.rand.uniform(task.Lower, task.Upper, [task.D]), rand) for i in range(self.NP)]
+		Camel.E_init, Camel.S_init = self.E_init, self.S_init
+		ccaravan = [Camel(self.uniform(task.Lower, task.Upper, [task.D]), self.Rand.rand) for i in range(self.NP)]
 		c_fits = [task.eval(c.x) for c in ccaravan]
 		ic_b = argmin(c_fits)
 		c_best, c_best_fit = ccaravan[ic_b], c_fits[ic_b]
 		while not task.stopCondI():
 			ccaravan, c_fitsn = vectorize(self.walk)(ccaravan, c_fits, task, self.omega, c_best)
-			ccaravan = vectorize(self.oasis)(ccaravan, self.rand.randn(self.NP), c_fits, c_fitsn, self.alpha)
+			ccaravan = vectorize(self.oasis)(ccaravan, self.rand(self.NP), c_fits, c_fitsn, self.alpha)
 			ci_b = argmin(c_fitsn)
 			if c_fitsn[ci_b] < c_best_fit: c_best, c_best_fit = ccaravan[ci_b], c_fits[ci_b]
 			ccaravan, c_fits = vectorize(self.lifeCycle)(ccaravan, c_fits, c_fitsn, self.mu, task)

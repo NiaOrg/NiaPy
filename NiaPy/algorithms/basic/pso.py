@@ -54,7 +54,7 @@ class ParticleSwarmAlgorithm(Algorithm):
 	def runTask(self, task):
 		"""Move particles in search space."""
 		self.init(task)
-		P, P_fit = task.Lower + task.bRange * self.rand.rand(self.NP, task.D), full(self.NP, inf)
+		P, P_fit = task.Lower + task.bRange * self.rand([self.NP, task.D]), full(self.NP, inf)
 		P_pb, P_pb_fit = P, P_fit
 		p_b, p_b_fit = P[0], P_fit[0]
 		V = full([self.NP, task.D], 0)
@@ -65,7 +65,7 @@ class ParticleSwarmAlgorithm(Algorithm):
 			P_pb[ip_pb], P_pb_fit[ip_pb] = P[ip_pb], P_fit[ip_pb]
 			ip_b = argmin(P_fit)
 			if p_b_fit > P_fit[ip_b]: p_b, p_b_fit = P[ip_b], P_fit[ip_b]
-			V = self.w * V + self.C1 * self.rand.rand(self.NP, task.D) * (P_pb - P) + self.C2 * self.rand.rand(self.NP, task.D) * (p_b - P)
+			V = self.w * V + self.C1 * self.rand([self.NP, task.D]) * (P_pb - P) + self.C2 * self.rand([self.NP, task.D]) * (p_b - P)
 			V = apply_along_axis(self.repair, 1, V, self.vMin, self.vMax)
 			P = P + V
 		return p_b, p_b_fit

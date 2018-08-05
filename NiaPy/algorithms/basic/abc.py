@@ -74,9 +74,9 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 		while not task.stopCond():
 			for i in range(self.FoodNumber):
 				newSolution = copy.deepcopy(self.Foods[i])
-				param2change = int(self.rand.rand() * task.D)
-				neighbor = int(self.FoodNumber * self.rand.rand())
-				newSolution.x[param2change] = self.Foods[i].x[param2change] + (-1 + 2 * self.rand.rand()) * (self.Foods[i].x[param2change] - self.Foods[neighbor].x[param2change])
+				param2change = int(self.rand() * task.D)
+				neighbor = int(self.FoodNumber * self.rand())
+				newSolution.x[param2change] = self.Foods[i].x[param2change] + (-1 + 2 * self.rand()) * (self.Foods[i].x[param2change] - self.Foods[neighbor].x[param2change])
 				newSolution.evaluate(task)
 				if newSolution.f < self.Foods[i].f:
 					self.checkForBest(newSolution)
@@ -86,13 +86,13 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 			self.CalculateProbs()
 			t, s = 0, 0
 			while t < self.FoodNumber:
-				if self.rand.rand() < self.Probs[s]:
+				if self.rand() < self.Probs[s]:
 					t += 1
 					Solution = copy.deepcopy(self.Foods[s])
-					param2change = int(self.rand.rand() * task.D)
-					neighbor = int(self.FoodNumber * self.rand.rand())
-					while neighbor == s: neighbor = int(self.FoodNumber * self.rand.rand())
-					Solution.x[param2change] = self.Foods[s].x[param2change] + (-1 + 2 * self.rand.rand()) * (self.Foods[s].x[param2change] - self.Foods[neighbor].x[param2change])
+					param2change = int(self.rand() * task.D)
+					neighbor = int(self.FoodNumber * self.rand())
+					while neighbor == s: neighbor = int(self.FoodNumber * self.rand())
+					Solution.x[param2change] = self.Foods[s].x[param2change] + (-1 + 2 * self.rand()) * (self.Foods[s].x[param2change] - self.Foods[neighbor].x[param2change])
 					Solution.evaluate(task)
 					if Solution.f < self.Foods[s].f:
 						self.checkForBest(newSolution)

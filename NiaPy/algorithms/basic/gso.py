@@ -43,7 +43,7 @@ class GlowwormSwarmOptimization(Algorithm):
 
 	def randMove(self, i):
 		j = i
-		while i == j: j = self.rand.randint(self.n)
+		while i == j: j = self.randint(self.n)
 		return j
 
 	def getNeighbors(self, i, r, GS, L):
@@ -52,16 +52,16 @@ class GlowwormSwarmOptimization(Algorithm):
 		return N
 
 	def probabilityes(self, i, N, L):
-		d, P = sum(L[where(N == 1)] - L[i]), full(self.n, 0)
+		d, P = sum(L[where(N == 1)] - L[i]), full(self.n, .0)
 		for j in range(self.n): P[i] = ((L[j] - L[i]) / d) if N[j] == 1 else 0
 		return P
 
 	def moveSelect(self, pb, i):
-		r, b_l, b_u = self.rand.rand(), 0, 0
+		r, b_l, b_u = self.rand(), 0, 0
 		for j in range(self.n):
 			b_l, b_u = b_u, b_u + pb[i]
 			if r > b_l and r < b_u: return j
-		return self.rand.randint(self.n)
+		return self.randint(self.n)
 
 	def calcLuciferin(self, L, GS_f): return (1 - self.rho) * L + self.gamma * GS_f
 
@@ -74,7 +74,7 @@ class GlowwormSwarmOptimization(Algorithm):
 
 	def runTask(self, task):
 		rs = euclidean(full(task.D, 0), task.bRange)
-		GS, GS_f, L, R = self.rand.uniform(task.Lower, task.Upper, [self.n, task.D]), full(self.n, inf), full(self.n, self.l0), full(self.n, rs)
+		GS, GS_f, L, R = self.uniform(task.Lower, task.Upper, [self.n, task.D]), full(self.n, inf), full(self.n, self.l0), full(self.n, rs)
 		xb, xb_f = None, inf
 		while not task.stopCondI():
 			GSo, Ro, GS_f = copy(GS), copy(R), apply_along_axis(task.eval, 1, GS)

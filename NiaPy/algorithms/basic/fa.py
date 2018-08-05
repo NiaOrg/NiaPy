@@ -44,14 +44,14 @@ class FireflyAlgorithm(Algorithm):
 			r = sqrt(sum((Fireflies[i] - Fireflies[j]) * (Fireflies[i] - Fireflies[j])))
 			if Intensity[i] > Intensity[j]:
 				beta = (1.0 - self.betamin) * exp(-self.gamma * pow(r, 2.0)) + self.betamin
-				tmpf = self.alpha * (self.rand.uniform(0, 1, task.D) - 0.5) * task.bRange
+				tmpf = self.alpha * (self.uniform(0, 1, task.D) - 0.5) * task.bRange
 				Fireflies[i] = Fireflies[i] * (1.0 - beta) + oFireflies[j] * beta + tmpf
 		task.repair(Fireflies[i])
 		return Fireflies[i]
 
 	def runTask(self, task):
 		"""Run."""
-		Fireflies = self.rand.uniform(task.Lower, task.Upper, [self.NP, task.D])
+		Fireflies = self.uniform(task.Lower, task.Upper, [self.NP, task.D])
 		Intensity = apply_along_axis(task.eval, 1, Fireflies)
 		alpha = self.alpha
 		while not task.stopCond():

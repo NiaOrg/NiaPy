@@ -9,21 +9,23 @@ logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.basic')
 logger.setLevel('INFO')
 
-__all__ = ['KrillHerdV1', 'KrillHerdV2', 'KrillHerdV3', 'KrillHerdV4']
+__all__ = ['KrillHerdV1', 'KrillHerdV2', 'KrillHerdV3', 'KrillHerdV4', 'KrillHerdV11']
 
-class KrillHerdV4(Algorithm):
+class KrillHerd(Algorithm):
 	r"""Implementation of krill herd algorithm.
 
 	**Algorithm:** Krill Herd Algorithm
 	**Date:** 2018
 	**Authors:** Klemen Berkovič
 	**License:** MIT
-	**Reference URL:**
-	**Reference paper:**
+	**Reference URL:** http://www.sciencedirect.com/science/article/pii/S1007570412002171
+	**Reference paper:** Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010.
 	"""
-	def __init__(self, **kwargs): Algorithm.__init__(self, name='BareBonesFireworksAlgorithm', sName='BBFA', **kwargs)
+	def __init__(self, **kwargs):
+		if kwargs.get('name', None) == None: Algorithm.__init__(self, name='KrillHerd', sName='KH', **kwargs)
+		else: Algorithm.__init__(self, **kwargs)
 
-	def setParameters(self, NP=50, N_max=0.01, V_f=0.02, D_max=0.002, C_t=0.93, W_n=0.42, W_f=0.38, d_s=2.63, Cr=0.2, Mu=0.05, epsilon=1e-4, **ukwargs):
+	def setParameters(self, NP=50, N_max=0.01, V_f=0.02, D_max=0.002, C_t=0.93, W_n=0.42, W_f=0.38, d_s=2.63, nn=5, Cr=0.2, Mu=0.05, epsilon=1e-31, **ukwargs):
 		r"""Set the arguments of an algorithm.
 
 		**Arguments**:
@@ -35,8 +37,13 @@ class KrillHerdV4(Algorithm):
 		W_n {real} or {array} -- inerta weights of the motion iduced from neighbors $\in [0, 1]$
 		W_f {real} or {array} -- inerta weights of the motion iduced from fraging $\in [0, 1]$
 		d_s {real} -- maximum euclidean distance for neighbors
+		nn {integer} -- maximu neighbors for neighbors effect
+		Cr {real} -- Crossover rate
+		Mu {real} -- Mutation rate
+		epsilon {real} -- Small numbers for devision
 		"""
-		self.N, self.N_max, self.V_f, self.D_max, self.C_t, self.W_n, self.W_f, self.d_s, self._Cr, self._Mu, self.epsilon = NP, N_max, V_f, D_max, C_t, W_n, W_f, d_s, Cr, Mu, epsilon
+		print (self.N, ' ', NP)
+		self.N, self.N_max, self.V_f, self.D_max, self.C_t, self.W_n, self.W_f, self.d_s, self.nn, self._Cr, self._Mu, self.epsilon = NP, N_max, V_f, D_max, C_t, W_n, W_f, d_s, nn, Cr, Mu, epsilon
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def initWeights(self, task):
@@ -47,7 +54,7 @@ class KrillHerdV4(Algorithm):
 		else: W_f = self.W_f if isinstance(self.W_f, ndarray) else asarray(self.W_f)
 		return W_n, W_f
 
-	def sensRange(self, ki, KH): return sum([ed(KH[ki], KH[i]) for i in range(self.N)]) / (5 * self.N)
+	def sensRange(self, ki, KH): return sum([ed(KH[ki], KH[i]) for i in range(self.N)]) / (self.nn * self.N)
 
 	def getNeigbors(self, i, ids, KH):
 		N = list()
@@ -63,21 +70,21 @@ class KrillHerdV4(Algorithm):
 		Ni = self.getNeigbors(i, self.sensRange(i, KH), KH)
 		Nx, Nf, f_b, f_w = KH[Ni], KH_f[Ni], KH_f[ikh_b], KH_f[ikh_w]
 		alpha_l = sum(asarray([self.funK(KH_f[i], j, f_b, f_w) for j in Nf]) * asarray([self.funX(KH[i], j) for j in Nx]).T)
-		alpha_t = 2 * (self.rand.rand() + task.Iters / task.nGEN)
+		alpha_t = 2 * (1 + self.rand() * task.Iters / task.nGEN)
 		return self.N_max * (alpha_l + alpha_t) + W * n
 
 	def induceFragingMotion(self, i, x, x_f, f, W, KH, KH_f, ikh_b, ikh_w, task):
-		beta_f = 2 * (1 - task.Iters / task.nGEN) * self.funK(KH_f[i], x_f, KH_f[ikh_b], KH_f[ikh_w]) * self.funX(KH[i], x)
+		beta_f = 2 * (1 - task.Iters / task.nGEN) * self.funK(KH_f[i], x_f, KH_f[ikh_b], KH_f[ikh_w]) * self.funX(KH[i], x) if KH_f[ikh_b] < KH_f[i] else 0
 		beta_b = self.funK(KH_f[i], KH_f[ikh_b], KH_f[ikh_b], KH_f[ikh_w]) * self.funX(KH[i], KH[ikh_b])
 		return self.V_f * (beta_f + beta_b) + W * f
 
-	def inducePhysicalDiffusion(self, task): return self.D_max * (1 - task.Iters / task.nGEN) * self.rand.uniform(-1, 1, task.D)
+	def inducePhysicalDiffusion(self, task): return self.D_max * (1 - task.Iters / task.nGEN) * self.uniform(-1, 1, task.D)
 
 	def deltaT(self, task): return self.C_t * sum(task.bRange)
 
-	def crossover(self, x, xo, Cr): return asarray([xo[i] if self.rand.rand() < Cr else x[i] for i in range(len(x))])
+	def crossover(self, x, xo, Cr): return asarray([xo[i] if self.rand() < Cr else x[i] for i in range(len(x))])
 
-	def mutate(self, x, x_b, Mu): return asarray([x[i] if self.rand.rand() < Mu else x_b[i] + self.rand.rand() for i in range(len(x))])
+	def mutate(self, x, x_b, Mu): return asarray([x[i] if self.rand() < Mu else x_b[i] + self.rand() for i in range(len(x))])
 
 	def getFoodLocation(self, KH, KH_f, task):
 		x_food = task.repair(asarray([sum(KH[:, i] / KH_f) for i in range(task.D)]) / sum(1 / KH_f))
@@ -89,7 +96,7 @@ class KrillHerdV4(Algorithm):
 	def Cr(self, xf, yf, xf_best, xf_worst): return self._Cr * self.funK(xf, yf, xf_best, xf_worst)
 
 	def runTask(self, task):
-		KH, N, F, x, x_fit = self.rand.uniform(task.Lower, task.Upper, [self.N, task.D]), full(self.N, .0), full(self.N, .0), None, inf
+		KH, N, F, x, x_fit = self.uniform(task.Lower, task.Upper, [self.N, task.D]), full(self.N, .0), full(self.N, .0), None, inf
 		W_n, W_f = self.initWeights(task)
 		while not task.stopCondI():
 			KH_f = apply_along_axis(task.eval, 1, KH)
@@ -108,15 +115,86 @@ class KrillHerdV4(Algorithm):
 			KH = apply_along_axis(task.repair, 1, KH_n)
 		return x, x_fit
 
+class KrillHerdV4(KrillHerd):
+	r"""Implementation of krill herd algorithm.
+
+	**Algorithm:** Krill Herd Algorithm
+	**Date:** 2018
+	**Authors:** Klemen Berkovič
+	**License:** MIT
+	**Reference URL:** http://www.sciencedirect.com/science/article/pii/S1007570412002171
+	**Reference paper:** Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010.
+	"""
+	def __init__(self, **kwargs):
+		if kwargs.get('name', None) == None: KrillHerd.__init__(self, name='KrillHerdV4', sName='KHv4', **kwargs)
+		else: KrillHerd.__init__(self, **kwargs)
+
+	def setParameters(self, NP=50, N_max=0.01, V_f=0.02, D_max=0.002, C_t=0.93, W_n=0.42, W_f=0.38, d_s=2.63, **ukwargs): KrillHerd.setParameters(NP, N_max, V_f, D_max, C_t, W_n, W_f, d_s, 4, 0.2, 0.05, 1e-31, **ukwargs)
+
 class KrillHerdV1(KrillHerdV4):
+	r"""Implementation of krill herd algorithm.
+
+	**Algorithm:** Krill Herd Algorithm
+	**Date:** 2018
+	**Authors:** Klemen Berkovič
+	**License:** MIT
+	**Reference URL:** http://www.sciencedirect.com/science/article/pii/S1007570412002171
+	**Reference paper:** Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010.
+	"""
+	def __init__(self, **kwargs):
+		if kwargs.get('name', None) == None: KrillHerd.__init__(self, name='KrillHerdV1', sName='KHv1', **kwargs)
+		else: KrillHerd.__init__(self, **kwargs)
+
 	def crossover(self, x, xo, Cr): return x
 
 	def mutate(self, x, x_b, Mu): return x
 
 class KrillHerdV2(KrillHerdV4):
+	r"""Implementation of krill herd algorithm.
+
+	**Algorithm:** Krill Herd Algorithm
+	**Date:** 2018
+	**Authors:** Klemen Berkovič
+	**License:** MIT
+	**Reference URL:** http://www.sciencedirect.com/science/article/pii/S1007570412002171
+	**Reference paper:** Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010.
+	"""
+	def __init__(self, **kwargs):
+		if kwargs.get('name', None) == None: KrillHerd.__init__(self, name='KrillHerdV2', sName='KHv2', **kwargs)
+		else: KrillHerd.__init__(self, **kwargs)
+
 	def mutate(self, x, x_b, Mu): return x
 
 class KrillHerdV3(KrillHerdV4):
+	r"""Implementation of krill herd algorithm.
+
+	**Algorithm:** Krill Herd Algorithm
+	**Date:** 2018
+	**Authors:** Klemen Berkovič
+	**License:** MIT
+	**Reference URL:** http://www.sciencedirect.com/science/article/pii/S1007570412002171
+	**Reference paper:** Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010.
+	"""
+	def __init__(self, **kwargs):
+		if kwargs.get('name', None) == None: KrillHerd.__init__(self, name='KrillHerdV3', sName='KHv3', **kwargs)
+		else: KrillHerd.__init__(self, **kwargs)
+
 	def crossover(self, x, xo, Cr): return x
+
+class KrillHerdV11(KrillHerdV4):
+	r"""Implementation of krill herd algorithm.
+
+	**Algorithm:** Krill Herd Algorithm
+	**Date:** 2018
+	**Authors:** Klemen Berkovič
+	**License:** MIT
+	**Reference URL:**
+	**Reference paper:**
+	"""
+	def __init__(self, **kwargs):
+		if kwargs.get('name', None) == None: KrillHerd.__init__(self, name='KrillHerdV11', sName='KHv11', **kwargs)
+		else: KrillHerd.__init__(self, **kwargs)
+
+	def sensRange(self, ki, HK): return 
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

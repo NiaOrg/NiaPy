@@ -54,9 +54,9 @@ class MonkeyKingEvolutionV1(Algorithm):
 		x[ir] = task.Lower[ir]
 		return x
 
-	def moveP(self, x, x_pb, x_b, task): return x_pb + self.F * self.rand.rand(task.D) * (x_b - x)
+	def moveP(self, x, x_pb, x_b, task): return x_pb + self.F * self.rand(task.D) * (x_b - x)
 
-	def moveMK(self, x, task): return x + self.FC * self.rand.rand(int(self.C * task.D), task.D) * x
+	def moveMK(self, x, task): return x + self.FC * self.rand([int(self.C * task.D), task.D]) * x
 
 	def movePartice(self, p, p_b, task):
 		p.x = self.repair(self.moveP(p.x, p.x_pb, p_b.x, task), task)
@@ -78,10 +78,10 @@ class MonkeyKingEvolutionV1(Algorithm):
 	def runTask(self, task):
 		pop = [MkeSolution(task=task) for i in range(self.NP)]
 		p_b = pop[argmin([x.f for x in pop])]
-		for i in self.rand.choice(self.NP, int(self.R * len(pop)), replace=False): pop[i].MonkeyKing = True
+		for i in self.Rand.choice(self.NP, int(self.R * len(pop)), replace=False): pop[i].MonkeyKing = True
 		while not task.stopCond():
 			self.movePopulation(pop, p_b, task)
-			for i in self.rand.choice(self.NP, int(self.R * len(pop)), replace=False): pop[i].MonkeyKing = True
+			for i in self.Rand.choice(self.NP, int(self.R * len(pop)), replace=False): pop[i].MonkeyKing = True
 			ib = argmin([x.f for x in pop])
 			if pop[ib].f < p_b.f: p_b = pop[ib]
 		return p_b.x, p_b.f
@@ -111,7 +111,7 @@ class MonkeyKingEvolutionV2(MonkeyKingEvolutionV1):
 		p.MonkeyKing = False
 		p_b, p_f = p.x, p.f
 		for _i in range(int(self.C * self.NP)):
-			r = self.rand.choice(self.NP, 2, replace=False)
+			r = self.Rand.choice(self.NP, 2, replace=False)
 			a = self.repair(self.moveMK(p.x, pop[r[0]].x - pop[r[1]].x, task), task)
 			a_f = task.eval(a)
 			if a_f < p_f: p_b, p_f = a, a_f
@@ -146,15 +146,15 @@ class MonkeyKingEvolutionV3(MonkeyKingEvolutionV1):
 	def neg(self, x): return 0.0 if x == 1 else 1.0
 
 	def runTask(self, task):
-		X = task.Lower + task.bRange * self.rand.rand(self.NP, task.D)
+		X = task.Lower + task.bRange * self.rand([self.NP, task.D])
 		x_gb, x_f_gb = self.eval(X, None, inf, task)
 		k, c = ceil(self.NP / task.D), ceil(self.C * task.D)
 		while not task.stopCond():
-			X_gb = x_gb + self.FC * X[self.rand.choice(len(X), c)] - X[self.rand.choice(len(X), c)]
+			X_gb = x_gb + self.FC * X[self.Rand.choice(len(X), c)] - X[self.Rand.choice(len(X), c)]
 			x_gb, x_f_gb = self.eval(X_gb, x_gb, x_f_gb, task)
 			M = ones([self.NP, task.D])
 			for i in range(k): M[i * task.D:(i + 1) * task.D] = tril(M[i * task.D:(i + 1) * task.D])
-			for i in range(self.NP): self.rand.shuffle(M[i])
+			for i in range(self.NP): self.Rand.shuffle(M[i])
 			X = M * X + vectorize(self.neg)(M) * x_gb
 			x_gb, x_f_gb = self.eval(X, x_gb, x_f_gb, task)
 		return x_gb, x_f_gb

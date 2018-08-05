@@ -44,20 +44,20 @@ class FlowerPollinationAlgorithm(Algorithm):
 
 	def levy(self):
 		sigma = (Gamma(1 + self.beta) * sin(pi * self.beta / 2) / (Gamma(1 + self.beta) * self.beta * 2 ** ((self.beta - 1) / 2))) ** (1 / self.beta)
-		return 0.01 * (self.rand.normal(0, 1) * sigma / fabs(self.rand.normal(0, 1)) ** (1 / self.beta))
+		return 0.01 * (self.normal(0, 1) * sigma / fabs(self.normal(0, 1)) ** (1 / self.beta))
 
 	def runTask(self, task):
-		Sol = self.rand.uniform(task.Lower, task.Upper, [self.NP, task.D])
+		Sol = self.uniform(task.Lower, task.Upper, [self.NP, task.D])
 		Sol_f = apply_along_axis(task.eval, 1, Sol)
 		ib = argmin(Sol_f)
 		solb, solb_f = Sol[ib], Sol_f[ib]
 		while not task.stopCond():
 			for i in range(self.NP):
 				S = full(task.D, 0.0)
-				if self.rand.uniform(0, 1) > self.p: S += self.levy() * (Sol[i] - solb)
+				if self.uniform(0, 1) > self.p: S += self.levy() * (Sol[i] - solb)
 				else:
-					JK = self.rand.permutation(self.NP)
-					S += self.rand.uniform(0, 1) * (Sol[JK[0]] - Sol[JK[1]])
+					JK = self.Rand.permutation(self.NP)
+					S += self.uniform(0, 1) * (Sol[JK[0]] - Sol[JK[1]])
 				S = self.repair(S, task)
 				f_i = task.eval(S)
 				if f_i <= Sol_f[i]: Sol[i], Sol_f[i] = S, f_i

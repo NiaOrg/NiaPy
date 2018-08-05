@@ -86,7 +86,7 @@ class DifferentialEvolutionAlgorithm(Algorithm):
 		pop = [self.evalPopulation(pop[i], pop[i], task) for i in range(self.Np)]
 		x_b = pop[argmin([x.f for x in pop])]
 		while not task.stopCond():
-			npop = [Individual(x=self.CrossMutt(pop, i, x_b, self.F, self.CR, self.rand)) for i in range(self.Np)]
+			npop = [Individual(x=self.CrossMutt(pop, i, x_b, self.F, self.CR, self.Rand)) for i in range(self.Np)]
 			pop = [self.evalPopulation(npop[i], pop[i], task) for i in range(self.Np)]
 			ix_b = argmin([x.f for x in pop])
 			if x_b.f > pop[ix_b].f: x_b = pop[ix_b]

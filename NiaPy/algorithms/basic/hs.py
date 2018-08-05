@@ -34,19 +34,19 @@ class HarmonySearch(Algorithm):
 		self.HMS, self.r_accept, self.r_pa, self.b_range = HMS, r_accept, r_pa, b_range
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def bw(self, task): return self.rand.uniform(-1, 1) * self.b_range
+	def bw(self, task): return self.uniform(-1, 1) * self.b_range
 
 	def adjustment(self, x, task): return x + self.bw(task)
 
 	def improvize(self, HM, task):
 		H = full(task.D, .0)
 		for i in range(task.D):
-			r, j = self.rand.rand(), self.rand.randint(self.HMS)
-			H[i] = HM[j, i] if r > self.r_accept else self.adjustment(HM[j, i], task) if r > self.r_pa else self.rand.uniform(task.Lower[i], task.Upper[i])
+			r, j = self.rand(), self.randint(self.HMS)
+			H[i] = HM[j, i] if r > self.r_accept else self.adjustment(HM[j, i], task) if r > self.r_pa else self.uniform(task.Lower[i], task.Upper[i])
 		return H
 
 	def runTask(self, task):
-		HM = self.rand.uniform(task.Lower, task.Upper, [self.HMS, task.D])
+		HM = self.uniform(task.Lower, task.Upper, [self.HMS, task.D])
 		HM_f = apply_along_axis(task.eval, 1, HM)
 		while not task.stopCondI():
 			H = self.improvize(HM, task)

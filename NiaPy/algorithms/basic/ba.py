@@ -52,21 +52,21 @@ class BatAlgorithm(Algorithm):
 		{decimal} -- minimal value found of objective function
 		"""
 		S, Q, v = full([self.NP, task.D], 0.0), full(self.NP, 0.0), full([self.NP, task.D], 0.0)
-		Sol = task.Lower + task.bRange * self.rand.uniform(0, 1, [self.NP, task.D])
+		Sol = task.Lower + task.bRange * self.uniform(0, 1, [self.NP, task.D])
 		Fitness = apply_along_axis(task.eval, 1, Sol)
 		j = argmin(Fitness)
 		best, f_min = Sol[j], Fitness[j]
 		while not task.stopCond():
 			for i in range(self.NP):
-				Q[i] = self.Qmin + (self.Qmax - self.Qmin) * self.rand.uniform(0, 1)
+				Q[i] = self.Qmin + (self.Qmax - self.Qmin) * self.uniform(0, 1)
 				v[i] = v[i] + (Sol[i] - best) * Q[i]
 				S[i] = Sol[i] + v[i]
 				S[i] = task.repair(S[i])
-				if self.rand.rand() > self.r:
-					S[i] = best + 0.001 * self.rand.normal(0, 1, task.D)
+				if self.rand() > self.r:
+					S[i] = best + 0.001 * self.normal(0, 1, task.D)
 					S[i] = task.repair(S[i])
 				Fnew = task.eval(S[i])
-				if (Fnew <= Fitness[i]) and (self.rand.rand() < self.A): Sol[i], Fitness[i] = S[i], Fnew
+				if (Fnew <= Fitness[i]) and (self.rand() < self.A): Sol[i], Fitness[i] = S[i], Fnew
 				if Fnew <= f_min: best, f_min = S[i], Fnew
 		return best, f_min
 

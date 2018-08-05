@@ -41,7 +41,7 @@ class GreyWolfOptimizer(Algorithm):
 
 	def runTask(self, task):
 		"""Run."""
-		pop = task.Lower + task.bRange * self.rand.rand(self.NP, task.D)
+		pop = task.Lower + task.bRange * self.rand([self.NP, task.D])
 		A, A_f, B, B_f, D, D_f = None, inf, None, inf, None, inf
 		while not task.stopCond():
 			for i in range(self.NP):
@@ -52,11 +52,11 @@ class GreyWolfOptimizer(Algorithm):
 				elif f > B_f and f < D_f: D, D_f = pop[i], f
 			a = 2 - task.Evals * (2 / task.nFES)
 			for i, w in enumerate(pop):
-				A1, C1 = 2 * a * self.rand.rand(task.D) - a, 2 * self.rand.rand(task.D)
+				A1, C1 = 2 * a * self.rand(task.D) - a, 2 * self.rand(task.D)
 				X1 = A - A1 * fabs(C1 * A - w)
-				A2, C2 = 2 * a * self.rand.rand(task.D) - a, 2 * self.rand.rand(task.D)
+				A2, C2 = 2 * a * self.rand(task.D) - a, 2 * self.rand(task.D)
 				X2 = B - A2 * fabs(C2 * B - w)
-				A3, C3 = 2 * a * self.rand.rand(task.D) - a, 2 * self.rand.rand(task.D)
+				A3, C3 = 2 * a * self.rand(task.D) - a, 2 * self.rand(task.D)
 				X3 = D - A3 * fabs(C3 * D - w)
 				pop[i] = (X1 + X2 + X3) / 3
 		return A, A_f

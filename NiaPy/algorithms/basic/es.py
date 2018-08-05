@@ -44,7 +44,7 @@ class EvolutionStrategy1p1(Algorithm):
 		self.mu, self.k, self.c_a, self.c_r = mu, k, c_a, c_r
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def mutate(self, x, rho): return x + self.rand.normal(0, rho, len(x))
+	def mutate(self, x, rho): return x + self.normal(0, rho, len(x))
 
 	def updateRho(self, rho, k):
 		phi = k / self.k
@@ -53,7 +53,7 @@ class EvolutionStrategy1p1(Algorithm):
 		else: return rho
 
 	def runTask(self, task):
-		c, ki = IndividualES(task=task, rand=self.rand), 0
+		c, ki = IndividualES(task=task, rand=self.Rand), 0
 		while not task.stopCondI():
 			if task.Iters % self.k == 0: c.rho, ki = self.updateRho(c.rho, ki), 0
 			cn = [task.repair(self.mutate(c.x, c.rho)) for _i in range(self.mu)]
@@ -105,7 +105,7 @@ class EvolutionStrategyMpL(EvolutionStrategy1p1):
 		self.lam = lam
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def mutate(self, x, rho): return x + self.rand.normal(0, rho, len(x))
+	def mutate(self, x, rho): return x + self.normal(0, rho, len(x))
 
 	def updateRho(self, pop, k):
 		phi = k / self.k
@@ -121,11 +121,11 @@ class EvolutionStrategyMpL(EvolutionStrategy1p1):
 		return k
 
 	def mutateRepair(self, pop, task):
-		i = self.rand.randint(self.mu)
+		i = self.randint(self.mu)
 		return task.repair(self.mutate(pop[i].x, pop[i].rho))
 
 	def runTask(self, task):
-		c, ki = [IndividualES(task=task, rand=self.rand) for _i in range(self.mu)], 0
+		c, ki = [IndividualES(task=task, rand=self.Rand) for _i in range(self.mu)], 0
 		while not task.stopCondI():
 			if task.Iters % self.k == 0: _, ki = self.updateRho(c, ki), 0
 			cm = [self.mutateRepair(c, task) for i in range(self.lam)]
@@ -160,7 +160,7 @@ class EvolutionStrategyML(EvolutionStrategyMpL):
 		return npop
 
 	def runTask(self, task):
-		c = [IndividualES(task=task, rand=self.rand) for _i in range(self.mu)]
+		c = [IndividualES(task=task, rand=self.Rand) for _i in range(self.mu)]
 		while not task.stopCondI():
 			cm = [self.mutateRepair(c, task) for i in range(self.lam)]
 			cn = [IndividualES(x=cm[i], task=task) for i in range(self.lam)]

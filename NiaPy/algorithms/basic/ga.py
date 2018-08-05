@@ -87,16 +87,16 @@ class GeneticAlgorithm(Algorithm):
 	def evolve(self, pop, x_b, task):
 		npop, x_bc = list(), pop[argmin([x.f for x in pop])]
 		for i in range(self.NP):
-			ind = Individual(x=self.Selection(pop, i, self.Ts, x_bc, self.rand), e=False)
-			ind.x = self.Crossover(pop, i, self.Cr, self.rand)
-			ind.x = self.Mutation(pop, i, self.Mr, task, self.rand)
+			ind = Individual(x=self.Selection(pop, i, self.Ts, x_bc, self.Rand), e=False)
+			ind.x = self.Crossover(pop, i, self.Cr, self.Rand)
+			ind.x = self.Mutation(pop, i, self.Mr, task, self.Rand)
 			ind.evaluate(task)
 			npop.append(ind)
 			if x_b.f > ind.f: x_b = ind
 		return npop, x_b
 
 	def runTask(self, task):
-		pop = [Individual(task=task, rand=self.rand) for _i in range(self.NP)]
+		pop = [Individual(task=task, rand=self.Rand) for _i in range(self.NP)]
 		x_b = pop[argmin([c.f for c in pop])]
 		while not task.stopCond(): pop, x_b = self.evolve(pop, x_b, task)
 		return x_b.x, x_b.f

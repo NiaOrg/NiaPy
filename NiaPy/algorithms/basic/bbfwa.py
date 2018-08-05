@@ -36,10 +36,10 @@ class BareBonesFireworksAlgorithm(Algorithm):
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def runTask(self, task):
-		x, A = self.rand.uniform(task.Lower, task.Upper, task.D), task.bRange
+		x, A = self.uniform(task.Lower, task.Upper, task.D), task.bRange
 		x_fit = task.eval(x)
 		while not task.stopCond():
-			S = self.rand.uniform(x - A, x + A, [self.n, task.D])
+			S = self.uniform(x - A, x + A, [self.n, task.D])
 			S_fit = apply_along_axis(task.eval, 1, S)
 			iS = argmin(S_fit)
 			if S_fit[iS] < x_fit: x, x_fit, A = S[iS], S_fit[iS], self.C_a * A
