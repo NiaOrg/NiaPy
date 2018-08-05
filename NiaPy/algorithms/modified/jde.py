@@ -52,8 +52,8 @@ class SelfAdaptiveDifferentialEvolutionAlgorithm(DifferentialEvolutionAlgorithm)
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def AdaptiveGen(self, x):
-		f = self.F_l + self.rand.rand() * (self.F_u - self.F_l) if self.rand.rand() < self.Tao1 else x.F
-		cr = self.rand.rand() if self.rand.rand() < self.Tao2 else x.CR
+		f = self.F_l + self.rand() * (self.F_u - self.F_l) if self.rand() < self.Tao1 else x.F
+		cr = self.rand() if self.rand() < self.Tao2 else x.CR
 		return SolutionjDE(x=x.x, F=f, CR=cr)
 
 	def runTask(self, task):
@@ -62,7 +62,7 @@ class SelfAdaptiveDifferentialEvolutionAlgorithm(DifferentialEvolutionAlgorithm)
 		x_b = pop[argmin([x.f for x in pop])]
 		while not task.stopCond():
 			npop = [self.AdaptiveGen(pop[i]) for i in range(self.Np)]
-			npop = [SolutionjDE(x=self.CrossMutt(npop, i, x_b, self.F, self.CR, self.rand), F=npop[i].F, CR=npop[i].CR) for i in range(self.Np)]
+			npop = [SolutionjDE(x=self.CrossMutt(npop, i, x_b, self.F, self.CR, self.Rand), F=npop[i].F, CR=npop[i].CR) for i in range(self.Np)]
 			pop = [self.evalPopulation(npop[i], pop[i], task) for i in range(self.Np)]
 			ix_b = argmin([x.f for x in pop])
 			if x_b.f > pop[ix_b].f: x_b = pop[ix_b]

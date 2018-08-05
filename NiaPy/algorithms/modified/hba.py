@@ -43,18 +43,18 @@ class HybridBatAlgorithm(BatAlgorithm):
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def runTask(self, task):
-		v, Sol = full([self.NP, task.D], 0.0), task.Lower + task.bRange * self.rand.rand(self.NP, task.D)
+		v, Sol = full([self.NP, task.D], 0.0), task.Lower + task.bRange * self.rand([self.NP, task.D])
 		Fitness = apply_along_axis(task.eval, 1, Sol)
 		ib = argmin(Fitness)
 		best, f_min = Sol[ib], Fitness[ib]
 		while not task.stopCond():
-			Q = self.Qmin + (self.Qmax - self.Qmin) * self.rand.uniform(0, 1, self.NP)
+			Q = self.Qmin + (self.Qmax - self.Qmin) * self.uniform(0, 1, self.NP)
 			for i in range(self.NP):
 				v[i] = v[i] + (Sol[i] - best) * Q[i]
 				S = task.repair(Sol[i] + v[i])
-				if self.rand.rand() > self.r: S = task.repair(self.CrossMutt(Sol, i, best, self.F, self.CR, self.rand))
+				if self.rand() > self.r: S = task.repair(self.CrossMutt(Sol, i, best, self.F, self.CR, self.Rand))
 				f_new = task.eval(S)
-				if Fitness[i] <= f_new and self.rand.rand() < self.A: Sol[i], Fitness[i] = S, f_new
+				if Fitness[i] <= f_new and self.rand() < self.A: Sol[i], Fitness[i] = S, f_new
 				if f_new < f_min: best, f_min = S, f_new
 		return best, f_min
 

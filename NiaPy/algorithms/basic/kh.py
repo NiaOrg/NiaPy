@@ -42,7 +42,6 @@ class KrillHerd(Algorithm):
 		Mu {real} -- Mutation rate
 		epsilon {real} -- Small numbers for devision
 		"""
-		print (self.N, ' ', NP)
 		self.N, self.N_max, self.V_f, self.D_max, self.C_t, self.W_n, self.W_f, self.d_s, self.nn, self._Cr, self._Mu, self.epsilon = NP, N_max, V_f, D_max, C_t, W_n, W_f, d_s, nn, Cr, Mu, epsilon
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
@@ -82,9 +81,9 @@ class KrillHerd(Algorithm):
 
 	def deltaT(self, task): return self.C_t * sum(task.bRange)
 
-	def crossover(self, x, xo, Cr): return asarray([xo[i] if self.rand() < Cr else x[i] for i in range(len(x))])
+	def crossover(self, x, xo, Cr): return [xo[i] if self.rand() < Cr else x[i] for i in range(len(x))]
 
-	def mutate(self, x, x_b, Mu): return asarray([x[i] if self.rand() < Mu else x_b[i] + self.rand() for i in range(len(x))])
+	def mutate(self, x, x_b, Mu): return [x[i] if self.rand() < Mu else x_b[i] + self.rand() for i in range(len(x))]
 
 	def getFoodLocation(self, KH, KH_f, task):
 		x_food = task.repair(asarray([sum(KH[:, i] / KH_f) for i in range(task.D)]) / sum(1 / KH_f))
@@ -129,7 +128,7 @@ class KrillHerdV4(KrillHerd):
 		if kwargs.get('name', None) == None: KrillHerd.__init__(self, name='KrillHerdV4', sName='KHv4', **kwargs)
 		else: KrillHerd.__init__(self, **kwargs)
 
-	def setParameters(self, NP=50, N_max=0.01, V_f=0.02, D_max=0.002, C_t=0.93, W_n=0.42, W_f=0.38, d_s=2.63, **ukwargs): KrillHerd.setParameters(NP, N_max, V_f, D_max, C_t, W_n, W_f, d_s, 4, 0.2, 0.05, 1e-31, **ukwargs)
+	def setParameters(self, NP=50, N_max=0.01, V_f=0.02, D_max=0.002, C_t=0.93, W_n=0.42, W_f=0.38, d_s=2.63, **ukwargs): KrillHerd.setParameters(self, NP, N_max, V_f, D_max, C_t, W_n, W_f, d_s, 4, 0.2, 0.05, 1e-31, **ukwargs)
 
 class KrillHerdV1(KrillHerdV4):
 	r"""Implementation of krill herd algorithm.
@@ -195,6 +194,6 @@ class KrillHerdV11(KrillHerdV4):
 		if kwargs.get('name', None) == None: KrillHerd.__init__(self, name='KrillHerdV11', sName='KHv11', **kwargs)
 		else: KrillHerd.__init__(self, **kwargs)
 
-	def sensRange(self, ki, HK): return 
+	def sensRange(self, ki, HK): return None
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
