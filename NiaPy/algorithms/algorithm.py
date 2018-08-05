@@ -43,7 +43,7 @@ class Algorithm:
 		"""
 		pass
 
-	def rand(self, D=[1]):
+	def rand(self, D=1):
 		r"""Get random numbers of shape D in range from 0 to 1.
 
 		**Arguments**:

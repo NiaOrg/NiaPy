@@ -2,7 +2,7 @@
 # pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, arguments-differ
 import logging
 from scipy.spatial.distance import euclidean as ed
-from numpy import apply_along_axis, argmin, argmax, sum, full, inf, ndarray, asarray
+from numpy import apply_along_axis, argmin, argmax, sum, full, inf, ndarray, asarray, mean, where, sqrt
 from NiaPy.algorithms.algorithm import Algorithm
 
 logging.basicConfig()
@@ -83,7 +83,8 @@ class KrillHerd(Algorithm):
 
 	def crossover(self, x, xo, Cr): return [xo[i] if self.rand() < Cr else x[i] for i in range(len(x))]
 
-	def mutate(self, x, x_b, Mu): return [x[i] if self.rand() < Mu else x_b[i] + self.rand() for i in range(len(x))]
+	def mutate(self, x, x_b, Mu):
+		return [x[i] if self.rand() < Mu else (x_b[i] + self.rand()) for i in range(len(x))]
 
 	def getFoodLocation(self, KH, KH_f, task):
 		x_food = task.repair(asarray([sum(KH[:, i] / KH_f) for i in range(task.D)]) / sum(1 / KH_f))
@@ -194,6 +195,51 @@ class KrillHerdV11(KrillHerdV4):
 		if kwargs.get('name', None) == None: KrillHerd.__init__(self, name='KrillHerdV11', sName='KHv11', **kwargs)
 		else: KrillHerd.__init__(self, **kwargs)
 
-	def sensRange(self, ki, HK): return None
+	def sensRange(self, ki, HK, HK_f): return None
+
+	def ElitistSelection(self, KH, KH_f, KHo, KHo_f):
+		ipb = where(KHo_f >= KH_f)
+		KHo[ipb], KHo_f[ipb] = KH[ipb], KH_f[ipb]
+		return KHo, KHo_f
+
+
+	def (self, i, KH, KH_f, KHo, KHo_f, iw, ib, x_food, x_food_f, N, F, W_n):
+		Rf, Rgb, RR, Kw_Kgb = x_food - KH[i], KH[ib] - KH[i], KH[:] - KH[i], KH_f[iw] - KH_f[ib]
+		R = sqrt(sum(RR * RR, axis=0))
+		alpha_b = -2 * () * Rgb if KH_f[ib] < KH_f[i] else 0
+		alpah_n, nn, ds = 0.0, 0, mean(R) / 5
+		for n in range(self.N):
+			if R < ds and n != i:
+				nn += 1
+				if nn <= 4 and KH_f[i] != KH[n]: alpah_n -= (KH(n) - KH[i]) / Kw_Kgb / sqrt(sum(Rbg * Rgb))
+		return w * N * self.N_max * (alpha_b + alpah_n)
+
+	def Foraging(self, KH, KH_f, W_f, x_food_f):
+		Rf, Kw_Kbg = KH - xb_f, w_f - w_b
+		beta_f = -2 * (1 - task.Iters / task.nGEN) * (x_food_f - KH_f) / Kw_Kgb / sqrt(sum(Rf * Rf)) * Rf if x_food_f < KH_f else 0
+		Rib = KHo - KH
+		beta_b = -(KHo_f - KH_f) / Kw_Kgb / sqrt(sum(Rib * Rib)) * Rib
+		return W_f * F + self.V_f * (beta_b + beta_f)
+
+	def runTask(self, task):
+		KH, N, F, Dt, x, x_fit = self.uniform(task.Lower, task.Upper, [self.N, task.D]), full(self.N, .0), full(self.N, .0), mean(task.bRange) / 2, None, inf
+		KHo, KHo_f = full([self.N, task.D], inf), full(self.N, inf)
+		W_n, W_f = self.initWeights(task)
+		while not task.stopCondI():
+			KH_f = apply_along_axis(task.eval, 1, KH)
+			KHo, KHo_f = self.ElitistSelection(KH, KH_f, KHo, KHo_f)
+			ib, iw = argmin(KH_f), argmax(KH_f)
+			if KH_f[ib] <= x_fit: x, x_fit = KH[ib], KH_f[ib]
+			x_food, x_food_f = self.getFoodLocation(KH, KH_f, task)
+			if x_food_f <= x_fit: x, x_fit = x_food, x_food_f
+			N = asarray([i for i in range(self.N)])
+			F = asarray([i for i in range(self.N)])
+			KH_n = KH + Dt * (F * N)
+			# Cr = asarray([self.Cr(KH_f[i], KH_f[ikh_b], KH_f[ikh_b], KH_f[ikh_w]) for i in range(self.N)])
+			# KH_n = asarray([self.crossover(KH_n[i], KH[i], Cr[i]) for i in range(self.N)])
+			# Mu = asarray([self.Mu(KH_f[i], KH_f[ikh_b], KH_f[ikh_b], KH_f[ikh_w]) for i in range(self.N)])
+			# KH_n = asarray([self.mutate(KH_n[i], KH[ikh_b], Mu[i]) for i in range(self.N)])
+			KH = apply_along_axis(task.repair, 1, KH_n)
+		return x, x_fit
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
