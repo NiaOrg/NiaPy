@@ -10,14 +10,13 @@ from NiaPy.algorithms.basic.ga import GeneticAlgorithm
 from NiaPy.algorithms.basic.abc import ArtificialBeeColonyAlgorithm
 from NiaPy.algorithms.basic.pso import ParticleSwarmAlgorithm
 from NiaPy.algorithms.basic.ca import CamelAlgorithm
-from NiaPy.algorithms.basic.bbfwa import BareBonesFireworksAlgorithm
 from NiaPy.algorithms.basic.mke import MonkeyKingEvolutionV1, MonkeyKingEvolutionV2, MonkeyKingEvolutionV3
 from NiaPy.algorithms.basic.es import EvolutionStrategy1p1, EvolutionStrategyMp1, EvolutionStrategyMpL, EvolutionStrategyML
 from NiaPy.algorithms.basic.sca import SineCosineAlgorithm
 from NiaPy.algorithms.basic.gso import GlowwormSwarmOptimization, GlowwormSwarmOptimizationV1, GlowwormSwarmOptimizationV2, GlowwormSwarmOptimizationV3
 from NiaPy.algorithms.basic.hs import HarmonySearch, HarmonySearchV1
 from NiaPy.algorithms.basic.kh import KrillHerdV1, KrillHerdV2, KrillHerdV3, KrillHerdV4, KrillHerdV11
-from NiaPy.algorithms.basic.fwa import FireworksAlgorithm, EnhancedFireworksAlgorithm, DynamicFireworksAlgorithm
+from NiaPy.algorithms.basic.fwa import FireworksAlgorithm, EnhancedFireworksAlgorithm, DynamicFireworksAlgorithm, BareBonesFireworksAlgorithm
 
 __all__ = [
     'BatAlgorithm',

@@ -54,7 +54,7 @@ class Algorithm:
 		elif D > 1: return self.Rand.rand(D)
 		else: return self.Rand.rand()
 
-	def uniform(self, Lower, Upper, D=[1]):
+	def uniform(self, Lower, Upper, D=None):
 		r"""Get D shape random uniform numbers in range from Lower to Upper.
 
 		**Arguments**:
@@ -62,7 +62,7 @@ class Algorithm:
 		Upper {array} or {real} or {int} -- Upper bound
 		D {array} or {int} -- Shape of returnd random uniform numbers
 		"""
-		return self.Rand.uniform(Lower, Upper, D)
+		return self.Rand.uniform(Lower, Upper, D) if D != None else self.Rand.uniform(Lower, Upper)
 
 	def normal(self, loc, scale, D):
 		r"""Get D shape random normal distributed numbers.

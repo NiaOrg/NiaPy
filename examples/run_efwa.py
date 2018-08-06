@@ -37,7 +37,7 @@ def simple_example(runs=10, D=50, nFES=50000):
 
 def logging_example(D=50, nFES=4e5):
 	task = TaskConvPrint(D=D, nFES=nFES, nGEN=10000, benchmark=MyBenchmark())
-	algo = EnhancedFireworksAlgorithm(seed=None, =task)
+	algo = EnhancedFireworksAlgorithm(seed=None, task=task)
 	best = algo.run()
 	logger.info('%s %s' % (best[0], best[1]))
 
