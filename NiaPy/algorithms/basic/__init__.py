@@ -17,6 +17,7 @@ from NiaPy.algorithms.basic.sca import SineCosineAlgorithm
 from NiaPy.algorithms.basic.gso import GlowwormSwarmOptimization, GlowwormSwarmOptimizationV1, GlowwormSwarmOptimizationV2, GlowwormSwarmOptimizationV3
 from NiaPy.algorithms.basic.hs import HarmonySearch, HarmonySearchV1
 from NiaPy.algorithms.basic.kh import KrillHerdV1, KrillHerdV2, KrillHerdV3, KrillHerdV4, KrillHerdV11
+from NiaPy.algorithms.basic.fwa import FireworksAlgorithm, EnhancedFireworksAlgorithm, DynamicFireworksAlgorithm
 
 __all__ = [
     'BatAlgorithm',
@@ -47,5 +48,8 @@ __all__ = [
     'KrillHerdV2',
     'KrillHerdV3',
     'KrillHerdV4',
-    'KrillHerdV11'
+    'KrillHerdV11',
+    'FireworksAlgorithm',
+    'EnhancedFireworksAlgorithm',
+    'DynamicFireworksAlgorithm'
 ]

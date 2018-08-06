@@ -58,7 +58,6 @@ class DifferentialEvolutionAlgorithm(Algorithm):
 	efficient heuristic for global optimization over continuous spaces."
 	Journal of global optimization 11.4 (1997): 341-359.
 	"""
-
 	def __init__(self, **kwargs):
 		if kwargs.get('name', None) == None: Algorithm.__init__(self, name=kwargs.get('name', 'DifferentialEvolutionAlgorithm'), sName=kwargs.get('sName', 'DE'), **kwargs)
 		else: Algorithm.__init__(self, **kwargs)

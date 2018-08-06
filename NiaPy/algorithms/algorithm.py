@@ -32,6 +32,7 @@ class Algorithm:
 		Algorithm.setParameters(self, **kwargs)
 		"""
 		task, self.name, self.sName, self.Rand = kwargs.pop('task', None), kwargs.pop('name', 'Algorith'), kwargs.pop('sName', 'algo'), rand.RandomState(kwargs.pop('seed', 1))
+		print (task)
 		self.task = task if task != None else Task(kwargs.pop('D', 10), kwargs.pop('nFES', 100000), kwargs.pop('nGEN', None), kwargs.pop('benchmark', 'ackley'))
 		self.setParameters(**kwargs)
 
@@ -73,7 +74,7 @@ class Algorithm:
 		"""
 		return self.Rand.normal(loc, scale, D)
 
-	def randint(self, Nmax, Nmin=0, D=1):
+	def randint(self, Nmax, D=1, Nmin=0):
 		r"""Get D shape random full numbers in range Nmin to Nmax.
 
 		**Arguments**:
