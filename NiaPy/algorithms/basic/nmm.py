@@ -38,31 +38,35 @@ class NelderMeadMethod(Algorithm):
 		X_f = apply_along_axis(task.eval, 1, X)
 		return X, X_f
 
+	def method(self, X, X_f, task):
+		x0 = sum(X[:-1], axis=0) / (len(X) - 1)
+		xr = x0 + self.alpha * (x0 - X[-1])
+		rs = task.eval(xr)
+		if X_f[0] >= rs < X_f[-2]:
+			X[-1], X_f[-1] = xr, rs
+			return X, X_f
+		if rs < X_f[0]:
+			xe = x0 + self.gamma * (x0 - X[-1])
+			re = task.eval(xe)
+			if re < rs: X[-1], X_f[-1] = xe, re
+			else: X[-1], X_f[-1] = xr, rs
+			return X, X_f
+		xc = x0 + self.rho * (x0 - X[-1])
+		rc = task.eval(xc)
+		if rc < X_f[-1]:
+			X[-1], X_f[-1] = xc, rc
+			return X, X_f
+		Xn = X[0] + self.sigma * (X[1:] - X[0])
+		Xn_f = apply_along_axis(task.eval, 1, Xn)
+		X[1:], X_f[1:] = Xn, Xn_f
+		return X, X_f
+
 	def runTask(self, task):
 		X, X_f = self.init(task)
-		while not task.stopCondI():
-			ib = argsort(X_f)
-			X, X_f = X[ib], X_f[ib]
-			x0 = sum(X[:-1], axis=0) / (len(X) - 1)
-			xr = x0 + self.alpha * (x0 - X[-1])
-			rs = task.eval(xr)
-			if X_f[0] >= rs > X_f[-2]:
-				X[-1], X_f[-1] = xr, rs
-				continue
-			if rs > X_f[0]:
-				xe = x0 + self.gamma * (x0 - X[-1])
-				re = task.eval(xe)
-				if re > rs: X[-1], X_f[-1] = xe, re
-				else: X[-1], X_f[-1] = xr, rs
-				continue
-			xc = x0 + self.rho * (x0 - X[-1])
-			rc = task.eval(xc)
-			if rc > X_f[-1]:
-				X[-1], X_f[-1] = xr, rs
-				continue
-			X = X[0] + self.sigma * (X - X[0])
-			X_f = apply_along_axis(task.eval, 1, X)
-		# FIXME
+		while not task.stopCond():
+			inds = argsort(X_f)
+			X, X_f = X[inds], X_f[inds]
+			X, X_f = self.method(X, X_f, task)
 		ib = argmin(X_f)
 		return X[ib], X_f[ib]
 
