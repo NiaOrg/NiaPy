@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, line-too-long, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, redefined-builtin, singleton-comparison, unused-argument, arguments-differ, chained-comparison, no-else-return
+# pylint: disable=mixed-indentation, trailing-whitespace, line-too-long, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, redefined-builtin, singleton-comparison, unused-argument, arguments-differ, no-else-return
 import logging
 from scipy.spatial.distance import euclidean
 from numpy import full, apply_along_axis, argmin, copy, sum, inf, fmax, pi, where
@@ -60,7 +60,7 @@ class GlowwormSwarmOptimization(Algorithm):
 		r, b_l, b_u = self.rand(), 0, 0
 		for j in range(self.n):
 			b_l, b_u = b_u, b_u + pb[i]
-			if r > b_l and r < b_u: return j
+			if b_l < r < b_u: return j
 		return self.randint(self.n)
 
 	def calcLuciferin(self, L, GS_f): return (1 - self.rho) * L + self.gamma * GS_f
