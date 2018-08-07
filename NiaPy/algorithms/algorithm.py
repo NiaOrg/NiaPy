@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, line-too-long, expression-not-assigned, singleton-comparison, len-as-condition, no-self-use, unused-argument
+# pylint: disable=mixed-indentation, multiple-statements, line-too-long, expression-not-assigned, singleton-comparison, len-as-condition, no-self-use, unused-argument, no-else-return
 from numpy import random as rand, inf, ndarray, asarray, array_equal
 from NiaPy.benchmarks.utility import Task
 
@@ -32,7 +32,6 @@ class Algorithm:
 		Algorithm.setParameters(self, **kwargs)
 		"""
 		task, self.name, self.sName, self.Rand = kwargs.pop('task', None), kwargs.pop('name', 'Algorith'), kwargs.pop('sName', 'algo'), rand.RandomState(kwargs.pop('seed', 1))
-		print (task)
 		self.task = task if task != None else Task(kwargs.pop('D', 10), kwargs.pop('nFES', 100000), kwargs.pop('nGEN', None), kwargs.pop('benchmark', 'ackley'))
 		self.setParameters(**kwargs)
 
@@ -64,7 +63,7 @@ class Algorithm:
 		"""
 		return self.Rand.uniform(Lower, Upper, D) if D != None else self.Rand.uniform(Lower, Upper)
 
-	def normal(self, loc, scale, D):
+	def normal(self, loc, scale, D=None):
 		r"""Get D shape random normal distributed numbers.
 
 		**Arguments**:
@@ -72,7 +71,7 @@ class Algorithm:
 		scale {} --
 		D {array} or {int} -- Shape of returnd random uniform numbers
 		"""
-		return self.Rand.normal(loc, scale, D)
+		return self.Rand.normal(loc, scale, D) if D != None else self.Rand.normal(loc, scale)
 
 	def randint(self, Nmax, D=1, Nmin=0):
 		r"""Get D shape random full numbers in range Nmin to Nmax.

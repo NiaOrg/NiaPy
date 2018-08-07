@@ -1,8 +1,109 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, multiple-statements, unused-variable, unused-argument, redefined-builtin
 from unittest import TestCase
-from numpy import full, random as rnd, inf, sum
-from NiaPy.benchmarks.utility import Utility, Task
+from numpy import full, random as rnd, inf, sum, array_equal, asarray
+from NiaPy.benchmarks.utility import Utility, Task, fullArray
+
+class FullArrayTestCase(TestCase):
+	def test_a_float_fine(self):
+		A = fullArray(25.25, 10)
+		self.assertTrue(array_equal(A, full(10, 25.25)))
+
+	def test_a_int_fine(self):
+		A = fullArray(25, 10)
+		self.assertTrue(array_equal(A, full(10, 25)))
+
+	def test_a_float_list_fine(self):
+		a = [25.25 for i in range(10)]
+		A = fullArray(a, 10)
+		self.assertTrue(array_equal(A, full(10, 25.25)))
+
+	def test_a_int_list_fine(self):
+		a = [25 for i in range(10)]
+		A = fullArray(a, 10)
+		self.assertTrue(array_equal(A, full(10, 25)))
+
+	def test_a_float_array_fine(self):
+		a = asarray([25.25 for i in range(10)])
+		A = fullArray(a, 10)
+		self.assertTrue(array_equal(A, full(10, 25.25)))
+
+	def test_a_int_array_fine(self):
+		a = asarray([25 for i in range(10)])
+		A = fullArray(a, 10)
+		self.assertTrue(array_equal(A, full(10, 25)))
+
+	def test_a_float_list1_fine(self):
+		a = [25.25 + i for i in range(10)]
+		A = fullArray(a, 15)
+		a.extend([25.25 + i for i in range(5)])
+		self.assertTrue(array_equal(A, asarray(a)))
+
+	def test_a_int_list1_fine(self):
+		a = [25 + i for i in range(10)]
+		A = fullArray(a, 15)
+		a.extend([25 + i for i in range(5)])
+		self.assertTrue(array_equal(A, asarray(a)))
+
+	def test_a_float_array1_fine(self):
+		a = [25.25 + i for i in range(10)]
+		A = fullArray(asarray(a), 15)
+		a.extend([25.25 + i for i in range(5)])
+		self.assertTrue(array_equal(A, asarray(a)))
+
+	def test_a_int_array1_fine(self):
+		a = [25 + i for i in range(10)]
+		A = fullArray(asarray(a), 15)
+		a.extend([25 + i for i in range(5)])
+		self.assertTrue(array_equal(A, asarray(a)))
+
+	def test_a_float_list2_fine(self):
+		a = [25.25 + i for i in range(10)]
+		A = fullArray(a, 13)
+		a.extend([25.25 + i for i in range(3)])
+		self.assertTrue(array_equal(A, asarray(a)))
+
+	def test_a_int_list2_fine(self):
+		a = [25 + i for i in range(10)]
+		A = fullArray(a, 13)
+		a.extend([25 + i for i in range(3)])
+		self.assertTrue(array_equal(A, asarray(a)))
+
+	def test_a_float_array2_fine(self):
+		a = [25.25 + i for i in range(10)]
+		A = fullArray(asarray(a), 13)
+		a.extend([25.25 + i for i in range(3)])
+		self.assertTrue(array_equal(A, asarray(a)))
+
+	def test_a_int_array2_fine(self):
+		a = [25 + i for i in range(10)]
+		A = fullArray(asarray(a), 13)
+		a.extend([25 + i for i in range(3)])
+		self.assertTrue(array_equal(A, asarray(a)))
+
+	def test_a_float_list3_fine(self):
+		a = [25.25 + i for i in range(10)]
+		A = fullArray(a, 9)
+		a.remove(34.25)
+		self.assertTrue(array_equal(A, asarray(a)))
+
+	def test_a_int_list3_fine(self):
+		a = [25 + i for i in range(10)]
+		A = fullArray(a, 9)
+		a.remove(34)
+		self.assertTrue(array_equal(A, asarray(a)))
+
+	def test_a_float_array3_fine(self):
+		a = [25.25 + i for i in range(10)]
+		A = fullArray(asarray(a), 9)
+		a.remove(34.25)
+		self.assertTrue(array_equal(A, asarray(a)))
+
+	def test_a_int_array3_fine(self):
+		a = [25 + i for i in range(10)]
+		A = fullArray(asarray(a), 9)
+		a.remove(34)
+		self.assertTrue(array_equal(A, asarray(a)))
 
 class NoLimits:
 	@classmethod

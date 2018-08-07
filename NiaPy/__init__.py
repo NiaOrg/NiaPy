@@ -201,6 +201,34 @@ class Runner:
 			algorithm = algorithms.basic.EvolutionStrategyMp1(D=self.D, nFES=self.nFES, mu=self.muES, k=self.k, c_a=self.C_a, c_r=self.C_r, benchmark=bench)
 		elif name == 'SineCosineAlgorithm':
 			algorithm = algorithms.basic.SineCosineAlgorithm(D=self.D, nFES=self.nFES, nGEN=self.nRuns, NP=self.NP, a=self.a, Rmin=self.Rmin, Rmax=self.Rmax, benchmark=bench)
+		elif name == 'HarmonySearch':
+			algorithm = algorithms.basic.HarmonySearch(D=self.D, nFES=self.nFES, nGEN=self.nRuns, benchmark=bench)
+		elif name == 'HarmonySearchV1':
+			algorithm = algorithms.basic.HarmonySearchV1(D=self.D, nFES=self.nFES, nGEN=self.nRuns, benchmark=bench)
+		elif name == 'GlowwormSwarmOptimization':
+			algorithm = algorithms.basic.GlowwormSwarmOptimization(D=self.D, nFES=self.nFES, nGEN=self.nRuns, benchmark=bench)
+		elif name == 'GlowwormSwarmOptimizationV1':
+			algorithm = algorithms.basic.GlowwormSwarmOptimizationV1(D=self.D, nFES=self.nFES, nGEN=self.nRuns, benchmark=bench)
+		elif name == 'GlowwormSwarmOptimizationV2':
+			algorithm = algorithms.basic.GlowwormSwarmOptimizationV2(D=self.D, nFES=self.nFES, nGEN=self.nRuns, benchmark=bench)
+		elif name == 'GlowwormSwarmOptimizationV3':
+			algorithm = algorithms.basic.GlowwormSwarmOptimizationV3(D=self.D, nFES=self.nFES, nGEN=self.nRuns, benchmark=bench)
+		elif name == 'KrillHerdV1':
+			algorithm = algorithms.basic.KrillHerdV1(D=self.D, nFES=self.nFES, nGEN=self.nRuns, benchmark=bench)
+		elif name == 'KrillHerdV2':
+			algorithm = algorithms.basic.KrillHerdV2(D=self.D, nFES=self.nFES, nGEN=self.nRuns, benchmark=bench)
+		elif name == 'KrillHerdV3':
+			algorithm = algorithms.basic.KrillHerdV3(D=self.D, nFES=self.nFES, nGEN=self.nRuns, benchmark=bench)
+		elif name == 'KrillHerdV4':
+			algorithm = algorithms.basic.KrillHerdV4(D=self.D, nFES=self.nFES, nGEN=self.nRuns, benchmark=bench)
+		elif name == 'KrillHerdV11':
+			algorithm = algorithms.basic.KrillHerdV11(D=self.D, nFES=self.nFES, nGEN=self.nRuns, benchmark=bench)
+		elif name == 'FireworksAlgorithm':
+			algorithm = algorithms.basic.FireworksAlgorithm(D=self.D, nFES=self.nFES, nGEN=self.nRuns, benchmark=bench)
+		elif name == 'EnhancedFireworksAlgorithm':
+			algorithm = algorithms.basic.EnhancedFireworksAlgorithm(D=self.D, nFES=self.nFES, nGEN=self.nRuns, benchmark=bench)
+		elif name == 'DynamicFireworksAlgorithm':
+			algorithm = algorithms.basic.DynamicFireworksAlgorithm(D=self.D, nFES=self.nFES, nGEN=self.nRuns, benchmark=bench)
 		else:
 			raise TypeError('Passed benchmark is not defined!')
 		return algorithm

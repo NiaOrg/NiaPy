@@ -1,8 +1,9 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, arguments-differ
+# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, arguments-differ, line-too-long, redefined-builtin, singleton-comparison, no-self-use
 import logging
 from scipy.spatial.distance import euclidean as ed
-from numpy import apply_along_axis, argmin, argmax, sum, full, inf, ndarray, asarray, mean, where, sqrt
+from numpy import apply_along_axis, argmin, argmax, sum, full, inf, asarray, mean, where, sqrt
+from NiaPy.benchmarks.utility import fullArray
 from NiaPy.algorithms.algorithm import Algorithm
 
 logging.basicConfig()
@@ -45,13 +46,7 @@ class KrillHerd(Algorithm):
 		self.N, self.N_max, self.V_f, self.D_max, self.C_t, self.W_n, self.W_f, self.d_s, self.nn, self._Cr, self._Mu, self.epsilon = NP, N_max, V_f, D_max, C_t, W_n, W_f, d_s, nn, Cr, Mu, epsilon
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def initWeights(self, task):
-		W_n, W_f = None, None
-		if isinstance(self.W_n, (int, float)): W_n = full(task.D, self.W_n)
-		else: W_n = self.W_n if isinstance(self.W_n, ndarray) else asarray(self.W_n)
-		if isinstance(self.W_f, (int, float)): W_f = full(task.D, self.W_f)
-		else: W_f = self.W_f if isinstance(self.W_f, ndarray) else asarray(self.W_f)
-		return W_n, W_f
+	def initWeights(self, task): return fullArray(self.W_n, task.D), fullArray(self.W_f, task.D)
 
 	def sensRange(self, ki, KH): return sum([ed(KH[ki], KH[i]) for i in range(self.N)]) / (self.nn * self.N)
 
@@ -61,9 +56,9 @@ class KrillHerd(Algorithm):
 			if j != i and ids > ed(KH[i], KH[j]): N.append(j)
 		return N
 
-	def funX(self, x, y): return (y - x) / (ed(y, x) + self.epsilon)
+	def funX(self, x, y): return ((y - x) + self.epsilon) / (ed(y, x) + self.epsilon)
 
-	def funK(self, x, y, b, w): return (x - y) / (w - b)
+	def funK(self, x, y, b, w): return ((x - y) + self.epsilon) / ((w - b) + self.epsilon)
 
 	def induceNeigborsMotion(self, i, n, W, KH, KH_f, ikh_b, ikh_w, task):
 		Ni = self.getNeigbors(i, self.sensRange(i, KH), KH)
@@ -131,7 +126,7 @@ class KrillHerdV4(KrillHerd):
 
 	def setParameters(self, NP=50, N_max=0.01, V_f=0.02, D_max=0.002, C_t=0.93, W_n=0.42, W_f=0.38, d_s=2.63, **ukwargs): KrillHerd.setParameters(self, NP, N_max, V_f, D_max, C_t, W_n, W_f, d_s, 4, 0.2, 0.05, 1e-31, **ukwargs)
 
-class KrillHerdV1(KrillHerdV4):
+class KrillHerdV1(KrillHerd):
 	r"""Implementation of krill herd algorithm.
 
 	**Algorithm:** Krill Herd Algorithm
@@ -149,7 +144,7 @@ class KrillHerdV1(KrillHerdV4):
 
 	def mutate(self, x, x_b, Mu): return x
 
-class KrillHerdV2(KrillHerdV4):
+class KrillHerdV2(KrillHerd):
 	r"""Implementation of krill herd algorithm.
 
 	**Algorithm:** Krill Herd Algorithm
@@ -165,7 +160,7 @@ class KrillHerdV2(KrillHerdV4):
 
 	def mutate(self, x, x_b, Mu): return x
 
-class KrillHerdV3(KrillHerdV4):
+class KrillHerdV3(KrillHerd):
 	r"""Implementation of krill herd algorithm.
 
 	**Algorithm:** Krill Herd Algorithm
@@ -181,7 +176,7 @@ class KrillHerdV3(KrillHerdV4):
 
 	def crossover(self, x, xo, Cr): return x
 
-class KrillHerdV11(KrillHerdV4):
+class KrillHerdV11(KrillHerd):
 	r"""Implementation of krill herd algorithm.
 
 	**Algorithm:** Krill Herd Algorithm
@@ -194,8 +189,6 @@ class KrillHerdV11(KrillHerdV4):
 	def __init__(self, **kwargs):
 		if kwargs.get('name', None) == None: KrillHerd.__init__(self, name='KrillHerdV11', sName='KHv11', **kwargs)
 		else: KrillHerd.__init__(self, **kwargs)
-
-	def sensRange(self, ki, HK, HK_f): return None
 
 	def ElitistSelection(self, KH, KH_f, KHo, KHo_f):
 		ipb = where(KHo_f >= KH_f)

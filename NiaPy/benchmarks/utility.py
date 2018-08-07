@@ -3,7 +3,7 @@
 """Implementation of benchmarks utility function."""
 import logging
 from enum import Enum
-from numpy import ndarray, asarray, full, inf, dot, where, random as rnd, fabs
+from numpy import ndarray, asarray, full, inf, dot, where, random as rnd, fabs, ceil
 from matplotlib import pyplot as plt, animation as anim
 from . import Rastrigin, Rosenbrock, Griewank, Sphere, Ackley, Schwefel, Schwefel221, Schwefel222, Whitley, Alpine1, Alpine2, HappyCat, Ridge, ChungReynolds, Csendes, Pinter, Qing, Quintic, Salomon, SchumerSteiglitz, Step, Step2, Step3, Stepint, SumSquares, StyblinskiTang, BentCigar, Discus, Elliptic, ExpandedGriewankPlusRosenbrock, HGBat, Katsuura, ExpandedScaffer, ModifiedSchwefel, Weierstrass, Michalewicz, Levy, Sphere2, Sphere3, Trid, Perm, Zakharov, DixonPrice, Powell, CosineMixture, Infinity
 
@@ -11,7 +11,24 @@ logging.basicConfig()
 logger = logging.getLogger('NiaPy.benchmarks.utility')
 logger.setLevel('INFO')
 
-__all__ = ['Utility', 'Task', 'TaskConvPrint', 'TaskConvPlot']
+__all__ = ['Utility', 'Task', 'TaskConvPrint', 'TaskConvPlot', 'fullArray']
+
+def fullArray(a, D):
+	r"""Fill or create array of lengthm D, from value or value form a.
+
+	Arguments:
+	a {integer} or {real} or {list} or {ndarray} -- Input values for fill
+	D {integer} -- Length of new array
+	"""
+	A = list()
+	if isinstance(a, (int, float)): A = full(D, a)
+	elif isinstance(a, (ndarray, list)):
+		if len(a) == D: A = a if isinstance(a, ndarray) else asarray(a)
+		elif len(a) > D: A = a[:D] if isinstance(a, ndarray) else asarray(a[:D])
+		else:
+			for i in range(int(ceil(D / len(a)))): A.extend(a[:D if (D - i * len(a)) >= len(a) else D - i * len(a)])
+			A = asarray(A)
+	return A
 
 class Utility:
 	def __init__(self):
@@ -106,16 +123,9 @@ class Task(Utility):
 		self.o = o if isinstance(o, ndarray) or o == None else asarray(o)
 		self.M = M if isinstance(M, ndarray) or M == None else asarray(M)
 		self.fo, self.fM, self.optF = fo, fM, optF
-		self.__initBounds()
-		self.optType = optType
-
-	def __initBounds(self):
-		Lower, Upper = self.benchmark.Lower, self.benchmark.Upper
-		if isinstance(Lower, (int, float)): self.Lower = full(self.D, Lower)
-		else: self.Lower = Lower if isinstance(Lower, ndarray) else asarray(Lower)
-		if isinstance(Upper, (int, float)): self.Upper = full(self.D, Upper)
-		else: self.Upper = Upper if isinstance(Upper, ndarray) else asarray(Upper)
+		self.Lower, self.Upper = fullArray(self.benchmark.Lower, self.D), fullArray(self.benchmark.Upper, self.D)
 		self.bRange = fabs(self.Upper - self.Lower)
+		self.optType = optType
 
 	def stopCond(self):
 		r"""Check if stoping condition reached."""
