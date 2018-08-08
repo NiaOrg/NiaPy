@@ -56,5 +56,6 @@ __all__ = [
     'MTS_LS1',
     'MTS_LS2',
     'MTS_LS3',
-    'MTS_LS1v1'
+    'MTS_LS1v1',
+    'MTS_LS3v1'
 ]
