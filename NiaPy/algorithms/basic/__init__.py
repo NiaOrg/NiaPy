@@ -19,6 +19,9 @@ from NiaPy.algorithms.basic.kh import KrillHerdV1, KrillHerdV2, KrillHerdV3, Kri
 from NiaPy.algorithms.basic.fwa import FireworksAlgorithm, EnhancedFireworksAlgorithm, DynamicFireworksAlgorithm, BareBonesFireworksAlgorithm
 from NiaPy.algorithms.basic.nmm import NelderMeadMethod
 from NiaPy.algorithms.basic.mts import MultipleTrajectorySearch, MTS_LS1, MTS_LS2, MTS_LS3, MTS_LS1v1
+from NiaPy.algorithms.basic.ihc import HillClimbAlgorithm
+from NiaPy.algorithms.basic.sa import SimulatedAnnealing
+
 
 __all__ = [
     'BatAlgorithm',
@@ -58,5 +61,7 @@ __all__ = [
     'MTS_LS1',
     'MTS_LS2',
     'MTS_LS3',
-    'MTS_LS1v1'
+    'MTS_LS1v1',
+    'HillClimbAlgorithm',
+    'SimulatedAnnealing'
 ]
