@@ -126,7 +126,7 @@ class MultipleTrajectorySearch(Algorithm):
 		else: Algorithm.__init__(self, **kwargs)
 		self.LSs = [MTS_LS1, MTS_LS2, MTS_LS3]
 
-	def setParameters(self, NP, NoLsTests, NoLs, NoLsBest, NoEnabled, **ukwargs):
+	def setParameters(self, NP=40, NoLsTests=5, NoLs=5, NoLsBest=5, NoEnabled=17, **ukwargs):
 		r"""Set the arguments of the algorithm.
 
 		Arguments:
@@ -136,36 +136,44 @@ class MultipleTrajectorySearch(Algorithm):
 		NoLsBest {integer} -- number of locals search algorithm runs on best solution
 		NoEnabled {integer} -- number of best solution for testing
 		"""
-		self.M, self.NoLsTests, self.NoLs, self.NoForeground = NP, NoLsTests, NoLs, NoForeground
+		self.M, self.NoLsTests, self.NoLs, self.NoEnabled = NP, NoLsTests, NoLs, NoEnabled
 
-	def GradingRun(self, x, x_f, improve, SR, task):
-		ls_grades, grades[i] = full(3, 0.0), 0.0
+	def GradingRun(self, x, x_f, xb_f, improve, SR, task):
+		ls_grades, Xn, Xn_f = full(3, 0.0), list(), list()
 		for j in range(self.NoLsTests):
-			Xn, Xn_f = list(), list()
 			for k in range(len(self.LSs)):
-				xn, xn_f, _, ls_grades[k], _ = self.LSs[k](x, x_f, xb_f, improve, SR, task, BONUS1=self.BONUS1, BONUS2=self.BONUS2, rnd=self.Rand)
+				xn, xn_f, _, g, _ = self.LSs[k](x, x_f, xb_f, improve, SR, task, BONUS1=self.BONUS1, BONUS2=self.BONUS2, rnd=self.Rand)
 				Xn.append(xn), Xn_f.append(xn_f)
-			ib = argmin(Xn_f)
-		return x, x_f, k
+				ls_grades[k] += g
+		ib, k = argmin(Xn_f), argmax(grades)
+		return Xn[ib], Xn_f[ib], k
+
+	def LsRun(self, k, x, x_f, xb_f, improve, SR, g, task):
+		for j in range(self.NoLs):
+			X[i], X_f[i], improve[i], grade, SR[i] = self.LSs[k](X[i], X_f[i], xb_f, improve[i], SR[i], task, BONUS1=self.BONUS1, BONUS2=self.BONUS2, rnd=self.Rand)
+			g += grade
+		return x, x_f, improve, SR, g
+
+	def getBest(self, X, X_f):
+		ib = argmin(X_f)
+		return X[ib], X_f[ib]
 
 	def runTask(self, task):
-		SOA = self.rand([self.M, self.N])
-		X = taks.Lower + task.bRange * SOA / (self.M - 1)
-		X_f = np.apply_along_axis(task.eval, 1, X)
-		enable, improve, SearchRanges, grades = full(self.M, True), full(self.M, True), full(self.M, task.bRange / 2), full(self.M, 0.0)
-		ix_b = np.argmin(X_fit)
-		xb, xb_f = X[ix_b], X_f[ix_b]
+		# TODO izgradi simulirano ortogonalno matriko
+		SOA = self.rand([self.M, task.D])
+		X = task.Lower + task.bRange * SOA / (self.M - 1)
+		X_f = apply_along_axis(task.eval, 1, X)
+		enable, improve, SR, grades = full(self.M, True), full(self.M, True), full([self.M, task.D], task.bRange / 2), full(self.M, 0.0)
+		xb, xb_f = self.getBest(X, X_f)
 		while not task.stopCond():
 			for i in range(self.M):
 				if not enable[i]: continue
-				X[i], X_f[i], k = self.GradingRun(X[i], X_f[i], improve[i], SR[i], task)
-				for j in range(self.NoLs):
-					X[i], X_f[i], improve[i], grade, SR[i] = self.LSs[k](X[i], X_f[i], xb_f, improve[i], SR[i], task, BONUS1=self.BONUS1, BONUS2=self.BONUS2, rnd=self.Rand)
-					grades[i] += grade
-				enable[i] = False
-			for i in range(self.NoLsBest): xb, xb_f, _, _, _ = MTS_LS1(xb, xb_f, xb_f, improve[], SR[], task, rnd=self.Rand)
-			isort = argsort(grades, self.NoForeground)
-			enable[isort[:self.NoForeground]] = True
+				enable[i], grades[i] = False, 0
+				X[i], X_f[i], k = self.GradingRun(X[i], X_f[i], xb_f, improve[i], SR[i], task)
+				X[i], X_f[i], improve[i], SR[i], grade[i] = self.LsRun(k, X[i], X_f[i], xb_f, improve[i], SR[i], grades[i], task)
+			for i in range(self.NoLsBest): xb, xb_f, _, _, _ = MTS_LS1(xb, xb_f, xb_f, False, task.bRange, task, rnd=self.Rand)
+			enable[argsort(grades)[:self.NoEnabled]] = True
+			xb, xb_f = self.getBest(X, X_f)
 		return xb, xb_f
 
 class MultipleTrajectorySearchV1(MultipleTrajectorySearch):
@@ -183,28 +191,7 @@ class MultipleTrajectorySearchV1(MultipleTrajectorySearch):
 		self.LSs = [MTS_LS1v1, MTS_LS2, MTS_LS3v1]
 
 	def runTask(self, task):
-		SOA = self.rand([self.M, self.N])
-		X = taks.Lower + task.bRange * SOA / (self.M - 1)
-		X_fit = apply_along_axis(task.eval, 1, X)
-		enable, improve, SearchRanges, grades = full(self.M, True), full(self.M, True), full(self.M, task.bRange / 2), full(self.M, 0.0)
-		ix_b = argmin(X_fit)
-		xb, xb_fit = X[ix_b], X_fit[ix_b]
-		while not task.stopCond():
-			for i in range(self.M):
-				if not enable[i]: continue
-				ls_grades, grades[i] = full(3, 0.0), 0.0
-				for j in range(self.NoLsTests):
-					# TODO fix variables for return value, and set parameters for ls
-					# for k in range(3): _, ls_grades[k], _ += self.LSs[k](X[i], X_fit[i], xb_fit, improve[i], SR[i], task, BONUS1=self.BONUS1, BONUS2=self.BONUS2, rnd=self.Rand)
-				# ils_grades_best = argmax(ls_grades)
-				# for j in range(self.NoLs):
-					# TODO fix variables for return value, and set parameters for ls
-					_, grade, _ = self.LSs[ils_grades_best]()
-					grades[i] += grade
-				enable[i] = False
-			isort = argsort(grades, self.NoForeground)
-			enable[isort[:self.NoForeground]] = True
-		return xb, xb_fit
-
+		pass
+		return None, None
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
