@@ -29,29 +29,29 @@ class MyBenchmark(object):
 			return val
 		return evaluate
 
-def simple_example(runs=10):
+def simple_example(runs=10, D=50, nFES=50000):
 	for i in range(10):
-		algo = SelfAdaptiveDifferentialEvolutionAlgorithm(NP=10, D=40, nFES=10000, F=0.5, F_l=-1, F_u=2.0, Tao1=0.1, CR=0.45, Tao2=0.25, benchmark=MyBenchmark())
+		algo = SelfAdaptiveDifferentialEvolutionAlgorithm(NP=50, D=D, nFES=nFES, F=0.5, F_l=-1, F_u=2.0, Tao1=0.1, CR=0.45, Tao2=0.25, benchmark=MyBenchmark())
 		Best = algo.run()
 		logger.info('%s %s' % (Best[0], Best[1]))
 
-def logging_example():
-	task = TaskConvPrint(D=50, nFES=50000, nGEN=50000, benchmark=MyBenchmark())
+def logging_example(D=10, nFES=50000):
+	task = TaskConvPrint(D=D, nFES=nFES, nGEN=50000, benchmark=MyBenchmark())
 	algo = SelfAdaptiveDifferentialEvolutionAlgorithm(NP=10, F=0.5, F_l=-1, F_u=2.0, Tao1=0.1, CR=0.45, Tao2=0.25, task=task)
 	best = algo.run()
 	logger.info('%s %s' % (best[0], best[1]))
 
-def plot_example():
-	task = TaskConvPlot(D=50, nFES=50000, nGEN=10000, benchmark=MyBenchmark())
+def plot_example(D=10, nFES=50000):
+	task = TaskConvPlot(D=D, nFES=nFES, nGEN=10000, benchmark=MyBenchmark())
 	algo = SelfAdaptiveDifferentialEvolutionAlgorithm(NP=10, F=0.5, F_l=-1, F_u=2.0, Tao1=0.1, CR=0.45, Tao2=0.25, task=task)
 	best = algo.run()
 	logger.info('%s %s' % (best[0], best[1]))
 	input('Press [enter] to continue')
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 	if len(sys.argv) <= 1: simple_example(1)
-	elif sys.argv[1] == 'plot': plot_example()
-	elif sys.argv[1] == 'log': logging_example()
-	else: simple_example(10)
+	elif sys.argv[1] == 'plot': plot_example(D=10 if len(sys.argv) <= 2 else int(sys.argv[2]), nFES=50000 if len(sys.argv) <= 3 else int(sys.argv[3]))
+	elif sys.argv[1] == 'log': logging_example(D=10 if len(sys.argv) <= 2 else int(sys.argv[2]), nFES=50000 if len(sys.argv) <= 3 else int(sys.argv[3]))
+	else: simple_example(runs=sys.argv[1], D=10 if len(sys.argv) <= 2 else int(sys.argv[2]), nFES=50000 if len(sys.argv) <= 3 else int(sys.argv[3]))
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

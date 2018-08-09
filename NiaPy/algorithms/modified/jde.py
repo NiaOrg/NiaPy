@@ -35,11 +35,7 @@ class SelfAdaptiveDifferentialEvolutionAlgorithm(DifferentialEvolutionAlgorithm)
 	"""
 	def __init__(self, **kwargs): DifferentialEvolutionAlgorithm.__init__(self, name='SelfAdaptiveDifferentialEvolutionAlgorithm', sName='jDE', **kwargs)
 
-	def setParameters(self, **kwargs):
-		super(SelfAdaptiveDifferentialEvolutionAlgorithm, self).setParameters(**kwargs)
-		self.__setParams(**kwargs)
-
-	def __setParams(self, F_l=0.0, F_u=2.0, Tao1=0.4, Tao2=0.6, **ukwargs):
+	def setParameters(self, F_l=0.0, F_u=2.0, Tao1=0.4, Tao2=0.6, **ukwargs):
 		r"""Set the parameters of an algorithm.
 
 		Arguments:
@@ -48,6 +44,7 @@ class SelfAdaptiveDifferentialEvolutionAlgorithm(DifferentialEvolutionAlgorithm)
 		Tao1 {decimal} -- change rate for F parameter update
 		Tao2 {decimal} -- change rate for CR parameter update
 		"""
+		DifferentialEvolutionAlgorithm.setParameters(self, **ukwargs)
 		self.F_l, self.F_u, self.Tao1, self.Tao2 = F_l, F_u, Tao1, Tao2
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
@@ -58,11 +55,10 @@ class SelfAdaptiveDifferentialEvolutionAlgorithm(DifferentialEvolutionAlgorithm)
 
 	def runTask(self, task):
 		pop = [SolutionjDE(task=task, F=self.F, CR=self.CR) for _i in range(self.Np)]
-		pop = [self.evalPopulation(pop[i], pop[i], task) for i in range(self.Np)]
 		x_b = pop[argmin([x.f for x in pop])]
 		while not task.stopCond():
 			npop = [self.AdaptiveGen(pop[i]) for i in range(self.Np)]
-			npop = [SolutionjDE(x=self.CrossMutt(npop, i, x_b, self.F, self.CR, self.Rand), F=npop[i].F, CR=npop[i].CR) for i in range(self.Np)]
+			npop = [SolutionjDE(x=self.CrossMutt(npop, i, x_b, self.F, self.CR, self.Rand), F=npop[i].F, CR=npop[i].CR, e=False) for i in range(self.Np)]
 			pop = [self.evalPopulation(npop[i], pop[i], task) for i in range(self.Np)]
 			ix_b = argmin([x.f for x in pop])
 			if x_b.f > pop[ix_b].f: x_b = pop[ix_b]
