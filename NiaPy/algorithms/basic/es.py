@@ -48,13 +48,13 @@ class EvolutionStrategy1p1(Algorithm):
 
 	def updateRho(self, rho, k):
 		phi = k / self.k
-		if phi < 0.2: return self.c_r * rho
-		elif phi > 0.2: return self.c_a * rho
+		if phi < 0.2: return self.c_r * rho if rho != 0 else 1
+		elif phi > 0.2: return self.c_a * rho if rho != 0 else 1
 		else: return rho
 
 	def runTask(self, task):
 		c, ki = IndividualES(task=task, rand=self.Rand), 0
-		while not task.stopCondI():
+		while not task.stopCond():
 			if task.Iters % self.k == 0: c.rho, ki = self.updateRho(c.rho, ki), 0
 			cn = [task.repair(self.mutate(c.x, c.rho)) for _i in range(self.mu)]
 			cn_f = [task.eval(cn[i]) for i in range(self.mu)]
