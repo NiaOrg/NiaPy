@@ -1,8 +1,7 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy
+# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, unused-argument, arguments-differ
 import logging
-import random
-from numpy import inf, copy, logical_or, exp, fabs, where
+from numpy import exp
 from NiaPy.algorithms.algorithm import Algorithm
 
 logging.basicConfig()

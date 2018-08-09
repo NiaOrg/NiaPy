@@ -1,8 +1,6 @@
 # encoding=utf8
 # pylint: disable=line-too-long, mixed-indentation, multiple-statements
 from unittest import TestCase
-from numpy import random as rnd
-from NiaPy.benchmarks.utility import Task
 from NiaPy.algorithms.modified import DynNPSelfAdaptiveDifferentialEvolutionAlgorithm
 
 class MyBenchmark:

@@ -26,24 +26,27 @@ The micro framework features following algorithms:
 - basic:
   - Artificial bee colony algorithm ([see example](examples/run_abc.py))
   - Bat algorithm ([see example](examples/run_ba.py))
-  - Bare bones fireworks algorithm ([see example](examples/run_bbfwa.py))
   - Camel algorithm ([see example](example/run_ca.py))
   - Differential evolution algorithm ([see example](examples/run_de.py))
   - Evolution Strategy ([see example](example/run_es1p1.py), [see example](example/run_esMp1.py), [see example](example/run_esMpL.py), [see example](example/run_esML.py))
   - Firefly algorithm ([see example](examples/run_fa.py))
+  - Fireworks algorithm ([see example](examples/run_fwa.py), [see example](examples/run_efwa.py), [see example](examples/run_dfwa.py), [see example](examples/run_bbfwa.py))
   - Flower pollination algorithm ([see example](examples/run_fpa.py))
   - Genetic algorithm ([see example](examples/run_ga.py))
-  - Glowworm Swarm Optimization ([see example](examples/run_gso.py))
+  - Glowworm Swarm Optimization ([see example](examples/run_gso.py), [see example](examples/run_gsov1.py), [see example](examples/run_gsov2.py), [see example](examples/run_gsov3.py))
   - Grey wolf optimizer ([see example](examples/run_gwo.py))
-  - Monkey King Evolution ([see example](example/run_mkev1.py), [see example](example/run_mkev2.py), [see example](example/run_mkev3.py))
+  - Harmony Search Algorithm ([see example](examples/run_hs.py))
+  - Krill Herd Algorithm ([see example](examples/run_khv1.py), [see example](examples/run_khv2.py), [see example](examples/run_khv3.py), [see example](examples/run_khv4.py), [see example](examples/run_khV11.py))
+  - Monkey King Evolution ([see example](examples/run_mkev1.py), [see example](examples/run_mkev2.py), [see example](examples/run_mkev3.py))
+  - Multiple trajectory search ([see example](examples/run_mts.py), [see example](examples/run_mtsv1.py))
   - Particle swarm optimization ([see example](examples/run_pso.py))
   - Sine Cosine Algorithm ([see example](examples/run_sca.py))
 - modified:
   - Hybrid bat algorithm ([see example](examples/run_hba.py))
   - Self-adaptive differential evolution algorithm ([see example](examples/run_jde.py))
-
+  - Dynamic population size self-adaptive differential evolution algorithm ([see example](examples/run_dynnpjde.py))
+  
 The following benchmark functions are included in NiaPy:
-
 - Ackley
 - Alpine
   - Alpine1

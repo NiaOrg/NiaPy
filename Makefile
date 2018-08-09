@@ -15,7 +15,7 @@ export PIPENV_IGNORE_VIRTUALENVS=true
 ENV := .venv
 
 # Set python version
-PYTHON = python
+PYTHON:= $(if $(PYTHON), $(PYTHON), python)
 
 # MAIN TASKS ##################################################################
 

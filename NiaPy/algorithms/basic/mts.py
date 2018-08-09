@@ -1,7 +1,8 @@
 # encoding=utf8
+# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, len-as-condition, singleton-comparison, arguments-differ, line-too-long, unused-argument, consider-using-enumerate
 import operator as oper
-from NiaPy.algorithms.algorithm import Algorithm
 from numpy import random as rand, vectorize, where, copy, apply_along_axis, argmin, argmax, argsort, fmin, fmax, full
+from NiaPy.algorithms.algorithm import Algorithm
 
 __all__ = ['MultipleTrajectorySearch', 'MultipleTrajectorySearchV1', 'MTS_LS1', 'MTS_LS1v1', 'MTS_LS2', 'MTS_LS3', 'MTS_LS3v1']
 
@@ -24,8 +25,8 @@ def MTS_LS1(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, rnd=
 				Xk_fit_new = task.eval(Xk)
 				if Xk_fit_new < Xb_fit: grade, Xb, Xb_fit = grade + BONUS1, copy(Xk), Xk_fit_new
 				if Xk_fit_new >= Xk_fit: Xk[i] = Xk_i_old
-				else: grade, improve_k, Xk_fit = grade + BONUS2, True, Xk_fit_new
-			else: grade, improve_k, Xk_fit = grade + BONUS2, True, Xk_fit_new
+				else: grade, improve, Xk_fit = grade + BONUS2, True, Xk_fit_new
+			else: grade, improve, Xk_fit = grade + BONUS2, True, Xk_fit_new
 	return Xk, Xk_fit, Xb, Xb_fit, improve, grade, SR
 
 def MTS_LS1v1(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, rnd=rand):
@@ -60,7 +61,7 @@ def MTS_LS2(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, rnd=
 		ifix = where(SR < 1e-15)
 		SR[ifix] = task.bRange[ifix] * 0.4
 	improve = False
-	for i in range(len(Xk)):
+	for _ in range(len(Xk)):
 		D = -1 + rnd.rand(len(Xk)) * 2
 		R = rnd.choice([0, 1, 2, 3], len(Xk))
 		Xk_new = vectorize(genNewX)(Xk, R, D, SR, oper.sub)
@@ -96,7 +97,7 @@ def MTS_LS3(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, rnd=
 
 def MTS_LS3v1(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, l=3, BONUS1=10, BONUS2=1, rnd=rand):
 	grade, Disp = 0.0, task.bRange / 10
-	while True in (Disp > 1e-3):
+	while True in Disp > 1e-3:
 		Xn = [rnd.permutation(Xk) + Disp * rnd.uniform(-1, 1, len(Xk)) for i in range(l)]
 		Xn_f = apply_along_axis(task.eval, 1, Xn)
 		iBetter, iBetterBest = where(Xn_f < Xk_fit), where(Xn_f < Xb_fit)
@@ -141,9 +142,9 @@ class MultipleTrajectorySearch(Algorithm):
 
 	def GradingRun(self, x, x_f, xb, xb_f, improve, SR, task):
 		ls_grades, Xn, Xnb = full(3, 0.0), [[x, x_f]] * len(self.LSs), [xb, xb_f]
-		for j in range(self.NoLsTests):
+		for _ in range(self.NoLsTests):
 			for k in range(len(self.LSs)):
-				xn, xn_f, xnb, xnb_f, improve, g, SR = self.LSs[k](Xn[k][0], Xn[k][1], Xnb[0], Xnb[1], improve, SR, task, BONUS1=self.BONUS1, BONUS2=self.BONUS2, rnd=self.Rand)
+				Xn[k][0], Xn[k][1], xnb, xnb_f, improve, g, SR = self.LSs[k](Xn[k][0], Xn[k][1], Xnb[0], Xnb[1], improve, SR, task, BONUS1=self.BONUS1, BONUS2=self.BONUS2, rnd=self.Rand)
 				if Xnb[1] > xnb_f: Xnb = [xnb, xnb_f]
 				ls_grades[k] += g
 		xn, k = min(Xn, key=lambda x: x[1]), argmax(ls_grades)
@@ -151,7 +152,7 @@ class MultipleTrajectorySearch(Algorithm):
 
 	def LsRun(self, k, x, x_f, xb, xb_f, improve, SR, g, task):
 		XBn = list()
-		for j in range(self.NoLs):
+		for _j in range(self.NoLs):
 			x, x_f, xnb, xnb_f, improve, grade, SR = self.LSs[k](x, x_f, xb, xb_f, improve, SR, task, BONUS1=self.BONUS1, BONUS2=self.BONUS2, rnd=self.Rand)
 			g += grade
 			XBn.append((xnb, xnb_f))
@@ -175,7 +176,7 @@ class MultipleTrajectorySearch(Algorithm):
 				enable[i], grades[i] = False, 0
 				X[i], X_f[i], xb, xb_f, k = self.GradingRun(X[i], X_f[i], xb, xb_f, improve[i], SR[i], task)
 				X[i], X_f[i], xb, xb_f, improve[i], SR[i], grades[i] = self.LsRun(k, X[i], X_f[i], xb, xb_f, improve[i], SR[i], grades[i], task)
-			for i in range(self.NoLsBest): x, x_f, xb, xb_f, _, _, _ = MTS_LS1(xb, xb_f, xb, xb_f, False, task.bRange, task, rnd=self.Rand)
+			for _ in range(self.NoLsBest): _, _, xb, xb_f, _, _, _ = MTS_LS1(xb, xb_f, xb, xb_f, False, task.bRange, task, rnd=self.Rand)
 			enable[argsort(grades)[:self.NoEnabled]] = True
 		return xb, xb_f
 
