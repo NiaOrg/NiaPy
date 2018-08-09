@@ -58,7 +58,7 @@ class HillClimbAlgorithm(Algorithm):
 			xfit = task.eval(x)
 			while not lo:
 				Xn, XnFit = self.Neighborhood(x, self.delta, task)
-				if Xn < xfit:
+				if XnFit < xfit:
 					xfit, x = XnFit, Xn
 					if xfit < xbfit: xbfit, xb = xfit, x
 				else: lo = True
