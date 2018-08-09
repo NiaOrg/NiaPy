@@ -15,12 +15,12 @@ export PIPENV_IGNORE_VIRTUALENVS=true
 ENV := .venv
 
 # Set python version
-PYTHON:= $(if $(PYTHON), $(PYTHON),python)
-PIPENVRUN:= $(if $(PIPENVRUN), $(PIPENVRUN),pipenv --python 3.6 run)
+PYTHON:= $(if $(PYTHON),$(PYTHON),python2)
+PVERSION:= $(if $(PVERSION),$(PVERSION),2.7)
 
 # MAIN TASKS ##################################################################
 
-SNIFFER := $(PIPENVRUN) sniffer
+SNIFFER := pipenv run sniffer
 
 .PHONY: all
 all: install
@@ -34,7 +34,7 @@ watch: install .clean-test ## Continuously run all CI tasks when files chanage
 
 .PHONY: run ## Start the program
 run: install
-	$(PIPENVRUN) $(PYTHON) $(PACKAGE)/__main__.py
+	pipenv run $(PYTHON) $(PACKAGE)/__main__.py
 
 # SYSTEM DEPENDENCIES #########################################################
 
@@ -51,18 +51,18 @@ METADATA := *.egg-info
 install: $(DEPENDENCIES) $(METADATA)
 
 $(DEPENDENCIES):
-	pipenv install --dev
+	pipenv --python $(PVERSION) install --dev
 	@ touch $@
 
 $(METADATA): setup.py
-	$(PIPENVRUN) $(PYTHON) setup.py develop
+	pipenv run $(PYTHON) setup.py develop
 	@ touch $@
 
 # CHECKS ######################################################################
 
-PYLINT := $(PIPENVRUN) pylint
-PYCODESTYLE := $(PIPENVRUN) pycodestyle
-PYDOCSTYLE := $(PIPENVRUN) pydocstyle
+PYLINT := pipenv run pylint
+PYCODESTYLE := pipenv run pycodestyle
+PYDOCSTYLE := pipenv run pydocstyle
 
 .PHONY: check
 check: pylint pycodestyle pydocstyle ## Run linters and static analysis
@@ -81,9 +81,9 @@ pydocstyle: install
 
 # TESTS #######################################################################
 
-PYTEST := $(PIPENVRUN) py.test
-COVERAGE := $(PIPENVRUN) coverage
-COVERAGE_SPACE := $(PIPENVRUN) coverage.space
+PYTEST := pipenv run pytest
+COVERAGE := pipenv run coverage
+COVERAGE_SPACE := pipenv run coverage.space
 
 RANDOM_SEED ?= $(shell date +%s)
 FAILURES := .cache/v/cache/lastfailed
@@ -129,7 +129,7 @@ read-coverage:
 
 # DOCUMENTATION ###############################################################
 
-PYREVERSE := $(PIPENVRUN) pyreverse
+PYREVERSE := pipenv run pyreverse
 
 SPHINXOPTS    =
 SPHINXBUILD   = sphinx-build
@@ -149,8 +149,8 @@ docs/*.png: $(MODULES)
 	- mv -f classes_$(PACKAGE).png docs/classes.png
 	- mv -f packages_$(PACKAGE).png docs/packages.png
 
-PYINSTALLER := $(PIPENVRUN) pyinstaller
-PYINSTALLER_MAKESPEC := $(PIPENVRUN) pyi-makespec
+PYINSTALLER := pipenv run pyinstaller
+PYINSTALLER_MAKESPEC := pipenv run pyi-makespec
 
 DIST_FILES := dist/*.tar.gz dist/*.whl
 EXE_FILES := dist/$(PROJECT).*
@@ -162,9 +162,9 @@ build: dist
 dist: install $(DIST_FILES)
 $(DIST_FILES): $(MODULES) README.rst
 	rm -f $(DIST_FILES)
-	$(PIPENVRUN) $(PYTHON) setup.py check --restructuredtext --strict --metadata
-	$(PIPENVRUN) $(PYTHON) setup.py sdist
-	$(PIPENVRUN) $(PYTHON) setup.py bdist_wheel
+	pipenv run $(PYTHON) setup.py check --restructuredtext --strict --metadata
+	pipenv run $(PYTHON) setup.py sdist
+	pipenv run $(PYTHON) setup.py bdist_wheel
 
 .PHONY: exe
 exe: install $(EXE_FILES)
@@ -177,7 +177,7 @@ $(PROJECT).spec:
 
 # RELEASE #####################################################################
 
-TWINE := $(PIPENVRUN) twine
+TWINE := pipenv run twine
 
 .PHONY: upload
 upload: dist ## Upload the current version to PyPI
