@@ -1,10 +1,9 @@
 # encoding=utf8
 import operator as oper
-from numpy import random as rand, vectorize, where, copy, apply_along_axis, argmin, argmax, argsort, fmin, fmax, full
 from NiaPy.algorithms.algorithm import Algorithm
-from NiaPy.benchmarks.utility import Task
+from numpy import random as rand, vectorize, where, copy, apply_along_axis, argmin, argmax, argsort, fmin, fmax, full
 
-__all__ = ['MultipleTrajectorySearch', 'MTS_LS1', 'MTS_LS1v1', 'MTS_LS2', 'MTS_LS3', 'MTS_LS3v1']
+__all__ = ['MultipleTrajectorySearch', 'MultipleTrajectorySearchV1', 'MTS_LS1', 'MTS_LS1v1', 'MTS_LS2', 'MTS_LS3', 'MTS_LS3v1']
 
 def MTS_LS1(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, rnd=rand):
 	grade = 0.0
@@ -40,13 +39,13 @@ def MTS_LS1v1(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, rn
 		Xk_i_old = Xk[i]
 		Xk[i] = Xk_i_old - SR[i] * D[i]
 		Xk_fit_new = task.eval(Xk)
-		if Xk_fit_new < Xb_fit: grade, Xb, Xb_fit = grade + BONUS1, Xk_new, Xk_fit_new
+		if Xk_fit_new < Xb_fit: grade, Xb, Xb_fit = grade + BONUS1, Xk, Xk_fit_new
 		if Xk_fit_new == Xk_fit: Xk[i] = Xk_i_old
 		else:
 			if Xk_fit_new > Xk_fit:
 				Xk[i] = Xk_i_old + 0.5 * SR[i]
 				Xk_fit_new = task.eval(Xk)
-				if Xk_fit_new < Xb_fit: grade, Xb, Xb_fit = grade + BONUS1, Xk_new, Xk_fit_new
+				if Xk_fit_new < Xb_fit: grade, Xb, Xb_fit = grade + BONUS1, Xk, Xk_fit_new
 				if Xk_fit_new >= Xk_fit: Xk[i] = Xk_i_old
 				else: grade, improve, Xk_fit = grade + BONUS2, True, Xk_fit_new
 			else: grade, improve, Xk_fit = grade + BONUS2, True, Xk_fit_new
@@ -98,14 +97,14 @@ def MTS_LS3(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, rnd=
 def MTS_LS3v1(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, l=3, BONUS1=10, BONUS2=1, rnd=rand):
 	grade, Disp = 0.0, task.bRange / 10
 	while True in (Disp > 1e-3):
-		Xn = [rnd.permutation(Xk) + Disp * rnd.uniform(-1, 1, len(Xk)) for i in l]
+		Xn = [rnd.permutation(Xk) + Disp * rnd.uniform(-1, 1, len(Xk)) for i in range(l)]
 		Xn_f = apply_along_axis(task.eval, 1, Xn)
 		iBetter, iBetterBest = where(Xn_f < Xk_fit), where(Xn_f < Xb_fit)
 		grade += len(iBetterBest) * BONUS1 + (len(iBetter) - len(iBetterBest)) * BONUS2
-		if len(iBetterBest) > 0:
+		if len(Xn_f[iBetterBest]) > 0:
 			ib, improve = argmin(Xn_f[iBetterBest]), True
 			Xb, Xb_fit, Xk, Xk_fit = Xn[ib], Xn_f[ib], Xn[ib], Xn_f[ib]
-		elif len(iBetter) > 0:
+		elif len(Xn_f[iBetter]) > 0:
 			ib, improve = argmin(Xn_f[iBetter]), True
 			Xk, Xk_fit = Xn[ib], Xn_f[ib]
 		Su, Sl = fmin(task.Upper, Xk + 2 * Disp), fmax(task.Lower, Xk - 2 * Disp)
@@ -124,7 +123,7 @@ class MultipleTrajectorySearch(Algorithm):
 	**Reference paper:** Lin-Yu Tseng and Chun Chen, "Multiple trajectory search for Large Scale Global Optimization," 2008 IEEE Congress on Evolutionary Computation (IEEE World Congress on Computational Intelligence), Hong Kong, 2008, pp. 3052-3059. doi: 10.1109/CEC.2008.4631210
 	"""
 	def __init__(self, **kwargs):
-		if kwargs.get('name', None) == None: Algorithm.__init__(self, name='MultipleTrajectorySearch', sName='MTS', **kwargs)
+		if kwargs.get('name', None) is None: Algorithm.__init__(self, name='MultipleTrajectorySearch', sName='MTS', **kwargs)
 		else: Algorithm.__init__(self, **kwargs)
 		self.LSs = [MTS_LS1, MTS_LS2, MTS_LS3]
 
@@ -195,7 +194,18 @@ class MultipleTrajectorySearchV1(MultipleTrajectorySearch):
 		self.LSs = [MTS_LS1v1, MTS_LS2, MTS_LS3v1]
 
 	def runTask(self, task):
-		pass
-		return None, None
+		SOA = self.rand([self.M, task.D])
+		X = task.Lower + task.bRange * SOA / (self.M - 1)
+		X_f = apply_along_axis(task.eval, 1, X)
+		enable, improve, SR, grades = full(self.M, True), full(self.M, True), full([self.M, task.D], task.bRange / 2), full(self.M, 0.0)
+		xb, xb_f = self.getBest(X, X_f)
+		while not task.stopCond():
+			for i in range(self.M):
+				if not enable[i]: continue
+				enable[i], grades[i] = False, 0
+				X[i], X_f[i], xb, xb_f, k = self.GradingRun(X[i], X_f[i], xb, xb_f, improve[i], SR[i], task)
+				X[i], X_f[i], xb, xb_f, improve[i], SR[i], grades[i] = self.LsRun(k, X[i], X_f[i], xb, xb_f, improve[i], SR[i], grades[i], task)
+			enable[argsort(grades)[:self.NoEnabled]] = True
+		return xb, xb_f
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

@@ -17,7 +17,7 @@ from NiaPy.algorithms.basic.gso import GlowwormSwarmOptimization, GlowwormSwarmO
 from NiaPy.algorithms.basic.hs import HarmonySearch, HarmonySearchV1
 from NiaPy.algorithms.basic.kh import KrillHerdV1, KrillHerdV2, KrillHerdV3, KrillHerdV4, KrillHerdV11
 from NiaPy.algorithms.basic.fwa import FireworksAlgorithm, EnhancedFireworksAlgorithm, DynamicFireworksAlgorithm, BareBonesFireworksAlgorithm
-from NiaPy.algorithms.basic.mts import MultipleTrajectorySearch, MTS_LS1, MTS_LS2, MTS_LS3, MTS_LS1v1
+from NiaPy.algorithms.basic.mts import MultipleTrajectorySearch, MultipleTrajectorySearchV1, MTS_LS1, MTS_LS2, MTS_LS3, MTS_LS1v1
 
 __all__ = [
     'BatAlgorithm',
@@ -53,6 +53,7 @@ __all__ = [
     'EnhancedFireworksAlgorithm',
     'DynamicFireworksAlgorithm',
     'MultipleTrajectorySearch',
+    'MultipleTrajectorySearchV1',
     'MTS_LS1',
     'MTS_LS2',
     'MTS_LS3',
