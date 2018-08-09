@@ -14,9 +14,13 @@ export PIPENV_VENV_IN_PROJECT=true
 export PIPENV_IGNORE_VIRTUALENVS=true
 ENV := .venv
 
+# set python interpreter
+PYTHON = python
 # Set python version
-PYTHON:= $(if $(PYTHON),$(PYTHON),python2)
-PVERSION:= $(if $(PVERSION),$(PVERSION),2.7)
+VERSION = $(shell $(PYTHON) -c "print(__import__('sys').version_info.major)").$(shell $(PYTHON) -c "print(__import__('sys').version_info.minor)").$(shell $(PYTHON) -c "print(__import__('sys').version_info.micro)")
+
+# GET PYTHON DEFAULT VERSION #################################################
+
 
 # MAIN TASKS ##################################################################
 
@@ -50,8 +54,8 @@ METADATA := *.egg-info
 .PHONY: install
 install: $(DEPENDENCIES) $(METADATA)
 
-$(DEPENDENCIES):
-	pipenv --python $(PVERSION) install --dev
+$(DEPENDENCIES): 
+	pipenv --python $(VERSION) install --dev
 	@ touch $@
 
 $(METADATA): setup.py
