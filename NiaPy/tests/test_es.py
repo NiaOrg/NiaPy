@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements
+# pylint: disable=mixed-indentation, multiple-statements, old-style-class
 from unittest import TestCase
 from NiaPy.benchmarks.griewank import Griewank
 from NiaPy.algorithms.basic import EvolutionStrategy1p1, EvolutionStrategyMp1, EvolutionStrategyMpL, EvolutionStrategyML

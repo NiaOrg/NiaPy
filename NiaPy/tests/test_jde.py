@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=line-too-long, mixed-indentation, multiple-statements
+# pylint: disable=line-too-long, mixed-indentation, multiple-statements, old-style-class
 from unittest import TestCase
 from numpy import random as rnd
 from NiaPy.benchmarks.utility import Task

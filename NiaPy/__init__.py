@@ -229,6 +229,16 @@ class Runner:
 			algorithm = algorithms.basic.EnhancedFireworksAlgorithm(D=self.D, nFES=self.nFES, nGEN=self.nRuns, benchmark=bench)
 		elif name == 'DynamicFireworksAlgorithm':
 			algorithm = algorithms.basic.DynamicFireworksAlgorithm(D=self.D, nFES=self.nFES, nGEN=self.nRuns, benchmark=bench)
+		elif name == 'MultipleTrajectorySearch':
+			algorithm = algorithms.basic.MultipleTrajectorySearch(D=self.D, nFES=self.nFES, benchmark=bench)
+		elif name == 'MultipleTrajectorySearchV1':
+			algorithm = algorithms.basic.MultipleTrajectorySearchV1(D=self.D, nFES=self.nFES, benchmark=bench)
+		elif name == 'NelderMeadMethod':
+			algorithm = algorithms.other.NelderMeadMethod(D=self.D, nFES=self.nFES, benchmark=bench)
+		elif name == 'HillClimbAlgorithm':
+			algorithm = algorithms.other.HillClimbAlgorithm(D=self.D, nFES=self.nFES, benchmark=bench)
+		elif name == 'SimulatedAnnealing':
+			algorithm = algorithms.other.SimulatedAnnealing(D=self.D, nFES=self.nFES, benchmark=bench)
 		else:
 			raise TypeError('Passed benchmark is not defined!')
 		return algorithm

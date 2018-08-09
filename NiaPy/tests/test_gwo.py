@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=too-many-function-args
+# pylint: disable=too-many-function-args, old-style-class
 from unittest import TestCase
 
 from NiaPy.algorithms.basic import GreyWolfOptimizer

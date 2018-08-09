@@ -50,7 +50,7 @@ class HillClimbAlgorithm(Algorithm):
 		"""
 		self.delta, self.Neighborhood = delta, Neighborhood
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
-	
+
 	def runTask(self, task):
 		xb, xbfit = None, inf
 		while not task.stopCond():

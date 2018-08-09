@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, function-redefined, multiple-statements
+# pylint: disable=mixed-indentation, function-redefined, multiple-statements, old-style-class
 from unittest import TestCase
 from NiaPy.algorithms.basic import GeneticAlgorithm
 from NiaPy.algorithms.basic.ga import TwoPointCrossover, MultiPointCrossover, CreepMutation

@@ -27,7 +27,7 @@ class SimulatedAnnealing(Algorithm):
 	**Reference paper:**
 	"""
 	def __init__(self, **kwargs):
-		r"""Simulated Annealing Algorithm.
+		r"""Init Simulated Annealing Algorithm.
 
 		**See**:
 		Algorithm.__init__(self, **kwargs)
@@ -42,15 +42,15 @@ class SimulatedAnnealing(Algorithm):
 		"""
 		self.delta, self.T, self.curT, self.deltaT, self.cool = delta, T, T, deltaT, coolingMethod
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
-	
-	def runTask(self, task):				
+
+	def runTask(self, task):
 		x = task.Lower + task.bRange * self.rand(task.D)  # Random solution
 		curT = self.T
 		xfit = task.eval(x)
-		while not task.stopCond() or (curT < 0):					
+		while not task.stopCond() or (curT < 0):
 			c = x - self.delta / 2 + self.rand(task.D) * self.delta
 			c = task.repair(c)
-			cfit = task.eval(c)			
+			cfit = task.eval(c)
 			deltaFit = cfit - xfit
 			rand = self.rand()
 			if deltaFit < 0 or rand < exp(deltaFit / curT): x, xfit = c, cfit
