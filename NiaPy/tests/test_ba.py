@@ -1,5 +1,5 @@
+# pylint: disable=old-style-class
 from unittest import TestCase
-
 from NiaPy.algorithms.basic import BatAlgorithm
 
 

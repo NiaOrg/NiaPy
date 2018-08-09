@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, line-too-long, expression-not-assigned, singleton-comparison, len-as-condition, no-self-use, unused-argument, no-else-return
+# pylint: disable=mixed-indentation, multiple-statements, line-too-long, expression-not-assigned, singleton-comparison, len-as-condition, no-self-use, unused-argument, no-else-return, old-style-class
 from numpy import random as rand, inf, ndarray, asarray, array_equal
 from NiaPy.benchmarks.utility import Task
 

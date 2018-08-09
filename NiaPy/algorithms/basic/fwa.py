@@ -119,7 +119,7 @@ class FireworksAlgorithm(Algorithm):
 			Ss, As = sum(FW_f[iw] - FW_f), sum(FW_f - FW_f[ib])
 			S = [self.SparsksNo(FW_f[i], FW_f[iw], Ss) for i in range(self.N)]
 			A = [self.ExplosionAmplitude(FW_f[i], FW_f[ib], Ah, As) for i in range(self.N)]
-			FWn = [self.ExplodeSpark(FW[i], A[i], task) for i in range(self.N) for j in range(S[i])]
+			FWn = [self.ExplodeSpark(FW[i], A[i], task) for i in range(self.N) for _ in range(S[i])]
 			for i in range(self.m): FWn.append(self.GaussianSpark(self.randint(self.N), task))
 			FW, FW_f = self.NextGeneration(FW, FW_f, FWn, task)
 		return FW[0], FW_f[0]
@@ -177,7 +177,7 @@ class EnhancedFireworksAlgorithm(FireworksAlgorithm):
 			S = [self.SparsksNo(FW_f[i], FW_f[iw], Ss) for i in range(self.N)]
 			A = [self.ExplosionAmplitude(FW_f[i], FW_f[ib], A_min, Ah, As, task) for i in range(self.N)]
 			A_min = self.uAmin(Ainit, Afinal, task)
-			FWn = [self.ExplodeSpark(FW[i], A[i], task) for i in range(self.N) for j in range(S[i])]
+			FWn = [self.ExplodeSpark(FW[i], A[i], task) for i in range(self.N) for _ in range(S[i])]
 			for i in range(self.m): FWn.append(self.GaussianSpark(self.randint(self.N), FW[ib], task))
 			FW, FW_f = self.NextGeneration(FW, FW_f, FWn, task)
 		return FW[0], FW_f[0]
@@ -236,7 +236,7 @@ class DynamicFireworksAlgorithm(EnhancedFireworksAlgorithm):
 			Ss, As = sum(FW_f[iw] - FW_f), sum(FW_f - FW_f[ib])
 			S, sb = [self.SparsksNo(FW_f[i], FW_f[iw], Ss) for i in range(self.N)], self.SparsksNo(xb_f, FW_f[iw], Ss)
 			A = [self.ExplosionAmplitude(FW_f[i], FW_f[ib], Ah, As) for i in range(self.N)]
-			FWn, xbn = [self.ExplodeSpark(FW[i], A[i], task) for i in range(self.N) for j in range(S[i])], [self.ExplodeSpark(xb, Acf, task) for i in range(sb)]
+			FWn, xbn = [self.ExplodeSpark(FW[i], A[i], task) for i in range(self.N) for _ in range(S[i])], [self.ExplodeSpark(xb, Acf, task) for _ in range(sb)]
 			FW, FW_f = self.NextGeneration(FW, FW_f, FWn, task)
 			iw, ib = argmax(FW_f), 0
 			xb, xb_f, Acf = self.uCF(xbn, FW[ib], FW_f[ib], xb, xb_f, Acf, task)

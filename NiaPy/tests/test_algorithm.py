@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, function-redefined, multiple-statements
+# pylint: disable=mixed-indentation, function-redefined, multiple-statements, old-style-class
 from unittest import TestCase
 from numpy import random as rnd, full, inf, array_equal
 from NiaPy.benchmarks.utility import Task

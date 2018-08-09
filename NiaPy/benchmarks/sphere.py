@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=anomalous-backslash-in-string, mixed-indentation, redefined-builtin, multiple-statements
+# pylint: disable=anomalous-backslash-in-string, mixed-indentation, redefined-builtin, multiple-statements, old-style-class
 
 from numpy import abs
 

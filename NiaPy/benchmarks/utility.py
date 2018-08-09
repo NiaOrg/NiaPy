@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, line-too-long, bad-continuation, multiple-statements, singleton-comparison, unused-argument, no-self-use, trailing-comma-tuple, logging-not-lazy, no-else-return
+# pylint: disable=mixed-indentation, line-too-long, bad-continuation, multiple-statements, singleton-comparison, unused-argument, no-self-use, trailing-comma-tuple, logging-not-lazy, no-else-return, old-style-class
 """Implementation of benchmarks utility function."""
 import logging
 from enum import Enum
@@ -26,7 +26,7 @@ def fullArray(a, D):
 		if len(a) == D: A = a if isinstance(a, ndarray) else asarray(a)
 		elif len(a) > D: A = a[:D] if isinstance(a, ndarray) else asarray(a[:D])
 		else:
-			for i in range(int(ceil(D / len(a)))): A.extend(a[:D if (D - i * len(a)) >= len(a) else D - i * len(a)])
+			for i in range(int(ceil(float(D) / len(a)))): A.extend(a[:D if (D - i * len(a)) >= len(a) else D - i * len(a)])
 			A = asarray(A)
 	return A
 

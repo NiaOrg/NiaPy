@@ -153,10 +153,8 @@ class EvolutionStrategyML(EvolutionStrategyMpL):
 	def newPop(self, pop):
 		pop_s = argsort([i.f for i in pop])
 		if self.mu < self.lam: return [pop[i] for i in pop_s[:self.mu]]
-		q, npop = ceil(self.mu / self.lam), list()
-		for j in range(q):
-			diff = self.mu - (self.lam * j)
-			npop.extend([pop[i] for i in (pop_s if diff >= self.lam else pop_s[:diff])])
+		npop = list()
+		for i in range(int(ceil(float(self.mu) / self.lam))): npop.extend(pop[:self.lam if (self.mu - i * self.lam) >= self.lam else self.mu - i * self.lam])
 		return npop
 
 	def runTask(self, task):

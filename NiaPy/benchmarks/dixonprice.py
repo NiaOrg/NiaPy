@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, line-too-long
+# pylint: disable=mixed-indentation, multiple-statements, line-too-long, old-style-class
 """Implementations of Dixon Price function."""
 
 __all__ = ['DixonPrice']
@@ -41,7 +41,7 @@ class DixonPrice:
 	def function(cls):
 		def f(D, X):
 			v = 0.0
-			for i in range(2, D - 1): v += i * (2 * X[i - 1] ** 2 - X[i - 2]) ** 2
+			for i in range(2, D): v += i * (2 * X[i] ** 2 - X[i - 1]) ** 2
 			return (X[0] - 1) ** 2 + v
 		return f
 

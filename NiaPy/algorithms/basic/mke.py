@@ -148,7 +148,7 @@ class MonkeyKingEvolutionV3(MonkeyKingEvolutionV1):
 	def runTask(self, task):
 		X = task.Lower + task.bRange * self.rand([self.NP, task.D])
 		x_gb, x_f_gb = self.eval(X, None, inf, task)
-		k, c = ceil(self.NP / task.D), ceil(self.C * task.D)
+		k, c = int(ceil(self.NP / task.D)), int(ceil(self.C * task.D))
 		while not task.stopCond():
 			X_gb = x_gb + self.FC * X[self.Rand.choice(len(X), c)] - X[self.Rand.choice(len(X), c)]
 			x_gb, x_f_gb = self.eval(X_gb, x_gb, x_f_gb, task)

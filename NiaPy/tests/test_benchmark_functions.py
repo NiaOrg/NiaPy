@@ -275,7 +275,7 @@ class TestBenchmarkFunctions(TestCase):
 		self.assertAlmostEqual(fun(10, full(10, .0)), .0)
 		self.assertAlmostEqual(fun(100, full(100, .0)), .0)
 
-	def __dixonprice_opt_sol(self, d): return asarray([2 ** -((2 ** i - 2) / 2 ** i) for i in range(1, d + 1)])
+	def __dixonprice_opt_sol(self, d): return asarray([2 ** (-(2 ** i - 2) / 2 ** i) for i in range(1, d + 1)])
 
 	def test_dixonprice(self):
 		fun = self.assertBounds('dixonprice', -10, 10)

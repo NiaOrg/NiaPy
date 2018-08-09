@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=anomalous-backslash-in-string, mixed-indentation, multiple-statements, line-too-long, no-else-return
+# pylint: disable=anomalous-backslash-in-string, mixed-indentation, multiple-statements, line-too-long, no-else-return, old-style-class
 """Implementations of Schwefels functions."""
 
 from math import sin, fmod, fabs, sqrt
