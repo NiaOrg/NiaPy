@@ -33,7 +33,9 @@ class SelfAdaptiveDifferentialEvolutionAlgorithm(DifferentialEvolutionAlgorithm)
 	A comparative study on numerical benchmark problems.
 	IEEE transactions on evolutionary computation, 10(6), 646-657, 2006.
 	"""
-	def __init__(self, **kwargs): DifferentialEvolutionAlgorithm.__init__(self, name='SelfAdaptiveDifferentialEvolutionAlgorithm', sName='jDE', **kwargs)
+	def __init__(self, **kwargs):
+		if kwargs.get('name', None) == None: DifferentialEvolutionAlgorithm.__init__(self, name='SelfAdaptiveDifferentialEvolutionAlgorithm', sName='jDE', **kwargs)
+		else: DifferentialEvolutionAlgorithm.__init__(self, **kwargs)
 
 	def setParameters(self, F_l=0.0, F_u=2.0, Tao1=0.4, Tao2=0.6, **ukwargs):
 		r"""Set the parameters of an algorithm.

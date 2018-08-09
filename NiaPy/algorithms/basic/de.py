@@ -74,10 +74,12 @@ class DifferentialEvolutionAlgorithm(Algorithm):
 		self.Np, self.F, self.CR, self.CrossMutt = NP, F, CR, CrossMutt
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
+	def selectBetter(self, x, y): return x if x.f < y.f else y
+
 	def evalPopulation(self, x, x_old, task):
 		"""Evaluate element."""
 		x.evaluate(task)
-		return x if x.f < x_old.f else x_old
+		return self.selectBetter(x, x_old)
 
 	def runTask(self, task):
 		"""Run."""

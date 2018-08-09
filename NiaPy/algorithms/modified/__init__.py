@@ -2,8 +2,10 @@
 
 from NiaPy.algorithms.modified.hba import HybridBatAlgorithm
 from NiaPy.algorithms.modified.jde import SelfAdaptiveDifferentialEvolutionAlgorithm
+from NiaPy.algorithms.modified.dynnpjde import DynNPSelfAdaptiveDifferentialEvolutionAlgorithm
 
 __all__ = [
     'HybridBatAlgorithm',
-    'SelfAdaptiveDifferentialEvolutionAlgorithm'
+    'SelfAdaptiveDifferentialEvolutionAlgorithm',
+    'DynNPSelfAdaptiveDifferentialEvolutionAlgorithm'
 ]

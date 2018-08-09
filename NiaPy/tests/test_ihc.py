@@ -17,7 +17,7 @@ class MyBenchmark(object):
 			return val
 		return evaluate
 
-class CSTestCase(TestCase):
+class IHCTestCase(TestCase):
 	def setUp(self):
 		self.D = 40
 		self.ihc_custom = HillClimbAlgorithm(D=self.D, nFES=1000, delta=0.4, benchmark=MyBenchmark())
