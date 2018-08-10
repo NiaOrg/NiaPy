@@ -3,7 +3,7 @@
 from unittest import TestCase
 from numpy import random as rnd
 from NiaPy.benchmarks.utility import Task
-from NiaPy.algorithms.modified import SelfAdaptiveDifferentialEvolutionAlgorithm
+from NiaPy.algorithms.modified import SelfAdaptiveDifferentialEvolutionAlgorithm, DynNPSelfAdaptiveDifferentialEvolutionAlgorithm
 from NiaPy.algorithms.modified.jde import SolutionjDE
 
 
@@ -44,5 +44,16 @@ class jDETestCase(TestCase):
 
 	def test_griewank_works_fine(self):
 		self.assertTrue(self.jde_griewank.run())
+
+class dyNPjDETestCase(TestCase):
+	def setUp(self):
+		self.dynnpjde_custom = DynNPSelfAdaptiveDifferentialEvolutionAlgorithm(D=10, NP=40, nFES=1000, F=0.5, F_l=0.0, F_u=2.0, Tao1=0.9, CR=0.1, Tao2=0.45, benchmark=MyBenchmark())
+		self.dynnpjde_griewank = DynNPSelfAdaptiveDifferentialEvolutionAlgorithm(D=10, NP=40, nFES=1000, F=0.5, F_l=0.0, F_u=2.0, Tao1=0.9, CR=0.1, Tao2=0.45, benchmark='griewank')
+
+	def test_custom_works_fine(self):
+		self.assertTrue(self.dynnpjde_custom.run())
+
+	def test_griewank_works_fine(self):
+		self.assertTrue(self.dynnpjde_griewank.run())
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

@@ -17,7 +17,9 @@ ENV := .venv
 # set python interpreter
 PYTHON = python
 # Set python version
-VERSION = $(shell $(PYTHON) -c "print(__import__('sys').version_info.major)").$(shell $(PYTHON) -c "print(__import__('sys').version_info.minor)").$(shell $(PYTHON) -c "print(__import__('sys').version_info.micro)")
+# VERSION = $(shell $(PYTHON) -c "print(__import__('sys').version_info.major)").$(shell $(PYTHON) -c "print(__import__('sys').version_info.minor)").$(shell $(PYTHON) -c "print(__import__('sys').version_info.micro)")
+VERSION = $(shell $(PYTHON) -V | cut -d" " -f2)
+$(info $(VERSION))
 
 # GET PYTHON DEFAULT VERSION #################################################
 

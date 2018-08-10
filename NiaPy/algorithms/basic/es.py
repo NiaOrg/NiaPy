@@ -32,7 +32,7 @@ class EvolutionStrategy1p1(Algorithm):
 		if kwargs.get('name', None) == None: Algorithm.__init__(self, name='(1+1)-EvolutionStrategy', sName='(1+1)-ES', **kwargs)
 		else: Algorithm.__init__(self, **kwargs)
 
-	def setParameters(self, mu=1, k=10, c_a=1.1, c_r=0.5, **ukwargs):
+	def setParameters(self, mu=1, k=10, c_a=1.1, c_r=0.5, epsilon=1e-20, **ukwargs):
 		r"""Set the arguments of an algorithm.
 
 		**Arguments**:
@@ -41,15 +41,15 @@ class EvolutionStrategy1p1(Algorithm):
 		c_a {real} --
 		c_r {real} --
 		"""
-		self.mu, self.k, self.c_a, self.c_r = mu, k, c_a, c_r
+		self.mu, self.k, self.c_a, self.c_r, self.epsilon = mu, k, c_a, c_r, epsilon
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def mutate(self, x, rho): return x + self.normal(0, rho, len(x))
 
 	def updateRho(self, rho, k):
 		phi = k / self.k
-		if phi < 0.2: return self.c_r * rho if rho != 0 else 1
-		elif phi > 0.2: return self.c_a * rho if rho != 0 else 1
+		if phi < 0.2: return self.c_r * rho if rho > self.epsilon else 1
+		elif phi > 0.2: return self.c_a * rho if rho > self.epsilon else 1
 		else: return rho
 
 	def runTask(self, task):
