@@ -16,10 +16,11 @@ ENV := .venv
 
 # set python interpreter
 PYTHON = python
-# Set python version
-VERSION = $(shell $(PYTHON) -c "print(__import__('sys').version_info.major)").$(shell $(PYTHON) -c "print(__import__('sys').version_info.minor)").$(shell $(PYTHON) -c "print(__import__('sys').version_info.micro)")
-# VERSION = $(shell $(PYTHON) -V | cut -d" " -f2)
-$(info $(VERSION))
+# Set command for python version
+ifeq ($(TPV),T)
+	COMM = --python $(shell $(PYTHON) -c "print(__import__('sys').version_info.major)").$(shell $(PYTHON) -c "print(__import__('sys').version_info.minor)").$(shell $(PYTHON) -c "print(__import__('sys').version_info.micro)")
+	# VERSION = $(shell $(PYTHON) -V | cut -d" " -f2)
+endif
 
 # GET PYTHON DEFAULT VERSION #################################################
 
@@ -57,7 +58,7 @@ METADATA := *.egg-info
 install: $(DEPENDENCIES) $(METADATA)
 
 $(DEPENDENCIES): 
-	pipenv --python $(VERSION) install --dev
+	pipenv $(COMM) install --dev
 	@ touch $@
 
 $(METADATA): setup.py
