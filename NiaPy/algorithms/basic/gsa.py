@@ -1,8 +1,8 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, line-too-long, unused-argument, no-self-use, no-self-use, attribute-defined-outside-init, logging-not-lazy, len-as-condition, singleton-comparison, arguments-differ
+# pylint: disable=mixed-indentation, multiple-statements, line-too-long, unused-argument, no-self-use, no-self-use, attribute-defined-outside-init, logging-not-lazy, len-as-condition, singleton-comparison, arguments-differ, redefined-builtin
 import logging
-from numpy import apply_along_axis, asarray, inf, argmin, argmax, sum, full, isnan
-from NiaPy.algorithms.algorithm import Algorithm, Individual
+from numpy import apply_along_axis, asarray, inf, argmin, argmax, sum, full
+from NiaPy.algorithms.algorithm import Algorithm
 
 __all__ = ['GravitationalSearchAlgorithm']
 

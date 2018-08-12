@@ -3,7 +3,6 @@
 from unittest import TestCase
 from numpy import asarray
 from NiaPy.benchmarks.griewank import Griewank
-from NiaPy.benchmarks.ackley import Ackley
 from NiaPy.algorithms.basic import GravitationalSearchAlgorithm
 
 class MyBenchmark:
