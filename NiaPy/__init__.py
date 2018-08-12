@@ -239,6 +239,8 @@ class Runner:
 			algorithm = algorithms.other.HillClimbAlgorithm(D=self.D, nFES=self.nFES, benchmark=bench)
 		elif name == 'SimulatedAnnealing':
 			algorithm = algorithms.other.SimulatedAnnealing(D=self.D, nFES=self.nFES, benchmark=bench)
+		elif name == 'GravitationalSearchAlgorithm':
+			algorithm = algorithms.other.GravitationalSearchAlgorithm(D=self.D, nFES=self.nFES, benchmark=bench)
 		else:
 			raise TypeError('Passed benchmark is not defined!')
 		return algorithm
