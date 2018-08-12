@@ -19,7 +19,7 @@ class MyBenchmark:
 			return val
 		return evaluate
 
-class DETestCase(TestCase):
+class GSATestCase(TestCase):
 	def setUp(self):
 		self.gsa_custom = GravitationalSearchAlgorithm(D=10, NP=40, nFES=1000, benchmark=MyBenchmark())
 		self.gsa_griewank = GravitationalSearchAlgorithm(NP=10, D=40, nFES=1000, benchmark='griewank')
@@ -28,11 +28,11 @@ class DETestCase(TestCase):
 		fun = MyBenchmark().function()
 		x = self.gsa_custom.run()
 		self.assertTrue(x)
-		self.assertAlmostEqual(fun(self.de_custom.task.D, asarray(x[0])), x[1], delta=1e2)
+		self.assertAlmostEqual(fun(self.gsa_custom.task.D, asarray(x[0])), x[1], delta=1e2)
 
 	def test_griewank_works_fine(self):
 		fun = Griewank().function()
-		x = self.de_griewank.run()
+		x = self.gsa_griewank.run()
 		self.assertTrue(x)
 		self.assertAlmostEqual(fun(self.gsa_griewank.task.D, asarray(x[0])), x[1], delta=1e2)
 

@@ -50,7 +50,6 @@ class GravitationalSearchAlgorithm(Algorithm):
 			Fi = asarray([[self.G(task.Iters) * ((M[i] * M[j]) / (self.d(X[i], X[j]) + self.epsilon)) * (X[i] - X[j]) for j in range(len(M))] for i in range(len(M))])
 			F = sum(self.rand([self.NP, task.D]) * Fi, axis=1)
 			a = F.T / (M + self.epsilon)
-			if isnan(a).any(): break
 			v = self.rand([self.NP, task.D]) * v + a.T
 			X = apply_along_axis(task.repair, 1, X + v)
 		return xb, xb_f
