@@ -75,6 +75,7 @@ setuptools.setup(
     install_requires=[
         # TODO: Add your library's requirements here
         'pytest ~= 3.7.1',
+        'coverage-space ~= 1.0.2',
         'numpy ~= 1.14.0',
         'enum34 ~= 1.1.6',
         'click ~= 6.0',
