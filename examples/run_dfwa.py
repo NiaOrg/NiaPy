@@ -38,7 +38,7 @@ class MaxMB(MinMB):
 
 def simple_example(runs=10, D=10, nFES=50000, nGEN=10000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kn):
 	for i in range(runs):
-		algo = DynamicFireworksAlgorithm(D=D, nFES=nFES, optType=optType, benchmark=optFunc())
+		algo = DynamicFireworksAlgorithm(D=D, nFES=nFES, optType=optType, seed=seed, benchmark=optFunc())
 		best = algo.run()
 		logger.info('%s %s' % (best[0], best[1]))
 

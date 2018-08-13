@@ -38,13 +38,13 @@ class MaxMB(MinMB):
 
 def simple_example(runs=10, D=10, nFES=50000, nGEN=10000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kn):
 	for i in range(runs):
-		algo = FireworksAlgorithm(D=D, nFES=nFES, optType=optType, benchmark=optFunc())
+		algo = FireworksAlgorithm(D=D, nFES=nFES, optType=optType, seed=seed, benchmark=optFunc())
 		best = algo.run()
 		logger.info('%s %s' % (best[0], best[1]))
 
 def logging_example(D=10, nFES=50000, nGEN=100000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kn):
 	task = TaskConvPrint(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc())
-	algo = FireworksAlgorithm(seed=None, task=task)
+	algo = FireworksAlgorithm(seed=seed, task=task)
 	best = algo.run()
 	logger.info('%s %s' % (best[0], best[1]))
 
