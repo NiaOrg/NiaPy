@@ -22,9 +22,6 @@ ifeq ($(TPV),T)
 	# VERSION = $(shell $(PYTHON) -V | cut -d" " -f2)
 endif
 
-# GET PYTHON DEFAULT VERSION #################################################
-
-
 # MAIN TASKS ##################################################################
 
 SNIFFER := pipenv run sniffer

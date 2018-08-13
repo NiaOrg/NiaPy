@@ -64,7 +64,7 @@ class FireflyAlgorithm(Algorithm):
 		while not task.stopCondI():
 			alpha = self.alpha_new(task.nFES / self.NP, alpha)
 			Index = argsort(Intensity)
-			tmp = [self.move_ffa(i, Fireflies[Index], Intensity[Index], copy(Fireflies), task) for i in range(self.NP)]
+			tmp = [self.move_ffa(i, Fireflies, Intensity[Index], Fireflies[Index], task) for i in range(self.NP)]
 			Fireflies, evalF = asarray([tmp[i][0] for i in range(len(tmp))]), asarray([tmp[i][1] for i in range(len(tmp))])
 			Intensity[where(evalF)] = apply_along_axis(task.eval, 1, Fireflies[where(evalF)])
 			xb, xb_f = self.getBest(xb, xb_f, Fireflies, Intensity)
