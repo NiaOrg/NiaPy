@@ -78,9 +78,9 @@ def getOptType(strtype):
 
 if __name__ == '__main__':
 	pargs = getDictArgs(sys.argv[1:])
-	optType, optFunc = getOptType(pargs['optType'])
-	if not pargs['runType']: simple_example(**pargs)
-	elif pargs['runType'] == 'log': logging_example(**pargs)
-	elif pargs['runType'] == 'plot': plot_example(**pargs)
+	optType, optFunc = getOptType(pargs.pop('optType', 'min'))
+	if not pargs['runType']: simple_example(optType=optType, optFunc=optFunc, **pargs)
+	elif pargs['runType'] == 'log': logging_example(optType=optType, optFunc=optFunc, **pargs)
+	elif pargs['runType'] == 'plot': plot_example(optType=optType, optFunc=optFunc, **pargs)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

@@ -7,9 +7,9 @@ sys.path.append('../')
 
 import random
 import logging
-from NiaPy.algorithms.basic import MultipleTrajectorySearch
-from NiaPy.benchmarks.utility import TaskConvPrint, TaskConvPlot
-from margparser import getArgs
+from NiaPy.algorithms.other import MultipleTrajectorySearch
+from NiaPy.benchmarks.utility import TaskConvPrint, TaskConvPlot, OptimizationType
+from margparser import getDictArgs
 
 logging.basicConfig()
 logger = logging.getLogger('examples')
@@ -25,7 +25,6 @@ class MinMB(object):
 		def evaluate(D, sol):
 			val = 0.0
 			for i in range(D): val = val + sol[i] * sol[i]
-			global_vector.append(val)
 			return val
 		return evaluate
 
@@ -36,20 +35,20 @@ class MaxMB(MinMB):
 		return e
 
 
-def simple_example(runs=10, D=10, nFES=50000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB):
+def simple_example(runs=10, D=10, nFES=50000, nGEN=10000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kn):
 	for i in range(runs):
-		algo = MultipleTrajectorySearch(D=D, nFES=nFES, n=15, C_a=1, C_r=0.5, optType=optType, benchmark=optFunc())
+		algo = MultipleTrajectorySearch(D=D, nFES=nFES, nGEN=nGEN, n=15, C_a=1, C_r=0.5, optType=optType, benchmark=optFunc())
 		best = algo.run()
 		logger.info('%s %s' % (best[0], best[1]))
 
-def logging_example(D=10, nFES=50000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB):
-	task = TaskConvPrint(D=D, nFES=nFES, nGEN=10000, optType=optType, benchmark=optFunc())
+def logging_example(D=10, nFES=50000, nGEN=100000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kn):
+	task = TaskConvPrint(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc())
 	algo = MultipleTrajectorySearch(task=task, n=15, C_a=1, C_r=0.5)
 	best = algo.run()
 	logger.info('%s %s' % (best[0], best[1]))
 
-def plot_example(D=10, nFES=50000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB):
-	task = TaskConvPlot(D=D, nFES=nFES, nGEN=10000, optType=optType, benchmark=optFunc())
+def plot_example(D=10, nFES=50000, nGEN=100000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kn):
+	task = TaskConvPlot(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc())
 	algo = MultipleTrajectorySearch(task=task, n=15, C_a=1, C_r=0.5)
 	best = algo.run()
 	logger.info('%s %s' % (best[0], best[1]))
@@ -61,10 +60,10 @@ def getOptType(strtype):
 	else: return None
 
 if __name__ == '__main__':
-	pargs = getArgs(sys.argv[1:])
-	optType, optFunc = getOptType(pargs.optType)
-	if not pargs.runType: simple_example(D=pargs.D, nFES=pargs.nFES, seed=pargs.seed, optType=optType, optFunc=optFunc)
-	elif pargs.runType == 'log': logging_example(D=pargs.D, nFES=pargs.nFES, seed=pargs.seed, optType=optType, optFunc=optFunc)
-	elif pargs.runType == 'plot': plot_example(D=pargs.D, nFES=pargs.nFES, seed=pargs.seed, optType=optType, optFunc=optFunc)
+	pargs = getDictArgs(sys.argv[1:])
+	optType, optFunc = getOptType(pargs.pop('optType', 'min'))
+	if not pargs['runType']: simple_example(optType=optType, optFunc=optFunc, **pargs)
+	elif pargs['runType'] == 'log': logging_example(optType=optType, optFunc=optFunc, **pargs)
+	elif pargs['runType'] == 'plot': plot_example(optType=optType, optFunc=optFunc, **pargs)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

@@ -21,7 +21,7 @@ class FireflyAlgorithm(Algorithm):
 	"""
 	def __init__(self, **kwargs): Algorithm.__init__(self, name='FireflyAlgorithm', sName='FA', **kwargs)
 
-	def setParameters(self, NP=25, alpha=1, betamin=1, gamma=2, **ukwargs):
+	def setParameters(self, NP=20, alpha=1, betamin=1, gamma=2, **ukwargs):
 		r"""Set the parameters of the algorithm.
 
 		**Arguments**:
@@ -42,12 +42,11 @@ class FireflyAlgorithm(Algorithm):
 		"""Move fireflies."""
 		moved = False
 		for j in range(self.NP):
-			r = sum((Fireflies[j] - Fireflies[i]) ** 2) ** (1 / 2)
+			r = sum((Fireflies[i] - Fireflies[j]) ** 2) ** (1 / 2)
 			if Intensity[i] <= Intensity[j]: continue
 			beta = (1.0 - self.betamin) * exp(-self.gamma * r ** 2.0) + self.betamin
 			tmpf = self.alpha * (self.uniform(0, 1, task.D) - 0.5) * task.bRange
-			Fireflies[i] = Fireflies[i] * (1.0 - beta) + oFireflies[j] * beta + tmpf
-			task.repair(Fireflies[i])
+			Fireflies[i] = task.repair(Fireflies[i] * (1.0 - beta) + oFireflies[j] * beta + tmpf)
 			moved = True
 		return Fireflies[i], moved
 
@@ -62,9 +61,10 @@ class FireflyAlgorithm(Algorithm):
 		Intensity = apply_along_axis(task.eval, 1, Fireflies)
 		(xb, xb_f), alpha = self.getBest(None, inf, Fireflies, Intensity), self.alpha
 		while not task.stopCondI():
-			alpha = self.alpha_new(task.nFES / self.NP, alpha)
+			alpha = task.nFES / self.NP
 			Index = argsort(Intensity)
-			tmp = [self.move_ffa(i, Fireflies, Intensity[Index], Fireflies[Index], task) for i in range(self.NP)]
+			# tmp = [self.move_ffa(i, Fireflies, Intensity[Index], Fireflies[Index], task) for i in range(self.NP)]
+			tmp = [self.move_ffa(i, Fireflies[Index], Intensity[Index], Fireflies, task) for i in range(self.NP)]
 			Fireflies, evalF = asarray([tmp[i][0] for i in range(len(tmp))]), asarray([tmp[i][1] for i in range(len(tmp))])
 			Intensity[where(evalF)] = apply_along_axis(task.eval, 1, Fireflies[where(evalF)])
 			xb, xb_f = self.getBest(xb, xb_f, Fireflies, Intensity)
