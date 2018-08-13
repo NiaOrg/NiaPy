@@ -36,7 +36,7 @@ class GravitationalSearchAlgorithm(Algorithm):
 
 	def G(self, t): return self.G_0 / t
 
-	def d(self, x, y, ln=2): return sum((y - x) ** ln) ** (1 / ln)
+	def d(self, x, y, ln=2): return sum((x - y) ** ln) ** (1 / ln)
 
 	def runTask(self, task):
 		X, v = self.uniform(task.Lower, task.Upper, [self.NP, task.D]), full([self.NP, task.D], 0.0)
