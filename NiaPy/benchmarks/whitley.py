@@ -1,11 +1,11 @@
 # encoding=utf8
-# pylint: disable=anomalous-backslash-in-string
+# pylint: disable=anomalous-backslash-in-string, old-style-class
 import math
 
 __all__ = ['Whitley']
 
 
-class Whitley(object):
+class Whitley:
     r"""Implementation of Whitley function.
 
     Date: 2018

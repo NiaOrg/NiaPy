@@ -1,9 +1,9 @@
+# pylint: disable=old-style-class
 from unittest import TestCase
-
 from NiaPy.algorithms.basic import BatAlgorithm
 
 
-class MyBenchmark(object):
+class MyBenchmark:
 
     def __init__(self):
         self.Lower = -11

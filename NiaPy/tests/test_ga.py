@@ -1,10 +1,10 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, function-redefined, multiple-statements
+# pylint: disable=mixed-indentation, function-redefined, multiple-statements, old-style-class
 from unittest import TestCase
 from NiaPy.algorithms.basic import GeneticAlgorithm
 from NiaPy.algorithms.basic.ga import TwoPointCrossover, MultiPointCrossover, CreepMutation
 
-class MyBenchmark(object):
+class MyBenchmark:
 	def __init__(self):
 		self.Lower = -5.12
 		self.Upper = 5.12

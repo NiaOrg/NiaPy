@@ -1,12 +1,12 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, line-too-long, multiple-statements
+# pylint: disable=mixed-indentation, line-too-long, multiple-statements, old-style-class
 """Implementations of HGBat functions."""
 
 from math import fabs
 
 __all__ = ['HGBat']
 
-class HGBat(object):
+class HGBat:
 	r"""Implementations of HGBat functions.
 
 	Date: 2018

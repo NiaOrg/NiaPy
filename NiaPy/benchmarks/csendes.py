@@ -1,11 +1,11 @@
 # encoding=utf8
-# pylint: disable=anomalous-backslash-in-string
+# pylint: disable=anomalous-backslash-in-string, old-style-class
 import math
 
 __all__ = ['Csendes']
 
 
-class Csendes(object):
+class Csendes:
     r"""Implementation of Csendes function.
 
     Date: 2018

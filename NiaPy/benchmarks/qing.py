@@ -1,11 +1,11 @@
 # encoding=utf8
-# pylint: disable=anomalous-backslash-in-string
+# pylint: disable=anomalous-backslash-in-string, old-style-class
 import math
 
 __all__ = ['Qing']
 
 
-class Qing(object):
+class Qing:
     r"""Implementation of Qing function.
 
     Date: 2018

@@ -1,11 +1,11 @@
 # encoding=utf8
-# pylint: disable=anomalous-backslash-in-string
+# pylint: disable=anomalous-backslash-in-string, old-style-class
 import math
 
 __all__ = ['Ridge']
 
 
-class Ridge(object):
+class Ridge:
     r"""Implementation of Ridge function.
 
     Date: 2018

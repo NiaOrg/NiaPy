@@ -1,10 +1,10 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements
+# pylint: disable=mixed-indentation, multiple-statements, old-style-class
 """Implementations of Discus functions."""
 
 __all__ = ['Discus']
 
-class Discus(object):
+class Discus:
 	r"""Implementations of Discus functions.
 
 	Date: 2018

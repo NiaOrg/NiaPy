@@ -1,11 +1,11 @@
 # encoding=utf8
-# pylint: disable=anomalous-backslash-in-string
+# pylint: disable=anomalous-backslash-in-string, old-style-class
 import math
 
 __all__ = ['HappyCat']
 
 
-class HappyCat(object):
+class HappyCat:
     r"""Implementation of Happy cat function.
 
     Date: 2018

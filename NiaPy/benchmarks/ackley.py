@@ -1,11 +1,10 @@
 # encoding=utf8
-# pylint: disable=anomalous-backslash-in-string
+# pylint: disable=anomalous-backslash-in-string, old-style-class
 import math
 
 __all__ = ['Ackley']
 
-
-class Ackley(object):
+class Ackley:
     r"""Implementation of Ackley function.
 
     Date: 2018
@@ -23,7 +22,7 @@ class Ackley(object):
         The function can be defined on any input domain but it is usually
         evaluated on the hypercube :math:`x_i ∈ [-32.768, 32.768]`, for all :math:`i = 1, 2,..., D`.
 
-        **Global minimum:** :math:`f(x^*) = 0`, at  :math:`x^* = (0,...,0)`
+        **Global minimum:** :math:`f(\textbf{x}^*) = 0`, at  :math:`x^* = (0,...,0)`
 
     LaTeX formats:
         Inline:

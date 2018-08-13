@@ -1,8 +1,7 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, line-too-long, singleton-comparison, multiple-statements, attribute-defined-outside-init, no-self-use, logging-not-lazy, unused-variable
+# pylint: disable=mixed-indentation, line-too-long, singleton-comparison, multiple-statements, attribute-defined-outside-init, no-self-use, logging-not-lazy, unused-variable, arguments-differ, old-style-class
 import logging
 from numpy import vectorize, argmin, exp
-from numpy.random import RandomState
 from NiaPy.algorithms.algorithm import Algorithm
 
 logging.basicConfig()
@@ -11,15 +10,12 @@ logger.setLevel('INFO')
 
 __all__ = ['CamelAlgorithm']
 
-class Camel(object):
+class Camel:
 	r"""Implementation of population individual that is a camel for Camel algorithm.
 
 	**Algorithm:** Camel algorithm
-
 	**Date:** 2018
-
 	**Authors:** Klemen Berkovič
-
 	**License:** MIT
 	"""
 	E_init, S_init = 1, 1
@@ -60,36 +56,17 @@ class CamelAlgorithm(Algorithm):
 	r"""Implementation of Camel traveling behavior.
 
 	**Algorithm:** Camel algorithm
-
 	**Date:** 2018
-
 	**Authors:** Klemen Berkovič
-
 	**License:** MIT
-
 	**Reference URL:**
 	https://www.iasj.net/iasj?func=fulltext&aId=118375
-
 	**Reference paper:**
 	Ali, Ramzy. (2016). Novel Optimization Algorithm Inspired by Camel Traveling Behavior. Iraq J. Electrical and Electronic Engineering. 12. 167-177.
 	"""
-	def __init__(self, **kwargs):
-		r"""Initialize Camel algorithm class.
+	def __init__(self, **kwargs): Algorithm.__init__(self, name='CamelAlgorithm', sName='CA', **kwargs)
 
-		**Arguments**:
-		D {integer} -- dimension of problem
-		nGEN {integer} -- nuber of generation/iterations
-		nFES {integer} -- number of function evaluations
-		benchmark {object} -- benchmark implementation object
-
-		**See**:
-		Algorithm.__init__(self, **kwargs)
-		"""
-		super(CamelAlgorithm, self).__init__(name='CamelAlgorithm', sName='CA', **kwargs)
-
-	def setParameters(self, **kwargs): self.__setParams(**kwargs)
-
-	def __setParams(self, NP=50, omega=0.25, mu=0.5, alpha=0.5, S_init=10, E_init=10, T_min=-10, T_max=10, **ukwargs):
+	def setParameters(self, NP=50, omega=0.25, mu=0.5, alpha=0.5, S_init=10, E_init=10, T_min=-10, T_max=10, **ukwargs):
 		r"""Set the arguments of an algorithm.
 
 		**Arguments**:
@@ -124,18 +101,17 @@ class CamelAlgorithm(Algorithm):
 		return c, fitn
 
 	def runTask(self, task):
-		Camel.E_init, Camel.S_init, rand = self.E_init, self.S_init, RandomState().rand
-		ccaravan = [Camel(self.rand.uniform(task.Lower, task.Upper, [task.D]), rand) for i in range(self.NP)]
+		Camel.E_init, Camel.S_init = self.E_init, self.S_init
+		ccaravan = [Camel(self.uniform(task.Lower, task.Upper, [task.D]), self.Rand.rand) for i in range(self.NP)]
 		c_fits = [task.eval(c.x) for c in ccaravan]
 		ic_b = argmin(c_fits)
 		c_best, c_best_fit = ccaravan[ic_b], c_fits[ic_b]
-		while not task.stopCond():
+		while not task.stopCondI():
 			ccaravan, c_fitsn = vectorize(self.walk)(ccaravan, c_fits, task, self.omega, c_best)
-			ccaravan = vectorize(self.oasis)(ccaravan, self.rand.randn(self.NP), c_fits, c_fitsn, self.alpha)
+			ccaravan = vectorize(self.oasis)(ccaravan, self.rand(self.NP), c_fits, c_fitsn, self.alpha)
 			ci_b = argmin(c_fitsn)
 			if c_fitsn[ci_b] < c_best_fit: c_best, c_best_fit = ccaravan[ci_b], c_fits[ci_b]
 			ccaravan, c_fits = vectorize(self.lifeCycle)(ccaravan, c_fits, c_fitsn, self.mu, task)
-			task.nextIter()
 		return c_best.x, c_best_fit
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

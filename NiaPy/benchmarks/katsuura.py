@@ -1,12 +1,13 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, line-too-long, multiple-statements
+# pylint: disable=mixed-indentation, line-too-long, multiple-statements, old-style-class
 """Implementations of Katsuura functions."""
 
 from math import fabs
+from NiaPy.benchmarks.benchmark import Benchmark
 
 __all__ = ['Katsuura']
 
-class Katsuura(object):
+class Katsuura(Benchmark):
 	r"""Implementations of Katsuura functions.
 
 	Date: 2018
@@ -38,7 +39,7 @@ class Katsuura(object):
 	Reference:
 	http://www5.zzu.edu.cn/__local/A/69/BC/D3B5DFE94CD2574B38AD7CD1D12_C802DAFE_BC0C0.pdf
 	"""
-	def __init__(self, Lower=-100.0, Upper=100.0): self.Lower, self.Upper = Lower, Upper
+	def __init__(self, Lower=-100.0, Upper=100.0, **kwargs): Benchmark.__init__(self, Lower, Upper, **kwargs)
 
 	@classmethod
 	def function(cls):

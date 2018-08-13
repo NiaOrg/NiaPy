@@ -1,11 +1,11 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements
+# pylint: disable=mixed-indentation, multiple-statements, old-style-class
 from unittest import TestCase
 from numpy import asarray
 from NiaPy.benchmarks.griewank import Griewank
 from NiaPy.algorithms.basic import CamelAlgorithm
 
-class MyBenchmark(object):
+class MyBenchmark:
 	def __init__(self):
 		self.Lower = -5.12
 		self.Upper = 5.12
@@ -18,7 +18,7 @@ class MyBenchmark(object):
 			return val
 		return evaluate
 
-class CSTestCase(TestCase):
+class CATestCase(TestCase):
 	def setUp(self):
 		self.D = 40
 		self.ca_custom = CamelAlgorithm(NP=40, D=self.D, nGEN=10, nFES=4000, benchmark=MyBenchmark())

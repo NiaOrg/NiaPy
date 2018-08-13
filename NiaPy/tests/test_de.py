@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements
+# pylint: disable=mixed-indentation, multiple-statements, old-style-class
 from unittest import TestCase
 from numpy import asarray
 from NiaPy.benchmarks.griewank import Griewank
@@ -7,7 +7,7 @@ from NiaPy.benchmarks.ackley import Ackley
 from NiaPy.algorithms.basic import DifferentialEvolutionAlgorithm
 from NiaPy.algorithms.basic.de import CrossRand1, CrossRand2, CrossBest1, CrossBest2, CrossCurr2Rand1, CrossCurr2Best1
 
-class MyBenchmark(object):
+class MyBenchmark:
 	def __init__(self):
 		self.Lower = -11
 		self.Upper = 11

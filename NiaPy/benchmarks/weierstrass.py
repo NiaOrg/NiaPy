@@ -1,12 +1,12 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, line-too-long, multiple-statements
+# pylint: disable=mixed-indentation, line-too-long, multiple-statements, old-style-class
 """Implementations of Weierstrass functions."""
 
 from math import pi, cos
 
 __all__ = ['Weierstrass']
 
-class Weierstrass(object):
+class Weierstrass:
 	r"""Implementations of Weierstrass functions.
 
 	Date: 2018

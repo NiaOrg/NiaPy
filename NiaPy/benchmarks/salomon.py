@@ -1,11 +1,11 @@
 # encoding=utf8
-# pylint: disable=anomalous-backslash-in-string
+# pylint: disable=anomalous-backslash-in-string, old-style-class
 import math
 
 __all__ = ['Salomon']
 
 
-class Salomon(object):
+class Salomon:
     r"""Implementation of Salomon function.
 
     Date: 2018

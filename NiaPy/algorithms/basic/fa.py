@@ -1,7 +1,7 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, redefined-builtin, line-too-long, no-self-use
+# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, redefined-builtin, line-too-long, no-self-use, arguments-differ, no-else-return
 import logging
-from numpy import argsort, power as pow, sqrt, sum, exp, apply_along_axis, where, asarray
+from numpy import argsort, argmin, sum, exp, apply_along_axis, asarray, where, inf, copy
 from NiaPy.algorithms.algorithm import Algorithm
 
 __all__ = ['FireflyAlgorithm']
@@ -14,22 +14,14 @@ class FireflyAlgorithm(Algorithm):
 	r"""Implementation of Firefly algorithm.
 
 	**Algorithm:** Firefly algorithm
-
 	**Date:** 2016
-
 	**Authors:** Iztok Fister Jr, Iztok Fister and Klemen Berkovič
-
 	**License:** MIT
-
-	**Reference paper:**
-	Fister, I., Fister Jr, I., Yang, X. S., & Brest, J. (2013). A comprehensive review of firefly algorithms. Swarm and Evolutionary Computation, 13, 34-46.
+	**Reference paper:** Fister, I., Fister Jr, I., Yang, X. S., & Brest, J. (2013). A comprehensive review of firefly algorithms. Swarm and Evolutionary Computation, 13, 34-46.
 	"""
+	def __init__(self, **kwargs): Algorithm.__init__(self, name='FireflyAlgorithm', sName='FA', **kwargs)
 
-	def __init__(self, **kwargs): super(FireflyAlgorithm, self).__init__(name='FireflyAlgorithm', sName='FA', **kwargs)
-
-	def setParameters(self, **kwargs): self.__setParams(**kwargs)
-
-	def __setParams(self, NP=25, alpha=1, betamin=1, gamma=2, **ukwargs):
+	def setParameters(self, NP=25, alpha=1, betamin=1, gamma=2, **ukwargs):
 		r"""Set the parameters of the algorithm.
 
 		**Arguments**:
@@ -41,14 +33,6 @@ class FireflyAlgorithm(Algorithm):
 		self.NP, self.alpha, self.betamin, self.gamma = NP, alpha, betamin, gamma
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def repair(self, x, task):
-		"""Find limits."""
-		ir = where(x > task.Upper)
-		x[ir] = task.Upper[ir]
-		ir = where(x < task.Lower)
-		x[ir] = task.Lower[ir]
-		return x
-
 	def alpha_new(self, a, alpha):
 		"""Optionally recalculate the new alpha value."""
 		delta = 1.0 - pow(pow(10.0, -4.0) / 0.9, 1.0 / float(a))
@@ -56,26 +40,34 @@ class FireflyAlgorithm(Algorithm):
 
 	def move_ffa(self, i, Fireflies, Intensity, oFireflies, task):
 		"""Move fireflies."""
+		moved = False
 		for j in range(self.NP):
-			r = sqrt(sum((Fireflies[i] - Fireflies[j]) * (Fireflies[i] - Fireflies[j])))
-			if Intensity[i] > Intensity[j]:
-				beta = (1.0 - self.betamin) * exp(-self.gamma * pow(r, 2.0)) + self.betamin
-				tmpf = self.alpha * (self.rand.uniform(0, 1, task.D) - 0.5) * task.bRange
-				Fireflies[i] = Fireflies[i] * (1.0 - beta) + oFireflies[j] * beta + tmpf
-		self.repair(Fireflies[i], task)
-		return Fireflies[i]
+			r = sum((Fireflies[j] - Fireflies[i]) ** 2) ** (1 / 2)
+			if Intensity[i] <= Intensity[j]: continue
+			beta = (1.0 - self.betamin) * exp(-self.gamma * r ** 2.0) + self.betamin
+			tmpf = self.alpha * (self.uniform(0, 1, task.D) - 0.5) * task.bRange
+			Fireflies[i] = Fireflies[i] * (1.0 - beta) + oFireflies[j] * beta + tmpf
+			task.repair(Fireflies[i])
+			moved = True
+		return Fireflies[i], moved
+
+	def getBest(self, xb, xb_f, Fireflies, Intensity):
+		ib = argmin(Intensity)
+		if xb_f > Intensity[ib]: return Fireflies[ib], Intensity[ib]
+		else: return xb, xb_f
 
 	def runTask(self, task):
 		"""Run."""
-		Fireflies = self.rand.uniform(task.Lower, task.Upper, [self.NP, task.D])
+		Fireflies = self.uniform(task.Lower, task.Upper, [self.NP, task.D])
 		Intensity = apply_along_axis(task.eval, 1, Fireflies)
-		alpha = self.alpha
-		while not task.stopCond():
+		(xb, xb_f), alpha = self.getBest(None, inf, Fireflies, Intensity), self.alpha
+		while not task.stopCondI():
 			alpha = self.alpha_new(task.nFES / self.NP, alpha)
 			Index = argsort(Intensity)
-			nFireflies, nIntensity = Fireflies[Index], Intensity[Index]
-			Fireflies = asarray([self.move_ffa(i, nFireflies, nIntensity, Fireflies, task) for i in range(self.NP)])
-			Intensity = apply_along_axis(task.eval, 1, Fireflies)
-		return Fireflies[0], Intensity[0]
+			tmp = [self.move_ffa(i, Fireflies[Index], Intensity[Index], copy(Fireflies), task) for i in range(self.NP)]
+			Fireflies, evalF = asarray([tmp[i][0] for i in range(len(tmp))]), asarray([tmp[i][1] for i in range(len(tmp))])
+			Intensity[where(evalF)] = apply_along_axis(task.eval, 1, Fireflies[where(evalF)])
+			xb, xb_f = self.getBest(xb, xb_f, Fireflies, Intensity)
+		return xb, xb_f
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

@@ -1,8 +1,8 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, line-too-long, unused-argument, no-self-use, no-self-use, attribute-defined-outside-init, logging-not-lazy, len-as-condition, singleton-comparison
+# pylint: disable=mixed-indentation, multiple-statements, line-too-long, unused-argument, no-self-use, no-self-use, attribute-defined-outside-init, logging-not-lazy, len-as-condition, singleton-comparison, arguments-differ
 import logging
-from numpy import where, argmin, asarray, ndarray, random as rand, inf
-from NiaPy.algorithms.algorithm import Algorithm
+from numpy import argmin, asarray
+from NiaPy.algorithms.algorithm import Algorithm, Individual
 
 __all__ = ['DifferentialEvolutionAlgorithm', 'CrossRand1', 'CrossBest2', 'CrossBest1', 'CrossBest2', 'CrossCurr2Rand1', 'CrossCurr2Best1']
 
@@ -46,60 +46,23 @@ def CrossCurr2Best1(pop, ic, x_b, f, cr, rnd):
 	x = [pop[ic][i] + f * (x_b[i] - pop[r[0]][i]) + f * (pop[r[1]][i] - pop[r[2]][i]) if rnd.rand() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
 	return asarray(x)
 
-class SolutionDE(object):
-	def __init__(self, **kwargs):
-		self.f = inf
-		task = kwargs.get('task', None)
-		rnd = kwargs.get('rand', rand)
-		x = kwargs.get('x', [])
-		if len(x) > 0: self.x = x if isinstance(x, ndarray) else asarray(x)
-		else: self.generateSolution(task, rnd)
-
-	def generateSolution(self, task, rnd): self.x = task.Lower + task.bRange * rnd.rand(task.D)
-
-	def evaluate(self, task): self.f = task.eval(self.x)
-
-	def repair(self, task):
-		ir = where(self.x > task.Upper)
-		self.x[ir] = task.Upper[ir]
-		ir = where(self.x < task.Lower)
-		self.x[ir] = task.Lower[ir]
-
-	def __eq__(self, other): return self.x == other.x and self.f == other.f
-
-	def __len__(self): return len(self.x)
-
-	def __getitem__(self, i): return self.x[i]
-
 class DifferentialEvolutionAlgorithm(Algorithm):
 	r"""Implementation of Differential evolution algorithm.
 
 	**Algorithm:** Differential evolution algorithm
-
 	**Date:** 2018
-
 	**Author:** Uros Mlakar and Klemen Berkoivč
-
 	**License:** MIT
-
 	**Reference paper:**
 	Storn, Rainer, and Kenneth Price. "Differential evolution - a simple and
 	efficient heuristic for global optimization over continuous spaces."
 	Journal of global optimization 11.4 (1997): 341-359.
 	"""
-
 	def __init__(self, **kwargs):
-		r"""**__init__(self, D, NP, nFES, F, CR, benchmark)**.
+		if kwargs.get('name', None) == None: Algorithm.__init__(self, name=kwargs.get('name', 'DifferentialEvolutionAlgorithm'), sName=kwargs.get('sName', 'DE'), **kwargs)
+		else: Algorithm.__init__(self, **kwargs)
 
-		Raises:
-		TypeError -- Raised when given benchmark function which does not exists.
-		"""
-		if kwargs.get('name', None) == None: super(DifferentialEvolutionAlgorithm, self).__init__(name=kwargs.get('name', 'DifferentialEvolutionAlgorithm'), sName=kwargs.get('sName', 'DE'), **kwargs)
-		else: super(DifferentialEvolutionAlgorithm, self).__init__(**kwargs)
-
-	def setParameters(self, **kwargs): self.__setParams(**kwargs)
-
-	def __setParams(self, NP=25, F=2, CR=0.2, CrossMutt=CrossRand1, **ukwargs):
+	def setParameters(self, NP=25, F=2, CR=0.2, CrossMutt=CrossRand1, **ukwargs):
 		r"""Set the algorithm parameters.
 
 		Arguments:
@@ -111,19 +74,20 @@ class DifferentialEvolutionAlgorithm(Algorithm):
 		self.Np, self.F, self.CR, self.CrossMutt = NP, F, CR, CrossMutt
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
+	def selectBetter(self, x, y): return x if x.f < y.f else y
+
 	def evalPopulation(self, x, x_old, task):
 		"""Evaluate element."""
-		x.repair(task)
 		x.evaluate(task)
-		return x if x.f < x_old.f else x_old
+		return self.selectBetter(x, x_old)
 
 	def runTask(self, task):
 		"""Run."""
-		pop = [SolutionDE(task=task) for _i in range(self.Np)]
+		pop = [Individual(task=task) for _i in range(self.Np)]
 		pop = [self.evalPopulation(pop[i], pop[i], task) for i in range(self.Np)]
 		x_b = pop[argmin([x.f for x in pop])]
 		while not task.stopCond():
-			npop = [SolutionDE(x=self.CrossMutt(pop, i, x_b, self.F, self.CR, self.rand)) for i in range(self.Np)]
+			npop = [Individual(x=self.CrossMutt(pop, i, x_b, self.F, self.CR, self.Rand)) for i in range(self.Np)]
 			pop = [self.evalPopulation(npop[i], pop[i], task) for i in range(self.Np)]
 			ix_b = argmin([x.f for x in pop])
 			if x_b.f > pop[ix_b].f: x_b = pop[ix_b]

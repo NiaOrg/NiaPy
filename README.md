@@ -26,20 +26,27 @@ The micro framework features following algorithms:
 - basic:
   - Artificial bee colony algorithm ([see example](examples/run_abc.py))
   - Bat algorithm ([see example](examples/run_ba.py))
-  - Bare bones fireworks algorithm ([see example](examples/run_bbfwa.py))
   - Camel algorithm ([see example](example/run_ca.py))
   - Differential evolution algorithm ([see example](examples/run_de.py))
+  - Evolution Strategy ([see example](example/run_es1p1.py), [see example](example/run_esMp1.py), [see example](example/run_esMpL.py), [see example](example/run_esML.py))
   - Firefly algorithm ([see example](examples/run_fa.py))
+  - Fireworks algorithm ([see example](examples/run_fwa.py), [see example](examples/run_efwa.py), [see example](examples/run_dfwa.py), [see example](examples/run_bbfwa.py))
   - Flower pollination algorithm ([see example](examples/run_fpa.py))
   - Genetic algorithm ([see example](examples/run_ga.py))
+  - Glowworm Swarm Optimization ([see example](examples/run_gso.py), [see example](examples/run_gsov1.py), [see example](examples/run_gsov2.py), [see example](examples/run_gsov3.py))
   - Grey wolf optimizer ([see example](examples/run_gwo.py))
+  - Harmony Search Algorithm ([see example](examples/run_hs.py))
+  - Krill Herd Algorithm ([see example](examples/run_khv1.py), [see example](examples/run_khv2.py), [see example](examples/run_khv3.py), [see example](examples/run_khv4.py), [see example](examples/run_khV11.py))
+  - Monkey King Evolution ([see example](examples/run_mkev1.py), [see example](examples/run_mkev2.py), [see example](examples/run_mkev3.py))
+  - Multiple trajectory search ([see example](examples/run_mts.py), [see example](examples/run_mtsv1.py))
   - Particle swarm optimization ([see example](examples/run_pso.py))
+  - Sine Cosine Algorithm ([see example](examples/run_sca.py))
 - modified:
   - Hybrid bat algorithm ([see example](examples/run_hba.py))
   - Self-adaptive differential evolution algorithm ([see example](examples/run_jde.py))
-
+  - Dynamic population size self-adaptive differential evolution algorithm ([see example](examples/run_dynnpjde.py))
+  
 The following benchmark functions are included in NiaPy:
-
 - Ackley
 - Alpine
   - Alpine1
@@ -48,12 +55,17 @@ The following benchmark functions are included in NiaPy:
 - Chung Reynolds
 - Csendes
 - Discus
+- Dixon-Price
 - Elliptic
 - Griewank
 - Happy cat
 - HGBat
 - Katsuura
+- Levy
+- Michalewicz
+- Perm
 - Pintér
+- Powell
 - Qing
 - Quintic
 - Rastrigin
@@ -65,14 +77,18 @@ The following benchmark functions are included in NiaPy:
   - Schwefel 2.21
   - Schwefel 2.22
 - Sphere
+  - Sphere2 -> Sphere with different powers
+  - Sphere3 -> Rotated hyper-ellipsoid
 - Step
   - Step2
   - Step3
 - Stepint
 - Styblinski-Tang
 - Sum Squares
+- Trid
 - Weierstrass
 - Whitley
+- Zakharov
 
 # Setup
 
@@ -176,9 +192,9 @@ We encourage you to contribute to NiaPy! Please check out the [Contributing to N
 Everyone interacting in NiaPy's codebases, issue trackers, chat rooms and mailing lists is expected to follow the NiaPy [code of conduct](CODE_OF_CONDUCT.md).
 
 ## Contributors
-[<img alt="GregaVrbancic" src="https://avatars0.githubusercontent.com/u/1894788?v=4&s=117" width="117">](https://github.com/GregaVrbancic) |[<img alt="firefly-cpp" src="https://avatars2.githubusercontent.com/u/1633361?v=4&s=117" width="117">](https://github.com/firefly-cpp) |[<img alt="lucijabrezocnik" src="https://avatars2.githubusercontent.com/u/36370699?v=4&s=117" width="117">](https://github.com/lucijabrezocnik) |[<img alt="mlaky88" src="https://avatars1.githubusercontent.com/u/23091578?v=4&s=117" width="117">](https://github.com/mlaky88) |[<img alt="rhododendrom" src="https://avatars1.githubusercontent.com/u/3198785?v=4&s=117" width="117">](https://github.com/rhododendrom) |[<img alt="kb2623" src="https://avatars3.githubusercontent.com/u/7480221?s=460&v=4" width="117">](https://github.com/kb2623)
-:---: |:---: |:---: |:---: |:---: |:---: |
-[GregaVrbancic](https://github.com/GregaVrbancic) |[firefly-cpp](https://github.com/firefly-cpp) |[lucijabrezocnik](https://github.com/lucijabrezocnik) |[mlaky88](https://github.com/mlaky88) |[rhododendrom](https://github.com/rhododendrom) |[kb2623](https://github.com/kb2623)
+[<img alt="GregaVrbancic" src="https://avatars0.githubusercontent.com/u/1894788?v=4&s=117" width="117">](https://github.com/GregaVrbancic) |[<img alt="firefly-cpp" src="https://avatars2.githubusercontent.com/u/1633361?v=4&s=117" width="117">](https://github.com/firefly-cpp) |[<img alt="lucijabrezocnik" src="https://avatars2.githubusercontent.com/u/36370699?v=4&s=117" width="117">](https://github.com/lucijabrezocnik) |[<img alt="mlaky88" src="https://avatars1.githubusercontent.com/u/23091578?v=4&s=117" width="117">](https://github.com/mlaky88) |[<img alt="rhododendrom" src="https://avatars1.githubusercontent.com/u/3198785?v=4&s=117" width="117">](https://github.com/rhododendrom) |[<img alt="kb2623" src="https://avatars3.githubusercontent.com/u/7480221?s=460&v=4" width="117">](https://github.com/kb2623)| [<img alt="flyzoor" src="https://avatars2.githubusercontent.com/u/38717032?s=40&v=4" width="117">](https://github.com/Flyzoor) |
+:---: |:---: |:---: |:---: |:---: |:---: |:---: |
+[GregaVrbancic](https://github.com/GregaVrbancic) |[firefly-cpp](https://github.com/firefly-cpp) |[lucijabrezocnik](https://github.com/lucijabrezocnik) |[mlaky88](https://github.com/mlaky88) |[rhododendrom](https://github.com/rhododendrom) |[kb2623](https://github.com/kb2623) |[Flyzoor](https://github.com/Flyzoor) |
 
 
 ## Licence

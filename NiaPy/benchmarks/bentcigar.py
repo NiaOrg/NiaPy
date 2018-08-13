@@ -1,10 +1,10 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements
+# pylint: disable=mixed-indentation, multiple-statements, old-style-class
 """Implementations of Bent Cigar functions."""
 
 __all__ = ['BentCigar']
 
-class BentCigar(object):
+class BentCigar:
 	r"""Implementations of Bent Cigar functions.
 
 	Date: 2018
@@ -44,7 +44,7 @@ class BentCigar(object):
 		def f(D, sol):
 			val = 0.0
 			for i in range(1, D): val += sol[i] ** 2
-			return sol[0] + 10 ** 6 * val
+			return sol[0] ** 2 + 10 ** 6 * val
 		return f
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

@@ -1,9 +1,9 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, line-too-long, multiple-statements
+# pylint: disable=mixed-indentation, line-too-long, multiple-statements, old-style-class
 from unittest import TestCase
 import NiaPy
 
-class MyBenchmark(object):
+class MyBenchmark:
 	def __init__(self):
 		self.Lower = -11
 		self.Upper = 11
@@ -16,13 +16,18 @@ class MyBenchmark(object):
 			return val
 		return evaluate
 
-
 class RunnerTestCase(TestCase):
 	def setUp(self):
-		self.algorithms = ['DifferentialEvolutionAlgorithm', 'GreyWolfOptimizer', 'GeneticAlgorithm', 'ParticleSwarmAlgorithm', 'HybridBatAlgorithm', 'SelfAdaptiveDifferentialEvolutionAlgorithm', 'CamelAlgorithm', 'BareBonesFireworksAlgorithm']
+		self.algorithms = ['DifferentialEvolutionAlgorithm', 'GreyWolfOptimizer', 'GeneticAlgorithm', 'ParticleSwarmAlgorithm', 'HybridBatAlgorithm', 'SelfAdaptiveDifferentialEvolutionAlgorithm', 'CamelAlgorithm', 'BareBonesFireworksAlgorithm', 'MonkeyKingEvolutionV1', 'MonkeyKingEvolutionV2', 'MonkeyKingEvolutionV3', 'EvolutionStrategy1p1', 'EvolutionStrategyMp1', 'SineCosineAlgorithm', 'GlowwormSwarmOptimization', 'GlowwormSwarmOptimizationV1', 'GlowwormSwarmOptimizationV2', 'GlowwormSwarmOptimizationV3', 'KrillHerdV1', 'KrillHerdV2', 'KrillHerdV3', 'KrillHerdV4', 'KrillHerdV11', 'HarmonySearch', 'HarmonySearchV1', 'FireworksAlgorithm', 'EnhancedFireworksAlgorithm', 'DynamicFireworksAlgorithm', 'MultipleTrajectorySearch', 'MultipleTrajectorySearchV1', 'NelderMeadMethod', 'HillClimbAlgorithm', 'SimulatedAnnealing']
 		self.benchmarks = ['griewank', MyBenchmark()]
 
 	def test_runner_works_fine(self):
-		self.assertTrue(NiaPy.Runner(10, 40, 1000, 3, self.algorithms, self.benchmarks).run())
+		self.assertTrue(NiaPy.Runner(4, 10, 10, 3, self.algorithms, self.benchmarks).run())
+
+	def test_runner_bad_algorithm_thorws_fine(self):
+		self.assertRaises(TypeError, lambda: NiaPy.Runner(4, 10, 10, 3, 'EvolutionStrategy', self.benchmarks).run())
+
+	def test_runner_bad_benchmark_thorws_fine(self):
+		self.assertRaises(TypeError, lambda: NiaPy.Runner(4, 10, 10, 3, 'EvolutionStrategy1p1', 'TesterMan').run())
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

@@ -2,6 +2,7 @@
 
 from NiaPy.algorithms import basic
 from NiaPy.algorithms import modified
-from NiaPy.algorithms.algorithm import Algorithm
+from NiaPy.algorithms import other
+from NiaPy.algorithms.algorithm import Algorithm, Individual
 
-__all__ = ['basic', 'modified', 'Algorithm']
+__all__ = ['basic', 'modified', 'other', 'Algorithm', 'Individual']

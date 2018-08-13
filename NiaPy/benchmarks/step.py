@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=anomalous-backslash-in-string
+# pylint: disable=anomalous-backslash-in-string, old-style-class
 """Implementations of Step functions."""
 
 import math
@@ -7,7 +7,7 @@ import math
 __all__ = ['Step', 'Step2', 'Step3']
 
 
-class Step(object):
+class Step:
     r"""Implementation of Step function.
 
     Date: 2018
@@ -64,7 +64,7 @@ class Step(object):
         return evaluate
 
 
-class Step2(object):
+class Step2:
     r"""Step2 function implementation.
 
     Date: 2018
@@ -119,7 +119,7 @@ class Step2(object):
         return evaluate
 
 
-class Step3(object):
+class Step3:
     r"""Step3 function implementation.
 
     Date: 2018

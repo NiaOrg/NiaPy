@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=anomalous-backslash-in-string, mixed-indentation, multiple-statements, line-too-long
+# pylint: disable=anomalous-backslash-in-string, mixed-indentation, multiple-statements, line-too-long, no-else-return, old-style-class
 """Implementations of Schwefels functions."""
 
 from math import sin, fmod, fabs, sqrt
@@ -7,7 +7,7 @@ from math import sin, fmod, fabs, sqrt
 __all__ = ['Schwefel', 'Schwefel221', 'Schwefel222', 'ModifiedSchwefel', 'ExpandedScaffer']
 
 
-class Schwefel(object):
+class Schwefel:
 	r"""Implementation of Schewel function.
 
 	Date: 2018
@@ -53,7 +53,7 @@ class Schwefel(object):
 			return 418.9829 * D - val
 		return evaluate
 
-class Schwefel221(object):
+class Schwefel221:
 	r"""Schwefel 2.21 function implementation.
 
 	Date: 2018
@@ -102,7 +102,7 @@ class Schwefel221(object):
 			return maximum
 		return evaluate
 
-class Schwefel222(object):
+class Schwefel222:
 	r"""Schwefel 2.22 function implementation.
 
 	Date: 2018
@@ -153,7 +153,7 @@ class Schwefel222(object):
 			return part1 + part2
 		return evaluate
 
-class ModifiedSchwefel(object):
+class ModifiedSchwefel:
 	r"""Implementations of Modified Schwefel functions.
 
 	Date: 2018
@@ -200,7 +200,7 @@ class ModifiedSchwefel(object):
 			return 418.9829 * D - val
 		return f
 
-class ExpandedScaffer(object):
+class ExpandedScaffer:
 	r"""Implementations of High Conditioned Elliptic functions.
 
 	Date: 2018
