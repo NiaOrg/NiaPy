@@ -47,7 +47,7 @@ class GravitationalSearchAlgorithm(Algorithm):
 			if xb_f > X_f[ib]: xb, xb_f = X[ib], X_f[ib]
 			m = (X_f - X_f[iw]) / (X_f[ib] - X_f[iw])
 			M = m / sum(m)
-			Fi = asarray([[self.G(task.Iters) * ((M[i] * M[j]) / (self.d(X[i], X[j]) + self.epsilon)) * (X[i] - X[j]) for j in range(len(M))] for i in range(len(M))])
+			Fi = asarray([[self.G(task.Iters) * ((M[i] * M[j]) / (self.d(X[i], X[j]) + self.epsilon)) * (X[j] - X[i]) for j in range(len(M))] for i in range(len(M))])
 			F = sum(self.rand([self.NP, task.D]) * Fi, axis=1)
 			a = F.T / (M + self.epsilon)
 			v = self.rand([self.NP, task.D]) * v + a.T
