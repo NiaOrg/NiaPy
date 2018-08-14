@@ -1,8 +1,8 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, old-style-class
+# pylint: disable=mixed-indentation, multiple-statements, old-style-class, line-too-long
 from unittest import TestCase
 from NiaPy.benchmarks.griewank import Griewank
-from NiaPy.algorithms.basic import BareBonesFireworksAlgorithm, FireworksAlgorithm, EnhancedFireworksAlgorithm, DynamicFireworksAlgorithm
+from NiaPy.algorithms.basic import BareBonesFireworksAlgorithm, FireworksAlgorithm, EnhancedFireworksAlgorithm, DynamicFireworksAlgorithm, DynamicFireworksAlgorithmGauss
 
 class MyBenchmark:
 	def __init__(self):
@@ -76,6 +76,24 @@ class DFWATestCase(TestCase):
 		self.D = 40
 		self.dfwa_custom = DynamicFireworksAlgorithm(D=self.D, nFES=1000, n=10, C_a=2, C_r=0.5, benchmark=MyBenchmark())
 		self.dfwa_griewank = DynamicFireworksAlgorithm(D=self.D, nFES=1000, n=10, C_a=5, C_r=0.5, benchmark=Griewank())
+
+	def test_custom_works_fine(self):
+		fun = MyBenchmark().function()
+		x = self.dfwa_custom.run()
+		self.assertTrue(x)
+		self.assertAlmostEqual(fun(self.D, x[0]), x[1], delta=1e2)
+
+	def test_griewank_works_fine(self):
+		fun = Griewank().function()
+		x = self.dfwa_griewank.run()
+		self.assertTrue(x)
+		self.assertAlmostEqual(fun(self.D, x[0]), x[1], delta=1e2)
+
+class DFWAGTestCase(TestCase):
+	def setUp(self):
+		self.D = 40
+		self.dfwa_custom = DynamicFireworksAlgorithmGauss(D=self.D, nFES=1000, n=10, C_a=2, C_r=0.5, benchmark=MyBenchmark())
+		self.dfwa_griewank = DynamicFireworksAlgorithmGauss(D=self.D, nFES=1000, n=10, C_a=5, C_r=0.5, benchmark=Griewank())
 
 	def test_custom_works_fine(self):
 		fun = MyBenchmark().function()
