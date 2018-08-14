@@ -1,8 +1,9 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, line-too-long, singleton-comparison, multiple-statements, attribute-defined-outside-init, no-self-use, logging-not-lazy, unused-variable, arguments-differ
 import logging
-from numpy import apply_along_axis, argmin, full, inf, where, ndarray, asarray
+from numpy import apply_along_axis, argmin, full, inf, where
 from NiaPy.algorithms.algorithm import Algorithm
+from NiaPy.benchmarks.utility import fullArray
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.basic')
@@ -36,13 +37,7 @@ class ParticleSwarmAlgorithm(Algorithm):
 		self.NP, self.C1, self.C2, self.w, self.vMin, self.vMax = NP, C1, C2, w, vMin, vMax
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def init(self, task):
-		if isinstance(self.w, (int, float)): self.w = full(task.D, self.w)
-		else: self.w = self.w if isinstance(self.w, ndarray) else asarray(self.w)
-		if isinstance(self.vMin, (int, float)): self.vMin = full(task.D, self.vMin)
-		else: self.vMin = self.vMin if isinstance(self.vMin, ndarray) else asarray(self.vMin)
-		if isinstance(self.vMax, (int, float)): self.vMax = full(task.D, self.vMax)
-		else: self.vMax = self.vMax if isinstance(self.vMax, ndarray) else asarray(self.vMax)
+	def init(self, task): self.w, self.vMin, self.vMax = fullArray(self.w, task.D), fullArray(self.vMin, task.D), fullArray(self.vMax, task.D)
 
 	def repair(self, x, l, u):
 		ir = where(x < l)

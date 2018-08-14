@@ -5,7 +5,7 @@ from numpy import exp
 from NiaPy.algorithms.algorithm import Algorithm
 
 logging.basicConfig()
-logger = logging.getLogger('NiaPy.algorithms.basic')
+logger = logging.getLogger('NiaPy.algorithms.other')
 logger.setLevel('INFO')
 
 __all__ = ['SimulatedAnnealing', 'coolDelta', 'coolLinear']

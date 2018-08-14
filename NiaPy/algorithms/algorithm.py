@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, line-too-long, expression-not-assigned, singleton-comparison, len-as-condition, no-self-use, unused-argument, no-else-return, old-style-class
+# pylint: disable=mixed-indentation, multiple-statements, line-too-long, expression-not-assigned, singleton-comparison, len-as-condition, no-self-use, unused-argument, no-else-return, old-style-class, dangerous-default-value
 from numpy import random as rand, inf, ndarray, asarray, array_equal
 from NiaPy.benchmarks.utility import Task, OptimizationType
 
@@ -73,17 +73,20 @@ class Algorithm:
 		"""
 		return self.Rand.normal(loc, scale, D) if D != None else self.Rand.normal(loc, scale)
 
-	def randint(self, Nmax, D=1, Nmin=0):
+	def randint(self, Nmax, D=1, Nmin=0, skip=[]):
 		r"""Get D shape random full numbers in range Nmin to Nmax.
 
 		**Arguments**:
 		Nmin {integer} --
 		Nmax {integer} --
 		D {array} or {int} -- Shape of returnd random uniform numbers
+		skip {array} -- numbers to skip
 		"""
-		if isinstance(D, (list, ndarray)): return self.Rand.randint(Nmin, Nmax, D)
-		elif D > 1: return self.Rand.randint(Nmin, Nmax, D)
-		else: return self.Rand.randint(Nmin, Nmax)
+		r = None
+		if isinstance(D, (list, ndarray)): r = self.Rand.randint(Nmin, Nmax, D)
+		elif D > 1: r = self.Rand.randint(Nmin, Nmax, D)
+		else: r = self.Rand.randint(Nmin, Nmax)
+		return r if r not in skip else self.randint(Nmax, D, Nmin, skip)
 
 	def run(self):
 		r"""Start the optimization.
