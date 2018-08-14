@@ -54,9 +54,7 @@ class DifferentialEvolutionAlgorithm(Algorithm):
 	**Author:** Uros Mlakar and Klemen Berkoivč
 	**License:** MIT
 	**Reference paper:**
-	Storn, Rainer, and Kenneth Price. "Differential evolution - a simple and
-	efficient heuristic for global optimization over continuous spaces."
-	Journal of global optimization 11.4 (1997): 341-359.
+	Storn, Rainer, and Kenneth Price. "Differential evolution - a simple and efficient heuristic for global optimization over continuous spaces." Journal of global optimization 11.4 (1997): 341-359.
 	"""
 	def __init__(self, **kwargs):
 		if kwargs.get('name', None) == None: Algorithm.__init__(self, name=kwargs.get('name', 'DifferentialEvolutionAlgorithm'), sName=kwargs.get('sName', 'DE'), **kwargs)

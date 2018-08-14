@@ -5,7 +5,7 @@ from numpy import apply_along_axis, argmin, inf, copy
 from NiaPy.algorithms.algorithm import Algorithm
 
 logging.basicConfig()
-logger = logging.getLogger('NiaPy.algorithms.basic')
+logger = logging.getLogger('NiaPy.algorithms.other')
 logger.setLevel('INFO')
 
 __all__ = ['HillClimbAlgorithm']

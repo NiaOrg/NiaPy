@@ -2,7 +2,7 @@
 # pylint: disable=mixed-indentation, multiple-statements, old-style-class
 from unittest import TestCase
 from NiaPy.benchmarks.griewank import Griewank
-from NiaPy.algorithms.basic import MultipleTrajectorySearch, MultipleTrajectorySearchV1
+from NiaPy.algorithms.other import MultipleTrajectorySearch, MultipleTrajectorySearchV1
 
 class MyBenchmark:
 	def __init__(self):

@@ -230,9 +230,9 @@ class Runner:
 		elif name == 'DynamicFireworksAlgorithm':
 			algorithm = algorithms.basic.DynamicFireworksAlgorithm(D=self.D, nFES=self.nFES, nGEN=self.nRuns, benchmark=bench)
 		elif name == 'MultipleTrajectorySearch':
-			algorithm = algorithms.basic.MultipleTrajectorySearch(D=self.D, nFES=self.nFES, benchmark=bench)
+			algorithm = algorithms.other.MultipleTrajectorySearch(D=self.D, nFES=self.nFES, benchmark=bench)
 		elif name == 'MultipleTrajectorySearchV1':
-			algorithm = algorithms.basic.MultipleTrajectorySearchV1(D=self.D, nFES=self.nFES, benchmark=bench)
+			algorithm = algorithms.other.MultipleTrajectorySearchV1(D=self.D, nFES=self.nFES, benchmark=bench)
 		elif name == 'NelderMeadMethod':
 			algorithm = algorithms.other.NelderMeadMethod(D=self.D, nFES=self.nFES, benchmark=bench)
 		elif name == 'HillClimbAlgorithm':
@@ -241,6 +241,8 @@ class Runner:
 			algorithm = algorithms.other.SimulatedAnnealing(D=self.D, nFES=self.nFES, benchmark=bench)
 		elif name == 'GravitationalSearchAlgorithm':
 			algorithm = algorithms.basic.GravitationalSearchAlgorithm(D=self.D, nFES=self.nFES, benchmark=bench)
+		elif name == 'AnarchicSocietyOptimization':
+			algorithm = algorithms.other.AnarchicSocietyOptimization(D=self.D, nFES=self.nFES, benchmark=bench)
 		else:
 			raise TypeError('Passed benchmark is not defined!')
 		return algorithm

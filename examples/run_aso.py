@@ -7,7 +7,7 @@ sys.path.append('../')
 
 import random
 import logging
-from NiaPy.algorithms.basic import EnhancedFireworksAlgorithm
+from NiaPy.algorithms.other import AnarchicSocietyOptimization
 from NiaPy.benchmarks.utility import TaskConvPrint, TaskConvPlot, OptimizationType
 from margparser import getDictArgs
 
@@ -38,19 +38,19 @@ class MaxMB(MinMB):
 
 def simple_example(runs=10, D=10, nFES=50000, nGEN=10000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kn):
 	for i in range(runs):
-		algo = EnhancedFireworksAlgorithm(D=D, nFES=nFES, optType=optType, benchmark=optFunc())
+		algo = AnarchicSocietyOptimization(D=D, nFES=nFES, optType=optType, seed=seed, benchmark=optFunc())
 		best = algo.run()
 		logger.info('%s %s' % (best[0], best[1]))
 
 def logging_example(D=10, nFES=50000, nGEN=100000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kn):
 	task = TaskConvPrint(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc())
-	algo = EnhancedFireworksAlgorithm(seed=None, task=task)
+	algo = AnarchicSocietyOptimization(seed=seed, task=task)
 	best = algo.run()
 	logger.info('%s %s' % (best[0], best[1]))
 
 def plot_example(D=10, nFES=50000, nGEN=100000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kn):
 	task = TaskConvPlot(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc())
-	algo = EnhancedFireworksAlgorithm(seed=None, task=task)
+	algo = AnarchicSocietyOptimization(seed=seed, task=task)
 	best = algo.run()
 	logger.info('%s %s' % (best[0], best[1]))
 	input('Press [enter] to continue')
