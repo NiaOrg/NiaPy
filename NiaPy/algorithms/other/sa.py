@@ -28,7 +28,7 @@ class SimulatedAnnealing(Algorithm):
 	**License:** MIT
 
 	**Reference URL:**
-	
+
 	**Reference paper:**
 	"""
 	def __init__(self, **kwargs):

@@ -17,7 +17,7 @@ class Elliptic(Benchmark):
 
 	Function:
 	**High Conditioned Elliptic Function**
-	
+
 		:math:`f(\textbf{x}) = \sum_{i=1}^D \left( 10^6 \right)^{ \frac{i - 1}{D - 1} } x_i^2`
 
 		**Input domain:**

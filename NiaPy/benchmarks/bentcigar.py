@@ -15,7 +15,7 @@ class BentCigar:
 
 	Function:
 	**Bent Cigar Function**
-	
+
 		:math:`f(\textbf{x}) = x_1^2 + 10^6 \sum_{i=2}^D x_i^2`
 
 		**Input domain:**

@@ -35,7 +35,7 @@ class NelderMeadMethod(Algorithm):
 		gamma {real} -- Expansion coefficient parameter
 
 		rho {real} -- Contraction coefficient parameter
-		
+
 		sigma {real} -- Shrink coefficient parameter
 		"""
 		self.alpha, self.gamma, self.rho, self.sigma = alpha, gamma, rho, sigma

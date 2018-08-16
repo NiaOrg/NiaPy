@@ -212,7 +212,7 @@ class ExpandedScaffer:
 
 	Function:
 	**High Conditioned Elliptic Function**
-	
+
 		:math:`f(\textbf{x}) = g(x_D, x_1) + \sum_{i=2}^D g(x_{i - 1}, x_i) \\ g(x, y) = 0.5 + \frac{\sin \left(\sqrt{x^2 + y^2} \right)^2 - 0.5}{\left( 1 + 0.001 (x^2 + y^2) \right)}^2`
 
 		**Input domain:**

@@ -19,9 +19,9 @@ class ParticleSwarmAlgorithm(Algorithm):
 	**Date:** 2018
 
 	**Authors:** Lucija Brezočnik, Grega Vrbančič, Iztok Fister Jr. and Klemen Berkovič
-	
+
 	**License:** MIT
-	
+
 	**Reference paper:** Kennedy, J. and Eberhart, R. "Particle Swarm Optimization". Proceedings of IEEE International Conference on Neural Networks. IV. pp. 1942--1948, 1995.
 	"""
 
@@ -41,7 +41,7 @@ class ParticleSwarmAlgorithm(Algorithm):
 		w {decimal} -- inertia weight
 
 		vMin {decimal} -- minimal velocity
-		
+
 		vMax {decimal} -- maximal velocity
 		"""
 		self.NP, self.C1, self.C2, self.w, self.vMin, self.vMax = NP, C1, C2, w, vMin, vMax

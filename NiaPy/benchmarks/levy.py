@@ -12,12 +12,12 @@ class Levy:
 	Date: 2018
 
 	Author: Klemen Berkovič
-	
+
 	License: MIT
 
 	Function:
 	**Levy Function**
-	
+
 		:math:`f(\textbf{x}) = \sin^2 (\pi w_1) + \sum_{i = 1}^{D - 1} (w_i - 1)^2 \left( 1 + 10 \sin^2 (\pi w_i + 1) \right) + (w_d - 1)^2 (1 + \sin^2 (2 \pi w_d)) \\ w_i = 1 + \frac{x_i - 1}{4}`
 
 		**Input domain:**

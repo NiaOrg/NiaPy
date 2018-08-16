@@ -32,7 +32,7 @@ class MonkeyKingEvolutionV1(Algorithm):
 	**License:** MIT
 
 	**Reference URL:** https://www.sciencedirect.com/science/article/pii/S0950705116000198
-	
+
 	**Reference paper:** Zhenyu Meng, Jeng-Shyang Pan, Monkey King Evolution: A new memetic evolutionary algorithm and its application in vehicle fuel consumption optimization, Knowledge-Based Systems, Volume 97, 2016, Pages 144-157, ISSN 0950-7051, https://doi.org/10.1016/j.knosys.2016.01.009.
 	"""
 	def __init__(self, **kwargs):
@@ -146,7 +146,7 @@ class MonkeyKingEvolutionV3(MonkeyKingEvolutionV1):
 
 	**Reference URL:**
 	https://www.sciencedirect.com/science/article/pii/S0950705116000198
-	
+
 	**Reference paper:**
 	Zhenyu Meng, Jeng-Shyang Pan, Monkey King Evolution: A new memetic evolutionary algorithm and its application in vehicle fuel consumption optimization, Knowledge-Based Systems, Volume 97, 2016, Pages 144-157, ISSN 0950-7051, https://doi.org/10.1016/j.knosys.2016.01.009.
 	"""

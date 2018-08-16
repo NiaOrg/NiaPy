@@ -14,15 +14,15 @@ class GravitationalSearchAlgorithm(Algorithm):
 	r"""Implementation of gravitational search algorithm.
 
 	**Algorithm:** Gravitational Search Algorithm
-	
+
 	**Date:** 2018
-	
+
 	**Author:** Klemen Berkoivč
-	
+
 	**License:** MIT
-	
+
 	**Reference URL:** https://doi.org/10.1016/j.ins.2009.03.004
-	
+
 	**Reference paper:** Esmat Rashedi, Hossein Nezamabadi-pour, Saeid Saryazdi, GSA: A Gravitational Search Algorithm, Information Sciences, Volume 179, Issue 13, 2009, Pages 2232-2248, ISSN 0020-0255
 	"""
 	def __init__(self, **kwargs):
@@ -35,7 +35,7 @@ class GravitationalSearchAlgorithm(Algorithm):
 		**Arguments:**
 
 		NP {integer} -- number of planets in population
-		
+
 		G_0 {real} -- starting gravitational constant
 		"""
 		self.NP, self.G_0, self.epsilon = NP, G_0, epsilon

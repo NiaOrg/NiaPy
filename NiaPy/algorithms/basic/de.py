@@ -74,7 +74,7 @@ class DifferentialEvolutionAlgorithm(Algorithm):
 		F {decimal} -- scaling factor
 
 		CR {decimal} -- crossover rate
-		
+
 		CrossMutt {function} -- crossover and mutation strategy
 		"""
 		self.Np, self.F, self.CR, self.CrossMutt = NP, F, CR, CrossMutt

@@ -35,7 +35,7 @@ class FlowerPollinationAlgorithm(Algorithm):
 		NP {integer} -- population size
 
 		p {decimal} -- probability switch
-		
+
 		beta {real} --
 		"""
 		self.NP, self.p, self.beta = NP, p, beta

@@ -84,7 +84,7 @@ class GeneticAlgorithm(Algorithm):
 		Ts {integer} -- tournament selection
 
 		Mr {decimal} -- mutation rate
-		
+
 		Cr {decimal} -- crossover rate
 		"""
 		self.NP, self.Ts, self.Mr, self.Cr = NP, Ts, Mr, Cr

@@ -64,7 +64,7 @@ class ExpandedGriewankPlusRosenbrock:
 	License: MIT
 
 	Function: **Expanded Griewank's plus Rosenbrock function**
-	
+
 		:math:`f(\textbf{x}) = h(g(x_D, x_1)) + \sum_{i=2}^D h(g(x_{i - 1}, x_i)) \\ g(x, y) = 100 (x^2 - y)^2 + (x - 1)^2 \\ h(z) = \frac{z^2}{4000} - \cos \left( \frac{z}{\sqrt{1}} \right) + 1`
 
 		**Input domain:**

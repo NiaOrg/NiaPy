@@ -43,7 +43,7 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 		**Arguments:**
 
 		NP {integer} -- population size
-		
+
 		Limit {integer} -- Limit
 		"""
 		self.NP = NP  # population size; number of search agents

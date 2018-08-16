@@ -23,7 +23,7 @@ class GlowwormSwarmOptimization(Algorithm):
 	**License:** MIT
 
 	**Reference URL:** https://www.springer.com/gp/book/9783319515946
-	
+
 	**Reference paper:** Kaipa, Krishnanand N., and Debasish Ghose. Glowworm swarm optimization: theory, algorithms, and applications. Vol. 698. Springer, 2017.
 	"""
 	def __init__(self, **kwargs):
@@ -197,7 +197,7 @@ class GlowwormSwarmOptimizationV3(GlowwormSwarmOptimization):
 		**Arguments:**
 
 		beta1 {real} --
-		
+
 		s {real} --
 		"""
 		self.beta1 = beta1

@@ -18,7 +18,7 @@ class Katsuura(Benchmark):
 
 	Function:
 	**Katsuura Function**
-	
+
 		:math:`f(\textbf{x}) = \frac{10}{D^2} \prod_{i=1}^D \left( 1 + i \sum_{j=1}^{32} \frac{| 2^j x_i - round\left(2^j x_i \right) |}{2^j} \right)^\frac{10}{D^{1.2}} - \frac{10}{D^2}`
 
 		**Input domain:**

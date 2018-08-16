@@ -82,15 +82,15 @@ class CamelAlgorithm(Algorithm):
 		NP {integer} -- population size $\in [1, \infty)$
 
 		T_min {real} -- minimum temperature, must be true $T_{min} < T_{max}$
-		
+
 		T_max {real} -- maximum temperature, must be true $T_{min} < T_{max}$
-		
+
 		omega {real} -- burden factor $\in [0, 1]$
-		
+
 		mu {real} -- dying rate $\in [0, 1]$
-		
+
 		S_init {real} -- initial supply $\in (0, \infty)$
-		
+
 		E_init {real} -- initial endurance $\in (0, \infty)$
 		"""
 		self.NP, self.omega, self.mu, self.alpha, self.S_init, self.E_init, self.T_min, self.T_max = NP, omega, mu, alpha, S_init, E_init, T_min, T_max

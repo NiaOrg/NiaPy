@@ -168,7 +168,7 @@ class EvolutionStrategyML(EvolutionStrategyMpL):
 	**License:** MIT
 
 	**Reference URL:**
-	
+
 	**Reference paper:**
 	"""
 	def __init__(self, **kwargs):

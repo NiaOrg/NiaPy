@@ -218,7 +218,7 @@ class DynamicFireworksAlgorithmGauss(EnhancedFireworksAlgorithm):
 	**License:** MIT
 
 	**Reference URL:** http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6900485&isnumber=6900223
-	
+
 	**Reference paper:** S. Zheng, A. Janecek, J. Li and Y. Tan, "Dynamic search in fireworks algorithm," 2014 IEEE Congress on Evolutionary Computation (CEC), Beijing, 2014, pp. 3222-3229. doi: 10.1109/CEC.2014.6900485
 	"""
 	def __init__(self, **kwargs):
@@ -292,7 +292,7 @@ class DynamicFireworksAlgorithm(DynamicFireworksAlgorithmGauss):
 	**License:** MIT
 
 	**Reference URL:** http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6900485&isnumber=6900223
-	
+
 	**Reference paper:** S. Zheng, A. Janecek, J. Li and Y. Tan, "Dynamic search in fireworks algorithm," 2014 IEEE Congress on Evolutionary Computation (CEC), Beijing, 2014, pp. 3222-3229. doi: 10.1109/CEC.2014.6900485
 	"""
 	def __init__(self, **kwargs): DynamicFireworksAlgorithmGauss.__init__(self, name='DynamicFireworksAlgorithm', sName='dynFWA', **kwargs)

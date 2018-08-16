@@ -17,7 +17,7 @@ class HGBat:
 
 	Function:
 	**HGBat Function**
-	
+
 		:math:``f(\textbf{x}) = \left| \left( \sum_{i=1}^D x_i^2 \right)^2 - \left( \sum_{i=1}^D x_i \right)^2 \right|^{\frac{1}{2}} + \frac{0.5 \sum_{i=1}^D x_i^2 + \sum_{i=1}^D x_i}{D} + 0.5
 
 		**Input domain:**

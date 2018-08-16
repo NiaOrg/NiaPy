@@ -35,7 +35,7 @@ class FireflyAlgorithm(Algorithm):
 		alpha {decimal} -- alpha parameter
 
 		betamin {decimal} -- betamin parameter
-		
+
 		gamma {decimal} -- gamma parameter
 		"""
 		self.NP, self.alpha, self.betamin, self.gamma = NP, alpha, betamin, gamma

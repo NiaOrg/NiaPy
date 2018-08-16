@@ -42,11 +42,13 @@ def MP_S(x, xr, xb, CR, MP, rnd=rand):
 		b = sort(rnd.choice(len(x), 2, replace=False))
 		x[b[0]:b[1]] = xb[b[0]:b[1]]
 		return x
-	elif MP < 0.5: return asarray([xb[i] if rnd.rand() < CR else x[i] for i in range(len(x))])
-	elif MP < 0.75:
+	if MP < 0.5:
+		return asarray([xb[i] if rnd.rand() < CR else x[i] for i in range(len(x))])
+	if MP < 0.75:
 		b = sort(rnd.choice(len(x), 2, replace=False))
 		x[b[0]:b[1]] = xr[b[0]:b[1]]
 		return x
+
 	return asarray([xr[i] if rnd.rand() < CR else x[i] for i in range(len(x))])
 
 def MP_P(x, xpb, CR, MP, rnd=rand):
@@ -77,23 +79,23 @@ class AnarchicSocietyOptimization(Algorithm):
 		**Arguments:**
 
 		NP {integer} -- population size
-		
+
 		alpha {array} -- factor for fickleness index function $\in [0, 1]$
-		
+
 		gamma {array} -- factor for external irregularity index function $\in [0, \infty)$
-		
+
 		theta {array} -- factor for internal irregularity index function $\in [0, \infty)$
-		
+
 		d {function} -- function that takes two arguments that are function values and calcs the distance between them
-		
+
 		dn {function} -- function that takes two arguments that are points in function landscape and calcs the distance between them
-		
+
 		nl {real} -- normalized range for neighborhood search $\in (0, 1]$
-		
+
 		F {real} -- mutation parameter
-		
+
 		CR {real} -- crossover parameter $\in [0, 1]$
-		
+
 		Combination {function} -- Function that combines movment strategies
 		"""
 		self.NP, self.alpha, self.gamma, self.theta, self.d, self.dn, self.nl, self.F, self.CR, self.Combination = NP, alpha, gamma, theta, d, dn, nl, F, CR, Combination
