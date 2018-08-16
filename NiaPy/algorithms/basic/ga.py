@@ -65,8 +65,11 @@ class GeneticAlgorithm(Algorithm):
 	r"""Implementation of Genetic algorithm.
 
 	**Algorithm:** Genetic algorithm
+
 	**Date:** 2018
+
 	**Author:** Uros Mlakar and Klemen Berkovič
+
 	**License:** MIT
 	"""
 	def __init__(self, **kwargs): Algorithm.__init__(self, name='GeneticAlgorithm', sName='GA', **kwargs)
@@ -74,10 +77,14 @@ class GeneticAlgorithm(Algorithm):
 	def setParameters(self, NP=25, Ts=5, Mr=0.25, Cr=0.25, Selection=TurnamentSelection, Crossover=UniformCrossover, Mutation=UniformMutation, **ukwargs):
 		r"""Set the parameters of the algorithm.
 
-		Arguments:
+		**Arguments:**
+
 		NP {integer} -- population size
+
 		Ts {integer} -- tournament selection
+
 		Mr {decimal} -- mutation rate
+
 		Cr {decimal} -- crossover rate
 		"""
 		self.NP, self.Ts, self.Mr, self.Cr = NP, Ts, Mr, Cr

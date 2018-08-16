@@ -15,11 +15,16 @@ class BareBonesFireworksAlgorithm(Algorithm):
 	r"""Implementation of bare bone fireworks algorithm.
 
 	**Algorithm:** Bare Bones Fireworks Algorithm
+
 	**Date:** 2018
+
 	**Authors:** Klemen Berkovič
+
 	**License:** MIT
+
 	**Reference URL:**
 	https://www.sciencedirect.com/science/article/pii/S1568494617306609
+
 	**Reference paper:**
 	Junzhi Li, Ying Tan, The bare bones fireworks algorithm: A minimalist global optimizer, Applied Soft Computing, Volume 62, 2018, Pages 454-462, ISSN 1568-4946, https://doi.org/10.1016/j.asoc.2017.10.046.
 	"""
@@ -28,9 +33,12 @@ class BareBonesFireworksAlgorithm(Algorithm):
 	def setParameters(self, n=10, C_a=1.5, C_r=0.5, **ukwargs):
 		r"""Set the arguments of an algorithm.
 
-		**Arguments**:
+		**Arguments:**
+
 		n {integer} -- number of sparks $\in [1, \infty)$
+
 		C_a {real} -- amplification coefficient $\in [1, \infty)$
+
 		C_r {real} -- reduction coefficient $\in (0, 1)$
 		"""
 		self.n, self.C_a, self.C_r = n, C_a, C_r
@@ -51,10 +59,15 @@ class FireworksAlgorithm(Algorithm):
 	r"""Implementation of fireworks algorithm.
 
 	**Algorithm:** Fireworks Algorithm
+
 	**Date:** 2018
+
 	**Authors:** Klemen Berkovič
+
 	**License:** MIT
+
 	**Reference URL:** https://www.springer.com/gp/book/9783662463529
+
 	**Reference paper:** Tan, Ying. "Firework Algorithm: A Novel Swarm Intelligence Optimization Method." (2015).
 	"""
 	def __init__(self, **kwargs):
@@ -64,12 +77,18 @@ class FireworksAlgorithm(Algorithm):
 	def setParameters(self, N=40, m=40, a=1, b=2, A=40, epsilon=1e-31, **ukwargs):
 		r"""Set the arguments of an algorithm.
 
-		**Arguments**:
+		**Arguments:**
+
 		N {integer} -- number of Fireworks
+
 		m {integer} -- number of sparks
+
 		a {integer} -- limitation of sparks
+
 		b {integer} -- limitation of sparks
+
 		A {real} --
+
 		epsilon {real} -- Small number for non 0 devision
 		"""
 		self.N, self.m, self.a, self.b, self.A, self.epsilon = N, m, a, b, A, epsilon
@@ -128,10 +147,15 @@ class EnhancedFireworksAlgorithm(FireworksAlgorithm):
 	r"""Implementation of enganced fireworks algorithm.
 
 	**Algorithm:** Enhanced Fireworks Algorithm
+
 	**Date:** 2018
+
 	**Authors:** Klemen Berkovič
+
 	**License:** MIT
+
 	**Reference URL:** https://ieeexplore.ieee.org/document/6557813/
+
 	**Reference paper:** S. Zheng, A. Janecek and Y. Tan, "Enhanced Fireworks Algorithm," 2013 IEEE Congress on Evolutionary Computation, Cancun, 2013, pp. 2069-2077. doi: 10.1109/CEC.2013.6557813
 	"""
 	def __init__(self, **kwargs):
@@ -186,10 +210,15 @@ class DynamicFireworksAlgorithmGauss(EnhancedFireworksAlgorithm):
 	r"""Implementation of dynamic fireworks algorithm.
 
 	**Algorithm:** Dynamic Fireworks Algorithm
+
 	**Date:** 2018
+
 	**Authors:** Klemen Berkovič
+
 	**License:** MIT
+
 	**Reference URL:** http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6900485&isnumber=6900223
+
 	**Reference paper:** S. Zheng, A. Janecek, J. Li and Y. Tan, "Dynamic search in fireworks algorithm," 2014 IEEE Congress on Evolutionary Computation (CEC), Beijing, 2014, pp. 3222-3229. doi: 10.1109/CEC.2014.6900485
 	"""
 	def __init__(self, **kwargs):
@@ -255,10 +284,15 @@ class DynamicFireworksAlgorithm(DynamicFireworksAlgorithmGauss):
 	r"""Implementation of dynamic fireworks algorithm.
 
 	**Algorithm:** Dynamic Fireworks Algorithm
+
 	**Date:** 2018
+
 	**Authors:** Klemen Berkovič
+
 	**License:** MIT
+
 	**Reference URL:** http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6900485&isnumber=6900223
+
 	**Reference paper:** S. Zheng, A. Janecek, J. Li and Y. Tan, "Dynamic search in fireworks algorithm," 2014 IEEE Congress on Evolutionary Computation (CEC), Beijing, 2014, pp. 3222-3229. doi: 10.1109/CEC.2014.6900485
 	"""
 	def __init__(self, **kwargs): DynamicFireworksAlgorithmGauss.__init__(self, name='DynamicFireworksAlgorithm', sName='dynFWA', **kwargs)

@@ -46,6 +46,7 @@ The main documentation is organized into a couple sections:
    changelog
    installation
    testing
+   documentation
    api/index
 
 .. _about-docs:

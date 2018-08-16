@@ -14,10 +14,15 @@ class HarmonySearch(Algorithm):
 	r"""Implementation of harmony search algorithm.
 
 	**Algorithm:** Harmony Search Algorithm
+
 	**Date:** 2018
+
 	**Authors:** Klemen Berkovič
+
 	**License:** MIT
+
 	**Reference URL:** https://link.springer.com/chapter/10.1007/978-3-642-00185-7_1
+
 	**Reference paper:** Yang, Xin-She. "Harmony search as a metaheuristic algorithm." Music-inspired harmony search algorithm. Springer, Berlin, Heidelberg, 2009. 1-14.
 	"""
 	def __init__(self, **kwargs): Algorithm.__init__(self, name='HarmonySearch', sName='HS', **kwargs)
@@ -25,10 +30,14 @@ class HarmonySearch(Algorithm):
 	def setParameters(self, HMS=30, r_accept=0.7, r_pa=0.35, b_range=1.42, **ukwargs):
 		r"""Set the arguments of the algorithm.
 
-		Arguments:
+		**Arguments:**
+
 		HMS {integer} -- Number of harmonys in the memory
+
 		r_accept {real} --
+
 		r_pa {real} --
+
 		b_range {real} --
 		"""
 		self.HMS, self.r_accept, self.r_pa, self.b_range = HMS, r_accept, r_pa, b_range
@@ -60,17 +69,24 @@ class HarmonySearchV1(HarmonySearch):
 	r"""Implementation of harmony search algorithm.
 
 	**Algorithm:** Harmony Search Algorithm
+
 	**Date:** 2018
+
 	**Authors:** Klemen Berkovič
+
 	**License:** MIT
+
 	**Reference URL:** https://link.springer.com/chapter/10.1007/978-3-642-00185-7_1
+
 	**Reference paper:** Yang, Xin-She. "Harmony search as a metaheuristic algorithm." Music-inspired harmony search algorithm. Springer, Berlin, Heidelberg, 2009. 1-14.
 	"""
 	def setParameters(self, bw_min=1, bw_max=2, **kwargs):
 		r"""Set the parameters of the algorithm.
 
-		Arguments:
+		**Arguments:**
+
 		bw_min {real} -- Minimal bandwidth
+
 		bw_max {real} -- Maximal bandwidth
 		"""
 		self.bw_min, self.bw_max = bw_min, bw_max

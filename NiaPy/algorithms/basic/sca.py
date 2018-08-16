@@ -14,10 +14,15 @@ class SineCosineAlgorithm(Algorithm):
 	r"""Implementation of sine cosine algorithm.
 
 	**Algorithm:** Sine Cosine Algorithm
+
 	**Date:** 2018
+
 	**Authors:** Klemen Berkovič
+
 	**License:** MIT
+
 	**Reference URL:** https://www.sciencedirect.com/science/article/pii/S0950705115005043
+
 	**Reference paper:** Seyedali Mirjalili, SCA: A Sine Cosine Algorithm for solving optimization problems, Knowledge-Based Systems, Volume 96, 2016, Pages 120-133, ISSN 0950-7051, https://doi.org/10.1016/j.knosys.2015.12.022.
 	"""
 	def __init__(self, **kwargs): Algorithm.__init__(self, name='SineCosineAlgorithm', sName='SCA', **kwargs)
@@ -25,10 +30,14 @@ class SineCosineAlgorithm(Algorithm):
 	def setParameters(self, NP=25, a=3, Rmin=0, Rmax=2, **ukwargs):
 		r"""Set the arguments of an algorithm.
 
-		**Arguments**:
+		**Arguments:**
+
 		NP {integer} -- number of individual in population
+
 		a {real} -- parameter for controlon $r_1$ value
+
 		Rmin {integer} -- minium value for $r_3$ value
+
 		Rmax {integer} -- maximum value for $r_3$ value
 		"""
 		self.NP, self.a, self.Rmin, self.Rmax = NP, a, Rmin, Rmax

@@ -14,9 +14,13 @@ class GreyWolfOptimizer(Algorithm):
 	r"""Implementation of Grey wolf optimizer.
 
 	**Algorithm:** Grey wolf optimizer
+
 	**Date:** 2018
+
 	**Author:** Iztok Fister Jr. and Klemen Berkovič
+
 	**License:** MIT
+
 	**Reference paper:** Mirjalili, Seyedali, Seyed Mohammad Mirjalili, and Andrew Lewis. "Grey wolf optimizer." Advances in engineering software 69 (2014): 46-61.
 	Grey Wold Optimizer (GWO) source code version 1.0 (MATLAB) from MathWorks
 	"""
@@ -25,7 +29,8 @@ class GreyWolfOptimizer(Algorithm):
 	def setParameters(self, NP=25, **ukwargs):
 		r"""Set the algorithm parameters.
 
-		Arguments:
+		**Arguments:**
+
 		NP {integer} -- Number of individuals in population
 		"""
 		self.NP = NP
@@ -48,8 +53,8 @@ class GreyWolfOptimizer(Algorithm):
 				pop[i] = self.repair(pop[i], task)
 				f = task.eval(pop[i])
 				if f < A_f: A, A_f = pop[i], f
-				elif f > A_f and f < B_f: B, B_f = pop[i], f
-				elif f > B_f and f < D_f: D, D_f = pop[i], f
+				elif A_f < f < B_f: B, B_f = pop[i], f
+				elif B_f < f < D_f: D, D_f = pop[i], f
 			a = 2 - task.Evals * (2 / task.nFES)
 			for i, w in enumerate(pop):
 				A1, C1 = 2 * a * self.rand(task.D) - a, 2 * self.rand(task.D)

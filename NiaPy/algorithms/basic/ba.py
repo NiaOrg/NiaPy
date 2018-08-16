@@ -14,9 +14,13 @@ class BatAlgorithm(Algorithm):
 	r"""Implementation of Bat algorithm.
 
 	**Algorithm:** Bat algorithm
+
 	**Date:** 2015
+
 	**Authors:** Iztok Fister Jr., Marko Burjek and Klemen Berkovič
+
 	**License:** MIT
+
 	**Reference paper:**
 	Yang, Xin-She. "A new metaheuristic bat-inspired algorithm."
 	Nature inspired cooperative strategies for optimization (NICSO 2010).
@@ -34,11 +38,16 @@ class BatAlgorithm(Algorithm):
 	def setParameters(self, NP, A, r, Qmin, Qmax, **ukwargs):
 		r"""Set the parameters of the algorithm.
 
-		Arguments:
+		**Arguments:**
+
 		NP {integer} -- population size
+
 		A {decimal} -- loudness
+
 		r {decimal} -- pulse rate
+
 		Qmin {decimal} -- minimum frequency
+
 		Qmax {decimal} -- maximum frequency
 		"""
 		self.NP, self.A, self.r, self.Qmin, self.Qmax = NP, A, r, Qmin, Qmax
@@ -47,8 +56,10 @@ class BatAlgorithm(Algorithm):
 	def runTask(self, task):
 		r"""Run algorithm with initialized parameters.
 
-		Return:
-		{decimal} -- coordinates of minimal found objective funciton
+		**Return:**
+
+		{decimal} -- coordinates of minimal found objective function
+
 		{decimal} -- minimal value found of objective function
 		"""
 		S, Q, v = full([self.NP, task.D], 0.0), full(self.NP, 0.0), full([self.NP, task.D], 0.0)
