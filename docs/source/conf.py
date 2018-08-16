@@ -18,8 +18,6 @@ sys.path.insert(0, os.path.abspath('../../'))
 
 print(sys.path)
 
-autodoc_mock_imports = ["_tkinter"]
-
 # -- Project information -----------------------------------------------------
 
 project = u'NiaPy'
@@ -178,3 +176,6 @@ intersphinx_mapping = {'https://docs.python.org/': None}
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = True
+
+import matplotlib
+matplotlib.use('agg')
