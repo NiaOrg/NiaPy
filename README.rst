@@ -47,17 +47,31 @@ The micro framework features following algorithms:
 -  basic:
     -  Artificial bee colony algorithm
     -  Bat algorithm
-    -  Bare bones fireworks algorithm
     -  Camel algorithm
     -  Differential evolution algorithm
+    -  Evolution Strategy
     -  Firefly algorithm
+    -  Fireworks algorithm
     -  Flower pollination algorithm
     -  Genetic algorithm
+    -  Glowworm Swarm Optimization
     -  Grey wolf optimizer
+    -  Harmony Search Algorithm
+    -  Krill Herd Algorithm
+    -  Monkey King Evolution
     -  Particle swarm optimization
+    -  Sine Cosine Algorithm
 -  modified:
     -  Hybrid bat algorithm
     -  Self-adaptive differential evolution algorithm
+    -  Dynamic population size self-adaptive differential evolution algorithm
+- other:
+    -  Anarchic society optimization
+    -  Hill climb algorithm
+    -  Multiple trajectory search
+    -  Nelder mead method
+    -  Simulated annealing algorithm
+    -  Tabu search algorithm
 
 The following benchmark functions are included in NiaPy:
 
@@ -69,12 +83,17 @@ The following benchmark functions are included in NiaPy:
 -  Chung Reynolds
 -  Csendes
 -  Discus
+-  Dixon-Price
 -  Elliptic
 -  Griewank
 -  Happy cat
 -  HGBat
 -  Katsuura
+-  Levy
+-  Michalewicz
+-  Perm
 -  Pintér
+-  Powell
 -  Qing
 -  Quintic
 -  Rastrigin
@@ -86,14 +105,18 @@ The following benchmark functions are included in NiaPy:
     -  Schwefel 2.21
     -  Schwefel 2.22
 -  Sphere
+    -  Sphere2 -> Sphere with different powers
+    -  Sphere3 -> Rotated hyper-ellipsoid
 -  Step
     -  Step2
     -  Step3
 -  Stepint
 -  Styblinski-Tang
 -  Sum Squares
+-  Trid
 -  Weierstrass
 -  Whitley
+-  Zakharov
 
 Setup
 =====
@@ -107,10 +130,14 @@ Requirements
 Dependencies
 ~~~~~~~~~~~~
 
--  click == *
+-  pytest == 3.7.1
+-  coverage == 4.4.2
+-  coverage-space == 1.0.2
+-  click == 6.0
 -  numpy == 1.14.0
 -  scipy == 1.0.0
 -  xlsxwriter == 1.0.2
+-  matplotlib == 2.2.2
 
 List of development dependencies and requirements can be found in the `installation section of NiaPy documentation <http://niapy.readthedocs.io/en/stable/installation.html>`_.
 
