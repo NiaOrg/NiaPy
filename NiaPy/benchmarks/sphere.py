@@ -17,23 +17,23 @@ class Sphere:
 
 	Function: **Sphere function**
 
-	:math:`f(\mathbf{x}) = \sum_{i=1}^D x_i^2`
+		:math:`f(\mathbf{x}) = \sum_{i=1}^D x_i^2`
 
-	**Input domain:**
-	The function can be defined on any input domain but it is usually
-	evaluated on the hypercube :math:`x_i ∈ [0, 10]`, for all :math:`i = 1, 2,..., D`.
+		**Input domain:**
+		The function can be defined on any input domain but it is usually
+		evaluated on the hypercube :math:`x_i ∈ [0, 10]`, for all :math:`i = 1, 2,..., D`.
 
-	**Global minimum:** :math:`f(x^*) = 0`, at :math:`x^* = (0,...,0)`
+		**Global minimum:** :math:`f(x^*) = 0`, at :math:`x^* = (0,...,0)`
 
 	LaTeX formats:
-	Inline:
-	$f(\mathbf{x}) = \sum_{i=1}^D x_i^2$
+		Inline:
+				$f(\mathbf{x}) = \sum_{i=1}^D x_i^2$
 
-	Equation:
-	\begin{equation}f(\mathbf{x}) = \sum_{i=1}^D x_i^2 \end{equation}
+		Equation:
+				\begin{equation}f(\mathbf{x}) = \sum_{i=1}^D x_i^2 \end{equation}
 
-	Domain:
-	$0 \leq x_i \leq 10$
+		Domain:
+				$0 \leq x_i \leq 10$
 
 	Reference paper:
 	Jamil, M., and Yang, X. S. (2013).
@@ -57,27 +57,30 @@ class Sphere2:
 	r"""Implementation of Sphere with different powers function.
 
 	Date: 2018
-	Authors: Klemen
+
+	Authors: Klemen Berkovič
+
 	License: MIT
 
 	Function: **Sun of different powers function**
-	:math:`f(\textbf{x}) = \sum_{i = 1}^D | x_i |^{i + 1}`
 
-	**Input domain:**
-	The function can be defined on any input domain but it is usually
-	evaluated on the hypercube :math:`x_i ∈ [-1, 1]`, for all :math:`i = 1, 2,..., D`.
+		:math:`f(\textbf{x}) = \sum_{i = 1}^D | x_i |^{i + 1}`
 
-	**Global minimum:** :math:`f(x^*) = 0`, at :math:`x^* = (0,...,0)`
+		**Input domain:**
+		The function can be defined on any input domain but it is usually
+		evaluated on the hypercube :math:`x_i ∈ [-1, 1]`, for all :math:`i = 1, 2,..., D`.
+
+		**Global minimum:** :math:`f(x^*) = 0`, at :math:`x^* = (0,...,0)`
 
 	LaTeX formats:
-	Inline:
-	$f(\textbf{x}) = \sum_{i = 1}^D | x_i |^{i + 1}$
+		Inline:
+				$f(\textbf{x}) = \sum_{i = 1}^D | x_i |^{i + 1}$
 
-	Equation:
-	\begin{equation} f(\textbf{x}) = \sum_{i = 1}^D | x_i |^{i + 1} \end{equation}
+		Equation:
+				\begin{equation} f(\textbf{x}) = \sum_{i = 1}^D | x_i |^{i + 1} \end{equation}
 
-	Domain:
-	$-1 \leq x_i \leq 1$
+		Domain:
+				$-1 \leq x_i \leq 1$
 
 	Reference URL:
 	https://www.sfu.ca/~ssurjano/sumpow.html
@@ -98,27 +101,30 @@ class Sphere3:
 	r"""Implementation of rotated hyper-ellipsoid function.
 
 	Date: 2018
-	Authors: Klemen
+
+	Authors: Klemen Berkovič
+
 	License: MIT
 
 	Function: **Sun of rotated hyper-elliposid function**
-	:math:`f(\textbf{x}) = \sum_{i = 1}^D \sum_{j = 1}^i x_j^2`
 
-	**Input domain:**
-	The function can be defined on any input domain but it is usually
-	evaluated on the hypercube :math:`x_i ∈ [-65.536, 65.536]`, for all :math:`i = 1, 2,..., D`.
+		:math:`f(\textbf{x}) = \sum_{i = 1}^D \sum_{j = 1}^i x_j^2`
 
-	**Global minimum:** :math:`f(x^*) = 0`, at :math:`x^* = (0,...,0)`
+		**Input domain:**
+		The function can be defined on any input domain but it is usually
+		evaluated on the hypercube :math:`x_i ∈ [-65.536, 65.536]`, for all :math:`i = 1, 2,..., D`.
+
+		**Global minimum:** :math:`f(x^*) = 0`, at :math:`x^* = (0,...,0)`
 
 	LaTeX formats:
-	Inline:
-	$f(\textbf{x}) = \sum_{i = 1}^D \sum_{j = 1}^i x_j^2$
+		Inline:
+				$f(\textbf{x}) = \sum_{i = 1}^D \sum_{j = 1}^i x_j^2$
 
-	Equation:
-	\begin{equation} f(\textbf{x}) = \sum_{i = 1}^D \sum_{j = 1}^i x_j^2 \end{equation}
+		Equation:
+				\begin{equation} f(\textbf{x}) = \sum_{i = 1}^D \sum_{j = 1}^i x_j^2 \end{equation}
 
-	Domain:
-	$-65.536 \leq x_i \leq 65.536$
+		Domain:
+				$-65.536 \leq x_i \leq 65.536$
 
 	Reference URL:
 	https://www.sfu.ca/~ssurjano/rothyp.html
