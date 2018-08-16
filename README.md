@@ -45,6 +45,12 @@ The micro framework features following algorithms:
   - Hybrid bat algorithm ([see example](examples/run_hba.py))
   - Self-adaptive differential evolution algorithm ([see example](examples/run_jde.py))
   - Dynamic population size self-adaptive differential evolution algorithm ([see example](examples/run_dynnpjde.py))
+- other:
+  - Anarchic society optimization algorithm ([see example](examples/run_aso.py))
+  - Hill climbing algorithm ([see example](examples/run_ihc.py))
+  - Multiple trajectory search ([see example](examples/run_mts.py))
+  - Nelder mead method or downhill simplex method or amoeba method ([see example](examples/run_nmm.py))
+  - Simulated annealing algorithm
   
 The following benchmark functions are included in NiaPy:
 - Ackley
@@ -103,6 +109,7 @@ The following benchmark functions are included in NiaPy:
 - numpy == 1.14.0
 - scipy == 1.0.0
 - xlsxwriter == 1.0.2
+- matplotlib == *
 
 List of development dependencies and requirements can be found [here](CONTRIBUTING.md#development-dependencies).
 
