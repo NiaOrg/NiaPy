@@ -60,9 +60,13 @@ class AnarchicSocietyOptimization(Algorithm):
 	r"""Implementation of Anarchic Society Optimization algorithm.
 
 	**Algorithm:** Particle Swarm Optimization algorithm
+
 	**Date:** 2018
+
 	**Authors:** Klemen Berkovič
+
 	**License:** MIT
+
 	**Reference paper:** Ahmadi-Javid, Amir. "Anarchic Society Optimization: A human-inspired method." Evolutionary Computation (CEC), 2011 IEEE Congress on. IEEE, 2011.
 	"""
 	def __init__(self, **kwargs): Algorithm.__init__(self, name='ParticleSwarmAlgorithm', sName='PSO', **kwargs)
@@ -70,16 +74,26 @@ class AnarchicSocietyOptimization(Algorithm):
 	def setParameters(self, NP=43, alpha=[1, 0.83], gamma=[1.17, 0.56], theta=[0.932, 0.832], d=euclidean, dn=euclidean, nl=1, F=1.2, CR=0.25, Combination=Elitism, **ukwargs):
 		r"""Set the parameters for the algorith.
 
-		**Arguments**:
+		**Arguments:**
+
 		NP {integer} -- population size
+		
 		alpha {array} -- factor for fickleness index function $\in [0, 1]$
+		
 		gamma {array} -- factor for external irregularity index function $\in [0, \infty)$
+		
 		theta {array} -- factor for internal irregularity index function $\in [0, \infty)$
+		
 		d {function} -- function that takes two arguments that are function values and calcs the distance between them
+		
 		dn {function} -- function that takes two arguments that are points in function landscape and calcs the distance between them
+		
 		nl {real} -- normalized range for neighborhood search $\in (0, 1]$
+		
 		F {real} -- mutation parameter
+		
 		CR {real} -- crossover parameter $\in [0, 1]$
+		
 		Combination {function} -- Function that combines movment strategies
 		"""
 		self.NP, self.alpha, self.gamma, self.theta, self.d, self.dn, self.nl, self.F, self.CR, self.Combination = NP, alpha, gamma, theta, d, dn, nl, F, CR, Combination

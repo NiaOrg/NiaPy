@@ -35,7 +35,8 @@ class HybridBatAlgorithm(BatAlgorithm):
 	def __setParams(self, F=0.78, CR=0.35, CrossMutt=CrossBest1, **ukwargs):
 		r"""**__init__(self, D, NP, nFES, A, r, Qmin, Qmax, benchmark)**.
 
-		Arguments:
+		**Arguments:**
+
 		F {decimal} -- scaling factor
 		CR {decimal} -- crossover
 		"""

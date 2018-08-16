@@ -50,9 +50,13 @@ class DifferentialEvolutionAlgorithm(Algorithm):
 	r"""Implementation of Differential evolution algorithm.
 
 	**Algorithm:** Differential evolution algorithm
+
 	**Date:** 2018
-	**Author:** Uros Mlakar and Klemen Berkoivč
+
+	**Author:** Uros Mlakar and Klemen Berkovič
+
 	**License:** MIT
+
 	**Reference paper:**
 	Storn, Rainer, and Kenneth Price. "Differential evolution - a simple and efficient heuristic for global optimization over continuous spaces." Journal of global optimization 11.4 (1997): 341-359.
 	"""
@@ -63,10 +67,14 @@ class DifferentialEvolutionAlgorithm(Algorithm):
 	def setParameters(self, NP=25, F=2, CR=0.2, CrossMutt=CrossRand1, **ukwargs):
 		r"""Set the algorithm parameters.
 
-		Arguments:
+		**Arguments:**
+
 		NP {integer} -- population size
+
 		F {decimal} -- scaling factor
+
 		CR {decimal} -- crossover rate
+		
 		CrossMutt {function} -- crossover and mutation strategy
 		"""
 		self.Np, self.F, self.CR, self.CrossMutt = NP, F, CR, CrossMutt

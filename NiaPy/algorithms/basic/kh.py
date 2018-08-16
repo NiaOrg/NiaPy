@@ -16,10 +16,15 @@ class KrillHerd(Algorithm):
 	r"""Implementation of krill herd algorithm.
 
 	**Algorithm:** Krill Herd Algorithm
+
 	**Date:** 2018
+
 	**Authors:** Klemen Berkovič
+
 	**License:** MIT
+
 	**Reference URL:** http://www.sciencedirect.com/science/article/pii/S1007570412002171
+	
 	**Reference paper:** Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010.
 	"""
 	def __init__(self, **kwargs):
@@ -29,18 +34,30 @@ class KrillHerd(Algorithm):
 	def setParameters(self, NP=50, N_max=0.01, V_f=0.02, D_max=0.002, C_t=0.93, W_n=0.42, W_f=0.38, d_s=2.63, nn=5, Cr=0.2, Mu=0.05, epsilon=1e-31, **ukwargs):
 		r"""Set the arguments of an algorithm.
 
-		**Arguments**:
+		**Arguments:**
+
 		NP {integer} -- Number of krill herds in population
+		
 		N_max {real} -- maximum induced speed
+		
 		V_f {real} -- foraging speed
+		
 		D_max {real} -- maximum diffsion speed
+		
 		C_t {real} -- constant $\in [0, 2]$
+		
 		W_n {real} or {array} -- inerta weights of the motion iduced from neighbors $\in [0, 1]$
+		
 		W_f {real} or {array} -- inerta weights of the motion iduced from fraging $\in [0, 1]$
+		
 		d_s {real} -- maximum euclidean distance for neighbors
+		
 		nn {integer} -- maximu neighbors for neighbors effect
+		
 		Cr {real} -- Crossover rate
+		
 		Mu {real} -- Mutation rate
+		
 		epsilon {real} -- Small numbers for devision
 		"""
 		self.N, self.N_max, self.V_f, self.D_max, self.C_t, self.W_n, self.W_f, self.d_s, self.nn, self._Cr, self._Mu, self.epsilon = NP, N_max, V_f, D_max, C_t, W_n, W_f, d_s, nn, Cr, Mu, epsilon
@@ -114,10 +131,15 @@ class KrillHerdV4(KrillHerd):
 	r"""Implementation of krill herd algorithm.
 
 	**Algorithm:** Krill Herd Algorithm
+
 	**Date:** 2018
+
 	**Authors:** Klemen Berkovič
+
 	**License:** MIT
+
 	**Reference URL:** http://www.sciencedirect.com/science/article/pii/S1007570412002171
+	
 	**Reference paper:** Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010.
 	"""
 	def __init__(self, **kwargs):
@@ -130,10 +152,15 @@ class KrillHerdV1(KrillHerd):
 	r"""Implementation of krill herd algorithm.
 
 	**Algorithm:** Krill Herd Algorithm
+	
 	**Date:** 2018
+	
 	**Authors:** Klemen Berkovič
+	
 	**License:** MIT
+	
 	**Reference URL:** http://www.sciencedirect.com/science/article/pii/S1007570412002171
+	
 	**Reference paper:** Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010.
 	"""
 	def __init__(self, **kwargs):
@@ -148,10 +175,15 @@ class KrillHerdV2(KrillHerd):
 	r"""Implementation of krill herd algorithm.
 
 	**Algorithm:** Krill Herd Algorithm
+
 	**Date:** 2018
+
 	**Authors:** Klemen Berkovič
+
 	**License:** MIT
+
 	**Reference URL:** http://www.sciencedirect.com/science/article/pii/S1007570412002171
+	
 	**Reference paper:** Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010.
 	"""
 	def __init__(self, **kwargs):
@@ -164,10 +196,15 @@ class KrillHerdV3(KrillHerd):
 	r"""Implementation of krill herd algorithm.
 
 	**Algorithm:** Krill Herd Algorithm
+	
 	**Date:** 2018
+	
 	**Authors:** Klemen Berkovič
+	
 	**License:** MIT
+	
 	**Reference URL:** http://www.sciencedirect.com/science/article/pii/S1007570412002171
+	
 	**Reference paper:** Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010.
 	"""
 	def __init__(self, **kwargs):
@@ -180,10 +217,15 @@ class KrillHerdV11(KrillHerd):
 	r"""Implementation of krill herd algorithm.
 
 	**Algorithm:** Krill Herd Algorithm
+	
 	**Date:** 2018
+	
 	**Authors:** Klemen Berkovič
+	
 	**License:** MIT
+	
 	**Reference URL:**
+	
 	**Reference paper:**
 	"""
 	def __init__(self, **kwargs):

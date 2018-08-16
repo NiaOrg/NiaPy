@@ -14,9 +14,13 @@ class NelderMeadMethod(Algorithm):
 	r"""Implementation of Nelder Mead method or downhill simplex method or amoeba method.
 
 	**Algorithm:** Nelder Mead Method
+
 	**Date:** 2018
+
 	**Authors:** Klemen Berkovič
+
 	**License:** MIT
+
 	**Reference URL:** https://en.wikipedia.org/wiki/Nelder%E2%80%93Mead_method
 	"""
 	def __init__(self, **kwargs): Algorithm.__init__(self, name='NelderMeadMethod', sName='NMM', **kwargs)
@@ -24,10 +28,14 @@ class NelderMeadMethod(Algorithm):
 	def setParameters(self, alpha=1.0, gamma=2.0, rho=-0.5, sigma=0.5, **ukwargs):
 		r"""Set the arguments of an algorithm.
 
-		**Arguments**:
+		**Arguments:**
+
 		alpha {real} -- Reflection coefficient parameter
+
 		gamma {real} -- Expansion coefficient parameter
+
 		rho {real} -- Contraction coefficient parameter
+		
 		sigma {real} -- Shrink coefficient parameter
 		"""
 		self.alpha, self.gamma, self.rho, self.sigma = alpha, gamma, rho, sigma

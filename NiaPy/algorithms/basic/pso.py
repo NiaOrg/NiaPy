@@ -15,9 +15,13 @@ class ParticleSwarmAlgorithm(Algorithm):
 	r"""Implementation of Particle Swarm Optimization algorithm.
 
 	**Algorithm:** Particle Swarm Optimization algorithm
+
 	**Date:** 2018
+
 	**Authors:** Lucija Brezočnik, Grega Vrbančič, Iztok Fister Jr. and Klemen Berkovič
+	
 	**License:** MIT
+	
 	**Reference paper:** Kennedy, J. and Eberhart, R. "Particle Swarm Optimization". Proceedings of IEEE International Conference on Neural Networks. IV. pp. 1942--1948, 1995.
 	"""
 
@@ -26,12 +30,18 @@ class ParticleSwarmAlgorithm(Algorithm):
 	def setParameters(self, NP=25, C1=2.0, C2=2.0, w=0.7, vMin=-4, vMax=4, **ukwargs):
 		r"""Set the parameters for the algorith.
 
-		**Arguments**:
+		**Arguments:**
+
 		NP {integer} -- population size
+
 		C1 {decimal} -- cognitive component
+
 		C2 {decimal} -- social component
+
 		w {decimal} -- inertia weight
+
 		vMin {decimal} -- minimal velocity
+		
 		vMax {decimal} -- maximal velocity
 		"""
 		self.NP, self.C1, self.C2, self.w, self.vMin, self.vMax = NP, C1, C2, w, vMin, vMax

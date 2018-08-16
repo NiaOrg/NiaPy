@@ -24,10 +24,15 @@ class MonkeyKingEvolutionV1(Algorithm):
 	r"""Implementation of monkey king evolution algorithm version 1.
 
 	**Algorithm:** Monkey King Evolution version 1
+
 	**Date:** 2018
+
 	**Authors:** Klemen Berkovič
+
 	**License:** MIT
+
 	**Reference URL:** https://www.sciencedirect.com/science/article/pii/S0950705116000198
+	
 	**Reference paper:** Zhenyu Meng, Jeng-Shyang Pan, Monkey King Evolution: A new memetic evolutionary algorithm and its application in vehicle fuel consumption optimization, Knowledge-Based Systems, Volume 97, 2016, Pages 144-157, ISSN 0950-7051, https://doi.org/10.1016/j.knosys.2016.01.009.
 	"""
 	def __init__(self, **kwargs):
@@ -37,11 +42,16 @@ class MonkeyKingEvolutionV1(Algorithm):
 	def setParameters(self, NP=40, F=0.7, R=0.3, C=3, FC=0.5, **ukwargs):
 		r"""Set the algorithm parameters.
 
-		Arguments:
+		**Arguments:**
+
 		NP {integer} -- Size of population
+
 		F {real} -- param
+
 		R {real} -- param
+
 		C {real} -- param
+
 		FC {real} -- param
 		"""
 		self.NP, self.F, self.R, self.C, self.FC = NP, F, R, C, FC
@@ -127,11 +137,16 @@ class MonkeyKingEvolutionV3(MonkeyKingEvolutionV1):
 	r"""Implementation of monkey king evolution algorithm version 3.
 
 	**Algorithm:** Monkey King Evolution version 3
+
 	**Date:** 2018
+
 	**Authors:** Klemen Berkovič
+
 	**License:** MIT
+
 	**Reference URL:**
 	https://www.sciencedirect.com/science/article/pii/S0950705116000198
+	
 	**Reference paper:**
 	Zhenyu Meng, Jeng-Shyang Pan, Monkey King Evolution: A new memetic evolutionary algorithm and its application in vehicle fuel consumption optimization, Knowledge-Based Systems, Volume 97, 2016, Pages 144-157, ISSN 0950-7051, https://doi.org/10.1016/j.knosys.2016.01.009.
 	"""

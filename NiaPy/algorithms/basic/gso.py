@@ -15,10 +15,15 @@ class GlowwormSwarmOptimization(Algorithm):
 	r"""Implementation of glowwarm swarm optimization.
 
 	**Algorithm:** Glowwarm Swarm Optimization Algorithm
+
 	**Date:** 2018
+
 	**Authors:** Klemen Berkovič
+
 	**License:** MIT
+
 	**Reference URL:** https://www.springer.com/gp/book/9783319515946
+	
 	**Reference paper:** Kaipa, Krishnanand N., and Debasish Ghose. Glowworm swarm optimization: theory, algorithms, and applications. Vol. 698. Springer, 2017.
 	"""
 	def __init__(self, **kwargs):
@@ -28,14 +33,22 @@ class GlowwormSwarmOptimization(Algorithm):
 	def setParameters(self, n=25, l0=5, nt=5, rho=0.4, gamma=0.6, beta=0.08, s=0.03, **ukwargs):
 		r"""Set the arguments of an algorithm.
 
-		**Arguments**:
+		**Arguments:**
+
 		n {integer} -- number of glowworms in population
+
 		l0 {real} -- initial luciferin quantity for each glowworm
+
 		nt {real} --
+
 		rs {real} -- maximum sensing range
+
 		rho {real} -- luciferin decay constant
+
 		gamma {real} -- luciferin enhancement constant
+
 		beta {real} --
+
 		s {real} --
 		"""
 		self.n, self.l0, self.nt, self.rho, self.gamma, self.beta, self.s = n, l0, nt, rho, gamma, beta, s
@@ -91,10 +104,15 @@ class GlowwormSwarmOptimizationV1(GlowwormSwarmOptimization):
 	r"""Implementation of glowwarm swarm optimization.
 
 	**Algorithm:** Glowwarm Swarm Optimization Algorithm
+
 	**Date:** 2018
+
 	**Authors:** Klemen Berkovič
+
 	**License:** MIT
+
 	**Reference URL:** https://www.springer.com/gp/book/9783319515946
+
 	**Reference paper:** Kaipa, Krishnanand N., and Debasish Ghose. Glowworm swarm optimization: theory, algorithms, and applications. Vol. 698. Springer, 2017.
 	"""
 	def __init__(self, **kwargs): GlowwormSwarmOptimization.__init__(self, name='GlowwormSwarmOptimizationV1', sName='GSOv1', **kwargs)
@@ -106,7 +124,8 @@ class GlowwormSwarmOptimizationV1(GlowwormSwarmOptimization):
 	def __setParams(self, alpha=0.2, **ukwargs):
 		r"""Set the arguments of an algorithm.
 
-		**Arguments**:
+		**Arguments:**
+
 		alpha {real} --
 		"""
 		self.alpha = alpha
@@ -120,10 +139,15 @@ class GlowwormSwarmOptimizationV2(GlowwormSwarmOptimization):
 	r"""Implementation of glowwarm swarm optimization.
 
 	**Algorithm:** Glowwarm Swarm Optimization Algorithm
+
 	**Date:** 2018
+
 	**Authors:** Klemen Berkovič
+
 	**License:** MIT
+
 	**Reference URL:** https://www.springer.com/gp/book/9783319515946
+
 	**Reference paper:** Kaipa, Krishnanand N., and Debasish Ghose. Glowworm swarm optimization: theory, algorithms, and applications. Vol. 698. Springer, 2017.
 	"""
 	def __init__(self, **kwargs): GlowwormSwarmOptimization.__init__(self, name='GlowwormSwarmOptimizationV2', sName='GSOv2', **kwargs)
@@ -135,8 +159,10 @@ class GlowwormSwarmOptimizationV2(GlowwormSwarmOptimization):
 	def __setParams(self, alpha=0.2, **ukwargs):
 		r"""Set the arguments of an algorithm.
 
-		**Arguments**:
+		**Arguments:**
+
 		beta1 {real} --
+
 		s {real} --
 		"""
 		self.alpha = alpha
@@ -148,10 +174,15 @@ class GlowwormSwarmOptimizationV3(GlowwormSwarmOptimization):
 	r"""Implementation of glowwarm swarm optimization.
 
 	**Algorithm:** Glowwarm Swarm Optimization Algorithm
+
 	**Date:** 2018
+
 	**Authors:** Klemen Berkovič
+
 	**License:** MIT
+
 	**Reference URL:** https://www.springer.com/gp/book/9783319515946
+
 	**Reference paper:** Kaipa, Krishnanand N., and Debasish Ghose. Glowworm swarm optimization: theory, algorithms, and applications. Vol. 698. Springer, 2017.
 	"""
 	def __init__(self, **kwargs): GlowwormSwarmOptimization.__init__(self, name='GlowwormSwarmOptimizationV2', sName='GSOv2', **kwargs)
@@ -163,8 +194,10 @@ class GlowwormSwarmOptimizationV3(GlowwormSwarmOptimization):
 	def __setParams(self, beta1=0.2, **ukwargs):
 		r"""Set the arguments of an algorithm.
 
-		**Arguments**:
+		**Arguments:**
+
 		beta1 {real} --
+		
 		s {real} --
 		"""
 		self.beta1 = beta1

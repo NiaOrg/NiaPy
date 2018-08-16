@@ -15,9 +15,13 @@ class FlowerPollinationAlgorithm(Algorithm):
 	r"""Implementation of Flower Pollination algorithm.
 
 	**Algorithm:** Flower Pollination algorithm
+
 	**Date:** 2018
+
 	**Authors:** Dusan Fister, Iztok Fister Jr. and Klemen Berkovič
+
 	**License:** MIT
+
 	**Reference paper:** Yang, Xin-She. "Flower pollination algorithm for global optimization. International conference on unconventional computing and natural computation. Springer, Berlin, Heidelberg, 2012.
 	Implementation is based on the following MATLAB code: https://www.mathworks.com/matlabcentral/fileexchange/45112-flower-pollination-algorithm?requestedDomain=true
 	"""
@@ -26,9 +30,12 @@ class FlowerPollinationAlgorithm(Algorithm):
 	def setParameters(self, NP=25, p=0.35, beta=1.5, **ukwargs):
 		r"""**__init__(self, D, NP, nFES, p, benchmark)**.
 
-		Arguments:
+		**Arguments:**
+
 		NP {integer} -- population size
+
 		p {decimal} -- probability switch
+		
 		beta {real} --
 		"""
 		self.NP, self.p, self.beta = NP, p, beta

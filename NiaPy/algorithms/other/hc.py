@@ -28,10 +28,15 @@ class HillClimbAlgorithm(Algorithm):
 	r"""Implementation of iterative hill climbing algorithm.
 
 	**Algorithm:** Hill Climbing Algorithm
+
 	**Date:** 2018
+
 	**Authors:** Jan Popič
+
 	**License:** MIT
+
 	**Reference URL:**
+	
 	**Reference paper:**
 	"""
 	def __init__(self, **kwargs):
