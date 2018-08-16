@@ -1,20 +1,33 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, unused-argument, arguments-differ
 import logging
-from numpy import exp
+from numpy import random as rand, exp
 from NiaPy.algorithms.algorithm import Algorithm
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.other')
 logger.setLevel('INFO')
 
-__all__ = ['SimulatedAnnealing', 'coolDelta', 'coolLinear']
+__all__ = ['SimulatedAnnealing', 'SimulatedAnnealingF', 'coolDelta', 'coolLinear']
 
 def coolDelta(currentT, T, deltaT, nFES):
 	return currentT - deltaT
 
 def coolLinear(currentT, T, deltaT, nFES):
 	return currentT - T / nFES
+
+def SimulatedAnnealingF(task, delta=1.5, delta_t=0.564, T=2000, cool=coolDelta, epsilon=1e-20, rnd=rand):
+	x = task.Lower + task.bRange * rnd.rand(task.D)  # Random solution
+	curT, xfit = T, task.eval(x)
+	xb, xb_f = x, xfit
+	while not task.stopCond() and curT >= epsilon:
+		c = task.repair(x - delta / 2 + rnd.rand(task.D) * delta)
+		cfit = task.eval(c)
+		deltaFit, rand = cfit - xfit, rnd.rand()
+		if deltaFit < 0 or rand < exp(deltaFit / curT): x, xfit = c, cfit
+		if xb_f > cfit: xb, xb_f = c, cfit
+		curT = cool(curT, T, delta_t, nFES=task.nFES)
+	return xb, xb_f
 
 class SimulatedAnnealing(Algorithm):
 	r"""Implementation of Simulated Annealing Algorithm.
@@ -28,7 +41,7 @@ class SimulatedAnnealing(Algorithm):
 	"""
 	def __init__(self, **kwargs): Algorithm.__init__(self, name='SimulatedAnnealing', sName='BBFA', **kwargs)
 
-	def setParameters(self, delta=0.5, T=20, deltaT=0.8, coolingMethod=coolDelta, epsilon=1e-23, **ukwargs):
+	def setParameters(self, delta=0.5, T=2000, deltaT=0.8, coolingMethod=coolDelta, epsilon=1e-23, **ukwargs):
 		r"""Set the algorithm parameters/arguments.
 
 		Arguments:
@@ -44,13 +57,14 @@ class SimulatedAnnealing(Algorithm):
 	def runTask(self, task):
 		x = task.Lower + task.bRange * self.rand(task.D)  # Random solution
 		curT, xfit = self.T, task.eval(x)
-		while not task.stopCond():
-			if (curT <= self.epsilon): curT = self.T
+		xb, xb_f = x, xfit
+		while not task.stopCond() and curT >= self.epsilon:
 			c = task.repair(x - self.delta / 2 + self.rand(task.D) * self.delta)
 			cfit = task.eval(c)
 			deltaFit, rand = cfit - xfit, self.rand()
 			if deltaFit < 0 or rand < exp(deltaFit / curT): x, xfit = c, cfit
+			if xb_f > cfit: xb, xb_f = c, cfit
 			curT = self.cool(curT, self.T, self.deltaT, nFES=task.nFES)
-		return x, xfit
+		return xb, xb_f
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
