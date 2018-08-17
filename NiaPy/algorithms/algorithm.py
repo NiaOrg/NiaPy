@@ -73,6 +73,14 @@ class Algorithm:
 		"""
 		return self.Rand.normal(loc, scale, D) if D != None else self.Rand.normal(loc, scale)
 
+	def randn(self, D=None):
+		r"""Get D shape random normal distributed numbers.
+
+		**Arguments**:
+		D {array} -- Shape of returnd random numbers
+		"""
+		return self.Rand.randn() if D == None else self.Rand.randn(*D)
+
 	def randint(self, Nmax, D=1, Nmin=0, skip=[]):
 		r"""Get D shape random full numbers in range Nmin to Nmax.
 

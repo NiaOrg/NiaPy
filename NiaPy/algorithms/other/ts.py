@@ -10,7 +10,7 @@ logger.setLevel('INFO')
 
 __all__ = ['TabuSearch']
 
-def TabuSearchF(TL_size=25, task, rnd=rand):
+def TabuSearchF(task, TL_size=25, rnd=rand):
 	x, TL  = rnd.uniform(task.Lower, task.Upper), list()
 	x_f = task.eval(x)
 	while not task.stopCond():

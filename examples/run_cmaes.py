@@ -7,13 +7,16 @@ sys.path.append('../')
 
 import random
 import logging
-from NiaPy.algorithms.other import MultipleTrajectorySearch
+from NiaPy.algorithms.basic import CovarianceMaatrixAdaptionEvolutionStrategy
 from NiaPy.benchmarks.utility import TaskConvPrint, TaskConvPlot, OptimizationType
 from margparser import getDictArgs
 
 logging.basicConfig()
 logger = logging.getLogger('examples')
 logger.setLevel('INFO')
+
+# For reproducive results
+random.seed(1234)
 
 # For reproducive results
 class MinMB(object):
@@ -36,19 +39,19 @@ class MaxMB(MinMB):
 
 def simple_example(runs=10, D=10, nFES=50000, nGEN=10000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kn):
 	for i in range(runs):
-		algo = MultipleTrajectorySearch(D=D, nFES=nFES, nGEN=nGEN, n=15, C_a=1, C_r=0.5, optType=optType, benchmark=optFunc())
+		algo = CovarianceMaatrixAdaptionEvolutionStrategy(D=D, nFES=nFES, nGEN=nGEN, n=15, C_a=1, C_r=0.5, optType=optType, benchmark=optFunc())
 		best = algo.run()
 		logger.info('%s %s' % (best[0], best[1]))
 
 def logging_example(D=10, nFES=50000, nGEN=100000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kn):
 	task = TaskConvPrint(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc())
-	algo = MultipleTrajectorySearch(task=task, n=15, C_a=1, C_r=0.5)
+	algo = CovarianceMaatrixAdaptionEvolutionStrategy(task=task, n=15, C_a=1, C_r=0.5)
 	best = algo.run()
 	logger.info('%s %s' % (best[0], best[1]))
 
 def plot_example(D=10, nFES=50000, nGEN=100000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kn):
 	task = TaskConvPlot(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc())
-	algo = MultipleTrajectorySearch(task=task, n=15, C_a=1, C_r=0.5)
+	algo = CovarianceMaatrixAdaptionEvolutionStrategy(task=task, n=15, C_a=1, C_r=0.5)
 	best = algo.run()
 	logger.info('%s %s' % (best[0], best[1]))
 	input('Press [enter] to continue')

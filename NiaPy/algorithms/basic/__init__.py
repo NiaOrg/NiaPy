@@ -11,7 +11,7 @@ from NiaPy.algorithms.basic.abc import ArtificialBeeColonyAlgorithm
 from NiaPy.algorithms.basic.pso import ParticleSwarmAlgorithm
 from NiaPy.algorithms.basic.ca import CamelAlgorithm
 from NiaPy.algorithms.basic.mke import MonkeyKingEvolutionV1, MonkeyKingEvolutionV2, MonkeyKingEvolutionV3
-from NiaPy.algorithms.basic.es import EvolutionStrategy1p1, EvolutionStrategyMp1, EvolutionStrategyMpL, EvolutionStrategyML
+from NiaPy.algorithms.basic.es import EvolutionStrategy1p1, EvolutionStrategyMp1, EvolutionStrategyMpL, EvolutionStrategyML, CovarianceMaatrixAdaptionEvolutionStrategy
 from NiaPy.algorithms.basic.sca import SineCosineAlgorithm
 from NiaPy.algorithms.basic.gso import GlowwormSwarmOptimization, GlowwormSwarmOptimizationV1, GlowwormSwarmOptimizationV2, GlowwormSwarmOptimizationV3
 from NiaPy.algorithms.basic.hs import HarmonySearch, HarmonySearchV1
@@ -37,6 +37,7 @@ __all__ = [
     'EvolutionStrategyMp1',
     'EvolutionStrategyMpL',
     'EvolutionStrategyML',
+    'CovarianceMaatrixAdaptionEvolutionStrategy',
     'SineCosineAlgorithm',
     'GlowwormSwarmOptimization',
     'GlowwormSwarmOptimizationV1',
