@@ -23,8 +23,8 @@ def SimulatedAnnealingF(task, delta=1.5, delta_t=0.564, T=2000, cool=coolDelta, 
 	while not task.stopCond() and curT >= epsilon:
 		c = task.repair(x - delta / 2 + rnd.rand(task.D) * delta)
 		cfit = task.eval(c)
-		deltaFit, rand = cfit - xfit, rnd.rand()
-		if deltaFit < 0 or rand < exp(deltaFit / curT): x, xfit = c, cfit
+		deltaFit, r = cfit - xfit, rnd.rand()
+		if deltaFit < 0 or r < exp(deltaFit / curT): x, xfit = c, cfit
 		if xb_f > cfit: xb, xb_f = c, cfit
 		curT = cool(curT, T, delta_t, nFES=task.nFES)
 	return xb, xb_f
@@ -54,17 +54,6 @@ class SimulatedAnnealing(Algorithm):
 		self.delta, self.T, self.deltaT, self.cool, self.epsilon = delta, T, deltaT, coolingMethod, epsilon
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def runTask(self, task):
-		x = task.Lower + task.bRange * self.rand(task.D)  # Random solution
-		curT, xfit = self.T, task.eval(x)
-		xb, xb_f = x, xfit
-		while not task.stopCond() and curT >= self.epsilon:
-			c = task.repair(x - self.delta / 2 + self.rand(task.D) * self.delta)
-			cfit = task.eval(c)
-			deltaFit, rand = cfit - xfit, self.rand()
-			if deltaFit < 0 or rand < exp(deltaFit / curT): x, xfit = c, cfit
-			if xb_f > cfit: xb, xb_f = c, cfit
-			curT = self.cool(curT, self.T, self.deltaT, nFES=task.nFES)
-		return xb, xb_f
+	def runTask(self, task): return SimulatedAnnealingF(task, self.delta, self.deltaT, self.T, self.cool, self.epsilon, self.Rand)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

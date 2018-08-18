@@ -1,8 +1,8 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, old-style-class
+# pylint: disable=mixed-indentation, multiple-statements, old-style-class, line-too-long
 from unittest import TestCase
 from NiaPy.benchmarks.griewank import Griewank
-from NiaPy.algorithms.basic import EvolutionStrategy1p1, EvolutionStrategyMp1, EvolutionStrategyMpL, EvolutionStrategyML
+from NiaPy.algorithms.basic import EvolutionStrategy1p1, EvolutionStrategyMp1, EvolutionStrategyMpL, EvolutionStrategyML, CovarianceMaatrixAdaptionEvolutionStrategy
 
 class MyBenchmark:
 	def __init__(self):
@@ -92,6 +92,38 @@ class ESMLTestCase(TestCase):
 		self.es1_custom = EvolutionStrategyML(D=self.D, nFES=1000, mu=45, lam=35, k=50, c_a=1.1, c_r=0.5, benchmark=MyBenchmark())
 		self.es_griewank = EvolutionStrategyML(D=self.D, nFES=1000, mu=35, lam=45, k=45, c_a=1.5, c_r=0.5, benchmark=Griewank())
 		self.es1_griewank = EvolutionStrategyML(D=self.D, nFES=1000, mu=45, lam=35, k=25, c_a=1.5, c_r=0.5, benchmark=Griewank())
+
+	def test_custom_works_fine(self):
+		fun = MyBenchmark().function()
+		x = self.es_custom.run()
+		self.assertTrue(x)
+		self.assertAlmostEqual(fun(self.D, x[0]), x[1], delta=1e2)
+
+	def test_custom1_works_fine(self):
+		fun = MyBenchmark().function()
+		x = self.es1_custom.run()
+		self.assertTrue(x)
+		self.assertAlmostEqual(fun(self.D, x[0]), x[1], delta=1e2)
+
+	def test_griewank_works_fine(self):
+		fun = Griewank().function()
+		x = self.es_griewank.run()
+		self.assertTrue(x)
+		self.assertAlmostEqual(fun(self.D, x[0]), x[1], delta=1e2)
+
+	def test_griewank1_works_fine(self):
+		fun = Griewank().function()
+		x = self.es1_griewank.run()
+		self.assertTrue(x)
+		self.assertAlmostEqual(fun(self.D, x[0]), x[1], delta=1e2)
+
+class CMAESTestCase(TestCase):
+	def setUp(self):
+		self.D = 40
+		self.es_custom = CovarianceMaatrixAdaptionEvolutionStrategy(D=self.D, nFES=1000, benchmark=MyBenchmark())
+		self.es1_custom = CovarianceMaatrixAdaptionEvolutionStrategy(D=self.D, nFES=1000, benchmark=MyBenchmark())
+		self.es_griewank = CovarianceMaatrixAdaptionEvolutionStrategy(D=self.D, nFES=1000, benchmark=Griewank())
+		self.es1_griewank = CovarianceMaatrixAdaptionEvolutionStrategy(D=self.D, nFES=1000, benchmark=Griewank())
 
 	def test_custom_works_fine(self):
 		fun = MyBenchmark().function()

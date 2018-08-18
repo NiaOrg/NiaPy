@@ -243,6 +243,10 @@ class Runner:
 			algorithm = algorithms.basic.GravitationalSearchAlgorithm(D=self.D, nFES=self.nFES, benchmark=bench)
 		elif name == 'AnarchicSocietyOptimization':
 			algorithm = algorithms.other.AnarchicSocietyOptimization(D=self.D, nFES=self.nFES, benchmark=bench)
+		elif name == 'CovarianceMaatrixAdaptionEvolutionStrategy':
+			algorithm = algorithms.basic.CovarianceMaatrixAdaptionEvolutionStrategy(D=self.D, nFES=self.nFES, benchmark=bench)
+		elif name == 'TabuSearch':
+			algorithm = algorithms.other.TabuSearch(D=self.D, nFES=self.nFES, benchmark=bench)
 		else:
 			raise TypeError('Passed benchmark is not defined!')
 		return algorithm

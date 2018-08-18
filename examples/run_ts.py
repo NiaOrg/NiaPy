@@ -7,7 +7,7 @@ sys.path.append('../')
 
 import random
 import logging
-from NiaPy.algorithms.other import SimulatedAnnealingF
+from NiaPy.algorithms.other import TabuSearchF
 from NiaPy.benchmarks.utility import Task, TaskConvPrint, TaskConvPlot, OptimizationType
 from margparser import getDictArgs
 
@@ -39,17 +39,17 @@ class MaxMB(MinMB):
 def simple_example(runs=10, D=10, nFES=50000, nGEN=10000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kn):
 	for i in range(runs):
 		task = Task(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc())
-		best = SimulatedAnnealingF(task=task)
+		best = TabuSearchF(task=task)
 		logger.info('%s %s' % (best[0], best[1]))
 
 def logging_example(D=10, nFES=50000, nGEN=100000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kn):
 	task = TaskConvPrint(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc())
-	best = SimulatedAnnealingF(task=task)
+	best = TabuSearchF(task=task)
 	logger.info('%s %s' % (best[0], best[1]))
 
 def plot_example(D=10, nFES=50000, nGEN=100000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kn):
 	task = TaskConvPlot(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc())
-	best = SimulatedAnnealingF(task=task)
+	best = TabuSearchF(task=task)
 	logger.info('%s %s' % (best[0], best[1]))
 	input('Press [enter] to continue')
 
