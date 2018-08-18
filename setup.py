@@ -77,10 +77,10 @@ setuptools.setup(
         'pytest ~= 3.7.1',
         'coverage ~= 4.4.2',
         'coverage-space ~= 1.0.2',
-        'numpy ~= 1.14.0',
+        'numpy ~= 1.15.0',
         'enum34 ~= 1.1.6',
         'click ~= 6.0',
-        'scipy ~= 1.0.0',
+        'scipy ~= 1.1.0',
         'xlsxwriter ~= 1.0.2',
         'matplotlib ~= 2.2.2'
     ]
