@@ -10,6 +10,7 @@ def makeArgParser():
 	parser.add_argument('-runType', dest='runType', choices=['', 'log', 'plot'], default='log', type=str)
 	parser.add_argument('-seed', dest='seed', default=None, type=int)
 	parser.add_argument('-optType', dest='optType', default='min', choices=['min', 'max'], type=str)
+	parser.add_argument('-fnum', dest='fnum', default=1, type=int)
 	return parser
 
 def getArgs(argv):

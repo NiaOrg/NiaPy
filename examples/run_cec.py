@@ -9,10 +9,19 @@ sys.path.append('cec14')
 import random
 import logging
 from numpy import asarray
-from margparser import getArgs
+from margparser import getDictArgs
 from NiaPy.algorithms.basic import DifferentialEvolutionAlgorithm
+from NiaPy.algorithms.basic import ParticleSwarmAlgorithm
+from NiaPy.algorithms.basic import SineCosineAlgorithm
+from NiaPy.algorithms.basic import CamelAlgorithm
+from NiaPy.algorithms.basic import CovarianceMaatrixAdaptionEvolutionStrategy
+from NiaPy.algorithms.basic import MonkeyKingEvolutionV1, MonkeyKingEvolutionV2, MonkeyKingEvolutionV3
+from NiaPy.algorithms.basic import HarmonySearch, HarmonySearchV1
+from NiaPy.algorithms.basic import BareBonesFireworksAlgorithm, EnhancedFireworksAlgorithm, DynamicFireworksAlgorithm, DynamicFireworksAlgorithmGauss, FireworksAlgorithm
+from NiaPy.algorithms.modified import SelfAdaptiveDifferentialEvolutionAlgorithm, DynNPSelfAdaptiveDifferentialEvolutionAlgorithm
 from NiaPy.algorithms.other import MultipleTrajectorySearch, MultipleTrajectorySearchV1
-from NiaPy.benchmarks.utility import TaskConvPrint, TaskConvPlot, OptimizationType
+from NiaPy.algorithms.other import AnarchicSocietyOptimization
+from NiaPy.benchmarks.utility import Task, TaskConvPrint, TaskConvPlot, OptimizationType
 from function_call import run_fun
 
 logging.basicConfig()
@@ -23,12 +32,13 @@ logger.setLevel('INFO')
 random.seed(1234)
 
 class MinMB(object):
-	def __init__(self):
+	def __init__(self, fnum=1):
 		self.Lower = -10
 		self.Upper = 10
+		self.fnum = fnum
 
 	def function(self):
-		def evaluate(D, sol): return run_fun(asarray(sol), 2)
+		def evaluate(D, sol): return run_fun(asarray(sol), self.fnum)
 		return evaluate
 
 class MaxMB(MinMB):
@@ -37,22 +47,22 @@ class MaxMB(MinMB):
 		def e(D, sol): return -f(D, sol)
 		return e
 
-def simple_example(runs=10, D=10, nFES=50000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB):
+def simple_example(alg, fnum=1, runs=10, D=10, nFES=50000, nGEN=5000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kwu):
 	for i in range(runs):
-		algo = DifferentialEvolutionAlgorithm(D=D, NP=40, nFES=nFES, F=0.5, CR=0.9, seed=seed + 1 if seed != None else seed, optType=optType, benchmark=optFunc())
+		task = Task(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc(3))
+		algo = alg(seed=seed, task=task)
 		Best = algo.run()
 		logger.info('%s %s' % (Best[0], Best[1]))
 
-def logging_example(D=10, nFES=50000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB):
-	task = TaskConvPrint(D=D, nFES=nFES, nGEN=50000, optType=optType, benchmark=optFunc())
-	# algo = DifferentialEvolutionAlgorithm(NP=40, F=0.5, CR=0.9, seed=seed, task=task)
-	algo = MultipleTrajectorySearch(seed=seed, task=task)
+def logging_example(alg, fnum=1, D=10, nFES=50000, nGEN=5000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **ukw):
+	task = TaskConvPrint(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc(3))
+	algo = alg(seed=seed, task=task)
 	best = algo.run()
 	logger.info('%s %s' % (best[0], best[1]))
 
-def plot_example(D=10, nFES=50000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB):
-	task = TaskConvPlot(D=D, nFES=nFES, nGEN=10000, optType=optType, benchmark=optFunc())
-	algo = DifferentialEvolutionAlgorithm(NP=40, F=0.5, CR=0.9, seed=seed, task=task)
+def plot_example(alg, fnum=1, D=10, nFES=50000, nGEN=5000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kwy):
+	task = TaskConvPlot(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc())
+	algo = alg(seed=seed, task=task)
 	best = algo.run()
 	logger.info('%s %s' % (best[0], best[1]))
 	input('Press [enter] to continue')
@@ -63,10 +73,30 @@ def getOptType(strtype):
 	else: return None
 
 if __name__ == '__main__':
-	pargs = getArgs(sys.argv[1:])
-	optType, optFunc = getOptType(pargs.optType)
-	if not pargs.runType: simple_example(D=pargs.D, nFES=pargs.nFES, seed=pargs.seed, optType=optType, optFunc=optFunc)
-	elif pargs.runType == 'log': logging_example(D=pargs.D, nFES=pargs.nFES, seed=pargs.seed, optType=optType, optFunc=optFunc)
-	elif pargs.runType == 'plot': plot_example(D=pargs.D, nFES=pargs.nFES, seed=pargs.seed, optType=optType, optFunc=optFunc)
+	# algo = DifferentialEvolutionAlgorithm
+	# algo = ParticleSwarmAlgorithm
+	# algo = SineCosineAlgorithm
+	# algo = CamelAlgorithm
+	# algo = MultipleTrajectorySearch
+	# algo = MultipleTrajectorySearchV1
+	# algo = CovarianceMaatrixAdaptionEvolutionStrategy
+	# algo = MonkeyKingEvolutionV1
+	# algo = MonkeyKingEvolutionV2
+	# algo = MonkeyKingEvolutionV3
+	# algo = HarmonySearch
+	# algo = HarmonySearchV1
+	algo = BareBonesFireworksAlgorithm
+	# algo = FireworksAlgorithm
+	# algo = EnhancedFireworksAlgorithm
+	# algo = DynamicFireworksAlgorithm
+	# algo = DynamicFireworksAlgorithmGauss
+	# algo = SelfAdaptiveDifferentialEvolutionAlgorithm
+	# algo = DynNPSelfAdaptiveDifferentialEvolutionAlgorithm
+	# algo = AnarchicSocietyOptimization
+	pargs = getDictArgs(sys.argv[1:])
+	optType, optFunc = getOptType(pargs.pop('optType', 'min'))
+	if not pargs['runType']: simple_example(algo, optType=optType, optFunc=optFunc, **pargs)
+	elif pargs['runType'] == 'log': logging_example(algo, optType=optType, optFunc=optFunc, **pargs)
+	elif pargs['runType'] == 'plot': plot_example(algo, optType=optType, optFunc=optFunc, **pargs)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
