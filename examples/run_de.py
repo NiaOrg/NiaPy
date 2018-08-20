@@ -7,9 +7,8 @@ sys.path.append('../')
 
 import random
 import logging
-from margparser import getArgs
 from NiaPy.algorithms.basic import DifferentialEvolutionAlgorithm
-from NiaPy.benchmarks.utility import TaskConvPrint, TaskConvPlot, OptimizationType
+from NiaPy.util import TaskConvPrint, TaskConvPlot, OptimizationType, getDictArgs
 
 logging.basicConfig()
 logger = logging.getLogger('examples')
@@ -19,15 +18,14 @@ logger.setLevel('INFO')
 random.seed(1234)
 
 class MinMB(object):
-	def __init__(self):
-		self.Lower = -5.12
-		self.Upper = 5.12
+	# FIXME
+	def __init__(self, fnum=1):
+		self.Lower = -100
+		self.Upper = 100
+		# self.fnum = fnum
 
 	def function(self):
-		def evaluate(D, sol):
-			val = 0.0
-			for i in range(D): val = val + sol[i] * sol[i]
-			return val
+		# def evaluate(D, sol): return run_fun(asarray(sol), self.fnum)
 		return evaluate
 
 class MaxMB(MinMB):
@@ -36,21 +34,22 @@ class MaxMB(MinMB):
 		def e(D, sol): return -f(D, sol)
 		return e
 
-def simple_example(runs=10, D=10, nFES=50000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB):
+def simple_example(alg, fnum=1, runs=10, D=10, nFES=50000, nGEN=5000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kwu):
 	for i in range(runs):
-		algo = DifferentialEvolutionAlgorithm(D=D, NP=40, nFES=nFES, F=0.5, CR=0.9, seed=seed + 1 if seed != None else seed, optType=optType, benchmark=optFunc())
+		task = Task(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc(fnum))
+		algo = alg(seed=seed, task=task)
 		Best = algo.run()
 		logger.info('%s %s' % (Best[0], Best[1]))
 
-def logging_example(D=10, nFES=50000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB):
-	task = TaskConvPrint(D=D, nFES=nFES, nGEN=50000, optType=optType, benchmark=optFunc())
-	algo = DifferentialEvolutionAlgorithm(NP=40, F=0.5, CR=0.9, seed=seed, task=task)
+def logging_example(alg, fnum=1, D=10, nFES=50000, nGEN=5000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **ukw):
+	task = TaskConvPrint(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc(fnum))
+	algo = alg(seed=seed, task=task)
 	best = algo.run()
 	logger.info('%s %s' % (best[0], best[1]))
 
-def plot_example(D=10, nFES=50000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB):
-	task = TaskConvPlot(D=D, nFES=nFES, nGEN=10000, optType=optType, benchmark=optFunc())
-	algo = DifferentialEvolutionAlgorithm(NP=40, F=0.5, CR=0.9, seed=seed, task=task)
+def plot_example(alg, fnum=1, D=10, nFES=50000, nGEN=5000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kwy):
+	task = TaskConvPlot(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc(fnum))
+	algo = alg(seed=seed, task=task)
 	best = algo.run()
 	logger.info('%s %s' % (best[0], best[1]))
 	input('Press [enter] to continue')
@@ -61,10 +60,11 @@ def getOptType(strtype):
 	else: return None
 
 if __name__ == '__main__':
-	pargs = getArgs(sys.argv[1:])
-	optType, optFunc = getOptType(pargs.optType)
-	if not pargs.runType: simple_example(D=pargs.D, nFES=pargs.nFES, seed=pargs.seed, optType=optType, optFunc=optFunc)
-	elif pargs.runType == 'log': logging_example(D=pargs.D, nFES=pargs.nFES, seed=pargs.seed, optType=optType, optFunc=optFunc)
-	elif pargs.runType == 'plot': plot_example(D=pargs.D, nFES=pargs.nFES, seed=pargs.seed, optType=optType, optFunc=optFunc)
+	algo = DifferentialEvolutionAlgorithm
+	pargs = getDictArgs(sys.argv[1:])
+	optType, optFunc = getOptType(pargs.pop('optType', 'min'))
+	if not pargs['runType']: simple_example(algo, optType=optType, optFunc=optFunc, **pargs)
+	elif pargs['runType'] == 'log': logging_example(algo, optType=optType, optFunc=optFunc, **pargs)
+	elif pargs['runType'] == 'plot': plot_example(algo, optType=optType, optFunc=optFunc, **pargs)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

@@ -5,13 +5,13 @@ import logging
 from enum import Enum
 from numpy import ndarray, asarray, full, inf, dot, where, random as rnd, fabs, ceil, array_equal
 from matplotlib import pyplot as plt, animation as anim
-from . import Rastrigin, Rosenbrock, Griewank, Sphere, Ackley, Schwefel, Schwefel221, Schwefel222, Whitley, Alpine1, Alpine2, HappyCat, Ridge, ChungReynolds, Csendes, Pinter, Qing, Quintic, Salomon, SchumerSteiglitz, Step, Step2, Step3, Stepint, SumSquares, StyblinskiTang, BentCigar, Discus, Elliptic, ExpandedGriewankPlusRosenbrock, HGBat, Katsuura, ExpandedScaffer, ModifiedSchwefel, Weierstrass, Michalewicz, Levy, Sphere2, Sphere3, Trid, Perm, Zakharov, DixonPrice, Powell, CosineMixture, Infinity
+from NiaPy.benchmarks import Rastrigin, Rosenbrock, Griewank, Sphere, Ackley, Schwefel, Schwefel221, Schwefel222, Whitley, Alpine1, Alpine2, HappyCat, Ridge, ChungReynolds, Csendes, Pinter, Qing, Quintic, Salomon, SchumerSteiglitz, Step, Step2, Step3, Stepint, SumSquares, StyblinskiTang, BentCigar, Discus, Elliptic, ExpandedGriewankPlusRosenbrock, HGBat, Katsuura, ExpandedScaffer, ModifiedSchwefel, Weierstrass, Michalewicz, Levy, Sphere2, Sphere3, Trid, Perm, Zakharov, DixonPrice, Powell, CosineMixture, Infinity
 
 logging.basicConfig()
-logger = logging.getLogger('NiaPy.benchmarks.utility')
+logger = logging.getLogger('NiaPy.util.utility')
 logger.setLevel('INFO')
 
-__all__ = ['Utility', 'Task', 'TaskConvPrint', 'TaskConvPlot', 'fullArray']
+__all__ = ['Utility', 'Task', 'TaskConvPrint', 'TaskConvPlot', 'fullArray', 'TaskComposition']
 
 def fullArray(a, D):
 	r"""Fill or create array of lengthm D, from value or value form a.

@@ -10,9 +10,9 @@ import json
 import datetime
 import xlsxwriter
 import numpy as np
-from NiaPy import algorithms, benchmarks
+from NiaPy import algorithms, benchmarks, util
 
-__all__ = ['algorithms', 'benchmarks']
+__all__ = ['algorithms', 'benchmarks', 'util']
 __project__ = 'NiaPy'
 __version__ = '1.0.1'
 
