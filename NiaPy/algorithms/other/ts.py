@@ -16,7 +16,9 @@ def TabuSearchF(task, SR=None, TL_size=25, rnd=rand):
 	x_f = task.eval(x)
 	while not task.stopCond():
 		# Generate neigours
-		# get best neignour
+		# evaluate x not in ts
+		# get best of of evaluated
+		# compare new best with best
 		pass
 	return x, x_f
 

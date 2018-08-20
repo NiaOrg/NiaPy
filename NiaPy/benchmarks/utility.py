@@ -100,7 +100,7 @@ class OptimizationType(Enum):
 	MAXIMIZATION = -1.0
 
 class Task(Utility):
-	def __init__(self, D, nFES, nGEN, benchmark=None, o=None, fo=None, M=None, fM=None, optF=None, optType=OptimizationType.MINIMIZATION):
+	def __init__(self, D, nFES, nGEN, benchmark=None, o=None, fo=None, M=None, fM=None, optF=None, optType=OptimizationType.MINIMIZATION, **ukw):
 		r"""Initialize task class for optimization.
 
 		Arguments:
@@ -116,6 +116,9 @@ class Task(Utility):
 		"""
 		Utility.__init__(self)
 		self.benchmark = self.get_benchmark(benchmark) if benchmark != None else None
+		if self.benchmark != None:
+			self.Lower, self.Upper = fullArray(self.benchmark.Lower, self.D), fullArray(self.benchmark.Upper, self.D)
+			self.bRange = fabs(self.Upper - self.Lower)
 		self.D = D  # dimension of the problem
 		self.Iters, self.nGEN = 0, nGEN if nGEN != None else 10000
 		self.Evals, self.nFES = 0, nFES
@@ -123,8 +126,6 @@ class Task(Utility):
 		self.o = o if isinstance(o, ndarray) or o == None else asarray(o)
 		self.M = M if isinstance(M, ndarray) or M == None else asarray(M)
 		self.fo, self.fM, self.optF = fo, fM, optF
-		self.Lower, self.Upper = fullArray(self.benchmark.Lower, self.D), fullArray(self.benchmark.Upper, self.D)
-		self.bRange = fabs(self.Upper - self.Lower)
 		self.optType = optType
 
 	def stopCond(self):
@@ -216,5 +217,18 @@ class TaskConvPlot(Task):
 			self.ax.set_ylim(minx_fs + 1, maxx_fs + 1)
 		self.line.set_data(self.iters, self.x_fs)
 		return self.line,
+
+class TaskComposition(Task):
+	def __init__(self, benchmarks=None, rho=None, lamb=None, bias=None, **kwargs):
+		r"""Initialization of compisite function problem
+
+		Arguments:
+		benchmarks {array} of {problems} -- optimization function to use in composition
+		delta {array} of {real} --
+		lamb {array} of {real} --
+		bias {array} of {real} --
+		"""
+		Task.__init__(self, **kwargs)
+		# TODO
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

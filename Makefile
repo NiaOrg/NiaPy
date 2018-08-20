@@ -18,7 +18,7 @@ ENV := .venv
 PYTHON = python
 # Set command for python version
 ifeq ($(TPV),T)
-	COMM = --python $(shell $(PYTHON) -c "print(__import__('sys').version_info.major)").$(shell $(PYTHON) -c "print(__import__('sys').version_info.minor)").$(shell $(PYTHON) -c "print(__import__('sys').version_info.micro)")
+	COMM = --python $(shell $(PYTHON) -c "import sys; print('%d.%d.%d' % (sys.version_info.major, sys.version_info.minor, sys.version_info.micro))")
 	# VERSION = $(shell $(PYTHON) -V | cut -d" " -f2)
 endif
 
