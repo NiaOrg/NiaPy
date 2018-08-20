@@ -3,26 +3,34 @@
 # It will be removed when package is published on PyPI
 import sys
 sys.path.append('../')
-sys.path.append('cec14')
+sys.path.append('cec2014')
 # End of fix
 
 import random
 import logging
 from numpy import asarray
 from margparser import getDictArgs
+from NiaPy.algorithms.basic import ArtificialBeeColonyAlgorithm
+from NiaPy.algorithms.basic import BatAlgorithm
+from NiaPy.algorithms.basic import CamelAlgorithm
 from NiaPy.algorithms.basic import DifferentialEvolutionAlgorithm
+from NiaPy.algorithms.basic import FireflyAlgorithm
+from NiaPy.algorithms.basic import FlowerPollinationAlgorithm
+from NiaPy.algorithms.basic import GeneticAlgorithm
+from NiaPy.algorithms.basic import GravitationalSearchAlgorithm
+from NiaPy.algorithms.basic import GlowwormSwarmOptimization
+from NiaPy.algorithms.basic import HarmonySearch, HarmonySearchV1
+from NiaPy.algorithms.basic import KrillHerdV11
+from NiaPy.algorithms.basic import MonkeyKingEvolutionV1, MonkeyKingEvolutionV2, MonkeyKingEvolutionV3
 from NiaPy.algorithms.basic import ParticleSwarmAlgorithm
 from NiaPy.algorithms.basic import SineCosineAlgorithm
-from NiaPy.algorithms.basic import CamelAlgorithm
 from NiaPy.algorithms.basic import CovarianceMaatrixAdaptionEvolutionStrategy
-from NiaPy.algorithms.basic import MonkeyKingEvolutionV1, MonkeyKingEvolutionV2, MonkeyKingEvolutionV3
-from NiaPy.algorithms.basic import HarmonySearch, HarmonySearchV1
 from NiaPy.algorithms.basic import BareBonesFireworksAlgorithm, EnhancedFireworksAlgorithm, DynamicFireworksAlgorithm, DynamicFireworksAlgorithmGauss, FireworksAlgorithm
 from NiaPy.algorithms.modified import SelfAdaptiveDifferentialEvolutionAlgorithm, DynNPSelfAdaptiveDifferentialEvolutionAlgorithm
 from NiaPy.algorithms.other import MultipleTrajectorySearch, MultipleTrajectorySearchV1
 from NiaPy.algorithms.other import AnarchicSocietyOptimization
 from NiaPy.benchmarks.utility import Task, TaskConvPrint, TaskConvPlot, OptimizationType
-from function_call import run_fun
+from cec2014 import run_fun
 
 logging.basicConfig()
 logger = logging.getLogger('examples')
@@ -33,8 +41,8 @@ random.seed(1234)
 
 class MinMB(object):
 	def __init__(self, fnum=1):
-		self.Lower = -10
-		self.Upper = 10
+		self.Lower = -100
+		self.Upper = 100
 		self.fnum = fnum
 
 	def function(self):
@@ -49,19 +57,19 @@ class MaxMB(MinMB):
 
 def simple_example(alg, fnum=1, runs=10, D=10, nFES=50000, nGEN=5000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kwu):
 	for i in range(runs):
-		task = Task(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc(3))
+		task = Task(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc(fnum))
 		algo = alg(seed=seed, task=task)
 		Best = algo.run()
 		logger.info('%s %s' % (Best[0], Best[1]))
 
 def logging_example(alg, fnum=1, D=10, nFES=50000, nGEN=5000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **ukw):
-	task = TaskConvPrint(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc(3))
+	task = TaskConvPrint(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc(fnum))
 	algo = alg(seed=seed, task=task)
 	best = algo.run()
 	logger.info('%s %s' % (best[0], best[1]))
 
 def plot_example(alg, fnum=1, D=10, nFES=50000, nGEN=5000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kwy):
-	task = TaskConvPlot(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc())
+	task = TaskConvPlot(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc(fnum))
 	algo = alg(seed=seed, task=task)
 	best = algo.run()
 	logger.info('%s %s' % (best[0], best[1]))
@@ -73,23 +81,31 @@ def getOptType(strtype):
 	else: return None
 
 if __name__ == '__main__':
-	# algo = DifferentialEvolutionAlgorithm
-	# algo = ParticleSwarmAlgorithm
-	# algo = SineCosineAlgorithm
+	# algo = ArtificialBeeColonyAlgorithm
+	# algo = BatAlgorithm
 	# algo = CamelAlgorithm
-	# algo = MultipleTrajectorySearch
-	# algo = MultipleTrajectorySearchV1
-	# algo = CovarianceMaatrixAdaptionEvolutionStrategy
+	# algo = DifferentialEvolutionAlgorithm
+	# algo = FireflyAlgorithm
+	# algo = FlowerPollinationAlgorithm
+	# algo = GeneticAlgorithm
+	# algo = GravitationalSearchAlgorithm
+	# algo = GlowwormSwarmOptimization
+	# algo = HarmonySearch
+	# algo = HarmonySearchV1
+	# algo = KrillHerdV11
 	# algo = MonkeyKingEvolutionV1
 	# algo = MonkeyKingEvolutionV2
 	# algo = MonkeyKingEvolutionV3
-	# algo = HarmonySearch
-	# algo = HarmonySearchV1
-	algo = BareBonesFireworksAlgorithm
+	# algo = ParticleSwarmAlgorithm
+	# algo = SineCosineAlgorithm
+	# algo = MultipleTrajectorySearch
+	# algo = MultipleTrajectorySearchV1
+	# algo = CovarianceMaatrixAdaptionEvolutionStrategy
+	# algo = BareBonesFireworksAlgorithm
 	# algo = FireworksAlgorithm
 	# algo = EnhancedFireworksAlgorithm
 	# algo = DynamicFireworksAlgorithm
-	# algo = DynamicFireworksAlgorithmGauss
+	algo = DynamicFireworksAlgorithmGauss
 	# algo = SelfAdaptiveDifferentialEvolutionAlgorithm
 	# algo = DynNPSelfAdaptiveDifferentialEvolutionAlgorithm
 	# algo = AnarchicSocietyOptimization

@@ -9,19 +9,19 @@
             "cec14_test_func.h"
         ],
         "extra_compile_args": [
-            "-std=c++14"
+            "-std=c++17"
         ],
         "include_dirs": [
             "/usr/lib/python3.7/site-packages/numpy/core/include"
         ],
         "language": "c++",
-        "name": "function_call",
+        "name": "cec2014",
         "sources": [
-            "function_call.pyx",
+            "cec2014.pyx",
             "cec14_test_func.cpp"
         ]
     },
-    "module_name": "function_call"
+    "module_name": "cec2014"
 }
 END: Cython Metadata */
 
@@ -598,8 +598,8 @@ static CYTHON_INLINE float __PYX_NAN() {
   #endif
 #endif
 
-#define __PYX_HAVE__function_call
-#define __PYX_HAVE_API__function_call
+#define __PYX_HAVE__cec2014
+#define __PYX_HAVE_API__cec2014
 /* Early includes */
 #include <string.h>
 #include <stdio.h>
@@ -831,7 +831,7 @@ static const char *__pyx_filename;
 
 
 static const char *__pyx_f[] = {
-  "function_call.pyx",
+  "cec2014.pyx",
   "__init__.pxd",
   "type.pxd",
 };
@@ -1122,16 +1122,16 @@ typedef npy_clongdouble __pyx_t_5numpy_clongdouble_t;
  * cdef inline object PyArray_MultiIterNew1(a):
  */
 typedef npy_cdouble __pyx_t_5numpy_complex_t;
-struct __pyx_opt_args_13function_call_run_fun;
+struct __pyx_opt_args_7cec2014_run_fun;
 
-/* "function_call.pyx":14
- *     double runtest(double*, int, int)
+/* "cec2014.pyx":12
+ * 	double runtest(double*, int, int)
  * 
  * cpdef double run_fun(np.ndarray[double, ndim=1, mode='c'] x, int fnum=1):             # <<<<<<<<<<<<<<
- *     # x = np.zeros((10,), dtype=np.double)
- *     # print (runtest(&x[0], 10, fnum))
+ * 	return runtest(&x[0], len(x), fnum)
+ * 
  */
-struct __pyx_opt_args_13function_call_run_fun {
+struct __pyx_opt_args_7cec2014_run_fun {
   int __pyx_n;
   int fnum;
 };
@@ -1610,14 +1610,14 @@ static PyTypeObject *__pyx_ptype_5numpy_ufunc = 0;
 static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *, char *, char *, int *); /*proto*/
 static CYTHON_INLINE int __pyx_f_5numpy_import_array(void); /*proto*/
 
-/* Module declarations from 'function_call' */
-static double __pyx_f_13function_call_run_fun(PyArrayObject *, int __pyx_skip_dispatch, struct __pyx_opt_args_13function_call_run_fun *__pyx_optional_args); /*proto*/
+/* Module declarations from 'cec2014' */
+static double __pyx_f_7cec2014_run_fun(PyArrayObject *, int __pyx_skip_dispatch, struct __pyx_opt_args_7cec2014_run_fun *__pyx_optional_args); /*proto*/
 static __Pyx_TypeInfo __Pyx_TypeInfo_double = { "double", NULL, sizeof(double), { 0 }, 0, 'R', 0, 0 };
-#define __Pyx_MODULE_NAME "function_call"
-extern int __pyx_module_is_main_function_call;
-int __pyx_module_is_main_function_call = 0;
+#define __Pyx_MODULE_NAME "cec2014"
+extern int __pyx_module_is_main_cec2014;
+int __pyx_module_is_main_cec2014 = 0;
 
-/* Implementation of 'function_call' */
+/* Implementation of 'cec2014' */
 static PyObject *__pyx_builtin_ValueError;
 static PyObject *__pyx_builtin_range;
 static PyObject *__pyx_builtin_RuntimeError;
@@ -1662,7 +1662,7 @@ static PyObject *__pyx_n_s_range;
 static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_kp_u_unknown_dtype_code_in_numpy_pxd;
 static PyObject *__pyx_n_s_x;
-static PyObject *__pyx_pf_13function_call_run_fun(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_x, int __pyx_v_fnum); /* proto */
+static PyObject *__pyx_pf_7cec2014_run_fun(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_x, int __pyx_v_fnum); /* proto */
 static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info, int __pyx_v_flags); /* proto */
 static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info); /* proto */
 static PyObject *__pyx_tuple_;
@@ -1676,16 +1676,16 @@ static PyObject *__pyx_tuple__8;
 static PyObject *__pyx_tuple__9;
 /* Late includes */
 
-/* "function_call.pyx":14
- *     double runtest(double*, int, int)
+/* "cec2014.pyx":12
+ * 	double runtest(double*, int, int)
  * 
  * cpdef double run_fun(np.ndarray[double, ndim=1, mode='c'] x, int fnum=1):             # <<<<<<<<<<<<<<
- *     # x = np.zeros((10,), dtype=np.double)
- *     # print (runtest(&x[0], 10, fnum))
+ * 	return runtest(&x[0], len(x), fnum)
+ * 
  */
 
-static PyObject *__pyx_pw_13function_call_1run_fun(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static double __pyx_f_13function_call_run_fun(PyArrayObject *__pyx_v_x, CYTHON_UNUSED int __pyx_skip_dispatch, struct __pyx_opt_args_13function_call_run_fun *__pyx_optional_args) {
+static PyObject *__pyx_pw_7cec2014_1run_fun(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static double __pyx_f_7cec2014_run_fun(PyArrayObject *__pyx_v_x, CYTHON_UNUSED int __pyx_skip_dispatch, struct __pyx_opt_args_7cec2014_run_fun *__pyx_optional_args) {
   int __pyx_v_fnum = ((int)1);
   __Pyx_LocalBuf_ND __pyx_pybuffernd_x;
   __Pyx_Buffer __pyx_pybuffer_x;
@@ -1706,14 +1706,16 @@ static double __pyx_f_13function_call_run_fun(PyArrayObject *__pyx_v_x, CYTHON_U
   __pyx_pybuffernd_x.rcbuffer = &__pyx_pybuffer_x;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_x.rcbuffer->pybuffer, (PyObject*)__pyx_v_x, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 14, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_x.rcbuffer->pybuffer, (PyObject*)__pyx_v_x, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 12, __pyx_L1_error)
   }
   __pyx_pybuffernd_x.diminfo[0].strides = __pyx_pybuffernd_x.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_x.diminfo[0].shape = __pyx_pybuffernd_x.rcbuffer->pybuffer.shape[0];
 
-  /* "function_call.pyx":18
- *     # print (runtest(&x[0], 10, fnum))
- *     # x = np.full((100,), 1.0, dtype=np.double)
- *     return runtest(&x[0], len(x), fnum)             # <<<<<<<<<<<<<<
+  /* "cec2014.pyx":13
+ * 
+ * cpdef double run_fun(np.ndarray[double, ndim=1, mode='c'] x, int fnum=1):
+ * 	return runtest(&x[0], len(x), fnum)             # <<<<<<<<<<<<<<
+ * 
+ * # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
  */
   __pyx_t_1 = 0;
   __pyx_t_2 = -1;
@@ -1723,18 +1725,18 @@ static double __pyx_f_13function_call_run_fun(PyArrayObject *__pyx_v_x, CYTHON_U
   } else if (unlikely(__pyx_t_1 >= __pyx_pybuffernd_x.diminfo[0].shape)) __pyx_t_2 = 0;
   if (unlikely(__pyx_t_2 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_2);
-    __PYX_ERR(0, 18, __pyx_L1_error)
+    __PYX_ERR(0, 13, __pyx_L1_error)
   }
-  __pyx_t_3 = PyObject_Length(((PyObject *)__pyx_v_x)); if (unlikely(__pyx_t_3 == ((Py_ssize_t)-1))) __PYX_ERR(0, 18, __pyx_L1_error)
+  __pyx_t_3 = PyObject_Length(((PyObject *)__pyx_v_x)); if (unlikely(__pyx_t_3 == ((Py_ssize_t)-1))) __PYX_ERR(0, 13, __pyx_L1_error)
   __pyx_r = runtest((&(*__Pyx_BufPtrCContig1d(double *, __pyx_pybuffernd_x.rcbuffer->pybuffer.buf, __pyx_t_1, __pyx_pybuffernd_x.diminfo[0].strides))), __pyx_t_3, __pyx_v_fnum);
   goto __pyx_L0;
 
-  /* "function_call.pyx":14
- *     double runtest(double*, int, int)
+  /* "cec2014.pyx":12
+ * 	double runtest(double*, int, int)
  * 
  * cpdef double run_fun(np.ndarray[double, ndim=1, mode='c'] x, int fnum=1):             # <<<<<<<<<<<<<<
- *     # x = np.zeros((10,), dtype=np.double)
- *     # print (runtest(&x[0], 10, fnum))
+ * 	return runtest(&x[0], len(x), fnum)
+ * 
  */
 
   /* function exit code */
@@ -1745,7 +1747,7 @@ static double __pyx_f_13function_call_run_fun(PyArrayObject *__pyx_v_x, CYTHON_U
     __Pyx_ErrFetch(&__pyx_type, &__pyx_value, &__pyx_tb);
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_x.rcbuffer->pybuffer);
   __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
-  __Pyx_WriteUnraisable("function_call.run_fun", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
+  __Pyx_WriteUnraisable("cec2014.run_fun", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
   __pyx_r = 0;
   goto __pyx_L2;
   __pyx_L0:;
@@ -1756,8 +1758,8 @@ static double __pyx_f_13function_call_run_fun(PyArrayObject *__pyx_v_x, CYTHON_U
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_13function_call_1run_fun(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_13function_call_1run_fun(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_7cec2014_1run_fun(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_7cec2014_1run_fun(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyArrayObject *__pyx_v_x = 0;
   int __pyx_v_fnum;
   PyObject *__pyx_r = 0;
@@ -1790,7 +1792,7 @@ static PyObject *__pyx_pw_13function_call_1run_fun(PyObject *__pyx_self, PyObjec
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "run_fun") < 0)) __PYX_ERR(0, 14, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "run_fun") < 0)) __PYX_ERR(0, 12, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -1803,21 +1805,21 @@ static PyObject *__pyx_pw_13function_call_1run_fun(PyObject *__pyx_self, PyObjec
     }
     __pyx_v_x = ((PyArrayObject *)values[0]);
     if (values[1]) {
-      __pyx_v_fnum = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_fnum == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 14, __pyx_L3_error)
+      __pyx_v_fnum = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_fnum == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 12, __pyx_L3_error)
     } else {
       __pyx_v_fnum = ((int)1);
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("run_fun", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 14, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("run_fun", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 12, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("function_call.run_fun", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cec2014.run_fun", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_x), __pyx_ptype_5numpy_ndarray, 1, "x", 0))) __PYX_ERR(0, 14, __pyx_L1_error)
-  __pyx_r = __pyx_pf_13function_call_run_fun(__pyx_self, __pyx_v_x, __pyx_v_fnum);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_x), __pyx_ptype_5numpy_ndarray, 1, "x", 0))) __PYX_ERR(0, 12, __pyx_L1_error)
+  __pyx_r = __pyx_pf_7cec2014_run_fun(__pyx_self, __pyx_v_x, __pyx_v_fnum);
 
   /* function exit code */
   goto __pyx_L0;
@@ -1828,13 +1830,13 @@ static PyObject *__pyx_pw_13function_call_1run_fun(PyObject *__pyx_self, PyObjec
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_13function_call_run_fun(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_x, int __pyx_v_fnum) {
+static PyObject *__pyx_pf_7cec2014_run_fun(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_x, int __pyx_v_fnum) {
   __Pyx_LocalBuf_ND __pyx_pybuffernd_x;
   __Pyx_Buffer __pyx_pybuffer_x;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   double __pyx_t_1;
-  struct __pyx_opt_args_13function_call_run_fun __pyx_t_2;
+  struct __pyx_opt_args_7cec2014_run_fun __pyx_t_2;
   PyObject *__pyx_t_3 = NULL;
   __Pyx_RefNannySetupContext("run_fun", 0);
   __pyx_pybuffer_x.pybuffer.buf = NULL;
@@ -1843,14 +1845,14 @@ static PyObject *__pyx_pf_13function_call_run_fun(CYTHON_UNUSED PyObject *__pyx_
   __pyx_pybuffernd_x.rcbuffer = &__pyx_pybuffer_x;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_x.rcbuffer->pybuffer, (PyObject*)__pyx_v_x, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 14, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_x.rcbuffer->pybuffer, (PyObject*)__pyx_v_x, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 12, __pyx_L1_error)
   }
   __pyx_pybuffernd_x.diminfo[0].strides = __pyx_pybuffernd_x.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_x.diminfo[0].shape = __pyx_pybuffernd_x.rcbuffer->pybuffer.shape[0];
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_2.__pyx_n = 1;
   __pyx_t_2.fnum = __pyx_v_fnum;
-  __pyx_t_1 = __pyx_f_13function_call_run_fun(__pyx_v_x, 0, &__pyx_t_2); 
-  __pyx_t_3 = PyFloat_FromDouble(__pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 14, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7cec2014_run_fun(__pyx_v_x, 0, &__pyx_t_2); 
+  __pyx_t_3 = PyFloat_FromDouble(__pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 12, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_r = __pyx_t_3;
   __pyx_t_3 = 0;
@@ -1865,7 +1867,7 @@ static PyObject *__pyx_pf_13function_call_run_fun(CYTHON_UNUSED PyObject *__pyx_
     __Pyx_ErrFetch(&__pyx_type, &__pyx_value, &__pyx_tb);
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_x.rcbuffer->pybuffer);
   __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
-  __Pyx_AddTraceback("function_call.run_fun", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cec2014.run_fun", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   goto __pyx_L2;
   __pyx_L0:;
@@ -4339,24 +4341,24 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_ufunc(void) {
 }
 
 static PyMethodDef __pyx_methods[] = {
-  {"run_fun", (PyCFunction)__pyx_pw_13function_call_1run_fun, METH_VARARGS|METH_KEYWORDS, 0},
+  {"run_fun", (PyCFunction)__pyx_pw_7cec2014_1run_fun, METH_VARARGS|METH_KEYWORDS, 0},
   {0, 0, 0, 0}
 };
 
 #if PY_MAJOR_VERSION >= 3
 #if CYTHON_PEP489_MULTI_PHASE_INIT
 static PyObject* __pyx_pymod_create(PyObject *spec, PyModuleDef *def); /*proto*/
-static int __pyx_pymod_exec_function_call(PyObject* module); /*proto*/
+static int __pyx_pymod_exec_cec2014(PyObject* module); /*proto*/
 static PyModuleDef_Slot __pyx_moduledef_slots[] = {
   {Py_mod_create, (void*)__pyx_pymod_create},
-  {Py_mod_exec, (void*)__pyx_pymod_exec_function_call},
+  {Py_mod_exec, (void*)__pyx_pymod_exec_cec2014},
   {0, NULL}
 };
 #endif
 
 static struct PyModuleDef __pyx_moduledef = {
     PyModuleDef_HEAD_INIT,
-    "function_call",
+    "cec2014",
     0, /* m_doc */
   #if CYTHON_PEP489_MULTI_PHASE_INIT
     0, /* m_size */
@@ -4627,11 +4629,11 @@ static int __Pyx_modinit_function_import_code(void) {
 
 
 #if PY_MAJOR_VERSION < 3
-__Pyx_PyMODINIT_FUNC initfunction_call(void) CYTHON_SMALL_CODE; /*proto*/
-__Pyx_PyMODINIT_FUNC initfunction_call(void)
+__Pyx_PyMODINIT_FUNC initcec2014(void) CYTHON_SMALL_CODE; /*proto*/
+__Pyx_PyMODINIT_FUNC initcec2014(void)
 #else
-__Pyx_PyMODINIT_FUNC PyInit_function_call(void) CYTHON_SMALL_CODE; /*proto*/
-__Pyx_PyMODINIT_FUNC PyInit_function_call(void)
+__Pyx_PyMODINIT_FUNC PyInit_cec2014(void) CYTHON_SMALL_CODE; /*proto*/
+__Pyx_PyMODINIT_FUNC PyInit_cec2014(void)
 #if CYTHON_PEP489_MULTI_PHASE_INIT
 {
   return PyModuleDef_Init(&__pyx_moduledef);
@@ -4671,7 +4673,7 @@ bad:
 }
 
 
-static int __pyx_pymod_exec_function_call(PyObject *__pyx_pyinit_module)
+static int __pyx_pymod_exec_cec2014(PyObject *__pyx_pyinit_module)
 #endif
 #endif
 {
@@ -4692,7 +4694,7 @@ if (!__Pyx_RefNanny) {
       Py_FatalError("failed to import 'refnanny' module");
 }
 #endif
-  __Pyx_RefNannySetupContext("__Pyx_PyMODINIT_FUNC PyInit_function_call(void)", 0);
+  __Pyx_RefNannySetupContext("__Pyx_PyMODINIT_FUNC PyInit_cec2014(void)", 0);
   if (__Pyx_check_binary_version() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_empty_tuple = PyTuple_New(0); if (unlikely(!__pyx_empty_tuple)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_empty_bytes = PyBytes_FromStringAndSize("", 0); if (unlikely(!__pyx_empty_bytes)) __PYX_ERR(0, 1, __pyx_L1_error)
@@ -4728,7 +4730,7 @@ if (!__Pyx_RefNanny) {
   Py_INCREF(__pyx_m);
   #else
   #if PY_MAJOR_VERSION < 3
-  __pyx_m = Py_InitModule4("function_call", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
+  __pyx_m = Py_InitModule4("cec2014", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
   #else
   __pyx_m = PyModule_Create(&__pyx_moduledef);
   #endif
@@ -4747,14 +4749,14 @@ if (!__Pyx_RefNanny) {
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
-  if (__pyx_module_is_main_function_call) {
+  if (__pyx_module_is_main_cec2014) {
     if (PyObject_SetAttrString(__pyx_m, "__name__", __pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(0, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "function_call")) {
-      if (unlikely(PyDict_SetItemString(modules, "function_call", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "cec2014")) {
+      if (unlikely(PyDict_SetItemString(modules, "cec2014", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
     }
   }
   #endif
@@ -4775,9 +4777,9 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "function_call.pyx":1
+  /* "cec2014.pyx":1
  * import numpy as np             # <<<<<<<<<<<<<<
- * cimport numpy as np  # for np.ndarray
+ * cimport numpy as np
  * 
  */
   __pyx_t_1 = __Pyx_Import(__pyx_n_s_numpy, 0, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
@@ -4785,18 +4787,18 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_np, __pyx_t_1) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "function_call.pyx":6
- * # Numpy must be initialized. When using numpy from C or Cython you must
- * # _always_ do that, or you will have segfaults
+  /* "cec2014.pyx":4
+ * cimport numpy as np
+ * 
  * np.import_array()             # <<<<<<<<<<<<<<
  * 
  * cdef extern from "numpy/arrayobject.h":
  */
-  __pyx_t_2 = __pyx_f_5numpy_import_array(); if (unlikely(__pyx_t_2 == ((int)-1))) __PYX_ERR(0, 6, __pyx_L1_error)
+  __pyx_t_2 = __pyx_f_5numpy_import_array(); if (unlikely(__pyx_t_2 == ((int)-1))) __PYX_ERR(0, 4, __pyx_L1_error)
 
-  /* "function_call.pyx":1
+  /* "cec2014.pyx":1
  * import numpy as np             # <<<<<<<<<<<<<<
- * cimport numpy as np  # for np.ndarray
+ * cimport numpy as np
  * 
  */
   __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
@@ -4819,11 +4821,11 @@ if (!__Pyx_RefNanny) {
   __Pyx_XDECREF(__pyx_t_1);
   if (__pyx_m) {
     if (__pyx_d) {
-      __Pyx_AddTraceback("init function_call", 0, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init cec2014", 0, __pyx_lineno, __pyx_filename);
     }
     Py_DECREF(__pyx_m); __pyx_m = 0;
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init function_call");
+    PyErr_SetString(PyExc_ImportError, "init cec2014");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();

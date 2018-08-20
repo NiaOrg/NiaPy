@@ -2,7 +2,7 @@
 # pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, len-as-condition, singleton-comparison, arguments-differ
 import logging
 from math import ceil
-from numpy import apply_along_axis, vectorize, argmin, inf, where, ones, tril
+from numpy import apply_along_axis, vectorize, argmin, inf, where, full, tril
 from NiaPy.algorithms.algorithm import Algorithm, Individual
 
 logging.basicConfig()
@@ -143,7 +143,7 @@ class MonkeyKingEvolutionV3(MonkeyKingEvolutionV1):
 		if X_f[igb] <= x_f: x, x_f = X[igb], X_f[igb]
 		return x, x_f
 
-	def neg(self, x): return 0.0 if x == 1 else 1.0
+	def neg(self, x): return 0.0 if x == 1.0 else 1.0
 
 	def runTask(self, task):
 		X = task.Lower + task.bRange * self.rand([self.NP, task.D])
@@ -152,7 +152,7 @@ class MonkeyKingEvolutionV3(MonkeyKingEvolutionV1):
 		while not task.stopCond():
 			X_gb = x_gb + self.FC * X[self.Rand.choice(len(X), c)] - X[self.Rand.choice(len(X), c)]
 			x_gb, x_f_gb = self.eval(X_gb, x_gb, x_f_gb, task)
-			M = ones([self.NP, task.D])
+			M = full([self.NP, task.D], 1.0)
 			for i in range(k): M[i * task.D:(i + 1) * task.D] = tril(M[i * task.D:(i + 1) * task.D])
 			for i in range(self.NP): self.Rand.shuffle(M[i])
 			X = M * X + vectorize(self.neg)(M) * x_gb

@@ -31,7 +31,7 @@ class BatAlgorithm(Algorithm):
 		if kwargs.get('name', None) == None: Algorithm.__init__(self, name=kwargs.get('name', 'BatAlgorithm'), sName=kwargs.get('sName', 'BA'), **kwargs)
 		else: Algorithm.__init__(self, **kwargs)
 
-	def setParameters(self, NP, A, r, Qmin, Qmax, **ukwargs):
+	def setParameters(self, NP=40, A=0.5, r=0.5, Qmin=0.0, Qmax=2.0, **ukwargs):
 		r"""Set the parameters of the algorithm.
 
 		Arguments:

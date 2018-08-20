@@ -4,9 +4,9 @@ from distutils.extension import Extension
 import numpy
 
 extensions = [
-    Extension('function_call', ['function_call.pyx', 'cec14_test_func.cpp'],
+    Extension('cec2015', ['cec2015.pyx', 'cec15_test_func.cpp'],
               include_dirs=[numpy.get_include()],
-              extra_compile_args=['-std=c++14'],
+              extra_compile_args=['-std=c++17'],
               language='c++'
               ),
 ]

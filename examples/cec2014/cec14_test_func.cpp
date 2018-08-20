@@ -43,7 +43,7 @@ double* cec14_test_func(double *x, double *f, int nx, int mx,int func_num) {
 		if (!(nx==2||nx==10||nx==20||nx==30||nx==50||nx==100)) printf("\nError: Test functions are only defined for D=2,10,20,30,50,100.\n");
 		if (nx==2&&((func_num>=17&&func_num<=22)||(func_num>=29&&func_num<=30))) printf("\nError: hf01,hf02,hf03,hf04,hf05,hf06,cf07&cf08 are NOT defined for D=2.\n");
 		/* Load Matrix M*/
-		sprintf(FileName, "./input_data/M_%d_D%d.txt", func_num, nx);
+		sprintf(FileName, "cec2014/input_data/M_%d_D%d.txt", func_num, nx);
 		fpt = fopen(FileName,"r");
 		if (fpt==NULL) printf("\n Error: Cannot open input file for reading M\n");
 		if (func_num<23) {
@@ -57,7 +57,7 @@ double* cec14_test_func(double *x, double *f, int nx, int mx,int func_num) {
 		}
 		fclose(fpt);
 		/* Load shift_data */
-		sprintf(FileName, "./input_data/shift_data_%d.txt", func_num);
+		sprintf(FileName, "cec2014/input_data/shift_data_%d.txt", func_num);
 		fpt = fopen(FileName,"r");
 		if (fpt==NULL) printf("\n Error: Cannot open input file for reading o\n");
 		if (func_num<23) {
@@ -81,7 +81,7 @@ double* cec14_test_func(double *x, double *f, int nx, int mx,int func_num) {
 		fclose(fpt);
 		/* Load Shuffle_data */
 		if (func_num>=17&&func_num<=22) {
-			sprintf(FileName, "./input_data/shuffle_data_%d_D%d.txt", func_num, nx);
+			sprintf(FileName, "cec2014/input_data/shuffle_data_%d_D%d.txt", func_num, nx);
 			fpt = fopen(FileName,"r");
 			if (fpt==NULL) printf("\n Error: Cannot open input file for reading s\n");
 			SS=(int *)malloc(nx*sizeof(int));
@@ -91,7 +91,7 @@ double* cec14_test_func(double *x, double *f, int nx, int mx,int func_num) {
 			}	
 			fclose(fpt);
 		} else if (func_num==29||func_num==30) {
-			sprintf(FileName, "./input_data/shuffle_data_%d_D%d.txt", func_num, nx);
+			sprintf(FileName, "cec2014/input_data/shuffle_data_%d_D%d.txt", func_num, nx);
 			fpt = fopen(FileName,"r");
 			if (fpt==NULL) printf("\n Error: Cannot open input file for reading s1\n");
 			SS=(int *)malloc(nx*cf_num*sizeof(int));
@@ -104,7 +104,6 @@ double* cec14_test_func(double *x, double *f, int nx, int mx,int func_num) {
 		n_flag=nx;
 		func_flag=func_num;
 		ini_flag=1;
-		// printf("Function has been initialized!\n");
 	}
 	for (i = 0; i < mx; i++) {
 		switch(func_num) {
