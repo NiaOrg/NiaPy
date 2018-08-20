@@ -3,13 +3,16 @@
 # It will be removed when package is published on PyPI
 import sys
 sys.path.append('../')
+sys.path.append('cec14')
 # End of fix
 
 import random
 import logging
+from numpy import asarray
 from margparser import getArgs
 from NiaPy.algorithms.basic import DifferentialEvolutionAlgorithm
 from NiaPy.benchmarks.utility import TaskConvPrint, TaskConvPlot, OptimizationType
+from function_call import run_fun
 
 logging.basicConfig()
 logger = logging.getLogger('examples')
@@ -20,14 +23,11 @@ random.seed(1234)
 
 class MinMB(object):
 	def __init__(self):
-		self.Lower = -5.12
-		self.Upper = 5.12
+		self.Lower = -10
+		self.Upper = 10
 
 	def function(self):
-		def evaluate(D, sol):
-			val = 0.0
-			for i in range(D): val = val + sol[i] * sol[i]
-			return val
+		def evaluate(D, sol): return run_fun(asarray(sol), 2)
 		return evaluate
 
 class MaxMB(MinMB):

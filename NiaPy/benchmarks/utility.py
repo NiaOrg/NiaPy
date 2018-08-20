@@ -115,13 +115,13 @@ class Task(Utility):
 		optF {real} -- Value added to benchmark function return
 		"""
 		Utility.__init__(self)
+		self.D = D  # dimension of the problem
+		self.Iters, self.nGEN = 0, nGEN if nGEN != None else 10000
+		self.Evals, self.nFES = 0, nFES
 		self.benchmark = self.get_benchmark(benchmark) if benchmark != None else None
 		if self.benchmark != None:
 			self.Lower, self.Upper = fullArray(self.benchmark.Lower, self.D), fullArray(self.benchmark.Upper, self.D)
 			self.bRange = fabs(self.Upper - self.Lower)
-		self.D = D  # dimension of the problem
-		self.Iters, self.nGEN = 0, nGEN if nGEN != None else 10000
-		self.Evals, self.nFES = 0, nFES
 		self.Fun = self.benchmark.function() if benchmark != None else None
 		self.o = o if isinstance(o, ndarray) or o == None else asarray(o)
 		self.M = M if isinstance(M, ndarray) or M == None else asarray(M)
