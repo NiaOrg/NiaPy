@@ -11,6 +11,7 @@ import logging
 from numpy import asarray
 from margparser import getArgs
 from NiaPy.algorithms.basic import DifferentialEvolutionAlgorithm
+from NiaPy.algorithms.other import MultipleTrajectorySearch, MultipleTrajectorySearchV1
 from NiaPy.benchmarks.utility import TaskConvPrint, TaskConvPlot, OptimizationType
 from function_call import run_fun
 
@@ -44,7 +45,8 @@ def simple_example(runs=10, D=10, nFES=50000, seed=None, optType=OptimizationTyp
 
 def logging_example(D=10, nFES=50000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB):
 	task = TaskConvPrint(D=D, nFES=nFES, nGEN=50000, optType=optType, benchmark=optFunc())
-	algo = DifferentialEvolutionAlgorithm(NP=40, F=0.5, CR=0.9, seed=seed, task=task)
+	# algo = DifferentialEvolutionAlgorithm(NP=40, F=0.5, CR=0.9, seed=seed, task=task)
+	algo = MultipleTrajectorySearch(seed=seed, task=task)
 	best = algo.run()
 	logger.info('%s %s' % (best[0], best[1]))
 
