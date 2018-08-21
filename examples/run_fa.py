@@ -51,35 +51,36 @@ def run_defult():
 	plt.title('Convergence plot')
 	plt.show()
 
-def simple_example(runs=10, D=10, nFES=50000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **no):
-	for i in range(10):
-		algo = FireflyAlgorithm(D=D, NP=20, nFES=nFES, alpha=0.5, betamin=0.2, gamma=1.0, seed=seed, optType=optType, benchmark=optFunc())
-		Best = algo.run()
-		logger.info('%s %s' % (Best[0], Best[1]))
+def simple_example(alg, runs=10, D=10, nFES=50000, nGEN=10000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kn):
+	for i in range(runs):
+		task = Task(D=D, nFES=nFES, optType=optType, benchmark=optFunc())
+		algo = alg(seed=seed, task=task)
+		best = algo.run()
+		logger.info('%s %s' % (best[0], best[1]))
 
-def logging_example(D=10, nFES=50000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **no):
-	task = TaskConvPrint(D=D, nFES=nFES, nGEN=50000, optType=optType, benchmark=optFunc())
-	algo = FireflyAlgorithm(NP=20, alpha=0.5, betamin=0.2, gamma=1.0, seed=seed, task=task)
+def logging_example(alg, D=10, nFES=50000, nGEN=100000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kn):
+	task = TaskConvPrint(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc())
+	algo = alg(seed=seed, task=task)
 	best = algo.run()
 	logger.info('%s %s' % (best[0], best[1]))
 
-def plot_example(D=10, nFES=50000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **no):
-	task = TaskConvPlot(D=D, nFES=nFES, nGEN=10000, optType=optType, benchmark=optFunc())
-	algo = FireflyAlgorithm(NP=20, alpha=0.5, betamin=0.2, gamma=1.0, seed=seed, task=task)
+def plot_example(alg, D=10, nFES=50000, nGEN=100000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kn):
+	task = TaskConvPlot(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc())
+	algo = alg(seed=seed, task=task)
 	best = algo.run()
 	logger.info('%s %s' % (best[0], best[1]))
 	input('Press [enter] to continue')
 
-def getOptType(strtype):
-	if strtype == 'min': return OptimizationType.MINIMIZATION, MinMB
-	elif strtype == 'max': return OptimizationType.MAXIMIZATION, MaxMB
+def getOptType(otype):
+	if otype == OptimizationType.MINIMIZATION: return MinMB
+	elif otype == OptimizationType.MAXIMIZATION: return MaxMB
 	else: return None
 
 if __name__ == '__main__':
-	pargs = getDictArgs(sys.argv[1:])
-	optType, optFunc = getOptType(pargs.pop('optType', 'min'))
-	if not pargs['runType']: simple_example(optType=optType, optFunc=optFunc, **pargs)
-	elif pargs['runType'] == 'log': logging_example(optType=optType, optFunc=optFunc, **pargs)
-	elif pargs['runType'] == 'plot': plot_example(optType=optType, optFunc=optFunc, **pargs)
+	pargs, algo = getDictArgs(sys.argv[1:]), FireflyAlgorithm
+	optFunc = getOptType(pargs['optType'])
+	if not pargs['runType']: simple_example(algo, optFunc=optFunc, **pargs)
+	elif pargs['runType'] == 'log': logging_example(algo, optFunc=optFunc, **pargs)
+	elif pargs['runType'] == 'plot': plot_example(algo, optFunc=optFunc, **pargs)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

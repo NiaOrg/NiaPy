@@ -168,7 +168,7 @@ class Task(Utility):
 		r"""Repair solution and put the solution in the random position inside of the bounds of problem.
 
 		Arguments:
-		x {array}
+		x {array} -- soution to check and repair if needed
 		"""
 		ir = where(x > self.Upper)
 		x[ir] = rnd.uniform(self.Lower[ir], self.Upper[ir])
@@ -229,6 +229,6 @@ class TaskComposition(Task):
 		bias {array} of {real} --
 		"""
 		Task.__init__(self, **kwargs)
-		# TODO
+		# TODO uporaba vec funkcij na enkrat
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

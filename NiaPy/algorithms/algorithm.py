@@ -43,6 +43,26 @@ class Algorithm:
 		"""
 		pass
 
+	def setTask(self, task):
+		r"""Set the benchmark for the algorithm.
+
+		**Arguments**:
+		bech {Task} -- Optimization task to perform
+		"""
+		self.task = task
+		return self
+
+	def setBechmark(self, bech):
+		r"""Set the benchmark for the algorithm.
+
+		**Arguments**:
+		bech {Task} -- Optimization task to perform
+
+		**See**:
+		Algorithm.setTask
+		"""
+		return self.setTask(bech)
+
 	def rand(self, D=1):
 		r"""Get random numbers of shape D in range from 0 to 1.
 

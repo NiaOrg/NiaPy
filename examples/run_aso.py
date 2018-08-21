@@ -8,7 +8,7 @@ sys.path.append('../')
 import random
 import logging
 from NiaPy.algorithms.other import AnarchicSocietyOptimization
-from NiaPy.util import TaskConvPrint, TaskConvPlot, OptimizationType, getDictArgs
+from NiaPy.util import Task, TaskConvPrint, TaskConvPlot, OptimizationType, getDictArgs
 
 logging.basicConfig()
 logger = logging.getLogger('examples')
@@ -55,16 +55,16 @@ def plot_example(alg, D=10, nFES=50000, nGEN=100000, seed=None, optType=Optimiza
 	logger.info('%s %s' % (best[0], best[1]))
 	input('Press [enter] to continue')
 
-def getOptType(strtype):
-	if strtype == 'min': return OptimizationType.MINIMIZATION, MinMB
-	elif strtype == 'max': return OptimizationType.MAXIMIZATION, MaxMB
+def getOptType(otype):
+	if otype == OptimizationType.MINIMIZATION: return MinMB
+	elif otype == OptimizationType.MAXIMIZATION: return MaxMB
 	else: return None
 
 if __name__ == '__main__':
-	algo, pargs = getDictArgs(sys.argv[1:]), AnarchicSocietyOptimization
-	optType, optFunc = getOptType(pargs.pop('optType', 'min'))
-	if not pargs['runType']: simple_example(algo, optType=optType, optFunc=optFunc, **pargs)
-	elif pargs['runType'] == 'log': logging_example(algo, optType=optType, optFunc=optFunc, **pargs)
-	elif pargs['runType'] == 'plot': plot_example(algo, optType=optType, optFunc=optFunc, **pargs)
+	pargs, algo = getDictArgs(sys.argv[1:]), AnarchicSocietyOptimization
+	optFunc = getOptType(pargs['optType'])
+	if not pargs['runType']: simple_example(algo, optFunc=optFunc, **pargs)
+	elif pargs['runType'] == 'log': logging_example(algo, optFunc=optFunc, **pargs)
+	elif pargs['runType'] == 'plot': plot_example(algo, optFunc=optFunc, **pargs)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

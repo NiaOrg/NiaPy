@@ -8,7 +8,7 @@ sys.path.append('../')
 import random
 import logging
 from NiaPy.algorithms.basic import KrillHerdV2
-from NiaPy.util import TaskConvPrint, TaskConvPlot
+from NiaPy.util import Task, TaskConvPrint, TaskConvPlot, OptimizationType, getDictArgs
 
 logging.basicConfig()
 logger = logging.getLogger('examples')
@@ -17,7 +17,7 @@ logger.setLevel('INFO')
 # For reproducive results
 random.seed(1234)
 
-class MyBenchmark(object):
+class MinMB(object):
 	def __init__(self):
 		self.Lower = -11
 		self.Upper = 11
@@ -25,33 +25,46 @@ class MyBenchmark(object):
 	def function(self):
 		def evaluate(D, sol):
 			val = 0.0
-			for i in range(D): val += sol[i] ** 2
+			for i in range(D): val = val + sol[i] * sol[i]
 			return val
 		return evaluate
 
-def simple_example(runs=10, D=10, nFES=50000):
+class MaxMB(MinMB):
+	def function(self):
+		f = MinMB.function(self)
+		def e(D, sol): return -f(D, sol)
+		return e
+
+def simple_example(alg, runs=10, D=10, nFES=50000, nGEN=10000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kn):
 	for i in range(runs):
-		algo = KrillHerdV2(D=D, nFES=nFES, n=15, C_a=1, C_r=0.5, benchmark=MyBenchmark())
+		task = Task(D=D, nFES=nFES, optType=optType, benchmark=optFunc())
+		algo = alg(seed=seed, task=task)
 		best = algo.run()
 		logger.info('%s %s' % (best[0], best[1]))
 
-def logging_example(D=10, nFES=50000):
-	task = TaskConvPrint(D=D, nFES=nFES, nGEN=10000, benchmark=MyBenchmark())
-	algo = KrillHerdV2(task=task, n=15, C_a=1, C_r=0.5)
+def logging_example(alg, D=10, nFES=50000, nGEN=100000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kn):
+	task = TaskConvPrint(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc())
+	algo = alg(seed=seed, task=task)
 	best = algo.run()
 	logger.info('%s %s' % (best[0], best[1]))
 
-def plot_example(D=10, nFES=50000):
-	task = TaskConvPlot(D=D, nFES=nFES, nGEN=10000, benchmark=MyBenchmark())
-	algo = KrillHerdV2(task=task, n=15, C_a=1, C_r=0.5)
+def plot_example(alg, D=10, nFES=50000, nGEN=100000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kn):
+	task = TaskConvPlot(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc())
+	algo = alg(seed=seed, task=task)
 	best = algo.run()
 	logger.info('%s %s' % (best[0], best[1]))
 	input('Press [enter] to continue')
 
+def getOptType(otype):
+	if otype == OptimizationType.MINIMIZATION: return MinMB
+	elif otype == OptimizationType.MAXIMIZATION: return MaxMB
+	else: return None
+
 if __name__ == '__main__':
-	if len(sys.argv) <= 1: simple_example(1)
-	elif sys.argv[1] == 'plot': plot_example(D=10 if len(sys.argv) <= 2 else int(sys.argv[2]), nFES=50000 if len(sys.argv) <= 3 else int(sys.argv[3]))
-	elif sys.argv[1] == 'log': logging_example(D=10 if len(sys.argv) <= 2 else int(sys.argv[2]), nFES=50000 if len(sys.argv) <= 3 else int(sys.argv[3]))
-	else: simple_example(runs=sys.argv[1], D=10 if len(sys.argv) <= 2 else int(sys.argv[2]), nFES=50000 if len(sys.argv) <= 3 else int(sys.argv[3]))
+	pargs, algo = getDictArgs(sys.argv[1:]), KrillHerdV2
+	optFunc = getOptType(pargs['optType'])
+	if not pargs['runType']: simple_example(algo, optFunc=optFunc, **pargs)
+	elif pargs['runType'] == 'log': logging_example(algo, optFunc=optFunc, **pargs)
+	elif pargs['runType'] == 'plot': plot_example(algo, optFunc=optFunc, **pargs)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

@@ -9,7 +9,7 @@ import logging
 import json
 import datetime
 import xlsxwriter
-import numpy as np
+from numpy import amin, amax, median, mean, std
 from NiaPy import algorithms, benchmarks, util
 
 __all__ = ['algorithms', 'benchmarks', 'util']
@@ -115,7 +115,7 @@ class Runner:
 		self.D = D
 		self.NP = NP
 		self.nFES = nFES
-		self.nRuns = nRuns
+		self.nGEN = nRuns
 		self.useAlgorithms = useAlgorithms
 		self.useBenchmarks = useBenchmarks
 		self.A = kwargs.pop('A', 0.5)
@@ -162,94 +162,97 @@ class Runner:
 		self.k = kwargs.pop('k', 15)
 		self.results = {}
 
-	def __algorithmFactory(self, name, benchmark):
-		bench = util.Utility().get_benchmark(benchmark)
+	def benchmarkFactory(self, name): return util.Task(D=self.D, nFES=self.nFES, nGEN=self.nGEN, optType=util.OptimizationType.MINIMIZATION, benchmark=name)
+
+	def algorithmFactory(self, name):
 		algorithm = None
 		if name == 'BatAlgorithm':
-			algorithm = algorithms.basic.BatAlgorithm(D=self.D, NP=self.NP, nFES=self.nFES, A=self.A, r=self.r, Qmin=self.Qmin, Qmax=self.Qmax, benchmark=bench)
+			algorithm = algorithms.basic.BatAlgorithm(NP=self.NP, A=self.A, r=self.r, Qmin=self.Qmin, Qmax=self.Qmax)
 		elif name == 'DifferentialEvolutionAlgorithm':
-			algorithm = algorithms.basic.DifferentialEvolutionAlgorithm(D=self.D, NP=self.NP, nFES=self.nFES, F=self.F, CR=self.CR, benchmark=bench)
+			algorithm = algorithms.basic.DifferentialEvolutionAlgorithm(NP=self.NP, F=self.F, CR=self.CR)
 		elif name == 'FireflyAlgorithm':
-			algorithm = algorithms.basic.FireflyAlgorithm(D=self.D, NP=self.NP, nFES=self.nFES, alpha=self.alpha, betamin=self.betamin, gamma=self.gamma, benchmark=bench)
+			algorithm = algorithms.basic.FireflyAlgorithm(NP=self.NP, alpha=self.alpha, betamin=self.betamin, gamma=self.gamma)
 		elif name == 'FlowerPollinationAlgorithm':
-			algorithm = algorithms.basic.FlowerPollinationAlgorithm(D=self.D, NP=self.NP, nFES=self.nFES, p=self.p, beta=self.beta, benchmark=bench)
+			algorithm = algorithms.basic.FlowerPollinationAlgorithm(NP=self.NP, p=self.p, beta=self.beta)
 		elif name == 'GreyWolfOptimizer':
-			algorithm = algorithms.basic.GreyWolfOptimizer(D=self.D, NP=self.NP, nFES=self.nFES, benchmark=bench)
+			algorithm = algorithms.basic.GreyWolfOptimizer(NP=self.NP, nFES=self.nFES)
 		elif name == 'ArtificialBeeColonyAlgorithm':
-			algorithm = algorithms.basic.ArtificialBeeColonyAlgorithm(D=self.D, NP=self.NP, nFES=self.nFES, Limit=self.Limit, benchmark=bench)
+			algorithm = algorithms.basic.ArtificialBeeColonyAlgorithm(NP=self.NP, nFES=self.nFES, Limit=self.Limit)
 		elif name == 'GeneticAlgorithm':
-			algorithm = algorithms.basic.GeneticAlgorithm(D=self.D, NP=self.NP, nFES=self.nFES, Ts=self.Ts, Mr=self.Mr, Cr=self.CR, benchmark=bench)
+			algorithm = algorithms.basic.GeneticAlgorithm(NP=self.NP, Ts=self.Ts, Mr=self.Mr, Cr=self.CR)
 		elif name == 'ParticleSwarmAlgorithm':
-			algorithm = algorithms.basic.ParticleSwarmAlgorithm(D=self.D, NP=self.NP, nFES=self.nFES, C1=self.C1, C2=self.C2, w=self.w, vMin=self.vMin, vMax=self.vMax, benchmark=bench)
+			algorithm = algorithms.basic.ParticleSwarmAlgorithm(NP=self.NP, C1=self.C1, C2=self.C2, w=self.w, vMin=self.vMin, vMax=self.vMax)
 		elif name == 'HybridBatAlgorithm':
-			algorithm = algorithms.modified.HybridBatAlgorithm(D=self.D, NP=self.NP, nFES=self.nFES, A=self.A, r=self.r, F=self.F, CR=self.CR, Qmin=self.Qmin, Qmax=self.Qmax, benchmark=bench)
+			algorithm = algorithms.modified.HybridBatAlgorithm(NP=self.NP, A=self.A, r=self.r, F=self.F, CR=self.CR, Qmin=self.Qmin, Qmax=self.Qmax)
 		elif name == 'SelfAdaptiveDifferentialEvolutionAlgorithm':
-			algorithm = algorithms.modified.SelfAdaptiveDifferentialEvolutionAlgorithm(D=self.D, NP=self.NP, nFES=self.nFES, F=self.F, F_l=self.F_l, F_u=self.F_u, Tao1=self.Tao1, CR=self.CR, Tao2=self.Tao2, benchmark=bench)
+			algorithm = algorithms.modified.SelfAdaptiveDifferentialEvolutionAlgorithm(NP=self.NP, F=self.F, F_l=self.F_l, F_u=self.F_u, Tao1=self.Tao1, CR=self.CR, Tao2=self.Tao2)
 		elif name == 'CamelAlgorithm':
-			algorithm = algorithms.basic.CamelAlgorithm(NP=self.NP, D=self.D, nGEN=self.nRuns, nFES=self.nFES, omega=self.omega, mu=self.mu, alpha=self.alpha, S_init=self.S_init, E_init=self.E_init, T_min=self.T_min, T_max=self.T_max, benchmark=bench)
+			algorithm = algorithms.basic.CamelAlgorithm(NP=self.NP, omega=self.omega, mu=self.mu, alpha=self.alpha, S_init=self.S_init, E_init=self.E_init, T_min=self.T_min, T_max=self.T_max)
 		elif name == 'BareBonesFireworksAlgorithm':
-			algorithm = algorithms.basic.BareBonesFireworksAlgorithm(D=self.D, nFES=self.nFES, n=self.n, C_a=self.C_a, C_r=self.C_r, benchmark=bench)
+			algorithm = algorithms.basic.BareBonesFireworksAlgorithm(n=self.n, C_a=self.C_a, C_r=self.C_r)
 		elif name == 'MonkeyKingEvolutionV1':
-			algorithm = algorithms.basic.MonkeyKingEvolutionV1(D=self.D, nFES=self.nFES, NP=self.NP, C=self.C, R=self.R, FC=self.FC, benchmark=bench)
+			algorithm = algorithms.basic.MonkeyKingEvolutionV1(NP=self.NP, C=self.C, R=self.R, FC=self.FC)
 		elif name == 'MonkeyKingEvolutionV2':
-			algorithm = algorithms.basic.MonkeyKingEvolutionV2(D=self.D, nFES=self.nFES, C=self.C, R=self.R, FC=self.FC, benchmark=bench)
+			algorithm = algorithms.basic.MonkeyKingEvolutionV2(C=self.C, R=self.R, FC=self.FC)
 		elif name == 'MonkeyKingEvolutionV3':
-			algorithm = algorithms.basic.MonkeyKingEvolutionV3(D=self.D, nFES=self.nFES, C=self.C, R=self.R, FC=self.FC, benchmark=bench)
+			algorithm = algorithms.basic.MonkeyKingEvolutionV3(C=self.C, R=self.R, FC=self.FC)
 		elif name == 'EvolutionStrategy1p1':
-			algorithm = algorithms.basic.EvolutionStrategy1p1(D=self.D, nFES=self.nFES, k=self.k, c_a=self.C_a, c_r=self.C_r, benchmark=bench)
+			algorithm = algorithms.basic.EvolutionStrategy1p1(D=self.D, nFES=self.nFES, k=self.k, c_a=self.C_a, c_r=self.C_r)
 		elif name == 'EvolutionStrategyMp1':
-			algorithm = algorithms.basic.EvolutionStrategyMp1(D=self.D, nFES=self.nFES, mu=self.muES, k=self.k, c_a=self.C_a, c_r=self.C_r, benchmark=bench)
+			algorithm = algorithms.basic.EvolutionStrategyMp1(mu=self.muES, k=self.k, c_a=self.C_a, c_r=self.C_r)
 		elif name == 'SineCosineAlgorithm':
-			algorithm = algorithms.basic.SineCosineAlgorithm(D=self.D, nFES=self.nFES, nGEN=self.nRuns, NP=self.NP, a=self.a, Rmin=self.Rmin, Rmax=self.Rmax, benchmark=bench)
+			algorithm = algorithms.basic.SineCosineAlgorithm(NP=self.NP, a=self.a, Rmin=self.Rmin, Rmax=self.Rmax)
 		elif name == 'HarmonySearch':
-			algorithm = algorithms.basic.HarmonySearch(D=self.D, nFES=self.nFES, nGEN=self.nRuns, benchmark=bench)
+			algorithm = algorithms.basic.HarmonySearch()
 		elif name == 'HarmonySearchV1':
-			algorithm = algorithms.basic.HarmonySearchV1(D=self.D, nFES=self.nFES, nGEN=self.nRuns, benchmark=bench)
+			algorithm = algorithms.basic.HarmonySearchV1()
 		elif name == 'GlowwormSwarmOptimization':
-			algorithm = algorithms.basic.GlowwormSwarmOptimization(D=self.D, nFES=self.nFES, nGEN=self.nRuns, benchmark=bench)
+			algorithm = algorithms.basic.GlowwormSwarmOptimization()
 		elif name == 'GlowwormSwarmOptimizationV1':
-			algorithm = algorithms.basic.GlowwormSwarmOptimizationV1(D=self.D, nFES=self.nFES, nGEN=self.nRuns, benchmark=bench)
+			algorithm = algorithms.basic.GlowwormSwarmOptimizationV1()
 		elif name == 'GlowwormSwarmOptimizationV2':
-			algorithm = algorithms.basic.GlowwormSwarmOptimizationV2(D=self.D, nFES=self.nFES, nGEN=self.nRuns, benchmark=bench)
+			algorithm = algorithms.basic.GlowwormSwarmOptimizationV2()
 		elif name == 'GlowwormSwarmOptimizationV3':
-			algorithm = algorithms.basic.GlowwormSwarmOptimizationV3(D=self.D, nFES=self.nFES, nGEN=self.nRuns, benchmark=bench)
+			algorithm = algorithms.basic.GlowwormSwarmOptimizationV3()
 		elif name == 'KrillHerdV1':
-			algorithm = algorithms.basic.KrillHerdV1(D=self.D, nFES=self.nFES, nGEN=self.nRuns, benchmark=bench)
+			algorithm = algorithms.basic.KrillHerdV1()
 		elif name == 'KrillHerdV2':
-			algorithm = algorithms.basic.KrillHerdV2(D=self.D, nFES=self.nFES, nGEN=self.nRuns, benchmark=bench)
+			algorithm = algorithms.basic.KrillHerdV2()
 		elif name == 'KrillHerdV3':
-			algorithm = algorithms.basic.KrillHerdV3(D=self.D, nFES=self.nFES, nGEN=self.nRuns, benchmark=bench)
+			algorithm = algorithms.basic.KrillHerdV3()
 		elif name == 'KrillHerdV4':
-			algorithm = algorithms.basic.KrillHerdV4(D=self.D, nFES=self.nFES, nGEN=self.nRuns, benchmark=bench)
+			algorithm = algorithms.basic.KrillHerdV4()
 		elif name == 'KrillHerdV11':
-			algorithm = algorithms.basic.KrillHerdV11(D=self.D, nFES=self.nFES, nGEN=self.nRuns, benchmark=bench)
+			algorithm = algorithms.basic.KrillHerdV11()
 		elif name == 'FireworksAlgorithm':
-			algorithm = algorithms.basic.FireworksAlgorithm(D=self.D, nFES=self.nFES, nGEN=self.nRuns, benchmark=bench)
+			algorithm = algorithms.basic.FireworksAlgorithm()
 		elif name == 'EnhancedFireworksAlgorithm':
-			algorithm = algorithms.basic.EnhancedFireworksAlgorithm(D=self.D, nFES=self.nFES, nGEN=self.nRuns, benchmark=bench)
+			algorithm = algorithms.basic.EnhancedFireworksAlgorithm()
 		elif name == 'DynamicFireworksAlgorithm':
-			algorithm = algorithms.basic.DynamicFireworksAlgorithm(D=self.D, nFES=self.nFES, nGEN=self.nRuns, benchmark=bench)
+			algorithm = algorithms.basic.DynamicFireworksAlgorithm()
 		elif name == 'MultipleTrajectorySearch':
-			algorithm = algorithms.other.MultipleTrajectorySearch(D=self.D, nFES=self.nFES, benchmark=bench)
+			algorithm = algorithms.other.MultipleTrajectorySearch()
 		elif name == 'MultipleTrajectorySearchV1':
-			algorithm = algorithms.other.MultipleTrajectorySearchV1(D=self.D, nFES=self.nFES, benchmark=bench)
+			algorithm = algorithms.other.MultipleTrajectorySearchV1()
 		elif name == 'NelderMeadMethod':
-			algorithm = algorithms.other.NelderMeadMethod(D=self.D, nFES=self.nFES, benchmark=bench)
+			algorithm = algorithms.other.NelderMeadMethod()
 		elif name == 'HillClimbAlgorithm':
-			algorithm = algorithms.other.HillClimbAlgorithm(D=self.D, nFES=self.nFES, benchmark=bench)
+			algorithm = algorithms.other.HillClimbAlgorithm()
 		elif name == 'SimulatedAnnealing':
-			algorithm = algorithms.other.SimulatedAnnealing(D=self.D, nFES=self.nFES, benchmark=bench)
+			algorithm = algorithms.other.SimulatedAnnealing()
 		elif name == 'GravitationalSearchAlgorithm':
-			algorithm = algorithms.basic.GravitationalSearchAlgorithm(D=self.D, nFES=self.nFES, benchmark=bench)
+			algorithm = algorithms.basic.GravitationalSearchAlgorithm()
 		elif name == 'AnarchicSocietyOptimization':
-			algorithm = algorithms.other.AnarchicSocietyOptimization(D=self.D, nFES=self.nFES, benchmark=bench)
+			algorithm = algorithms.other.AnarchicSocietyOptimization()
 		elif name == 'CovarianceMaatrixAdaptionEvolutionStrategy':
-			algorithm = algorithms.basic.CovarianceMaatrixAdaptionEvolutionStrategy(D=self.D, nFES=self.nFES, benchmark=bench)
+			algorithm = algorithms.basic.CovarianceMaatrixAdaptionEvolutionStrategy()
 		elif name == 'TabuSearch':
-			algorithm = algorithms.other.TabuSearch(D=self.D, nFES=self.nFES, benchmark=bench)
+			algorithm = algorithms.other.TabuSearch()
 		else:
 			raise TypeError('Passed benchmark is not defined!')
 		return algorithm
+
+	def __algorithmFactory(self, aname, bname): return self.algorithmFactory(aname).setTask(self.benchmarkFactory(bname))
 
 	@classmethod
 	def __createExportDir(cls):
@@ -270,22 +273,15 @@ class Runner:
 		self.__createExportDir()
 		workbook = xlsxwriter.Workbook(self.__generateExportName('xlsx'))
 		worksheet = workbook.add_worksheet()
-		row = 0
-		col = 0
-		nRuns = 0
+		row, col, nRuns = 0, 0, 0
 		for alg in self.results:
-			worksheet.write(row, col, alg)
-			col += 1
+			_, col = worksheet.write(row, col, alg),  col + 1
 			for bench in self.results[alg]:
 				worksheet.write(row, col, bench)
 				nRuns = len(self.results[alg][bench])
-				for i in range(len(self.results[alg][bench])):
-					row += 1
-					worksheet.write(row, col, self.results[alg][bench][i])
-				row -= len(self.results[alg][bench])  # jump back up
-				col += 1
-			row += 1 + nRuns  # jump down to row after previous results
-			col -= 1 + len(self.results[alg])
+				for i in range(len(self.results[alg][bench])): _, row = worksheet.write(row, col, self.results[alg][bench][i]), row + 1
+				row, col = row - len(self.results[alg][bench]), col + 1
+			row, col = row + 1 + nRuns, col - 1 + len(self.results[alg])
 		workbook.close()
 		logger.info('Export to XLSX completed!')
 
@@ -306,8 +302,7 @@ class Runner:
 			for alg in self.results:
 				for _i in range(len(self.results[alg])): begin_tabular += 'S'
 				firstLine = '   &'
-				for benchmark in self.results[alg].keys():
-					firstLine += '  &   \\multicolumn{1}{c}{\\textbf{' + benchmark + '}}'
+				for benchmark in self.results[alg].keys(): firstLine += '  &   \\multicolumn{1}{c}{\\textbf{' + benchmark + '}}'
 				firstLine += ' \\\\'
 				break
 			begin_tabular += '}\n'
@@ -325,11 +320,11 @@ class Runner:
 						else: shortAlg = only_upper(alg)
 						line += '\\textbf{' + shortAlg + '} &   ' + metric
 						for benchmark in self.results[alg]:
-							if metric == 'Best':	line += '   &   ' + str(np.amin(self.results[alg][benchmark]))
-							elif metric == 'Median': line += '   &   ' + str(np.median(self.results[alg][benchmark]))
-							elif metric == 'Worst': line += '   &   ' + str(np.amax(self.results[alg][benchmark]))
-							elif metric == 'Mean': line += '   &   ' + str(np.mean(self.results[alg][benchmark]))
-							else: line += '   &   ' + str(np.std(self.results[alg][benchmark]))
+							if metric == 'Best':	line += '   &   ' + str(amin(self.results[alg][benchmark]))
+							elif metric == 'Median': line += '   &   ' + str(median(self.results[alg][benchmark]))
+							elif metric == 'Worst': line += '   &   ' + str(amax(self.results[alg][benchmark]))
+							elif metric == 'Mean': line += '   &   ' + str(mean(self.results[alg][benchmark]))
+							else: line += '   &   ' + str(std(self.results[alg][benchmark]))
 						line += '   \\\\'
 						outFile.write(line + '\n')
 					outFile.write('\\hline\n')
@@ -356,14 +351,11 @@ class Runner:
 			if verbose:	logger.info('Running %s...', alg)
 			for bench in self.useBenchmarks:
 				benchName = ''
-				# check if passed benchmark is class
-				if not isinstance(bench, ''.__class__):
-					# set class name as benchmark name
-					benchName = str(type(bench).__name__)
+				if not isinstance(bench, ''.__class__): benchName = str(type(bench).__name__)
 				else: benchName = bench
 				if verbose: logger.info('Running %s algorithm on %s benchmark...', alg, benchName)
 				self.results[alg][benchName] = []
-				for _i in range(self.nRuns):
+				for _ in range(self.nGEN):
 					algorithm = self.__algorithmFactory(alg, bench)
 					self.results[alg][benchName].append(algorithm.run())
 			if verbose: logger.info('---------------------------------------------------')
