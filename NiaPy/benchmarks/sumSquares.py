@@ -1,11 +1,12 @@
 # encoding=utf8
 # pylint: disable=anomalous-backslash-in-string, old-style-class
 import math
+from NiaPy.benchmarks import Benchmark
 
 __all__ = ['SumSquares']
 
 
-class SumSquares:
+class SumSquares(Benchmark):
     r"""Implementation of Sum Squares functions.
 
     Date: 2018

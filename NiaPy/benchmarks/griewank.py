@@ -1,11 +1,12 @@
 # encoding=utf8
 # pylint: disable=anomalous-backslash-in-string, mixed-indentation, multiple-statements, line-too-long, old-style-class
 from math import sqrt, cos
+from NiaPy.benchmarks import Benchmark
 
 __all__ = ['Griewank', 'ExpandedGriewankPlusRosenbrock']
 
 
-class Griewank:
+class Griewank(Benchmark):
 	r"""Implementation of Griewank function.
 
 	Date: 2018
@@ -54,7 +55,7 @@ class Griewank:
 			return val1 - val2 + 1.0
 		return evaluate
 
-class ExpandedGriewankPlusRosenbrock:
+class ExpandedGriewankPlusRosenbrock(Benchmark):
 	r"""Implementation of Expanded Griewank's plus Rosenbrock function.
 
 	Date: 2018

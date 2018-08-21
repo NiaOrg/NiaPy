@@ -1,11 +1,12 @@
 # encoding=utf8
 # pylint: disable=anomalous-backslash-in-string, old-style-class
 import math
+from NiaPy.benchmarks import Benchmark
 
 __all__ = ['Ridge']
 
 
-class Ridge:
+class Ridge(Benchmark):
     r"""Implementation of Ridge function.
 
     Date: 2018

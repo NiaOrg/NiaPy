@@ -3,10 +3,11 @@
 """Implementations of Weierstrass functions."""
 
 from math import pi, cos
+from NiaPy.benchmarks import Benchmark
 
 __all__ = ['Weierstrass']
 
-class Weierstrass:
+class Weierstrass(Benchmark):
 	r"""Implementations of Weierstrass functions.
 
 	Date: 2018

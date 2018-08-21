@@ -3,10 +3,11 @@
 """Implementations of Infinity function."""
 
 from numpy import sin
+from NiaPy.benchmarks import Benchmark
 
 __all__ = ['Infinity']
 
-class Infinity:
+class Infinity(Benchmark):
 	r"""Implementations of Infinity function.
 
 	Date: 2018

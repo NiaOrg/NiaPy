@@ -2,9 +2,11 @@
 # pylint: disable=mixed-indentation, multiple-statements, old-style-class
 """Implementations of Perm function."""
 
+from NiaPy.benchmarks import Benchmark
+
 __all__ = ['Perm']
 
-class Perm:
+class Perm(Benchmark):
 	r"""Implementations of Perm functions.
 
 	Date: 2018

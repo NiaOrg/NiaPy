@@ -3,10 +3,11 @@
 """Implementations of Cosine mixture functions."""
 
 from numpy import cos, pi
+from NiaPy.benchmarks import Benchmark
 
 __all__ = ['CosineMixture']
 
-class CosineMixture:
+class CosineMixture(Benchmark):
 	r"""Implementations of Cosine mixture function.
 
 	Date: 2018

@@ -1,11 +1,12 @@
 # encoding=utf8
 # pylint: disable=anomalous-backslash-in-string, old-style-class
 import math
+from NiaPy.benchmarks import Benchmark
 
 __all__ = ['Rastrigin']
 
 
-class Rastrigin:
+class Rastrigin(Benchmark):
     r"""Implementation of Rastrigin benchmark function.
 
     Date: 2018

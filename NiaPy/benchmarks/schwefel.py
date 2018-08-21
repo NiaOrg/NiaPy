@@ -3,11 +3,12 @@
 """Implementations of Schwefels functions."""
 
 from math import sin, fmod, fabs, sqrt
+from NiaPy.benchmarks import Benchmark
 
 __all__ = ['Schwefel', 'Schwefel221', 'Schwefel222', 'ModifiedSchwefel', 'ExpandedScaffer']
 
 
-class Schwefel:
+class Schwefel(Benchmark):
 	r"""Implementation of Schewel function.
 
 	Date: 2018
@@ -53,7 +54,7 @@ class Schwefel:
 			return 418.9829 * D - val
 		return evaluate
 
-class Schwefel221:
+class Schwefel221(Benchmark):
 	r"""Schwefel 2.21 function implementation.
 
 	Date: 2018
@@ -102,7 +103,7 @@ class Schwefel221:
 			return maximum
 		return evaluate
 
-class Schwefel222:
+class Schwefel222(Benchmark):
 	r"""Schwefel 2.22 function implementation.
 
 	Date: 2018
@@ -153,7 +154,7 @@ class Schwefel222:
 			return part1 + part2
 		return evaluate
 
-class ModifiedSchwefel:
+class ModifiedSchwefel(Benchmark):
 	r"""Implementations of Modified Schwefel functions.
 
 	Date: 2018
@@ -200,7 +201,7 @@ class ModifiedSchwefel:
 			return 418.9829 * D - val
 		return f
 
-class ExpandedScaffer:
+class ExpandedScaffer(Benchmark):
 	r"""Implementations of High Conditioned Elliptic functions.
 
 	Date: 2018

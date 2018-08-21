@@ -3,11 +3,12 @@
 """Implementations of Alpine functions."""
 
 import math
+from NiaPy.benchmarks import Benchmark
 
 __all__ = ['Alpine1', 'Alpine2']
 
 
-class Alpine1:
+class Alpine1(Benchmark):
     r"""Implementation of Alpine1 function.
 
     Date: 2018

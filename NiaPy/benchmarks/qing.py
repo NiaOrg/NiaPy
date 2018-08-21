@@ -1,11 +1,12 @@
 # encoding=utf8
 # pylint: disable=anomalous-backslash-in-string, old-style-class
 import math
+from NiaPy.benchmarks import Benchmark
 
 __all__ = ['Qing']
 
 
-class Qing:
+class Qing(Benchmark):
     r"""Implementation of Qing function.
 
     Date: 2018

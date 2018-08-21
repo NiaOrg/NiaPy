@@ -2,11 +2,12 @@
 # pylint: disable=anomalous-backslash-in-string, mixed-indentation, redefined-builtin, multiple-statements, old-style-class
 
 from numpy import abs
+from NiaPy.benchmarks import Benchmark
 
 __all__ = ['Sphere', 'Sphere2', 'Sphere3']
 
 
-class Sphere:
+class Sphere(Benchmark):
 	r"""Implementation of Sphere functions.
 
 	Date: 2018
@@ -53,7 +54,7 @@ class Sphere:
 			return val
 		return evaluate
 
-class Sphere2:
+class Sphere2(Benchmark):
 	r"""Implementation of Sphere with different powers function.
 
 	Date: 2018
@@ -94,7 +95,7 @@ class Sphere2:
 			return val
 		return evaluate
 
-class Sphere3:
+class Sphere3(Benchmark):
 	r"""Implementation of rotated hyper-ellipsoid function.
 
 	Date: 2018

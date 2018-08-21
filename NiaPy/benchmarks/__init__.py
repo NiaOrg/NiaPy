@@ -39,6 +39,7 @@ from NiaPy.benchmarks.cosinemixture import CosineMixture
 from NiaPy.benchmarks.infinity import Infinity
 
 __all__ = [
+    'Benchmark',
     'Rastrigin',
     'Rosenbrock',
     'Griewank',
@@ -85,6 +86,5 @@ __all__ = [
     'DixonPrice',
     'Powell',
     'CosineMixture',
-    'Infinity',
-    'Benchmark'
+    'Infinity'
 ]

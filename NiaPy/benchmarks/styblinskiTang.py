@@ -1,11 +1,12 @@
 # encoding=utf8
 # pylint: disable=anomalous-backslash-in-string, old-style-class
 import math
+from NiaPy.benchmarks import Benchmark
 
 __all__ = ['StyblinskiTang']
 
 
-class StyblinskiTang:
+class StyblinskiTang(Benchmark):
     r"""Implementation of Styblinski-Tang functions.
 
     Date: 2018

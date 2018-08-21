@@ -2,9 +2,11 @@
 # pylint: disable=mixed-indentation, multiple-statements, old-style-class
 """Implementations of Bent Cigar functions."""
 
+from NiaPy.benchmarks import Benchmark
+
 __all__ = ['BentCigar']
 
-class BentCigar:
+class BentCigar(Benchmark):
 	r"""Implementations of Bent Cigar functions.
 
 	Date: 2018

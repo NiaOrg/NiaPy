@@ -3,10 +3,11 @@
 """Implementations of Michalewichz's function."""
 
 from numpy import sin, pi
+from NiaPy.benchmarks import Benchmark
 
 __all__ = ['Michalewicz']
 
-class Michalewicz:
+class Michalewicz(Benchmark):
 	r"""Implementations of Michalewichz's functions.
 
 	Date: 2018

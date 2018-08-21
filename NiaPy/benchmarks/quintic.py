@@ -1,11 +1,12 @@
 # encoding=utf8
 # pylint: disable=anomalous-backslash-in-string, old-style-class
 import math
+from NiaPy.benchmarks import Benchmark
 
 __all__ = ['Quintic']
 
 
-class Quintic:
+class Quintic(Benchmark):
     r"""Implementation of Quintic function.
 
     Date: 2018

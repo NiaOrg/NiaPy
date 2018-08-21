@@ -3,7 +3,7 @@
 """Implementations of Katsuura functions."""
 
 from math import fabs
-from NiaPy.benchmarks.benchmark import Benchmark
+from NiaPy.benchmarks import Benchmark
 
 __all__ = ['Katsuura']
 

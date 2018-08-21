@@ -1,11 +1,12 @@
 # encoding=utf8
 # pylint: disable=anomalous-backslash-in-string, old-style-class
 import math
+from NiaPy.benchmarks import Benchmark
 
 __all__ = ['Pinter']
 
 
-class Pinter:
+class Pinter(Benchmark):
     r"""Implementation of Pintér function.
 
     Date: 2018

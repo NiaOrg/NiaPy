@@ -2,9 +2,11 @@
 # pylint: disable=mixed-indentation, multiple-statements, line-too-long, old-style-class
 """Implementations of Zakharov function."""
 
+from NiaPy.benchmarks import Benchmark
+
 __all__ = ['Zakharov']
 
-class Zakharov:
+class Zakharov(Benchmark):
 	r"""Implementations of Zakharov functions.
 
 	Date: 2018

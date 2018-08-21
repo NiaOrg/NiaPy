@@ -2,9 +2,11 @@
 # pylint: disable=mixed-indentation, multiple-statements, old-style-class
 """Implementations of Discus functions."""
 
+from NiaPy.benchmarks import Benchmark
+
 __all__ = ['Discus']
 
-class Discus:
+class Discus(Benchmark):
 	r"""Implementations of Discus functions.
 
 	Date: 2018

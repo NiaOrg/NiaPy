@@ -1,11 +1,12 @@
 # encoding=utf8
 # pylint: disable=anomalous-backslash-in-string, old-style-class
 import math
+from NiaPy.benchmarks import Benchmark
 
 __all__ = ['Rosenbrock']
 
 
-class Rosenbrock:
+class Rosenbrock(Benchmark):
     r"""Implementation of Rosenbrock benchmark function.
 
     Date: 2018

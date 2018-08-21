@@ -2,9 +2,11 @@
 # pylint: disable=mixed-indentation, multiple-statements, line-too-long, old-style-class
 """Implementations of Dixon Price function."""
 
+from NiaPy.benchmarks import Benchmark
+
 __all__ = ['DixonPrice']
 
-class DixonPrice:
+class DixonPrice(Benchmark):
 	r"""Implementations of Dixon Price function.
 
 	Date: 2018
