@@ -8,7 +8,7 @@ sys.path.append('../')
 import random
 import logging
 from NiaPy.algorithms.other import HillClimbAlgorithm
-from NiaPy.benchmarks.utility import TaskConvPrint, TaskConvPlot
+from NiaPy.util import TaskConvPrint, TaskConvPlot
 
 logging.basicConfig()
 logger = logging.getLogger('examples')

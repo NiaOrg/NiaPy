@@ -81,11 +81,11 @@ class DifferentialEvolutionAlgorithm(Algorithm):
 
 	def runTask(self, task):
 		"""Run."""
-		pop = [Individual(task=task) for _i in range(self.Np)]
+		pop = [Individual(task=task, e=True) for _i in range(self.Np)]
 		x_b = pop[argmin([x.f for x in pop])]
 		while not task.stopCond():
 			npop = [Individual(x=self.CrossMutt(pop, i, x_b, self.F, self.CR, self.Rand), e=False) for i in range(self.Np)]
-			pop = [self.evalPopulation(np, pop[i], task) for i, np in enumerate(pop)]
+			pop = [self.evalPopulation(np, pop[i], task) for i, np in enumerate(npop)]
 			ix_b = argmin([x.f for x in pop])
 			if x_b.f > pop[ix_b].f: x_b = pop[ix_b]
 		return x_b.x, x_b.f

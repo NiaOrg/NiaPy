@@ -8,8 +8,7 @@ sys.path.append('../')
 import random
 import logging
 from NiaPy.algorithms.basic import CovarianceMaatrixAdaptionEvolutionStrategy
-from NiaPy.benchmarks.utility import TaskConvPrint, TaskConvPlot, OptimizationType
-from margparser import getDictArgs
+from NiaPy.util import TaskConvPrint, TaskConvPlot, OptimizationType, getDictArgs
 
 logging.basicConfig()
 logger = logging.getLogger('examples')
@@ -37,21 +36,22 @@ class MaxMB(MinMB):
 		def e(D, sol): return -f(D, sol)
 		return e
 
-def simple_example(runs=10, D=10, nFES=50000, nGEN=10000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kn):
+def simple_example(alg, fnum=1, runs=10, D=10, nFES=50000, nGEN=5000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kwu):
 	for i in range(runs):
-		algo = CovarianceMaatrixAdaptionEvolutionStrategy(D=D, nFES=nFES, nGEN=nGEN, n=15, C_a=1, C_r=0.5, optType=optType, benchmark=optFunc())
-		best = algo.run()
-		logger.info('%s %s' % (best[0], best[1]))
+		task = Task(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc())
+		algo = alg(seed=seed, task=task)
+		Best = algo.run()
+		logger.info('%s %s' % (Best[0], Best[1]))
 
-def logging_example(D=10, nFES=50000, nGEN=100000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kn):
+def logging_example(alg, fnum=1, D=10, nFES=50000, nGEN=5000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **ukw):
 	task = TaskConvPrint(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc())
-	algo = CovarianceMaatrixAdaptionEvolutionStrategy(task=task, n=15, C_a=1, C_r=0.5)
+	algo = alg(seed=seed, task=task)
 	best = algo.run()
 	logger.info('%s %s' % (best[0], best[1]))
 
-def plot_example(D=10, nFES=50000, nGEN=100000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kn):
+def plot_example(alg, fnum=1, D=10, nFES=50000, nGEN=5000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kwy):
 	task = TaskConvPlot(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc())
-	algo = CovarianceMaatrixAdaptionEvolutionStrategy(task=task, n=15, C_a=1, C_r=0.5)
+	algo = alg(seed=seed, task=task)
 	best = algo.run()
 	logger.info('%s %s' % (best[0], best[1]))
 	input('Press [enter] to continue')
@@ -61,11 +61,12 @@ def getOptType(strtype):
 	elif strtype == 'max': return OptimizationType.MAXIMIZATION, MaxMB
 	else: return None
 
-if __name__ == '__main__':
+if __name__ == "__main__":
+	algo = CovarianceMaatrixAdaptionEvolutionStrategy
 	pargs = getDictArgs(sys.argv[1:])
 	optType, optFunc = getOptType(pargs.pop('optType', 'min'))
-	if not pargs['runType']: simple_example(optType=optType, optFunc=optFunc, **pargs)
-	elif pargs['runType'] == 'log': logging_example(optType=optType, optFunc=optFunc, **pargs)
-	elif pargs['runType'] == 'plot': plot_example(optType=optType, optFunc=optFunc, **pargs)
+	if not pargs['runType']: simple_example(algo, optType=optType, optFunc=optFunc, **pargs)
+	elif pargs['runType'] == 'log': logging_example(algo, optType=optType, optFunc=optFunc, **pargs)
+	elif pargs['runType'] == 'plot': plot_example(algo, optType=optType, optFunc=optFunc, **pargs)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

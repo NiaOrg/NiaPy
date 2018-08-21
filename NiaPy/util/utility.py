@@ -11,7 +11,7 @@ logging.basicConfig()
 logger = logging.getLogger('NiaPy.util.utility')
 logger.setLevel('INFO')
 
-__all__ = ['Utility', 'Task', 'TaskConvPrint', 'TaskConvPlot', 'fullArray', 'TaskComposition']
+__all__ = ['Utility', 'Task', 'TaskConvPrint', 'TaskConvPlot', 'fullArray', 'TaskComposition', 'OptimizationType']
 
 def fullArray(a, D):
 	r"""Fill or create array of lengthm D, from value or value form a.

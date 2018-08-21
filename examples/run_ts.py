@@ -7,9 +7,8 @@ sys.path.append('../')
 
 import random
 import logging
-from NiaPy.algorithms.other import TabuSearchF
-from NiaPy.benchmarks.utility import Task, TaskConvPrint, TaskConvPlot, OptimizationType
-from margparser import getDictArgs
+from NiaPy.algorithms.other import TabuSearch
+from NiaPy.util import Task, TaskConvPrint, TaskConvPlot, OptimizationType, getDictArgs
 
 logging.basicConfig()
 logger = logging.getLogger('examples')
@@ -58,11 +57,12 @@ def getOptType(strtype):
 	elif strtype == 'max': return OptimizationType.MAXIMIZATION, MaxMB
 	else: return None
 
-if __name__ == '__main__':
+if __name__ == "__main__":
+	algo = TabuSearch
 	pargs = getDictArgs(sys.argv[1:])
 	optType, optFunc = getOptType(pargs.pop('optType', 'min'))
-	if not pargs['runType']: simple_example(optType=optType, optFunc=optFunc, **pargs)
-	elif pargs['runType'] == 'log': logging_example(optType=optType, optFunc=optFunc, **pargs)
-	elif pargs['runType'] == 'plot': plot_example(optType=optType, optFunc=optFunc, **pargs)
+	if not pargs['runType']: simple_example(algo, optType=optType, optFunc=optFunc, **pargs)
+	elif pargs['runType'] == 'log': logging_example(algo, optType=optType, optFunc=optFunc, **pargs)
+	elif pargs['runType'] == 'plot': plot_example(algo, optType=optType, optFunc=optFunc, **pargs)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

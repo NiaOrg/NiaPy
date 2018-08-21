@@ -8,8 +8,7 @@ sys.path.append('../')
 import random
 import logging
 from NiaPy.algorithms.basic import GravitationalSearchAlgorithm
-from NiaPy.benchmarks.utility import TaskConvPrint, TaskConvPlot, OptimizationType
-from margparser import getArgs
+from NiaPy.util import TaskConvPrint, TaskConvPlot, OptimizationType, getArgs
 
 logging.basicConfig()
 logger = logging.getLogger('examples')

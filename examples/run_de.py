@@ -7,8 +7,8 @@ sys.path.append('../')
 
 import random
 import logging
-from NiaPy.algorithms.basic import DifferentialEvolutionAlgorithm
 from NiaPy.util import TaskConvPrint, TaskConvPlot, OptimizationType, getDictArgs
+from NiaPy.algorithms.basic import DifferentialEvolutionAlgorithm
 
 logging.basicConfig()
 logger = logging.getLogger('examples')
@@ -18,14 +18,15 @@ logger.setLevel('INFO')
 random.seed(1234)
 
 class MinMB(object):
-	# FIXME
 	def __init__(self, fnum=1):
 		self.Lower = -100
 		self.Upper = 100
-		# self.fnum = fnum
 
 	def function(self):
-		# def evaluate(D, sol): return run_fun(asarray(sol), self.fnum)
+		def evaluate(D, sol):
+			v = 0.0
+			for x in sol: v += x ** 2
+			return v
 		return evaluate
 
 class MaxMB(MinMB):

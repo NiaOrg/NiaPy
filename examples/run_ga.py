@@ -8,7 +8,7 @@ sys.path.append('../')
 import random
 import logging
 from NiaPy.algorithms.basic import GeneticAlgorithm
-from NiaPy.benchmarks.utility import TaskConvPrint, TaskConvPlot
+from NiaPy.util import TaskConvPrint, TaskConvPlot
 from NiaPy.algorithms.basic.ga import MutationUros, CrossoverUros, RouletteSelection
 
 logging.basicConfig()

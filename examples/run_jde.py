@@ -8,7 +8,7 @@ sys.path.append('../')
 import random
 import logging
 from NiaPy.algorithms.modified import SelfAdaptiveDifferentialEvolutionAlgorithm
-from NiaPy.util import TaskConvPrint, TaskConvPlot, getDictArgs
+from NiaPy.util import TaskConvPrint, TaskConvPlot, getDictArgs, OptimizationType
 
 logging.basicConfig()
 logger = logging.getLogger('examples')
@@ -17,32 +17,39 @@ logger.setLevel('INFO')
 # For reproducive results
 random.seed(1234)
 
-class MyBenchmark(object):
+class MinMB(object):
 	def __init__(self):
-		self.Lower = -11
-		self.Upper = 11
+		self.Lower = -100
+		self.Upper = 100
 
 	def function(self):
 		def evaluate(D, sol):
-			val = 0.0
-			for i in range(D): val += sol[i] ** 2
-			return val
+			v = 0.0
+			for x in sol: v += x ** 2
+			return v
 		return evaluate
+
+class MaxMB(MinMB):
+	def function(self):
+		f = MinMB.function(self)
+		def e(D, sol): return -f(D, sol)
+		return e
+
 def simple_example(alg, fnum=1, runs=10, D=10, nFES=50000, nGEN=5000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kwu):
 	for i in range(runs):
-		task = Task(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc(fnum))
+		task = Task(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc())
 		algo = alg(seed=seed, task=task)
 		Best = algo.run()
 		logger.info('%s %s' % (Best[0], Best[1]))
 
 def logging_example(alg, fnum=1, D=10, nFES=50000, nGEN=5000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **ukw):
-	task = TaskConvPrint(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc(fnum))
+	task = TaskConvPrint(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc())
 	algo = alg(seed=seed, task=task)
 	best = algo.run()
 	logger.info('%s %s' % (best[0], best[1]))
 
 def plot_example(alg, fnum=1, D=10, nFES=50000, nGEN=5000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kwy):
-	task = TaskConvPlot(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc(fnum))
+	task = TaskConvPlot(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc())
 	algo = alg(seed=seed, task=task)
 	best = algo.run()
 	logger.info('%s %s' % (best[0], best[1]))
@@ -54,10 +61,11 @@ def getOptType(strtype):
 	else: return None
 
 if __name__ == "__main__":
-	pargs = getArgs(sys.argv[1:])
-	optType, optFunc = getOptType(pargs.optType)
-	if not pargs.runType: simple_example(D=pargs.D, nFES=pargs.nFES, seed=pargs.seed, optType=optType, optFunc=optFunc)
-	elif pargs.runType == 'log': logging_example(D=pargs.D, nFES=pargs.nFES, seed=pargs.seed, optType=optType, optFunc=optFunc)
-	elif pargs.runType == 'plot': plot_example(D=pargs.D, nFES=pargs.nFES, seed=pargs.seed, optType=optType, optFunc=optFunc)
+	algo = SelfAdaptiveDifferentialEvolutionAlgorithm
+	pargs = getDictArgs(sys.argv[1:])
+	optType, optFunc = getOptType(pargs.pop('optType', 'min'))
+	if not pargs['runType']: simple_example(algo, optType=optType, optFunc=optFunc, **pargs)
+	elif pargs['runType'] == 'log': logging_example(algo, optType=optType, optFunc=optFunc, **pargs)
+	elif pargs['runType'] == 'plot': plot_example(algo, optType=optType, optFunc=optFunc, **pargs)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

@@ -9,8 +9,7 @@ import random
 import logging
 import matplotlib.pyplot as plt
 from NiaPy.algorithms.basic import FireflyAlgorithm
-from NiaPy.benchmarks.utility import TaskConvPrint, TaskConvPlot, OptimizationType
-from margparser import getDictArgs
+from NiaPy.util import TaskConvPrint, TaskConvPlot, OptimizationType, getDictArgs
 
 logging.basicConfig()
 logger = logging.getLogger('examples')

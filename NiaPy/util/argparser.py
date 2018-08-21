@@ -3,8 +3,13 @@ from argparse import ArgumentParser
 
 __all__ = ['MakeArgParser', 'getArgs', 'getDictArgs']
 
+calgos = ['DifferentialEvolutionAlgorithm', 'SineCosineAlgorithm',]
+cbechs = ['Ackley', 'DixonPrice',]
+
 def MakeArgParser():
 	parser = ArgumentParser(description='Runer example.')
+	parser.add_argument('-a', '--algorithm', dest='algo', nargs='*', default=calgos[0], choices=calgos, type=str)
+	parser.add_argument('-b', '--bech', dest='bech', nargs='*', default=cbechs[0], choices=cbechs, type=str)
 	parser.add_argument('-D', dest='D', default=10, type=int)
 	parser.add_argument('-nFES', dest='nFES', default=50000, type=int)
 	parser.add_argument('-nGEN', dest='nGEN', default=5000, type=int)
