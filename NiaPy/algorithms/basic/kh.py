@@ -146,6 +146,7 @@ class KrillHerdV4(KrillHerd):
 		del d['Cr']
 		del d['Mu']
 		del d['epsilon']
+		return d
 
 	def setParameters(self, NP=50, N_max=0.01, V_f=0.02, D_max=0.002, C_t=0.93, W_n=0.42, W_f=0.38, d_s=2.63, **ukwargs): KrillHerd.setParameters(self, NP, N_max, V_f, D_max, C_t, W_n, W_f, d_s, 4, 0.2, 0.05, 1e-31, **ukwargs)
 
