@@ -60,6 +60,13 @@ class DifferentialEvolutionAlgorithm(Algorithm):
 		if kwargs.get('name', None) == None: Algorithm.__init__(self, name=kwargs.get('name', 'DifferentialEvolutionAlgorithm'), sName=kwargs.get('sName', 'DE'), **kwargs)
 		else: Algorithm.__init__(self, **kwargs)
 
+	@staticmethod
+	def typeParameters(): return {
+			'NP': lambda x: isinstance(x, int) and x > 0,
+			'F': lambda x: isinstance(x, (float, int)) and 0 < x <= 2,
+			'CR': lambda x: isinstance(x, float) and 0 <= x <= 1
+	}
+
 	def setParameters(self, NP=25, F=2, CR=0.2, CrossMutt=CrossRand1, **ukwargs):
 		r"""Set the algorithm parameters.
 

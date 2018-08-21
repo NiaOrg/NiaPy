@@ -133,6 +133,15 @@ class MultipleTrajectorySearch(Algorithm):
 		else: Algorithm.__init__(self, **kwargs)
 		self.LSs = [MTS_LS1, MTS_LS2, MTS_LS3]
 
+	@staticmethod
+	def typeParameters(): return {
+			'NP': lambda x: isinstance(x, int) and x > 0,
+			'NoLsTests': lambda x: isinstance(x, int) and x >= 0,
+			'NoLs': lambda x: isinstance(x, int) and x >= 0,
+			'NoLsBest': lambda x: isinstance(x, int) and x >= 0,
+			'NoEnabled': lambda x: isinstance(x, int) and x > 0
+	}
+
 	def setParameters(self, NP=40, NoLsTests=5, NoLs=5, NoLsBest=5, NoEnabled=17, **ukwargs):
 		r"""Set the arguments of the algorithm.
 
@@ -200,19 +209,8 @@ class MultipleTrajectorySearchV1(MultipleTrajectorySearch):
 		MultipleTrajectorySearch.__init__(self, name='MultipleTrajectorySearchV1', sName='MTSv1', **kwargs)
 		self.LSs = [MTS_LS1v1, MTS_LS2, MTS_LS3v1]
 
-	def runTask(self, task):
-		SOA = self.rand([self.M, task.D])
-		X = task.Lower + task.bRange * SOA / (self.M - 1)
-		X_f = apply_along_axis(task.eval, 1, X)
-		enable, improve, SR, grades = full(self.M, True), full(self.M, True), full([self.M, task.D], task.bRange / 2), full(self.M, 0.0)
-		xb, xb_f = self.getBest(X, X_f)
-		while not task.stopCond():
-			for i in range(self.M):
-				if not enable[i]: continue
-				enable[i], grades[i] = False, 0
-				X[i], X_f[i], xb, xb_f, k = self.GradingRun(X[i], X_f[i], xb, xb_f, improve[i], SR[i], task)
-				X[i], X_f[i], xb, xb_f, improve[i], SR[i], grades[i] = self.LsRun(k, X[i], X_f[i], xb, xb_f, improve[i], SR[i], grades[i], task)
-			enable[argsort(grades)[:self.NoEnabled]] = True
-		return xb, xb_f
+	def setParameters(self, **kwargs):
+		kwargs.pop('NoLsBest', None)
+		MultipleTrajectorySearch.setParameters(self, NoLsBest=0, **kwargs)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

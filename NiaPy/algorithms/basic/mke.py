@@ -34,6 +34,15 @@ class MonkeyKingEvolutionV1(Algorithm):
 		if kwargs.get('name', None) == None: Algorithm.__init__(self, name='MonkeyKingEvolutionV1', sName='MKEv1', **kwargs)
 		else: Algorithm.__init__(self, **kwargs)
 
+	@staticmethod
+	def typeParameters(): return {
+			'NP': lambda x: isinstance(x, int) and x > 0,
+			'F': lambda x: isinstance(x, (float, int)) and x > 0,
+			'R': lambda x: isinstance(x, (float, int)) and x > 0,
+			'C': lambda x: isinstance(x, int) and x > 0,
+			'FC': lambda x: isinstance(x, (float, int)) and x > 0
+	}
+
 	def setParameters(self, NP=40, F=0.7, R=0.3, C=3, FC=0.5, **ukwargs):
 		r"""Set the algorithm parameters.
 

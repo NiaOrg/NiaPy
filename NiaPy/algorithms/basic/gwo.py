@@ -22,6 +22,11 @@ class GreyWolfOptimizer(Algorithm):
 	"""
 	def __init__(self, **kwargs): Algorithm.__init__(self, name='GreyWolfOptimizer', sName='GWO', **kwargs)
 
+	@staticmethod
+	def typeParameters(): return {
+			'NP': lambda x: isinstance(x, int) and x > 0
+	}
+
 	def setParameters(self, NP=25, **ukwargs):
 		r"""Set the algorithm parameters.
 

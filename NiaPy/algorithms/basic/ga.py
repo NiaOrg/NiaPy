@@ -71,6 +71,14 @@ class GeneticAlgorithm(Algorithm):
 	"""
 	def __init__(self, **kwargs): Algorithm.__init__(self, name='GeneticAlgorithm', sName='GA', **kwargs)
 
+	@staticmethod
+	def typeParameters(): return {
+			'NP': lambda x: isinstance(x, int) and x > 0,
+			'Ts': lambda x: isinstance(x, int) and x > 1,
+			'Mr': lambda x: isinstance(x, float) and 0 <= x <= 1,
+			'Cr': lambda x: isinstance(x, float) and 0 <= x <= 1
+	}
+
 	def setParameters(self, NP=25, Ts=5, Mr=0.25, Cr=0.25, Selection=TurnamentSelection, Crossover=UniformCrossover, Mutation=UniformMutation, **ukwargs):
 		r"""Set the parameters of the algorithm.
 

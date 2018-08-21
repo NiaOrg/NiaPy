@@ -23,6 +23,13 @@ class FlowerPollinationAlgorithm(Algorithm):
 	"""
 	def __init__(self, **kwargs): Algorithm.__init__(self, name='FlowerPollinationAlgorithm', sName='FPA', **kwargs)
 
+	@staticmethod
+	def typeParameters(): return {
+			'NP': lambda x: isinstance(x, int) and x > 0,
+			'p': lambda x: isinstance(x, float) and 0 <= x <= 1,
+			'beta': lambda x: isinstance(x, (float, int)) and x > 0,
+	}
+
 	def setParameters(self, NP=25, p=0.35, beta=1.5, **ukwargs):
 		r"""**__init__(self, D, NP, nFES, p, benchmark)**.
 

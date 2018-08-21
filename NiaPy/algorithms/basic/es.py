@@ -33,14 +33,23 @@ class EvolutionStrategy1p1(Algorithm):
 		if kwargs.get('name', None) == None: Algorithm.__init__(self, name='(1+1)-EvolutionStrategy', sName='(1+1)-ES', **kwargs)
 		else: Algorithm.__init__(self, **kwargs)
 
+	@staticmethod
+	def typeParameters(): return {
+			'mu': lambda x: isinstance(x, int) and x > 0,
+			'k': lambda x: isinstance(x, int) and x > 0,
+			'c_a': lambda x: isinstance(x, (float, int)) and x > 1,
+			'c_r': lambda x: isinstance(x, (float, int)) and 0 < x < 1,
+			'epsilon': lambda x: isinstance(x, float) and 0 < x < 1
+	}
+
 	def setParameters(self, mu=1, k=10, c_a=1.1, c_r=0.5, epsilon=1e-20, **ukwargs):
 		r"""Set the arguments of an algorithm.
 
 		**Arguments**:
-		mu {integer} --
-		k {integer} --
-		c_a {real} --
-		c_r {real} --
+		mu {integer} -- Number of parents
+		k {integer} -- Number of iterations before checking and fixing rho
+		c_a {real} -- Search range amplification factor
+		c_r {real} -- Search range reduction factor
 		"""
 		self.mu, self.k, self.c_a, self.c_r, self.epsilon = mu, k, c_a, c_r, epsilon
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
@@ -92,6 +101,12 @@ class EvolutionStrategyMpL(EvolutionStrategy1p1):
 	def __init__(self, **kwargs):
 		if kwargs.get('name', None) == None: EvolutionStrategy1p1.__init__(self, name='(mu+lambda)-EvolutionStrategy', sName='(mu+lambda)-ES', **kwargs)
 		else: EvolutionStrategy1p1.__init__(self, **kwargs)
+
+	@staticmethod
+	def typeParameters():
+		d = EvolutionStrategy1p1.typeParameters()
+		d['lam'] = lambda x: isinstance(x, int) and x > 0
+		return d
 
 	def setParameters(self, lam=45, **ukwargs):
 		r"""Set the arguments of an algorithm.
@@ -212,6 +227,11 @@ class CovarianceMaatrixAdaptionEvolutionStrategy(Algorithm):
 	**Reference paper:** Hansen, Nikolaus. "The CMA evolution strategy: A tutorial." arXiv preprint arXiv:1604.00772 (2016).
 	"""
 	def __init__(self, **kwargs): Algorithm.__init__(self, name='CovarianceMaatrixAdaptionEvolutionStrategy', sName='CMA-ES', **kwargs)
+
+	@staticmethod
+	def typeParameters(): return {
+			'epsilon': lambda x: isinstance(x, (float, int)) and 0 < epsilon < 1
+	}
 
 	def setParameters(self, epsilon=1e-20, **ukwargs):
 		self.epsilon = epsilon

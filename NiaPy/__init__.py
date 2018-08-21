@@ -28,7 +28,7 @@ class Runner:
 	Feature which enables running multiple algorithms with multiple benchmarks.
 	It also support exporting results in various formats (e.g. LaTeX, Excel, JSON)
 	"""
-	def __init__(self, D, NP, nFES, nRuns, useAlgorithms, useBenchmarks, **kwargs):
+	def __init__(self, D=10, nFES=1000000, nRuns=100000, useAlgorithms='ArtificialBeeColonyAlgorithm', useBenchmarks='Ackley', **kwargs):
 		r"""Initialize Runner.
 
 		**__init__(self, D, NP, nFES, nRuns, useAlgorithms, useBenchmarks, ...)**
@@ -113,144 +113,68 @@ class Runner:
 		k {integer} -- Number of runs before adaptive
 		"""
 		self.D = D
-		self.NP = NP
 		self.nFES = nFES
 		self.nGEN = nRuns
 		self.useAlgorithms = useAlgorithms
 		self.useBenchmarks = useBenchmarks
-		self.A = kwargs.pop('A', 0.5)
-		self.a = kwargs.pop('a', 5)
-		self.r = kwargs.pop('r', 0.5)
-		self.Qmin = kwargs.pop('Qmin', 0.0)
-		self.Qmax = kwargs.pop('Qmax', 2.0)
-		self.Pa = kwargs.pop('Pa', 0.25)
-		self.F = kwargs.pop('F', 0.5)
-		self.F_l = kwargs.pop('F_l', 0.0)
-		self.F_u = kwargs.pop('F_u', 2.0)
-		self.CR = kwargs.pop('CR', 0.9)
-		self.alpha = kwargs.pop('alpha', 0.5)
-		self.beta = kwargs.pop('beta', 2)
-		self.betamin = kwargs.pop('betamin', 0.2)
-		self.gamma = kwargs.pop('gamma', 1.0)
-		self.p = kwargs.pop('p', 0.5)
-		self.Ts = kwargs.pop('Ts', 4)
-		self.Mr = kwargs.pop('Mr', 0.05)
-		self.C1 = kwargs.pop('C1', 2.0)
-		self.C2 = kwargs.pop('C2', 2.0)
-		self.w = kwargs.pop('w', 0.7)
-		self.vMin = kwargs.pop('vMin', -4)
-		self.vMax = kwargs.pop('vMax', 4)
-		self.Tao1 = kwargs.pop('Tao1', 0.43)
-		self.Tao2 = kwargs.pop('Tao2', 0.1)
-		self.n = kwargs.pop('n', 10)
-		self.omega = kwargs.pop('omega', 0.25)
-		self.mu = kwargs.pop('mu', 0.5)
-		self.muES = kwargs.pop('muES', 35)
-		self.E_init = kwargs.pop('E_init', 10)
-		self.S_init = kwargs.pop('S_init', 10)
-		self.T_min = kwargs.pop('T_min', -10)
-		self.T_max = kwargs.pop('T_max', 10)
-		self.C_a = kwargs.pop('C_a', 2)
-		self.C_r = kwargs.pop('C_r', 0.5)
-		self.Limit = kwargs.pop('Limit', 100)
-		self.Rmin = kwargs.pop('Rmin', .0)
-		self.Rmax = kwargs.pop('Rmax', 2)
-		self.lam = kwargs.pop('lam', 40)
-		self.C = kwargs.pop('C', 2)
-		self.FC = kwargs.pop('FC', 0.7)
-		self.R = kwargs.pop('R', 0.3)
-		self.k = kwargs.pop('k', 15)
+		self.args = kwargs
 		self.results = {}
+
+	@staticmethod
+	def getAlgorithm(name):
+		algorithm = None
+		if name == 'BatAlgorithm': algorithm = algorithms.basic.BatAlgorithm
+		elif name == 'DifferentialEvolutionAlgorithm': algorithm = algorithms.basic.DifferentialEvolutionAlgorithm
+		elif name == 'FireflyAlgorithm': algorithm = algorithms.basic.FireflyAlgorithm
+		elif name == 'FlowerPollinationAlgorithm': algorithm = algorithms.basic.FlowerPollinationAlgorithm
+		elif name == 'GreyWolfOptimizer': algorithm = algorithms.basic.GreyWolfOptimizer
+		elif name == 'ArtificialBeeColonyAlgorithm': algorithm = algorithms.basic.ArtificialBeeColonyAlgorithm
+		elif name == 'GeneticAlgorithm': algorithm = algorithms.basic.GeneticAlgorithm
+		elif name == 'ParticleSwarmAlgorithm': algorithm = algorithms.basic.ParticleSwarmAlgorithm
+		elif name == 'HybridBatAlgorithm': algorithm = algorithms.modified.HybridBatAlgorithm
+		elif name == 'SelfAdaptiveDifferentialEvolutionAlgorithm': algorithm = algorithms.modified.SelfAdaptiveDifferentialEvolutionAlgorithm
+		elif name == 'CamelAlgorithm': algorithm = algorithms.basic.CamelAlgorithm
+		elif name == 'BareBonesFireworksAlgorithm': algorithm = algorithms.basic.BareBonesFireworksAlgorithm
+		elif name == 'MonkeyKingEvolutionV1': algorithm = algorithms.basic.MonkeyKingEvolutionV1
+		elif name == 'MonkeyKingEvolutionV2': algorithm = algorithms.basic.MonkeyKingEvolutionV2
+		elif name == 'MonkeyKingEvolutionV3': algorithm = algorithms.basic.MonkeyKingEvolutionV3
+		elif name == 'EvolutionStrategy1p1': algorithm = algorithms.basic.EvolutionStrategy1p1
+		elif name == 'EvolutionStrategyMp1': algorithm = algorithms.basic.EvolutionStrategyMp1
+		elif name == 'SineCosineAlgorithm': algorithm = algorithms.basic.SineCosineAlgorithm
+		elif name == 'HarmonySearch': algorithm = algorithms.basic.HarmonySearch
+		elif name == 'HarmonySearchV1': algorithm = algorithms.basic.HarmonySearchV1
+		elif name == 'GlowwormSwarmOptimization': algorithm = algorithms.basic.GlowwormSwarmOptimization
+		elif name == 'GlowwormSwarmOptimizationV1': algorithm = algorithms.basic.GlowwormSwarmOptimizationV1
+		elif name == 'GlowwormSwarmOptimizationV2': algorithm = algorithms.basic.GlowwormSwarmOptimizationV2
+		elif name == 'GlowwormSwarmOptimizationV3': algorithm = algorithms.basic.GlowwormSwarmOptimizationV3
+		elif name == 'KrillHerdV1': algorithm = algorithms.basic.KrillHerdV1
+		elif name == 'KrillHerdV2': algorithm = algorithms.basic.KrillHerdV2
+		elif name == 'KrillHerdV3': algorithm = algorithms.basic.KrillHerdV3
+		elif name == 'KrillHerdV4': algorithm = algorithms.basic.KrillHerdV4
+		elif name == 'KrillHerdV11': algorithm = algorithms.basic.KrillHerdV11
+		elif name == 'FireworksAlgorithm': algorithm = algorithms.basic.FireworksAlgorithm
+		elif name == 'EnhancedFireworksAlgorithm': algorithm = algorithms.basic.EnhancedFireworksAlgorithm
+		elif name == 'DynamicFireworksAlgorithm': algorithm = algorithms.basic.DynamicFireworksAlgorithm
+		elif name == 'MultipleTrajectorySearch': algorithm = algorithms.other.MultipleTrajectorySearch
+		elif name == 'MultipleTrajectorySearchV1': algorithm = algorithms.other.MultipleTrajectorySearchV1
+		elif name == 'NelderMeadMethod': algorithm = algorithms.other.NelderMeadMethod
+		elif name == 'HillClimbAlgorithm': algorithm = algorithms.other.HillClimbAlgorithm
+		elif name == 'SimulatedAnnealing': algorithm = algorithms.other.SimulatedAnnealing
+		elif name == 'GravitationalSearchAlgorithm': algorithm = algorithms.basic.GravitationalSearchAlgorithm
+		elif name == 'AnarchicSocietyOptimization': algorithm = algorithms.other.AnarchicSocietyOptimization
+		elif name == 'CovarianceMaatrixAdaptionEvolutionStrategy': algorithm = algorithms.basic.CovarianceMaatrixAdaptionEvolutionStrategy
+		elif name == 'TabuSearch': algorithm = algorithms.other.TabuSearch
+		else: raise TypeError('Passed benchmark is not defined!')
+		return algorithm
 
 	def benchmarkFactory(self, name): return util.Task(D=self.D, nFES=self.nFES, nGEN=self.nGEN, optType=util.OptimizationType.MINIMIZATION, benchmark=name)
 
 	def algorithmFactory(self, name):
-		algorithm = None
-		if name == 'BatAlgorithm':
-			algorithm = algorithms.basic.BatAlgorithm(NP=self.NP, A=self.A, r=self.r, Qmin=self.Qmin, Qmax=self.Qmax)
-		elif name == 'DifferentialEvolutionAlgorithm':
-			algorithm = algorithms.basic.DifferentialEvolutionAlgorithm(NP=self.NP, F=self.F, CR=self.CR)
-		elif name == 'FireflyAlgorithm':
-			algorithm = algorithms.basic.FireflyAlgorithm(NP=self.NP, alpha=self.alpha, betamin=self.betamin, gamma=self.gamma)
-		elif name == 'FlowerPollinationAlgorithm':
-			algorithm = algorithms.basic.FlowerPollinationAlgorithm(NP=self.NP, p=self.p, beta=self.beta)
-		elif name == 'GreyWolfOptimizer':
-			algorithm = algorithms.basic.GreyWolfOptimizer(NP=self.NP, nFES=self.nFES)
-		elif name == 'ArtificialBeeColonyAlgorithm':
-			algorithm = algorithms.basic.ArtificialBeeColonyAlgorithm(NP=self.NP, nFES=self.nFES, Limit=self.Limit)
-		elif name == 'GeneticAlgorithm':
-			algorithm = algorithms.basic.GeneticAlgorithm(NP=self.NP, Ts=self.Ts, Mr=self.Mr, Cr=self.CR)
-		elif name == 'ParticleSwarmAlgorithm':
-			algorithm = algorithms.basic.ParticleSwarmAlgorithm(NP=self.NP, C1=self.C1, C2=self.C2, w=self.w, vMin=self.vMin, vMax=self.vMax)
-		elif name == 'HybridBatAlgorithm':
-			algorithm = algorithms.modified.HybridBatAlgorithm(NP=self.NP, A=self.A, r=self.r, F=self.F, CR=self.CR, Qmin=self.Qmin, Qmax=self.Qmax)
-		elif name == 'SelfAdaptiveDifferentialEvolutionAlgorithm':
-			algorithm = algorithms.modified.SelfAdaptiveDifferentialEvolutionAlgorithm(NP=self.NP, F=self.F, F_l=self.F_l, F_u=self.F_u, Tao1=self.Tao1, CR=self.CR, Tao2=self.Tao2)
-		elif name == 'CamelAlgorithm':
-			algorithm = algorithms.basic.CamelAlgorithm(NP=self.NP, omega=self.omega, mu=self.mu, alpha=self.alpha, S_init=self.S_init, E_init=self.E_init, T_min=self.T_min, T_max=self.T_max)
-		elif name == 'BareBonesFireworksAlgorithm':
-			algorithm = algorithms.basic.BareBonesFireworksAlgorithm(n=self.n, C_a=self.C_a, C_r=self.C_r)
-		elif name == 'MonkeyKingEvolutionV1':
-			algorithm = algorithms.basic.MonkeyKingEvolutionV1(NP=self.NP, C=self.C, R=self.R, FC=self.FC)
-		elif name == 'MonkeyKingEvolutionV2':
-			algorithm = algorithms.basic.MonkeyKingEvolutionV2(C=self.C, R=self.R, FC=self.FC)
-		elif name == 'MonkeyKingEvolutionV3':
-			algorithm = algorithms.basic.MonkeyKingEvolutionV3(C=self.C, R=self.R, FC=self.FC)
-		elif name == 'EvolutionStrategy1p1':
-			algorithm = algorithms.basic.EvolutionStrategy1p1(D=self.D, nFES=self.nFES, k=self.k, c_a=self.C_a, c_r=self.C_r)
-		elif name == 'EvolutionStrategyMp1':
-			algorithm = algorithms.basic.EvolutionStrategyMp1(mu=self.muES, k=self.k, c_a=self.C_a, c_r=self.C_r)
-		elif name == 'SineCosineAlgorithm':
-			algorithm = algorithms.basic.SineCosineAlgorithm(NP=self.NP, a=self.a, Rmin=self.Rmin, Rmax=self.Rmax)
-		elif name == 'HarmonySearch':
-			algorithm = algorithms.basic.HarmonySearch()
-		elif name == 'HarmonySearchV1':
-			algorithm = algorithms.basic.HarmonySearchV1()
-		elif name == 'GlowwormSwarmOptimization':
-			algorithm = algorithms.basic.GlowwormSwarmOptimization()
-		elif name == 'GlowwormSwarmOptimizationV1':
-			algorithm = algorithms.basic.GlowwormSwarmOptimizationV1()
-		elif name == 'GlowwormSwarmOptimizationV2':
-			algorithm = algorithms.basic.GlowwormSwarmOptimizationV2()
-		elif name == 'GlowwormSwarmOptimizationV3':
-			algorithm = algorithms.basic.GlowwormSwarmOptimizationV3()
-		elif name == 'KrillHerdV1':
-			algorithm = algorithms.basic.KrillHerdV1()
-		elif name == 'KrillHerdV2':
-			algorithm = algorithms.basic.KrillHerdV2()
-		elif name == 'KrillHerdV3':
-			algorithm = algorithms.basic.KrillHerdV3()
-		elif name == 'KrillHerdV4':
-			algorithm = algorithms.basic.KrillHerdV4()
-		elif name == 'KrillHerdV11':
-			algorithm = algorithms.basic.KrillHerdV11()
-		elif name == 'FireworksAlgorithm':
-			algorithm = algorithms.basic.FireworksAlgorithm()
-		elif name == 'EnhancedFireworksAlgorithm':
-			algorithm = algorithms.basic.EnhancedFireworksAlgorithm()
-		elif name == 'DynamicFireworksAlgorithm':
-			algorithm = algorithms.basic.DynamicFireworksAlgorithm()
-		elif name == 'MultipleTrajectorySearch':
-			algorithm = algorithms.other.MultipleTrajectorySearch()
-		elif name == 'MultipleTrajectorySearchV1':
-			algorithm = algorithms.other.MultipleTrajectorySearchV1()
-		elif name == 'NelderMeadMethod':
-			algorithm = algorithms.other.NelderMeadMethod()
-		elif name == 'HillClimbAlgorithm':
-			algorithm = algorithms.other.HillClimbAlgorithm()
-		elif name == 'SimulatedAnnealing':
-			algorithm = algorithms.other.SimulatedAnnealing()
-		elif name == 'GravitationalSearchAlgorithm':
-			algorithm = algorithms.basic.GravitationalSearchAlgorithm()
-		elif name == 'AnarchicSocietyOptimization':
-			algorithm = algorithms.other.AnarchicSocietyOptimization()
-		elif name == 'CovarianceMaatrixAdaptionEvolutionStrategy':
-			algorithm = algorithms.basic.CovarianceMaatrixAdaptionEvolutionStrategy()
-		elif name == 'TabuSearch':
-			algorithm = algorithms.other.TabuSearch()
-		else:
-			raise TypeError('Passed benchmark is not defined!')
-		return algorithm
+		algorithm, params = Runner.getAlgorithm(name), dict()
+		for k, v in algorithm.typeParameters().items():
+			val = self.args.get(k, None)
+			if val != None and v(val): params[k] = val
+		return algorithm(**params)
 
 	def __algorithmFactory(self, aname, bname): return self.algorithmFactory(aname).setTask(self.benchmarkFactory(bname))
 

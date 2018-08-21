@@ -24,6 +24,13 @@ class GravitationalSearchAlgorithm(Algorithm):
 		if kwargs.get('name', None) == None: Algorithm.__init__(self, name=kwargs.get('name', 'DifferentialEvolutionAlgorithm'), sName=kwargs.get('sName', 'DE'), **kwargs)
 		else: Algorithm.__init__(self, **kwargs)
 
+	@staticmethod
+	def typeParameters(): return {
+			'NP': lambda x: isinstance(x, int) and x > 0,
+			'G_0': lambda x: isinstance(x, (int, float)) and x >= 0,
+			'epsilon': lambda x: isinstance(x, float) and 0 < x < 1
+	}
+
 	def setParameters(self, NP=40, G_0=2.467, epsilon=1e-17, **ukwargs):
 		r"""Set the algorithm parameters.
 

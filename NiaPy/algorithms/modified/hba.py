@@ -28,17 +28,21 @@ class HybridBatAlgorithm(BatAlgorithm):
 	"""
 	def __init__(self, **kwargs): BatAlgorithm.__init__(self, name='HybridBatAlgorithm', sName='HBA', **kwargs)
 
-	def setParameters(self, **kwargs):
-		BatAlgorithm.setParameters(self, **kwargs)
-		self.__setParams(**kwargs)
+	@staticmethod
+	def typeParameters():
+		d = BatAlgorithm.typeParameters()
+		d['F'] = lambda x: isinstance(x, (int, float)) and x > 0
+		d['CR'] = lambda x: isinstance(x, float) and 0 <= x <= 1
+		return d
 
-	def __setParams(self, F=0.78, CR=0.35, CrossMutt=CrossBest1, **ukwargs):
+	def setParameters(self, F=0.78, CR=0.35, CrossMutt=CrossBest1, **ukwargs):
 		r"""**__init__(self, D, NP, nFES, A, r, Qmin, Qmax, benchmark)**.
 
 		Arguments:
 		F {decimal} -- scaling factor
 		CR {decimal} -- crossover
 		"""
+		BatAlgorithm.setParameters(self, **ukwargs)
 		self.F, self.CR, self.CrossMutt = F, CR, CrossMutt
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 

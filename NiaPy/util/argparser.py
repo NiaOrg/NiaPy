@@ -20,12 +20,12 @@ def makeCalgos():
 def makeCbechs(): return np.benchmarks.__all__
 
 def optimizationType(x):
-	if x not in ['min', 'max']: logger.info('You can use only [min, max]')
+	if x not in ['min', 'max']: logger.info('You can use only [min, max], using min')
 	return np.util.OptimizationType.MAXIMIZATION if x == 'max' else np.util.OptimizationType.MINIMIZATION
 
 def MakeArgParser():
 	parser, calgos, cbechs = ArgumentParser(description='Runer example.'), makeCalgos(), makeCbechs()
-	parser.add_argument('-a', '--algorithm', dest='algo', nargs='*', default=calgos[0], choices=calgos, type=str)
+	parser.add_argument('-a', '--algorithm', dest='algo', default=calgos[0], choices=calgos, type=str)
 	parser.add_argument('-b', '--bech', dest='bech', nargs='*', default=cbechs[0], choices=cbechs, type=str)
 	parser.add_argument('-D', dest='D', default=10, type=int)
 	parser.add_argument('-nFES', dest='nFES', default=50000, type=int)

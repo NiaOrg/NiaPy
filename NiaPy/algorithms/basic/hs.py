@@ -22,6 +22,14 @@ class HarmonySearch(Algorithm):
 	"""
 	def __init__(self, **kwargs): Algorithm.__init__(self, name='HarmonySearch', sName='HS', **kwargs)
 
+	@staticmethod
+	def typeParameters(): return {
+			'HMS': lambda x: isinstance(x, int) and x > 0,
+			'r_accept': lambda x: isinstance(x, float) and 0 < x < 1,
+			'r_pa': lambda x: isinstance(x, float) and 0 < x < 1,
+			'b_range': lambda x: isinstance(x, float) and x > 0
+	}
+
 	def setParameters(self, HMS=30, r_accept=0.7, r_pa=0.35, b_range=1.42, **ukwargs):
 		r"""Set the arguments of the algorithm.
 
@@ -66,6 +74,14 @@ class HarmonySearchV1(HarmonySearch):
 	**Reference URL:** https://link.springer.com/chapter/10.1007/978-3-642-00185-7_1
 	**Reference paper:** Yang, Xin-She. "Harmony search as a metaheuristic algorithm." Music-inspired harmony search algorithm. Springer, Berlin, Heidelberg, 2009. 1-14.
 	"""
+	@staticmethod
+	def typeParameters():
+		d = HarmonySearch.typeParameters()
+		del d['b_range']
+		d['dw_min'] = lambda x: isinstance(x, (float, int))
+		d['dw_max'] = lambda x: isinstance(x, (float, int))
+		return d
+
 	def setParameters(self, bw_min=1, bw_max=2, **kwargs):
 		r"""Set the parameters of the algorithm.
 

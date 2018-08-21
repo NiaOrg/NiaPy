@@ -25,6 +25,17 @@ class GlowwormSwarmOptimization(Algorithm):
 		if kwargs.get('name', None) == None: Algorithm.__init__(self, name='GlowwormSwarmOptimization', sName='GSO', **kwargs)
 		else: Algorithm.__init__(self, **kwargs)
 
+	@staticmethod
+	def typeParameters(): return {
+			'n': lambda x: isinstance(x, int) and x > 0,
+			'l0': lambda x: isinstance(x, (float, int)) and x > 0,
+			'nt': lambda x: isinstance(x, (float, int)) and x > 0,
+			'rho': lambda x: isinstance(x, float) and 0 < x < 1,
+			'gamma': lambda x: isinstance(x, float) and 0 < x < 1,
+			'beta': lambda x: isinstance(x, float) and x > 0,
+			's': lambda x: isinstance(x, float) and x > 0
+	}
+
 	def setParameters(self, n=25, l0=5, nt=5, rho=0.4, gamma=0.6, beta=0.08, s=0.03, **ukwargs):
 		r"""Set the arguments of an algorithm.
 
@@ -32,7 +43,6 @@ class GlowwormSwarmOptimization(Algorithm):
 		n {integer} -- number of glowworms in population
 		l0 {real} -- initial luciferin quantity for each glowworm
 		nt {real} --
-		rs {real} -- maximum sensing range
 		rho {real} -- luciferin decay constant
 		gamma {real} -- luciferin enhancement constant
 		beta {real} --

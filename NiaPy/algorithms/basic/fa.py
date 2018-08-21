@@ -21,6 +21,14 @@ class FireflyAlgorithm(Algorithm):
 	"""
 	def __init__(self, **kwargs): Algorithm.__init__(self, name='FireflyAlgorithm', sName='FA', **kwargs)
 
+	@staticmethod
+	def typeParameters(): return {
+			'NP': lambda x: isinstance(x, int) and x > 0,
+			'alpha': lambda x: isinstance(x, (float, int)) and x > 0,
+			'betamin': lambda x: isinstance(x, (float, int)) and x > 0,
+			'gamma': lambda x: isinstance(x, (float, int)) and x > 0,
+	}
+
 	def setParameters(self, NP=20, alpha=1, betamin=1, gamma=2, **ukwargs):
 		r"""Set the parameters of the algorithm.
 

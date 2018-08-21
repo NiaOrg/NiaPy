@@ -29,6 +29,15 @@ class SelfAdaptiveDifferentialEvolutionAlgorithm(DifferentialEvolutionAlgorithm)
 		if kwargs.get('name', None) == None: DifferentialEvolutionAlgorithm.__init__(self, name='SelfAdaptiveDifferentialEvolutionAlgorithm', sName='jDE', **kwargs)
 		else: DifferentialEvolutionAlgorithm.__init__(self, **kwargs)
 
+	@staticmethod
+	def typeParameters():
+		d = DifferentialEvolutionAlgorithm.typeParameters()
+		d['F_l'] = lambda x: isinstance(x, (float, int)) and x > 0
+		d['F_u'] = lambda x: isinstance(x, (float, int)) and x > 0
+		d['Tao1'] = lambda x: isinstance(x, (float, int)) and 0 <= x <= 1
+		d['Tao2'] = lambda x: isinstance(x, (float, int)) and 0 <= x <= 1
+		return d
+
 	def setParameters(self, F_l=0.0, F_u=2.0, Tao1=0.4, Tao2=0.6, **ukwargs):
 		r"""Set the parameters of an algorithm.
 
@@ -69,6 +78,13 @@ class DynNPSelfAdaptiveDifferentialEvolutionAlgorithm(SelfAdaptiveDifferentialEv
 	**Reference paper:** Brest, Janez, and Mirjam Sepesy Maučec. "Population size reduction for the differential evolution algorithm." Applied Intelligence 29.3 (2008): 228-247.
 	"""
 	def __init__(self, **kwargs): SelfAdaptiveDifferentialEvolutionAlgorithm.__init__(self, name='SelfAdaptiveDifferentialEvolutionAlgorithm', sName='jDE', **kwargs)
+
+	@staticmethod
+	def typeParameters():
+		d = SelfAdaptiveDifferentialEvolutionAlgorithm.typeParameters()
+		d['rp'] = lambda x: isinstance(x, (float, int)) and x > 0
+		d['pmax'] = lambda x: isinstance(x, int) and x > 0
+		return d
 
 	def setParameters(self, rp=0, pmax=4, **ukwargs):
 		r"""Set the parameters of an algorithm.

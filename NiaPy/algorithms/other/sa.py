@@ -41,6 +41,14 @@ class SimulatedAnnealing(Algorithm):
 	"""
 	def __init__(self, **kwargs): Algorithm.__init__(self, name='SimulatedAnnealing', sName='BBFA', **kwargs)
 
+	@staticmethod
+	def typeParameters(): return {
+			'delta': lambda x: isinstance(x, (int, float)) and x > 0,
+			'T': lambda x: isinstance(x, (int, float)) and x > 0,
+			'deltaT': lambda x: isinstance(x, (int, float)) and x > 0,
+			'epsilon': lambda x: isinstance(x, float) and 0 < x < 1
+	}
+
 	def setParameters(self, delta=0.5, T=2000, deltaT=0.8, coolingMethod=coolDelta, epsilon=1e-23, **ukwargs):
 		r"""Set the algorithm parameters/arguments.
 

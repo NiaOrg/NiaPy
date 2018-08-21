@@ -25,13 +25,13 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 	numerical function optimization: artificial bee colony (ABC) algorithm."
 	Journal of global optimization 39.3 (2007): 459-471.
 	"""
-	def __init__(self, **kwargs):
-		"""**__init__(self, D, NP, nFES, benchmark)**.
+	def __init__(self, **kwargs): Algorithm.__init__(self, name='ArtificialBeeColonyAlgorithm', sName='ABC', **kwargs)
 
-		**See**:
-		Algorithm.__init__(self, **kwargs)
-		"""
-		Algorithm.__init__(self, name='ArtificialBeeColonyAlgorithm', sName='ABC', **kwargs)
+	@staticmethod
+	def typeParameters(): return {
+			'NP': lambda x: isinstance(x, int) and x > 0,
+			'Limit': lambda x: isinstance(x, int) and x > 0
+	}
 
 	def setParameters(self, NP=10, Limit=100, **ukwargs):
 		r"""Set the arguments of an algorithm.

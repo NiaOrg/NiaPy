@@ -66,6 +66,18 @@ class CamelAlgorithm(Algorithm):
 	"""
 	def __init__(self, **kwargs): Algorithm.__init__(self, name='CamelAlgorithm', sName='CA', **kwargs)
 
+	@staticmethod
+	def typeParameters(): return {
+			'NP': lambda x: isinstance(x, int) and x > 0,
+			'omega': lambda x: isinstance(x, float),
+			'mu': lambda x: isinstance(x, float) and 0 <= x <= 1,
+			'alpha': lambda x: isinstance(x, float) and 0 <= x <= 1,
+			'S_init': lambda x: isinstance(x, (float, int)) and x > 0,
+			'E_init': lambda x: isinstance(x, (float, int)) and x > 0,
+			'T_min': lambda x: isinstance(x, (float, int)) and x > 0,
+			'T_max': lambda x: isinstance(x, (float, int)) and x > 0
+	}
+
 	def setParameters(self, NP=50, omega=0.25, mu=0.5, alpha=0.5, S_init=10, E_init=10, T_min=-10, T_max=10, **ukwargs):
 		r"""Set the arguments of an algorithm.
 

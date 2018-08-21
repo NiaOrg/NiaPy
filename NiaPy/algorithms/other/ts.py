@@ -34,6 +34,11 @@ class TabuSearch(Algorithm):
 	"""
 	def __init__(self, **kwargs): Algorithm.__init__(self, name='TabuSearch', sName='TS', **kwargs)
 
+	@staticmethod
+	def typeParameters(): return {
+			'NP': lambda x: isinstance(x, int) and x > 0
+	}
+
 	def setParameters(self, **ukwargs):
 		r"""Set the algorithm parameters/arguments."""
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))

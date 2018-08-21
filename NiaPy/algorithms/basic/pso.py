@@ -20,8 +20,17 @@ class ParticleSwarmAlgorithm(Algorithm):
 	**License:** MIT
 	**Reference paper:** Kennedy, J. and Eberhart, R. "Particle Swarm Optimization". Proceedings of IEEE International Conference on Neural Networks. IV. pp. 1942--1948, 1995.
 	"""
-
 	def __init__(self, **kwargs): Algorithm.__init__(self, name='ParticleSwarmAlgorithm', sName='PSO', **kwargs)
+
+	@staticmethod
+	def typeParameters(): return {
+			'NP': lambda x: isinstance(x, int) and x > 0,
+			'C1': lambda x: isinstance(x, (int, float)) and x >= 0,
+			'C2': lambda x: isinstance(x, (int, float)) and x >= 0,
+			'w': lambda x: isinstance(x, float) and x >= 0,
+			'vMin': lambda x: isinstance(x, (int, float)),
+			'vMax': lambda x: isinstance(x, (int, float))
+	}
 
 	def setParameters(self, NP=25, C1=2.0, C2=2.0, w=0.7, vMin=-4, vMax=4, **ukwargs):
 		r"""Set the parameters for the algorith.
@@ -39,13 +48,6 @@ class ParticleSwarmAlgorithm(Algorithm):
 
 	def init(self, task): self.w, self.vMin, self.vMax = fullArray(self.w, task.D), fullArray(self.vMin, task.D), fullArray(self.vMax, task.D)
 
-	def repair(self, x, l, u):
-		ir = where(x < l)
-		x[ir] = l[ir]
-		ir = where(x > u)
-		x[ir] = u[ir]
-		return x
-
 	def runTask(self, task):
 		"""Move particles in search space."""
 		self.init(task)
@@ -54,14 +56,14 @@ class ParticleSwarmAlgorithm(Algorithm):
 		p_b, p_b_fit = P[0], P_fit[0]
 		V = full([self.NP, task.D], 0)
 		while not task.stopCond():
-			P = apply_along_axis(self.repair, 1, P, task.Lower, task.Upper)
+			P = apply_along_axis(task.repair, 1, P)
 			P_fit = apply_along_axis(task.eval, 1, P)
 			ip_pb = where(P_pb_fit > P_fit)
 			P_pb[ip_pb], P_pb_fit[ip_pb] = P[ip_pb], P_fit[ip_pb]
 			ip_b = argmin(P_fit)
 			if p_b_fit > P_fit[ip_b]: p_b, p_b_fit = P[ip_b], P_fit[ip_b]
 			V = self.w * V + self.C1 * self.rand([self.NP, task.D]) * (P_pb - P) + self.C2 * self.rand([self.NP, task.D]) * (p_b - P)
-			V = apply_along_axis(self.repair, 1, V, self.vMin, self.vMax)
+			V = apply_along_axis(task.repair, 1, V)
 			P = P + V
 		return p_b, p_b_fit
 

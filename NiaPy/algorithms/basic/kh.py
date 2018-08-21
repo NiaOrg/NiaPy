@@ -26,6 +26,22 @@ class KrillHerd(Algorithm):
 		if kwargs.get('name', None) == None: Algorithm.__init__(self, name='KrillHerd', sName='KH', **kwargs)
 		else: Algorithm.__init__(self, **kwargs)
 
+	@staticmethod
+	def typeParameters(): return {
+			'NP': lambda x: isinstance(x, int) and x > 0,
+			'N_max': lambda x: isinstance(x, (int, float)) and x > 0,
+			'V_f': lambda x: isinstance(x, (int, float)) and x > 0,
+			'D_max': lambda x: isinstance(x, (int, float)) and x > 0,
+			'C_t': lambda x: isinstance(x, (int, float)) and x > 0,
+			'W_n': lambda x: isinstance(x, (int, float)) and x > 0,
+			'W_f': lambda x: isinstance(x, (int, float)) and x > 0,
+			'd_s': lambda x: isinstance(x, (int, float)) and x > 0,
+			'nn': lambda x: isinstance(x, int) and x > 0,
+			'Cr': lambda x: isinstance(x, float) and 0 <= x <= 1,
+			'Mu': lambda x: isinstance(x, float) and 0 <= x <= 1,
+			'epsilon': lambda x: isinstance(x, float) and 0 < x < 1
+	}
+
 	def setParameters(self, NP=50, N_max=0.01, V_f=0.02, D_max=0.002, C_t=0.93, W_n=0.42, W_f=0.38, d_s=2.63, nn=5, Cr=0.2, Mu=0.05, epsilon=1e-31, **ukwargs):
 		r"""Set the arguments of an algorithm.
 
@@ -124,6 +140,13 @@ class KrillHerdV4(KrillHerd):
 		if kwargs.get('name', None) == None: KrillHerd.__init__(self, name='KrillHerdV4', sName='KHv4', **kwargs)
 		else: KrillHerd.__init__(self, **kwargs)
 
+	@staticmethod
+	def typeParameters():
+		d = KrillHerd.typeParameters()
+		del d['Cr']
+		del d['Mu']
+		del d['epsilon']
+
 	def setParameters(self, NP=50, N_max=0.01, V_f=0.02, D_max=0.002, C_t=0.93, W_n=0.42, W_f=0.38, d_s=2.63, **ukwargs): KrillHerd.setParameters(self, NP, N_max, V_f, D_max, C_t, W_n, W_f, d_s, 4, 0.2, 0.05, 1e-31, **ukwargs)
 
 class KrillHerdV1(KrillHerd):
@@ -139,6 +162,9 @@ class KrillHerdV1(KrillHerd):
 	def __init__(self, **kwargs):
 		if kwargs.get('name', None) == None: KrillHerd.__init__(self, name='KrillHerdV1', sName='KHv1', **kwargs)
 		else: KrillHerd.__init__(self, **kwargs)
+
+	@staticmethod
+	def typeParameters(): return KrillHerdV4.typeParameters()
 
 	def crossover(self, x, xo, Cr): return x
 
@@ -158,6 +184,12 @@ class KrillHerdV2(KrillHerd):
 		if kwargs.get('name', None) == None: KrillHerd.__init__(self, name='KrillHerdV2', sName='KHv2', **kwargs)
 		else: KrillHerd.__init__(self, **kwargs)
 
+	@staticmethod
+	def typeParameters():
+		d = KrillHerd.typeParameters()
+		del d['Mu']
+		return d
+
 	def mutate(self, x, x_b, Mu): return x
 
 class KrillHerdV3(KrillHerd):
@@ -173,6 +205,12 @@ class KrillHerdV3(KrillHerd):
 	def __init__(self, **kwargs):
 		if kwargs.get('name', None) == None: KrillHerd.__init__(self, name='KrillHerdV3', sName='KHv3', **kwargs)
 		else: KrillHerd.__init__(self, **kwargs)
+
+	@staticmethod
+	def typeParameters():
+		d = KrillHerd.typeParameters()
+		del d['Cr']
+		return d
 
 	def crossover(self, x, xo, Cr): return x
 

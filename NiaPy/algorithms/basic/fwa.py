@@ -25,6 +25,13 @@ class BareBonesFireworksAlgorithm(Algorithm):
 	"""
 	def __init__(self, **kwargs): Algorithm.__init__(self, name='BareBonesFireworksAlgorithm', sName='BBFA', **kwargs)
 
+	@staticmethod
+	def typeParameters(): return {
+			'n': lambda x: isinstance(x, int) and x > 0,
+			'C_a': lambda x: isinstance(x, (float, int)) and x > 1,
+			'C_r': lambda x: isinstance(x, (float, int)) and 0 < x < 1
+	}
+
 	def setParameters(self, n=10, C_a=1.5, C_r=0.5, **ukwargs):
 		r"""Set the arguments of an algorithm.
 
@@ -60,6 +67,15 @@ class FireworksAlgorithm(Algorithm):
 	def __init__(self, **kwargs):
 		if kwargs.get('name', None) == None: Algorithm.__init__(self, name=kwargs.get('name', 'FireworksAlgorithm'), sName=kwargs.get('sName', 'FWA'), **kwargs)
 		else: Algorithm.__init__(self, **kwargs)
+
+	@staticmethod
+	def typeParameters(): return {
+			'N': lambda x: isinstance(x, int) and x > 0,
+			'm': lambda x: isinstance(x, int) and x > 0,
+			'a': lambda x: isinstance(x, (int, float)) and x > 0,
+			'b': lambda x: isinstance(x, (int, float)) and x > 0,
+			'epsilon': lambda x: isinstance(x, float) and 0 < x < 1
+	}
 
 	def setParameters(self, N=40, m=40, a=1, b=2, A=40, epsilon=1e-31, **ukwargs):
 		r"""Set the arguments of an algorithm.
@@ -138,6 +154,13 @@ class EnhancedFireworksAlgorithm(FireworksAlgorithm):
 		if kwargs.get('name', None) == None: FireworksAlgorithm.__init__(self, name=kwargs.get('name', 'EnhancedFireworksAlgorithm'), sName=kwargs.get('sName', 'EFWA'), **kwargs)
 		else: FireworksAlgorithm.__init__(self, **kwargs)
 
+	@staticmethod
+	def typeParameters():
+		d = FireworksAlgorithm.typeParameters()
+		d['Ainit'] = lambda x: isinstance(x, (float, int)) and x > 0
+		d['Afinal'] = lambda x: isinstance(x, (float, int)) and x > 0
+		return d
+
 	def setParameters(self, Ainit=20, Afinal=5, **ukwargs):
 		FireworksAlgorithm.setParameters(self, **ukwargs)
 		self.Ainit, self.Afinal = Ainit, Afinal
@@ -195,6 +218,15 @@ class DynamicFireworksAlgorithmGauss(EnhancedFireworksAlgorithm):
 	def __init__(self, **kwargs):
 		if kwargs.get('name', None) == None: EnhancedFireworksAlgorithm.__init__(self, name='DynamicFireworksGaussAlgorithm', sName='dynFWA-G', **kwargs)
 		else: EnhancedFireworksAlgorithm.__init__(self, **kwargs)
+
+	@staticmethod
+	def typeParameters():
+		d = FireworksAlgorithm.typeParameters()
+		d['A_cf'] = lambda x: isinstance(x, (float, int)) and x > 0
+		d['C_a'] = lambda x: isinstance(x, (float, int)) and 1 < x
+		d['C_r'] = lambda x: isinstance(x, (float, int)) and 0 < x < 1
+		d['epsilon'] = lambda x: isinstance(x, (float, int)) and 0 < x < 1
+		return d
 
 	def setParameters(self, A_cf=20, C_a=1.2, C_r=0.9, epsilon=1e-8, **ukwargs):
 		FireworksAlgorithm.setParameters(self, **ukwargs)

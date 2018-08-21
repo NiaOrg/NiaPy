@@ -22,6 +22,14 @@ class SineCosineAlgorithm(Algorithm):
 	"""
 	def __init__(self, **kwargs): Algorithm.__init__(self, name='SineCosineAlgorithm', sName='SCA', **kwargs)
 
+	@staticmethod
+	def typeParameters(): return {
+			'NP': lambda x: isinstance(x, int) and x > 0,
+			'a': lambda x: isinstance(x, (float, int)) and x > 0,
+			'Rmin': lambda x: isinstance(x, (float, int)),
+			'Rmax': lambda x: isinstance(x, (float, int))
+	}
+
 	def setParameters(self, NP=25, a=3, Rmin=0, Rmax=2, **ukwargs):
 		r"""Set the arguments of an algorithm.
 

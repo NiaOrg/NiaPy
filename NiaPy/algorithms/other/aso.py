@@ -67,6 +67,17 @@ class AnarchicSocietyOptimization(Algorithm):
 	"""
 	def __init__(self, **kwargs): Algorithm.__init__(self, name='ParticleSwarmAlgorithm', sName='PSO', **kwargs)
 
+	@staticmethod
+	def typeParameters(): return {
+			'NP': lambda x: isinstance(x, int) and x > 0,
+			'alpha': lambda x: True,
+			'gamma': lambda x: True,
+			'theta': lambda x: True,
+			'nl': lambda x: True,
+			'F': lambda x: isinstance(x, (int, float)) and x >= 0,
+			'CR': lambda x: isinstance(x, float) and 0 <= x <= 1
+	}
+
 	def setParameters(self, NP=43, alpha=[1, 0.83], gamma=[1.17, 0.56], theta=[0.932, 0.832], d=euclidean, dn=euclidean, nl=1, F=1.2, CR=0.25, Combination=Elitism, **ukwargs):
 		r"""Set the parameters for the algorith.
 
