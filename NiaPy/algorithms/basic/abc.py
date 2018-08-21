@@ -96,8 +96,7 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 					Solution.evaluate(task)
 					if Solution.f < self.Foods[s].f:
 						self.checkForBest(newSolution)
-						self.Foods[s] = Solution
-						self.Trial[s] = 0
+						self.Foods[s], self.Trial[s] = Solution, 0
 					else: self.Trial[s] += 1
 				s += 1
 				if s == self.FoodNumber: s = 0

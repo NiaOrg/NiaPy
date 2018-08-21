@@ -2,10 +2,9 @@
 # pylint: disable=line-too-long, mixed-indentation, multiple-statements, old-style-class
 from unittest import TestCase
 from numpy import random as rnd
-from NiaPy.benchmarks.utility import Task
+from NiaPy.util import Task
 from NiaPy.algorithms.modified import SelfAdaptiveDifferentialEvolutionAlgorithm, DynNPSelfAdaptiveDifferentialEvolutionAlgorithm
 from NiaPy.algorithms.modified.jde import SolutionjDE
-
 
 class MyBenchmark:
 	def __init__(self):

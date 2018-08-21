@@ -2,7 +2,7 @@
 # pylint: disable=mixed-indentation, function-redefined, multiple-statements, old-style-class
 from unittest import TestCase
 from numpy import random as rnd, full, inf, array_equal
-from NiaPy.benchmarks.utility import Task
+from NiaPy.util import Task
 from NiaPy.algorithms.algorithm import Algorithm, Individual
 
 class MyBenchmark:

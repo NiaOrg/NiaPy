@@ -3,7 +3,7 @@
 from unittest import TestCase
 from numpy import random as rnd, full, array_equal
 from NiaPy.benchmarks import Griewank
-from NiaPy.benchmarks.utility import Task
+from NiaPy.util import Task
 from NiaPy.algorithms.basic import MonkeyKingEvolutionV1, MonkeyKingEvolutionV2, MonkeyKingEvolutionV3
 from NiaPy.algorithms.basic.mke import MkeSolution
 

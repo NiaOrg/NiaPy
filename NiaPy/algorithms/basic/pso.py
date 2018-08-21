@@ -3,7 +3,7 @@
 import logging
 from numpy import apply_along_axis, argmin, full, inf, where
 from NiaPy.algorithms.algorithm import Algorithm
-from NiaPy.benchmarks.utility import fullArray
+from NiaPy.util import fullArray
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.basic')

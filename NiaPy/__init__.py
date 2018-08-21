@@ -163,7 +163,7 @@ class Runner:
 		self.results = {}
 
 	def __algorithmFactory(self, name, benchmark):
-		bench = benchmarks.utility.Utility().get_benchmark(benchmark)
+		bench = util.Utility().get_benchmark(benchmark)
 		algorithm = None
 		if name == 'BatAlgorithm':
 			algorithm = algorithms.basic.BatAlgorithm(D=self.D, NP=self.NP, nFES=self.nFES, A=self.A, r=self.r, Qmin=self.Qmin, Qmax=self.Qmax, benchmark=bench)

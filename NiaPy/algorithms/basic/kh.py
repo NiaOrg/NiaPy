@@ -3,7 +3,7 @@
 import logging
 from scipy.spatial.distance import euclidean as ed
 from numpy import apply_along_axis, argmin, argmax, sum, full, inf, asarray, mean, where, sqrt
-from NiaPy.benchmarks.utility import fullArray
+from NiaPy.util import fullArray
 from NiaPy.algorithms.algorithm import Algorithm
 
 logging.basicConfig()
