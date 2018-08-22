@@ -26,7 +26,8 @@ class HybridBatAlgorithm(BatAlgorithm):
 	Fister Jr., Iztok and Fister, Dusan and Yang, Xin-She.
 	"A Hybrid Bat Algorithm". Elektrotehniski vestnik, 2013. 1-7.
 	"""
-	def __init__(self, **kwargs): BatAlgorithm.__init__(self, name='HybridBatAlgorithm', sName='HBA', **kwargs)
+	@staticmethod
+	def Name(): return ['HybridBatAlgorithm', 'HBA']
 
 	@staticmethod
 	def typeParameters():

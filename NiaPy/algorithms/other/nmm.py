@@ -19,7 +19,8 @@ class NelderMeadMethod(Algorithm):
 	**License:** MIT
 	**Reference URL:** https://en.wikipedia.org/wiki/Nelder%E2%80%93Mead_method
 	"""
-	def __init__(self, **kwargs): Algorithm.__init__(self, name='NelderMeadMethod', sName='NMM', **kwargs)
+	@staticmethod
+	def Name(): return ['NelderMeadMethod', 'NMM']
 
 	@staticmethod
 	def typeParameters(): return {

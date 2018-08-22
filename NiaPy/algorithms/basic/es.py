@@ -29,9 +29,8 @@ class EvolutionStrategy1p1(Algorithm):
 	**Reference URL:**
 	**Reference paper:**
 	"""
-	def __init__(self, **kwargs):
-		if kwargs.get('name', None) == None: Algorithm.__init__(self, name='(1+1)-EvolutionStrategy', sName='(1+1)-ES', **kwargs)
-		else: Algorithm.__init__(self, **kwargs)
+	@staticmethod
+	def Name(): return ['(1+1)-EvolutionStrategy', '(1+1)-ES']
 
 	@staticmethod
 	def typeParameters(): return {
@@ -82,7 +81,8 @@ class EvolutionStrategyMp1(EvolutionStrategy1p1):
 	**Reference URL:**
 	**Reference paper:**
 	"""
-	def __init__(self, **kwargs): EvolutionStrategy1p1.__init__(self, name='(mu+1)-EvolutionStrategy', sName='(mu+1)-ES', **kwargs)
+	@staticmethod
+	def Name(): return ['(mu+1)-EvolutionStrategy', '(mu+1)-ES']
 
 	def setParameters(self, **kwargs):
 		mu = kwargs.pop('mu', 40)
@@ -98,9 +98,8 @@ class EvolutionStrategyMpL(EvolutionStrategy1p1):
 	**Reference URL:**
 	**Reference paper:**
 	"""
-	def __init__(self, **kwargs):
-		if kwargs.get('name', None) == None: EvolutionStrategy1p1.__init__(self, name='(mu+lambda)-EvolutionStrategy', sName='(mu+lambda)-ES', **kwargs)
-		else: EvolutionStrategy1p1.__init__(self, **kwargs)
+	@staticmethod
+	def Name(): return ['(mu+lambda)-EvolutionStrategy', '(m+l)-ES']
 
 	@staticmethod
 	def typeParameters():
@@ -159,9 +158,8 @@ class EvolutionStrategyML(EvolutionStrategyMpL):
 	**Reference URL:**
 	**Reference paper:**
 	"""
-	def __init__(self, **kwargs):
-		if kwargs.get('name', None) == None: EvolutionStrategyMpL.__init__(self, name='(mu,lambda)-EvolutionStrategy', sName='(mu,lambda)-ES', **kwargs)
-		else: EvolutionStrategyMpL.__init__(self, **kwargs)
+	@staticmethod
+	def Name(): return ['(mu,lambda)-EvolutionStrategy', '(mu,lambda)-ES']
 
 	def newPop(self, pop):
 		pop_s = argsort([i.f for i in pop])
@@ -226,7 +224,8 @@ class CovarianceMaatrixAdaptionEvolutionStrategy(Algorithm):
 	**Reference URL:** https://arxiv.org/abs/1604.00772
 	**Reference paper:** Hansen, Nikolaus. "The CMA evolution strategy: A tutorial." arXiv preprint arXiv:1604.00772 (2016).
 	"""
-	def __init__(self, **kwargs): Algorithm.__init__(self, name='CovarianceMaatrixAdaptionEvolutionStrategy', sName='CMA-ES', **kwargs)
+	@staticmethod
+	def Name(): return ['CovarianceMaatrixAdaptionEvolutionStrategy', 'CMA-ES']
 
 	@staticmethod
 	def typeParameters(): return {

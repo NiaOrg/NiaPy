@@ -19,7 +19,8 @@ class FireflyAlgorithm(Algorithm):
 	**License:** MIT
 	**Reference paper:** Fister, I., Fister Jr, I., Yang, X. S., & Brest, J. (2013). A comprehensive review of firefly algorithms. Swarm and Evolutionary Computation, 13, 34-46.
 	"""
-	def __init__(self, **kwargs): Algorithm.__init__(self, name='FireflyAlgorithm', sName='FA', **kwargs)
+	@staticmethod
+	def Name(): return ['FireflyAlgorithm', 'FA']
 
 	@staticmethod
 	def typeParameters(): return {

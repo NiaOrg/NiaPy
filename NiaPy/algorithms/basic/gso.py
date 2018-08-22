@@ -21,9 +21,8 @@ class GlowwormSwarmOptimization(Algorithm):
 	**Reference URL:** https://www.springer.com/gp/book/9783319515946
 	**Reference paper:** Kaipa, Krishnanand N., and Debasish Ghose. Glowworm swarm optimization: theory, algorithms, and applications. Vol. 698. Springer, 2017.
 	"""
-	def __init__(self, **kwargs):
-		if kwargs.get('name', None) == None: Algorithm.__init__(self, name='GlowwormSwarmOptimization', sName='GSO', **kwargs)
-		else: Algorithm.__init__(self, **kwargs)
+	@staticmethod
+	def Name(): return ['GlowwormSwarmOptimization', 'GSO']
 
 	@staticmethod
 	def typeParameters(): return {
@@ -107,7 +106,8 @@ class GlowwormSwarmOptimizationV1(GlowwormSwarmOptimization):
 	**Reference URL:** https://www.springer.com/gp/book/9783319515946
 	**Reference paper:** Kaipa, Krishnanand N., and Debasish Ghose. Glowworm swarm optimization: theory, algorithms, and applications. Vol. 698. Springer, 2017.
 	"""
-	def __init__(self, **kwargs): GlowwormSwarmOptimization.__init__(self, name='GlowwormSwarmOptimizationV1', sName='GSOv1', **kwargs)
+	@staticmethod
+	def Name(): return ['GlowwormSwarmOptimizationV1', 'GSOv1']
 
 	def setParameters(self, **kwargs):
 		self.__setParams(**kwargs)
@@ -136,7 +136,8 @@ class GlowwormSwarmOptimizationV2(GlowwormSwarmOptimization):
 	**Reference URL:** https://www.springer.com/gp/book/9783319515946
 	**Reference paper:** Kaipa, Krishnanand N., and Debasish Ghose. Glowworm swarm optimization: theory, algorithms, and applications. Vol. 698. Springer, 2017.
 	"""
-	def __init__(self, **kwargs): GlowwormSwarmOptimization.__init__(self, name='GlowwormSwarmOptimizationV2', sName='GSOv2', **kwargs)
+	@staticmethod
+	def Name(): return ['GlowwormSwarmOptimizationV2', 'GSOv2']
 
 	def setParameters(self, **kwargs):
 		self.__setParams(alpha=kwargs.pop('alpha', 0.2), **kwargs)
@@ -164,7 +165,8 @@ class GlowwormSwarmOptimizationV3(GlowwormSwarmOptimization):
 	**Reference URL:** https://www.springer.com/gp/book/9783319515946
 	**Reference paper:** Kaipa, Krishnanand N., and Debasish Ghose. Glowworm swarm optimization: theory, algorithms, and applications. Vol. 698. Springer, 2017.
 	"""
-	def __init__(self, **kwargs): GlowwormSwarmOptimization.__init__(self, name='GlowwormSwarmOptimizationV2', sName='GSOv2', **kwargs)
+	@staticmethod
+	def Name(): return ['GlowwormSwarmOptimizationV2', 'GSOv2']
 
 	def setParameters(self, **kwargs):
 		self.__setParams(beta1=kwargs.pop('beta1', 0.2), **kwargs)

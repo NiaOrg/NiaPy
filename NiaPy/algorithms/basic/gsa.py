@@ -20,9 +20,8 @@ class GravitationalSearchAlgorithm(Algorithm):
 	**Reference URL:** https://doi.org/10.1016/j.ins.2009.03.004
 	**Reference paper:** Esmat Rashedi, Hossein Nezamabadi-pour, Saeid Saryazdi, GSA: A Gravitational Search Algorithm, Information Sciences, Volume 179, Issue 13, 2009, Pages 2232-2248, ISSN 0020-0255
 	"""
-	def __init__(self, **kwargs):
-		if kwargs.get('name', None) == None: Algorithm.__init__(self, name=kwargs.get('name', 'DifferentialEvolutionAlgorithm'), sName=kwargs.get('sName', 'DE'), **kwargs)
-		else: Algorithm.__init__(self, **kwargs)
+	@staticmethod
+	def Name(): return ['DifferentialEvolutionAlgorithm', 'DE']
 
 	@staticmethod
 	def typeParameters(): return {

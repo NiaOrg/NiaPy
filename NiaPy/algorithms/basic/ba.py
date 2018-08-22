@@ -19,14 +19,8 @@ class BatAlgorithm(Algorithm):
 	**License:** MIT
 	**Reference paper:** Yang, Xin-She. "A new metaheuristic bat-inspired algorithm." Nature inspired cooperative strategies for optimization (NICSO 2010). Springer, Berlin, Heidelberg, 2010. 65-74.
 	"""
-	def __init__(self, **kwargs):
-		r"""**__init__(self, D, NP, nFES, A, r, Qmin, Qmax, benchmark)**.
-
-		**See**:
-		Algorithm.__init__(self, **kwargs)
-		"""
-		if kwargs.get('name', None) == None: Algorithm.__init__(self, name=kwargs.get('name', 'BatAlgorithm'), sName=kwargs.get('sName', 'BA'), **kwargs)
-		else: Algorithm.__init__(self, **kwargs)
+	@staticmethod
+	def Name(): return ['BatAlgorithm', 'BA']
 
 	@staticmethod
 	def typeParameters(): return {

@@ -34,7 +34,8 @@ class HillClimbAlgorithm(Algorithm):
 	**Reference URL:**
 	**Reference paper:**
 	"""
-	def __init__(self, **kwargs): Algorithm.__init__(self, name='HillClimbAlgorithm', sName='BBFA', **kwargs)
+	@staticmethod
+	def Name(): return ['HillClimbAlgorithm', 'BBFA']
 
 	@staticmethod
 	def typeParameters(): return {

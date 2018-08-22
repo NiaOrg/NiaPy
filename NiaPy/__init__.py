@@ -22,6 +22,8 @@ logging.basicConfig()
 logger = logging.getLogger('NiaPy')
 logger.setLevel('INFO')
 
+NiaPyAlgos = [algorithms.basic.BatAlgorithm, algorithms.basic.DifferentialEvolutionAlgorithm, algorithms.basic.FireflyAlgorithm, algorithms.basic.FlowerPollinationAlgorithm, algorithms.basic.GreyWolfOptimizer, algorithms.basic.ArtificialBeeColonyAlgorithm, algorithms.basic.GeneticAlgorithm, algorithms.basic.ParticleSwarmAlgorithm, algorithms.modified.HybridBatAlgorithm, algorithms.modified.SelfAdaptiveDifferentialEvolutionAlgorithm, algorithms.basic.CamelAlgorithm, algorithms.basic.BareBonesFireworksAlgorithm, algorithms.basic.MonkeyKingEvolutionV1, algorithms.basic.MonkeyKingEvolutionV2, algorithms.basic.MonkeyKingEvolutionV3, algorithms.basic.EvolutionStrategy1p1, algorithms.basic.EvolutionStrategyMp1, algorithms.basic.SineCosineAlgorithm, algorithms.basic.HarmonySearch, algorithms.basic.HarmonySearchV1, algorithms.basic.GlowwormSwarmOptimization, algorithms.basic.GlowwormSwarmOptimizationV1, algorithms.basic.GlowwormSwarmOptimizationV2, algorithms.basic.GlowwormSwarmOptimizationV3, algorithms.basic.KrillHerdV1, algorithms.basic.KrillHerdV2, algorithms.basic.KrillHerdV3, algorithms.basic.KrillHerdV4, algorithms.basic.KrillHerdV11, algorithms.basic.FireworksAlgorithm, algorithms.basic.EnhancedFireworksAlgorithm, algorithms.basic.DynamicFireworksAlgorithm, algorithms.basic.DynamicFireworksAlgorithmGauss, algorithms.other.MultipleTrajectorySearch, algorithms.other.MultipleTrajectorySearchV1, algorithms.other.NelderMeadMethod, algorithms.other.HillClimbAlgorithm, algorithms.other.SimulatedAnnealing, algorithms.basic.GravitationalSearchAlgorithm, algorithms.other.AnarchicSocietyOptimization, algorithms.basic.CovarianceMaatrixAdaptionEvolutionStrategy, algorithms.other.TabuSearch]
+
 class Runner:
 	r"""Runner utility feature.
 
@@ -123,49 +125,11 @@ class Runner:
 	@staticmethod
 	def getAlgorithm(name):
 		algorithm = None
-		if name in ['BatAlgorithm', 'BT']: algorithm = algorithms.basic.BatAlgorithm
-		elif name in ['DifferentialEvolutionAlgorithm', 'DE']: algorithm = algorithms.basic.DifferentialEvolutionAlgorithm
-		elif name in ['FireflyAlgorithm', 'FA']: algorithm = algorithms.basic.FireflyAlgorithm
-		elif name in ['FlowerPollinationAlgorithm', 'FPA']: algorithm = algorithms.basic.FlowerPollinationAlgorithm
-		elif name in ['GreyWolfOptimizer', 'GWO']: algorithm = algorithms.basic.GreyWolfOptimizer
-		elif name in ['ArtificialBeeColonyAlgorithm', 'ABC']: algorithm = algorithms.basic.ArtificialBeeColonyAlgorithm
-		elif name in ['GeneticAlgorithm', 'GA']: algorithm = algorithms.basic.GeneticAlgorithm
-		elif name in ['ParticleSwarmAlgorithm', 'PSO']: algorithm = algorithms.basic.ParticleSwarmAlgorithm
-		elif name in ['HybridBatAlgorithm', 'HBA']: algorithm = algorithms.modified.HybridBatAlgorithm
-		elif name in ['SelfAdaptiveDifferentialEvolutionAlgorithm', 'jDE']: algorithm = algorithms.modified.SelfAdaptiveDifferentialEvolutionAlgorithm
-		elif name in ['CamelAlgorithm', 'CA']: algorithm = algorithms.basic.CamelAlgorithm
-		elif name in ['BareBonesFireworksAlgorithm', 'BBFWA']: algorithm = algorithms.basic.BareBonesFireworksAlgorithm
-		elif name in ['MonkeyKingEvolutionV1', 'MKE', 'MKEv1']: algorithm = algorithms.basic.MonkeyKingEvolutionV1
-		elif name in ['MonkeyKingEvolutionV2', 'MKEv2']: algorithm = algorithms.basic.MonkeyKingEvolutionV2
-		elif name in ['MonkeyKingEvolutionV3', 'MKEv3']: algorithm = algorithms.basic.MonkeyKingEvolutionV3
-		elif name in ['EvolutionStrategy1p1', 'ES 1+1']: algorithm = algorithms.basic.EvolutionStrategy1p1
-		elif name in ['EvolutionStrategyMp1', 'ES M+1']: algorithm = algorithms.basic.EvolutionStrategyMp1
-		elif name in ['SineCosineAlgorithm', 'SCA']: algorithm = algorithms.basic.SineCosineAlgorithm
-		elif name in ['HarmonySearch', 'HS']: algorithm = algorithms.basic.HarmonySearch
-		elif name in ['HarmonySearchV1', 'HSv1']: algorithm = algorithms.basic.HarmonySearchV1
-		elif name in ['GlowwormSwarmOptimization', 'GSO']: algorithm = algorithms.basic.GlowwormSwarmOptimization
-		elif name in ['GlowwormSwarmOptimizationV1', 'GSOv1']: algorithm = algorithms.basic.GlowwormSwarmOptimizationV1
-		elif name in ['GlowwormSwarmOptimizationV2', 'GSOv2']: algorithm = algorithms.basic.GlowwormSwarmOptimizationV2
-		elif name in ['GlowwormSwarmOptimizationV3', 'GSOv3']: algorithm = algorithms.basic.GlowwormSwarmOptimizationV3
-		elif name in ['KrillHerdV1', 'KHv1']: algorithm = algorithms.basic.KrillHerdV1
-		elif name in ['KrillHerdV2', 'KHv2']: algorithm = algorithms.basic.KrillHerdV2
-		elif name in ['KrillHerdV3', 'KHv3']: algorithm = algorithms.basic.KrillHerdV3
-		elif name in ['KrillHerdV4', 'KHv4']: algorithm = algorithms.basic.KrillHerdV4
-		elif name in ['KrillHerdV11', 'KHv11']: algorithm = algorithms.basic.KrillHerdV11
-		elif name in ['FireworksAlgorithm', 'FWA']: algorithm = algorithms.basic.FireworksAlgorithm
-		elif name in ['EnhancedFireworksAlgorithm', 'EFWA']: algorithm = algorithms.basic.EnhancedFireworksAlgorithm
-		elif name in ['DynamicFireworksAlgorithm', 'dynFWA']: algorithm = algorithms.basic.DynamicFireworksAlgorithm
-		elif name in ['DynamicFireworksAlgorithmGauss', 'dynFWAG']: algorithm = algorithms.basic.DynamicFireworksAlgorithmGauss
-		elif name in ['MultipleTrajectorySearch', 'MTS', 'MTS_lsgo']: algorithm = algorithms.other.MultipleTrajectorySearch
-		elif name in ['MultipleTrajectorySearchV1', 'MTSv1', 'MTS_moo']: algorithm = algorithms.other.MultipleTrajectorySearchV1
-		elif name in ['NelderMeadMethod', 'NMM']: algorithm = algorithms.other.NelderMeadMethod
-		elif name in ['HillClimbAlgorithm', 'HCA']: algorithm = algorithms.other.HillClimbAlgorithm
-		elif name in ['SimulatedAnnealing', 'SA']: algorithm = algorithms.other.SimulatedAnnealing
-		elif name in ['GravitationalSearchAlgorithm', 'GSA']: algorithm = algorithms.basic.GravitationalSearchAlgorithm
-		elif name in ['AnarchicSocietyOptimization', 'ASO']: algorithm = algorithms.other.AnarchicSocietyOptimization
-		elif name in ['CovarianceMaatrixAdaptionEvolutionStrategy', 'CMA ES']: algorithm = algorithms.basic.CovarianceMaatrixAdaptionEvolutionStrategy
-		elif name in ['TabuSearch', 'TS']: algorithm = algorithms.other.TabuSearch
-		else: raise TypeError('Passed algorithm is not defined!')
+		for alg in NiaPyAlgos:
+			if name in alg.Name():
+				algorithm = alg
+				break
+		if algorithm == None: raise TypeError('Passed algorithm is not defined!')
 		return algorithm
 
 	def benchmarkFactory(self, name): return util.Task(D=self.D, nFES=self.nFES, nGEN=self.nGEN, optType=util.OptimizationType.MINIMIZATION, benchmark=name)

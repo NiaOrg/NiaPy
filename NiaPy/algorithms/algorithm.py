@@ -31,7 +31,7 @@ class Algorithm:
 		**See**:
 		Algorithm.setParameters(self, **kwargs)
 		"""
-		task, self.name, self.sName, self.Rand = kwargs.pop('task', None), kwargs.pop('name', 'Algorith'), kwargs.pop('sName', 'algo'), rand.RandomState(kwargs.pop('seed', 1))
+		task, self.Rand = kwargs.pop('task', None), rand.RandomState(kwargs.pop('seed', 1))
 		self.task = task if task != None else Task(kwargs.pop('D', 10), kwargs.pop('nFES', 100000), kwargs.pop('nGEN', None), kwargs.pop('benchmark', 'ackley'), optType=kwargs.pop('optType', OptimizationType.MINIMIZATION))
 		self.setParameters(**kwargs)
 
@@ -39,6 +39,9 @@ class Algorithm:
 	def typeParameters():
 		r"""Get the parameter names for the algorithm."""
 		return dict()
+
+	@staticmethod
+	def Name(): ['Algorithm', 'A']
 
 	def setParameters(self, **kwargs):
 		r"""Set the parameters/arguments of the algorithm.

@@ -23,7 +23,8 @@ class BareBonesFireworksAlgorithm(Algorithm):
 	**Reference paper:**
 	Junzhi Li, Ying Tan, The bare bones fireworks algorithm: A minimalist global optimizer, Applied Soft Computing, Volume 62, 2018, Pages 454-462, ISSN 1568-4946, https://doi.org/10.1016/j.asoc.2017.10.046.
 	"""
-	def __init__(self, **kwargs): Algorithm.__init__(self, name='BareBonesFireworksAlgorithm', sName='BBFA', **kwargs)
+	@staticmethod
+	def Name(): return ['BareBonesFireworksAlgorithm', 'BBFA']
 
 	@staticmethod
 	def typeParameters(): return {
@@ -64,9 +65,8 @@ class FireworksAlgorithm(Algorithm):
 	**Reference URL:** https://www.springer.com/gp/book/9783662463529
 	**Reference paper:** Tan, Ying. "Firework Algorithm: A Novel Swarm Intelligence Optimization Method." (2015).
 	"""
-	def __init__(self, **kwargs):
-		if kwargs.get('name', None) == None: Algorithm.__init__(self, name=kwargs.get('name', 'FireworksAlgorithm'), sName=kwargs.get('sName', 'FWA'), **kwargs)
-		else: Algorithm.__init__(self, **kwargs)
+	@staticmethod
+	def Name(): return ['FireworksAlgorithm', 'FWA']
 
 	@staticmethod
 	def typeParameters(): return {
@@ -150,9 +150,8 @@ class EnhancedFireworksAlgorithm(FireworksAlgorithm):
 	**Reference URL:** https://ieeexplore.ieee.org/document/6557813/
 	**Reference paper:** S. Zheng, A. Janecek and Y. Tan, "Enhanced Fireworks Algorithm," 2013 IEEE Congress on Evolutionary Computation, Cancun, 2013, pp. 2069-2077. doi: 10.1109/CEC.2013.6557813
 	"""
-	def __init__(self, **kwargs):
-		if kwargs.get('name', None) == None: FireworksAlgorithm.__init__(self, name=kwargs.get('name', 'EnhancedFireworksAlgorithm'), sName=kwargs.get('sName', 'EFWA'), **kwargs)
-		else: FireworksAlgorithm.__init__(self, **kwargs)
+	@staticmethod
+	def Name(): return ['EnhancedFireworksAlgorithm', 'EFWA']
 
 	@staticmethod
 	def typeParameters():
@@ -215,9 +214,8 @@ class DynamicFireworksAlgorithmGauss(EnhancedFireworksAlgorithm):
 	**Reference URL:** http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6900485&isnumber=6900223
 	**Reference paper:** S. Zheng, A. Janecek, J. Li and Y. Tan, "Dynamic search in fireworks algorithm," 2014 IEEE Congress on Evolutionary Computation (CEC), Beijing, 2014, pp. 3222-3229. doi: 10.1109/CEC.2014.6900485
 	"""
-	def __init__(self, **kwargs):
-		if kwargs.get('name', None) == None: EnhancedFireworksAlgorithm.__init__(self, name='DynamicFireworksGaussAlgorithm', sName='dynFWA-G', **kwargs)
-		else: EnhancedFireworksAlgorithm.__init__(self, **kwargs)
+	@staticmethod
+	def Name(): return ['DynamicFireworksGaussAlgorithm', 'dynFWA-G']
 
 	@staticmethod
 	def typeParameters():
@@ -293,7 +291,8 @@ class DynamicFireworksAlgorithm(DynamicFireworksAlgorithmGauss):
 	**Reference URL:** http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6900485&isnumber=6900223
 	**Reference paper:** S. Zheng, A. Janecek, J. Li and Y. Tan, "Dynamic search in fireworks algorithm," 2014 IEEE Congress on Evolutionary Computation (CEC), Beijing, 2014, pp. 3222-3229. doi: 10.1109/CEC.2014.6900485
 	"""
-	def __init__(self, **kwargs): DynamicFireworksAlgorithmGauss.__init__(self, name='DynamicFireworksAlgorithm', sName='dynFWA', **kwargs)
+	@staticmethod
+	def Name(): return ['DynamicFireworksAlgorithm', 'dynFWA']
 
 	def runTask(self, task):
 		FW, (Ah, Ab) = self.uniform(task.Lower, task.Upper, [self.N, task.D]), self.initAmplitude(task)

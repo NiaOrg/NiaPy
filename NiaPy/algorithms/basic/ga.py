@@ -69,7 +69,8 @@ class GeneticAlgorithm(Algorithm):
 	**Author:** Uros Mlakar and Klemen Berkovič
 	**License:** MIT
 	"""
-	def __init__(self, **kwargs): Algorithm.__init__(self, name='GeneticAlgorithm', sName='GA', **kwargs)
+	@staticmethod
+	def Name(): return ['GeneticAlgorithm', 'GA']
 
 	@staticmethod
 	def typeParameters(): return {

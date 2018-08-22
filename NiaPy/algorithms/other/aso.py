@@ -59,13 +59,14 @@ def MP_P(x, xpb, CR, MP, rnd=rand):
 class AnarchicSocietyOptimization(Algorithm):
 	r"""Implementation of Anarchic Society Optimization algorithm.
 
-	**Algorithm:** Particle Swarm Optimization algorithm
+	**Algorithm:** Anarchic Society Optimization algorithm
 	**Date:** 2018
 	**Authors:** Klemen Berkovič
 	**License:** MIT
 	**Reference paper:** Ahmadi-Javid, Amir. "Anarchic Society Optimization: A human-inspired method." Evolutionary Computation (CEC), 2011 IEEE Congress on. IEEE, 2011.
 	"""
-	def __init__(self, **kwargs): Algorithm.__init__(self, name='ParticleSwarmAlgorithm', sName='PSO', **kwargs)
+	@staticmethod
+	def Name(): return ['AnarchicSocietyOptimization', 'ASO']
 
 	@staticmethod
 	def typeParameters(): return {

@@ -39,7 +39,8 @@ class SimulatedAnnealing(Algorithm):
 	**Reference URL:**
 	**Reference paper:**
 	"""
-	def __init__(self, **kwargs): Algorithm.__init__(self, name='SimulatedAnnealing', sName='BBFA', **kwargs)
+	@staticmethod
+	def Name(): return ['SimulatedAnnealing', 'BBFA']
 
 	@staticmethod
 	def typeParameters(): return {

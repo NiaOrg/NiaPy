@@ -22,9 +22,8 @@ class KrillHerd(Algorithm):
 	**Reference URL:** http://www.sciencedirect.com/science/article/pii/S1007570412002171
 	**Reference paper:** Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010.
 	"""
-	def __init__(self, **kwargs):
-		if kwargs.get('name', None) == None: Algorithm.__init__(self, name='KrillHerd', sName='KH', **kwargs)
-		else: Algorithm.__init__(self, **kwargs)
+	@staticmethod
+	def Name(): return ['KrillHerd', 'KH']
 
 	@staticmethod
 	def typeParameters(): return {
