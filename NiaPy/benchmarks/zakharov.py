@@ -37,7 +37,7 @@ class Zakharov(Benchmark):
 	Reference:
 	https://www.sfu.ca/~ssurjano/levy.html
 	"""
-	def __init__(self, Lower=-5.0, Upper=10.0): self.Lower, self.Upper, = Lower, Upper
+	def __init__(self, Lower=-5.0, Upper=10.0): Benchmark.__init__(self, Lower, Upper)
 
 	@classmethod
 	def function(cls):

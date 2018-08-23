@@ -39,7 +39,7 @@ class Discus(Benchmark):
 	Reference:
 	http://www5.zzu.edu.cn/__local/A/69/BC/D3B5DFE94CD2574B38AD7CD1D12_C802DAFE_BC0C0.pdf
 	"""
-	def __init__(self, Lower=-100.0, Upper=100.0): self.Lower, self.Upper = Lower, Upper
+	def __init__(self, Lower=-100.0, Upper=100.0): Benchmark.__init__(self, Lower, Upper)
 
 	@classmethod
 	def function(cls):

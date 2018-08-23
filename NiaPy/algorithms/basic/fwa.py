@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, arguments-differ, line-too-long, redefined-builtin, no-self-use, singleton-comparison, unused-argument
+# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, arguments-differ, line-too-long, redefined-builtin, no-self-use, singleton-comparison, unused-argument, bad-continuation
 import logging
 from numpy import apply_along_axis, argmin, argmax, sum, sqrt, round, argsort, fabs, asarray, where
 from NiaPy.algorithms.algorithm import Algorithm
@@ -64,8 +64,7 @@ class FireworksAlgorithm(Algorithm):
 	**Reference URL:** https://www.springer.com/gp/book/9783662463529
 	**Reference paper:** Tan, Ying. "Firework Algorithm: A Novel Swarm Intelligence Optimization Method." (2015).
 	"""
-	@staticmethod
-	def Name(): return ['FireworksAlgorithm', 'FWA']
+	Name = ['FireworksAlgorithm', 'FWA']
 
 	@staticmethod
 	def typeParameters(): return {
@@ -149,8 +148,7 @@ class EnhancedFireworksAlgorithm(FireworksAlgorithm):
 	**Reference URL:** https://ieeexplore.ieee.org/document/6557813/
 	**Reference paper:** S. Zheng, A. Janecek and Y. Tan, "Enhanced Fireworks Algorithm," 2013 IEEE Congress on Evolutionary Computation, Cancun, 2013, pp. 2069-2077. doi: 10.1109/CEC.2013.6557813
 	"""
-	@staticmethod
-	def Name(): return ['EnhancedFireworksAlgorithm', 'EFWA']
+	Name = ['EnhancedFireworksAlgorithm', 'EFWA']
 
 	@staticmethod
 	def typeParameters():
@@ -213,14 +211,13 @@ class DynamicFireworksAlgorithmGauss(EnhancedFireworksAlgorithm):
 	**Reference URL:** http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6900485&isnumber=6900223
 	**Reference paper:** S. Zheng, A. Janecek, J. Li and Y. Tan, "Dynamic search in fireworks algorithm," 2014 IEEE Congress on Evolutionary Computation (CEC), Beijing, 2014, pp. 3222-3229. doi: 10.1109/CEC.2014.6900485
 	"""
-	@staticmethod
-	def Name(): return ['DynamicFireworksGaussAlgorithm', 'dynFWA-G']
+	Name = ['DynamicFireworksAlgorithmGauss', 'dynFWA-G']
 
 	@staticmethod
 	def typeParameters():
 		d = FireworksAlgorithm.typeParameters()
 		d['A_cf'] = lambda x: isinstance(x, (float, int)) and x > 0
-		d['C_a'] = lambda x: isinstance(x, (float, int)) and 1 < x
+		d['C_a'] = lambda x: isinstance(x, (float, int)) and x > 1
 		d['C_r'] = lambda x: isinstance(x, (float, int)) and 0 < x < 1
 		d['epsilon'] = lambda x: isinstance(x, (float, int)) and 0 < x < 1
 		return d
@@ -290,8 +287,7 @@ class DynamicFireworksAlgorithm(DynamicFireworksAlgorithmGauss):
 	**Reference URL:** http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6900485&isnumber=6900223
 	**Reference paper:** S. Zheng, A. Janecek, J. Li and Y. Tan, "Dynamic search in fireworks algorithm," 2014 IEEE Congress on Evolutionary Computation (CEC), Beijing, 2014, pp. 3222-3229. doi: 10.1109/CEC.2014.6900485
 	"""
-	@staticmethod
-	def Name(): return ['DynamicFireworksAlgorithm', 'dynFWA']
+	Name = ['DynamicFireworksAlgorithm', 'dynFWA']
 
 	def runTask(self, task):
 		FW, (Ah, Ab) = self.uniform(task.Lower, task.Upper, [self.N, task.D]), self.initAmplitude(task)

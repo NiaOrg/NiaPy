@@ -42,9 +42,7 @@ class Sphere(Benchmark):
 	International Journal of Mathematical Modelling and Numerical Optimisation,
 	4(2), 150-194.
 	"""
-	def __init__(self, Lower=-5.12, Upper=5.12):
-		self.Lower = Lower
-		self.Upper = Upper
+	def __init__(self, Lower=-5.12, Upper=5.12): Benchmark.__init__(self, Lower, Upper)
 
 	@classmethod
 	def function(cls):
@@ -58,7 +56,7 @@ class Sphere2(Benchmark):
 	r"""Implementation of Sphere with different powers function.
 
 	Date: 2018
-	Authors: Klemen
+	Authors: Klemen Berkovič
 	License: MIT
 
 	Function: **Sun of different powers function**
@@ -83,9 +81,7 @@ class Sphere2(Benchmark):
 	Reference URL:
 	https://www.sfu.ca/~ssurjano/sumpow.html
 	"""
-	def __init__(self, Lower=-1., Upper=1.):
-		self.Lower = Lower
-		self.Upper = Upper
+	def __init__(self, Lower=-1., Upper=1.): Benchmark.__init__(self, Lower, Upper)
 
 	@classmethod
 	def function(cls):
@@ -99,7 +95,7 @@ class Sphere3(Benchmark):
 	r"""Implementation of rotated hyper-ellipsoid function.
 
 	Date: 2018
-	Authors: Klemen
+	Authors: Klemen Berkovič
 	License: MIT
 
 	Function: **Sun of rotated hyper-elliposid function**
@@ -124,9 +120,7 @@ class Sphere3(Benchmark):
 	Reference URL:
 	https://www.sfu.ca/~ssurjano/rothyp.html
 	"""
-	def __init__(self, Lower=-65.536, Upper=65.536):
-		self.Lower = Lower
-		self.Upper = Upper
+	def __init__(self, Lower=-65.536, Upper=65.536): Benchmark.__init__(self, Lower, Upper)
 
 	@classmethod
 	def function(cls):

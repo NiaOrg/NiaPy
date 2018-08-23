@@ -40,7 +40,9 @@ class Perm(Benchmark):
 	Reference:
 	https://www.sfu.ca/~ssurjano/perm0db.html
 	"""
-	def __init__(self, D=10.0, beta=.5): self.Lower, self.Upper, Perm.beta = -D, D, beta
+	def __init__(self, D=10.0, beta=.5):
+		Benchmark.__init__(self, -D, D)
+		Perm.beta = beta
 
 	@classmethod
 	def function(cls):

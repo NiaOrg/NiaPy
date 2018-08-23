@@ -47,8 +47,7 @@ class Salomon(Benchmark):
     """
 
     def __init__(self, Lower=-100.0, Upper=100.0):
-        self.Lower = Lower
-        self.Upper = Upper
+        Benchmark.__init__(self, Lower, Upper)
 
     @classmethod
     def function(cls):

@@ -43,7 +43,7 @@ class Weierstrass(Benchmark):
 	a, b, k_max = 0.5, 3, 20
 
 	def __init__(self, Lower=-100.0, Upper=100.0, a=0.5, b=3, k_max=20):
-		self.Lower, self.Upper = Lower, Upper
+		Benchmark.__init__(self, Lower, Upper)
 		Weierstrass.a, Weierstrass.b, Weierstrass.k_max = a, b, k_max
 
 	@classmethod

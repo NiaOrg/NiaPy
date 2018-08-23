@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, line-too-long, multiple-statements, too-many-function-args, old-style-class
+# pylint: disable=mixed-indentation, line-too-long, multiple-statements, too-many-function-args, old-style-class, singleton-comparison
 """Python micro framework for building nature-inspired algorithms."""
 
 from __future__ import print_function  # for backward compatibility purpose
@@ -10,9 +10,10 @@ import json
 import datetime
 import xlsxwriter
 from numpy import amin, amax, median, mean, std
-from NiaPy import algorithms, benchmarks, util
+from NiaPy import benchmarks, util, algorithms, argparser
+from NiaPy.algorithms import basic as balgos, modified as malgos, other as oalgos
 
-__all__ = ['algorithms', 'benchmarks', 'util']
+__all__ = ['algorithms', 'benchmarks', 'util', 'argparser']
 __project__ = 'NiaPy'
 __version__ = '1.0.1'
 
@@ -22,7 +23,9 @@ logging.basicConfig()
 logger = logging.getLogger('NiaPy')
 logger.setLevel('INFO')
 
-NiaPyAlgos = [algorithms.basic.BatAlgorithm, algorithms.basic.DifferentialEvolutionAlgorithm, algorithms.basic.FireflyAlgorithm, algorithms.basic.FlowerPollinationAlgorithm, algorithms.basic.GreyWolfOptimizer, algorithms.basic.ArtificialBeeColonyAlgorithm, algorithms.basic.GeneticAlgorithm, algorithms.basic.ParticleSwarmAlgorithm, algorithms.modified.HybridBatAlgorithm, algorithms.modified.SelfAdaptiveDifferentialEvolutionAlgorithm, algorithms.basic.CamelAlgorithm, algorithms.basic.BareBonesFireworksAlgorithm, algorithms.basic.MonkeyKingEvolutionV1, algorithms.basic.MonkeyKingEvolutionV2, algorithms.basic.MonkeyKingEvolutionV3, algorithms.basic.EvolutionStrategy1p1, algorithms.basic.EvolutionStrategyMp1, algorithms.basic.SineCosineAlgorithm, algorithms.basic.HarmonySearch, algorithms.basic.HarmonySearchV1, algorithms.basic.GlowwormSwarmOptimization, algorithms.basic.GlowwormSwarmOptimizationV1, algorithms.basic.GlowwormSwarmOptimizationV2, algorithms.basic.GlowwormSwarmOptimizationV3, algorithms.basic.KrillHerdV1, algorithms.basic.KrillHerdV2, algorithms.basic.KrillHerdV3, algorithms.basic.KrillHerdV4, algorithms.basic.KrillHerdV11, algorithms.basic.FireworksAlgorithm, algorithms.basic.EnhancedFireworksAlgorithm, algorithms.basic.DynamicFireworksAlgorithm, algorithms.basic.DynamicFireworksAlgorithmGauss, algorithms.other.MultipleTrajectorySearch, algorithms.other.MultipleTrajectorySearchV1, algorithms.other.NelderMeadMethod, algorithms.other.HillClimbAlgorithm, algorithms.other.SimulatedAnnealing, algorithms.basic.GravitationalSearchAlgorithm, algorithms.other.AnarchicSocietyOptimization, algorithms.basic.CovarianceMaatrixAdaptionEvolutionStrategy, algorithms.other.TabuSearch]
+NiaPyAlgos = [balgos.BatAlgorithm, balgos.DifferentialEvolutionAlgorithm, balgos.FireflyAlgorithm, balgos.FlowerPollinationAlgorithm, balgos.GreyWolfOptimizer, balgos.ArtificialBeeColonyAlgorithm, balgos.GeneticAlgorithm, balgos.ParticleSwarmAlgorithm, balgos.CamelAlgorithm, balgos.BareBonesFireworksAlgorithm, balgos.MonkeyKingEvolutionV1, balgos.MonkeyKingEvolutionV2, balgos.MonkeyKingEvolutionV3, balgos.EvolutionStrategy1p1, balgos.EvolutionStrategyMp1, balgos.SineCosineAlgorithm, balgos.HarmonySearch, balgos.HarmonySearchV1, balgos.GlowwormSwarmOptimization, balgos.GlowwormSwarmOptimizationV1, balgos.GlowwormSwarmOptimizationV2, balgos.GlowwormSwarmOptimizationV3, balgos.KrillHerdV1, balgos.KrillHerdV2, balgos.KrillHerdV3, balgos.KrillHerdV4, balgos.KrillHerdV11, balgos.FireworksAlgorithm, balgos.EnhancedFireworksAlgorithm, balgos.DynamicFireworksAlgorithm, balgos.DynamicFireworksAlgorithmGauss, balgos.GravitationalSearchAlgorithm, balgos.CovarianceMaatrixAdaptionEvolutionStrategy]
+NiaPyAlgos.extend([malgos.HybridBatAlgorithm, malgos.SelfAdaptiveDifferentialEvolutionAlgorithm, malgos.DynNPSelfAdaptiveDifferentialEvolutionAlgorithm])
+NiaPyAlgos.extend([oalgos.MultipleTrajectorySearch, oalgos.MultipleTrajectorySearchV1, oalgos.NelderMeadMethod, oalgos.HillClimbAlgorithm, oalgos.SimulatedAnnealing, oalgos.AnarchicSocietyOptimization, oalgos.TabuSearch])
 
 class Runner:
 	r"""Runner utility feature.
@@ -126,9 +129,7 @@ class Runner:
 	def getAlgorithm(name):
 		algorithm = None
 		for alg in NiaPyAlgos:
-			if name in alg.Name:
-				algorithm = alg
-				break
+			if name in alg.Name: algorithm = alg; break
 		if algorithm == None: raise TypeError('Passed algorithm is not defined!')
 		return algorithm
 
@@ -164,7 +165,7 @@ class Runner:
 		worksheet = workbook.add_worksheet()
 		row, col, nRuns = 0, 0, 0
 		for alg in self.results:
-			_, col = worksheet.write(row, col, alg),  col + 1
+			_, col = worksheet.write(row, col, alg), col + 1
 			for bench in self.results[alg]:
 				worksheet.write(row, col, bench)
 				nRuns = len(self.results[alg][bench])

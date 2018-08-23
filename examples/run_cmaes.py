@@ -7,8 +7,8 @@ sys.path.append('../')
 
 import random
 import logging
-from NiaPy.algorithms.basic import CovarianceMaatrixAdaptionEvolutionStrategy
-from NiaPy.util import Task, TaskConvPrint, TaskConvPlot, OptimizationType, getDictArgs
+from NiaPy import Runner, getDictArgs
+from NiaPy.util import Task, TaskConvPrint, TaskConvPlot, OptimizationType
 
 logging.basicConfig()
 logger = logging.getLogger('examples')
@@ -61,7 +61,7 @@ def getOptType(otype):
 	else: return None
 
 if __name__ == '__main__':
-	pargs, algo = getDictArgs(sys.argv[1:]), CovarianceMaatrixAdaptionEvolutionStrategy
+	pargs, algo = getDictArgs(sys.argv[1:]), Runner.getAlgorithm('CovarianceMaatrixAdaptionEvolutionStrategy')
 	optFunc = getOptType(pargs['optType'])
 	if not pargs['runType']: simple_example(algo, optFunc=optFunc, **pargs)
 	elif pargs['runType'] == 'log': logging_example(algo, optFunc=optFunc, **pargs)

@@ -44,8 +44,7 @@ class Qing(Benchmark):
     """
 
     def __init__(self, Lower=-500.0, Upper=500.0):
-        self.Lower = Lower
-        self.Upper = Upper
+        Benchmark.__init__(self, Lower, Upper)
 
     @classmethod
     def function(cls):

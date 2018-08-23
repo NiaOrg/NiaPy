@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, unused-argument, line-too-long, len-as-condition, useless-super-delegation, redefined-builtin, arguments-differ
+# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, unused-argument, line-too-long, len-as-condition, useless-super-delegation, redefined-builtin, arguments-differ, bad-continuation
 import logging
 from numpy import argmin, sort, random as rand, asarray, fmin, fmax, sum
 from NiaPy.algorithms.algorithm import Algorithm, Individual

@@ -37,9 +37,6 @@ class Algorithm:
 		self.task = task if task != None else Task(kwargs.pop('D', 10), kwargs.pop('nFES', 100000), kwargs.pop('nGEN', None), kwargs.pop('benchmark', 'ackley'), optType=kwargs.pop('optType', OptimizationType.MINIMIZATION))
 		self.setParameters(**kwargs)
 
-	@staticmethod
-	def Name(): ['Algorithm', 'A']
-
 	def setParameters(self, **kwargs):
 		r"""Set the parameters/arguments of the algorithm.
 

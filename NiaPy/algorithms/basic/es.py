@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, unused-argument, singleton-comparison, no-else-return, line-too-long, arguments-differ, no-self-use, superfluous-parens, redefined-builtin
+# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, unused-argument, singleton-comparison, no-else-return, line-too-long, arguments-differ, no-self-use, superfluous-parens, redefined-builtin, bad-continuation
 import logging
 from math import ceil
 from numpy import argmin, argsort, log, sum, fmax, sqrt, full, exp, eye, diag, apply_along_axis, round, any, asarray, dot, random as rand, tile, inf, where
@@ -29,7 +29,7 @@ class EvolutionStrategy1p1(Algorithm):
 	**Reference URL:**
 	**Reference paper:**
 	"""
-	Name = ['EvolutionStrategy(1+1)', 'ES(1+1)']
+	Name = ['EvolutionStrategy1p1', 'EvolutionStrategy(1+1)', 'ES(1+1)']
 
 	@staticmethod
 	def typeParameters(): return {
@@ -80,7 +80,7 @@ class EvolutionStrategyMp1(EvolutionStrategy1p1):
 	**Reference URL:**
 	**Reference paper:**
 	"""
-	Name = ['EvolutionStrategy(mu+1)', 'ES(m+1)']
+	Name = ['EvolutionStrategyMp1', 'EvolutionStrategy(mu+1)', 'ES(m+1)']
 
 	def setParameters(self, **kwargs):
 		mu = kwargs.pop('mu', 40)
@@ -96,7 +96,7 @@ class EvolutionStrategyMpL(EvolutionStrategy1p1):
 	**Reference URL:**
 	**Reference paper:**
 	"""
-	Name = ['EvolutionStrategy(mu+lambda)', 'ES(m+l)']
+	Name = ['EvolutionStrategyMpL', 'EvolutionStrategy(mu+lambda)', 'ES(m+l)']
 
 	@staticmethod
 	def typeParameters():
@@ -155,7 +155,7 @@ class EvolutionStrategyML(EvolutionStrategyMpL):
 	**Reference URL:**
 	**Reference paper:**
 	"""
-	Name = ['EvolutionStrategy(mu,lambda)', 'ES(m,l)']
+	Name = ['EvolutionStrategyML', 'EvolutionStrategy(mu,lambda)', 'ES(m,l)']
 
 	def newPop(self, pop):
 		pop_s = argsort([i.f for i in pop])
@@ -220,12 +220,11 @@ class CovarianceMaatrixAdaptionEvolutionStrategy(Algorithm):
 	**Reference URL:** https://arxiv.org/abs/1604.00772
 	**Reference paper:** Hansen, Nikolaus. "The CMA evolution strategy: A tutorial." arXiv preprint arXiv:1604.00772 (2016).
 	"""
-	@staticmethod
-	def Name(): return ['CovarianceMaatrixAdaptionEvolutionStrategy', 'CMA-ES']
+	Name = ['CovarianceMaatrixAdaptionEvolutionStrategy', 'CMA-ES']
 
 	@staticmethod
 	def typeParameters(): return {
-			'epsilon': lambda x: isinstance(x, (float, int)) and 0 < epsilon < 1
+			'epsilon': lambda x: isinstance(x, (float, int)) and 0 < x < 1
 	}
 
 	def setParameters(self, epsilon=1e-20, **ukwargs):

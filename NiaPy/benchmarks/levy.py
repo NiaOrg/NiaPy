@@ -38,7 +38,7 @@ class Levy(Benchmark):
 	Reference:
 	https://www.sfu.ca/~ssurjano/levy.html
 	"""
-	def __init__(self, Lower=0.0, Upper=pi): self.Lower, self.Upper, = Lower, Upper
+	def __init__(self, Lower=0.0, Upper=pi): Benchmark.__init__(self, Lower, Upper)
 
 	@classmethod
 	def function(cls):

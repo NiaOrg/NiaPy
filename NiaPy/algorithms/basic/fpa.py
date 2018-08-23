@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, line-too-long, logging-not-lazy, no-self-use, attribute-defined-outside-init, arguments-differ
+# pylint: disable=mixed-indentation, multiple-statements, line-too-long, logging-not-lazy, no-self-use, attribute-defined-outside-init, arguments-differ, bad-continuation
 import logging
 from scipy.special import gamma as Gamma
 from numpy import where, argmin, sin, fabs, pi, apply_along_axis, full

@@ -37,7 +37,7 @@ class DixonPrice(Benchmark):
 	Reference:
 	https://www.sfu.ca/~ssurjano/dixonpr.html
 	"""
-	def __init__(self, Lower=-10.0, Upper=10): self.Lower, self.Upper, = Lower, Upper
+	def __init__(self, Lower=-10.0, Upper=10): Benchmark.__init__(self, Lower, Upper)
 
 	@classmethod
 	def function(cls):

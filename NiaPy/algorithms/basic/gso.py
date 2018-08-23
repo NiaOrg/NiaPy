@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, line-too-long, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, redefined-builtin, singleton-comparison, unused-argument, arguments-differ, no-else-return
+# pylint: disable=mixed-indentation, trailing-whitespace, line-too-long, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, redefined-builtin, singleton-comparison, unused-argument, arguments-differ, no-else-return, bad-continuation
 import logging
 from scipy.spatial.distance import euclidean
 from numpy import full, apply_along_axis, argmin, copy, sum, inf, fmax, pi, where
@@ -105,8 +105,7 @@ class GlowwormSwarmOptimizationV1(GlowwormSwarmOptimization):
 	**Reference URL:** https://www.springer.com/gp/book/9783319515946
 	**Reference paper:** Kaipa, Krishnanand N., and Debasish Ghose. Glowworm swarm optimization: theory, algorithms, and applications. Vol. 698. Springer, 2017.
 	"""
-	@staticmethod
-	def Name(): return ['GlowwormSwarmOptimizationV1', 'GSOv1']
+	Name = ['GlowwormSwarmOptimizationV1', 'GSOv1']
 
 	def setParameters(self, **kwargs):
 		self.__setParams(**kwargs)
@@ -135,8 +134,7 @@ class GlowwormSwarmOptimizationV2(GlowwormSwarmOptimization):
 	**Reference URL:** https://www.springer.com/gp/book/9783319515946
 	**Reference paper:** Kaipa, Krishnanand N., and Debasish Ghose. Glowworm swarm optimization: theory, algorithms, and applications. Vol. 698. Springer, 2017.
 	"""
-	@staticmethod
-	def Name(): return ['GlowwormSwarmOptimizationV2', 'GSOv2']
+	Name = ['GlowwormSwarmOptimizationV2', 'GSOv2']
 
 	def setParameters(self, **kwargs):
 		self.__setParams(alpha=kwargs.pop('alpha', 0.2), **kwargs)
@@ -164,8 +162,7 @@ class GlowwormSwarmOptimizationV3(GlowwormSwarmOptimization):
 	**Reference URL:** https://www.springer.com/gp/book/9783319515946
 	**Reference paper:** Kaipa, Krishnanand N., and Debasish Ghose. Glowworm swarm optimization: theory, algorithms, and applications. Vol. 698. Springer, 2017.
 	"""
-	@staticmethod
-	def Name(): return ['GlowwormSwarmOptimizationV2', 'GSOv2']
+	Name = ['GlowwormSwarmOptimizationV3', 'GSOv3']
 
 	def setParameters(self, **kwargs):
 		self.__setParams(beta1=kwargs.pop('beta1', 0.2), **kwargs)

@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, logging-not-lazy, attribute-defined-outside-init, line-too-long, arguments-differ, singleton-comparison
+# pylint: disable=mixed-indentation, multiple-statements, logging-not-lazy, attribute-defined-outside-init, line-too-long, arguments-differ, singleton-comparison, bad-continuation
 import logging
 from numpy import argmin
 from NiaPy.algorithms.algorithm import Individual
@@ -75,7 +75,7 @@ class DynNPSelfAdaptiveDifferentialEvolutionAlgorithm(SelfAdaptiveDifferentialEv
 	**Reference URL:** https://link.springer.com/article/10.1007/s10489-007-0091-x
 	**Reference paper:** Brest, Janez, and Mirjam Sepesy Maučec. "Population size reduction for the differential evolution algorithm." Applied Intelligence 29.3 (2008): 228-247.
 	"""
-	Name = ['DynamicPopulationSelfAdaptiveDifferentialEvolutionAlgorithm', 'jDE']
+	Name = ['DynNPSelfAdaptiveDifferentialEvolutionAlgorithm', 'jDE']
 
 	@staticmethod
 	def typeParameters():

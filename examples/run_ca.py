@@ -6,8 +6,8 @@ sys.path.append('../')
 
 import random
 import logging
-from NiaPy.algorithms.basic import CamelAlgorithm
-from NiaPy.util import Task, TaskConvPrint, TaskConvPlot, OptimizationType, getDictArgs
+from NiaPy.algorithms.basic import CamelAlgorithm, getDictArgs
+from NiaPy.util import Task, TaskConvPrint, TaskConvPlot, OptimizationType
 
 logging.basicConfig()
 logger = logging.getLogger('examples')

@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, line-too-long, singleton-comparison, multiple-statements, attribute-defined-outside-init, no-self-use, logging-not-lazy, unused-variable, arguments-differ, unused-argument, dangerous-default-value
+# pylint: disable=mixed-indentation, line-too-long, singleton-comparison, multiple-statements, attribute-defined-outside-init, no-self-use, logging-not-lazy, unused-variable, arguments-differ, unused-argument, dangerous-default-value, bad-continuation, no-else-return
 import logging
 from scipy.spatial.distance import euclidean
 from numpy import apply_along_axis, argmin, full, inf, where, asarray, random as rand, sort, exp
@@ -42,8 +42,7 @@ def MP_S(x, xr, xb, CR, MP, rnd=rand):
 		b = sort(rnd.choice(len(x), 2, replace=False))
 		x[b[0]:b[1]] = xb[b[0]:b[1]]
 		return x
-	elif MP < 0.5: return asarray([xb[i] if rnd.rand() < CR else x[i] for i in range(len(x))])
-	elif MP < 0.75:
+	elif 0.5 < MP < 0.75:
 		b = sort(rnd.choice(len(x), 2, replace=False))
 		x[b[0]:b[1]] = xr[b[0]:b[1]]
 		return x

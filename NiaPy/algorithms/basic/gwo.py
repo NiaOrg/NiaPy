@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, line-too-long, arguments-differ
+# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, line-too-long, arguments-differ, bad-continuation
 import logging
 from numpy import fabs, inf, where
 from NiaPy.algorithms.algorithm import Algorithm
@@ -53,8 +53,8 @@ class GreyWolfOptimizer(Algorithm):
 				pop[i] = self.repair(pop[i], task)
 				f = task.eval(pop[i])
 				if f < A_f: A, A_f = pop[i], f
-				elif f > A_f and f < B_f: B, B_f = pop[i], f
-				elif f > B_f and f < D_f: D, D_f = pop[i], f
+				elif A_f < f < B_f: B, B_f = pop[i], f
+				elif B_f < f < D_f: D, D_f = pop[i], f
 			a = 2 - task.Evals * (2 / task.nFES)
 			for i, w in enumerate(pop):
 				A1, C1 = 2 * a * self.rand(task.D) - a, 2 * self.rand(task.D)

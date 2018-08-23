@@ -7,8 +7,9 @@ sys.path.append('../')
 
 import random
 import logging
-from NiaPy.algorithms.basic import EnhancedFireworksAlgorithm
-from NiaPy.util import Task, TaskConvPrint, TaskConvPlot, OptimizationType, getDictArgs
+from NiaPy import Runner
+from NiaPy.argparser import getDictArgs
+from NiaPy.util import Task, TaskConvPrint, TaskConvPlot, OptimizationType
 
 logging.basicConfig()
 logger = logging.getLogger('examples')
@@ -61,7 +62,7 @@ def getOptType(otype):
 	else: return None
 
 if __name__ == '__main__':
-	pargs, algo = getDictArgs(sys.argv[1:]), EnhancedFireworksAlgorithm
+	pargs, algo = getDictArgs(sys.argv[1:]), Runner.getAlgorithm('EnhancedFireworksAlgorithm')
 	optFunc = getOptType(pargs['optType'])
 	if not pargs['runType']: simple_example(algo, optFunc=optFunc, **pargs)
 	elif pargs['runType'] == 'log': logging_example(algo, optFunc=optFunc, **pargs)

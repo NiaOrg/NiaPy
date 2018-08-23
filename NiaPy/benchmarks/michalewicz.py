@@ -40,7 +40,9 @@ class Michalewicz(Benchmark):
 	Reference URL:
 	https://www.sfu.ca/~ssurjano/michal.html
 	"""
-	def __init__(self, Lower=0.0, Upper=pi, m=10): self.Lower, self.Upper, Michalewicz.m = Lower, Upper, m
+	def __init__(self, Lower=0.0, Upper=pi, m=10):
+		Benchmark.__init__(self, Lower, Upper)
+		Michalewicz.m = m
 
 	@classmethod
 	def function(cls):

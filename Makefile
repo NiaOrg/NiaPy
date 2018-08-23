@@ -15,11 +15,10 @@ export PIPENV_IGNORE_VIRTUALENVS=true
 ENV := .venv
 
 # set python interpreter
-PYTHON = python
+PYTHON := python
 # Set command for python version
 ifeq ($(TPV),T)
-	COMM = --python $(shell $(PYTHON) -c "import sys; print('%d.%d.%d' % (sys.version_info.major, sys.version_info.minor, sys.version_info.micro))")
-	# VERSION = $(shell $(PYTHON) -V | cut -d" " -f2)
+	COMM := --python $(shell $(PYTHON) -c "import sys; print('%d.%d.%d' % (sys.version_info.major, sys.version_info.minor, sys.version_info.micro))")
 endif
 
 # MAIN TASKS ##################################################################
@@ -55,7 +54,8 @@ METADATA := *.egg-info
 install: $(DEPENDENCIES) $(METADATA)
 
 $(DEPENDENCIES): 
-	pipenv $(COMM) install --dev
+	pipenv $(COMM)
+	pipenv install --dev
 	@ touch $@
 
 $(METADATA): setup.py

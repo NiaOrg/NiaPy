@@ -54,8 +54,7 @@ class Pinter(Benchmark):
     """
 
     def __init__(self, Lower=-10.0, Upper=10.0):
-        self.Lower = Lower
-        self.Upper = Upper
+        Benchmark.__init__(self, Lower, Upper)
 
     @classmethod
     def function(cls):

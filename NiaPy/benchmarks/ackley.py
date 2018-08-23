@@ -44,8 +44,7 @@ class Ackley(Benchmark):
     """
 
     def __init__(self, Lower=-32.768, Upper=32.768):
-        self.Lower = Lower
-        self.Upper = Upper
+        Benchmark.__init__(self, Lower, Upper)
 
     @classmethod
     def function(cls):

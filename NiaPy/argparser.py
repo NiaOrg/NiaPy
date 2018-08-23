@@ -3,7 +3,8 @@
 import sys
 import logging
 from argparse import ArgumentParser
-import NiaPy as np
+from NiaPy.util.utility import OptimizationType
+import NiaPy.benchmarks as bencs
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.util.argparse')
@@ -11,11 +12,11 @@ logger.setLevel('INFO')
 
 __all__ = ['MakeArgParser', 'getArgs', 'getDictArgs']
 
-def makeCbechs(): return np.benchmarks.__all__
+def makeCbechs(): return bencs.__all__
 
 def optimizationType(x):
 	if x not in ['min', 'max']: logger.info('You can use only [min, max], using min')
-	return np.util.OptimizationType.MAXIMIZATION if x == 'max' else np.util.OptimizationType.MINIMIZATION
+	return OptimizationType.MAXIMIZATION if x == 'max' else OptimizationType.MINIMIZATION
 
 def MakeArgParser():
 	parser, cbechs = ArgumentParser(description='Runer example.'), makeCbechs()
@@ -30,10 +31,10 @@ def MakeArgParser():
 	parser.add_argument('-optType', dest='optType', default=optimizationType('min'), type=optimizationType)
 	return parser
 
-def getArgs(argv):
+def getArgs(av):
 	parser = MakeArgParser()
-	args = parser.parse_args(argv)
-	return args
+	a = parser.parse_args(av)
+	return a
 
 def getDictArgs(argv): return vars(getArgs(argv))
 

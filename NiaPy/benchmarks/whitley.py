@@ -50,8 +50,7 @@ class Whitley(Benchmark):
     """
 
     def __init__(self, Lower=-10.24, Upper=10.24):
-        self.Lower = Lower
-        self.Upper = Upper
+        Benchmark.__init__(self, Lower, Upper)
 
     @classmethod
     def function(cls):

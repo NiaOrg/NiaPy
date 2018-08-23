@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, arguments-differ, redefined-outer-name
+# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, arguments-differ, redefined-outer-name, bad-continuation
 import logging
 from numpy import apply_along_axis, argmin, inf, copy
 from NiaPy.algorithms.algorithm import Algorithm

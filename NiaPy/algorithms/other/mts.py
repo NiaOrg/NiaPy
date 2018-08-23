@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, len-as-condition, singleton-comparison, arguments-differ, line-too-long, unused-argument, consider-using-enumerate
+# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, len-as-condition, singleton-comparison, arguments-differ, line-too-long, unused-argument, consider-using-enumerate, bad-continuation
 import logging
 import operator as oper
 from numpy import random as rand, vectorize, where, copy, apply_along_axis, argmin, argmax, argsort, fmin, fmax, full
@@ -209,6 +209,7 @@ class MultipleTrajectorySearchV1(MultipleTrajectorySearch):
 	Name = ['MultipleTrajectorySearchV1', 'MTSv1']
 
 	def __init__(self, **kwargs):
+		MultipleTrajectorySearch.__init__(self, **kwargs)
 		self.LSs = [MTS_LS1v1, MTS_LS2, MTS_LS3v1]
 
 	def setParameters(self, **kwargs):
