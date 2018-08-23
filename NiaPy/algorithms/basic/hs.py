@@ -20,8 +20,7 @@ class HarmonySearch(Algorithm):
 	**Reference URL:** https://link.springer.com/chapter/10.1007/978-3-642-00185-7_1
 	**Reference paper:** Yang, Xin-She. "Harmony search as a metaheuristic algorithm." Music-inspired harmony search algorithm. Springer, Berlin, Heidelberg, 2009. 1-14.
 	"""
-	@staticmethod
-	def Name(): return ['HarmonySearch', 'HS']
+	Name = ['HarmonySearch', 'HS']
 
 	@staticmethod
 	def typeParameters(): return {
@@ -75,6 +74,8 @@ class HarmonySearchV1(HarmonySearch):
 	**Reference URL:** https://link.springer.com/chapter/10.1007/978-3-642-00185-7_1
 	**Reference paper:** Yang, Xin-She. "Harmony search as a metaheuristic algorithm." Music-inspired harmony search algorithm. Springer, Berlin, Heidelberg, 2009. 1-14.
 	"""
+	Name = ['HarmonySearchV1', 'HSv1']
+
 	@staticmethod
 	def typeParameters():
 		d = HarmonySearch.typeParameters()

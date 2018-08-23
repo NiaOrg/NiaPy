@@ -19,8 +19,7 @@ class BatAlgorithm(Algorithm):
 	**License:** MIT
 	**Reference paper:** Yang, Xin-She. "A new metaheuristic bat-inspired algorithm." Nature inspired cooperative strategies for optimization (NICSO 2010). Springer, Berlin, Heidelberg, 2010. 65-74.
 	"""
-	@staticmethod
-	def Name(): return ['BatAlgorithm', 'BA']
+	Name = ['BatAlgorithm', 'BA']
 
 	@staticmethod
 	def typeParameters(): return {

@@ -126,7 +126,7 @@ class Runner:
 	def getAlgorithm(name):
 		algorithm = None
 		for alg in NiaPyAlgos:
-			if name in alg.Name():
+			if name in alg.Name:
 				algorithm = alg
 				break
 		if algorithm == None: raise TypeError('Passed algorithm is not defined!')

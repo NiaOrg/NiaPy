@@ -34,8 +34,7 @@ class HillClimbAlgorithm(Algorithm):
 	**Reference URL:**
 	**Reference paper:**
 	"""
-	@staticmethod
-	def Name(): return ['HillClimbAlgorithm', 'BBFA']
+	Name = ['HillClimbAlgorithm', 'BBFA']
 
 	@staticmethod
 	def typeParameters(): return {

@@ -32,8 +32,7 @@ class TabuSearch(Algorithm):
 	**Reference URL:** http://www.cleveralgorithms.com/nature-inspired/stochastic/tabu_search.html
 	**Reference paper:**
 	"""
-	@staticmethod
-	def Name(): return ['TabuSearch', 'TS']
+	Name = ['TabuSearch', 'TS']
 
 	@staticmethod
 	def typeParameters(): return {

@@ -20,8 +20,7 @@ class GravitationalSearchAlgorithm(Algorithm):
 	**Reference URL:** https://doi.org/10.1016/j.ins.2009.03.004
 	**Reference paper:** Esmat Rashedi, Hossein Nezamabadi-pour, Saeid Saryazdi, GSA: A Gravitational Search Algorithm, Information Sciences, Volume 179, Issue 13, 2009, Pages 2232-2248, ISSN 0020-0255
 	"""
-	@staticmethod
-	def Name(): return ['DifferentialEvolutionAlgorithm', 'DE']
+	Name = ['GravitationalSearchAlgorithm', 'GSA']
 
 	@staticmethod
 	def typeParameters(): return {

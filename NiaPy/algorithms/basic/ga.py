@@ -69,8 +69,7 @@ class GeneticAlgorithm(Algorithm):
 	**Author:** Uros Mlakar and Klemen Berkovič
 	**License:** MIT
 	"""
-	@staticmethod
-	def Name(): return ['GeneticAlgorithm', 'GA']
+	Name = ['GeneticAlgorithm', 'GA']
 
 	@staticmethod
 	def typeParameters(): return {

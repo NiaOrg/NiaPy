@@ -65,8 +65,7 @@ class AnarchicSocietyOptimization(Algorithm):
 	**License:** MIT
 	**Reference paper:** Ahmadi-Javid, Amir. "Anarchic Society Optimization: A human-inspired method." Evolutionary Computation (CEC), 2011 IEEE Congress on. IEEE, 2011.
 	"""
-	@staticmethod
-	def Name(): return ['AnarchicSocietyOptimization', 'ASO']
+	Name = ['AnarchicSocietyOptimization', 'ASO']
 
 	@staticmethod
 	def typeParameters(): return {

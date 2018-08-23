@@ -25,8 +25,7 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 	numerical function optimization: artificial bee colony (ABC) algorithm."
 	Journal of global optimization 39.3 (2007): 459-471.
 	"""
-	@staticmethod
-	def Name(): ['ArtificialBeeColonyAlgorithm', 'ABC']
+	Name = ['ArtificialBeeColonyAlgorithm', 'ABC']
 
 	@staticmethod
 	def typeParameters(): return {

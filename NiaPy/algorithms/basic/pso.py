@@ -20,8 +20,7 @@ class ParticleSwarmAlgorithm(Algorithm):
 	**License:** MIT
 	**Reference paper:** Kennedy, J. and Eberhart, R. "Particle Swarm Optimization". Proceedings of IEEE International Conference on Neural Networks. IV. pp. 1942--1948, 1995.
 	"""
-	@staticmethod
-	def Name(): return ['ParticleSwarmAlgorithm', 'PSO']
+	Name = ['ParticleSwarmAlgorithm', 'PSO']
 
 	@staticmethod
 	def typeParameters(): return {

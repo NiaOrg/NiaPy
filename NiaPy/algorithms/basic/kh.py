@@ -22,8 +22,7 @@ class KrillHerd(Algorithm):
 	**Reference URL:** http://www.sciencedirect.com/science/article/pii/S1007570412002171
 	**Reference paper:** Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010.
 	"""
-	@staticmethod
-	def Name(): return ['KrillHerd', 'KH']
+	Name = ['KrillHerd', 'KH']
 
 	@staticmethod
 	def typeParameters(): return {
@@ -135,9 +134,7 @@ class KrillHerdV4(KrillHerd):
 	**Reference URL:** http://www.sciencedirect.com/science/article/pii/S1007570412002171
 	**Reference paper:** Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010.
 	"""
-	def __init__(self, **kwargs):
-		if kwargs.get('name', None) == None: KrillHerd.__init__(self, name='KrillHerdV4', sName='KHv4', **kwargs)
-		else: KrillHerd.__init__(self, **kwargs)
+	Name = ['KrillHerdV4', 'KHv4']
 
 	@staticmethod
 	def typeParameters():
@@ -159,9 +156,7 @@ class KrillHerdV1(KrillHerd):
 	**Reference URL:** http://www.sciencedirect.com/science/article/pii/S1007570412002171
 	**Reference paper:** Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010.
 	"""
-	def __init__(self, **kwargs):
-		if kwargs.get('name', None) == None: KrillHerd.__init__(self, name='KrillHerdV1', sName='KHv1', **kwargs)
-		else: KrillHerd.__init__(self, **kwargs)
+	Name = ['KrillHerdV1', 'KHv1']
 
 	@staticmethod
 	def typeParameters(): return KrillHerdV4.typeParameters()
@@ -180,9 +175,7 @@ class KrillHerdV2(KrillHerd):
 	**Reference URL:** http://www.sciencedirect.com/science/article/pii/S1007570412002171
 	**Reference paper:** Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010.
 	"""
-	def __init__(self, **kwargs):
-		if kwargs.get('name', None) == None: KrillHerd.__init__(self, name='KrillHerdV2', sName='KHv2', **kwargs)
-		else: KrillHerd.__init__(self, **kwargs)
+	Name = ['KrillHerdV2', 'KHv2']
 
 	@staticmethod
 	def typeParameters():
@@ -202,9 +195,7 @@ class KrillHerdV3(KrillHerd):
 	**Reference URL:** http://www.sciencedirect.com/science/article/pii/S1007570412002171
 	**Reference paper:** Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010.
 	"""
-	def __init__(self, **kwargs):
-		if kwargs.get('name', None) == None: KrillHerd.__init__(self, name='KrillHerdV3', sName='KHv3', **kwargs)
-		else: KrillHerd.__init__(self, **kwargs)
+	Name = ['KrillHerdV3', 'KHv3']
 
 	@staticmethod
 	def typeParameters():
@@ -224,9 +215,7 @@ class KrillHerdV11(KrillHerd):
 	**Reference URL:**
 	**Reference paper:**
 	"""
-	def __init__(self, **kwargs):
-		if kwargs.get('name', None) == None: KrillHerd.__init__(self, name='KrillHerdV11', sName='KHv11', **kwargs)
-		else: KrillHerd.__init__(self, **kwargs)
+	Name = ['KrillHerdV11', 'KHv11']
 
 	def ElitistSelection(self, KH, KH_f, KHo, KHo_f):
 		ipb = where(KHo_f >= KH_f)

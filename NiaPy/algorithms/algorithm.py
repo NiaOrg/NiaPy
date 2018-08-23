@@ -12,6 +12,8 @@ class Algorithm:
 	**Author:** Klemen Berkovič
 	**License:** MIT
 	"""
+	Name = ['Algorithm', 'AAA']
+
 	def __init__(self, **kwargs):
 		r"""Initialize algorithm and create name for an algorithm.
 
@@ -34,11 +36,6 @@ class Algorithm:
 		task, self.Rand = kwargs.pop('task', None), rand.RandomState(kwargs.pop('seed', 1))
 		self.task = task if task != None else Task(kwargs.pop('D', 10), kwargs.pop('nFES', 100000), kwargs.pop('nGEN', None), kwargs.pop('benchmark', 'ackley'), optType=kwargs.pop('optType', OptimizationType.MINIMIZATION))
 		self.setParameters(**kwargs)
-
-	@staticmethod
-	def typeParameters():
-		r"""Get the parameter names for the algorithm."""
-		return dict()
 
 	@staticmethod
 	def Name(): ['Algorithm', 'A']

@@ -128,12 +128,11 @@ class MultipleTrajectorySearch(Algorithm):
 	**Reference URL:** https://ieeexplore.ieee.org/document/4631210/
 	**Reference paper:** Lin-Yu Tseng and Chun Chen, "Multiple trajectory search for Large Scale Global Optimization," 2008 IEEE Congress on Evolutionary Computation (IEEE World Congress on Computational Intelligence), Hong Kong, 2008, pp. 3052-3059. doi: 10.1109/CEC.2008.4631210
 	"""
+	Name = ['MultipleTrajectorySearch', 'MTS']
+
 	def __init__(self, **kwargs):
 		Algorithm.__init__(self, **kwargs)
 		self.LSs = [MTS_LS1, MTS_LS2, MTS_LS3]
-
-	@staticmethod
-	def Name(): return ['MultipleTrajectorySearch', 'MTS']
 
 	@staticmethod
 	def typeParameters(): return {
@@ -207,11 +206,10 @@ class MultipleTrajectorySearchV1(MultipleTrajectorySearch):
 	**Reference URL:** https://ieeexplore.ieee.org/document/4983179/
 	**Reference paper:** Tseng, Lin-Yu, and Chun Chen. "Multiple trajectory search for unconstrained/constrained multi-objective optimization." Evolutionary Computation, 2009. CEC'09. IEEE Congress on. IEEE, 2009.
 	"""
+	Name = ['MultipleTrajectorySearchV1', 'MTSv1']
+
 	def __init__(self, **kwargs):
 		self.LSs = [MTS_LS1v1, MTS_LS2, MTS_LS3v1]
-
-	@statements
-	def Name(): return ['MultipleTrajectorySearchV1', 'MTSv1']
 
 	def setParameters(self, **kwargs):
 		kwargs.pop('NoLsBest', None)

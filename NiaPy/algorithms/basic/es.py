@@ -29,8 +29,7 @@ class EvolutionStrategy1p1(Algorithm):
 	**Reference URL:**
 	**Reference paper:**
 	"""
-	@staticmethod
-	def Name(): return ['(1+1)-EvolutionStrategy', '(1+1)-ES']
+	Name = ['EvolutionStrategy(1+1)', 'ES(1+1)']
 
 	@staticmethod
 	def typeParameters(): return {
@@ -81,8 +80,7 @@ class EvolutionStrategyMp1(EvolutionStrategy1p1):
 	**Reference URL:**
 	**Reference paper:**
 	"""
-	@staticmethod
-	def Name(): return ['(mu+1)-EvolutionStrategy', '(mu+1)-ES']
+	Name = ['EvolutionStrategy(mu+1)', 'ES(m+1)']
 
 	def setParameters(self, **kwargs):
 		mu = kwargs.pop('mu', 40)
@@ -98,8 +96,7 @@ class EvolutionStrategyMpL(EvolutionStrategy1p1):
 	**Reference URL:**
 	**Reference paper:**
 	"""
-	@staticmethod
-	def Name(): return ['(mu+lambda)-EvolutionStrategy', '(m+l)-ES']
+	Name = ['EvolutionStrategy(mu+lambda)', 'ES(m+l)']
 
 	@staticmethod
 	def typeParameters():
@@ -158,8 +155,7 @@ class EvolutionStrategyML(EvolutionStrategyMpL):
 	**Reference URL:**
 	**Reference paper:**
 	"""
-	@staticmethod
-	def Name(): return ['(mu,lambda)-EvolutionStrategy', '(mu,lambda)-ES']
+	Name = ['EvolutionStrategy(mu,lambda)', 'ES(m,l)']
 
 	def newPop(self, pop):
 		pop_s = argsort([i.f for i in pop])

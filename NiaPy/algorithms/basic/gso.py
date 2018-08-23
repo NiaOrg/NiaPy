@@ -21,8 +21,7 @@ class GlowwormSwarmOptimization(Algorithm):
 	**Reference URL:** https://www.springer.com/gp/book/9783319515946
 	**Reference paper:** Kaipa, Krishnanand N., and Debasish Ghose. Glowworm swarm optimization: theory, algorithms, and applications. Vol. 698. Springer, 2017.
 	"""
-	@staticmethod
-	def Name(): return ['GlowwormSwarmOptimization', 'GSO']
+	Name = ['GlowwormSwarmOptimization', 'GSO']
 
 	@staticmethod
 	def typeParameters(): return {

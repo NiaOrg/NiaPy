@@ -64,8 +64,7 @@ class CamelAlgorithm(Algorithm):
 	**Reference paper:**
 	Ali, Ramzy. (2016). Novel Optimization Algorithm Inspired by Camel Traveling Behavior. Iraq J. Electrical and Electronic Engineering. 12. 167-177.
 	"""
-	@staticmethod
-	def Name(): return ['CamelAlgorithm', 'CA']
+	Name = ['CamelAlgorithm', 'CA']
 
 	@staticmethod
 	def typeParameters(): return {

@@ -19,8 +19,7 @@ class NelderMeadMethod(Algorithm):
 	**License:** MIT
 	**Reference URL:** https://en.wikipedia.org/wiki/Nelder%E2%80%93Mead_method
 	"""
-	@staticmethod
-	def Name(): return ['NelderMeadMethod', 'NMM']
+	Name = ['NelderMeadMethod', 'NMM']
 
 	@staticmethod
 	def typeParameters(): return {

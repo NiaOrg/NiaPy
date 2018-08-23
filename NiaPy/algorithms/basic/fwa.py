@@ -23,8 +23,7 @@ class BareBonesFireworksAlgorithm(Algorithm):
 	**Reference paper:**
 	Junzhi Li, Ying Tan, The bare bones fireworks algorithm: A minimalist global optimizer, Applied Soft Computing, Volume 62, 2018, Pages 454-462, ISSN 1568-4946, https://doi.org/10.1016/j.asoc.2017.10.046.
 	"""
-	@staticmethod
-	def Name(): return ['BareBonesFireworksAlgorithm', 'BBFA']
+	Name = ['BareBonesFireworksAlgorithm', 'BBFA']
 
 	@staticmethod
 	def typeParameters(): return {

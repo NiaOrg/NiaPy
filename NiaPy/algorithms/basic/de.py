@@ -56,7 +56,7 @@ class DifferentialEvolutionAlgorithm(Algorithm):
 	**Reference paper:**
 	Storn, Rainer, and Kenneth Price. "Differential evolution - a simple and efficient heuristic for global optimization over continuous spaces." Journal of global optimization 11.4 (1997): 341-359.
 	"""
-	def Name(): ['DifferentialEvolutionAlgorithm', 'DE']
+	Name = ['DifferentialEvolutionAlgorithm', 'DE']
 
 	@staticmethod
 	def typeParameters(): return {

@@ -39,8 +39,7 @@ class SimulatedAnnealing(Algorithm):
 	**Reference URL:**
 	**Reference paper:**
 	"""
-	@staticmethod
-	def Name(): return ['SimulatedAnnealing', 'BBFA']
+	Name = ['SimulatedAnnealing', 'BBFA']
 
 	@staticmethod
 	def typeParameters(): return {

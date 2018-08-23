@@ -6,7 +6,7 @@ sys.path.append('../')
 
 import random
 import logging
-from NiaPy.algorithms.basic import BatAlgorithm
+from NiaPy import Runner
 from NiaPy.benchmarks import Griewank
 
 logging.basicConfig()
@@ -32,7 +32,7 @@ class MyBenchmark(object):
 # example using custom benchmark "MyBenchmark"
 logger.info('Running with custom MyBenchmark...')
 for i in range(10):
-    Algorithm = BatAlgorithm(D=10, NP=40, nFES=10000, A=0.5, r=0.5, Qmin=0.0, Qmax=2.0, benchmark=MyBenchmark())
+    Algorithm = Runner.getAlgorithm('BA')(D=10, NP=40, nFES=10000, A=0.5, r=0.5, Qmin=0.0, Qmax=2.0, benchmark=MyBenchmark())
     Best = Algorithm.run()
     logger.info(Best)
 
@@ -47,7 +47,7 @@ logger.info('Running with default Griewank benchmark...')
 griewank = Griewank()
 
 for i in range(10):
-    Algorithm = BatAlgorithm(D=10, NP=40, nFES=10000, A=0.5, r=0.5, Qmin=0.0, Qmax=2.0, benchmark=griewank)
+    Algorithm = Runner.getAlgorithm('BA')(D=10, NP=40, nFES=10000, A=0.5, r=0.5, Qmin=0.0, Qmax=2.0, benchmark=griewank)
     Best = Algorithm.run()
     Best = Algorithm.run()
     logger.info(Best)
@@ -56,7 +56,7 @@ logger.info(
     'Running with default Griewank benchmark - should be the same as previous implementataion...')
 
 for i in range(10):
-    Algorithm = BatAlgorithm(D=10, NP=40, nFES=10000, A=0.5, r=0.5, Qmin=0.0, Qmax=2.0, benchmark='griewank')
+    Algorithm = Runner.getAlgorithm('BA')(D=10, NP=40, nFES=10000, A=0.5, r=0.5, Qmin=0.0, Qmax=2.0, benchmark='griewank')
     Best = Algorithm.run()
 
     logger.info(Best)
@@ -67,6 +67,6 @@ logger.info('Running with Griewank with changed Upper and Lower bounds...')
 griewank = Griewank(-50, 50)
 
 for i in range(10):
-    Algorithm = BatAlgorithm(D=10, NP=40, nFES=10000, A=0.5, r=0.5, Qmin=0.0, Qmax=2.0, benchmark=griewank)
+    Algorithm = Runner.getAlgorithm('BA')(D=10, NP=40, nFES=10000, A=0.5, r=0.5, Qmin=0.0, Qmax=2.0, benchmark=griewank)
     Best = Algorithm.run()
     logger.info(Best)

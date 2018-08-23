@@ -20,8 +20,7 @@ class GreyWolfOptimizer(Algorithm):
 	**Reference paper:** Mirjalili, Seyedali, Seyed Mohammad Mirjalili, and Andrew Lewis. "Grey wolf optimizer." Advances in engineering software 69 (2014): 46-61.
 	Grey Wold Optimizer (GWO) source code version 1.0 (MATLAB) from MathWorks
 	"""
-	@staticmethod
-	def Name(): return ['GreyWolfOptimizer', 'GWO']
+	Name = ['GreyWolfOptimizer', 'GWO']
 
 	@staticmethod
 	def typeParameters(): return {
