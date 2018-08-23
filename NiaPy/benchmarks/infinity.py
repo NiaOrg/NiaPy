@@ -3,7 +3,7 @@
 """Implementations of Infinity function."""
 
 from numpy import sin
-from NiaPy.benchmarks import Benchmark
+from NiaPy.benchmarks.benchmark import Benchmark
 
 __all__ = ['Infinity']
 

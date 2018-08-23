@@ -8,9 +8,8 @@ sys.path.append('../')
 import random
 import logging
 import matplotlib.pyplot as plt
-from NiaPy.argparser import getDictArgs
 from NiaPy.algorithms.basic import FireflyAlgorithm
-from NiaPy.util import TaskConvPrint, TaskConvPlot, OptimizationType
+from NiaPy.util import TaskConvPrint, TaskConvPlot, OptimizationType, getDictArgs
 
 logging.basicConfig()
 logger = logging.getLogger('examples')

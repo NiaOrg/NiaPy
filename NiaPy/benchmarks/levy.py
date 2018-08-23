@@ -3,7 +3,7 @@
 """Implementations of Levy function."""
 
 from numpy import sin, pi
-from NiaPy.benchmarks import Benchmark
+from NiaPy.benchmarks.benchmark import Benchmark
 
 __all__ = ['Levy']
 

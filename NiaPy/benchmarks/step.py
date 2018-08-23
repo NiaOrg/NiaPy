@@ -3,10 +3,9 @@
 """Implementations of Step functions."""
 
 import math
-from NiaPy.benchmarks import Benchmark
+from NiaPy.benchmarks.benchmark import Benchmark
 
 __all__ = ['Step', 'Step2', 'Step3']
-
 
 class Step(Benchmark):
     r"""Implementation of Step function.

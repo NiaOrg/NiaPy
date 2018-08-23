@@ -3,7 +3,7 @@
 """Implementations of Weierstrass functions."""
 
 from math import pi, cos
-from NiaPy.benchmarks import Benchmark
+from NiaPy.benchmarks.benchmark import Benchmark
 
 __all__ = ['Weierstrass']
 

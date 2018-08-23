@@ -8,8 +8,7 @@ sys.path.append('../')
 import random
 import logging
 from NiaPy import Runner
-from NiaPy.argparser import getDictArgs
-from NiaPy.util import Task, TaskConvPrint, TaskConvPlot, OptimizationType
+from NiaPy.util import Task, TaskConvPrint, TaskConvPlot, OptimizationType, getDictArgs
 
 logging.basicConfig()
 logger = logging.getLogger('examples')

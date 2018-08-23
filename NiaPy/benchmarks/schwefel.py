@@ -3,10 +3,9 @@
 """Implementations of Schwefels functions."""
 
 from math import sin, fmod, fabs, sqrt
-from NiaPy.benchmarks import Benchmark
+from NiaPy.benchmarks.benchmark import Benchmark
 
 __all__ = ['Schwefel', 'Schwefel221', 'Schwefel222', 'ModifiedSchwefel', 'ExpandedScaffer']
-
 
 class Schwefel(Benchmark):
 	r"""Implementation of Schewel function.

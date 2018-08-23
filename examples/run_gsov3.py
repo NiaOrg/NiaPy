@@ -7,9 +7,8 @@ sys.path.append('../')
 
 import random
 import logging
-from NiaPy.argparser import getDictArgs
 from NiaPy.algorithms.basic import GlowwormSwarmOptimizationV3
-from NiaPy.util import Task, TaskConvPrint, TaskConvPlot, OptimizationType
+from NiaPy.util import Task, TaskConvPrint, TaskConvPlot, OptimizationType, getDictArgs
 
 logging.basicConfig()
 logger = logging.getLogger('examples')

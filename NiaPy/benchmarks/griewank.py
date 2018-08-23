@@ -1,7 +1,7 @@
 # encoding=utf8
 # pylint: disable=anomalous-backslash-in-string, mixed-indentation, multiple-statements, line-too-long, old-style-class
 from math import sqrt, cos
-from NiaPy.benchmarks import Benchmark
+from NiaPy.benchmarks.benchmark import Benchmark
 
 __all__ = ['Griewank', 'ExpandedGriewankPlusRosenbrock']
 

@@ -10,10 +10,10 @@ import json
 import datetime
 import xlsxwriter
 from numpy import amin, amax, median, mean, std
-from NiaPy import benchmarks, util, algorithms, argparser
+from NiaPy import benchmarks, util, algorithms
 from NiaPy.algorithms import basic as balgos, modified as malgos, other as oalgos
 
-__all__ = ['algorithms', 'benchmarks', 'util', 'argparser']
+__all__ = ['algorithms', 'benchmarks', 'util']
 __project__ = 'NiaPy'
 __version__ = '1.0.1'
 

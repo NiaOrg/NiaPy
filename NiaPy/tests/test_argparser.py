@@ -1,7 +1,7 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, multiple-statements, old-style-class
 from unittest import TestCase
-from NiaPy.argparser import MakeArgParser, getArgs, getDictArgs
+from NiaPy.util import MakeArgParser, getArgs, getDictArgs
 
 class ArgParserTestCase(TestCase):
 	def setUp(self):

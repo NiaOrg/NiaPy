@@ -3,7 +3,7 @@
 """Implementations of HGBat functions."""
 
 from math import fabs
-from NiaPy.benchmarks import Benchmark
+from NiaPy.benchmarks.benchmark import Benchmark
 
 __all__ = ['HGBat']
 
