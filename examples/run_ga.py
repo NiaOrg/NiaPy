@@ -7,9 +7,10 @@ sys.path.append('../')
 
 import random
 import logging
+from NiaPy.argparser import getDictArgs
 from NiaPy.algorithms.basic import GeneticAlgorithm
 from NiaPy.algorithms.basic.ga import MutationUros, CrossoverUros, RouletteSelection
-from NiaPy.util import Task, TaskConvPrint, TaskConvPlot, OptimizationType, getDictArgs
+from NiaPy.util import Task, TaskConvPrint, TaskConvPlot, OptimizationType
 
 logging.basicConfig()
 logger = logging.getLogger('examples')
