@@ -8,7 +8,7 @@ logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.basic')
 logger.setLevel('INFO')
 
-__all__ = ['HarmonySearch']
+__all__ = ['HarmonySearch', 'HarmonySearchV1', 'HarmonySearchB', 'HarmonySearchV1B']
 
 class HarmonySearch(Algorithm):
 	r"""Implementation of harmony search algorithm.
@@ -93,6 +93,39 @@ class HarmonySearchV1(HarmonySearch):
 		"""
 		self.bw_min, self.bw_max = bw_min, bw_max
 		HarmonySearch.setParameters(self, **kwargs)
+
+	def bw(self, task): return self.bw_min * exp(log(self.bw_min / self.bw_max) * task.Iters / task.nGEN)
+
+class HarmonySearchB:
+	def __init__(self, Lower, Upper, HMS=30, r_accept=0.7, r_pa=0.35, b_range=1.42): self.HMS, self.r_accept, self.r_pa, self.b_range, self.Lower, self.Upper = HMS, r_accept, r_pa, b_range, Lower, Upper
+
+	def bw(self, task): return self.uniform(-1, 1) * self.b_range
+
+	def adjustment(self, x, task): return x + self.bw(task)
+
+	def improvize(self, HM, task):
+		H = full(task.D, .0)
+		for i in range(task.D):
+			r, j = self.rand(), self.randint(self.HMS)
+			H[i] = HM[j, i] if r > self.r_accept else self.adjustment(HM[j, i], task) if r > self.r_pa else self.uniform(task.Lower[i], task.Upper[i])
+		return H
+
+	def runTask(self, task, HM=list()):
+		# FIXME
+		HM = self.uniform(task.Lower, task.Upper, [self.HMS, task.D])
+		HM_f = apply_along_axis(task.eval, 1, HM)
+		while not task.stopCondI():
+			H = self.improvize(HM, task)
+			H_f = task.eval(task.repair(H))
+			iw = argmax(HM_f)
+			if H_f <= HM_f[iw]: HM[iw], HM_f[iw] = H, H_f
+		ib = argmin(HM_f)
+		return HM[ib], HM_f[ib]
+
+class HarmonySearchV1B(HarmonySearchB):
+	def __init__(self, bw_min=1, bw_max=2, **kwargs):
+		HarmonySearchB.__init__(self, **kwargs)
+		self.bw_min, self.bw_max = bw_min, bw_max
 
 	def bw(self, task): return self.bw_min * exp(log(self.bw_min / self.bw_max) * task.Iters / task.nGEN)
 

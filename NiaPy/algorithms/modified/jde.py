@@ -52,14 +52,21 @@ class SelfAdaptiveDifferentialEvolutionAlgorithm(DifferentialEvolutionAlgorithm)
 	def AdaptiveGen(self, x):
 		f = self.F_l + self.rand() * (self.F_u - self.F_l) if self.rand() < self.Tao1 else x.F
 		cr = self.rand() if self.rand() < self.Tao2 else x.CR
-		return SolutionjDE(x=x.x, F=f, CR=cr)
+		return SolutionjDE(x=x.x, F=f, CR=cr, e=False)
+
+	def selectBetter(self, x, y): return x if x.f < y.f else y
+
+	def evalPopulation(self, x, x_old, task):
+		"""Evaluate element."""
+		x.evaluate(task)
+		return self.selectBetter(x, x_old)
 
 	def runTask(self, task):
 		pop = [SolutionjDE(task=task, F=self.F, CR=self.CR) for _i in range(self.Np)]
 		x_b = pop[argmin([x.f for x in pop])]
 		while not task.stopCond():
 			npop = [self.AdaptiveGen(pop[i]) for i in range(self.Np)]
-			npop = [SolutionjDE(x=self.CrossMutt(npop, i, x_b, self.F, self.CR, self.Rand), F=npop[i].F, CR=npop[i].CR, e=False) for i in range(self.Np)]
+			for i in range(self.Np):npop[i].x = self.CrossMutt(npop, i, x_b, self.F, self.CR, self.Rand)
 			pop = [self.evalPopulation(npop[i], pop[i], task) for i in range(self.Np)]
 			ix_b = argmin([x.f for x in pop])
 			if x_b.f > pop[ix_b].f: x_b = pop[ix_b]
@@ -75,7 +82,7 @@ class DynNPSelfAdaptiveDifferentialEvolutionAlgorithm(SelfAdaptiveDifferentialEv
 	**Reference URL:** https://link.springer.com/article/10.1007/s10489-007-0091-x
 	**Reference paper:** Brest, Janez, and Mirjam Sepesy Maučec. "Population size reduction for the differential evolution algorithm." Applied Intelligence 29.3 (2008): 228-247.
 	"""
-	Name = ['DynNPSelfAdaptiveDifferentialEvolutionAlgorithm', 'jDE']
+	Name = ['DynNPSelfAdaptiveDifferentialEvolutionAlgorithm', 'dynPNjDE']
 
 	@staticmethod
 	def typeParameters():
@@ -106,14 +113,29 @@ class DynNPSelfAdaptiveDifferentialEvolutionAlgorithm(SelfAdaptiveDifferentialEv
 		x_b = pop[argmin([x.f for x in pop])]
 		while not task.stopCondI():
 			npop = [self.AdaptiveGen(pop[i]) for i in range(len(pop))]
-			npop = [SolutionjDE(x=self.CrossMutt(npop, i, x_b, self.F, self.CR, self.Rand), F=npop[i].F, CR=npop[i].CR, e=False) for i in range(len(pop))]
-			pop = [self.evalPopulation(npop[i], pop[i], task) for i in range(len(pop))]
+			for i in range(len(npop)):npop[i].x = self.CrossMutt(npop, i, x_b, self.F, self.CR, self.Rand)
+			pop = [self.evalPopulation(npop[i], pop[i], task) for i in range(len(npop))]
 			ix_b = argmin([x.f for x in pop])
 			if x_b.f > pop[ix_b].f: x_b = pop[ix_b]
 			if task.Iters == Gr:
 				NP = int(len(pop) / 2)
-				pop = [self.selectBetter(pop[i], pop[i + NP]) for i in range(NP)]
+				pop = [pop[i] if pop[i].f < pop[i + NP].f else pop[i + NP] for i in range(NP)]
 				Gr += task.nFES // (self.pmax * NP) + self.rp
 		return x_b.x, x_b.f
+
+class SelfAdaptiveDifferentialEvolutionAlgorithmBestHarmonySearch(SelfAdaptiveDifferentialEvolutionAlgorithm):
+	Name = ['SelfAdaptiveDifferentialEvolutionAlgorithmBestHarmonySearch', 'jDEbHS']
+
+	def setParameters(self, **ukwargs): pass
+
+	def runTask(self, task): pass
+
+class SelfAdaptiveDifferentialEvolutionAlgorithmPBestHarmonySearch(SelfAdaptiveDifferentialEvolutionAlgorithm):
+	Name = ['SelfAdaptiveDifferentialEvolutionAlgorithmBestHarmonySearch', 'jDEpbHS']
+
+	def setParameters(self, **ukwargs): pass
+
+	def runTask(self, task): pass
+
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

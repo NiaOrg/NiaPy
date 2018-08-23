@@ -77,20 +77,13 @@ class DifferentialEvolutionAlgorithm(Algorithm):
 		self.Np, self.F, self.CR, self.CrossMutt = NP, F, CR, CrossMutt
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def selectBetter(self, x, y): return x if x.f < y.f else y
-
-	def evalPopulation(self, x, x_old, task):
-		"""Evaluate element."""
-		x.evaluate(task)
-		return self.selectBetter(x, x_old)
-
 	def runTask(self, task):
 		"""Run."""
 		pop = [Individual(task=task, e=True) for _i in range(self.Np)]
 		x_b = pop[argmin([x.f for x in pop])]
-		while not task.stopCond():
-			npop = [Individual(x=self.CrossMutt(pop, i, x_b, self.F, self.CR, self.Rand), e=False) for i in range(self.Np)]
-			pop = [self.evalPopulation(np, pop[i], task) for i, np in enumerate(npop)]
+		while not task.stopCondI():
+			npop = [Individual(x=self.CrossMutt(pop, i, x_b, self.F, self.CR, self.Rand), task=task, e=True) for i in range(self.Np)]
+			pop = [np if np.f < pop[i].f else pop[i] for i, np in enumerate(npop)]
 			ix_b = argmin([x.f for x in pop])
 			if x_b.f > pop[ix_b].f: x_b = pop[ix_b]
 		return x_b.x, x_b.f
