@@ -17,10 +17,6 @@ ENV := .venv
 # set python interpreter
 PYTHON := python
 # Set command for python version
-ifeq ($(TPV),T)
-	COMM := --python $(shell $(PYTHON) -c "import sys; print('%d.%d.%d' % (sys.version_info.major, sys.version_info.minor, sys.version_info.micro))")
-endif
-
 # MAIN TASKS ##################################################################
 
 SNIFFER := pipenv run sniffer
@@ -54,6 +50,9 @@ METADATA := *.egg-info
 install: $(DEPENDENCIES) $(METADATA)
 
 $(DEPENDENCIES): 
+	ifeq ($(TPV),T)
+		COMM := --python $(shell $(PYTHON) -c "import sys; print('%d.%d.%d' % (sys.version_info.major, sys.version_info.minor, sys.version_info.micro))")
+	endif
 	pipenv $(COMM)
 	pipenv install --dev
 	@ touch $@

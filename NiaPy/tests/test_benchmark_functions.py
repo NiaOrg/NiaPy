@@ -182,8 +182,18 @@ class TestBenchmarkFunctions(TestCase):
 		self.assertTrue(callable(fun))
 		self.assertAlmostEqual(fun(self.D, self.array), 2.2997, delta=1e2)
 
-	def test_expanded_scaffer(self):
-		fun = self.assertBounds('expandedscaffer', -100, 100)
+	def test_expanded_schaffer(self):
+		fun = self.assertBounds('expandedschaffer', -100, 100)
+		self.assertTrue(callable(fun))
+		self.assertAlmostEqual(fun(self.D, self.array10), 2.616740208857464, delta=1e-4)
+
+	def test_schaffern2(self):
+		fun = self.assertBounds('schaffer2', -100, 100)
+		self.assertTrue(callable(fun))
+		self.assertAlmostEqual(fun(self.D, self.array10), 2.616740208857464, delta=1e-4)
+
+	def test_schaffern4(self):
+		fun = self.assertBounds('schaffer4', -100, 100)
 		self.assertTrue(callable(fun))
 		self.assertAlmostEqual(fun(self.D, self.array10), 2.616740208857464, delta=1e-4)
 

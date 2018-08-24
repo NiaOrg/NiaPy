@@ -4,12 +4,15 @@ import logging
 from numpy import argmin
 from NiaPy.algorithms.algorithm import Individual
 from NiaPy.algorithms.basic.de import DifferentialEvolutionAlgorithm
+from NiaPy.algorithms.other.sa import SimulatedAnnealingF
+from NiaPy.algorithms.basic.hs import HarmonySearchB, HarmonySearchV1B
+from NiaPy.algorithms.other.mts import MTS_LS1, MTS_LS2, MTS_LS3
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.modified')
 logger.setLevel('INFO')
 
-__all__ = ['SelfAdaptiveDifferentialEvolutionAlgorithm', 'DynNPSelfAdaptiveDifferentialEvolutionAlgorithm']
+__all__ = ['SelfAdaptiveDifferentialEvolutionAlgorithm', 'DynNPSelfAdaptiveDifferentialEvolutionAlgorithm', 'SelfAdaptiveDifferentialEvolutionAlgorithmBestHarmonySearch', 'SelfAdaptiveDifferentialEvolutionAlgorithmBestMTS1', 'SelfAdaptiveDifferentialEvolutionAlgorithmBestMTS2', 'SelfAdaptiveDifferentialEvolutionAlgorithmBestMTS3']
 
 class SolutionjDE(Individual):
 	def __init__(self, **kwargs):
@@ -82,7 +85,7 @@ class DynNPSelfAdaptiveDifferentialEvolutionAlgorithm(SelfAdaptiveDifferentialEv
 	**Reference URL:** https://link.springer.com/article/10.1007/s10489-007-0091-x
 	**Reference paper:** Brest, Janez, and Mirjam Sepesy Maučec. "Population size reduction for the differential evolution algorithm." Applied Intelligence 29.3 (2008): 228-247.
 	"""
-	Name = ['DynNPSelfAdaptiveDifferentialEvolutionAlgorithm', 'dynPNjDE']
+	Name = ['DynNPSelfAdaptiveDifferentialEvolutionAlgorithm', 'dynNPjDE']
 
 	@staticmethod
 	def typeParameters():
@@ -123,6 +126,13 @@ class DynNPSelfAdaptiveDifferentialEvolutionAlgorithm(SelfAdaptiveDifferentialEv
 				Gr += task.nFES // (self.pmax * NP) + self.rp
 		return x_b.x, x_b.f
 
+class SelfAdaptiveDifferentialEvolutionAlgorithmBestSimulatedAnnealing(SelfAdaptiveDifferentialEvolutionAlgorithm):
+	Name = ['SelfAdaptiveDifferentialEvolutionAlgorithmBestSimulatedAnnealing', 'jDEbSA']
+
+	def setParameters(self, **ukwargs): pass
+
+	def runTask(self, task): pass
+
 class SelfAdaptiveDifferentialEvolutionAlgorithmBestHarmonySearch(SelfAdaptiveDifferentialEvolutionAlgorithm):
 	Name = ['SelfAdaptiveDifferentialEvolutionAlgorithmBestHarmonySearch', 'jDEbHS']
 
@@ -130,12 +140,25 @@ class SelfAdaptiveDifferentialEvolutionAlgorithmBestHarmonySearch(SelfAdaptiveDi
 
 	def runTask(self, task): pass
 
-class SelfAdaptiveDifferentialEvolutionAlgorithmPBestHarmonySearch(SelfAdaptiveDifferentialEvolutionAlgorithm):
-	Name = ['SelfAdaptiveDifferentialEvolutionAlgorithmBestHarmonySearch', 'jDEpbHS']
+class SelfAdaptiveDifferentialEvolutionAlgorithmBestMTS1(SelfAdaptiveDifferentialEvolutionAlgorithm):
+	Name = ['SelfAdaptiveDifferentialEvolutionAlgorithmBestMTS1', 'jDEbMTS1']
 
 	def setParameters(self, **ukwargs): pass
 
 	def runTask(self, task): pass
 
+class SelfAdaptiveDifferentialEvolutionAlgorithmBestMTS2(SelfAdaptiveDifferentialEvolutionAlgorithm):
+	Name = ['SelfAdaptiveDifferentialEvolutionAlgorithmBestMTS2', 'jDEbMTS2']
+
+	def setParameters(self, **ukwargs): pass
+
+	def runTask(self, task): pass
+
+class SelfAdaptiveDifferentialEvolutionAlgorithmBestMTS3(SelfAdaptiveDifferentialEvolutionAlgorithm):
+	Name = ['SelfAdaptiveDifferentialEvolutionAlgorithmBestMTS3', 'jDEbMTS3']
+
+	def setParameters(self, **ukwargs): pass
+
+	def runTask(self, task): pass
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

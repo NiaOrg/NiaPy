@@ -78,7 +78,6 @@ class DifferentialEvolutionAlgorithm(Algorithm):
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def runTask(self, task):
-		"""Run."""
 		pop = [Individual(task=task, e=True) for _i in range(self.Np)]
 		x_b = pop[argmin([x.f for x in pop])]
 		while not task.stopCondI():

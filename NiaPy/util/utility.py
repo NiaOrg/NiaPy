@@ -5,7 +5,7 @@ import logging
 from enum import Enum
 from numpy import ndarray, asarray, full, inf, dot, where, random as rnd, fabs, ceil, array_equal
 from matplotlib import pyplot as plt, animation as anim
-from NiaPy.benchmarks import Rastrigin, Rosenbrock, Griewank, Sphere, Ackley, Schwefel, Schwefel221, Schwefel222, Whitley, Alpine1, Alpine2, HappyCat, Ridge, ChungReynolds, Csendes, Pinter, Qing, Quintic, Salomon, SchumerSteiglitz, Step, Step2, Step3, Stepint, SumSquares, StyblinskiTang, BentCigar, Discus, Elliptic, ExpandedGriewankPlusRosenbrock, HGBat, Katsuura, ExpandedScaffer, ModifiedSchwefel, Weierstrass, Michalewicz, Levy, Sphere2, Sphere3, Trid, Perm, Zakharov, DixonPrice, Powell, CosineMixture, Infinity
+from NiaPy.benchmarks import Rastrigin, Rosenbrock, Griewank, Sphere, Ackley, Schwefel, Schwefel221, Schwefel222, Whitley, Alpine1, Alpine2, HappyCat, Ridge, ChungReynolds, Csendes, Pinter, Qing, Quintic, Salomon, SchumerSteiglitz, Step, Step2, Step3, Stepint, SumSquares, StyblinskiTang, BentCigar, Discus, Elliptic, ExpandedGriewankPlusRosenbrock, HGBat, Katsuura, ExpandedSchaffer, ModifiedSchwefel, Weierstrass, Michalewicz, Levy, Sphere2, Sphere3, Trid, Perm, Zakharov, DixonPrice, Powell, CosineMixture, Infinity, SchafferN2, SchafferN4
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.util.utility')
@@ -45,7 +45,7 @@ class Utility:
 			'conditionedellptic': Elliptic,
 			'elliptic': Elliptic,
 			'expandedgriewankplusrosenbrock': ExpandedGriewankPlusRosenbrock,
-			'expandedscaffer': ExpandedScaffer,
+			'expandedschaffer': ExpandedSchaffer,
 			'griewank': Griewank,
 			'happyCat': HappyCat,
 			'hgbat': HGBat,
@@ -63,6 +63,8 @@ class Utility:
 			'ridge': Ridge,
 			'rosenbrock': Rosenbrock,
 			'salomon': Salomon,
+			'schaffer2': SchafferN2,
+			'schaffer4': SchafferN4,
 			'schumerSteiglitz': SchumerSteiglitz,
 			'schwefel': Schwefel,
 			'schwefel221': Schwefel221,

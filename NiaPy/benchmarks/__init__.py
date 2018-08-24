@@ -6,7 +6,7 @@ from NiaPy.benchmarks.alpine import Alpine1, Alpine2
 from NiaPy.benchmarks.rastrigin import Rastrigin
 from NiaPy.benchmarks.rosenbrock import Rosenbrock
 from NiaPy.benchmarks.griewank import Griewank, ExpandedGriewankPlusRosenbrock
-from NiaPy.benchmarks.schwefel import Schwefel, Schwefel221, Schwefel222, ExpandedScaffer, ModifiedSchwefel
+from NiaPy.benchmarks.schwefel import Schwefel, Schwefel221, Schwefel222, ModifiedSchwefel
 from NiaPy.benchmarks.whitley import Whitley
 from NiaPy.benchmarks.happyCat import HappyCat
 from NiaPy.benchmarks.ridge import Ridge
@@ -37,6 +37,7 @@ from NiaPy.benchmarks.dixonprice import DixonPrice
 from NiaPy.benchmarks.powell import Powell
 from NiaPy.benchmarks.cosinemixture import CosineMixture
 from NiaPy.benchmarks.infinity import Infinity
+from NiaPy.benchmarks.schaffer import SchafferN2, SchafferN4, ExpandedSchaffer
 
 __all__ = [
     'Benchmark',
@@ -49,7 +50,6 @@ __all__ = [
     'Schwefel',
     'Schwefel221',
     'Schwefel222',
-    'ExpandedScaffer',
     'ModifiedSchwefel',
     'Whitley',
     'Alpine1',
@@ -86,5 +86,8 @@ __all__ = [
     'DixonPrice',
     'Powell',
     'CosineMixture',
-    'Infinity'
+    'Infinity',
+    'ExpandedSchaffer',
+    'SchafferN2',
+    'SchafferN4'
 ]
