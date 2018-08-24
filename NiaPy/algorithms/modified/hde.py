@@ -35,7 +35,7 @@ class DifferentialEvolutionBestSimulatedAnnealing(DifferentialEvolutionAlgorithm
 		T {real} -- for SA
 		deltaT {real} -- for SA
 		"""
-		self.SR, self.delta self.delta_t, self.T = SR, delta, delta_t, T
+		self.SR, self.delta, self.delta_t, self.T = SR, delta, delta_t, T
 		DifferentialEvolutionAlgorithm.setParameters(self, **ukwargs)
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
@@ -106,7 +106,7 @@ class DifferentialEvolutionBestMTS1(DifferentialEvolutionBestSimulatedAnnealing)
 	@staticmethod
 	def typeParameters():
 		d = DifferentialEvolutionBestHarmonySearch.typeParameters()
-		d['NoLSRuns'] = lambda x: isinstance(x , int) and x >= 0
+		d['NoLSRuns'] = lambda x: isinstance(x, int) and x >= 0
 		return d
 
 	def setParameters(self, NoLSRuns=25, **ukwargs):

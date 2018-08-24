@@ -40,6 +40,8 @@ class CosineMixture(Benchmark):
 	Reference:
 	http://infinity77.net/global_optimization/test_functions_nd_C.html#go_benchmark.CosineMixture
 	"""
+	Name = ['CosineMixture']
+
 	def __init__(self, Lower=-1.0, Upper=1.0): Benchmark.__init__(self, Lower, Upper)
 
 	@classmethod

@@ -27,7 +27,7 @@ from NiaPy.benchmarks.hgbat import HGBat
 from NiaPy.benchmarks.katsuura import Katsuura
 from NiaPy.benchmarks.elliptic import Elliptic
 from NiaPy.benchmarks.discus import Discus
-from NiaPy.benchmarks.michalewicz import Michalewicz
+from NiaPy.benchmarks.michalewichz import Michalewichz
 from NiaPy.benchmarks.levy import Levy
 from NiaPy.benchmarks.sphere import Sphere, Sphere2, Sphere3
 from NiaPy.benchmarks.trid import Trid
@@ -75,7 +75,7 @@ __all__ = [
     'Katsuura',
     'Elliptic',
     'Discus',
-    'Michalewicz',
+    'Michalewichz',
     'Levy',
     'Sphere',
     'Sphere2',

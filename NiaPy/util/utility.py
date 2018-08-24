@@ -1,11 +1,11 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, line-too-long, bad-continuation, multiple-statements, singleton-comparison, unused-argument, no-self-use, trailing-comma-tuple, logging-not-lazy, no-else-return, old-style-class
+# pylint: disable=mixed-indentation, line-too-long, bad-continuation, multiple-statements, unused-argument, no-self-use, trailing-comma-tuple, logging-not-lazy, no-else-return, old-style-class
 """Implementation of benchmarks utility function."""
 import logging
 from enum import Enum
 from numpy import ndarray, asarray, full, inf, dot, where, random as rnd, fabs, ceil, array_equal
 from matplotlib import pyplot as plt, animation as anim
-from NiaPy.benchmarks import Rastrigin, Rosenbrock, Griewank, Sphere, Ackley, Schwefel, Schwefel221, Schwefel222, Whitley, Alpine1, Alpine2, HappyCat, Ridge, ChungReynolds, Csendes, Pinter, Qing, Quintic, Salomon, SchumerSteiglitz, Step, Step2, Step3, Stepint, SumSquares, StyblinskiTang, BentCigar, Discus, Elliptic, ExpandedGriewankPlusRosenbrock, HGBat, Katsuura, ExpandedSchaffer, ModifiedSchwefel, Weierstrass, Michalewicz, Levy, Sphere2, Sphere3, Trid, Perm, Zakharov, DixonPrice, Powell, CosineMixture, Infinity, SchafferN2, SchafferN4
+from NiaPy.benchmarks import Rastrigin, Rosenbrock, Griewank, Sphere, Ackley, Schwefel, Schwefel221, Schwefel222, Whitley, Alpine1, Alpine2, HappyCat, Ridge, ChungReynolds, Csendes, Pinter, Qing, Quintic, Salomon, SchumerSteiglitz, Step, Step2, Step3, Stepint, SumSquares, StyblinskiTang, BentCigar, Discus, Elliptic, ExpandedGriewankPlusRosenbrock, HGBat, Katsuura, ExpandedSchaffer, ModifiedSchwefel, Weierstrass, Michalewichz, Levy, Sphere2, Sphere3, Trid, Perm, Zakharov, DixonPrice, Powell, CosineMixture, Infinity, SchafferN2, SchafferN4
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.util.utility')
@@ -52,7 +52,7 @@ class Utility:
 			'infinity': Infinity,
 			'katsuura': Katsuura,
 			'levy': Levy,
-			'michalewicz': Michalewicz,
+			'michalewicz': Michalewichz,
 			'modifiedscwefel': ModifiedSchwefel,
 			'perm': Perm,
 			'pinter': Pinter,
@@ -118,25 +118,25 @@ class Task(Utility):
 		"""
 		Utility.__init__(self)
 		self.D = D  # dimension of the problem
-		self.Iters, self.nGEN = 0, nGEN if nGEN != None else 10000
+		self.Iters, self.nGEN = 0, nGEN if nGEN is not None else 10000
 		self.Evals, self.nFES = 0, nFES
-		self.benchmark = self.get_benchmark(benchmark) if benchmark != None else None
-		if self.benchmark != None:
+		self.benchmark = self.get_benchmark(benchmark) if benchmark is not None else None
+		if self.benchmark is not None:
 			self.Lower, self.Upper = fullArray(self.benchmark.Lower, self.D), fullArray(self.benchmark.Upper, self.D)
 			self.bRange = fabs(self.Upper - self.Lower)
-		self.Fun = self.benchmark.function() if benchmark != None else None
-		self.o = o if isinstance(o, ndarray) or o == None else asarray(o)
-		self.M = M if isinstance(M, ndarray) or M == None else asarray(M)
+		self.Fun = self.benchmark.function() if benchmark is not None else None
+		self.o = o if isinstance(o, ndarray) or o is None else asarray(o)
+		self.M = M if isinstance(M, ndarray) or M is None else asarray(M)
 		self.fo, self.fM, self.optF = fo, fM, optF
 		self.optType = optType
 
 	def stopCond(self):
 		r"""Check if stoping condition reached."""
-		return self.Evals >= self.nFES or (False if self.nGEN == None else self.Iters >= self.nGEN)
+		return self.Evals >= self.nFES or (False if self.nGEN is None else self.Iters >= self.nGEN)
 
 	def stopCondI(self):
 		r"""Check if stoping condition reached and incrise number of iterations."""
-		r = self.Evals >= self.nFES or (False if self.nGEN == None else self.Iters >= self.nGEN)
+		r = self.Evals >= self.nFES or (False if self.nGEN is None else self.Iters >= self.nGEN)
 		self.Iters += 1
 		return r
 
@@ -148,11 +148,11 @@ class Task(Utility):
 		"""
 		if self.stopCond() or not self.isFeasible(A): return inf
 		self.Evals += 1
-		X = A - self.o if self.o != None else A
-		X = self.fo(X) if self.fo != None else X
-		X = dot(X, self.M) if self.M != None else X
-		X = self.fM(X) if self.fM != None else X
-		return self.optType.value * self.Fun(self.D, X) + (self.optF if self.optF != None else 0)
+		X = A - self.o if self.o is not None else A
+		X = self.fo(X) if self.fo is not None else X
+		X = dot(X, self.M) if self.M is not None else X
+		X = self.fM(X) if self.fM is not None else X
+		return self.optType.value * self.Fun(self.D, X) + (self.optF if self.optF is not None else 0)
 
 	def nextIter(self):
 		r"""Increase the number of generation/iterations of algorithms main loop."""

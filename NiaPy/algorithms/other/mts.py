@@ -12,12 +12,11 @@ logger.setLevel('INFO')
 __all__ = ['MultipleTrajectorySearch', 'MultipleTrajectorySearchV1', 'MTS_LS1', 'MTS_LS1v1', 'MTS_LS2', 'MTS_LS3', 'MTS_LS3v1']
 
 def MTS_LS1(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, rnd=rand):
-	grade = 0.0
 	if not improve:
 		SR /= 2
 		ifix = where(SR < 1e-15)
 		SR[ifix] = task.bRange[ifix] * 0.4
-	improve = False
+	improve, grade = False, 0.0
 	for i in range(len(Xk)):
 		Xk_i_old = Xk[i]
 		Xk[i] = Xk_i_old - SR[i]
@@ -35,12 +34,11 @@ def MTS_LS1(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, rnd=
 	return Xk, Xk_fit, Xb, Xb_fit, improve, grade, SR
 
 def MTS_LS1v1(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, rnd=rand):
-	grade = 0.0
 	if not improve:
 		SR /= 2
 		ifix = where(SR < 1e-15)
 		SR[ifix] = task.bRange[ifix] * 0.4
-	improve, D = False, rnd.uniform(-1, 1, task.D)
+	improve, D, grade = False, rnd.uniform(-1, 1, task.D), 0.0
 	for i in range(len(Xk)):
 		Xk_i_old = Xk[i]
 		Xk[i] = Xk_i_old - SR[i] * D[i]
@@ -60,12 +58,11 @@ def MTS_LS1v1(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, rn
 def genNewX(x, r, d, SR, op): return op(x, SR * d) if r == 0 else x
 
 def MTS_LS2(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, rnd=rand):
-	grade = 0.0
 	if not improve:
 		SR /= 2
 		ifix = where(SR < 1e-15)
 		SR[ifix] = task.bRange[ifix] * 0.4
-	improve = False
+	improve, grade = False, 0.0
 	for _ in range(len(Xk)):
 		D = -1 + rnd.rand(len(Xk)) * 2
 		R = rnd.choice([0, 1, 2, 3], len(Xk))

@@ -43,6 +43,7 @@ class Rosenbrock(Benchmark):
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
     """
+    Name = ['Rosenbrock']
 
     def __init__(self, Lower=-30.0, Upper=30.0):
         Benchmark.__init__(self, Lower, Upper)

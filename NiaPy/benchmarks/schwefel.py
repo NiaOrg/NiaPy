@@ -39,9 +39,9 @@ class Schwefel(Benchmark):
 
 	Reference: https://www.sfu.ca/~ssurjano/schwef.html
 	"""
+	Name = ['Schwefel']
 
-	def __init__(self, Lower=-500.0, Upper=500.0):
-		Benchmark.__init__(self, Lower, Upper)
+	def __init__(self, Lower=-500.0, Upper=500.0): Benchmark.__init__(self, Lower, Upper)
 
 	@classmethod
 	def function(cls):
@@ -87,8 +87,9 @@ class Schwefel221(Benchmark):
 	International Journal of Mathematical Modelling and Numerical Optimisation,
 	4(2), 150-194.
 	"""
-	def __init__(self, Lower=-100.0, Upper=100.0):
-		Benchmark.__init__(self, Lower, Upper)
+	Name = ['Schwefel221']
+
+	def __init__(self, Lower=-100.0, Upper=100.0): Benchmark.__init__(self, Lower, Upper)
 
 	@classmethod
 	def function(cls):
@@ -136,8 +137,9 @@ class Schwefel222(Benchmark):
 	International Journal of Mathematical Modelling and Numerical Optimisation,
 	4(2), 150-194.
 	"""
-	def __init__(self, Lower=-100.0, Upper=100.0):
-		Benchmark.__init__(self, Lower, Upper)
+	Name = ['Schwefel222']
+
+	def __init__(self, Lower=-100.0, Upper=100.0): Benchmark.__init__(self, Lower, Upper)
 
 	@classmethod
 	def function(cls):
@@ -182,6 +184,8 @@ class ModifiedSchwefel(Benchmark):
 	Reference:
 	http://www5.zzu.edu.cn/__local/A/69/BC/D3B5DFE94CD2574B38AD7CD1D12_C802DAFE_BC0C0.pdf
 	"""
+	Name = ['ModifiedSchwefel']
+
 	def __init__(self, Lower=-100.0, Upper=100.0): Benchmark.__init__(self, Lower, Upper)
 
 	@classmethod

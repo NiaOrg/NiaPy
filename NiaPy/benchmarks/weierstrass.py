@@ -40,6 +40,7 @@ class Weierstrass(Benchmark):
 	Reference:
 	http://www5.zzu.edu.cn/__local/A/69/BC/D3B5DFE94CD2574B38AD7CD1D12_C802DAFE_BC0C0.pdf
 	"""
+	Name = ['Weierstrass']
 	a, b, k_max = 0.5, 3, 20
 
 	def __init__(self, Lower=-100.0, Upper=100.0, a=0.5, b=3, k_max=20):

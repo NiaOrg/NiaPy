@@ -40,6 +40,8 @@ class Infinity(Benchmark):
 	Reference:
 	http://infinity77.net/global_optimization/test_functions_nd_I.html#go_benchmark.Infinity
 	"""
+	Name = ['Infinity']
+
 	def __init__(self, Lower=-1.0, Upper=1.0): Benchmark.__init__(self, Lower, Upper)
 
 	@classmethod

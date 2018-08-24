@@ -42,6 +42,7 @@ class Ackley(Benchmark):
 
     Reference: https://www.sfu.ca/~ssurjano/ackley.html
     """
+    Name = ['Ackley']
 
     def __init__(self, Lower=-32.768, Upper=32.768):
         Benchmark.__init__(self, Lower, Upper)

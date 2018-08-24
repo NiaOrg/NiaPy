@@ -41,6 +41,7 @@ class ChungReynolds(Benchmark):
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
     """
+    Name = ['ChungReynolds']
 
     def __init__(self, Lower=-100.0, Upper=100.0):
         Benchmark.__init__(self, Lower, Upper)

@@ -40,6 +40,6 @@ def getDictArgs(argv): return vars(getArgs(argv))
 
 if __name__ == '__main__':
 	args = getArgs(sys.argv[1:])
-	print (args)
+	print(args)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

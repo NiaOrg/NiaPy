@@ -43,6 +43,7 @@ class Alpine1(Benchmark):
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
     """
+    Name = ['Alpine1']
 
     def __init__(self, Lower=-10.0, Upper=10.0):
         Benchmark.__init__(self, Lower, Upper)
@@ -97,6 +98,7 @@ class Alpine2:
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
     """
+    Name = ['Alpine2']
 
     def __init__(self, Lower=0.0, Upper=10.0):
         self.Lower = Lower

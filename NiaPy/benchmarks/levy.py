@@ -38,6 +38,8 @@ class Levy(Benchmark):
 	Reference:
 	https://www.sfu.ca/~ssurjano/levy.html
 	"""
+	Name = ['Levy']
+
 	def __init__(self, Lower=0.0, Upper=pi): Benchmark.__init__(self, Lower, Upper)
 
 	@classmethod

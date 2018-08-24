@@ -43,6 +43,7 @@ class StyblinskiTang(Benchmark):
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
     """
+    Name = ['StyblinskiTang']
 
     def __init__(self, Lower=-5.0, Upper=5.0):
         Benchmark.__init__(self, Lower, Upper)

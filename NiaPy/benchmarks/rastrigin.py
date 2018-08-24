@@ -39,6 +39,7 @@ class Rastrigin(Benchmark):
 
     Reference: https://www.sfu.ca/~ssurjano/rastr.html
     """
+    Name = ['Rastrigin']
 
     def __init__(self, Lower=-5.12, Upper=5.12):
         Benchmark.__init__(self, Lower, Upper)

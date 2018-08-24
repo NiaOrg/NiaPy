@@ -69,7 +69,7 @@ class SelfAdaptiveDifferentialEvolutionAlgorithm(DifferentialEvolutionAlgorithm)
 		x_b = pop[argmin([x.f for x in pop])]
 		while not task.stopCond():
 			npop = [self.AdaptiveGen(pop[i]) for i in range(self.Np)]
-			for i in range(self.Np):npop[i].x = self.CrossMutt(npop, i, x_b, self.F, self.CR, self.Rand)
+			for i in range(self.Np): npop[i].x = self.CrossMutt(npop, i, x_b, self.F, self.CR, self.Rand)
 			pop = [self.evalPopulation(npop[i], pop[i], task) for i in range(self.Np)]
 			ix_b = argmin([x.f for x in pop])
 			if x_b.f > pop[ix_b].f: x_b = pop[ix_b]
@@ -116,7 +116,7 @@ class DynNPSelfAdaptiveDifferentialEvolutionAlgorithm(SelfAdaptiveDifferentialEv
 		x_b = pop[argmin([x.f for x in pop])]
 		while not task.stopCondI():
 			npop = [self.AdaptiveGen(pop[i]) for i in range(len(pop))]
-			for i in range(len(npop)):npop[i].x = self.CrossMutt(npop, i, x_b, self.F, self.CR, self.Rand)
+			for i in range(len(npop)): npop[i].x = self.CrossMutt(npop, i, x_b, self.F, self.CR, self.Rand)
 			pop = [self.evalPopulation(npop[i], pop[i], task) for i in range(len(npop))]
 			ix_b = argmin([x.f for x in pop])
 			if x_b.f > pop[ix_b].f: x_b = pop[ix_b]

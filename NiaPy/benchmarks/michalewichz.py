@@ -5,9 +5,9 @@
 from numpy import sin, pi
 from NiaPy.benchmarks.benchmark import Benchmark
 
-__all__ = ['Michalewicz']
+__all__ = ['Michalewichz']
 
-class Michalewicz(Benchmark):
+class Michalewichz(Benchmark):
 	r"""Implementations of Michalewichz's functions.
 
 	Date: 2018
@@ -40,9 +40,11 @@ class Michalewicz(Benchmark):
 	Reference URL:
 	https://www.sfu.ca/~ssurjano/michal.html
 	"""
+	Name = ['Michalewichz']
+
 	def __init__(self, Lower=0.0, Upper=pi, m=10):
 		Benchmark.__init__(self, Lower, Upper)
-		Michalewicz.m = m
+		Michalewichz.m = m
 
 	@classmethod
 	def function(cls):

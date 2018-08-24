@@ -45,6 +45,7 @@ class Step(Benchmark):
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
     """
+    Name = ['Step']
 
     def __init__(self, Lower=-100.0, Upper=100.0):
         Benchmark.__init__(self, Lower, Upper)
@@ -99,6 +100,7 @@ class Step2(Benchmark):
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
     """
+    Name = ['Step2']
 
     def __init__(self, Lower=-100.0, Upper=100.0):
         Benchmark.__init__(self, Lower, Upper)
@@ -153,6 +155,7 @@ class Step3(Benchmark):
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
     """
+    Name = ['Step3']
 
     def __init__(self, Lower=-100.0, Upper=100.0):
         Benchmark.__init__(self, Lower, Upper)

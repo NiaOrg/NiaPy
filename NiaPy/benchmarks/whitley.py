@@ -47,6 +47,7 @@ class Whitley(Benchmark):
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
     """
+    Name = ['Whitley']
 
     def __init__(self, Lower=-10.24, Upper=10.24):
         Benchmark.__init__(self, Lower, Upper)

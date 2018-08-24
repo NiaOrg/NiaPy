@@ -37,6 +37,8 @@ class Powell(Benchmark):
 	Reference:
 	https://www.sfu.ca/~ssurjano/levy.html
 	"""
+	Name = ['Powell']
+
 	def __init__(self, Lower=-4.0, Upper=5.0): Benchmark.__init__(self, Lower, Upper)
 
 	@classmethod

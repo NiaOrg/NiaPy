@@ -38,6 +38,7 @@ class Ridge(Benchmark):
 
     Reference: http://www.cs.unm.edu/~neal.holts/dga/benchmarkFunction/ridge.html
     """
+    Name = ['Ridge']
 
     def __init__(self, Lower=-64.0, Upper=64.0):
         Benchmark.__init__(self, Lower, Upper)

@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, line-too-long, expression-not-assigned, singleton-comparison, len-as-condition, no-self-use, unused-argument, no-else-return, old-style-class, dangerous-default-value
+# pylint: disable=mixed-indentation, multiple-statements, line-too-long, expression-not-assigned, len-as-condition, no-self-use, unused-argument, no-else-return, old-style-class, dangerous-default-value
 from numpy import random as rand, inf, ndarray, asarray, array_equal
 from NiaPy.util import Task, OptimizationType
 
@@ -34,7 +34,7 @@ class Algorithm:
 		Algorithm.setParameters(self, **kwargs)
 		"""
 		task, self.Rand = kwargs.pop('task', None), rand.RandomState(kwargs.pop('seed', 1))
-		self.task = task if task != None else Task(kwargs.pop('D', 10), kwargs.pop('nFES', 100000), kwargs.pop('nGEN', None), kwargs.pop('benchmark', 'ackley'), optType=kwargs.pop('optType', OptimizationType.MINIMIZATION))
+		self.task = task if task is not None else Task(kwargs.pop('D', 10), kwargs.pop('nFES', 100000), kwargs.pop('nGEN', None), kwargs.pop('benchmark', 'ackley'), optType=kwargs.pop('optType', OptimizationType.MINIMIZATION))
 		self.setParameters(**kwargs)
 
 	def setParameters(self, **kwargs):
@@ -83,7 +83,7 @@ class Algorithm:
 		Upper {array} or {real} or {int} -- Upper bound
 		D {array} or {int} -- Shape of returnd random uniform numbers
 		"""
-		return self.Rand.uniform(Lower, Upper, D) if D != None else self.Rand.uniform(Lower, Upper)
+		return self.Rand.uniform(Lower, Upper, D) if D is not None else self.Rand.uniform(Lower, Upper)
 
 	def normal(self, loc, scale, D=None):
 		r"""Get D shape random normal distributed numbers.
@@ -93,7 +93,7 @@ class Algorithm:
 		scale {} --
 		D {array} or {int} -- Shape of returnd random uniform numbers
 		"""
-		return self.Rand.normal(loc, scale, D) if D != None else self.Rand.normal(loc, scale)
+		return self.Rand.normal(loc, scale, D) if D is not None else self.Rand.normal(loc, scale)
 
 	def randn(self, D=None):
 		r"""Get D shape random normal distributed numbers.
@@ -101,7 +101,7 @@ class Algorithm:
 		**Arguments**:
 		D {array} -- Shape of returnd random numbers
 		"""
-		return self.Rand.randn() if D == None else self.Rand.randn(*D)
+		return self.Rand.randn() if D is None else self.Rand.randn(*D)
 
 	def randint(self, Nmax, D=1, Nmin=0, skip=[]):
 		r"""Get D shape random full numbers in range Nmin to Nmax.
@@ -162,7 +162,7 @@ class Individual:
 		task, rnd, x = kwargs.pop('task', None), kwargs.pop('rand', rand), kwargs.pop('x', [])
 		if len(x) > 0: self.x = x if isinstance(x, ndarray) else asarray(x)
 		else: self.generateSolution(task, rnd)
-		if kwargs.pop('e', True) and task != None: self.evaluate(task)
+		if kwargs.pop('e', True) and task is not None: self.evaluate(task)
 
 	def generateSolution(self, task, rnd=rand):
 		r"""Generate new solution.

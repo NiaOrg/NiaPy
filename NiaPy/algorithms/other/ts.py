@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, unused-argument, arguments-differ, bad-continuation, singleton-comparison, no-self-use
+# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, unused-argument, arguments-differ, bad-continuation, singleton-comparison, no-self-use, unused-variable
 import logging
 from numpy import random as rand
 from NiaPy.algorithms.algorithm import Algorithm
@@ -12,7 +12,7 @@ __all__ = ['TabuSearch']
 
 def TabuSearchF(task, SR=None, TL_size=25, rnd=rand):
 	if SR == None: SR = task.bRange
-	x, TL  = rnd.uniform(task.Lower, task.Upper), list()
+	x, TL = rnd.uniform(task.Lower, task.Upper), list()
 	x_f = task.eval(x)
 	while not task.stopCond():
 		# Generate neigours

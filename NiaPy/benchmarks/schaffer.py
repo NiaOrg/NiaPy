@@ -1,11 +1,11 @@
 # encoding=utf8
-# pylint: disable=anomalous-backslash-in-string, mixed-indentation, multiple-statements, line-too-long, no-else-return, old-style-class
+# pylint: disable=anomalous-backslash-in-string, mixed-indentation, multiple-statements, line-too-long, no-else-return, old-style-class, unused-argument
 """Implementations of Schwefels functions."""
 
 from math import sin, cos, sqrt
 from NiaPy.benchmarks.benchmark import Benchmark
 
-__all__ = ['SchafferN2', 'SchafferN4', 'ExpandedScaffer']
+__all__ = ['SchafferN2', 'SchafferN4', 'ExpandedSchaffer']
 
 class SchafferN2(Benchmark):
 	r"""Implementations of Schaffer N. 2 functions.
@@ -39,6 +39,8 @@ class SchafferN2(Benchmark):
 	Reference:
 	http://www5.zzu.edu.cn/__local/A/69/BC/D3B5DFE94CD2574B38AD7CD1D12_C802DAFE_BC0C0.pdf
 	"""
+	Name = ['SchafferN2']
+
 	def __init__(self, Lower=-100.0, Upper=100.0): Benchmark.__init__(self, Lower, Upper)
 
 	@classmethod
@@ -78,6 +80,8 @@ class SchafferN4(Benchmark):
 	Reference:
 	http://www5.zzu.edu.cn/__local/A/69/BC/D3B5DFE94CD2574B38AD7CD1D12_C802DAFE_BC0C0.pdf
 	"""
+	Name = ['SchafferN4']
+
 	def __init__(self, Lower=-100.0, Upper=100.0): Benchmark.__init__(self, Lower, Upper)
 
 	@classmethod
@@ -117,6 +121,8 @@ class ExpandedSchaffer(Benchmark):
 	Reference:
 	http://www5.zzu.edu.cn/__local/A/69/BC/D3B5DFE94CD2574B38AD7CD1D12_C802DAFE_BC0C0.pdf
 	"""
+	Name = ['ExpandedSchaffer']
+
 	def __init__(self, Lower=-100.0, Upper=100.0): Benchmark.__init__(self, Lower, Upper)
 
 	@classmethod

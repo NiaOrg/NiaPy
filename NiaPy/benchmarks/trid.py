@@ -37,6 +37,8 @@ class Trid(Benchmark):
 	Reference:
 	https://www.sfu.ca/~ssurjano/trid.html
 	"""
+	Name = ['Trid']
+
 	def __init__(self, D=2): Benchmark.__init__(self, -(D ** 2), D ** 2)
 
 	@classmethod

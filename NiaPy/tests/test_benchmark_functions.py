@@ -190,12 +190,12 @@ class TestBenchmarkFunctions(TestCase):
 	def test_schaffern2(self):
 		fun = self.assertBounds('schaffer2', -100, 100)
 		self.assertTrue(callable(fun))
-		self.assertAlmostEqual(fun(self.D, self.array10), 2.616740208857464, delta=1e-4)
+		self.assertAlmostEqual(fun(self.D, self.array10), 0.02467, delta=1e-4)
 
 	def test_schaffern4(self):
 		fun = self.assertBounds('schaffer4', -100, 100)
 		self.assertTrue(callable(fun))
-		self.assertAlmostEqual(fun(self.D, self.array10), 2.616740208857464, delta=1e-4)
+		self.assertAlmostEqual(fun(self.D, self.array10), 0.97545, delta=1e-4)
 
 	def test_hgbat(self):
 		fun = self.assertBounds('hgbat', -100, 100)

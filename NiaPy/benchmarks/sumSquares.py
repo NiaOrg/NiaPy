@@ -40,6 +40,7 @@ class SumSquares(Benchmark):
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
     """
+    Name = ['SumSquares']
 
     def __init__(self, Lower=-10.0, Upper=10.0):
         Benchmark.__init__(self, Lower, Upper)

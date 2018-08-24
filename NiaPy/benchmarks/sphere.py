@@ -41,6 +41,8 @@ class Sphere(Benchmark):
 	International Journal of Mathematical Modelling and Numerical Optimisation,
 	4(2), 150-194.
 	"""
+	Name = ['Sphere']
+
 	def __init__(self, Lower=-5.12, Upper=5.12): Benchmark.__init__(self, Lower, Upper)
 
 	@classmethod
@@ -80,6 +82,8 @@ class Sphere2(Benchmark):
 	Reference URL:
 	https://www.sfu.ca/~ssurjano/sumpow.html
 	"""
+	Name = ['Sphere2']
+
 	def __init__(self, Lower=-1., Upper=1.): Benchmark.__init__(self, Lower, Upper)
 
 	@classmethod
@@ -119,6 +123,8 @@ class Sphere3(Benchmark):
 	Reference URL:
 	https://www.sfu.ca/~ssurjano/rothyp.html
 	"""
+	Name = ['Sphere3']
+
 	def __init__(self, Lower=-65.536, Upper=65.536): Benchmark.__init__(self, Lower, Upper)
 
 	@classmethod

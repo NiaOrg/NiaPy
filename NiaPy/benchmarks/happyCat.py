@@ -43,6 +43,7 @@ class HappyCat(Benchmark):
     Beyer, H. G., & Finck, S. (2012). HappyCat - A Simple Function Class Where Well-Known Direct Search Algorithms Do Fail.
     In International Conference on Parallel Problem Solving from Nature (pp. 367-376). Springer, Berlin, Heidelberg.
     """
+    Name = ['HappyCat']
 
     def __init__(self, Lower=-100.0, Upper=100.0):
         Benchmark.__init__(self, Lower, Upper)

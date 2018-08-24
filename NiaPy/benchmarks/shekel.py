@@ -37,7 +37,9 @@ class Shekel(Benchmark):
 	Reference:
 	https://www.sfu.ca/~ssurjano/levy.html
 	"""
-	def __init__(self, Lower=-5.0, Upper=10.0, C):
+	Name = ['Shekel']
+
+	def __init__(self, C, Lower=-5.0, Upper=10.0):
 		Benchmark.__init__(self, Lower, Upper)
 		self.C = C
 
