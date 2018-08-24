@@ -21,22 +21,43 @@ class DifferentialEvolutionBestSimulatedAnnealing(DifferentialEvolutionAlgorithm
 	def typeParameters():
 		d = DifferentialEvolutionAlgorithm.typeParameters()
 		d['SR'] = lambda x: isinstance(x, float) and 0 < x <= 1
+		d['delta'] = lambda x: isinstance(x, (int, float)) and x > 0
+		d['T'] = lambda x: isinstance(x, (int, float)) and x > 0
+		d['deltaT'] = lambda x: isinstance(x, (int, float)) and x > 0
 		return d
 
-	def setParameters(self, SR=0.1, **ukwargs):
+	def setParameters(self, SR=0.1, delta=1.5, delta_t=0.564, T=2000, **ukwargs):
 		r"""Set the algorithm parameters.
 
 		Arguments:
 		SR {decimal} -- search reange for best (normalized)
+		delta {real} -- for SA
+		T {real} -- for SA
+		deltaT {real} -- for SA
 		"""
-		self.SR = SR
+		self.SR, self.delta self.delta_t, self.T = SR, delta, delta_t, T
 		DifferentialEvolutionAlgorithm.setParameters(self, **ukwargs)
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def runTask(self, task): pass
+	def runTask(self, task):
+		pop = [Individual(task=task, e=True) for _i in range(self.Np)]
+		x_b = pop[argmin([x.f for x in pop])]
+		while not task.stopCondI():
+			npop = [Individual(x=self.CrossMutt(pop, i, x_b, self.F, self.CR, self.Rand), task=task, e=True) for i in range(self.Np)]
+			pop = [np if np.f < pop[i].f else pop[i] for i, np in enumerate(npop)]
+			ix_b = argmin([x.f for x in pop])
+			# TODO dodaj zagon SA funkcije
+			if x_b.f > pop[ix_b].f: x_b = pop[ix_b]
+		return x_b.x, x_b.f
 
-class DifferentialEvolutionBestHarmonySearch(DifferentialEvolutionBestSimulatedAnnealing):
+class DifferentialEvolutionBestHarmonySearch(DifferentialEvolutionAlgorithm):
 	Name = ['DifferentialEvolutionBestHarmonySearch', 'DEbHS']
+
+	@staticmethod
+	def typeParameters():
+		d = DifferentialEvolutionAlgorithm.typeParameters()
+		d['SR'] = lambda x: isinstance(x, float) and 0 < x <= 1
+		return d
 
 	def runTask(self, task):
 		# FIXME add HS algorithm to the mix
