@@ -4,7 +4,7 @@ import logging
 from numpy import argmin
 from NiaPy.algorithms.algorithm import Individual
 from NiaPy.algorithms.basic.de import DifferentialEvolutionAlgorithm
-from NiaPy.algorithms.other.sa import SimulatedAnnealingF
+from NiaPy.algorithms.other.sa import SimulatedAnnealingBF
 from NiaPy.algorithms.basic.hs import HarmonySearchB, HarmonySearchV1B
 from NiaPy.algorithms.other.mts import MTS_LS1, MTS_LS2, MTS_LS3
 
@@ -67,7 +67,7 @@ class SelfAdaptiveDifferentialEvolutionAlgorithm(DifferentialEvolutionAlgorithm)
 	def runTask(self, task):
 		pop = [SolutionjDE(task=task, F=self.F, CR=self.CR) for _i in range(self.Np)]
 		x_b = pop[argmin([x.f for x in pop])]
-		while not task.stopCond():
+		while not task.stopCondI():
 			npop = [self.AdaptiveGen(pop[i]) for i in range(self.Np)]
 			for i in range(self.Np): npop[i].x = self.CrossMutt(npop, i, x_b, self.F, self.CR, self.Rand)
 			pop = [self.evalPopulation(npop[i], pop[i], task) for i in range(self.Np)]
@@ -129,36 +129,71 @@ class DynNPSelfAdaptiveDifferentialEvolutionAlgorithm(SelfAdaptiveDifferentialEv
 class SelfAdaptiveDifferentialEvolutionAlgorithmBestSimulatedAnnealing(SelfAdaptiveDifferentialEvolutionAlgorithm):
 	Name = ['SelfAdaptiveDifferentialEvolutionAlgorithmBestSimulatedAnnealing', 'jDEbSA']
 
-	def setParameters(self, **ukwargs): pass
+	@staticmethod
+	def typeParameters():
+		d = SelfAdaptiveDifferentialEvolutionAlgorithm.typeParameters()
+		d['SR'] = lambda x: isinstance(x, float) and 0 < x <= 1
+		return d
 
-	def runTask(self, task): pass
+	def setParameters(self, SR=0.189, delta=0.563, delta_t=0.564, T=2000,**ukwargs):
+		r"""Set the algorithm parameters.
+
+		Arguments:
+		SR {decimal} -- search reange for best (normalized)
+		"""
+		self.SR, self.delta, self.delta_t, self.T = SR, delta, delta_t, T
+		SelfAdaptiveDifferentialEvolutionAlgorithm.setParameters(self, **ukwargs)
+		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
+
+	def runTask(self, task):
+		pop = [SolutionjDE(task=task, F=self.F, CR=self.CR) for _i in range(self.Np)]
+		x_b = pop[argmin([x.f for x in pop])]
+		while not task.stopCondI():
+			npop = [self.AdaptiveGen(pop[i]) for i in range(self.Np)]
+			for i in range(self.Np): npop[i].x = self.CrossMutt(npop, i, x_b, self.F, self.CR, self.Rand)
+			pop = [self.evalPopulation(npop[i], pop[i], task) for i in range(self.Np)]
+			ix_b = argmin([x.f for x in pop])
+			tSR = (task.bRange * self.SR) / 2
+			tLower, tUpper = pop[ix_b].x - tSR, pop[ix_b] + tSR
+			xn = SimulatedAnnealingBF(task, tLower, tUpper, x=pop[ix_b].x, xfit=pop[ix_b].f, delta=self.delta, delta_t=self.delta_t, T=self.T, rnd=self.Rand)
+			if xn[1] < pop[ix_b].f: pop[ix_b].x, pop[ix_b].f = xn
+			if x_b.f > pop[ix_b].f: x_b = pop[ix_b]
+		return x_b.x, x_b.f
 
 class SelfAdaptiveDifferentialEvolutionAlgorithmBestHarmonySearch(SelfAdaptiveDifferentialEvolutionAlgorithm):
 	Name = ['SelfAdaptiveDifferentialEvolutionAlgorithmBestHarmonySearch', 'jDEbHS']
 
 	def setParameters(self, **ukwargs): pass
 
-	def runTask(self, task): pass
+	def runTask(self, task):
+		# FIXME
+		pass
 
 class SelfAdaptiveDifferentialEvolutionAlgorithmBestMTS1(SelfAdaptiveDifferentialEvolutionAlgorithm):
 	Name = ['SelfAdaptiveDifferentialEvolutionAlgorithmBestMTS1', 'jDEbMTS1']
 
 	def setParameters(self, **ukwargs): pass
 
-	def runTask(self, task): pass
+	def runTask(self, task):
+		# FIXME
+		pass
 
 class SelfAdaptiveDifferentialEvolutionAlgorithmBestMTS2(SelfAdaptiveDifferentialEvolutionAlgorithm):
 	Name = ['SelfAdaptiveDifferentialEvolutionAlgorithmBestMTS2', 'jDEbMTS2']
 
 	def setParameters(self, **ukwargs): pass
 
-	def runTask(self, task): pass
+	def runTask(self, task):
+		# FIXME
+		pass
 
 class SelfAdaptiveDifferentialEvolutionAlgorithmBestMTS3(SelfAdaptiveDifferentialEvolutionAlgorithm):
 	Name = ['SelfAdaptiveDifferentialEvolutionAlgorithmBestMTS3', 'jDEbMTS3']
 
 	def setParameters(self, **ukwargs): pass
 
-	def runTask(self, task): pass
+	def runTask(self, task):
+		# FIXME
+		pass
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

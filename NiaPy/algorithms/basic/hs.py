@@ -115,6 +115,12 @@ class HarmonySearchB:
 		if HM is None:
 			HM = self.rnd.uniform(self.Lower, self.Upper, [self.HMS, task.D])
 			HM_f = apply_along_axis(task.eval, 1, HM)
+		elif len(HM.shape) == 1:
+			nHM = self.rnd.uniform(self.Lower, self.Upper, [self.HMS - 1, task.D])
+			nHM_f = apply_along_axis(task.eval, 1, nHM)
+			print (nHM, '\n', nHM_f)
+			print (HM, '\n', HM_f)
+			HM, HM_f = concatenate([HM, nHM]), concatenate([HM_f, nHM_f])
 		elif len(HM) < self.HMS:
 			nHM = self.rnd.uniform(self.Lower, self.Upper, [self.HMS - len(HM), task.D])
 			nHM_f = apply_along_axis(task.eval, 1, nHM)

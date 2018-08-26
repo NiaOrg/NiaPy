@@ -4,7 +4,7 @@ import logging
 from numpy import argmin
 from NiaPy.algorithms.algorithm import Individual, Algorithm
 from NiaPy.algorithms.basic.de import DifferentialEvolutionAlgorithm
-from NiaPy.algorithms.other.sa import SimulatedAnnealingF
+from NiaPy.algorithms.other.sa import SimulatedAnnealingBF
 from NiaPy.algorithms.basic.hs import HarmonySearchB, HarmonySearchV1B
 from NiaPy.algorithms.other.mts import MTS_LS1, MTS_LS2, MTS_LS3
 
@@ -26,7 +26,7 @@ class DifferentialEvolutionBestSimulatedAnnealing(DifferentialEvolutionAlgorithm
 		d['deltaT'] = lambda x: isinstance(x, (int, float)) and x > 0
 		return d
 
-	def setParameters(self, SR=0.1, delta=1.5, delta_t=0.564, T=2000, **ukwargs):
+	def setParameters(self, SR=0.1782, delta=0.563, delta_t=0.564, T=2000, **ukwargs):
 		r"""Set the algorithm parameters.
 
 		Arguments:
@@ -46,7 +46,9 @@ class DifferentialEvolutionBestSimulatedAnnealing(DifferentialEvolutionAlgorithm
 			npop = [Individual(x=self.CrossMutt(pop, i, x_b, self.F, self.CR, self.Rand), task=task, e=True) for i in range(self.Np)]
 			pop = [np if np.f < pop[i].f else pop[i] for i, np in enumerate(npop)]
 			ix_b = argmin([x.f for x in pop])
-			# TODO dodaj zagon SA funkcije
+			tSR = (task.bRange * self.SR) / 2
+			xn = SimulatedAnnealingBF(task, pop[ix_b].x - tSR, pop[ix_b].x + tSR, x=pop[ix_b].x, xfit=pop[ix_b].f, delta=self.delta, delta_t=self.delta_t, T=self.T, rnd=self.Rand)
+			if xn[1] < pop[ix_b].f: pop[ix_b].x, pop[ix_b].f = xn
 			if x_b.f > pop[ix_b].f: x_b = pop[ix_b]
 		return x_b.x, x_b.f
 
@@ -59,44 +61,29 @@ class DifferentialEvolutionBestHarmonySearch(DifferentialEvolutionAlgorithm):
 		d['SR'] = lambda x: isinstance(x, float) and 0 < x <= 1
 		return d
 
-	def runTask(self, task):
-		# FIXME add HS algorithm to the mix
-		pop = [Individual(task=task, e=True) for _i in range(self.Np)]
-		x_b = pop[argmin([x.f for x in pop])]
-		while not task.stopCondI():
-			npop = [Individual(x=self.CrossMutt(pop, i, x_b, self.F, self.CR, self.Rand), task=task, e=True) for i in range(self.Np)]
-			pop = [np if np.f < pop[i].f else pop[i] for i, np in enumerate(npop)]
-			ix_b = argmin([x.f for x in pop])
-			if x_b.f > pop[ix_b].f: x_b = pop[ix_b]
-		return x_b.x, x_b.f
-
-class DifferentialEvolutionPBestHarmonySearch(DifferentialEvolutionBestHarmonySearch):
-	Name = ['DifferentialEvolutionPBestHarmonySearch', 'DEpbHS']
-
-	@staticmethod
-	def typeParameters():
-		d = DifferentialEvolutionBestHarmonySearch.typeParameters()
-		d['p'] = lambda x: isinstance(x, float) and 0 < x <= 1
-		return d
-
-	def setParameters(self, p=0.1, **ukwargs):
+	def setParameters(self, SR=0.1782, **ukwargs):
 		r"""Set the algorithm parameters.
 
 		Arguments:
-		p {decimal} -- procentage of best individuals in population
+		SR {decimal} -- search reange for best (normalized)
+		delta {real} -- for SA
+		T {real} -- for SA
+		deltaT {real} -- for SA
 		"""
-		DifferentialEvolutionBestHarmonySearch.setParameters(self, **ukwargs)
-		self.p = p
+		self.SR = SR
+		DifferentialEvolutionAlgorithm.setParameters(self, **ukwargs)
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def runTask(self, task):
-		# FIXME add HS algorithm to the mix with p% of best population
 		pop = [Individual(task=task, e=True) for _i in range(self.Np)]
 		x_b = pop[argmin([x.f for x in pop])]
 		while not task.stopCondI():
 			npop = [Individual(x=self.CrossMutt(pop, i, x_b, self.F, self.CR, self.Rand), task=task, e=True) for i in range(self.Np)]
 			pop = [np if np.f < pop[i].f else pop[i] for i, np in enumerate(npop)]
 			ix_b = argmin([x.f for x in pop])
+			tSR = (task.bRange * self.SR) / 2
+			xn = HarmonySearchB(pop[ix_b].x - tSR, pop[ix_b].x + tSR, x=pop[ix_b].x).runTask(task, pop[ix_b].x, pop[ix_b].f)
+			if xn[1] < pop[ix_b].f: pop[ix_b].x, pop[ix_b].f = xn
 			if x_b.f > pop[ix_b].f: x_b = pop[ix_b]
 		return x_b.x, x_b.f
 

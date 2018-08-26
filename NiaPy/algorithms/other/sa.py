@@ -1,14 +1,14 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, unused-argument, arguments-differ, bad-continuation
 import logging
-from numpy import random as rand, exp
+from numpy import random as rand, exp, fabs
 from NiaPy.algorithms.algorithm import Algorithm
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.other')
 logger.setLevel('INFO')
 
-__all__ = ['SimulatedAnnealing', 'SimulatedAnnealingF', 'coolDelta', 'coolLinear']
+__all__ = ['SimulatedAnnealing', 'SimulatedAnnealingF', 'SimulatedAnnealingBF', 'coolDelta', 'coolLinear']
 
 def coolDelta(currentT, T, deltaT, nFES):
 	return currentT - deltaT
@@ -16,8 +16,22 @@ def coolDelta(currentT, T, deltaT, nFES):
 def coolLinear(currentT, T, deltaT, nFES):
 	return currentT - T / nFES
 
+def SimulatedAnnealingBF(task, Lower, Upper, x=None, xfit=None, delta=1.5, delta_t=0.564, T=2000, cool=coolDelta, epsilon=1e-20, rnd=rand):
+	if x is None:
+		x = task.Lower + fabs(Upper - Lower) * rnd.rand(task.D)
+		xfit = task.eval(x)
+	curT, xb, xb_f = T, x, xfit
+	while not task.stopCond() and curT >= epsilon:
+		c = task.repair(x - delta / 2 + rnd.rand(task.D) * delta)
+		cfit = task.eval(c)
+		deltaFit, r = cfit - xfit, rnd.rand()
+		if deltaFit < 0 or r < exp(deltaFit / curT): x, xfit = c, cfit
+		if xb_f > cfit: xb, xb_f = c, cfit
+		curT = cool(curT, T, delta_t, nFES=task.nFES)
+	return xb, xb_f
+
 def SimulatedAnnealingF(task, delta=1.5, delta_t=0.564, T=2000, cool=coolDelta, epsilon=1e-20, rnd=rand):
-	x = task.Lower + task.bRange * rnd.rand(task.D)  # Random solution
+	x = task.Lower + task.bRange * rnd.rand(task.D)
 	curT, xfit = T, task.eval(x)
 	xb, xb_f = x, xfit
 	while not task.stopCond() and curT >= epsilon:
@@ -53,11 +67,11 @@ class SimulatedAnnealing(Algorithm):
 		r"""Set the algorithm parameters/arguments.
 
 		Arguments:
-		delta {real} --
-		T {real} --
-		deltaT {real} --
-		coolingMethod {function} --
-		epsilon {real}
+		delta {real} -- Movemt for neighbour search
+		T {real} -- Starting temperature
+		deltaT {real} -- Change in temperature
+		coolingMethod {function} -- Neigborhud function
+		epsilon {real} -- Error value
 		"""
 		self.delta, self.T, self.deltaT, self.cool, self.epsilon = delta, T, deltaT, coolingMethod, epsilon
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))

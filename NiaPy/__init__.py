@@ -24,8 +24,8 @@ logger = logging.getLogger('NiaPy')
 logger.setLevel('INFO')
 
 NiaPyAlgos = [balgos.BatAlgorithm, balgos.DifferentialEvolutionAlgorithm, balgos.FireflyAlgorithm, balgos.FlowerPollinationAlgorithm, balgos.GreyWolfOptimizer, balgos.ArtificialBeeColonyAlgorithm, balgos.GeneticAlgorithm, balgos.ParticleSwarmAlgorithm, balgos.CamelAlgorithm, balgos.BareBonesFireworksAlgorithm, balgos.MonkeyKingEvolutionV1, balgos.MonkeyKingEvolutionV2, balgos.MonkeyKingEvolutionV3, balgos.EvolutionStrategy1p1, balgos.EvolutionStrategyMp1, balgos.SineCosineAlgorithm, balgos.HarmonySearch, balgos.HarmonySearchV1, balgos.GlowwormSwarmOptimization, balgos.GlowwormSwarmOptimizationV1, balgos.GlowwormSwarmOptimizationV2, balgos.GlowwormSwarmOptimizationV3, balgos.KrillHerdV1, balgos.KrillHerdV2, balgos.KrillHerdV3, balgos.KrillHerdV4, balgos.KrillHerdV11, balgos.FireworksAlgorithm, balgos.EnhancedFireworksAlgorithm, balgos.DynamicFireworksAlgorithm, balgos.DynamicFireworksAlgorithmGauss, balgos.GravitationalSearchAlgorithm, balgos.CovarianceMaatrixAdaptionEvolutionStrategy]
-NiaPyAlgos.extend([malgos.HybridBatAlgorithm, malgos.SelfAdaptiveDifferentialEvolutionAlgorithm, malgos.DynNPSelfAdaptiveDifferentialEvolutionAlgorithm])
-NiaPyAlgos.extend([oalgos.MultipleTrajectorySearch, oalgos.MultipleTrajectorySearchV1, oalgos.NelderMeadMethod, oalgos.HillClimbAlgorithm, oalgos.SimulatedAnnealing, oalgos.AnarchicSocietyOptimization, oalgos.TabuSearch])
+NiaPyAlgos += [malgos.HybridBatAlgorithm, malgos.SelfAdaptiveDifferentialEvolutionAlgorithm, malgos.DynNPSelfAdaptiveDifferentialEvolutionAlgorithm, malgos.DifferentialEvolutionBestSimulatedAnnealing, malgos.SelfAdaptiveDifferentialEvolutionAlgorithmBestSimulatedAnnealing, malgos.DifferentialEvolutionBestHarmonySearch]
+NiaPyAlgos += [oalgos.MultipleTrajectorySearch, oalgos.MultipleTrajectorySearchV1, oalgos.NelderMeadMethod, oalgos.HillClimbAlgorithm, oalgos.SimulatedAnnealing, oalgos.AnarchicSocietyOptimization, oalgos.TabuSearch]
 
 class Runner:
 	r"""Runner utility feature.

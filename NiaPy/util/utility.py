@@ -102,7 +102,7 @@ class OptimizationType(Enum):
 	MAXIMIZATION = -1.0
 
 class Task(Utility):
-	def __init__(self, D, nFES, nGEN, benchmark=None, o=None, fo=None, M=None, fM=None, optF=None, optType=OptimizationType.MINIMIZATION, **ukw):
+	def __init__(self, D, nFES, nGEN=None, benchmark=None, o=None, fo=None, M=None, fM=None, optF=None, optType=OptimizationType.MINIMIZATION, **ukw):
 		r"""Initialize task class for optimization.
 
 		Arguments:
@@ -118,7 +118,7 @@ class Task(Utility):
 		"""
 		Utility.__init__(self)
 		self.D = D  # dimension of the problem
-		self.Iters, self.nGEN = 0, nGEN if nGEN is not None else 10000
+		self.Iters, self.nGEN = 0, nGEN if nGEN is not None else nFES
 		self.Evals, self.nFES = 0, nFES
 		self.benchmark = self.get_benchmark(benchmark) if benchmark is not None else None
 		if self.benchmark is not None:
