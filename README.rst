@@ -198,6 +198,11 @@ fits your purposes or that it is bug-free. Use it at your own risk!
 Revision History
 ================
 
+2.0.0rc2 (Aug 30, 2018)
+-----------------------
+
+- fix PyPI build
+
 2.0.0rc1 (Aug 30, 2018)
 -----------------------
 Changes included in release:
