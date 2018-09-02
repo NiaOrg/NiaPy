@@ -27,7 +27,7 @@ def MakeArgParser():
 	parser.add_argument('-nGEN', dest='nGEN', default=5000, type=int)
 	parser.add_argument('-NP', dest='NP', default=43, type=int)
 	parser.add_argument('-r', '--runType', dest='runType', choices=['', 'log', 'plot'], default='', type=str)
-	parser.add_argument('-seed', dest='seed', nargs='*', default=[None], type=int)
+	parser.add_argument('-seed', dest='seed', nargs='+', default=[None], type=int)
 	parser.add_argument('-optType', dest='optType', default=optimizationType('min'), type=optimizationType)
 	return parser
 
