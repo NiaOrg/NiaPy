@@ -26,7 +26,7 @@ class DifferentialEvolutionBestSimulatedAnnealing(DifferentialEvolutionAlgorithm
 		d['deltaT'] = lambda x: isinstance(x, (int, float)) and x > 0
 		return d
 
-	def setParameters(self, SR=0.1782, delta=0.563, delta_t=0.564, T=2000, **ukwargs):
+	def setParameters(self, SR=0.1782, delta=0.563, delta_t=0.564, T=200, **ukwargs):
 		r"""Set the algorithm parameters.
 
 		Arguments:
@@ -48,41 +48,6 @@ class DifferentialEvolutionBestSimulatedAnnealing(DifferentialEvolutionAlgorithm
 			ix_b = argmin([x.f for x in pop])
 			tSR = (task.bRange * self.SR) / 2
 			xn = SimulatedAnnealingBF(task, pop[ix_b].x - tSR, pop[ix_b].x + tSR, x=pop[ix_b].x, xfit=pop[ix_b].f, delta=self.delta, delta_t=self.delta_t, T=self.T, rnd=self.Rand)
-			if xn[1] < pop[ix_b].f: pop[ix_b].x, pop[ix_b].f = xn
-			if x_b.f > pop[ix_b].f: x_b = pop[ix_b]
-		return x_b.x, x_b.f
-
-class DifferentialEvolutionBestHarmonySearch(DifferentialEvolutionAlgorithm):
-	Name = ['DifferentialEvolutionBestHarmonySearch', 'DEbHS']
-
-	@staticmethod
-	def typeParameters():
-		d = DifferentialEvolutionAlgorithm.typeParameters()
-		d['SR'] = lambda x: isinstance(x, float) and 0 < x <= 1
-		return d
-
-	def setParameters(self, SR=0.1782, **ukwargs):
-		r"""Set the algorithm parameters.
-
-		Arguments:
-		SR {decimal} -- search reange for best (normalized)
-		delta {real} -- for SA
-		T {real} -- for SA
-		deltaT {real} -- for SA
-		"""
-		self.SR = SR
-		DifferentialEvolutionAlgorithm.setParameters(self, **ukwargs)
-		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
-
-	def runTask(self, task):
-		pop = [Individual(task=task, e=True) for _i in range(self.Np)]
-		x_b = pop[argmin([x.f for x in pop])]
-		while not task.stopCondI():
-			npop = [Individual(x=self.CrossMutt(pop, i, x_b, self.F, self.CR, self.Rand), task=task, e=True) for i in range(self.Np)]
-			pop = [np if np.f < pop[i].f else pop[i] for i, np in enumerate(npop)]
-			ix_b = argmin([x.f for x in pop])
-			tSR = (task.bRange * self.SR) / 2
-			xn = HarmonySearchB(pop[ix_b].x - tSR, pop[ix_b].x + tSR, x=pop[ix_b].x).runTask(task, pop[ix_b].x, pop[ix_b].f)
 			if xn[1] < pop[ix_b].f: pop[ix_b].x, pop[ix_b].f = xn
 			if x_b.f > pop[ix_b].f: x_b = pop[ix_b]
 		return x_b.x, x_b.f

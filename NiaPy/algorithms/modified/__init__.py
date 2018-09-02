@@ -10,7 +10,6 @@ __all__ = [
     'HybridBatAlgorithm',
     'SelfAdaptiveDifferentialEvolutionAlgorithm',
     'DynNPSelfAdaptiveDifferentialEvolutionAlgorithm',
-    'SelfAdaptiveDifferentialEvolutionAlgorithmBestHarmonySearch',
     'SelfAdaptiveDifferentialEvolutionAlgorithmBestSimulatedAnnealing',
     'SelfAdaptiveDifferentialEvolutionAlgorithmBestMTS1',
     'SelfAdaptiveDifferentialEvolutionAlgorithmBestMTS2',

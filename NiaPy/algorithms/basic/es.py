@@ -2,8 +2,8 @@
 # pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, unused-argument, singleton-comparison, no-else-return, line-too-long, arguments-differ, no-self-use, superfluous-parens, redefined-builtin, bad-continuation
 import logging
 from math import ceil
-from numpy import argmin, argsort, log, sum, fmax, sqrt, full, exp, eye, diag, apply_along_axis, round, any, asarray, dot, random as rand, tile, inf, where
-from numpy.linalg import norm, cholesky as chol, eig, solve, lstsq
+from numpy import argmin, argsort, log, sum, fmax, sqrt, full, exp, eye, diag, apply_along_axis, round, any, asarray, dot, random as rand, tile, inf, where, arange, outer
+from numpy.linalg import norm, cholesky as chol, eig, eigh, solve, lstsq
 from NiaPy.algorithms.algorithm import Algorithm, Individual
 
 logging.basicConfig()
@@ -171,6 +171,53 @@ class EvolutionStrategyML(EvolutionStrategyMpL):
 			cn = [IndividualES(x=cm[i], task=task) for i in range(self.lam)]
 			c = self.newPop(cn)
 		return c[0].x, c[0].f
+# https://github.com/DEAP/deap/blob/master/deap/cma.py
+def CovarianceMaatrixAdaptionEvolutionStrategyFNew(task, sigma=2, epsilon=1e-20, rnd=rand):
+	centroid = rnd.uniform(task.Lower, task.Upper, task.D)
+	pc = full(takd.D, 0.0)
+	ps = full(task.D, 0.0)
+	chiN = sqrt(task.D) * (1 - 1. / (4. * task.D) + 1. / (21. * task.D ** 2))
+	C = eye(task.D)
+	diagD, B = eigh(C)
+	indx = argsort(diagD)
+	diagD = diagD[indx] ** 0.5
+	B = B[:, indx]
+	BD = B * diagD
+	cond = diagD[indx[-1]] / diagD[indx[0]]
+	lambda_ = int(4 + 3 * log(task.D))
+	mu = int(lambda_ / 2)
+	weights = log(mu + 0.5) - log(arange(1, mu + 1))
+	weights /= sum(weights)
+	mueff = 1. / sum(weights ** 2)
+	cc = 4. / (task.D + 4.)
+	cs = (mueff + 2.) / (task.D + mueff + 3.)
+	ccov1 = 2. / ((task.D + 1.3) ** 2 + mueff)
+	ccovmu = 2. * (mueff - 2. + 1. / mueff) / ((task.D + 2.) ** 2 + mueff)
+	ccovmu = min(1 - ccov1, ccovmu)
+	damps = 1. + 2. * max(0, sqrt((mueff - 1.) / (task.D + 1.)) - 1.) + cs
+	while not task.stopCondI():
+		pop = rnd.standard_mormal((lambda_, task.D))
+		pop = centroid + sigma * dot(pop, BD.T)
+		pop_f = apply_along_axis(task.eval, 1, pop)
+		indx = argsort(pop_f)
+		pop = pop[indx]
+		pop_f = pop_f[indx]
+		old_centroid = centroid
+		centroid = dot(weights, pop[0:mu])
+		c_diff = centroid - old_centroid
+		ps = (1 - cs) * ps + sqrt(cs * (2 - cs) * mueff) / sigma * dot(B, (1 / diagD) * dot(B.T, c_diff))
+		hsig = float((norm(ps) / sqrt(1. - (1. - cs) ** (2. * task.Evals)) / chiN < (1.4 + 2. / (task.D + 1.))))
+		pc = (1 - cc) * pc + hsig * sqrt(cc * (2 - cc) * mueff) / sigma * c_diff
+		artmp = pop - old_centroid
+		C = (1 - ccov1 - ccovmu + (1 - hsig) * ccov1 * cc (2 - cc)) * C + ccov1 * outer(pc, pc) + ccovmu * dot((weights * artmp.T), artmp) / sigma ** 2
+		sigma *= exp((norm(ps) / shiN - 1.) * cs / damps)
+		diagD, B = eigh(C)
+		indx = argsort(diagD)
+		cond = diagD[indx[-1]] / diagD[indx[0]]
+		diagD = diagD ** 0.5
+		B = B[:, indx]
+		BD = B * diagD
+	return centroid
 
 def CovarianceMaatrixAdaptionEvolutionStrategyF(task, epsilon=1e-20, rnd=rand):
 	lam, alpha_mu, hs, sigma0 = (4 + round(3 * log(task.D))) * 10, 2, 0, 0.3 * task.bRange
