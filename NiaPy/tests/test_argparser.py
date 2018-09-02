@@ -23,5 +23,22 @@ class ArgParserTestCase(TestCase):
 		self.assertEqual(args['D'], 10)
 		self.assertEqual(args['nFES'], 100000000)
 		self.assertEqual(args['algo'], 'SCA')
+		self.assertEqual(args['seed'], [None])
+
+	def test_getDictArgs_seed_fine(self):
+		args = getDictArgs(['-D', '10', '-nFES', '100000000', '-a', 'SCA', '-seed', '1'])
+		self.assertTrue(args)
+		self.assertEqual(args['D'], 10)
+		self.assertEqual(args['nFES'], 100000000)
+		self.assertEqual(args['algo'], 'SCA')
+		self.assertEqual(args['seed'], [1])
+
+	def test_getDictArgs_seed_fine(self):
+		args = getDictArgs(['-D', '10', '-nFES', '100000000', '-a', 'SCA', '-seed', '1', '234', '231523'])
+		self.assertTrue(args)
+		self.assertEqual(args['D'], 10)
+		self.assertEqual(args['nFES'], 100000000)
+		self.assertEqual(args['algo'], 'SCA')
+		self.assertEqual(args['seed'], [1, 234, 231523])
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
