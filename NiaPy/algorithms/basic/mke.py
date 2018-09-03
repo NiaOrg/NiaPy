@@ -83,7 +83,7 @@ class MonkeyKingEvolutionV1(Algorithm):
 			p.uPersonalBest()
 
 	def runTask(self, task):
-		pop = [MkeSolution(task=task) for i in range(self.NP)]
+		pop = [MkeSolution(task=task, rand=self.Rand) for i in range(self.NP)]
 		p_b = pop[argmin([x.f for x in pop])]
 		for i in self.Rand.choice(self.NP, int(self.R * len(pop)), replace=False): pop[i].MonkeyKing = True
 		while not task.stopCond():

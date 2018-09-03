@@ -1,7 +1,7 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, multiple-statements, line-too-long, unused-argument, no-self-use, no-self-use, attribute-defined-outside-init, logging-not-lazy, len-as-condition, singleton-comparison, arguments-differ, bad-continuation
 import logging
-from numpy import argmin, asarray
+from numpy import argmin, asarray, inf
 from NiaPy.algorithms.algorithm import Algorithm, Individual
 
 __all__ = ['DifferentialEvolutionAlgorithm', 'CrossRand1', 'CrossBest2', 'CrossBest1', 'CrossBest2', 'CrossCurr2Rand1', 'CrossCurr2Best1']
@@ -78,13 +78,14 @@ class DifferentialEvolutionAlgorithm(Algorithm):
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def runTask(self, task):
-		pop = [Individual(task=task, e=True) for _i in range(self.Np)]
-		x_b = pop[argmin([x.f for x in pop])]
+		pop = [Individual(task=task, e=True, rand=self.Rand) for _i in range(self.Np)]
+		ib = argmin([x.f for x in pop])
+		x_b, x_bf = pop[ib].x, pop[ib].f
 		while not task.stopCondI():
 			npop = [Individual(x=self.CrossMutt(pop, i, x_b, self.F, self.CR, self.Rand), task=task, e=True) for i in range(self.Np)]
 			pop = [np if np.f < pop[i].f else pop[i] for i, np in enumerate(npop)]
-			ix_b = argmin([x.f for x in pop])
-			if x_b.f > pop[ix_b].f: x_b = pop[ix_b]
-		return x_b.x, x_b.f
+			ib = argmin([x.f for x in pop])
+			if x_bf > pop[ib].f: x_b, x_bf = pop[ib].x, pop[ib].f
+		return x_b, x_bf
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

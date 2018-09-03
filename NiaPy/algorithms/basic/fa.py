@@ -54,7 +54,7 @@ class FireflyAlgorithm(Algorithm):
 			if Intensity[i] <= Intensity[j]: continue
 			beta = (1.0 - self.betamin) * exp(-self.gamma * r ** 2.0) + self.betamin
 			tmpf = alpha * (self.uniform(0, 1, task.D) - 0.5) * task.bRange
-			Fireflies[i] = task.repair(Fireflies[i] * (1.0 - beta) + oFireflies[j] * beta + tmpf)
+			Fireflies[i] = task.repair(Fireflies[i] * (1.0 - beta) + oFireflies[j] * beta + tmpf, rnd=self.Rand)
 			moved = True
 		return Fireflies[i], moved
 

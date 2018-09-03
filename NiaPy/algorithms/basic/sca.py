@@ -5,7 +5,7 @@ from numpy import apply_along_axis, argmin, pi, inf, fabs, sin, cos
 from NiaPy.algorithms.algorithm import Algorithm
 
 logging.basicConfig()
-logger = logging.getLogger('NiaPy.algorithms.basic')
+logger = logging.getLogger('NiaPy.algorithms.basic.SineCosineAlgorithm')
 logger.setLevel('INFO')
 
 __all__ = ['SineCosineAlgorithm']
@@ -42,7 +42,7 @@ class SineCosineAlgorithm(Algorithm):
 		self.NP, self.a, self.Rmin, self.Rmax = NP, a, Rmin, Rmax
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def nextPos(self, x, x_b, r1, r2, r3, r4, task): return task.repair(x + r1 * (sin(r2) if r4 < 0.5 else cos(r2)) * fabs(r3 * x_b - x))
+	def nextPos(self, x, x_b, r1, r2, r3, r4, task): return task.repair(x + r1 * (sin(r2) if r4 < 0.5 else cos(r2)) * fabs(r3 * x_b - x), self.Rand)
 
 	def runTask(self, task):
 		P, x, x_f = self.uniform(task.Lower, task.Upper, [self.NP, task.D]), None, inf

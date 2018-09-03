@@ -65,7 +65,7 @@ class SelfAdaptiveDifferentialEvolutionAlgorithm(DifferentialEvolutionAlgorithm)
 		return self.selectBetter(x, x_old)
 
 	def runTask(self, task):
-		pop = [SolutionjDE(task=task, F=self.F, CR=self.CR) for _i in range(self.Np)]
+		pop = [SolutionjDE(task=task, F=self.F, CR=self.CR, rand=self.Rand) for _i in range(self.Np)]
 		x_b = pop[argmin([x.f for x in pop])]
 		while not task.stopCondI():
 			npop = [self.AdaptiveGen(pop[i]) for i in range(self.Np)]
@@ -111,7 +111,7 @@ class DynNPSelfAdaptiveDifferentialEvolutionAlgorithm(SelfAdaptiveDifferentialEv
 		return SolutionjDE(x=x.x, F=f, CR=cr)
 
 	def runTask(self, task):
-		pop = [SolutionjDE(task=task, F=self.F, CR=self.CR) for _i in range(self.Np)]
+		pop = [SolutionjDE(task=task, F=self.F, CR=self.CR, rand=self.Rand) for _i in range(self.Np)]
 		Gr = task.nFES // (self.pmax * self.Np) + self.rp
 		x_b = pop[argmin([x.f for x in pop])]
 		while not task.stopCondI():
@@ -146,7 +146,7 @@ class SelfAdaptiveDifferentialEvolutionAlgorithmBestSimulatedAnnealing(SelfAdapt
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def runTask(self, task):
-		pop = [SolutionjDE(task=task, F=self.F, CR=self.CR) for _i in range(self.Np)]
+		pop = [SolutionjDE(task=task, F=self.F, CR=self.CR, rand=self.Rand) for _i in range(self.Np)]
 		x_b = pop[argmin([x.f for x in pop])]
 		while not task.stopCondI():
 			npop = [self.AdaptiveGen(pop[i]) for i in range(self.Np)]
@@ -159,15 +159,6 @@ class SelfAdaptiveDifferentialEvolutionAlgorithmBestSimulatedAnnealing(SelfAdapt
 			if xn[1] < pop[ix_b].f: pop[ix_b].x, pop[ix_b].f = xn
 			if x_b.f > pop[ix_b].f: x_b = pop[ix_b]
 		return x_b.x, x_b.f
-
-class SelfAdaptiveDifferentialEvolutionAlgorithmBestHarmonySearch(SelfAdaptiveDifferentialEvolutionAlgorithm):
-	Name = ['SelfAdaptiveDifferentialEvolutionAlgorithmBestHarmonySearch', 'jDEbHS']
-
-	def setParameters(self, **ukwargs): pass
-
-	def runTask(self, task):
-		# FIXME
-		pass
 
 class SelfAdaptiveDifferentialEvolutionAlgorithmBestMTS1(SelfAdaptiveDifferentialEvolutionAlgorithm):
 	Name = ['SelfAdaptiveDifferentialEvolutionAlgorithmBestMTS1', 'jDEbMTS1']

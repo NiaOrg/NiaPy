@@ -33,7 +33,7 @@ class Algorithm:
 		**See**:
 		Algorithm.setParameters(self, **kwargs)
 		"""
-		task, self.Rand = kwargs.pop('task', None), rand.RandomState(kwargs.pop('seed', 1))
+		task, self.Rand = kwargs.pop('task', None), rand.RandomState(kwargs.pop('seed', None))
 		self.task = task if task is not None else Task(kwargs.pop('D', 10), kwargs.pop('nFES', 100000), kwargs.pop('nGEN', None), kwargs.pop('benchmark', 'ackley'), optType=kwargs.pop('optType', OptimizationType.MINIMIZATION))
 		self.setParameters(**kwargs)
 

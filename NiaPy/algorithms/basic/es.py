@@ -267,7 +267,7 @@ class CovarianceMaatrixAdaptionEvolutionStrategy(Algorithm):
 	**Reference URL:** https://arxiv.org/abs/1604.00772
 	**Reference paper:** Hansen, Nikolaus. "The CMA evolution strategy: A tutorial." arXiv preprint arXiv:1604.00772 (2016).
 	"""
-	Name = ['CovarianceMaatrixAdaptionEvolutionStrategy', 'CMA-ES']
+	Name = ['CovarianceMaatrixAdaptionEvolutionStrategy', 'CMA-ES', 'CMAES']
 
 	@staticmethod
 	def typeParameters(): return {
@@ -278,6 +278,6 @@ class CovarianceMaatrixAdaptionEvolutionStrategy(Algorithm):
 		self.epsilon = epsilon
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def runTask(self, task): return CovarianceMaatrixAdaptionEvolutionStrategyF(task, self.epsilon, self.Rand)
+	def runTask(self, task): return CovarianceMaatrixAdaptionEvolutionStrategyF(task, self.epsilon, rnd=self.Rand)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

@@ -57,8 +57,8 @@ class BatAlgorithm(Algorithm):
 		best, f_min = Sol[j], Fitness[j]
 		while not task.stopCond():
 			for i in range(self.NP):
-				Q[i], v[i], S[i] = self.Qmin + (self.Qmax - self.Qmin) * self.uniform(0, 1), v[i] + (Sol[i] - best) * Q[i], task.repair(Sol[i] + v[i])
-				if self.rand() > self.r: S[i] = task.repair(best + 0.001 * self.normal(0, 1, task.D))
+				Q[i], v[i], S[i] = self.Qmin + (self.Qmax - self.Qmin) * self.uniform(0, 1), v[i] + (Sol[i] - best) * Q[i], task.repair(Sol[i] + v[i], rnd=self.Rand)
+				if self.rand() > self.r: S[i] = task.repair(best + 0.001 * self.normal(0, 1, task.D), rnd=self.Rand)
 				Fnew = task.eval(S[i])
 				if (Fnew <= Fitness[i]) and (self.rand() < self.A): Sol[i], Fitness[i] = S[i], Fnew
 				if Fnew <= f_min: best, f_min = S[i], Fnew

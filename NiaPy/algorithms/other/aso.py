@@ -14,19 +14,19 @@ __all__ = ['AnarchicSocietyOptimization', 'Elitism', 'Sequential', 'Crossover']
 
 def Elitism(x, xpb, xb, xr, MP_c, MP_s, MP_p, F, CR, task, rnd=rand):
 	r"""Select the best of all three strategies."""
-	xn = [task.repair(MP_C(x, F, CR, MP_c, rnd)), task.repair(MP_S(x, xr, xb, CR, MP_s, rnd)), task.repair(MP_P(x, xpb, CR, MP_p, rnd))]
+	xn = [task.repair(MP_C(x, F, CR, MP_c, rnd), rnd=rnd), task.repair(MP_S(x, xr, xb, CR, MP_s, rnd), rnd=rnd), task.repair(MP_P(x, xpb, CR, MP_p, rnd), rnd=rnd)]
 	xn_f = apply_along_axis(task.eval, 1, xn)
 	ib = argmin(xn_f)
 	return xn[ib], xn_f[ib]
 
 def Sequential(x, xpb, xb, xr, MP_c, MP_s, MP_p, F, CR, task, rnd=rand):
 	r"""Sequentialy combines all three strategies."""
-	xn = task.repair(MP_S(MP_P(MP_C(x, F, CR, MP_c, rnd), xpb, CR, MP_p, rnd), xr, xb, CR, MP_s, rnd))
+	xn = task.repair(MP_S(MP_P(MP_C(x, F, CR, MP_c, rnd), xpb, CR, MP_p, rnd), xr, xb, CR, MP_s, rnd), rnd=rnd)
 	return xn, task.eval(xn)
 
 def Crossover(x, xpb, xb, xr, MP_c, MP_s, MP_p, F, CR, task, rnd=rand):
 	r"""Create a crossover over all three strategies."""
-	xns = [task.repair(MP_C(x, F, CR, MP_c, rnd)), task.repair(MP_S(x, xr, xb, CR, MP_s, rnd)), task.repair(MP_P(x, xpb, CR, MP_p, rnd))]
+	xns = [task.repair(MP_C(x, F, CR, MP_c, rnd), rnd=rnd), task.repair(MP_S(x, xr, xb, CR, MP_s, rnd), rnd=rnd), task.repair(MP_P(x, xpb, CR, MP_p, rnd), rnd=rnd)]
 	x = asarray([xns[rnd.randint(len(xns))][i] if rnd.rand() < CR else x[i] for i in range(len(x))])
 	return x, task.eval(x)
 

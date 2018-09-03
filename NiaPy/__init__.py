@@ -33,7 +33,7 @@ class Runner:
 	Feature which enables running multiple algorithms with multiple benchmarks.
 	It also support exporting results in various formats (e.g. LaTeX, Excel, JSON)
 	"""
-	def __init__(self, D=10, nFES=1000000, nRuns=100000, useAlgorithms='ArtificialBeeColonyAlgorithm', useBenchmarks='Ackley', **kwargs):
+	def __init__(self, D=10, nFES=1000000, nGEN=100000, useAlgorithms='ArtificialBeeColonyAlgorithm', useBenchmarks='Ackley', **kwargs):
 		r"""Initialize Runner.
 
 		**__init__(self, D, NP, nFES, nRuns, useAlgorithms, useBenchmarks, ...)**
@@ -119,7 +119,7 @@ class Runner:
 		"""
 		self.D = D
 		self.nFES = nFES
-		self.nGEN = nRuns
+		self.nGEN = nGEN
 		self.useAlgorithms = useAlgorithms
 		self.useBenchmarks = useBenchmarks
 		self.args = kwargs

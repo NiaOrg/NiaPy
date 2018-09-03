@@ -124,7 +124,7 @@ class Task(Utility):
 		if self.benchmark is not None:
 			self.Lower, self.Upper = fullArray(self.benchmark.Lower, self.D), fullArray(self.benchmark.Upper, self.D)
 			self.bRange = fabs(self.Upper - self.Lower)
-		self.Fun = self.benchmark.function() if benchmark is not None else None
+		self.Fun = self.benchmark.function() if self.benchmark is not None else None
 		self.o = o if isinstance(o, ndarray) or o is None else asarray(o)
 		self.M = M if isinstance(M, ndarray) or M is None else asarray(M)
 		self.fo, self.fM, self.optF = fo, fM, optF
@@ -146,8 +146,8 @@ class Task(Utility):
 		Arguments:
 		A {array} -- Solution to evaluate
 		"""
-		if self.stopCond() or not self.isFeasible(A): return inf
 		self.Evals += 1
+		if self.stopCond(): return inf
 		X = A - self.o if self.o is not None else A
 		X = self.fo(X) if self.fo is not None else X
 		X = dot(X, self.M) if self.M is not None else X
@@ -166,7 +166,7 @@ class Task(Utility):
 		"""
 		return (False if True in (A < self.Lower) else True) and (False if True in (A > self.Upper) else True)
 
-	def repair(self, x):
+	def repair(self, x, rnd=rnd):
 		r"""Repair solution and put the solution in the random position inside of the bounds of problem.
 
 		Arguments:
@@ -177,6 +177,8 @@ class Task(Utility):
 		ir = where(x < self.Lower)
 		x[ir] = rnd.uniform(self.Lower[ir], self.Upper[ir])
 		return x
+
+	def unused_evals(self): return self.Evals - self.nFES
 
 class TaskConvPrint(Task):
 	def __init__(self, **kwargs):

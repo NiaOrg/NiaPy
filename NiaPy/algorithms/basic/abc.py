@@ -11,7 +11,7 @@ logger.setLevel('INFO')
 __all__ = ['ArtificialBeeColonyAlgorithm']
 
 class SolutionABC(Individual):
-	def __init__(self, task): Individual.__init__(self, task=task, e=False)
+	def __init__(self, task, rand): Individual.__init__(self, task=task, e=False, rand=rand)
 
 class ArtificialBeeColonyAlgorithm(Algorithm):
 	r"""Implementation of Artificial Bee Colony algorithm.
@@ -52,9 +52,9 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 		"""Initialize positions."""
 		self.Probs = [0 for i in range(self.FoodNumber)]
 		self.Trial = [0 for i in range(self.FoodNumber)]
-		self.Best = SolutionABC(task)
+		self.Best = SolutionABC(task, self.Rand)
 		for i in range(self.FoodNumber):
-			self.Foods.append(SolutionABC(task))
+			self.Foods.append(SolutionABC(task, self.Rand))
 			self.Foods[i].evaluate(task)
 			self.checkForBest(self.Foods[i])
 
@@ -66,7 +66,7 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 
 	def checkForBest(self, Solution):
 		"""Check best solution."""
-		if Solution.f <= self.Best.f: self.Best = copy.deepcopy(Solution)
+		if Solution.f <= self.Best.f: self.Best.x, self.Best.f = Solution.x, Solution.f
 
 	def runTask(self, task):
 		"""Run."""
@@ -102,7 +102,7 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 				if s == self.FoodNumber: s = 0
 			mi = self.Trial.index(max(self.Trial))
 			if self.Trial[mi] >= self.Limit:
-				self.Foods[mi] = SolutionABC(task)
+				self.Foods[mi] = SolutionABC(task, self.Rand)
 				self.Foods[mi].evaluate(task)
 				self.Trial[mi] = 0
 		return self.Best.x, self.Best.f
