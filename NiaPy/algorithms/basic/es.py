@@ -64,7 +64,7 @@ class EvolutionStrategy1p1(Algorithm):
 		c, ki = IndividualES(task=task, rand=self.Rand), 0
 		while not task.stopCond():
 			if task.Iters % self.k == 0: c.rho, ki = self.updateRho(c.rho, ki), 0
-			cn = [task.repair(self.mutate(c.x, c.rho)) for _i in range(self.mu)]
+			cn = [task.repair(self.mutate(c.x, c.rho), self.Rand) for _i in range(self.mu)]
 			cn_f = [task.eval(cn[i]) for i in range(self.mu)]
 			ib = argmin(cn_f)
 			if cn_f[ib] < c.f: c.x, c.f, ki = cn[ib], cn_f[ib], ki + 1
@@ -131,7 +131,7 @@ class EvolutionStrategyMpL(EvolutionStrategy1p1):
 
 	def mutateRepair(self, pop, task):
 		i = self.randint(self.mu)
-		return task.repair(self.mutate(pop[i].x, pop[i].rho))
+		return task.repair(self.mutate(pop[i].x, pop[i].rho), self.Rand)
 
 	def runTask(self, task):
 		c, ki = [IndividualES(task=task, rand=self.Rand) for _i in range(self.mu)], 0
@@ -171,6 +171,7 @@ class EvolutionStrategyML(EvolutionStrategyMpL):
 			cn = [IndividualES(x=cm[i], task=task) for i in range(self.lam)]
 			c = self.newPop(cn)
 		return c[0].x, c[0].f
+
 # https://github.com/DEAP/deap/blob/master/deap/cma.py
 def CovarianceMaatrixAdaptionEvolutionStrategyFNew(task, sigma=2, epsilon=1e-20, rnd=rand):
 	centroid = rnd.uniform(task.Lower, task.Upper, task.D)
@@ -235,7 +236,7 @@ def CovarianceMaatrixAdaptionEvolutionStrategyF(task, epsilon=1e-20, rnd=rand):
 	x_f = task.eval(x)
 	while not task.stopCondI():
 		pop_step = asarray([rnd.multivariate_normal(full(task.D, 0.0), C) for _ in range(int(lam))])
-		pop = asarray([task.repair(x + sigma * ps) for ps in pop_step])
+		pop = asarray([task.repair(x + sigma * ps, rnd) for ps in pop_step])
 		pop_f = apply_along_axis(task.eval, 1, pop)
 		isort = argsort(pop_f)
 		pop, pop_f, pop_step = pop[isort[:mu]], pop_f[isort[:mu]], pop_step[isort[:mu]]

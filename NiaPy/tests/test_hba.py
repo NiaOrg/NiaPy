@@ -1,32 +1,16 @@
 # pylint: disable=old-style-class
-from unittest import TestCase
-
+from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
 from NiaPy.algorithms.modified import HybridBatAlgorithm
 
 
-class MyBenchmark:
-
-    def __init__(self):
-        self.Lower = -11
-        self.Upper = 11
-
-    @classmethod
-    def function(cls):
-        def evaluate(D, sol):
-            val = 0.0
-            for i in range(D):
-                val = val + sol[i] * sol[i]
-            return val
-        return evaluate
-
-
-class HBATestCase(TestCase):
-    def setUp(self):
-        self.hba_custom = HybridBatAlgorithm(D=10, NP=40, nFES=1000, A=0.5, r=0.5, F=0.5, CR=0.9, Qmin=0.0, Qmax=2.0, benchmark=MyBenchmark())
-        self.hba_griewank = HybridBatAlgorithm(D=10, NP=40, nFES=1000, A=0.5, r=0.5, F=0.5, CR=0.9, Qmin=0.0, Qmax=2.0, benchmark='griewank')
+class HBATestCase(AlgorithmTestCase):
 
     def test_custom_works_fine(self):
-        self.assertTrue(self.hba_custom.run())
+        hba_custom = HybridBatAlgorithm(D=self.D, NP=40, nFES=self.nFES, nGEN=self.nGEN, A=0.5, r=0.5, F=0.5, CR=0.9, Qmin=0.0, Qmax=2.0, benchmark=MyBenchmark(), seed=self.seed)
+        hba_customc = HybridBatAlgorithm(D=self.D, NP=40, nFES=self.nFES, nGEN=self.nGEN, A=0.5, r=0.5, F=0.5, CR=0.9, Qmin=0.0, Qmax=2.0, benchmark=MyBenchmark(), seed=self.seed)
+        AlgorithmTestCase.algorithm_run_test(self, hba_custom, hba_customc)
 
     def test_griewank_works_fine(self):
-        self.assertTrue(self.hba_griewank.run())
+        hba_griewank = HybridBatAlgorithm(D=self.D, NP=40, nFES=self.nFES, nGEN=self.nGEN, A=0.5, r=0.5, F=0.5, CR=0.9, Qmin=0.0, Qmax=2.0, benchmark='griewank', seed=self.seed)
+        hba_griewankc = HybridBatAlgorithm(D=self.D, NP=40, nFES=self.nFES, nGEN=self.nGEN, A=0.5, r=0.5, F=0.5, CR=0.9, Qmin=0.0, Qmax=2.0, benchmark='griewank', seed=self.seed)
+        AlgorithmTestCase.algorithm_run_test(self, hba_griewank, hba_griewankc)

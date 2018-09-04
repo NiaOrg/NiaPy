@@ -1,31 +1,17 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, multiple-statements, old-style-class
-from unittest import TestCase
+from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
 from NiaPy.algorithms.other import TabuSearch
 
-class MyBenchmark:
-	def __init__(self):
-		self.Lower = -5.12
-		self.Upper = 5.12
-
-	@classmethod
-	def function(cls):
-		def evaluate(D, sol):
-			val = 0.0
-			for i in range(D):
-				val = val + sol[i] * sol[i]
-			return val
-		return evaluate
-
-class ABCTestCase(TestCase):
-	def setUp(self):
-		self.ts_custom = TabuSearch(NP=10, D=40, nFES=4000, benchmark=MyBenchmark())
-		self.ts_griewank = TabuSearch(NP=10, D=40, nFES=4000, benchmark='griewank')
-
+class TSTestCase(AlgorithmTestCase):
 	def test_custom_works_fine(self):
-		self.assertTrue(self.ts_custom.run())
+		ts_custom = TabuSearch(NP=10, D=self.D, nFES=self.nFES, nGEN=self.nGEN, benchmark=MyBenchmark(), seed=self.seed)
+		ts_customc = TabuSearch(NP=10, D=self.D, nFES=self.nFES, nGEN=self.nGEN, benchmark=MyBenchmark(), seed=self.seed)
+		AlgorithmTestCase.test_algorithm_fine(self, ts_custom, ts_customc)
 
 	def test_griewank_works_fine(self):
-		self.assertTrue(self.ts_griewank.run())
+		ts_griewank = TabuSearch(NP=10, D=self.D, nFES=self.nFES, nGEN=self.nGEN, benchmark='griewank', seed=self.seed)
+		ts_griewankc = TabuSearch(NP=10, D=self.D, nFES=self.nFES, nGEN=self.nGEN, benchmark='griewank', seed=self.seed)
+		AlgorithmTestCase.test_algorithm_fine(self, ts_griewank, ts_griewankc)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

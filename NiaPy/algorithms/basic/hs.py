@@ -58,7 +58,7 @@ class HarmonySearch(Algorithm):
 		HM_f = apply_along_axis(task.eval, 1, HM)
 		while not task.stopCondI():
 			H = self.improvize(HM, task)
-			H_f = task.eval(task.repair(H))
+			H_f = task.eval(task.repair(H, self.Rand))
 			iw = argmax(HM_f)
 			if H_f <= HM_f[iw]: HM[iw], HM_f[iw] = H, H_f
 		ib = argmin(HM_f)
@@ -118,8 +118,6 @@ class HarmonySearchB:
 		elif len(HM.shape) == 1:
 			nHM = self.rnd.uniform(self.Lower, self.Upper, [self.HMS - 1, task.D])
 			nHM_f = apply_along_axis(task.eval, 1, nHM)
-			print (nHM, '\n', nHM_f)
-			print (HM, '\n', HM_f)
 			HM, HM_f = concatenate([HM, nHM]), concatenate([HM_f, nHM_f])
 		elif len(HM) < self.HMS:
 			nHM = self.rnd.uniform(self.Lower, self.Upper, [self.HMS - len(HM), task.D])

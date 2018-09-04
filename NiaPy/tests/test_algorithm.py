@@ -58,9 +58,14 @@ class IndividualTestCase(TestCase):
 
 class AlgorithmTestCase(TestCase):
 	def setUp(self):
-		self.a = Algorithm()
+		self.D, self.nGEN, self.nFES, self.seed = 40, 1000, 1000, 1
 
-	def test__fine(self):
-		pass
+	def algorithm_run_test(self, a, b):
+		x = a.run()
+		self.assertTrue(x)
+		y = b.run()
+		self.assertTrue(y)
+		self.assertTrue(array_equal(x[0], y[0]), 'Results can not be reproduced, check usages of random number generator')
+		self.assertEqual(x[1], y[1], 'Results can not be reproduced or bad function value')
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

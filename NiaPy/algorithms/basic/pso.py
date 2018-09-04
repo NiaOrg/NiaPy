@@ -56,14 +56,14 @@ class ParticleSwarmAlgorithm(Algorithm):
 		p_b, p_b_fit = P[0], P_fit[0]
 		V = full([self.NP, task.D], 0)
 		while not task.stopCond():
-			P = apply_along_axis(task.repair, 1, P)
+			P = apply_along_axis(task.repair, 1, P, self.Rand)
 			P_fit = apply_along_axis(task.eval, 1, P)
 			ip_pb = where(P_pb_fit > P_fit)
 			P_pb[ip_pb], P_pb_fit[ip_pb] = P[ip_pb], P_fit[ip_pb]
 			ip_b = argmin(P_fit)
 			if p_b_fit > P_fit[ip_b]: p_b, p_b_fit = P[ip_b], P_fit[ip_b]
 			V = self.w * V + self.C1 * self.rand([self.NP, task.D]) * (P_pb - P) + self.C2 * self.rand([self.NP, task.D]) * (p_b - P)
-			V = apply_along_axis(task.repair, 1, V)
+			V = apply_along_axis(task.repair, 1, V, self.Rand)
 			P = P + V
 		return p_b, p_b_fit
 
