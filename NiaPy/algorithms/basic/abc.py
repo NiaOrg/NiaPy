@@ -2,7 +2,6 @@
 # pylint: disable=mixed-indentation, line-too-long, multiple-statements, attribute-defined-outside-init, logging-not-lazy, arguments-differ, bad-continuation
 import copy
 import logging
-from numpy import random as rand
 from NiaPy.algorithms.algorithm import Algorithm, Individual
 
 logging.basicConfig()

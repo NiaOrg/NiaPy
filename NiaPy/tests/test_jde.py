@@ -1,11 +1,11 @@
 # encoding=utf8
 # pylint: disable=line-too-long, mixed-indentation, multiple-statements, old-style-class
 from unittest import TestCase
-from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
 from numpy import random as rnd
 from NiaPy.util import Task
 from NiaPy.algorithms.modified import SelfAdaptiveDifferentialEvolutionAlgorithm, DynNPSelfAdaptiveDifferentialEvolutionAlgorithm
 from NiaPy.algorithms.modified.jde import SolutionjDE
+from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
 
 class SolutionjDETestCase(TestCase):
 	def setUp(self):

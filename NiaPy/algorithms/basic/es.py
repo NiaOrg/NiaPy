@@ -175,7 +175,7 @@ class EvolutionStrategyML(EvolutionStrategyMpL):
 # https://github.com/DEAP/deap/blob/master/deap/cma.py
 def CovarianceMaatrixAdaptionEvolutionStrategyFNew(task, sigma=2, epsilon=1e-20, rnd=rand):
 	centroid = rnd.uniform(task.Lower, task.Upper, task.D)
-	pc = full(takd.D, 0.0)
+	pc = full(task.D, 0.0)
 	ps = full(task.D, 0.0)
 	chiN = sqrt(task.D) * (1 - 1. / (4. * task.D) + 1. / (21. * task.D ** 2))
 	C = eye(task.D)
@@ -184,7 +184,7 @@ def CovarianceMaatrixAdaptionEvolutionStrategyFNew(task, sigma=2, epsilon=1e-20,
 	diagD = diagD[indx] ** 0.5
 	B = B[:, indx]
 	BD = B * diagD
-	cond = diagD[indx[-1]] / diagD[indx[0]]
+	#cond = diagD[indx[-1]] / diagD[indx[0]]
 	lambda_ = int(4 + 3 * log(task.D))
 	mu = int(lambda_ / 2)
 	weights = log(mu + 0.5) - log(arange(1, mu + 1))
@@ -211,7 +211,7 @@ def CovarianceMaatrixAdaptionEvolutionStrategyFNew(task, sigma=2, epsilon=1e-20,
 		pc = (1 - cc) * pc + hsig * sqrt(cc * (2 - cc) * mueff) / sigma * c_diff
 		artmp = pop - old_centroid
 		C = (1 - ccov1 - ccovmu + (1 - hsig) * ccov1 * cc (2 - cc)) * C + ccov1 * outer(pc, pc) + ccovmu * dot((weights * artmp.T), artmp) / sigma ** 2
-		sigma *= exp((norm(ps) / shiN - 1.) * cs / damps)
+		sigma *= exp((norm(ps) / sigma - 1.) * cs / damps)
 		diagD, B = eigh(C)
 		indx = argsort(diagD)
 		cond = diagD[indx[-1]] / diagD[indx[0]]

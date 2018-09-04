@@ -3,7 +3,7 @@
 """Implementation of benchmarks utility function."""
 import logging
 from enum import Enum
-from numpy import ndarray, asarray, full, inf, dot, where, random as rnd, fabs, ceil, array_equal
+from numpy import ndarray, asarray, full, inf, dot, where, random as rand, fabs, ceil, array_equal
 from matplotlib import pyplot as plt, animation as anim
 from NiaPy.benchmarks import Rastrigin, Rosenbrock, Griewank, Sphere, Ackley, Schwefel, Schwefel221, Schwefel222, Whitley, Alpine1, Alpine2, HappyCat, Ridge, ChungReynolds, Csendes, Pinter, Qing, Quintic, Salomon, SchumerSteiglitz, Step, Step2, Step3, Stepint, SumSquares, StyblinskiTang, BentCigar, Discus, Elliptic, ExpandedGriewankPlusRosenbrock, HGBat, Katsuura, ExpandedSchaffer, ModifiedSchwefel, Weierstrass, Michalewichz, Levy, Sphere2, Sphere3, Trid, Perm, Zakharov, DixonPrice, Powell, CosineMixture, Infinity, SchafferN2, SchafferN4
 
@@ -166,7 +166,7 @@ class Task(Utility):
 		"""
 		return (False if True in (A < self.Lower) else True) and (False if True in (A > self.Upper) else True)
 
-	def repair(self, x, rnd=rnd):
+	def repair(self, x, rnd=rand):
 		r"""Repair solution and put the solution in the random position inside of the bounds of problem.
 
 		Arguments:

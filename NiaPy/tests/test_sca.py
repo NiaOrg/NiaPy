@@ -1,9 +1,8 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, multiple-statements, old-style-class
-from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
-from numpy import array_equal
 from NiaPy.benchmarks.griewank import Griewank
 from NiaPy.algorithms.basic import SineCosineAlgorithm
+from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
 
 class SCATestCase(AlgorithmTestCase):
 	def test_custom_works_fine(self):

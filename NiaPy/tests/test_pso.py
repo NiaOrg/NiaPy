@@ -1,8 +1,6 @@
-# pylint: disable=old-style-class
-from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
-from numpy import array_equal
-
+# pylint: disable=old-style-class, line-too-long
 from NiaPy.algorithms.basic import ParticleSwarmAlgorithm
+from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
 
 
 class PSOTestCase(AlgorithmTestCase):

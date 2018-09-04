@@ -15,8 +15,6 @@ __all__ = [
     'SelfAdaptiveDifferentialEvolutionAlgorithmBestMTS2',
     'SelfAdaptiveDifferentialEvolutionAlgorithmBestMTS3',
     'DifferentialEvolutionBestSimulatedAnnealing',
-    'DifferentialEvolutionBestHarmonySearch',
-    'DifferentialEvolutionBestHarmonySearch',
     'DifferentialEvolutionBestMTS1',
     'DifferentialEvolutionBestMTS2',
     'DifferentialEvolutionBestMTS3'

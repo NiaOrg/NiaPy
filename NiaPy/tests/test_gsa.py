@@ -1,9 +1,7 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, multiple-statements, old-style-class
-from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
-from numpy import asarray
-from NiaPy.benchmarks.griewank import Griewank
 from NiaPy.algorithms.basic import GravitationalSearchAlgorithm
+from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
 
 class GSATestCase(AlgorithmTestCase):
 	def test_Custom_works_fine(self):

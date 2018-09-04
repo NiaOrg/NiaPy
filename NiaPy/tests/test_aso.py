@@ -1,7 +1,6 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, old-style-class
+# pylint: disable=mixed-indentation, multiple-statements, old-style-class, line-too-long
 from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
-from numpy import asarray, array_equal
 from NiaPy.benchmarks.griewank import Griewank
 from NiaPy.algorithms.other import AnarchicSocietyOptimization
 from NiaPy.algorithms.other.aso import Elitism, Sequential, Crossover

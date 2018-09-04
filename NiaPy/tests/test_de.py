@@ -1,8 +1,6 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, multiple-statements, old-style-class, line-too-long
 from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
-from NiaPy.benchmarks.griewank import Griewank
-from NiaPy.benchmarks.ackley import Ackley
 from NiaPy.algorithms.basic import DifferentialEvolutionAlgorithm
 from NiaPy.algorithms.basic.de import CrossRand1, CrossRand2, CrossBest1, CrossBest2, CrossCurr2Rand1, CrossCurr2Best1
 

@@ -1,9 +1,9 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, function-redefined, multiple-statements, old-style-class
+# pylint: disable=mixed-indentation, function-redefined, multiple-statements, old-style-class, function-redefined
 from unittest import TestCase
 from numpy import random as rnd, full, inf, array_equal
 from NiaPy.util import Task
-from NiaPy.algorithms.algorithm import Algorithm, Individual
+from NiaPy.algorithms.algorithm import Individual
 
 class MyBenchmark:
 	def __init__(self):

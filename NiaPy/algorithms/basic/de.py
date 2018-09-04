@@ -1,7 +1,7 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, multiple-statements, line-too-long, unused-argument, no-self-use, no-self-use, attribute-defined-outside-init, logging-not-lazy, len-as-condition, singleton-comparison, arguments-differ, bad-continuation
 import logging
-from numpy import random as rand, argmin, asarray, inf
+from numpy import random as rand, argmin, asarray
 from NiaPy.algorithms.algorithm import Algorithm, Individual
 
 __all__ = ['DifferentialEvolutionAlgorithm', 'CrossRand1', 'CrossBest2', 'CrossBest1', 'CrossBest2', 'CrossCurr2Rand1', 'CrossCurr2Best1']

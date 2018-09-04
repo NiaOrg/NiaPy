@@ -1,8 +1,8 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, old-style-class
-from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
+# pylint: disable=mixed-indentation, multiple-statements, old-style-class, line-too-long
 from NiaPy.benchmarks.griewank import Griewank
 from NiaPy.algorithms.basic import GlowwormSwarmOptimization, GlowwormSwarmOptimizationV1, GlowwormSwarmOptimizationV2, GlowwormSwarmOptimizationV3
+from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
 
 class GSOTestCase(AlgorithmTestCase):
 	def test_custom_works_fine(self):

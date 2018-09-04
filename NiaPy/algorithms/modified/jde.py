@@ -135,7 +135,7 @@ class SelfAdaptiveDifferentialEvolutionAlgorithmBestSimulatedAnnealing(SelfAdapt
 		d['SR'] = lambda x: isinstance(x, float) and 0 < x <= 1
 		return d
 
-	def setParameters(self, SR=0.189, delta=0.563, delta_t=0.564, T=2000,**ukwargs):
+	def setParameters(self, SR=0.189, delta=0.563, delta_t=0.564, T=2000, **ukwargs):
 		r"""Set the algorithm parameters.
 
 		Arguments:
