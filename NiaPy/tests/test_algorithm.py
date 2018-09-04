@@ -67,5 +67,7 @@ class AlgorithmTestCase(TestCase):
 		self.assertTrue(y)
 		self.assertTrue(array_equal(x[0], y[0]), 'Results can not be reproduced, check usages of random number generator')
 		self.assertEqual(x[1], y[1], 'Results can not be reproduced or bad function value')
+		self.assertEqual(a.task.Iters, b.task.Iters)
+		self.assertEqual(a.task.Evals, b.task.Evals)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
