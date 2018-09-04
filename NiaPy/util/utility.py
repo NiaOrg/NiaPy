@@ -118,8 +118,8 @@ class Task(Utility):
 		"""
 		Utility.__init__(self)
 		self.D = D  # dimension of the problem
-		self.Iters, self.nGEN = 0, nGEN if nGEN is not None else nFES
-		self.Evals, self.nFES = 0, nFES
+		self.Iters, self.nGEN, self.nGENu = 0, nGEN if nGEN is not None else 10000, nGEN is not None
+		self.Evals, self.nFES, self.nFESu = 0, nFES if nFES is not None else 10000, nFES is not None
 		self.benchmark = self.get_benchmark(benchmark) if benchmark is not None else None
 		if self.benchmark is not None:
 			self.Lower, self.Upper = fullArray(self.benchmark.Lower, self.D), fullArray(self.benchmark.Upper, self.D)
@@ -132,11 +132,11 @@ class Task(Utility):
 
 	def stopCond(self):
 		r"""Check if stoping condition reached."""
-		return self.Evals >= self.nFES or (False if self.nGEN is None else self.Iters >= self.nGEN)
+		return (self.Evals >= self.nFES if self.nFESu else False) or (self.Iters >= self.nGEN if self.nGENu else False)
 
 	def stopCondI(self):
 		r"""Check if stoping condition reached and incrise number of iterations."""
-		r = self.Evals >= self.nFES or (False if self.nGEN is None else self.Iters >= self.nGEN)
+		r = self.stopCond()
 		self.Iters += 1
 		return r
 
@@ -146,8 +146,8 @@ class Task(Utility):
 		Arguments:
 		A {array} -- Solution to evaluate
 		"""
-		self.Evals += 1
 		if self.stopCond(): return inf
+		self.Evals += 1
 		X = A - self.o if self.o is not None else A
 		X = self.fo(X) if self.fo is not None else X
 		X = dot(X, self.M) if self.M is not None else X

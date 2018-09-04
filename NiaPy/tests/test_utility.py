@@ -160,13 +160,7 @@ class TaskTestCase(TestCase):
 
 	def test_eval_fine(self):
 		x = full(self.D, 0.0)
-		for i in range(self.nFES): self.assertAlmostEqual(self.t.eval(x), 0.0)
-		self.assertEqual(self.t.eval(x), inf)
-
-	def test_eval_not_feasible_test(self):
-		x = full(self.D, -20)
-		self.assertEqual(self.t.eval(x), inf)
-		x = full(self.D, 20)
+		for i in range(self.nFES): self.assertAlmostEqual(self.t.eval(x), 0.0, msg='Error at %s iteration!!!' % (i))
 		self.assertEqual(self.t.eval(x), inf)
 
 	def test_eval_over_nFES_fine(self):

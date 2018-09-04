@@ -162,7 +162,7 @@ class Individual:
 		task, rnd, x = kwargs.pop('task', None), kwargs.pop('rand', rand), kwargs.pop('x', [])
 		if len(x) > 0: self.x = x if isinstance(x, ndarray) else asarray(x)
 		else: self.generateSolution(task, rnd)
-		if kwargs.pop('e', True) and task is not None: self.evaluate(task)
+		if kwargs.pop('e', True) and task is not None: self.evaluate(task, rnd)
 
 	def generateSolution(self, task, rnd=rand):
 		r"""Generate new solution.
@@ -174,22 +174,22 @@ class Individual:
 		"""
 		self.x = task.Lower + task.bRange * rnd.rand(task.D)
 
-	def evaluate(self, task):
+	def evaluate(self, task, rnd=rand):
 		r"""Evaluate the solution.
 
 		Arguments:
 		task {Task} -- Object with objective function for optimization
 		"""
-		self.repair(task)
+		self.repair(task, rnd=rnd)
 		self.f = task.eval(self.x)
 
-	def repair(self, task):
+	def repair(self, task, rnd=rand):
 		r"""Reper solution and put the solution in the bounds of problem.
 
 		Arguments:
 		task {Task}
 		"""
-		self.x = task.repair(self.x)
+		self.x = task.repair(self.x, rnd=rnd)
 
 	def __eq__(self, other):
 		r"""Compare the individuals if they are one of the same."""

@@ -61,7 +61,7 @@ class SelfAdaptiveDifferentialEvolutionAlgorithm(DifferentialEvolutionAlgorithm)
 
 	def evalPopulation(self, x, x_old, task):
 		"""Evaluate element."""
-		x.evaluate(task)
+		x.evaluate(task, rnd=self.Rand)
 		return self.selectBetter(x, x_old)
 
 	def runTask(self, task):
@@ -69,7 +69,7 @@ class SelfAdaptiveDifferentialEvolutionAlgorithm(DifferentialEvolutionAlgorithm)
 		x_b = pop[argmin([x.f for x in pop])]
 		while not task.stopCondI():
 			npop = [self.AdaptiveGen(pop[i]) for i in range(self.Np)]
-			for i in range(self.Np): npop[i].x = self.CrossMutt(npop, i, x_b, self.F, self.CR, self.Rand)
+			for i in range(self.Np): npop[i].x = self.CrossMutt(npop, i, x_b, self.F, self.CR, rnd=self.Rand)
 			pop = [self.evalPopulation(npop[i], pop[i], task) for i in range(self.Np)]
 			ix_b = argmin([x.f for x in pop])
 			if x_b.f > pop[ix_b].f: x_b = pop[ix_b]
@@ -108,15 +108,15 @@ class DynNPSelfAdaptiveDifferentialEvolutionAlgorithm(SelfAdaptiveDifferentialEv
 	def AdaptiveGen(self, x):
 		f = self.F_l + self.rand() * (self.F_u - self.F_l) if self.rand() < self.Tao1 else x.F
 		cr = self.rand() if self.rand() < self.Tao2 else x.CR
-		return SolutionjDE(x=x.x, F=f, CR=cr)
+		return SolutionjDE(x=x.x, F=f, CR=cr, e=False)
 
 	def runTask(self, task):
-		pop = [SolutionjDE(task=task, F=self.F, CR=self.CR, rand=self.Rand) for _i in range(self.Np)]
+		pop = [SolutionjDE(task=task, e=True, F=self.F, CR=self.CR, rand=self.Rand) for _i in range(self.Np)]
 		Gr = task.nFES // (self.pmax * self.Np) + self.rp
 		x_b = pop[argmin([x.f for x in pop])]
 		while not task.stopCondI():
 			npop = [self.AdaptiveGen(pop[i]) for i in range(len(pop))]
-			for i in range(len(npop)): npop[i].x = self.CrossMutt(npop, i, x_b, self.F, self.CR, self.Rand)
+			for i in range(len(npop)): npop[i].x = self.CrossMutt(npop, i, x_b, self.F, self.CR, rnd=self.Rand)
 			pop = [self.evalPopulation(npop[i], pop[i], task) for i in range(len(npop))]
 			ix_b = argmin([x.f for x in pop])
 			if x_b.f > pop[ix_b].f: x_b = pop[ix_b]
@@ -150,7 +150,7 @@ class SelfAdaptiveDifferentialEvolutionAlgorithmBestSimulatedAnnealing(SelfAdapt
 		x_b = pop[argmin([x.f for x in pop])]
 		while not task.stopCondI():
 			npop = [self.AdaptiveGen(pop[i]) for i in range(self.Np)]
-			for i in range(self.Np): npop[i].x = self.CrossMutt(npop, i, x_b, self.F, self.CR, self.Rand)
+			for i in range(self.Np): npop[i].x = self.CrossMutt(npop, i, x_b, self.F, self.CR, rnd=self.Rand)
 			pop = [self.evalPopulation(npop[i], pop[i], task) for i in range(self.Np)]
 			ix_b = argmin([x.f for x in pop])
 			tSR = (task.bRange * self.SR) / 2

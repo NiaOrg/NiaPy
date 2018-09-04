@@ -18,7 +18,7 @@ class HSTestCase(AlgorithmTestCase):
 class HSv1TestCase(AlgorithmTestCase):
 	def test_custom_works_fine(self):
 		hs_costom = HarmonySearchV1(D=self.D, nFES=self.nFES, nGEN=self.nGEN, seed=self.seed, benchmark=MyBenchmark())
-		hs_costomc = HarmonySearch(D=self.D, nFES=self.nFES, nGEN=self.nGEN, seed=self.seed, benchmark=MyBenchmark())
+		hs_costomc = HarmonySearchV1(D=self.D, nFES=self.nFES, nGEN=self.nGEN, seed=self.seed, benchmark=MyBenchmark())
 		AlgorithmTestCase.algorithm_run_test(self, hs_costom, hs_costomc)
 
 	def test_griewank_works_fine(self):

@@ -96,7 +96,7 @@ class KrillHerd(Algorithm):
 		return [x[i] if self.rand() < Mu else (x_b[i] + self.rand()) for i in range(len(x))]
 
 	def getFoodLocation(self, KH, KH_f, task):
-		x_food = task.repair(asarray([sum(KH[:, i] / KH_f) for i in range(task.D)]) / sum(1 / KH_f))
+		x_food = task.repair(asarray([sum(KH[:, i] / KH_f) for i in range(task.D)]) / sum(1 / KH_f), rnd=self.Rand)
 		x_food_f = task.eval(x_food)
 		return x_food, x_food_f
 
@@ -121,7 +121,7 @@ class KrillHerd(Algorithm):
 			KH_n = asarray([self.crossover(KH_n[i], KH[i], Cr[i]) for i in range(self.N)])
 			Mu = asarray([self.Mu(KH_f[i], KH_f[ikh_b], KH_f[ikh_b], KH_f[ikh_w]) for i in range(self.N)])
 			KH_n = asarray([self.mutate(KH_n[i], KH[ikh_b], Mu[i]) for i in range(self.N)])
-			KH = apply_along_axis(task.repair, 1, KH_n)
+			KH = apply_along_axis(task.repair, 1, KH_n, rnd=self.Rand)
 		return x, x_fit
 
 class KrillHerdV4(KrillHerd):
@@ -257,7 +257,7 @@ class KrillHerdV11(KrillHerd):
 			Cr = asarray([self.Cr(KH_f[i], KH_f[ib], KH_f[iw]) for i in range(self.N)])
 			KH_n = asarray([self.crossover(KH[self.randint(self.N)], KH[i], Cr[i]) for i in range(self.N)])
 			KH_n = KH + Dt * (F + N)
-			KH = apply_along_axis(task.repair, 1, KH_n)
+			KH = apply_along_axis(task.repair, 1, KH_n, self.Rand)
 		return x, x_fit
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

@@ -1,7 +1,7 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, unused-argument, arguments-differ, bad-continuation, singleton-comparison, no-self-use, unused-variable
 import logging
-from numpy import random as rand
+from numpy import random as rand, full
 from NiaPy.algorithms.algorithm import Algorithm
 
 logging.basicConfig()
@@ -46,6 +46,6 @@ class TabuSearch(Algorithm):
 	def move(self): return list()
 
 	def runTask(self, task):
-		return None, None
+		return full(task.D, 0.0), 0.0
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

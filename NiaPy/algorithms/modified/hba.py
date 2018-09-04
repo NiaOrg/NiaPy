@@ -55,8 +55,8 @@ class HybridBatAlgorithm(BatAlgorithm):
 			Q = self.Qmin + (self.Qmax - self.Qmin) * self.uniform(0, 1, self.NP)
 			for i in range(self.NP):
 				v[i] = v[i] + (Sol[i] - best) * Q[i]
-				S = task.repair(Sol[i] + v[i])
-				if self.rand() > self.r: S = task.repair(self.CrossMutt(Sol, i, best, self.F, self.CR, self.Rand))
+				S = task.repair(Sol[i] + v[i], rnd=self.Rand)
+				if self.rand() > self.r: S = task.repair(self.CrossMutt(Sol, i, best, self.F, self.CR, rnd=self.Rand), rnd=self.Rand)
 				f_new = task.eval(S)
 				if Fitness[i] <= f_new and self.rand() < self.A: Sol[i], Fitness[i] = S, f_new
 				if f_new < f_min: best, f_min = S, f_new

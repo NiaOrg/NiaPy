@@ -56,7 +56,7 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 		self.Best = SolutionABC(task, self.Rand)
 		for i in range(self.FoodNumber):
 			self.Foods.append(SolutionABC(task, self.Rand))
-			self.Foods[i].evaluate(task)
+			self.Foods[i].evaluate(task, rnd=self.Rand)
 			self.checkForBest(self.Foods[i])
 
 	def CalculateProbs(self):
@@ -78,7 +78,7 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 				param2change = int(self.rand() * task.D)
 				neighbor = int(self.FoodNumber * self.rand())
 				newSolution.x[param2change] = self.Foods[i].x[param2change] + (-1 + 2 * self.rand()) * (self.Foods[i].x[param2change] - self.Foods[neighbor].x[param2change])
-				newSolution.evaluate(task)
+				newSolution.evaluate(task, rnd=self.Rand)
 				if newSolution.f < self.Foods[i].f:
 					self.checkForBest(newSolution)
 					self.Foods[i] = newSolution
@@ -94,7 +94,7 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 					neighbor = int(self.FoodNumber * self.rand())
 					while neighbor == s: neighbor = int(self.FoodNumber * self.rand())
 					Solution.x[param2change] = self.Foods[s].x[param2change] + (-1 + 2 * self.rand()) * (self.Foods[s].x[param2change] - self.Foods[neighbor].x[param2change])
-					Solution.evaluate(task)
+					Solution.evaluate(task, rnd=self.Rand)
 					if Solution.f < self.Foods[s].f:
 						self.checkForBest(newSolution)
 						self.Foods[s], self.Trial[s] = Solution, 0
@@ -104,7 +104,7 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 			mi = self.Trial.index(max(self.Trial))
 			if self.Trial[mi] >= self.Limit:
 				self.Foods[mi] = SolutionABC(task, self.Rand)
-				self.Foods[mi].evaluate(task)
+				self.Foods[mi].evaluate(task, rnd=self.Rand)
 				self.Trial[mi] = 0
 		return self.Best.x, self.Best.f
 
