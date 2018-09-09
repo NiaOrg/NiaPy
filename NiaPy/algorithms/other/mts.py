@@ -74,8 +74,8 @@ def MTS_LS2(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, rnd=
 				Xk_new = vectorize(genNewX)(Xk, R, D, SR, oper.add)
 				Xk_fit_new = task.eval(Xk_new)
 				if Xk_fit_new < Xb_fit: grade, Xb, Xb_fit = grade + BONUS1, Xk_new, Xk_fit_new
-				if Xk_fit_new < Xk_fit: grade, improve, Xk, Xk_fit = grade + BONUS2, True, Xk_new, Xk_fit_new
-			else: grade, improve, Xk, Xk_fit = grade + BONUS2, True, Xk_new, Xk_fit_new
+				if Xk_fit_new < Xk_fit: grade, Xk, Xk_fit, improve = grade + BONUS2, Xk_new, Xk_fit_new, True
+			else: grade, Xk, Xk_fit, improve = grade + BONUS2, Xk_new, Xk_fit_new, True
 	return Xk, Xk_fit, Xb, Xb_fit, improve, grade, SR
 
 def MTS_LS3(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, rnd=rand):
@@ -94,7 +94,7 @@ def MTS_LS3(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, rnd=
 		a, b, c = 0.4 + rnd.rand() * 0.1, 0.1 + rnd.rand() * 0.2, rnd.rand()
 		Xk_new[i] += a * (D1 - D2) + b * (D3 - 2 * D1) + c
 		Xk_fit_new = task.eval(Xk_new)
-	if Xk_fit_new < Xk_fit: Xk, Xk_fit = Xk_new, Xk_fit_new
+	if Xk_fit_new < Xk_fit: Xk, Xk_fit, improve = Xk_new, Xk_fit_new, True
 	return Xk, Xk_fit, Xb, Xb_fit, improve, grade, SR
 
 def MTS_LS3v1(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, phi=3, BONUS1=10, BONUS2=1, rnd=rand):
@@ -133,11 +133,11 @@ class MultipleTrajectorySearch(Algorithm):
 
 	@staticmethod
 	def typeParameters(): return {
-			'NP': lambda x: isinstance(x, int) and x > 0,
-			'NoLsTests': lambda x: isinstance(x, int) and x >= 0,
-			'NoLs': lambda x: isinstance(x, int) and x >= 0,
-			'NoLsBest': lambda x: isinstance(x, int) and x >= 0,
-			'NoEnabled': lambda x: isinstance(x, int) and x > 0
+		'NP': lambda x: isinstance(x, int) and x > 0,
+		'NoLsTests': lambda x: isinstance(x, int) and x >= 0,
+		'NoLs': lambda x: isinstance(x, int) and x >= 0,
+		'NoLsBest': lambda x: isinstance(x, int) and x >= 0,
+		'NoEnabled': lambda x: isinstance(x, int) and x > 0
 	}
 
 	def setParameters(self, NP=40, NoLsTests=5, NoLs=5, NoLsBest=5, NoEnabled=17, **ukwargs):

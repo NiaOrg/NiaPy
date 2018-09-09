@@ -130,6 +130,14 @@ class Task(Utility):
 		self.fo, self.fM, self.optF = fo, fM, optF
 		self.optType = optType
 
+	def scale(self, SR):
+		# FIXME return a new task that is connected to self, but uses other upper and lowe renges, we could have
+		pass
+
+	def scale(self, Lower, Upper):
+		# FIXME
+		pass
+
 	def stopCond(self):
 		r"""Check if stoping condition reached."""
 		return (self.Evals >= self.nFES if self.nFESu else False) or (self.Iters >= self.nGEN if self.nGENu else False)

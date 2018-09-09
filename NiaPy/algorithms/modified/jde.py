@@ -94,7 +94,7 @@ class DynNPSelfAdaptiveDifferentialEvolutionAlgorithm(SelfAdaptiveDifferentialEv
 		d['pmax'] = lambda x: isinstance(x, int) and x > 0
 		return d
 
-	def setParameters(self, rp=0, pmax=4, **ukwargs):
+	def setParameters(self, rp=0, pmax=40, **ukwargs):
 		r"""Set the parameters of an algorithm.
 
 		Arguments:
@@ -116,58 +116,47 @@ class DynNPSelfAdaptiveDifferentialEvolutionAlgorithm(SelfAdaptiveDifferentialEv
 		x_b = pop[argmin([x.f for x in pop])]
 		while not task.stopCondI():
 			npop = [self.AdaptiveGen(pop[i]) for i in range(len(pop))]
+			print (len(pop))
 			for i in range(len(npop)): npop[i].x = self.CrossMutt(npop, i, x_b, self.F, self.CR, rnd=self.Rand)
 			pop = [self.evalPopulation(npop[i], pop[i], task) for i in range(len(npop))]
 			ix_b = argmin([x.f for x in pop])
 			if x_b.f > pop[ix_b].f: x_b = pop[ix_b]
-			if task.Iters == Gr:
+			if task.Iters == Gr and len(pop) > 3:
 				NP = int(len(pop) / 2)
 				pop = [pop[i] if pop[i].f < pop[i + NP].f else pop[i + NP] for i in range(NP)]
 				Gr += task.nFES // (self.pmax * NP) + self.rp
 		return x_b.x, x_b.f
 
-class SelfAdaptiveDifferentialEvolutionAlgorithmBestSimulatedAnnealing(SelfAdaptiveDifferentialEvolutionAlgorithm):
-	Name = ['SelfAdaptiveDifferentialEvolutionAlgorithmBestSimulatedAnnealing', 'jDEbSA']
-
-	@staticmethod
-	def typeParameters():
-		d = SelfAdaptiveDifferentialEvolutionAlgorithm.typeParameters()
-		d['SR'] = lambda x: isinstance(x, float) and 0 < x <= 1
-		return d
-
-	def setParameters(self, SR=0.189, delta=0.563, delta_t=0.564, T=2000, **ukwargs):
-		r"""Set the algorithm parameters.
-
-		Arguments:
-		SR {decimal} -- search reange for best (normalized)
-		"""
-		self.SR, self.delta, self.delta_t, self.T = SR, delta, delta_t, T
-		SelfAdaptiveDifferentialEvolutionAlgorithm.setParameters(self, **ukwargs)
-		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
-
-	def runTask(self, task):
-		pop = [SolutionjDE(task=task, F=self.F, CR=self.CR, rand=self.Rand) for _i in range(self.Np)]
-		x_b = pop[argmin([x.f for x in pop])]
-		while not task.stopCondI():
-			npop = [self.AdaptiveGen(pop[i]) for i in range(self.Np)]
-			for i in range(self.Np): npop[i].x = self.CrossMutt(npop, i, x_b, self.F, self.CR, rnd=self.Rand)
-			pop = [self.evalPopulation(npop[i], pop[i], task) for i in range(self.Np)]
-			ix_b = argmin([x.f for x in pop])
-			tSR = (task.bRange * self.SR) / 2
-			tLower, tUpper = pop[ix_b].x - tSR, pop[ix_b] + tSR
-			xn = SimulatedAnnealingBF(task, tLower, tUpper, x=pop[ix_b].x, xfit=pop[ix_b].f, delta=self.delta, delta_t=self.delta_t, T=self.T, rnd=self.Rand)
-			if xn[1] < pop[ix_b].f: pop[ix_b].x, pop[ix_b].f = xn
-			if x_b.f > pop[ix_b].f: x_b = pop[ix_b]
-		return x_b.x, x_b.f
-
 class SelfAdaptiveDifferentialEvolutionAlgorithmBestMTS1(SelfAdaptiveDifferentialEvolutionAlgorithm):
 	Name = ['SelfAdaptiveDifferentialEvolutionAlgorithmBestMTS1', 'jDEbMTS1']
 
-	def setParameters(self, **ukwargs): pass
+	def setParameters(self, pBest=0.2, SR=0.186, **ukwargs):
+		r"""Ste the alrguments of the algorithm.
+
+		See: SelfAdaptiveDifferentialEvolutionAlgorithm.setParameter
+
+		Arguments
+		pBest {real} -- in (0, 1] number of best individuals of population
+		SR {real} -- in (0, 1] range in which to performe local search
+		"""
+		SelfAdaptiveDifferentialEvolutionAlgorithm.setParameters(**ukwargs)
+		self.SR, self.pBest = SR, pBest
 
 	def runTask(self, task):
-		# FIXME
-		pass
+		pop = [SolutionjDE(task=task, e=True, F=self.F, CR=self.CR, rand=self.Rand) for _i in range(self.Np)]
+		Gr = task.nFES // (self.pmax * self.Np) + self.rp
+		x_b = pop[argmin([x.f for x in pop])]
+		while not task.stopCondI():
+			npop = [self.AdaptiveGen(pop[i]) for i in range(len(pop))]
+			for i in range(len(npop)): npop[i].x = self.CrossMutt(npop, i, x_b, self.F, self.CR, rnd=self.Rand)
+			pop = [self.evalPopulation(npop[i], pop[i], task) for i in range(len(npop))]
+			ix_b = argmin([x.f for x in pop])
+			if x_b.f > pop[ix_b].f: x_b = pop[ix_b]
+			if task.Iters == Gr and len(pop) > 3:
+				NP = int(len(pop) / 2)
+				pop = [pop[i] if pop[i].f < pop[i + NP].f else pop[i + NP] for i in range(NP)]
+				Gr += task.nFES // (self.pmax * NP) + self.rp
+		return x_b.x, x_b.f
 
 class SelfAdaptiveDifferentialEvolutionAlgorithmBestMTS2(SelfAdaptiveDifferentialEvolutionAlgorithm):
 	Name = ['SelfAdaptiveDifferentialEvolutionAlgorithmBestMTS2', 'jDEbMTS2']

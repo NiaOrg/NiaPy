@@ -88,4 +88,100 @@ class DifferentialEvolutionAlgorithm(Algorithm):
 			if x_bf > pop[ib].f: x_b, x_bf = pop[ib].x, pop[ib].f
 		return x_b, x_bf
 
+class DynNpDifferentialEvolutionBestMTS1(DifferentialEvolutionAlgorithm):
+	Name = ['DynNpDifferentialEvolutionBestMTS1', 'dynNpDE']
+
+	@staticmethod
+	def typeParameters(): return DifferentialEvolutionAlgorithm.typeParameters()
+
+	def setParameters(self, pmax=50, rp=3, **ukwargs):
+		r"""Set the algorithm parameters.
+
+		Arguments:
+		NP {integer} -- population size
+		F {decimal} -- scaling factor
+		CR {decimal} -- crossover rate
+		SR {decimal} -- search reange for best (normalized)
+		CrossMutt {function} -- crossover and mutation strategy
+		"""
+		self.Np, self.F, self.CR, self.SR, self.CrossMutt, self.age, self.pmax, self.rp = NP, F, CR, SR, CrossMutt, 0, pmax, rp
+		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
+
+	def runTask(self, task):
+		# FIXME add MTS_LS1 algorithm to the mix
+		# Lt_min, Lt_max = task.nGEN * 0.03, task.nGEN * 0.1
+		Gr = task.nFES // (self.pmax * self.Np) + self.rp
+		pop = [MtsIndividual(task=task, rand=self.Rand, e=True) for _i in range(self.Np)]
+		x_b, x_w = pop[argmin([x.f for x in pop])], pop[argmax([x.f for x in pop])]
+		while not task.stopCondI():
+			npop = [Individual(x=self.CrossMutt(pop, i, x_b, self.F, self.CR, self.Rand), task=task, rand=self.Rand, e=True) for i in range(len(pop))]
+			pop = [np if np.f < pop[i].f else pop[i] for i, np in enumerate(npop)]
+			ix_b = argmin([x.f for x in pop])
+			if x_b.f > pop[ix_b].f: x_b = pop[ix_b]
+			if task.Iters == Gr and len(pop) > 3:
+				NP = int(len(pop) / 2)
+				pop = [pop[i] if pop[i].f < pop[i + NP].f else pop[i + NP] for i in range(NP)]
+				Gr += task.nFES // (self.pmax * NP) + self.rp
+			print (len(pop))
+		return x_b.x, x_b.f
+
+def proportional(Lt_min, Lt_max, mu, x_f, avg, *kwargs): return min(Lt_min + mu * avg / x_f, Lt_max)
+
+def linear(Lt_min, Lt_max, mu, x_f, avg, x_gw, x_gb, *kwargs): return Lt_min + 2 * mu * (x_f - x_gw) / (x_gb - x_gw)
+
+def bilinear(Lt_min, Lt_max, mu, x_f, avg, x_gw, x_gb, *kwargs):
+	if avg < x_f: return Lt_min + mu * (x_f - x_gw) / (x_gb - x_gw)
+	return 0.5 * (Lt_min + Lt_max) + mu * (x_f - avg) / (x_gb - avg)
+
+class AgingIndividual(Individual):
+	def __init__(self, **kwargs):
+		Individual.__init__(self, **kwargs)
+		self.age = 0
+
+class DynNpStrategyDifferentialEvolutionBest(DifferentialEvolutionAlgorithm):
+	r"""Implementation base on """
+	Name = ['DynNpStrategyDifferentialEvolutionBest', 'dynNpSDE']
+
+	@staticmethod
+	def typeParameters():
+		r = DifferentialEvolutionAlgorithm.typeParameters()
+		# TODO add other parameters to data check list
+		return r
+
+	def setParameters(self, Lt_min=1, Lt_max=10, age=bilinear, **ukwargs):
+		r"""Set the algorithm parameters.
+
+		Arguments:
+		Lt_min {integer} -- Minimu life time
+		Lt_max {integer} -- Maximum life time
+		age {function} -- Function for calculation of age for individual
+		"""
+		DifferentialEvolutionAlgorithm.setParameters(self, **ukwargs)
+		self.Lt_min, self.Lt_max, self.age = Lt_min, Lt_max, age
+		self.mu = abs(self.Lt_max - self.Lt_min) / 2
+		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
+
+	def reduction(self, task, pop, npop, x_b, x_w):
+		fpop, fnpop = asarray([x.f for x in pop]), asarray([x.f for x in npop])
+		xn_b, xn_w = npop[argmin(fnpop)], npop[argmax(fnpop)]
+		if xn_b.f < x_b.f: x_b = xn_b
+		if xn_w.f > x_w.f: x_w = xn_w
+		avg, nnpop = mean(concatenate((fpop, fnpop))), []
+		for x in pop:
+			Lt = self.age(self.Lt_min, self.Lt_max, self.mu, x.f, avg, x_w.f, x_b.f)
+			print ('Lt: ', Lt, ' age: ', x.age)
+			if x.age <= round(Lt): nnpop.append(x)
+		print (log(len(pop)))
+		nnpop.extend(sorted(npop, key=lambda x: x.f)[:int(len(pop))])
+		return nnpop, x_b, x_w
+
+	def runTask(self, task):
+		pop = [AgingIndividual(task=task, rand=self.Rand, e=True) for _i in range(self.Np)]
+		x_b, x_w = pop[argmin([x.f for x in pop])], pop[argmax([x.f for x in pop])]
+		while not task.stopCondI():
+			for x in pop: x.age += 1
+			npop = [AgingIndividual(x=self.CrossMutt(pop, i, x_b, self.F, self.CR, self.Rand), task=task, rand=self.Rand, e=True) for i in range(len(pop))]
+			pop, x_b, x_w = self.reduction(task, pop, npop, x_b, x_w)
+		return x_b.x, x_b.f
+
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
