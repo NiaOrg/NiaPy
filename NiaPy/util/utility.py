@@ -148,11 +148,11 @@ class ATask(Utility):
 		pass
 
 	def evals(self):
-		r"""Returns the number of evaluations made."""
+		r"""Get the number of evaluations made."""
 		pass
 
 	def iters(self):
-		r"""Returns the number of algorithm iteratins made."""
+		r"""Get the number of algorithm iteratins made."""
 		pass
 
 	def nextIter(self):

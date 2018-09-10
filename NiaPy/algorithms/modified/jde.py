@@ -128,8 +128,8 @@ class MultiStrategySelfAdaptiveDifferentialEvolution(SelfAdaptiveDifferentialEvo
 	r"""My implementation with multiple mutation strategys used."""
 	Name = ['MultiStrategySelfAdaptiveDifferentialEvolution', 'MSjDE']
 
-	def setParameters(self, strategys=[CrossCurr2Rand1, CrossCurr2Best1, CrossRand1, CrossBest1, CrossBest2], **ukwargs):
-		SelfAdaptiveDifferentialEvolution.setParameters(self, **ukwargs)
+	def setParameters(self, strategys=[CrossCurr2Rand1, CrossCurr2Best1, CrossRand1, CrossBest1, CrossBest2], **kwargs):
+		SelfAdaptiveDifferentialEvolution.setParameters(self, **kwargs)
 		self.strategys = strategys
 
 	def multiMutations(self, pop, i, x_b, task):
@@ -153,8 +153,8 @@ class DynNpMultiStrategySelfAdaptiveDifferentialEvolution(MultiStrategySelfAdapt
 	r"""My implementation with multiple mutation strategys used."""
 	Name = ['DynNpMultiStrategySelfAdaptiveDifferentialEvolution', 'dynNpMsjDE']
 
-	def setParameters(self, pmax=10, rp=5, **ukwargs):
-		MultiStrategySelfAdaptiveDifferentialEvolution.setParameters(self, **ukwargs)
+	def setParameters(self, pmax=10, rp=5, **kwargs):
+		MultiStrategySelfAdaptiveDifferentialEvolution.setParameters(self, **kwargs)
 		self.pmax, self.rp = pmax, rp
 
 	def multiMutations(self, pop, i, x_b, task):
@@ -182,14 +182,14 @@ class DynNpMultiStrategySelfAdaptiveDifferentialEvolution(MultiStrategySelfAdapt
 class DynNpMultiStrategySelfAdaptiveDifferentialEvolutionMTS(MultiStrategySelfAdaptiveDifferentialEvolution):
 	Name = ['DynNpMultiStrategySelfAdaptiveDifferentialEvolutionMTS', 'dynNpMsjDEMTS']
 
-	def setParameters(self,  **ukwargs):
+	def setParameters(self, **kwargs):
 		DynNpMultiStrategySelfAdaptiveDifferentialEvolutionMTS.setParameters(self, **kwargs)
 		self.LSs = [MTS_LS1, MTS_LS2, MTS_LS3]
 
 class DynNpMultiStrategySelfAdaptiveDifferentialEvolutionMTSv1(DynNpMultiStrategySelfAdaptiveDifferentialEvolutionMTS):
 	Name = ['DynNpMultiStrategySelfAdaptiveDifferentialEvolutionMTS', 'dynNpMsjDEMTS']
 
-	def setParameters(self, **ukwargs):
+	def setParameters(self, **kwargs):
 		DynNpMultiStrategySelfAdaptiveDifferentialEvolutionMTS.setParameters(self, **kwargs)
 		self.LSs = [MTS_LS1v1, MTS_LS2, MTS_LS3v1]
 

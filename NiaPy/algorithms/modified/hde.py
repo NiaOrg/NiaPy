@@ -176,7 +176,7 @@ class DynNpMultiStrategyDifferentialEvolutionMTSv1(DynNpMultiStrategyDifferentia
 	Name = ['DynNpMultiStrategyDifferentialEvolutionMTSv1', 'dynNpMSDEMTSv1']
 
 	def setParameters(self, **kwargs):
-		MultiStratgyDifferentialEvolutionMTS.setParameters(self, **kwargs)
+		DynNpMultiStrategyDifferentialEvolutionMTS.setParameters(self, **kwargs)
 		self.LSs = [MTS_LS1v1, MTS_LS2, MTS_LS3v1]
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
