@@ -2,8 +2,8 @@
 # pylint: disable=mixed-indentation, line-too-long, multiple-statements, too-many-function-args, old-style-class
 import sys
 import logging
-from numpy import inf
 from argparse import ArgumentParser
+from numpy import inf
 from NiaPy.util.utility import OptimizationType
 import NiaPy.benchmarks as bencs
 

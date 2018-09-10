@@ -11,7 +11,7 @@ class SolutionjDETestCase(TestCase):
 	def setUp(self):
 		self.D, self.F, self.CR = 10, 0.9, 0.3
 		self.x, self.task = rnd.uniform(10, 50, self.D), Task(self.D, 230, None, MyBenchmark())
-		self.s1, self.s2 = SolutionjDE(task=self.task), SolutionjDE(x=self.x, CR=self.CR, F=self.F)
+		self.s1, self.s2 = SolutionjDE(task=self.task, e=False), SolutionjDE(x=self.x, CR=self.CR, F=self.F)
 
 	def test_F_fine(self):
 		self.assertAlmostEqual(self.s1.F, 2)

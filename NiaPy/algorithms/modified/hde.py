@@ -1,17 +1,16 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, logging-not-lazy, attribute-defined-outside-init, line-too-long, arguments-differ, singleton-comparison, bad-continuation
+# pylint: disable=mixed-indentation, multiple-statements, logging-not-lazy, attribute-defined-outside-init, line-too-long, arguments-differ, singleton-comparison, bad-continuation, dangerous-default-value
 import logging
-from numpy import argmin, full
+from numpy import argmin, argsort, argmax, full
 from NiaPy.algorithms.algorithm import Individual
-from NiaPy.algorithms.basic.de import DifferentialEvolution
-from numpy import argsort, argmin, argmax
+from NiaPy.algorithms.basic.de import DifferentialEvolution, CrossBest1, CrossBest2, CrossRand1, CrossRand2, CrossCurr2Rand1
 from NiaPy.algorithms.other.mts import MTS_LS1, MTS_LS1v1, MTS_LS2, MTS_LS3, MTS_LS3v1
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.modified')
 logger.setLevel('INFO')
 
-__all__ = ['DifferentialEvolutionMTS', 'DifferentialEvolutionMTSv1']
+__all__ = ['DifferentialEvolutionMTS', 'DifferentialEvolutionMTSv1', 'DynNpDifferentialEvolutionMTS', 'DynNpDifferentialEvolutionMTSv1', 'MultiStratgyDifferentialEvolutionMTS', 'MultiStratgyDifferentialEvolutionMTSv1', 'DynNpMultiStrategyDifferentialEvolutionMTS', 'DynNpMultiStrategyDifferentialEvolutionMTSv1']
 
 class MtsIndividual(Individual):
 	def __init__(self, SR, grade=0, enable=True, improved=False, **kwargs):
@@ -24,7 +23,7 @@ class DifferentialEvolutionMTS(DifferentialEvolution):
 	@staticmethod
 	def typeParameters(): return DifferentialEvolution.typeParameters()
 
-	def setParameters(self, NoGradingRuns=3, NoLs=6, NoEnabled=15, **ukwargs):
+	def setParameters(self, NoGradingRuns=1, NoLs=1, NoEnabled=10, **ukwargs):
 		r"""Set the algorithm parameters.
 
 		Arguments:
@@ -75,20 +74,109 @@ class DifferentialEvolutionMTS(DifferentialEvolution):
 class DifferentialEvolutionMTSv1(DifferentialEvolutionMTS):
 	Name = ['DifferentialEvolutionMTSv1', 'DEMTSv1']
 
-	def __init__(self, **kwargs):
-		DifferentialEvolutionMTS.__init__(self, **kwargs)
+	def setParameters(self, **ukwargs):
+		DifferentialEvolutionMTS.setParameters(self, **ukwargs)
 		self.LSs = [MTS_LS1v1, MTS_LS2, MTS_LS3v1]
 
 class DynNpDifferentialEvolutionMTS(DifferentialEvolutionMTS):
-	Name = []
-	pass
+	Name = ['DynNpDifferentialEvolutionMTS', 'dynNpDEMTS']
+
+	def setParameters(self, pmax=50, rp=3, **ukwargs):
+		DifferentialEvolutionMTS.setParameters(self, **ukwargs)
+		self.pmax, self.rp = pmax, rp
+
+	def runTask(self, task):
+		Gr = task.nFES // (self.pmax * self.Np) + self.rp
+		pop = [MtsIndividual(task.bcRange() * 0.06, task=task, rand=self.Rand, e=True) for _i in range(self.Np)]
+		x_b = pop[argmin([x.f for x in pop])]
+		while not task.stopCondI():
+			npop = [MtsIndividual(pop[i].SR, x=self.CrossMutt(pop, i, x_b, self.F, self.CR, self.Rand), task=task, rand=self.Rand, e=True) for i in range(len(pop))]
+			for i, e in enumerate(npop): npop[i], x_b = self.LSprocedure(e, x_b, task)
+			pop = [np if np.f < pop[i].f else pop[i] for i, np in enumerate(npop)]
+			for i in argsort([x.grade for x in pop])[:self.NoEnabled]: pop[i].enable = True
+			if task.Iters == Gr and len(pop) > 3:
+				NP = int(len(pop) / 2)
+				pop = [pop[i] if pop[i].f < pop[i + NP].f else pop[i + NP] for i in range(NP)]
+				Gr += task.nFES // (self.pmax * NP) + self.rp
+		return x_b.x, x_b.f
+
+class DynNpDifferentialEvolutionMTSv1(DifferentialEvolutionMTSv1):
+	Name = ['DynNpDifferentialEvolutionMTSv1', 'dynNpDEMTSv1']
+
+	def setParameters(self, pmax=50, rp=3, **ukwargs):
+		DifferentialEvolutionMTSv1.setParameters(self, **ukwargs)
+		self.pmax, self.rp = pmax, rp
+
+	def runTask(self, task):
+		Gr = task.nFES // (self.pmax * self.Np) + self.rp
+		pop = [MtsIndividual(task.bcRange() * 0.06, task=task, rand=self.Rand, e=True) for _i in range(self.Np)]
+		x_b = pop[argmin([x.f for x in pop])]
+		while not task.stopCondI():
+			npop = [MtsIndividual(pop[i].SR, x=self.CrossMutt(pop, i, x_b, self.F, self.CR, self.Rand), task=task, rand=self.Rand, e=True) for i in range(len(pop))]
+			for i, e in enumerate(npop): npop[i], x_b = self.LSprocedure(e, x_b, task)
+			pop = [np if np.f < pop[i].f else pop[i] for i, np in enumerate(npop)]
+			for i in argsort([x.grade for x in pop])[:self.NoEnabled]: pop[i].enable = True
+			if task.Iters == Gr and len(pop) > 3:
+				NP = int(len(pop) / 2)
+				pop = [pop[i] if pop[i].f < pop[i + NP].f else pop[i + NP] for i in range(NP)]
+				Gr += task.nFES // (self.pmax * NP) + self.rp
+		return x_b.x, x_b.f
 
 class MultiStratgyDifferentialEvolutionMTS(DifferentialEvolutionMTS):
-	Name = []
-	pass
+	Name = ['MultiStratgyDifferentialEvolutionMTS', 'MSDEMTS']
 
-class DynNpMultiStrategyDifferentialEvolutionMTS(DifferentialEvolutionMTS):
-	Name = []
-	pass
+	def setParameters(self, strategys=[CrossBest1, CrossRand1, CrossCurr2Rand1, CrossBest2, CrossRand2], **ukwargs):
+		DifferentialEvolutionMTS.setParameters(self, **ukwargs)
+		self.strategys = strategys
+
+	def multiMutations(self, pop, i, x_b, task):
+		L = [MtsIndividual(pop[i].SR, x=strategy(pop, i, x_b, self.F, self.CR, rnd=self.Rand), task=task, e=True, rand=self.Rand) for strategy in self.strategys]
+		return L[argmin([x.f for x in L])]
+
+	def runTask(self, task):
+		pop = [MtsIndividual(task.bcRange() * 0.06, task=task, rand=self.Rand, e=True) for _i in range(self.Np)]
+		x_b = pop[argmin([x.f for x in pop])]
+		while not task.stopCondI():
+			npop = [MtsIndividual(pop[i].SR, x=self.CrossMutt(pop, i, x_b, self.F, self.CR, self.Rand), task=task, rand=self.Rand, e=True) for i in range(len(pop))]
+			for i, e in enumerate(npop): npop[i], x_b = self.LSprocedure(e, x_b, task)
+			pop = [np if np.f < pop[i].f else pop[i] for i, np in enumerate(npop)]
+			for i in argsort([x.grade for x in pop])[:self.NoEnabled]: pop[i].enable = True
+		return x_b.x, x_b.f
+
+class MultiStratgyDifferentialEvolutionMTSv1(MultiStratgyDifferentialEvolutionMTS):
+	Name = ['MultiStratgyDifferentialEvolutionMTSv1', 'MSDEMTSv1']
+
+	def __init__(self, **kwargs):
+		MultiStratgyDifferentialEvolutionMTS.__init__(self, **kwargs)
+		self.LSs = [MTS_LS1v1, MTS_LS2, MTS_LS3v1]
+
+class DynNpMultiStrategyDifferentialEvolutionMTS(MultiStratgyDifferentialEvolutionMTS):
+	Name = ['DynNpMultiStrategyDifferentialEvolutionMTS', 'dynNpMSDEMTS']
+
+	def setParameters(self, pmax=50, rp=7, **ukwargs):
+		MultiStratgyDifferentialEvolutionMTS.setParameters(self, **ukwargs)
+		self.pmax, self.rp = pmax, rp
+
+	def runTask(self, task):
+		Gr = task.nFES // (self.pmax * self.Np) + self.rp
+		pop = [MtsIndividual(task.bcRange() * 0.06, task=task, rand=self.Rand, e=True) for _i in range(self.Np)]
+		x_b = pop[argmin([x.f for x in pop])]
+		while not task.stopCondI():
+			npop = [MtsIndividual(pop[i].SR, x=self.CrossMutt(pop, i, x_b, self.F, self.CR, self.Rand), task=task, rand=self.Rand, e=True) for i in range(len(pop))]
+			for i, e in enumerate(npop): npop[i], x_b = self.LSprocedure(e, x_b, task)
+			pop = [np if np.f < pop[i].f else pop[i] for i, np in enumerate(npop)]
+			for i in argsort([x.grade for x in pop])[:self.NoEnabled]: pop[i].enable = True
+			if task.Iters == Gr and len(pop) > 3:
+				NP = int(len(pop) / 2)
+				pop = [pop[i] if pop[i].f < pop[i + NP].f else pop[i + NP] for i in range(NP)]
+				Gr += task.nFES // (self.pmax * NP) + self.rp
+		return x_b.x, x_b.f
+
+class DynNpMultiStrategyDifferentialEvolutionMTSv1(DynNpMultiStrategyDifferentialEvolutionMTS):
+	Name = ['DynNpMultiStrategyDifferentialEvolutionMTSv1', 'dynNpMSDEMTSv1']
+
+	def setParameters(self, **kwargs):
+		MultiStratgyDifferentialEvolutionMTS.setParameters(self, **kwargs)
+		self.LSs = [MTS_LS1v1, MTS_LS2, MTS_LS3v1]
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

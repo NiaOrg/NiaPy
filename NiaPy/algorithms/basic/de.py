@@ -142,7 +142,7 @@ class AgingIndividual(Individual):
 		self.age = 0
 
 class DynNpStrategyDifferentialEvolution(DifferentialEvolution):
-	r"""Implementation base on """
+	r"""Implementation base on our idea."""
 	Name = ['DynNpStrategyDifferentialEvolution', 'dynNpSDE']
 
 	@staticmethod
@@ -209,8 +209,8 @@ class MultiStrategyDifferentialEvolution(DifferentialEvolution):
 		self.strategys = strategys
 
 	def multiMutations(self, pop, i, x_b, task):
-		l = [Individual(x=strategy(pop, i, x_b, self.F, self.CR, rnd=self.Rand), task=task, e=True, rand=self.Rand) for strategy in self.strategys]
-		return l[argmin([x.f for x in l])]
+		L = [Individual(x=strategy(pop, i, x_b, self.F, self.CR, rnd=self.Rand), task=task, e=True, rand=self.Rand) for strategy in self.strategys]
+		return L[argmin([x.f for x in L])]
 
 	def runTask(self, task):
 		pop = [Individual(task=task, e=True, rand=self.Rand) for _i in range(self.Np)]

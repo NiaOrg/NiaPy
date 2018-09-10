@@ -7,6 +7,7 @@ sys.path.append('../')
 
 import random
 import logging
+from numpy import set_printoptions
 from NiaPy import Runner
 from NiaPy.algorithms.modified.hde import DifferentialEvolutionMTS
 from NiaPy.util import Task, TaskConvPrint, TaskConvPlot, OptimizationType, getDictArgs
@@ -17,6 +18,8 @@ logger.setLevel('INFO')
 
 # For reproducive results
 random.seed(1234)
+# For output results printing
+set_printoptions(linewidth=10000000, formatter={'all': lambda x: str(x)})
 
 class MinMB(object):
 	def __init__(self):
@@ -63,7 +66,7 @@ def getOptType(otype):
 	else: return None
 
 if __name__ == '__main__':
-	pargs, algo = getDictArgs(sys.argv[1:]), Runner.getAlgorithm('GA')
+	pargs, algo = getDictArgs(sys.argv[1:]), Runner.getAlgorithm('jDE')
 	optFunc = getOptType(pargs['optType'])
 	if not pargs['runType']: simple_example(algo, optFunc=optFunc, **pargs)
 	elif pargs['runType'] == 'log': logging_example(algo, optFunc=optFunc, **pargs)

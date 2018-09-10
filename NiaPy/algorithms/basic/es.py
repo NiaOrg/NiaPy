@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, unused-argument, singleton-comparison, no-else-return, line-too-long, arguments-differ, no-self-use, superfluous-parens, redefined-builtin, bad-continuation
+# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, unused-argument, singleton-comparison, no-else-return, line-too-long, arguments-differ, no-self-use, superfluous-parens, redefined-builtin, bad-continuation, unused-variable
 import logging
 from math import ceil
 from numpy import argmin, argsort, log, sum, fmax, sqrt, full, exp, eye, diag, apply_along_axis, round, any, asarray, dot, random as rand, tile, inf, where, arange, outer
@@ -184,7 +184,7 @@ def CovarianceMaatrixAdaptionEvolutionStrategyFNew(task, sigma=2, epsilon=1e-20,
 	diagD = diagD[indx] ** 0.5
 	B = B[:, indx]
 	BD = B * diagD
-	#cond = diagD[indx[-1]] / diagD[indx[0]]
+	cond = diagD[indx[-1]] / diagD[indx[0]]
 	lambda_ = int(4 + 3 * log(task.D))
 	mu = int(lambda_ / 2)
 	weights = log(mu + 0.5) - log(arange(1, mu + 1))
@@ -210,11 +210,11 @@ def CovarianceMaatrixAdaptionEvolutionStrategyFNew(task, sigma=2, epsilon=1e-20,
 		hsig = float((norm(ps) / sqrt(1. - (1. - cs) ** (2. * task.Evals)) / chiN < (1.4 + 2. / (task.D + 1.))))
 		pc = (1 - cc) * pc + hsig * sqrt(cc * (2 - cc) * mueff) / sigma * c_diff
 		artmp = pop - old_centroid
-		C = (1 - ccov1 - ccovmu + (1 - hsig) * ccov1 * cc (2 - cc)) * C + ccov1 * outer(pc, pc) + ccovmu * dot((weights * artmp.T), artmp) / sigma ** 2
+		C = (1 - ccov1 - ccovmu + (1 - hsig) * ccov1 * cc(2 - cc)) * C + ccov1 * outer(pc, pc) + ccovmu * dot((weights * artmp.T), artmp) / sigma ** 2
 		sigma *= exp((norm(ps) / sigma - 1.) * cs / damps)
 		diagD, B = eigh(C)
 		indx = argsort(diagD)
-		# cond = diagD[indx[-1]] / diagD[indx[0]]
+		cond = diagD[indx[-1]] / diagD[indx[0]]
 		diagD = diagD ** 0.5
 		B = B[:, indx]
 		BD = B * diagD
@@ -228,7 +228,7 @@ def CovarianceMaatrixAdaptionEvolutionStrategyF(task, epsilon=1e-20, rnd=rand):
 	mueff = 1 / sum(w ** 2)
 	cs = (mueff + 2) / (task.D + mueff + 5)
 	ds = 1 + cs + 2 * max(sqrt((mueff - 1) / (task.D + 1)) - 1, 0)
-	ENN = sqrt(task.D) * (1 - 1/ (4 * task.D) + 1 / (21 * task.D ** 2))
+	ENN = sqrt(task.D) * (1 - 1 / (4 * task.D) + 1 / (21 * task.D ** 2))
 	cc, c1 = (4 + mueff / task.D) / (4 + task.D + 2 * mueff / task.D), 2 / ((task.D + 1.3) ** 2 + mueff)
 	cmu, hth = min(1 - c1, alpha_mu * (mueff - 2 + 1 / mueff) / ((task.D + 2) ** 2 + alpha_mu * mueff / 2)), (1.4 + 2 / (task.D + 1)) * ENN
 	ps, pc, C, sigma, M = full(task.D, 0.0), full(task.D, 0.0), eye(task.D), sigma0, full(task.D, 0.0)

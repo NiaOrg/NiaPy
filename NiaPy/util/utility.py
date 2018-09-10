@@ -103,7 +103,7 @@ class OptimizationType(Enum):
 
 class ATask(Utility):
 	def __init__(self, **kwargs):
-		r"""Default felds of a task class."""
+		r"""Set the default felds of a task class."""
 		Utility.__init__(self)
 		self.D, self.Lower, self.Upper, self.bRange = None, [], [], []
 		self.Iters, self.Evals = 0, 0
@@ -114,24 +114,24 @@ class ATask(Utility):
 	def nFESs(self): return 100000 if self.nFES == inf else self.nFES
 
 	def dim(self):
-		r"""Returns the number of dimesions."""
+		r"""Get the number of dimesions."""
 		return self.D
 
 	def bcLower(self):
-		r"""Returns the array of lower bound constrant."""
+		r"""Get the array of lower bound constrant."""
 		return self.Lower
 
 	def bcUpper(self):
-		r"""Returns the array of upper bound constrant."""
+		r"""Get the array of upper bound constrant."""
 		return self.Upper
 
 	def bcRange(self):
-		r"""Returns the range of bound contraint."""
+		r"""Get the range of bound contraint."""
 		return fabs(self.bcUpper() - self.bcLower())
 
 	def stopCond(self):
 		r"""Check if stoping condition reached."""
-		pass
+		return False
 
 	def stopCondI(self):
 		r"""Check if stoping condition reached and incrise number of iterations."""
@@ -232,7 +232,7 @@ class Task(ATask):
 		return (False if True in (A < self.Lower) else True) and (False if True in (A > self.Upper) else True)
 
 	def unused_evals(self):
-		r"""Returns the number of times that this class returnd inf in the evaluation function, because of stoping condition error."""
+		r"""Get the number of times that this class returnd inf in the evaluation function, because of stoping condition error."""
 		return self.Evals - self.nFES
 
 class ScaledTask(ATask):
@@ -301,7 +301,7 @@ class TaskConvPlot(Task):
 
 class TaskComposition(Task):
 	def __init__(self, benchmarks=None, rho=None, lamb=None, bias=None, **kwargs):
-		r"""Initialization of compisite function problem
+		r"""Initialize of compisite function problem.
 
 		Arguments:
 		benchmarks {array} of {problems} -- optimization function to use in composition

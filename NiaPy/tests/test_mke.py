@@ -1,7 +1,7 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, multiple-statements, too-many-function-args, old-style-class
 from unittest import TestCase
-from numpy import array_equal, full, random as rnd
+from numpy import array_equal, full, inf, random as rnd
 from NiaPy.benchmarks import Griewank
 from NiaPy.util import Task
 from NiaPy.algorithms.basic import MonkeyKingEvolutionV1, MonkeyKingEvolutionV2, MonkeyKingEvolutionV3
@@ -11,8 +11,8 @@ from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
 class MkeSolutionTestCase(TestCase):
 	def setUp(self):
 		self.D = 20
-		self.x, self.task = rnd.uniform(-2, 2, self.D), Task(self.D, 230, None, MyBenchmark())
-		self.sol1, self.sol2, self.sol3 = MkeSolution(x=self.x), MkeSolution(task=self.task), MkeSolution(x=self.x)
+		self.x, self.task = rnd.uniform(-2, 2, self.D), Task(self.D, 230, inf, MyBenchmark())
+		self.sol1, self.sol2, self.sol3 = MkeSolution(x=self.x, e=False), MkeSolution(task=self.task), MkeSolution(x=self.x, e=False)
 
 	def test_uPersonalBest_fine(self):
 		self.sol2.uPersonalBest()

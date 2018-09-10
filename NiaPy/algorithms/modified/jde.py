@@ -4,7 +4,7 @@ import logging
 from numpy import argmin, apply_along_axis
 from NiaPy.algorithms.algorithm import Individual
 from NiaPy.algorithms.basic.de import DifferentialEvolution, CrossBest1, CrossRand1, CrossCurr2Best1, CrossBest2, CrossCurr2Rand1
-# from NiaPy.algorithms.other.mts import MTS_LS1, MTS_LS1v1, MTS_LS2, MTS_LS3, MTS_LS3v1
+from NiaPy.algorithms.other.mts import MTS_LS1, MTS_LS1v1, MTS_LS2, MTS_LS3, MTS_LS3v1
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.modified')
@@ -125,7 +125,7 @@ class DynNPSelfAdaptiveDifferentialEvolutionAlgorithm(SelfAdaptiveDifferentialEv
 		return x_b.x, x_b.f
 
 class MultiStrategySelfAdaptiveDifferentialEvolution(SelfAdaptiveDifferentialEvolution):
-	r"""My implementation with multiple mutation strategys used"""
+	r"""My implementation with multiple mutation strategys used."""
 	Name = ['MultiStrategySelfAdaptiveDifferentialEvolution', 'MSjDE']
 
 	def setParameters(self, strategys=[CrossCurr2Rand1, CrossCurr2Best1, CrossRand1, CrossBest1, CrossBest2], **ukwargs):
@@ -133,10 +133,10 @@ class MultiStrategySelfAdaptiveDifferentialEvolution(SelfAdaptiveDifferentialEvo
 		self.strategys = strategys
 
 	def multiMutations(self, pop, i, x_b, task):
-		l = [task.repair(strategy(pop, i, x_b, pop[i].F, pop[i].CR, rnd=self.Rand), rnd=self.Rand) for strategy in self.strategys]
-		l_f = apply_along_axis(task.eval, 1, l)
-		ib = argmin(l_f)
-		return l[ib], l_f[ib]
+		L = [task.repair(strategy(pop, i, x_b, pop[i].F, pop[i].CR, rnd=self.Rand), rnd=self.Rand) for strategy in self.strategys]
+		L_f = apply_along_axis(task.eval, 1, L)
+		ib = argmin(L_f)
+		return L[ib], L_f[ib]
 
 	def runTask(self, task):
 		pop = [SolutionjDE(task=task, F=self.F, CR=self.CR, rand=self.Rand) for _i in range(self.Np)]
@@ -150,7 +150,7 @@ class MultiStrategySelfAdaptiveDifferentialEvolution(SelfAdaptiveDifferentialEvo
 		return x_b.x, x_b.f
 
 class DynNpMultiStrategySelfAdaptiveDifferentialEvolution(MultiStrategySelfAdaptiveDifferentialEvolution):
-	r"""My implementation with multiple mutation strategys used"""
+	r"""My implementation with multiple mutation strategys used."""
 	Name = ['DynNpMultiStrategySelfAdaptiveDifferentialEvolution', 'dynNpMsjDE']
 
 	def setParameters(self, pmax=10, rp=5, **ukwargs):
@@ -158,10 +158,10 @@ class DynNpMultiStrategySelfAdaptiveDifferentialEvolution(MultiStrategySelfAdapt
 		self.pmax, self.rp = pmax, rp
 
 	def multiMutations(self, pop, i, x_b, task):
-		l = [task.repair(strategy(pop, i, x_b, pop[i].F, pop[i].CR, rnd=self.Rand), rnd=self.Rand) for strategy in self.strategys]
-		l_f = apply_along_axis(task.eval, 1, l)
-		ib = argmin(l_f)
-		return l[ib], l_f[ib]
+		L = [task.repair(strategy(pop, i, x_b, pop[i].F, pop[i].CR, rnd=self.Rand), rnd=self.Rand) for strategy in self.strategys]
+		L_f = apply_along_axis(task.eval, 1, L)
+		ib = argmin(L_f)
+		return L[ib], L_f[ib]
 
 	def runTask(self, task):
 		Gr = task.nFES // (self.pmax * self.Np) + self.rp
@@ -178,5 +178,19 @@ class DynNpMultiStrategySelfAdaptiveDifferentialEvolution(MultiStrategySelfAdapt
 				pop = [pop[i] if pop[i].f < pop[i + NP].f else pop[i + NP] for i in range(NP)]
 				Gr += task.nFES // (self.pmax * NP) + self.rp
 		return x_b.x, x_b.f
+
+class DynNpMultiStrategySelfAdaptiveDifferentialEvolutionMTS(MultiStrategySelfAdaptiveDifferentialEvolution):
+	Name = ['DynNpMultiStrategySelfAdaptiveDifferentialEvolutionMTS', 'dynNpMsjDEMTS']
+
+	def setParameters(self,  **ukwargs):
+		DynNpMultiStrategySelfAdaptiveDifferentialEvolutionMTS.setParameters(self, **kwargs)
+		self.LSs = [MTS_LS1, MTS_LS2, MTS_LS3]
+
+class DynNpMultiStrategySelfAdaptiveDifferentialEvolutionMTSv1(DynNpMultiStrategySelfAdaptiveDifferentialEvolutionMTS):
+	Name = ['DynNpMultiStrategySelfAdaptiveDifferentialEvolutionMTS', 'dynNpMsjDEMTS']
+
+	def setParameters(self, **ukwargs):
+		DynNpMultiStrategySelfAdaptiveDifferentialEvolutionMTS.setParameters(self, **kwargs)
+		self.LSs = [MTS_LS1v1, MTS_LS2, MTS_LS3v1]
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
