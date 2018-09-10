@@ -108,13 +108,13 @@ class CamelAlgorithm(Algorithm):
 
 	def lifeCycle(self, c, fit, fitn, mu, task):
 		if fit < mu * fitn:
-			cn = Camel(c.rand(task.D) * task.bRange, c.rand)
+			cn = Camel(c.rand(task.D) * task.bcRange(), c.rand)
 			return cn, task.eval(cn.x)
 		return c, fitn
 
 	def runTask(self, task):
 		Camel.E_init, Camel.S_init = self.E_init, self.S_init
-		ccaravan = [Camel(self.uniform(task.Lower, task.Upper, [task.D]), self.Rand.rand) for i in range(self.NP)]
+		ccaravan = [Camel(self.uniform(task.bcLower(), task.bcUpper(), [task.D]), self.Rand.rand) for i in range(self.NP)]
 		c_fits = [task.eval(c.x) for c in ccaravan]
 		ic_b = argmin(c_fits)
 		c_best, c_best_fit = ccaravan[ic_b], c_fits[ic_b]

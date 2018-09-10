@@ -53,7 +53,7 @@ class HillClimbAlgorithm(Algorithm):
 	def runTask(self, task):
 		xb, xbfit = None, inf
 		while not task.stopCond():
-			lo, x = False, task.Lower + task.bRange * self.rand(task.D)
+			lo, x = False, task.bcLower() + task.bcRange() * self.rand(task.D)
 			xfit = task.eval(x)
 			while not lo:
 				Xn, XnFit = self.Neighborhood(x, self.delta, task)

@@ -32,7 +32,7 @@ class MyBenchmark(object):
 # example using custom benchmark "MyBenchmark"
 logger.info('Running with custom MyBenchmark...')
 for i in range(10):
-    Algorithm = Runner.getAlgorithm('BA')(D=10, NP=40, nFES=10000, A=0.5, r=0.5, Qmin=0.0, Qmax=2.0, benchmark=MyBenchmark())
+    Algorithm = Runner.getAlgorithm('BA')(D=10, NP=40, nFES=50000, A=0.5, r=0.5, Qmin=0.0, Qmax=2.0, benchmark=MyBenchmark())
     Best = Algorithm.run()
     logger.info(Best)
 

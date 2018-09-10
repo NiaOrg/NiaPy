@@ -131,14 +131,14 @@ class EvolutionStrategyMpL(EvolutionStrategy1p1):
 
 	def mutateRepair(self, pop, task):
 		i = self.randint(self.mu)
-		return task.repair(self.mutate(pop[i].x, pop[i].rho), self.Rand)
+		return task.repair(self.mutate(pop[i].x, pop[i].rho), rnd=self.Rand)
 
 	def runTask(self, task):
 		c, ki = [IndividualES(task=task, rand=self.Rand) for _i in range(self.mu)], 0
 		while not task.stopCondI():
 			if task.Iters % self.k == 0: _, ki = self.updateRho(c, ki), 0
 			cm = [self.mutateRepair(c, task) for i in range(self.lam)]
-			cn = [IndividualES(x=cm[i], task=task) for i in range(self.lam)]
+			cn = [IndividualES(x=cm[i], task=task, rand=self.Rand) for i in range(self.lam)]
 			cn.extend(c)
 			cn = [cn[i] for i in argsort([i.f for i in cn])[:self.mu]]
 			ki += self.changeCount(c, cn)
@@ -168,13 +168,13 @@ class EvolutionStrategyML(EvolutionStrategyMpL):
 		c = [IndividualES(task=task, rand=self.Rand) for _i in range(self.mu)]
 		while not task.stopCondI():
 			cm = [self.mutateRepair(c, task) for i in range(self.lam)]
-			cn = [IndividualES(x=cm[i], task=task) for i in range(self.lam)]
+			cn = [IndividualES(x=cm[i], task=task, rand=self.Rand) for i in range(self.lam)]
 			c = self.newPop(cn)
 		return c[0].x, c[0].f
 
 # https://github.com/DEAP/deap/blob/master/deap/cma.py
 def CovarianceMaatrixAdaptionEvolutionStrategyFNew(task, sigma=2, epsilon=1e-20, rnd=rand):
-	centroid = rnd.uniform(task.Lower, task.Upper, task.D)
+	centroid = rnd.uniform(task.bcLower(), task.bcUpper(), task.D)
 	pc = full(task.D, 0.0)
 	ps = full(task.D, 0.0)
 	chiN = sqrt(task.D) * (1 - 1. / (4. * task.D) + 1. / (21. * task.D ** 2))
@@ -214,14 +214,14 @@ def CovarianceMaatrixAdaptionEvolutionStrategyFNew(task, sigma=2, epsilon=1e-20,
 		sigma *= exp((norm(ps) / sigma - 1.) * cs / damps)
 		diagD, B = eigh(C)
 		indx = argsort(diagD)
-		cond = diagD[indx[-1]] / diagD[indx[0]]
+		# cond = diagD[indx[-1]] / diagD[indx[0]]
 		diagD = diagD ** 0.5
 		B = B[:, indx]
 		BD = B * diagD
 	return centroid
 
 def CovarianceMaatrixAdaptionEvolutionStrategyF(task, epsilon=1e-20, rnd=rand):
-	lam, alpha_mu, hs, sigma0 = (4 + round(3 * log(task.D))) * 10, 2, 0, 0.3 * task.bRange
+	lam, alpha_mu, hs, sigma0 = (4 + round(3 * log(task.D))) * 10, 2, 0, 0.3 * task.bcRange()
 	mu = int(round(lam / 2))
 	w = log(mu + 0.5) - log(range(1, mu + 1))
 	w = w / sum(w)
@@ -232,7 +232,7 @@ def CovarianceMaatrixAdaptionEvolutionStrategyF(task, epsilon=1e-20, rnd=rand):
 	cc, c1 = (4 + mueff / task.D) / (4 + task.D + 2 * mueff / task.D), 2 / ((task.D + 1.3) ** 2 + mueff)
 	cmu, hth = min(1 - c1, alpha_mu * (mueff - 2 + 1 / mueff) / ((task.D + 2) ** 2 + alpha_mu * mueff / 2)), (1.4 + 2 / (task.D + 1)) * ENN
 	ps, pc, C, sigma, M = full(task.D, 0.0), full(task.D, 0.0), eye(task.D), sigma0, full(task.D, 0.0)
-	x = rnd.uniform(task.Lower, task.Upper)
+	x = rnd.uniform(task.bcLower(), task.bcUpper())
 	x_f = task.eval(x)
 	while not task.stopCondI():
 		pop_step = asarray([rnd.multivariate_normal(full(task.D, 0.0), C) for _ in range(int(lam))])

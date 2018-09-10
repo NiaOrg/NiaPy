@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, line-too-long, multiple-statements, too-many-function-args, old-style-class, singleton-comparison
+# pylint: disable=mixed-indentation, line-too-long, multiple-statements, too-many-function-args, old-style-class, singleton-comparison, bad-continuation
 """Python micro framework for building nature-inspired algorithms."""
 
 from __future__ import print_function  # for backward compatibility purpose
@@ -23,9 +23,66 @@ logging.basicConfig()
 logger = logging.getLogger('NiaPy')
 logger.setLevel('INFO')
 
-NiaPyAlgos = [balgos.BatAlgorithm, balgos.DifferentialEvolutionAlgorithm, balgos.FireflyAlgorithm, balgos.FlowerPollinationAlgorithm, balgos.GreyWolfOptimizer, balgos.ArtificialBeeColonyAlgorithm, balgos.GeneticAlgorithm, balgos.ParticleSwarmAlgorithm, balgos.CamelAlgorithm, balgos.BareBonesFireworksAlgorithm, balgos.MonkeyKingEvolutionV1, balgos.MonkeyKingEvolutionV2, balgos.MonkeyKingEvolutionV3, balgos.EvolutionStrategy1p1, balgos.EvolutionStrategyMp1, balgos.SineCosineAlgorithm, balgos.HarmonySearch, balgos.HarmonySearchV1, balgos.GlowwormSwarmOptimization, balgos.GlowwormSwarmOptimizationV1, balgos.GlowwormSwarmOptimizationV2, balgos.GlowwormSwarmOptimizationV3, balgos.KrillHerdV1, balgos.KrillHerdV2, balgos.KrillHerdV3, balgos.KrillHerdV4, balgos.KrillHerdV11, balgos.FireworksAlgorithm, balgos.EnhancedFireworksAlgorithm, balgos.DynamicFireworksAlgorithm, balgos.DynamicFireworksAlgorithmGauss, balgos.GravitationalSearchAlgorithm, balgos.CovarianceMaatrixAdaptionEvolutionStrategy]
-NiaPyAlgos += [malgos.HybridBatAlgorithm, malgos.SelfAdaptiveDifferentialEvolutionAlgorithm, malgos.DynNPSelfAdaptiveDifferentialEvolutionAlgorithm]
-NiaPyAlgos += [oalgos.MultipleTrajectorySearch, oalgos.MultipleTrajectorySearchV1, oalgos.NelderMeadMethod, oalgos.HillClimbAlgorithm, oalgos.SimulatedAnnealing, oalgos.AnarchicSocietyOptimization, oalgos.TabuSearch]
+NiaPyAlgos = [
+	balgos.BatAlgorithm,
+	balgos.DifferentialEvolution,
+	balgos.DynNpDifferentialEvolution,
+	balgos.DynNpStrategyDifferentialEvolution,
+	balgos.MultiStrategyDifferentialEvolution,
+	balgos.DynNpMultiStrategyDifferentialEvolution,
+	balgos.FireflyAlgorithm,
+	balgos.FlowerPollinationAlgorithm,
+	balgos.GreyWolfOptimizer,
+	balgos.ArtificialBeeColonyAlgorithm,
+	balgos.GeneticAlgorithm,
+	balgos.ParticleSwarmAlgorithm,
+	balgos.CamelAlgorithm,
+	balgos.BareBonesFireworksAlgorithm,
+	balgos.MonkeyKingEvolutionV1,
+	balgos.MonkeyKingEvolutionV2,
+	balgos.MonkeyKingEvolutionV3,
+	balgos.EvolutionStrategy1p1,
+	balgos.EvolutionStrategyMp1,
+	balgos.EvolutionStrategyMpL,
+	balgos.SineCosineAlgorithm,
+	balgos.HarmonySearch,
+	balgos.HarmonySearchV1,
+	balgos.GlowwormSwarmOptimization,
+	balgos.GlowwormSwarmOptimizationV1,
+	balgos.GlowwormSwarmOptimizationV2,
+	balgos.GlowwormSwarmOptimizationV3,
+	balgos.KrillHerdV1,
+	balgos.KrillHerdV2,
+	balgos.KrillHerdV3,
+	balgos.KrillHerdV4,
+	balgos.KrillHerdV11,
+	balgos.FireworksAlgorithm,
+	balgos.EnhancedFireworksAlgorithm,
+	balgos.DynamicFireworksAlgorithm,
+	balgos.DynamicFireworksAlgorithmGauss,
+	balgos.GravitationalSearchAlgorithm,
+	balgos.CovarianceMaatrixAdaptionEvolutionStrategy
+]
+
+NiaPyAlgos += [
+	malgos.HybridBatAlgorithm,
+	malgos.DifferentialEvolutionMTS,
+	malgos.DifferentialEvolutionMTSv1,
+	malgos.SelfAdaptiveDifferentialEvolution,
+	malgos.DynNPSelfAdaptiveDifferentialEvolutionAlgorithm,
+	malgos.MultiStrategySelfAdaptiveDifferentialEvolution,
+	malgos.DynNpMultiStrategySelfAdaptiveDifferentialEvolution
+]
+
+NiaPyAlgos += [
+	oalgos.MultipleTrajectorySearch,
+	oalgos.MultipleTrajectorySearchV1,
+	oalgos.NelderMeadMethod,
+	oalgos.HillClimbAlgorithm,
+	oalgos.SimulatedAnnealing,
+	oalgos.AnarchicSocietyOptimization,
+	oalgos.TabuSearch
+]
 
 class Runner:
 	r"""Runner utility feature.

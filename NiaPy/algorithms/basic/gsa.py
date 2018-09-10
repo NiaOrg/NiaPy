@@ -44,7 +44,7 @@ class GravitationalSearchAlgorithm(Algorithm):
 	def d(self, x, y, ln=2): return sum((x - y) ** ln) ** (1 / ln)
 
 	def runTask(self, task):
-		X, v = self.uniform(task.Lower, task.Upper, [self.NP, task.D]), full([self.NP, task.D], 0.0)
+		X, v = self.uniform(task.bcLower(), task.bcUpper(), [self.NP, task.D]), full([self.NP, task.D], 0.0)
 		xb, xb_f = None, inf
 		while not task.stopCondI():
 			X_f = apply_along_axis(task.eval, 1, X)
@@ -56,7 +56,7 @@ class GravitationalSearchAlgorithm(Algorithm):
 			F = sum(self.rand([self.NP, task.D]) * Fi, axis=1)
 			a = F.T / (M + self.epsilon)
 			v = self.rand([self.NP, task.D]) * v + a.T
-			X = apply_along_axis(task.repair, 1, X + v)
+			X = apply_along_axis(task.repair, 1, X + v, self.Rand)
 		return xb, xb_f
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

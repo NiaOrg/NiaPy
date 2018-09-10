@@ -50,15 +50,15 @@ def CrossoverUros(pop, ic, cr, rnd=rand):
 
 def UniformMutation(pop, ic, mr, task, rnd=rand):
 	j = rnd.randint(task.D)
-	nx = [rnd.uniform(task.Upper[i], task.Lower[i]) if rnd.rand() < mr or i == j else pop[ic][i] for i in range(task.D)]
+	nx = [rnd.uniform(task.bcLower()[i], task.bcUpper()[i]) if rnd.rand() < mr or i == j else pop[ic][i] for i in range(task.D)]
 	return asarray(nx)
 
 def MutationUros(pop, ic, mr, task, rnd=rand):
-	return fmin(fmax(rnd.normal(pop[ic], mr * task.bRange), task.Lower), task.Upper)
+	return fmin(fmax(rnd.normal(pop[ic], mr * task.bcRange()), task.bcLower()), task.bcUpper())
 
 def CreepMutation(pop, ic, mr, task, rnd=rand):
 	ic, j = rnd.randint(len(pop)), rnd.randint(task.D)
-	nx = [rnd.uniform(task.Upper[i], task.Lower[i]) if rnd.rand() < mr or i == j else pop[ic][i] for i in range(task.D)]
+	nx = [rnd.uniform(task.bcLower()[i], task.bcUpper()[i]) if rnd.rand() < mr or i == j else pop[ic][i] for i in range(task.D)]
 	return asarray(nx)
 
 class GeneticAlgorithm(Algorithm):
@@ -98,7 +98,7 @@ class GeneticAlgorithm(Algorithm):
 			ind = Individual(x=self.Selection(pop, i, self.Ts, x_bc, self.Rand), e=False)
 			ind.x = self.Crossover(pop, i, self.Cr, self.Rand)
 			ind.x = self.Mutation(pop, i, self.Mr, task, self.Rand)
-			ind.evaluate(task)
+			ind.evaluate(task, rnd=self.Rand)
 			npop.append(ind)
 			if x_b.f > ind.f: x_b = ind
 		return npop, x_b

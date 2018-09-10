@@ -120,7 +120,7 @@ class AnarchicSocietyOptimization(Algorithm):
 		return Xpb, Xpb_f, Xpb[ib], Xpb_f[ib]
 
 	def runTask(self, task):
-		X, (alpha, gamma, theta), rs = self.uniform(task.Lower, task.Upper, [self.NP, task.D]), self.init(task), euclidean(full(task.D, 0.0), task.D)
+		X, (alpha, gamma, theta), rs = self.uniform(task.bcLower(), task.bcUpper(), [self.NP, task.D]), self.init(task), euclidean(full(task.D, 0.0), task.D)
 		X_f = apply_along_axis(task.eval, 1, X)
 		Xpb, Xpb_f, xb, xb_f = self.uBestAndPBest(X, X_f, full([self.NP, task.D], 0.0), full(self.NP, inf))
 		while not task.stopCondI():

@@ -2,6 +2,7 @@
 # pylint: disable=mixed-indentation, line-too-long, multiple-statements, too-many-function-args, old-style-class
 import sys
 import logging
+from numpy import inf
 from argparse import ArgumentParser
 from NiaPy.util.utility import OptimizationType
 import NiaPy.benchmarks as bencs
@@ -23,8 +24,8 @@ def MakeArgParser():
 	parser.add_argument('-a', '--algorithm', dest='algo', default='jDE', type=str)
 	parser.add_argument('-b', '--bech', dest='bech', nargs='*', default=cbechs[0], choices=cbechs, type=str)
 	parser.add_argument('-D', dest='D', default=10, type=int)
-	parser.add_argument('-nFES', dest='nFES', default=50000, type=int)
-	parser.add_argument('-nGEN', dest='nGEN', default=5000, type=int)
+	parser.add_argument('-nFES', dest='nFES', default=inf, type=int)
+	parser.add_argument('-nGEN', dest='nGEN', default=inf, type=int)
 	parser.add_argument('-NP', dest='NP', default=43, type=int)
 	parser.add_argument('-r', '--runType', dest='runType', choices=['', 'log', 'plot'], default='', type=str)
 	parser.add_argument('-seed', dest='seed', nargs='+', default=[None], type=int)

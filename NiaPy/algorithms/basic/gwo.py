@@ -38,15 +38,15 @@ class GreyWolfOptimizer(Algorithm):
 
 	def repair(self, x, task):
 		"""Find limits."""
-		ir = where(x > task.Upper)
-		x[ir] = task.Upper[ir]
-		ir = where(x < task.Lower)
-		x[ir] = task.Lower[ir]
+		ir = where(x > task.bcUpper())
+		x[ir] = task.bcUpper()[ir]
+		ir = where(x < task.bcLower())
+		x[ir] = task.bcLower()[ir]
 		return x
 
 	def runTask(self, task):
 		"""Run."""
-		pop = task.Lower + task.bRange * self.rand([self.NP, task.D])
+		pop = task.bcLower() + task.bcRange() * self.rand([self.NP, task.D])
 		A, A_f, B, B_f, D, D_f = None, inf, None, inf, None, inf
 		while not task.stopCond():
 			for i in range(self.NP):

@@ -34,7 +34,7 @@ class Algorithm:
 		Algorithm.setParameters(self, **kwargs)
 		"""
 		task, self.Rand = kwargs.pop('task', None), rand.RandomState(kwargs.pop('seed', None))
-		self.task = task if task is not None else Task(kwargs.pop('D', 10), kwargs.pop('nFES', 100000), kwargs.pop('nGEN', None), kwargs.pop('benchmark', 'ackley'), optType=kwargs.pop('optType', OptimizationType.MINIMIZATION))
+		self.task = task if task is not None else Task(kwargs.pop('D', 10), kwargs.pop('nFES', inf), kwargs.pop('nGEN', inf), kwargs.pop('benchmark', 'ackley'), optType=kwargs.pop('optType', OptimizationType.MINIMIZATION))
 		self.setParameters(**kwargs)
 
 	def setParameters(self, **kwargs):
@@ -172,7 +172,7 @@ class Individual:
 		e {bool} -- Eval the solution
 		rnd {random} -- Object for generating random numbers
 		"""
-		self.x = task.Lower + task.bRange * rnd.rand(task.D)
+		self.x = task.bcLower() + task.bcRange() * rnd.rand(task.dim())
 
 	def evaluate(self, task, rnd=rand):
 		r"""Evaluate the solution.

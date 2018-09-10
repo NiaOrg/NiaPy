@@ -11,7 +11,7 @@ logging.basicConfig()
 logger = logging.getLogger('NiaPy.util.utility')
 logger.setLevel('INFO')
 
-__all__ = ['Utility', 'Task', 'TaskConvPrint', 'TaskConvPlot', 'fullArray', 'TaskComposition', 'OptimizationType']
+__all__ = ['Utility', 'Task', 'TaskConvPrint', 'TaskConvPlot', 'fullArray', 'TaskComposition', 'OptimizationType', 'ScaledTask']
 
 def fullArray(a, D):
 	r"""Fill or create array of lengthm D, from value or value form a.
@@ -101,46 +101,37 @@ class OptimizationType(Enum):
 	MINIMIZATION = 1.0
 	MAXIMIZATION = -1.0
 
-class Task(Utility):
-	def __init__(self, D, nFES, nGEN=None, benchmark=None, o=None, fo=None, M=None, fM=None, optF=None, optType=OptimizationType.MINIMIZATION, **ukw):
-		r"""Initialize task class for optimization.
-
-		Arguments:
-		D {integer} -- Number of dimensions
-		nFES {integer} -- Number of function evaluations
-		nGEN {integer} -- Number of generation or iterations
-		benchmark {class} or {string} -- Problem to solve
-		o {array} -- Array for shifting
-		of {function} -- Function applied on shifted input
-		M {matrix} -- Matrix for rotating
-		fM {function} -- Function applied after rotating
-		optF {real} -- Value added to benchmark function return
-		"""
+class ATask(Utility):
+	def __init__(self, **kwargs):
+		r"""Default felds of a task class."""
 		Utility.__init__(self)
-		self.D = D  # dimension of the problem
-		self.Iters, self.nGEN, self.nGENu = 0, nGEN if nGEN is not None else 10000, nGEN is not None
-		self.Evals, self.nFES, self.nFESu = 0, nFES if nFES is not None else 10000, nFES is not None
-		self.benchmark = self.get_benchmark(benchmark) if benchmark is not None else None
-		if self.benchmark is not None:
-			self.Lower, self.Upper = fullArray(self.benchmark.Lower, self.D), fullArray(self.benchmark.Upper, self.D)
-			self.bRange = fabs(self.Upper - self.Lower)
-		self.Fun = self.benchmark.function() if self.benchmark is not None else None
-		self.o = o if isinstance(o, ndarray) or o is None else asarray(o)
-		self.M = M if isinstance(M, ndarray) or M is None else asarray(M)
-		self.fo, self.fM, self.optF = fo, fM, optF
-		self.optType = optType
+		self.D, self.Lower, self.Upper, self.bRange = None, [], [], []
+		self.Iters, self.Evals = 0, 0
+		self.nGEN, self.nFES = inf, inf
 
-	def scale(self, SR):
-		# FIXME return a new task that is connected to self, but uses other upper and lowe renges, we could have
-		pass
+	def nGENs(self): return 100000 if self.nGEN == inf else self.nGEN
 
-	def scale(self, Lower, Upper):
-		# FIXME
-		pass
+	def nFESs(self): return 100000 if self.nFES == inf else self.nFES
+
+	def dim(self):
+		r"""Returns the number of dimesions."""
+		return self.D
+
+	def bcLower(self):
+		r"""Returns the array of lower bound constrant."""
+		return self.Lower
+
+	def bcUpper(self):
+		r"""Returns the array of upper bound constrant."""
+		return self.Upper
+
+	def bcRange(self):
+		r"""Returns the range of bound contraint."""
+		return fabs(self.bcUpper() - self.bcLower())
 
 	def stopCond(self):
 		r"""Check if stoping condition reached."""
-		return (self.Evals >= self.nFES if self.nFESu else False) or (self.Iters >= self.nGEN if self.nGENu else False)
+		pass
 
 	def stopCondI(self):
 		r"""Check if stoping condition reached and incrise number of iterations."""
@@ -154,25 +145,27 @@ class Task(Utility):
 		Arguments:
 		A {array} -- Solution to evaluate
 		"""
-		if self.stopCond(): return inf
-		self.Evals += 1
-		X = A - self.o if self.o is not None else A
-		X = self.fo(X) if self.fo is not None else X
-		X = dot(X, self.M) if self.M is not None else X
-		X = self.fM(X) if self.fM is not None else X
-		return self.optType.value * self.Fun(self.D, X) + (self.optF if self.optF is not None else 0)
+		pass
+
+	def evals(self):
+		r"""Returns the number of evaluations made."""
+		pass
+
+	def iters(self):
+		r"""Returns the number of algorithm iteratins made."""
+		pass
 
 	def nextIter(self):
-		r"""Increase the number of generation/iterations of algorithms main loop."""
-		self.Iters += 1
+		r"""Increases the number of algorithm iterations made."""
+		pass
 
 	def isFeasible(self, A):
-		r"""Check if the solution is in bounds and is feasible.
+		r"""Cehck if the solution is feasible.
 
 		Arguments:
-		A {array} -- Solution to check
+		A {array} -- Solution to check for feasibility
 		"""
-		return (False if True in (A < self.Lower) else True) and (False if True in (A > self.Upper) else True)
+		pass
 
 	def repair(self, x, rnd=rand):
 		r"""Repair solution and put the solution in the random position inside of the bounds of problem.
@@ -180,13 +173,89 @@ class Task(Utility):
 		Arguments:
 		x {array} -- soution to check and repair if needed
 		"""
-		ir = where(x > self.Upper)
-		x[ir] = rnd.uniform(self.Lower[ir], self.Upper[ir])
 		ir = where(x < self.Lower)
+		x[ir] = rnd.uniform(self.Lower[ir], self.Upper[ir])
+		ir = where(x > self.Upper)
 		x[ir] = rnd.uniform(self.Lower[ir], self.Upper[ir])
 		return x
 
-	def unused_evals(self): return self.Evals - self.nFES
+class Task(ATask):
+	def __init__(self, D, nFES=inf, nGEN=inf, benchmark=None, o=None, fo=None, M=None, fM=None, optF=None, optType=OptimizationType.MINIMIZATION, **kwargs):
+		r"""Initialize task class for optimization.
+
+		Arguments:
+		D {integer} -- Number of dimensions
+		nFES {integer} -- Number of function evaluations
+		nGEN {integer} -- Number of generation or iterations
+		benchmark {class} or {string} -- Problem to solve
+		o {array} -- Array for shifting
+		of {function} -- Function applied on shifted input
+		M {matrix} -- Matrix for rotating
+		fM {function} -- Function applied after rotating
+		optF {real} -- Value added to benchmark function return
+		"""
+		ATask.__init__(self)
+		self.D = D  # dimension of the problem
+		self.Iters, self.nGEN = 0, nGEN
+		self.Evals, self.nFES = 0, nFES
+		self.benchmark = self.get_benchmark(benchmark) if benchmark is not None else None
+		if self.benchmark is not None:
+			self.Lower, self.Upper = fullArray(self.benchmark.Lower, self.D), fullArray(self.benchmark.Upper, self.D)
+			self.bRange = fabs(self.Upper - self.Lower)
+		self.Fun = self.benchmark.function() if self.benchmark is not None else None
+		self.o = o if isinstance(o, ndarray) or o is None else asarray(o)
+		self.M = M if isinstance(M, ndarray) or M is None else asarray(M)
+		self.fo, self.fM, self.optF = fo, fM, optF
+		self.optType = optType
+
+	def stopCond(self):
+		return (self.Evals >= self.nFES) or (self.Iters >= self.nGEN)
+
+	def eval(self, A):
+		if self.stopCond():
+			self.Evals += 1
+			return inf
+		self.Evals += 1
+		X = A - self.o if self.o is not None else A
+		X = self.fo(X) if self.fo is not None else X
+		X = dot(X, self.M) if self.M is not None else X
+		X = self.fM(X) if self.fM is not None else X
+		return self.optType.value * self.Fun(self.D, X) + (self.optF if self.optF is not None else 0)
+
+	def evals(self): return self.Evals
+
+	def iters(self): return self.Iters
+
+	def nextIter(self): self.Iters += 1
+
+	def isFeasible(self, A):
+		return (False if True in (A < self.Lower) else True) and (False if True in (A > self.Upper) else True)
+
+	def unused_evals(self):
+		r"""Returns the number of times that this class returnd inf in the evaluation function, because of stoping condition error."""
+		return self.Evals - self.nFES
+
+class ScaledTask(ATask):
+	def __init__(self, task, Lower, Upper, **kwargs):
+		ATask.__init__(self)
+		self._task = task
+		self.D = self._task.D
+		self.Lower, self.Upper = fullArray(Lower, self.D), fullArray(Upper, self.D)
+		self.bRange = fabs(Upper - Lower)
+
+	def stopCond(self): return self._task.stopCond()
+
+	def stopCondI(self): return self._task.stopCondI()
+
+	def eval(self, A): return self._task.eval(A)
+
+	def evals(self): return self._task.evals()
+
+	def iters(self): return self._task.iters()
+
+	def nextIter(self): self._task.nextIter()
+
+	def isFeasible(self, A): return self._task.isFeasible(A)
 
 class TaskConvPrint(Task):
 	def __init__(self, **kwargs):
@@ -241,6 +310,9 @@ class TaskComposition(Task):
 		bias {array} of {real} --
 		"""
 		Task.__init__(self, **kwargs)
+
+	def eval(self, A):
 		# TODO uporaba vec funkcij na enkrat
+		return inf
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

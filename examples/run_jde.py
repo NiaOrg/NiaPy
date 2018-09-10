@@ -7,7 +7,7 @@ sys.path.append('../')
 
 import random
 import logging
-from NiaPy.algorithms.modified import SelfAdaptiveDifferentialEvolutionAlgorithm
+from NiaPy.algorithms.modified import SelfAdaptiveDifferentialEvolution
 from NiaPy.util import Task, TaskConvPrint, TaskConvPlot, OptimizationType, getDictArgs
 
 logging.basicConfig()
@@ -61,7 +61,7 @@ def getOptType(otype):
 	else: return None
 
 if __name__ == '__main__':
-	pargs, algo = getDictArgs(sys.argv[1:]), SelfAdaptiveDifferentialEvolutionAlgorithm
+	pargs, algo = getDictArgs(sys.argv[1:]), SelfAdaptiveDifferentialEvolution
 	optFunc = getOptType(pargs['optType'])
 	if not pargs['runType']: simple_example(algo, optFunc=optFunc, **pargs)
 	elif pargs['runType'] == 'log': logging_example(algo, optFunc=optFunc, **pargs)

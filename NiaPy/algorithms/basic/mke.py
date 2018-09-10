@@ -2,7 +2,7 @@
 # pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, len-as-condition, singleton-comparison, arguments-differ, bad-continuation
 import logging
 from math import ceil
-from numpy import apply_along_axis, vectorize, argmin, inf, where, full, tril
+from numpy import apply_along_axis, vectorize, argmin, inf, full, tril
 from NiaPy.algorithms.algorithm import Algorithm, Individual
 
 logging.basicConfig()
@@ -54,24 +54,17 @@ class MonkeyKingEvolutionV1(Algorithm):
 		self.NP, self.F, self.R, self.C, self.FC = NP, F, R, C, FC
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def repair(self, x, task):
-		ir = where(x > task.Upper)
-		x[ir] = task.Upper[ir]
-		ir = where(x < task.Lower)
-		x[ir] = task.Lower[ir]
-		return x
-
 	def moveP(self, x, x_pb, x_b, task): return x_pb + self.F * self.rand(task.D) * (x_b - x)
 
 	def moveMK(self, x, task): return x + self.FC * self.rand([int(self.C * task.D), task.D]) * x
 
 	def movePartice(self, p, p_b, task):
-		p.x = self.repair(self.moveP(p.x, p.x_pb, p_b.x, task), task)
-		p.evaluate(task)
+		p.x = self.moveP(p.x, p.x_pb, p_b.x, task)
+		p.evaluate(task, rnd=self.Rand)
 
 	def moveMokeyKingPartice(self, p, task):
 		p.MonkeyKing = False
-		A = apply_along_axis(self.repair, 1, self.moveMK(p.x, task), task)
+		A = apply_along_axis(task.repair, 1, self.moveMK(p.x, task), self.Rand)
 		A_f = apply_along_axis(task.eval, 1, A)
 		ib = argmin(A_f)
 		p.x, p.f = A[ib], A_f[ib]
@@ -119,7 +112,7 @@ class MonkeyKingEvolutionV2(MonkeyKingEvolutionV1):
 		p_b, p_f = p.x, p.f
 		for _i in range(int(self.C * self.NP)):
 			r = self.Rand.choice(self.NP, 2, replace=False)
-			a = self.repair(self.moveMK(p.x, pop[r[0]].x - pop[r[1]].x, task), task)
+			a = task.repair(self.moveMK(p.x, pop[r[0]].x - pop[r[1]].x, task), self.Rand)
 			a_f = task.eval(a)
 			if a_f < p_f: p_b, p_f = a, a_f
 		p.x, p.f = p_b, p_f
@@ -153,7 +146,7 @@ class MonkeyKingEvolutionV3(MonkeyKingEvolutionV1):
 	def neg(self, x): return 0.0 if x == 1.0 else 1.0
 
 	def runTask(self, task):
-		X = task.Lower + task.bRange * self.rand([self.NP, task.D])
+		X = task.bcLower() + task.bcRange() * self.rand([self.NP, task.D])
 		x_gb, x_f_gb = self.eval(X, None, inf, task)
 		k, c = int(ceil(self.NP / task.D)), int(ceil(self.C * task.D))
 		while not task.stopCond():

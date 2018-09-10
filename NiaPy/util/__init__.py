@@ -1,4 +1,4 @@
-from NiaPy.util.utility import Utility, Task, TaskComposition, TaskConvPrint, TaskConvPlot, OptimizationType, fullArray
+from NiaPy.util.utility import Utility, Task, ScaledTask, TaskComposition, TaskConvPrint, TaskConvPlot, OptimizationType, fullArray
 from NiaPy.util.argparser import MakeArgParser, getArgs, getDictArgs
 
 __all__ = [
@@ -10,5 +10,6 @@ __all__ = [
     'fullArray',
     'MakeArgParser',
     'getArgs',
-    'getDictArgs'
+    'getDictArgs',
+    'ScaledTask'
 ]

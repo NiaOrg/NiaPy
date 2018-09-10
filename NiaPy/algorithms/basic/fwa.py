@@ -44,7 +44,7 @@ class BareBonesFireworksAlgorithm(Algorithm):
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def runTask(self, task):
-		x, A = self.uniform(task.Lower, task.Upper, task.D), task.bRange
+		x, A = self.uniform(task.bcLower(), task.bcUpper(), task.D), task.bcRange()
 		x_fit = task.eval(x)
 		while not task.stopCond():
 			S = self.uniform(x - A, x + A, [self.n, task.D])
@@ -102,10 +102,10 @@ class FireworksAlgorithm(Algorithm):
 	def GaussianSpark(self, x, task): return self.Mapping(x + self.rand(task.D) * self.normal(1, 1, task.D), task)
 
 	def Mapping(self, x, task):
-		ir = where(x > task.Upper)
-		x[ir] = task.Lower[ir] + x[ir] % task.bRange[ir]
-		ir = where(x < task.Lower)
-		x[ir] = task.Lower[ir] + x[ir] % task.bRange[ir]
+		ir = where(x > task.bcUpper())
+		x[ir] = task.bcLower()[ir] + x[ir] % task.bcRange()[ir]
+		ir = where(x < task.bcLower())
+		x[ir] = task.bcLower()[ir] + x[ir] % task.bcRange()[ir]
 		return x
 
 	def R(self, x, FW): return sqrt(sum(fabs(x - FW)))
@@ -124,7 +124,7 @@ class FireworksAlgorithm(Algorithm):
 		return FW, FW_f
 
 	def runTask(self, task):
-		FW, Ah = self.uniform(task.Lower, task.Upper, [self.N, task.D]), self.initAmplitude(task)
+		FW, Ah = self.uniform(task.bcLower(), task.bcUpper(), [self.N, task.D]), self.initAmplitude(task)
 		FW_f = apply_along_axis(task.eval, 1, FW)
 		ib = argmin(FW_f)
 		FW[0], FW_f[0] = FW[ib], FW_f[ib]
@@ -185,7 +185,7 @@ class EnhancedFireworksAlgorithm(FireworksAlgorithm):
 		return FW, FW_f
 
 	def runTask(self, task):
-		FW, Ah = self.uniform(task.Lower, task.Upper, [self.N, task.D]), self.initAmplitude(task)
+		FW, Ah = self.uniform(task.bcLower(), task.bcUpper(), [self.N, task.D]), self.initAmplitude(task)
 		Ainit, Afinal, A_min = self.initRanges(task)
 		FW_f = apply_along_axis(task.eval, 1, FW)
 		ib = argmin(FW_f)
@@ -226,15 +226,15 @@ class DynamicFireworksAlgorithmGauss(EnhancedFireworksAlgorithm):
 		FireworksAlgorithm.setParameters(self, **ukwargs)
 		self.A_cf, self.C_a, self.C_r, self.epsilon = A_cf, C_a, C_r, epsilon
 
-	def initAmplitude(self, task): return FireworksAlgorithm.initAmplitude(self, task), task.bRange
+	def initAmplitude(self, task): return FireworksAlgorithm.initAmplitude(self, task), task.bcRange()
 
 	def ExplosionAmplitude(self, x_f, xb_f, A, As): return FireworksAlgorithm.ExplosionAmplitude(self, x_f, xb_f, A, As)
 
 	def Mapping(self, x, task):
-		ir = where(x > task.Upper)
-		x[ir] = self.uniform(task.Lower[ir], task.Upper[ir])
-		ir = where(x < task.Lower)
-		x[ir] = self.uniform(task.Lower[ir], task.Upper[ir])
+		ir = where(x > task.bcUpper())
+		x[ir] = self.uniform(task.bcLower()[ir], task.bcUpper()[ir])
+		ir = where(x < task.bcLower())
+		x[ir] = self.uniform(task.bcLower()[ir], task.bcUpper()[ir])
 		return x
 
 	def repair(self, x, d, epsilon):
@@ -256,13 +256,13 @@ class DynamicFireworksAlgorithmGauss(EnhancedFireworksAlgorithm):
 		xnb_f = apply_along_axis(task.eval, 1, xnb)
 		ib_f = argmin(xnb_f)
 		if xnb_f[ib_f] <= xb_f: xb, xb_f = xnb[ib_f], xnb_f[ib_f]
-		Acf = self.repair(Acf, task.bRange, self.epsilon)
+		Acf = self.repair(Acf, task.bcRange(), self.epsilon)
 		if xb_f >= xcb_f: xb, xb_f, Acf = xcb, xcb_f, Acf * self.C_a
 		else: Acf = Acf * self.C_r
 		return xb, xb_f, Acf
 
 	def runTask(self, task):
-		FW, (Ah, Ab) = self.uniform(task.Lower, task.Upper, [self.N, task.D]), self.initAmplitude(task)
+		FW, (Ah, Ab) = self.uniform(task.bcLower(), task.bcUpper(), [self.N, task.D]), self.initAmplitude(task)
 		FW_f = apply_along_axis(task.eval, 1, FW)
 		iw, ib = argmax(FW_f), argmin(FW_f)
 		xb, xb_f = FW[ib], FW_f[ib]
@@ -290,7 +290,7 @@ class DynamicFireworksAlgorithm(DynamicFireworksAlgorithmGauss):
 	Name = ['DynamicFireworksAlgorithm', 'dynFWA']
 
 	def runTask(self, task):
-		FW, (Ah, Ab) = self.uniform(task.Lower, task.Upper, [self.N, task.D]), self.initAmplitude(task)
+		FW, (Ah, Ab) = self.uniform(task.bcLower(), task.bcUpper(), [self.N, task.D]), self.initAmplitude(task)
 		FW_f = apply_along_axis(task.eval, 1, FW)
 		iw, ib = argmax(FW_f), argmin(FW_f)
 		xb, xb_f = FW[ib], FW_f[ib]

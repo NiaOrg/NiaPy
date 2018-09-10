@@ -8,7 +8,7 @@ sys.path.append('../')
 import random
 import logging
 from NiaPy import Runner
-from NiaPy.algorithms.modified.hde import DifferentialEvolutionBestMTS1, DifferentialEvolutionBestMTS1Redct
+from NiaPy.algorithms.modified.hde import DifferentialEvolutionMTS
 from NiaPy.util import Task, TaskConvPrint, TaskConvPlot, OptimizationType, getDictArgs
 
 logging.basicConfig()
@@ -63,10 +63,7 @@ def getOptType(otype):
 	else: return None
 
 if __name__ == '__main__':
-	# pargs, algo = getDictArgs(sys.argv[1:]), Runner.getAlgorithm('DifferentialEvolutionAlgorithm')
-	# pargs, algo = getDictArgs(sys.argv[1:]), Runner.getAlgorithm('DynNPSelfAdaptiveDifferentialEvolutionAlgorithm')
-	# pargs, algo = getDictArgs(sys.argv[1:]), DifferentialEvolutionBestMTS1
-	pargs, algo = getDictArgs(sys.argv[1:]), DifferentialEvolutionBestMTS1Redct
+	pargs, algo = getDictArgs(sys.argv[1:]), Runner.getAlgorithm('GA')
 	optFunc = getOptType(pargs['optType'])
 	if not pargs['runType']: simple_example(algo, optFunc=optFunc, **pargs)
 	elif pargs['runType'] == 'log': logging_example(algo, optFunc=optFunc, **pargs)

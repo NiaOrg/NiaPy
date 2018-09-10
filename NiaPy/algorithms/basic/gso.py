@@ -81,8 +81,8 @@ class GlowwormSwarmOptimization(Algorithm):
 		else: return xb, xb_f
 
 	def runTask(self, task):
-		rs = euclidean(full(task.D, 0), task.bRange)
-		GS, GS_f, L, R = self.uniform(task.Lower, task.Upper, [self.n, task.D]), full(self.n, inf), full(self.n, self.l0), full(self.n, rs)
+		rs = euclidean(full(task.D, 0), task.bcRange())
+		GS, GS_f, L, R = self.uniform(task.bcLower(), task.bcUpper(), [self.n, task.D]), full(self.n, inf), full(self.n, self.l0), full(self.n, rs)
 		xb, xb_f = None, inf
 		while not task.stopCondI():
 			GSo, Ro, GS_f = copy(GS), copy(R), apply_along_axis(task.eval, 1, GS)
@@ -91,7 +91,7 @@ class GlowwormSwarmOptimization(Algorithm):
 			N = [self.getNeighbors(i, Ro[i], GSo, L) for i in range(self.n)]
 			P = [self.probabilityes(i, N[i], L) for i in range(self.n)]
 			j = [self.moveSelect(P[i], i) for i in range(self.n)]
-			for i in range(self.n): GS[i] = task.repair(GSo[i] + self.s * ((GSo[j[i]] - GSo[i]) / (euclidean(GSo[j[i]], GSo[i]) + 1e-31)))
+			for i in range(self.n): GS[i] = task.repair(GSo[i] + self.s * ((GSo[j[i]] - GSo[i]) / (euclidean(GSo[j[i]], GSo[i]) + 1e-31)), rnd=self.Rand)
 			for i in range(self.n): R[i] = max(0, min(rs, self.rangeUpdate(Ro[i], N[i], rs)))
 		return xb, xb_f
 

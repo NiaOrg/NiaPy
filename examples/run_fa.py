@@ -41,7 +41,7 @@ class MaxMB(MinMB):
 
 def run_defult():
 	for i in range(10):
-		Algorithm = FireflyAlgorithm(D=10, NP=20, nFES=1000, alpha=0.5, betamin=0.2, gamma=1.0, benchmark=MyBenchmark())	
+		Algorithm = FireflyAlgorithm(D=10, NP=20, nFES=50000, alpha=0.5, betamin=0.2, gamma=1.0, benchmark=MyBenchmark())
 		Best = Algorithm.run()
 		plt.plot(global_vector)
 		global_vector = []
@@ -51,22 +51,22 @@ def run_defult():
 	plt.title('Convergence plot')
 	plt.show()
 
-def simple_example(alg, runs=10, D=10, nFES=50000, nGEN=10000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kn):
+def simple_example(alg, runs=10, D=10, nFES=50000, nGEN=10000, seed=[None], optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kn):
 	for i in range(runs):
 		task = Task(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc())
-		algo = alg(seed=seed, task=task)
+		algo = alg(seed=seed[i % len(seed)], task=task)
 		best = algo.run()
 		logger.info('%s %s' % (best[0], best[1]))
 
-def logging_example(alg, D=10, nFES=50000, nGEN=100000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kn):
+def logging_example(alg, D=10, nFES=50000, nGEN=100000, seed=[None], optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kn):
 	task = TaskConvPrint(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc())
-	algo = alg(seed=seed, task=task)
+	algo = alg(seed=seed[0], task=task)
 	best = algo.run()
 	logger.info('%s %s' % (best[0], best[1]))
 
-def plot_example(alg, D=10, nFES=50000, nGEN=100000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kn):
+def plot_example(alg, D=10, nFES=50000, nGEN=100000, seed=[None], optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kn):
 	task = TaskConvPlot(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc())
-	algo = alg(seed=seed, task=task)
+	algo = alg(seed=seed[0], task=task)
 	best = algo.run()
 	logger.info('%s %s' % (best[0], best[1]))
 	input('Press [enter] to continue')

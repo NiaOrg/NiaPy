@@ -3,7 +3,7 @@
 from unittest import TestCase
 from numpy import random as rnd
 from NiaPy.util import Task
-from NiaPy.algorithms.modified import SelfAdaptiveDifferentialEvolutionAlgorithm, DynNPSelfAdaptiveDifferentialEvolutionAlgorithm
+from NiaPy.algorithms.modified import SelfAdaptiveDifferentialEvolution, DynNPSelfAdaptiveDifferentialEvolutionAlgorithm
 from NiaPy.algorithms.modified.jde import SolutionjDE
 from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
 
@@ -23,13 +23,13 @@ class SolutionjDETestCase(TestCase):
 
 class jDETestCase(AlgorithmTestCase):
 	def test_custom_works_fine(self):
-		jde_custom = SelfAdaptiveDifferentialEvolutionAlgorithm(D=self.D, NP=40, nFES=self.nFES, nGEN=self.nGEN, F=0.5, F_l=0.0, F_u=2.0, Tao1=0.9, CR=0.1, Tao2=0.45, benchmark=MyBenchmark(), seed=self.seed)
-		jde_customc = SelfAdaptiveDifferentialEvolutionAlgorithm(D=self.D, NP=40, nFES=self.nFES, nGEN=self.nGEN, F=0.5, F_l=0.0, F_u=2.0, Tao1=0.9, CR=0.1, Tao2=0.45, benchmark=MyBenchmark(), seed=self.seed)
+		jde_custom = SelfAdaptiveDifferentialEvolution(D=self.D, NP=40, nFES=self.nFES, nGEN=self.nGEN, F=0.5, F_l=0.0, F_u=2.0, Tao1=0.9, CR=0.1, Tao2=0.45, benchmark=MyBenchmark(), seed=self.seed)
+		jde_customc = SelfAdaptiveDifferentialEvolution(D=self.D, NP=40, nFES=self.nFES, nGEN=self.nGEN, F=0.5, F_l=0.0, F_u=2.0, Tao1=0.9, CR=0.1, Tao2=0.45, benchmark=MyBenchmark(), seed=self.seed)
 		AlgorithmTestCase.algorithm_run_test(self, jde_custom, jde_customc)
 
 	def test_griewank_works_fine(self):
-		jde_griewank = SelfAdaptiveDifferentialEvolutionAlgorithm(D=self.D, NP=40, nFES=self.nFES, nGEN=self.nGEN, F=0.5, F_l=0.0, F_u=2.0, Tao1=0.9, CR=0.1, Tao2=0.45, benchmark='griewank', seed=self.seed)
-		jde_griewankc = SelfAdaptiveDifferentialEvolutionAlgorithm(D=self.D, NP=40, nFES=self.nFES, nGEN=self.nGEN, F=0.5, F_l=0.0, F_u=2.0, Tao1=0.9, CR=0.1, Tao2=0.45, benchmark='griewank', seed=self.seed)
+		jde_griewank = SelfAdaptiveDifferentialEvolution(D=self.D, NP=40, nFES=self.nFES, nGEN=self.nGEN, F=0.5, F_l=0.0, F_u=2.0, Tao1=0.9, CR=0.1, Tao2=0.45, benchmark='griewank', seed=self.seed)
+		jde_griewankc = SelfAdaptiveDifferentialEvolution(D=self.D, NP=40, nFES=self.nFES, nGEN=self.nGEN, F=0.5, F_l=0.0, F_u=2.0, Tao1=0.9, CR=0.1, Tao2=0.45, benchmark='griewank', seed=self.seed)
 		AlgorithmTestCase.algorithm_run_test(self, jde_griewank, jde_griewankc)
 
 class dyNPjDETestCase(AlgorithmTestCase):

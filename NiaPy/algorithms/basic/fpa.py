@@ -44,9 +44,9 @@ class FlowerPollinationAlgorithm(Algorithm):
 	def repair(self, x, task):
 		"""Find limits."""
 		ir = where(x > task.Upper)
-		x[ir] = task.Upper[ir]
+		x[ir] = task.Lower[ir] + x[ir] % task.bRange[ir]
 		ir = where(x < task.Lower)
-		x[ir] = task.Lower[ir]
+		x[ir] = task.Lower[ir] + x[ir] % task.bRange[ir]
 		return x
 
 	def levy(self):
@@ -54,7 +54,7 @@ class FlowerPollinationAlgorithm(Algorithm):
 		return 0.01 * (self.normal(0, 1) * sigma / fabs(self.normal(0, 1)) ** (1 / self.beta))
 
 	def runTask(self, task):
-		Sol = self.uniform(task.Lower, task.Upper, [self.NP, task.D])
+		Sol = self.uniform(task.bcLower(), task.bcUpper(), [self.NP, task.D])
 		Sol_f = apply_along_axis(task.eval, 1, Sol)
 		ib = argmin(Sol_f)
 		solb, solb_f = Sol[ib], Sol_f[ib]
