@@ -23,7 +23,7 @@ class DifferentialEvolutionMTS(DifferentialEvolution):
 	@staticmethod
 	def typeParameters(): return DifferentialEvolution.typeParameters()
 
-	def setParameters(self, NoGradingRuns=1, NoLs=1, NoEnabled=10, **ukwargs):
+	def setParameters(self, NoGradingRuns=1, NoLs=2, NoEnabled=2, **ukwargs):
 		r"""Set the algorithm parameters.
 
 		Arguments:

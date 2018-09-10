@@ -187,7 +187,7 @@ class DynNpStrategyDifferentialEvolution(DifferentialEvolution):
 
 class MultiStrategyDifferentialEvolution(DifferentialEvolution):
 	r"""Method uses multiple mutation strategys tof mutation and after mutation it selects the best individual."""
-	Name = ['MultiStrategyDifferentialEvolution', 'MSDE']
+	Name = ['MultiStrategyDifferentialEvolution', 'MsDE']
 
 	@staticmethod
 	def typeParameters():
@@ -225,7 +225,7 @@ class MultiStrategyDifferentialEvolution(DifferentialEvolution):
 
 class DynNpMultiStrategyDifferentialEvolution(MultiStrategyDifferentialEvolution):
 	r"""Method uses multiple mutation strategys tof mutation and after mutation it selects the best individual."""
-	Name = ['DynNpMultiStrategyDifferentialEvolution', 'dynNpMSDE']
+	Name = ['DynNpMultiStrategyDifferentialEvolution', 'dynNpMsDE']
 
 	@staticmethod
 	def typeParameters():

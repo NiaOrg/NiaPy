@@ -196,8 +196,7 @@ class Task(ATask):
 		"""
 		ATask.__init__(self)
 		self.D = D  # dimension of the problem
-		self.Iters, self.nGEN = 0, nGEN
-		self.Evals, self.nFES = 0, nFES
+		self.nGEN, self.nFES = nGEN, nFES
 		self.benchmark = self.get_benchmark(benchmark) if benchmark is not None else None
 		if self.benchmark is not None:
 			self.Lower, self.Upper = fullArray(self.benchmark.Lower, self.D), fullArray(self.benchmark.Upper, self.D)

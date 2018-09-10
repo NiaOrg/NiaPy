@@ -187,7 +187,7 @@ class DynNpMultiStrategySelfAdaptiveDifferentialEvolutionMTS(MultiStrategySelfAd
 		self.LSs = [MTS_LS1, MTS_LS2, MTS_LS3]
 
 class DynNpMultiStrategySelfAdaptiveDifferentialEvolutionMTSv1(DynNpMultiStrategySelfAdaptiveDifferentialEvolutionMTS):
-	Name = ['DynNpMultiStrategySelfAdaptiveDifferentialEvolutionMTS', 'dynNpMsjDEMTS']
+	Name = ['DynNpMultiStrategySelfAdaptiveDifferentialEvolutionMTSv1', 'dynNpMsjDEMTSv1']
 
 	def setParameters(self, **kwargs):
 		DynNpMultiStrategySelfAdaptiveDifferentialEvolutionMTS.setParameters(self, **kwargs)
