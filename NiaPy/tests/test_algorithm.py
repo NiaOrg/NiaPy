@@ -2,13 +2,14 @@
 # pylint: disable=mixed-indentation, function-redefined, multiple-statements, old-style-class, function-redefined
 from unittest import TestCase
 from numpy import random as rnd, full, inf, array_equal
-from NiaPy.util import Task
+from NiaPy.util import Task, OptimizationType
 from NiaPy.algorithms.algorithm import Individual
 
 class MyBenchmark:
 	def __init__(self):
 		self.Lower = -5.12
 		self.Upper = 5.12
+		self.optType = OptimizationType.MINIMIZATION
 
 	@classmethod
 	def function(cls):

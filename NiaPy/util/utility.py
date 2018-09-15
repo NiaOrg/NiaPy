@@ -213,7 +213,7 @@ class Task(ATask):
 	def eval(self, A):
 		if self.stopCond():
 			self.Evals += 1
-			return inf
+			return self.optType.value * inf
 		self.Evals += 1
 		X = A - self.o if self.o is not None else A
 		X = self.fo(X) if self.fo is not None else X
