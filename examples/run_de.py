@@ -66,7 +66,7 @@ def getOptType(otype):
 	else: return None
 
 if __name__ == '__main__':
-	pargs, algo = getDictArgs(sys.argv[1:]), Runner.getAlgorithm('jDE')
+	pargs, algo = getDictArgs(sys.argv[1:]), Runner.getAlgorithm('DE')
 	optFunc = getOptType(pargs['optType'])
 	if not pargs['runType']: simple_example(algo, optFunc=optFunc, **pargs)
 	elif pargs['runType'] == 'log': logging_example(algo, optFunc=optFunc, **pargs)

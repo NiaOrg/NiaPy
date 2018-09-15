@@ -18,6 +18,13 @@ class MtsIndividual(Individual):
 		self.SR, self.grade, self.enable, self.improved = SR, grade, enable, improved
 
 class DifferentialEvolutionMTS(DifferentialEvolution):
+	r"""Implementation of Differential Evolution withm MTS local searches.
+
+	**Algorithm:** Differential Evolution withm MTS local searches
+	**Date:** 2018
+	**Author:** Klemen Berkovič
+	**License:** MIT
+	"""
 	Name = ['DifferentialEvolutionMTS', 'DEMTS']
 
 	@staticmethod
@@ -72,6 +79,13 @@ class DifferentialEvolutionMTS(DifferentialEvolution):
 		return x_b.x, x_b.f
 
 class DifferentialEvolutionMTSv1(DifferentialEvolutionMTS):
+	r"""Implementation of Differential Evolution withm MTSv1 local searches.
+
+	**Algorithm:** Differential Evolution withm MTSv1 local searches
+	**Date:** 2018
+	**Author:** Klemen Berkovič
+	**License:** MIT
+	"""
 	Name = ['DifferentialEvolutionMTSv1', 'DEMTSv1']
 
 	def setParameters(self, **ukwargs):
@@ -79,6 +93,13 @@ class DifferentialEvolutionMTSv1(DifferentialEvolutionMTS):
 		self.LSs = [MTS_LS1v1, MTS_LS2, MTS_LS3v1]
 
 class DynNpDifferentialEvolutionMTS(DifferentialEvolutionMTS):
+	r"""Implementation of Differential Evolution withm MTS local searches dynamic and population size.
+
+	**Algorithm:** Differential Evolution withm MTS local searches and dynamic population size
+	**Date:** 2018
+	**Author:** Klemen Berkovič
+	**License:** MIT
+	"""
 	Name = ['DynNpDifferentialEvolutionMTS', 'dynNpDEMTS']
 
 	def setParameters(self, pmax=50, rp=3, **ukwargs):
@@ -100,29 +121,28 @@ class DynNpDifferentialEvolutionMTS(DifferentialEvolutionMTS):
 				Gr += task.nFES // (self.pmax * NP) + self.rp
 		return x_b.x, x_b.f
 
-class DynNpDifferentialEvolutionMTSv1(DifferentialEvolutionMTSv1):
+class DynNpDifferentialEvolutionMTSv1(DynNpDifferentialEvolutionMTS):
+	r"""Implementation of Differential Evolution withm MTSv1 local searches and dynamic population size.
+
+	**Algorithm:** Differential Evolution withm MTSv1 local searches and dynamic population size
+	**Date:** 2018
+	**Author:** Klemen Berkovič
+	**License:** MIT
+	"""
 	Name = ['DynNpDifferentialEvolutionMTSv1', 'dynNpDEMTSv1']
 
 	def setParameters(self, pmax=50, rp=3, **ukwargs):
-		DifferentialEvolutionMTSv1.setParameters(self, **ukwargs)
-		self.pmax, self.rp = pmax, rp
-
-	def runTask(self, task):
-		Gr = task.nFES // (self.pmax * self.Np) + self.rp
-		pop = [MtsIndividual(task.bcRange() * 0.06, task=task, rand=self.Rand, e=True) for _i in range(self.Np)]
-		x_b = pop[argmin([x.f for x in pop])]
-		while not task.stopCondI():
-			npop = [MtsIndividual(pop[i].SR, x=self.CrossMutt(pop, i, x_b, self.F, self.CR, self.Rand), task=task, rand=self.Rand, e=True) for i in range(len(pop))]
-			for i, e in enumerate(npop): npop[i], x_b = self.LSprocedure(e, x_b, task)
-			pop = [np if np.f < pop[i].f else pop[i] for i, np in enumerate(npop)]
-			for i in argsort([x.grade for x in pop])[:self.NoEnabled]: pop[i].enable = True
-			if task.Iters == Gr and len(pop) > 3:
-				NP = int(len(pop) / 2)
-				pop = [pop[i] if pop[i].f < pop[i + NP].f else pop[i + NP] for i in range(NP)]
-				Gr += task.nFES // (self.pmax * NP) + self.rp
-		return x_b.x, x_b.f
+		DifferentialEvolutionMTS.setParameters(self, **ukwargs)
+		self.LSs, self.pmax, self.rp = [MTS_LS1v1, MTS_LS2, MTS_LS3v1], pmax, rp
 
 class MultiStratgyDifferentialEvolutionMTS(DifferentialEvolutionMTS):
+	r"""Implementation of Differential Evolution withm MTS local searches and multiple mutation strategys.
+
+	**Algorithm:** Differential Evolution withm MTS local searches and multiple mutation strategys
+	**Date:** 2018
+	**Author:** Klemen Berkovič
+	**License:** MIT
+	"""
 	Name = ['MultiStratgyDifferentialEvolutionMTS', 'MSDEMTS']
 
 	def setParameters(self, strategys=[CrossBest1, CrossRand1, CrossCurr2Rand1, CrossBest2, CrossRand2], **ukwargs):
@@ -144,6 +164,13 @@ class MultiStratgyDifferentialEvolutionMTS(DifferentialEvolutionMTS):
 		return x_b.x, x_b.f
 
 class MultiStratgyDifferentialEvolutionMTSv1(MultiStratgyDifferentialEvolutionMTS):
+	r"""Implementation of Differential Evolution withm MTSv1 local searches and multiple mutation strategys.
+
+	**Algorithm:** Differential Evolution withm MTSv1 local searches and multiple mutation strategys
+	**Date:** 2018
+	**Author:** Klemen Berkovič
+	**License:** MIT
+	"""
 	Name = ['MultiStratgyDifferentialEvolutionMTSv1', 'MSDEMTSv1']
 
 	def __init__(self, **kwargs):
@@ -151,6 +178,13 @@ class MultiStratgyDifferentialEvolutionMTSv1(MultiStratgyDifferentialEvolutionMT
 		self.LSs = [MTS_LS1v1, MTS_LS2, MTS_LS3v1]
 
 class DynNpMultiStrategyDifferentialEvolutionMTS(MultiStratgyDifferentialEvolutionMTS):
+	r"""Implementation of Differential Evolution withm MTS local searches, multiple mutation strategys and dynamic population size.
+
+	**Algorithm:** Differential Evolution withm MTS local searches, multiple mutation strategys and dynamic population size
+	**Date:** 2018
+	**Author:** Klemen Berkovič
+	**License:** MIT
+	"""
 	Name = ['DynNpMultiStrategyDifferentialEvolutionMTS', 'dynNpMSDEMTS']
 
 	def setParameters(self, pmax=50, rp=7, **ukwargs):
@@ -173,6 +207,13 @@ class DynNpMultiStrategyDifferentialEvolutionMTS(MultiStratgyDifferentialEvoluti
 		return x_b.x, x_b.f
 
 class DynNpMultiStrategyDifferentialEvolutionMTSv1(DynNpMultiStrategyDifferentialEvolutionMTS):
+	r"""Implementation of Differential Evolution withm MTSv1 local searches, multiple mutation strategys and dynamic population size.
+
+	**Algorithm:** Differential Evolution withm MTSv1 local searches, multiple mutation strategys and dynamic population size
+	**Date:** 2018
+	**Author:** Klemen Berkovič
+	**License:** MIT
+	"""
 	Name = ['DynNpMultiStrategyDifferentialEvolutionMTSv1', 'dynNpMSDEMTSv1']
 
 	def setParameters(self, **kwargs):

@@ -133,24 +133,23 @@ class MultipleTrajectorySearch(Algorithm):
 
 	@staticmethod
 	def typeParameters(): return {
-		'NP': lambda x: isinstance(x, int) and x > 0,
 		'NoLsTests': lambda x: isinstance(x, int) and x >= 0,
 		'NoLs': lambda x: isinstance(x, int) and x >= 0,
 		'NoLsBest': lambda x: isinstance(x, int) and x >= 0,
 		'NoEnabled': lambda x: isinstance(x, int) and x > 0
 	}
 
-	def setParameters(self, NP=40, NoLsTests=5, NoLs=5, NoLsBest=5, NoEnabled=17, **ukwargs):
+	def setParameters(self, M=40, NoLsTests=5, NoLs=5, NoLsBest=5, NoEnabled=17, **ukwargs):
 		r"""Set the arguments of the algorithm.
 
 		Arguments:
-		NP, M {integer} -- population size
+		M {integer} -- number of individuals in population
 		NoLsTests {integer} -- number of test runs on local search algorihms
 		NoLs {integer} -- number of local search algoritm runs
 		NoLsBest {integer} -- number of locals search algorithm runs on best solution
 		NoEnabled {integer} -- number of best solution for testing
 		"""
-		self.M, self.NoLsTests, self.NoLs, self.NoLsBest, self.NoEnabled = NP, NoLsTests, NoLs, NoLsBest, NoEnabled
+		self.M, self.NoLsTests, self.NoLs, self.NoLsBest, self.NoEnabled = M, NoLsTests, NoLs, NoLsBest, NoEnabled
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def GradingRun(self, x, x_f, xb, xb_f, improve, SR, task):
