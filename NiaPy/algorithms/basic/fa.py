@@ -14,9 +14,13 @@ class FireflyAlgorithm(Algorithm):
 	r"""Implementation of Firefly algorithm.
 
 	**Algorithm:** Firefly algorithm
+
 	**Date:** 2016
+
 	**Authors:** Iztok Fister Jr, Iztok Fister and Klemen Berkovič
+
 	**License:** MIT
+
 	**Reference paper:** Fister, I., Fister Jr, I., Yang, X. S., & Brest, J. (2013). A comprehensive review of firefly algorithms. Swarm and Evolutionary Computation, 13, 34-46.
 	"""
 	Name = ['FireflyAlgorithm', 'FA']
@@ -32,10 +36,14 @@ class FireflyAlgorithm(Algorithm):
 	def setParameters(self, NP=20, alpha=1, betamin=1, gamma=2, **ukwargs):
 		r"""Set the parameters of the algorithm.
 
-		**Arguments**:
+		**Arguments:**
+
 		NP {integer} -- population size
+
 		alpha {decimal} -- alpha parameter
+
 		betamin {decimal} -- betamin parameter
+
 		gamma {decimal} -- gamma parameter
 		"""
 		self.NP, self.alpha, self.betamin, self.gamma = NP, alpha, betamin, gamma

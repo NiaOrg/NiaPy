@@ -14,8 +14,11 @@ class Camel:
 	r"""Implementation of population individual that is a camel for Camel algorithm.
 
 	**Algorithm:** Camel algorithm
+
 	**Date:** 2018
+
 	**Authors:** Klemen Berkovič
+
 	**License:** MIT
 	"""
 	E_init, S_init = 1, 1
@@ -56,11 +59,16 @@ class CamelAlgorithm(Algorithm):
 	r"""Implementation of Camel traveling behavior.
 
 	**Algorithm:** Camel algorithm
+
 	**Date:** 2018
+
 	**Authors:** Klemen Berkovič
+
 	**License:** MIT
+
 	**Reference URL:**
 	https://www.iasj.net/iasj?func=fulltext&aId=118375
+
 	**Reference paper:**
 	Ali, Ramzy. (2016). Novel Optimization Algorithm Inspired by Camel Traveling Behavior. Iraq J. Electrical and Electronic Engineering. 12. 167-177.
 	"""
@@ -81,13 +89,20 @@ class CamelAlgorithm(Algorithm):
 	def setParameters(self, NP=50, omega=0.25, mu=0.5, alpha=0.5, S_init=10, E_init=10, T_min=-10, T_max=10, **ukwargs):
 		r"""Set the arguments of an algorithm.
 
-		**Arguments**:
+		**Arguments:**
+
 		NP {integer} -- population size $\in [1, \infty)$
+
 		T_min {real} -- minimum temperature, must be true $T_{min} < T_{max}$
+
 		T_max {real} -- maximum temperature, must be true $T_{min} < T_{max}$
+
 		omega {real} -- burden factor $\in [0, 1]$
+
 		mu {real} -- dying rate $\in [0, 1]$
+
 		S_init {real} -- initial supply $\in (0, \infty)$
+
 		E_init {real} -- initial endurance $\in (0, \infty)$
 		"""
 		self.NP, self.omega, self.mu, self.alpha, self.S_init, self.E_init, self.T_min, self.T_max = NP, omega, mu, alpha, S_init, E_init, T_min, T_max

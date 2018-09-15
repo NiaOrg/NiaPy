@@ -14,9 +14,13 @@ class GreyWolfOptimizer(Algorithm):
 	r"""Implementation of Grey wolf optimizer.
 
 	**Algorithm:** Grey wolf optimizer
+
 	**Date:** 2018
+
 	**Author:** Iztok Fister Jr. and Klemen Berkovič
+
 	**License:** MIT
+
 	**Reference paper:** Mirjalili, Seyedali, Seyed Mohammad Mirjalili, and Andrew Lewis. "Grey wolf optimizer." Advances in engineering software 69 (2014): 46-61.
 	Grey Wold Optimizer (GWO) source code version 1.0 (MATLAB) from MathWorks
 	"""
@@ -30,7 +34,8 @@ class GreyWolfOptimizer(Algorithm):
 	def setParameters(self, NP=25, **ukwargs):
 		r"""Set the algorithm parameters.
 
-		Arguments:
+		**Arguments:**
+
 		NP {integer} -- Number of individuals in population
 		"""
 		self.NP = NP

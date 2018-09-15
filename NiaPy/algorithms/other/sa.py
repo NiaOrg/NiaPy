@@ -33,10 +33,15 @@ class SimulatedAnnealing(Algorithm):
 	r"""Implementation of Simulated Annealing Algorithm.
 
 	**Algorithm:** Simulated Annealing Algorithm
+
 	**Date:** 2018
+
 	**Authors:** Jan Popič
+
 	**License:** MIT
+
 	**Reference URL:**
+
 	**Reference paper:**
 	"""
 	Name = ['SimulatedAnnealing', 'BBFA']

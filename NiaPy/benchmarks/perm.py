@@ -10,7 +10,9 @@ class Perm(Benchmark):
 	r"""Implementations of Perm functions.
 
 	Date: 2018
+
 	Author: Klemen Berkovič
+
 	License: MIT
 
 	Arguments:
@@ -18,24 +20,25 @@ class Perm(Benchmark):
 
 	Function:
 	**Perm Function**
-	:math:`f(\textbf{x}) = \sum_{i = 1}^D \left( \sum_{j = 1}^D (j - \beta) \left( x_j^i - \frac{1}{j^i} \right) \right)^2`
 
-	**Input domain:**
-	The function can be defined on any input domain but it is usually
-	evaluated on the hypercube :math:`x_i ∈ [-D, D]`, for all :math:`i = 1, 2,..., D`.
+		:math:`f(\textbf{x}) = \sum_{i = 1}^D \left( \sum_{j = 1}^D (j - \beta) \left( x_j^i - \frac{1}{j^i} \right) \right)^2`
 
-	**Global minimum:**
-	:math:`f(\textbf{x}^*) = 0` at :math:`\textbf{x}^* = (1, \frac{1}{2}, \cdots , \frac{1}{i} , \cdots , \frac{1}{D})`
+		**Input domain:**
+		The function can be defined on any input domain but it is usually
+		evaluated on the hypercube :math:`x_i ∈ [-D, D]`, for all :math:`i = 1, 2,..., D`.
+
+		**Global minimum:**
+		:math:`f(\textbf{x}^*) = 0` at :math:`\textbf{x}^* = (1, \frac{1}{2}, \cdots , \frac{1}{i} , \cdots , \frac{1}{D})`
 
 	LaTeX formats:
-	Inline:
-	$f(\textbf{x}) = \sum_{i = 1}^D \left( \sum_{j = 1}^D (j - \beta) \left( x_j^i - \frac{1}{j^i} \right) \right)^2$
+		Inline:
+				$f(\textbf{x}) = \sum_{i = 1}^D \left( \sum_{j = 1}^D (j - \beta) \left( x_j^i - \frac{1}{j^i} \right) \right)^2$
 
-	Equation:
-	\begin{equation} f(\textbf{x}) = \sum_{i = 1}^D \left( \sum_{j = 1}^D (j - \beta) \left( x_j^i - \frac{1}{j^i} \right) \right)^2 \end{equation}
+		Equation:
+				\begin{equation} f(\textbf{x}) = \sum_{i = 1}^D \left( \sum_{j = 1}^D (j - \beta) \left( x_j^i - \frac{1}{j^i} \right) \right)^2 \end{equation}
 
-	Domain:
-	$-D \leq x_i \leq D$
+		Domain:
+				$-D \leq x_i \leq D$
 
 	Reference:
 	https://www.sfu.ca/~ssurjano/perm0db.html

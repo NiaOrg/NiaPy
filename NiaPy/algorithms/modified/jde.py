@@ -27,9 +27,13 @@ class SelfAdaptiveDifferentialEvolution(DifferentialEvolution):
 	r"""Implementation of Self-adaptive differential evolution algorithm.
 
 	**Algorithm:** Self-adaptive differential evolution algorithm
+
 	**Date:** 2018
+
 	**Author:** Uros Mlakar and Klemen Berkvoič
+
 	**License:** MIT
+
 	**Reference paper:** Brest, J., Greiner, S., Boskovic, B., Mernik, M., Zumer, V.	Self-adapting control parameters in differential evolution: A comparative study on numerical benchmark problems. IEEE transactions on evolutionary computation, 10(6), 646-657, 2006.
 	"""
 	Name = ['SelfAdaptiveDifferentialEvolution', 'jDE']
@@ -46,10 +50,14 @@ class SelfAdaptiveDifferentialEvolution(DifferentialEvolution):
 	def setParameters(self, F_l=0.0, F_u=2.0, Tao1=0.4, Tao2=0.6, **ukwargs):
 		r"""Set the parameters of an algorithm.
 
-		Arguments:
+		**Arguments:**
+
 		F_l {decimal} -- scaling factor lower limit
+
 		F_u {decimal} -- scaling factor upper limit
+
 		Tao1 {decimal} -- change rate for F parameter update
+
 		Tao2 {decimal} -- change rate for CR parameter update
 		"""
 		DifferentialEvolution.setParameters(self, **ukwargs)
@@ -83,6 +91,7 @@ class DynNPSelfAdaptiveDifferentialEvolutionAlgorithm(SelfAdaptiveDifferentialEv
 	**Algorithm:** Dynamic population size self-adaptive differential evolution algorithm
 	**Date:** 2018
 	**Author:** Jan Popič and Klemen Berkovič
+	**Author:** Jan Popič
 	**License:** MIT
 	**Reference URL:** https://link.springer.com/article/10.1007/s10489-007-0091-x
 	**Reference paper:** Brest, Janez, and Mirjam Sepesy Maučec. "Population size reduction for the differential evolution algorithm." Applied Intelligence 29.3 (2008): 228-247.
@@ -99,8 +108,10 @@ class DynNPSelfAdaptiveDifferentialEvolutionAlgorithm(SelfAdaptiveDifferentialEv
 	def setParameters(self, rp=0, pmax=40, **ukwargs):
 		r"""Set the parameters of an algorithm.
 
-		Arguments:
+		**Arguments:**
+
 		rp {integer} -- small non-negative number which is added to value of genp (if it's not divisible)
+
 		pmax {integer} -- number of population reductions
 		"""
 		SelfAdaptiveDifferentialEvolution.setParameters(self, **ukwargs)

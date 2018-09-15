@@ -9,7 +9,9 @@ class Algorithm:
 	r"""Class for implementing algorithms.
 
 	**Data:** 2018
+
 	**Author:** Klemen Berkovič
+
 	**License:** MIT
 	"""
 	Name = ['Algorithm', 'AAA']
@@ -17,17 +19,26 @@ class Algorithm:
 	def __init__(self, **kwargs):
 		r"""Initialize algorithm and create name for an algorithm.
 
-		**Arguments**:
+		**Arguments:**
+
 		name {string} -- Full name of algorithm
+
 		shortName {string} -- Short name of algorithm
+
 		NP {integer} -- population size
+
 		D {integer} -- dimension of problem
+
 		nGEN {integer} -- nuber of generation/iterations
+
 		nFES {integer} -- number of function evaluations
+
 		benchmark {object} -- benchmark implementation object
+
 		task {Task} -- task to perform optimization on
 
-		**Raises**:
+		**Raises:**
+
 		TypeError -- Raised when given benchmark function which does not exists.
 
 		**See**:
@@ -40,7 +51,8 @@ class Algorithm:
 	def setParameters(self, **kwargs):
 		r"""Set the parameters/arguments of the algorithm.
 
-		**Arguments**:
+		**Arguments:**
+
 		kwargs {dict} -- Dictionary with values of the parametres
 		"""
 		pass
@@ -68,7 +80,8 @@ class Algorithm:
 	def rand(self, D=1):
 		r"""Get random numbers of shape D in range from 0 to 1.
 
-		**Arguments**:
+		**Arguments:**
+
 		D {array} or {int} -- Shape of return random numbers
 		"""
 		if isinstance(D, (ndarray, list)): return self.Rand.rand(*D)
@@ -78,9 +91,12 @@ class Algorithm:
 	def uniform(self, Lower, Upper, D=None):
 		r"""Get D shape random uniform numbers in range from Lower to Upper.
 
-		**Arguments**:
+		**Arguments:**
+
 		Lower {array} or {real} or {int} -- Lower bound
+
 		Upper {array} or {real} or {int} -- Upper bound
+
 		D {array} or {int} -- Shape of returnd random uniform numbers
 		"""
 		return self.Rand.uniform(Lower, Upper, D) if D is not None else self.Rand.uniform(Lower, Upper)
@@ -88,9 +104,12 @@ class Algorithm:
 	def normal(self, loc, scale, D=None):
 		r"""Get D shape random normal distributed numbers.
 
-		**Arguments**:
+		**Arguments:**
+
 		loc {} --
+
 		scale {} --
+
 		D {array} or {int} -- Shape of returnd random uniform numbers
 		"""
 		return self.Rand.normal(loc, scale, D) if D is not None else self.Rand.normal(loc, scale)
@@ -106,10 +125,14 @@ class Algorithm:
 	def randint(self, Nmax, D=1, Nmin=0, skip=[]):
 		r"""Get D shape random full numbers in range Nmin to Nmax.
 
-		**Arguments**:
+		**Arguments:**
+
 		Nmin {integer} --
+
 		Nmax {integer} --
+
 		D {array} or {int} -- Shape of returnd random uniform numbers
+
 		skip {array} -- numbers to skip
 		"""
 		r = None
@@ -129,11 +152,14 @@ class Algorithm:
 	def runYield(self, task):
 		r"""Run the algorithm for only one iteration and return the gest solution.
 
-		Arguments:
+		**Arguments:**
+
 		task {Task} -- Task with bounds and objective function for optimization
 
 		Return:
+
 		solution {array} -- point of best solution
+
 		fitness {real} -- fitness value of the best solution
 		"""
 		yield None, None
@@ -141,11 +167,14 @@ class Algorithm:
 	def runTask(self, task):
 		r"""Start the optimization.
 
-		**Arguments**
+		**Arguments:**
+
 		task {Task} -- Task with bounds and objective function for optimization
 
-		**Return**
+		**Return:**
+
 		solution {array} -- point of best solution
+
 		fitness {real} -- fitness value of best solution
 		"""
 		return None, None
@@ -153,8 +182,10 @@ class Algorithm:
 class Individual:
 	r"""Class that represent one solution in population of solutions.
 
-	**Data:** 2018
+	**Date:** 2018
+
 	**Author:** Klemen Berkovič
+
 	**License:** MIT
 	"""
 	def __init__(self, **kwargs):
@@ -167,9 +198,12 @@ class Individual:
 	def generateSolution(self, task, rnd=rand):
 		r"""Generate new solution.
 
-		Arguments:
+		**Arguments:**
+
 		task {Task}
+
 		e {bool} -- Eval the solution
+
 		rnd {random} -- Object for generating random numbers
 		"""
 		self.x = task.bcLower() + task.bcRange() * rnd.rand(task.dim())
@@ -177,7 +211,8 @@ class Individual:
 	def evaluate(self, task, rnd=rand):
 		r"""Evaluate the solution.
 
-		Arguments:
+		**Arguments:**
+
 		task {Task} -- Object with objective function for optimization
 		"""
 		self.repair(task, rnd=rnd)
@@ -186,7 +221,8 @@ class Individual:
 	def repair(self, task, rnd=rand):
 		r"""Reper solution and put the solution in the bounds of problem.
 
-		Arguments:
+		**Arguments:**
+
 		task {Task}
 		"""
 		self.x = task.repair(self.x, rnd=rnd)
@@ -202,7 +238,8 @@ class Individual:
 	def __getitem__(self, i):
 		r"""Get the value of i-th component of the solution.
 
-		Arguments:
+		**Arguments:**
+
 		i {integer} -- position of the solution component
 		"""
 		return self.x[i]

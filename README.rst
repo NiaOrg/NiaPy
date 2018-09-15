@@ -54,24 +54,24 @@ The micro framework features following algorithms:
     -  Fireworks algorithm
     -  Flower pollination algorithm
     -  Genetic algorithm
-    -  Glowworm Swarm Optimization
+    -  Glowworm swarm optimization
     -  Grey wolf optimizer
-    -  Harmony Search Algorithm
-    -  Krill Herd Algorithm
-    -  Monkey King Evolution
+    -  Harmony Search algorithm
+    -  Krill herd algorithm
+    -  Monkey king evolution
+    -  Multiple trajectory search
     -  Particle swarm optimization
-    -  Sine Cosine Algorithm
+    -  Sine cosine algorithm
 -  modified:
     -  Hybrid bat algorithm
     -  Self-adaptive differential evolution algorithm
     -  Dynamic population size self-adaptive differential evolution algorithm
-- other:
-    -  Anarchic society optimization
-    -  Hill climb algorithm
+-  other:
+    -  Anarchic society optimization algorithm
+    -  Hill climbing algorithm
     -  Multiple trajectory search
-    -  Nelder mead method
+    -  Nelder mead method or downhill simplex method or amoeba method
     -  Simulated annealing algorithm
-    -  Tabu search algorithm
 
 The following benchmark functions are included in NiaPy:
 
@@ -200,6 +200,54 @@ fits your purposes or that it is bug-free. Use it at your own risk!
 
 Revision History
 ================
+
+2.0.0rc2 (Aug 30, 2018)
+-----------------------
+
+- fix PyPI build
+
+2.0.0rc1 (Aug 30, 2018)
+-----------------------
+Changes included in release:
+
+- Added algorithms:
+    - basic:
+        - Camel algorithm
+        - Evolution Strategy
+        - Fireworks algorithm
+        - Glowworm swarm optimization
+        - Harmony search algorithm
+        - Krill Herd Algorithm
+        - Monkey King Evolution
+        - Multiple trajectory search
+        - Sine Cosine Algorithm
+    - modified:
+        - Dynamic population size self-adaptive differential evolution algorithm
+    - other:
+        - Anarchic society optimization algorithm
+        - Hill climbing algorithm
+        - Multiple trajectory search
+        - Nelder mead method or downhill simplex method or amoeba method
+        - Simulated annealing algorithm
+
+- Added benchmarks functions:
+    - Discus
+    - Dixon-Price
+    - Elliptic
+    - HGBat
+    - Katsuura
+    - Levy
+    - Michalewicz
+    - Perm
+    - Powell
+    - Sphere2 -> Sphere with different powers
+    - Sphere3 -> Rotated hyper-ellipsoid
+    - Trid
+    - Weierstrass
+    - Zakharov
+
+- **breaking changes** in algorithms structure
+- various bugfixes
 
 1.0.1 (Mar 21, 2018)
 --------------------

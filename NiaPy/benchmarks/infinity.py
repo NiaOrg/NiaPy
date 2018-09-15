@@ -18,24 +18,25 @@ class Infinity(Benchmark):
 
 	Function:
 	**Infinity Function**
-	:math:`f(\textbf{x}) = \sum_{i = 1}^D x_i^6 \left( \sin \left( \frac{1}{x_i} \right) + 2 \right)`
 
-	**Input domain:**
-	The function can be defined on any input domain but it is usually
-	evaluated on the hypercube :math:`x_i ∈ [-1, 1]`, for all :math:`i = 1, 2,..., D`.
+		:math:`f(\textbf{x}) = \sum_{i = 1}^D x_i^6 \left( \sin \left( \frac{1}{x_i} \right) + 2 \right)`
 
-	**Global minimum:**
-	:math:`f(x^*) = 0`, at :math:`x^* = (420.968746,...,420.968746)`
+		**Input domain:**
+		The function can be defined on any input domain but it is usually
+		evaluated on the hypercube :math:`x_i ∈ [-1, 1]`, for all :math:`i = 1, 2,..., D`.
+
+		**Global minimum:**
+		:math:`f(x^*) = 0`, at :math:`x^* = (420.968746,...,420.968746)`
 
 	LaTeX formats:
-	Inline:
-	$f(\textbf{x}) = \sum_{i = 1}^D x_i^6 \left( \sin \left( \frac{1}{x_i} \right) + 2 \right)$
+		Inline:
+				$f(\textbf{x}) = \sum_{i = 1}^D x_i^6 \left( \sin \left( \frac{1}{x_i} \right) + 2 \right)$
 
-	Equation:
-	\begin{equation} f(\textbf{x}) = \sum_{i = 1}^D x_i^6 \left( \sin \left( \frac{1}{x_i} \right) + 2 \right) \end{equation}
+		Equation:
+				\begin{equation} f(\textbf{x}) = \sum_{i = 1}^D x_i^6 \left( \sin \left( \frac{1}{x_i} \right) + 2 \right) \end{equation}
 
-	Domain:
-	$-1 \leq x_i \leq 1$
+		Domain:
+				$-1 \leq x_i \leq 1$
 
 	Reference:
 	http://infinity77.net/global_optimization/test_functions_nd_I.html#go_benchmark.Infinity

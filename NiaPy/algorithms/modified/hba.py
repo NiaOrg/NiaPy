@@ -32,7 +32,8 @@ class HybridBatAlgorithm(BatAlgorithm):
 	def setParameters(self, F=0.78, CR=0.35, CrossMutt=CrossBest1, **ukwargs):
 		r"""**__init__(self, D, NP, nFES, A, r, Qmin, Qmax, benchmark)**.
 
-		Arguments:
+		**Arguments:**
+
 		F {decimal} -- scaling factor
 		CR {decimal} -- crossover
 		"""
@@ -52,7 +53,7 @@ class HybridBatAlgorithm(BatAlgorithm):
 				S = task.repair(Sol[i] + v[i], rnd=self.Rand)
 				if self.rand() > self.r: S = task.repair(self.CrossMutt(Sol, i, best, self.F, self.CR, rnd=self.Rand), rnd=self.Rand)
 				f_new = task.eval(S)
-				if Fitness[i] <= f_new and self.rand() < self.A: Sol[i], Fitness[i] = S, f_new
+				if f_new <= Fitness[i] and self.rand() < self.A: Sol[i], Fitness[i] = S, f_new
 				if f_new < f_min: best, f_min = S, f_new
 		return best, f_min
 

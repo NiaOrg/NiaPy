@@ -119,10 +119,15 @@ class MultipleTrajectorySearch(Algorithm):
 	r"""Implementation of Multiple trajectory search.
 
 	**Algorithm:** Multiple trajectory search
+
 	**Date:** 2018
+
 	**Authors:** Klemen Berkovic
+
 	**License:** MIT
+
 	**Reference URL:** https://ieeexplore.ieee.org/document/4631210/
+
 	**Reference paper:** Lin-Yu Tseng and Chun Chen, "Multiple trajectory search for Large Scale Global Optimization," 2008 IEEE Congress on Evolutionary Computation (IEEE World Congress on Computational Intelligence), Hong Kong, 2008, pp. 3052-3059. doi: 10.1109/CEC.2008.4631210
 	"""
 	Name = ['MultipleTrajectorySearch', 'MTS']
@@ -144,9 +149,13 @@ class MultipleTrajectorySearch(Algorithm):
 
 		Arguments:
 		M {integer} -- number of individuals in population
+
 		NoLsTests {integer} -- number of test runs on local search algorihms
+
 		NoLs {integer} -- number of local search algoritm runs
+
 		NoLsBest {integer} -- number of locals search algorithm runs on best solution
+
 		NoEnabled {integer} -- number of best solution for testing
 		"""
 		self.M, self.NoLsTests, self.NoLs, self.NoLsBest, self.NoEnabled = M, NoLsTests, NoLs, NoLsBest, NoEnabled
@@ -196,10 +205,15 @@ class MultipleTrajectorySearchV1(MultipleTrajectorySearch):
 	r"""Implementation of Multiple trajectory search.
 
 	**Algorithm:** Multiple trajectory search
+
 	**Date:** 2018
+
 	**Authors:** Klemen Berkovic
+
 	**License:** MIT
+
 	**Reference URL:** https://ieeexplore.ieee.org/document/4983179/
+
 	**Reference paper:** Tseng, Lin-Yu, and Chun Chen. "Multiple trajectory search for unconstrained/constrained multi-objective optimization." Evolutionary Computation, 2009. CEC'09. IEEE Congress on. IEEE, 2009.
 	"""
 	Name = ['MultipleTrajectorySearchV1', 'MTSv1']

@@ -10,29 +10,32 @@ class Trid(Benchmark):
 	r"""Implementations of Trid functions.
 
 	Date: 2018
+
 	Author: Klemen Berkovič
+
 	License: MIT
 
 	Function:
 	**Levy Function**
-	:math:`f(\textbf{x}) = \sum_{i = 1}^D \left( x_i - 1 \right)^2 - \sum_{i = 2}^D x_i x_{i - 1}`
 
-	**Input domain:**
-	The function can be defined on any input domain but it is usually
-	evaluated on the hypercube :math:`x_i ∈ [-D^2, D^2]`, for all :math:`i = 1, 2,..., D`.
+		:math:`f(\textbf{x}) = \sum_{i = 1}^D \left( x_i - 1 \right)^2 - \sum_{i = 2}^D x_i x_{i - 1}`
 
-	**Global minimum:**
-	:math:`f(\textbf{x}^*) = \frac{-D(D + 4)(D - 1)}{6}` at :math:`\textbf{x}^* = (1 (D + 1 - 1), \cdots , i (D + 1 - i) , \cdots , D (D + 1 - D))`
+		**Input domain:**
+		The function can be defined on any input domain but it is usually
+		evaluated on the hypercube :math:`x_i ∈ [-D^2, D^2]`, for all :math:`i = 1, 2,..., D`.
+
+		**Global minimum:**
+		:math:`f(\textbf{x}^*) = \frac{-D(D + 4)(D - 1)}{6}` at :math:`\textbf{x}^* = (1 (D + 1 - 1), \cdots , i (D + 1 - i) , \cdots , D (D + 1 - D))`
 
 	LaTeX formats:
-	Inline:
-	$f(\textbf{x}) = \sum_{i = 1}^D \left( x_i - 1 \right)^2 - \sum_{i = 2}^D x_i x_{i - 1}$
+		Inline:
+				$f(\textbf{x}) = \sum_{i = 1}^D \left( x_i - 1 \right)^2 - \sum_{i = 2}^D x_i x_{i - 1}$
 
-	Equation:
-	\begin{equation} f(\textbf{x}) = \sum_{i = 1}^D \left( x_i - 1 \right)^2 - \sum_{i = 2}^D x_i x_{i - 1} \end{equation}
+		Equation:
+				\begin{equation} f(\textbf{x}) = \sum_{i = 1}^D \left( x_i - 1 \right)^2 - \sum_{i = 2}^D x_i x_{i - 1} \end{equation}
 
-	Domain:
-	$-D^2 \leq x_i \leq D^2$
+		Domain:
+				$-D^2 \leq x_i \leq D^2$
 
 	Reference:
 	https://www.sfu.ca/~ssurjano/trid.html

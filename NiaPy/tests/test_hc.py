@@ -5,6 +5,11 @@ from NiaPy.benchmarks.griewank import Griewank
 from NiaPy.algorithms.other import HillClimbAlgorithm
 
 class HCTestCase(AlgorithmTestCase):
+	def setUp(self):
+		self.D = 40
+		self.ihc_custom = HillClimbAlgorithm(D=self.D, nFES=1000, delta=0.4, benchmark=MyBenchmark())
+		self.ihc_griewank = HillClimbAlgorithm(D=self.D, nFES=1000, benchmark=Griewank())
+
 	def test_custom_works_fine(self):
 		ihc_custom = HillClimbAlgorithm(D=self.D, nFES=self.nFES, nGEN=self.nGEN, delta=0.4, benchmark=MyBenchmark(), seed=self.seed)
 		ihc_customc = HillClimbAlgorithm(D=self.D, nFES=self.nFES, nGEN=self.nGEN, delta=0.4, benchmark=MyBenchmark(), seed=self.seed)
