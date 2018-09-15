@@ -91,7 +91,6 @@ class DynNpSelfAdaptiveDifferentialEvolutionAlgorithm(SelfAdaptiveDifferentialEv
 	**Algorithm:** Dynamic population size self-adaptive differential evolution algorithm
 	**Date:** 2018
 	**Author:** Jan Popič and Klemen Berkovič
-	**Author:** Jan Popič
 	**License:** MIT
 	**Reference URL:** https://link.springer.com/article/10.1007/s10489-007-0091-x
 	**Reference paper:** Brest, Janez, and Mirjam Sepesy Maučec. "Population size reduction for the differential evolution algorithm." Applied Intelligence 29.3 (2008): 228-247.
@@ -105,7 +104,7 @@ class DynNpSelfAdaptiveDifferentialEvolutionAlgorithm(SelfAdaptiveDifferentialEv
 		d['pmax'] = lambda x: isinstance(x, int) and x > 0
 		return d
 
-	def setParameters(self, rp=0, pmax=40, **ukwargs):
+	def setParameters(self, rp=0, pmax=10, **ukwargs):
 		r"""Set the parameters of an algorithm.
 
 		**Arguments:**

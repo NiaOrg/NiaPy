@@ -102,7 +102,7 @@ class DynNpDifferentialEvolutionMTS(DifferentialEvolutionMTS):
 	"""
 	Name = ['DynNpDifferentialEvolutionMTS', 'dynNpDEMTS']
 
-	def setParameters(self, pmax=50, rp=3, **ukwargs):
+	def setParameters(self, pmax=10, rp=3, **ukwargs):
 		DifferentialEvolutionMTS.setParameters(self, **ukwargs)
 		self.pmax, self.rp = pmax, rp
 
@@ -131,7 +131,7 @@ class DynNpDifferentialEvolutionMTSv1(DynNpDifferentialEvolutionMTS):
 	"""
 	Name = ['DynNpDifferentialEvolutionMTSv1', 'dynNpDEMTSv1']
 
-	def setParameters(self, pmax=50, rp=3, **ukwargs):
+	def setParameters(self, pmax=10, rp=3, **ukwargs):
 		DifferentialEvolutionMTS.setParameters(self, **ukwargs)
 		self.LSs, self.pmax, self.rp = [MTS_LS1v1, MTS_LS2, MTS_LS3v1], pmax, rp
 
@@ -187,7 +187,7 @@ class DynNpMultiStrategyDifferentialEvolutionMTS(MultiStratgyDifferentialEvoluti
 	"""
 	Name = ['DynNpMultiStrategyDifferentialEvolutionMTS', 'dynNpMSDEMTS']
 
-	def setParameters(self, pmax=50, rp=7, **ukwargs):
+	def setParameters(self, pmax=10, rp=7, **ukwargs):
 		MultiStratgyDifferentialEvolutionMTS.setParameters(self, **ukwargs)
 		self.pmax, self.rp = pmax, rp
 

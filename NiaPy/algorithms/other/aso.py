@@ -42,8 +42,7 @@ def MP_S(x, xr, xb, CR, MP, rnd=rand):
 		b = sort(rnd.choice(len(x), 2, replace=False))
 		x[b[0]:b[1]] = xb[b[0]:b[1]]
 		return x
-	elif MP < 0.5:
-		return asarray([xb[i] if rnd.rand() < CR else x[i] for i in range(len(x))])
+	elif MP < 0.5: return asarray([xb[i] if rnd.rand() < CR else x[i] for i in range(len(x))])
 	elif MP < 0.75:
 		b = sort(rnd.choice(len(x), 2, replace=False))
 		x[b[0]:b[1]] = xr[b[0]:b[1]]

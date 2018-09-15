@@ -51,7 +51,7 @@ class GreyWolfOptimizer(Algorithm):
 
 	def runTask(self, task):
 		"""Run."""
-		pop = task.bcLower() + task.bcRange() * self.rand([self.NP, task.D])
+		pop = task.Lower + task.bRange * self.rand([self.NP, task.D])
 		A, A_f, B, B_f, D, D_f = None, inf, None, inf, None, inf
 		while not task.stopCond():
 			for i in range(self.NP):

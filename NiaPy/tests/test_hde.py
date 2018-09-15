@@ -2,7 +2,7 @@
 # pylint: disable=mixed-indentation, multiple-statements, old-style-class, line-too-long
 from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
 from NiaPy.benchmarks.griewank import Griewank
-from NiaPy.algorithms.modified import DifferentialEvolutionMTS, DifferentialEvolutionMTSv1, MultiStratgyDifferentialEvolutionMTS, DynNpMultiStrategyDifferentialEvolutionMTS, DynNpMultiStrategyDifferentialEvolutionMTSv1
+from NiaPy.algorithms.modified import DifferentialEvolutionMTS, DifferentialEvolutionMTSv1, MultiStratgyDifferentialEvolutionMTS, DynNpMultiStrategyDifferentialEvolutionMTS, DynNpMultiStrategyDifferentialEvolutionMTSv1, DynNpDifferentialEvolutionMTS, DynNpDifferentialEvolutionMTSv1
 
 class DEMTSTestCase(AlgorithmTestCase):
 	def test_custom_works_fine(self):
@@ -28,24 +28,24 @@ class DEMTSv1TestCase(AlgorithmTestCase):
 
 class DynNpDEMTSTestCase(AlgorithmTestCase):
 	def test_custom_works_fine(self):
-		ca_custom = DifferentialEvolutionMTSv1(NP=40, D=self.D, nGEN=self.nGEN, nFES=self.nFES, benchmark=MyBenchmark(), seed=self.seed)
-		ca_customc = DifferentialEvolutionMTSv1(NP=40, D=self.D, nGEN=self.nGEN, nFES=self.nFES, benchmark=MyBenchmark(), seed=self.seed)
+		ca_custom = DynNpDifferentialEvolutionMTS(NP=40, D=self.D, nGEN=self.nGEN, nFES=self.nFES, benchmark=MyBenchmark(), seed=self.seed)
+		ca_customc = DynNpDifferentialEvolutionMTS(NP=40, D=self.D, nGEN=self.nGEN, nFES=self.nFES, benchmark=MyBenchmark(), seed=self.seed)
 		AlgorithmTestCase.algorithm_run_test(self, ca_custom, ca_customc)
 
 	def test_griewank_works_fine(self):
-		ca_griewank = DifferentialEvolutionMTSv1(NP=40, D=self.D, nGEN=self.nGEN, nFES=self.nFES, benchmark=Griewank(), seed=self.seed)
-		ca_griewankc = DifferentialEvolutionMTSv1(NP=40, D=self.D, nGEN=self.nGEN, nFES=self.nFES, benchmark=Griewank(), seed=self.seed)
+		ca_griewank = DynNpDifferentialEvolutionMTS(NP=40, D=self.D, nGEN=self.nGEN, nFES=self.nFES, benchmark=Griewank(), seed=self.seed)
+		ca_griewankc = DynNpDifferentialEvolutionMTS(NP=40, D=self.D, nGEN=self.nGEN, nFES=self.nFES, benchmark=Griewank(), seed=self.seed)
 		AlgorithmTestCase.algorithm_run_test(self, ca_griewank, ca_griewankc)
 
 class DynNpDEMTSv1TestCase(AlgorithmTestCase):
 	def test_custom_works_fine(self):
-		ca_custom = DifferentialEvolutionMTSv1(NP=40, D=self.D, nGEN=self.nGEN, nFES=self.nFES, benchmark=MyBenchmark(), seed=self.seed)
-		ca_customc = DifferentialEvolutionMTSv1(NP=40, D=self.D, nGEN=self.nGEN, nFES=self.nFES, benchmark=MyBenchmark(), seed=self.seed)
+		ca_custom = DynNpDifferentialEvolutionMTSv1(NP=40, D=self.D, nGEN=self.nGEN, nFES=self.nFES, benchmark=MyBenchmark(), seed=self.seed)
+		ca_customc = DynNpDifferentialEvolutionMTSv1(NP=40, D=self.D, nGEN=self.nGEN, nFES=self.nFES, benchmark=MyBenchmark(), seed=self.seed)
 		AlgorithmTestCase.algorithm_run_test(self, ca_custom, ca_customc)
 
 	def test_griewank_works_fine(self):
-		ca_griewank = DifferentialEvolutionMTSv1(NP=40, D=self.D, nGEN=self.nGEN, nFES=self.nFES, benchmark=Griewank(), seed=self.seed)
-		ca_griewankc = DifferentialEvolutionMTSv1(NP=40, D=self.D, nGEN=self.nGEN, nFES=self.nFES, benchmark=Griewank(), seed=self.seed)
+		ca_griewank = DynNpDifferentialEvolutionMTSv1(NP=40, D=self.D, nGEN=self.nGEN, nFES=self.nFES, benchmark=Griewank(), seed=self.seed)
+		ca_griewankc = DynNpDifferentialEvolutionMTSv1(NP=40, D=self.D, nGEN=self.nGEN, nFES=self.nFES, benchmark=Griewank(), seed=self.seed)
 		AlgorithmTestCase.algorithm_run_test(self, ca_griewank, ca_griewankc)
 
 class MSDEMTSTestCase(AlgorithmTestCase):
