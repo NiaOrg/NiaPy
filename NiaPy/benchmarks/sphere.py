@@ -57,13 +57,9 @@ class Sphere2(Benchmark):
 	r"""Implementation of Sphere with different powers function.
 
 	Date: 2018
-<<<<<<< HEAD
-	Authors: Klemen Berkovič
-=======
 
 	Authors: Klemen Berkovič
 
->>>>>>> c863d801fda8e1949a3ca716a4de7c7ca3d0ea16
 	License: MIT
 
 	Function: **Sun of different powers function**
