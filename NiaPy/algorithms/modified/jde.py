@@ -11,7 +11,7 @@ logger.setLevel('INFO')
 
 __all__ = [
 	'SelfAdaptiveDifferentialEvolution',
-	'DynNPSelfAdaptiveDifferentialEvolutionAlgorithm',
+	'DynNpSelfAdaptiveDifferentialEvolutionAlgorithm',
 	'MultiStrategySelfAdaptiveDifferentialEvolution',
 	'DynNpMultiStrategySelfAdaptiveDifferentialEvolution'
 ]
@@ -85,7 +85,7 @@ class SelfAdaptiveDifferentialEvolution(DifferentialEvolution):
 			if x_b.f > pop[ix_b].f: x_b = pop[ix_b]
 		return x_b.x, x_b.f
 
-class DynNPSelfAdaptiveDifferentialEvolutionAlgorithm(SelfAdaptiveDifferentialEvolution):
+class DynNpSelfAdaptiveDifferentialEvolutionAlgorithm(SelfAdaptiveDifferentialEvolution):
 	r"""Implementation of Dynamic population size self-adaptive differential evolution algorithm.
 
 	**Algorithm:** Dynamic population size self-adaptive differential evolution algorithm
@@ -96,7 +96,7 @@ class DynNPSelfAdaptiveDifferentialEvolutionAlgorithm(SelfAdaptiveDifferentialEv
 	**Reference URL:** https://link.springer.com/article/10.1007/s10489-007-0091-x
 	**Reference paper:** Brest, Janez, and Mirjam Sepesy Maučec. "Population size reduction for the differential evolution algorithm." Applied Intelligence 29.3 (2008): 228-247.
 	"""
-	Name = ['DynNPSelfAdaptiveDifferentialEvolutionAlgorithm', 'dynNPjDE']
+	Name = ['DynNpSelfAdaptiveDifferentialEvolutionAlgorithm', 'dynNPjDE']
 
 	@staticmethod
 	def typeParameters():
@@ -142,7 +142,7 @@ class MultiStrategySelfAdaptiveDifferentialEvolution(SelfAdaptiveDifferentialEvo
 	**Author:** Klemen Berkovič
 	**License:** MIT
 	"""
-	Name = ['MultiStrategySelfAdaptiveDifferentialEvolution', 'MSjDE']
+	Name = ['MultiStrategySelfAdaptiveDifferentialEvolution', 'MsjDE']
 
 	def setParameters(self, strategys=[CrossCurr2Rand1, CrossCurr2Best1, CrossRand1, CrossBest1, CrossBest2], **kwargs):
 		SelfAdaptiveDifferentialEvolution.setParameters(self, **kwargs)

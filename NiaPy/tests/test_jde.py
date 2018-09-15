@@ -3,7 +3,7 @@
 from unittest import TestCase
 from numpy import random as rnd
 from NiaPy.util import Task
-from NiaPy.algorithms.modified import SelfAdaptiveDifferentialEvolution, DynNPSelfAdaptiveDifferentialEvolutionAlgorithm
+from NiaPy.algorithms.modified import SelfAdaptiveDifferentialEvolution, DynNpSelfAdaptiveDifferentialEvolutionAlgorithm, MultiStrategySelfAdaptiveDifferentialEvolution, DynNpMultiStrategySelfAdaptiveDifferentialEvolution
 from NiaPy.algorithms.modified.jde import SolutionjDE
 from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
 
@@ -34,13 +34,35 @@ class jDETestCase(AlgorithmTestCase):
 
 class dyNPjDETestCase(AlgorithmTestCase):
 	def test_custom_works_fine(self):
-		dynnpjde_custom = DynNPSelfAdaptiveDifferentialEvolutionAlgorithm(D=self.D, NP=40, nFES=self.nFES, nGEN=self.nGEN, F=0.5, F_l=0.0, F_u=2.0, Tao1=0.9, CR=0.1, Tao2=0.45, benchmark=MyBenchmark(), seed=self.seed)
-		dynnpjde_customc = DynNPSelfAdaptiveDifferentialEvolutionAlgorithm(D=self.D, NP=40, nFES=self.nFES, nGEN=self.nGEN, F=0.5, F_l=0.0, F_u=2.0, Tao1=0.9, CR=0.1, Tao2=0.45, benchmark=MyBenchmark(), seed=self.seed)
+		dynnpjde_custom = DynNpSelfAdaptiveDifferentialEvolutionAlgorithm(D=self.D, NP=40, nFES=self.nFES, nGEN=self.nGEN, F=0.5, F_l=0.0, F_u=2.0, Tao1=0.9, CR=0.1, Tao2=0.45, benchmark=MyBenchmark(), seed=self.seed)
+		dynnpjde_customc = DynNpSelfAdaptiveDifferentialEvolutionAlgorithm(D=self.D, NP=40, nFES=self.nFES, nGEN=self.nGEN, F=0.5, F_l=0.0, F_u=2.0, Tao1=0.9, CR=0.1, Tao2=0.45, benchmark=MyBenchmark(), seed=self.seed)
 		AlgorithmTestCase.algorithm_run_test(self, dynnpjde_custom, dynnpjde_customc)
 
 	def test_griewank_works_fine(self):
-		dynnpjde_griewank = DynNPSelfAdaptiveDifferentialEvolutionAlgorithm(D=self.D, NP=40, nFES=self.nFES, nGEN=self.nGEN, F=0.5, F_l=0.0, F_u=2.0, Tao1=0.9, CR=0.1, Tao2=0.45, benchmark='griewank', seed=self.seed)
-		dynnpjde_griewankc = DynNPSelfAdaptiveDifferentialEvolutionAlgorithm(D=self.D, NP=40, nFES=self.nFES, nGEN=self.nGEN, F=0.5, F_l=0.0, F_u=2.0, Tao1=0.9, CR=0.1, Tao2=0.45, benchmark='griewank', seed=self.seed)
+		dynnpjde_griewank = DynNpSelfAdaptiveDifferentialEvolutionAlgorithm(D=self.D, NP=40, nFES=self.nFES, nGEN=self.nGEN, F=0.5, F_l=0.0, F_u=2.0, Tao1=0.9, CR=0.1, Tao2=0.45, benchmark='griewank', seed=self.seed)
+		dynnpjde_griewankc = DynNpSelfAdaptiveDifferentialEvolutionAlgorithm(D=self.D, NP=40, nFES=self.nFES, nGEN=self.nGEN, F=0.5, F_l=0.0, F_u=2.0, Tao1=0.9, CR=0.1, Tao2=0.45, benchmark='griewank', seed=self.seed)
 		AlgorithmTestCase.algorithm_run_test(self, dynnpjde_griewank, dynnpjde_griewankc)
+
+class MsjDETestCase(AlgorithmTestCase):
+	def test_custom_works_fine(self):
+		jde_custom = MultiStrategySelfAdaptiveDifferentialEvolution(D=self.D, NP=40, nFES=self.nFES, nGEN=self.nGEN, F=0.5, F_l=0.0, F_u=2.0, Tao1=0.9, CR=0.1, Tao2=0.45, benchmark=MyBenchmark(), seed=self.seed)
+		jde_customc = MultiStrategySelfAdaptiveDifferentialEvolution(D=self.D, NP=40, nFES=self.nFES, nGEN=self.nGEN, F=0.5, F_l=0.0, F_u=2.0, Tao1=0.9, CR=0.1, Tao2=0.45, benchmark=MyBenchmark(), seed=self.seed)
+		AlgorithmTestCase.algorithm_run_test(self, jde_custom, jde_customc)
+
+	def test_griewank_works_fine(self):
+		jde_griewank = MultiStrategySelfAdaptiveDifferentialEvolution(D=self.D, NP=40, nFES=self.nFES, nGEN=self.nGEN, F=0.5, F_l=0.0, F_u=2.0, Tao1=0.9, CR=0.1, Tao2=0.45, benchmark='griewank', seed=self.seed)
+		jde_griewankc = MultiStrategySelfAdaptiveDifferentialEvolution(D=self.D, NP=40, nFES=self.nFES, nGEN=self.nGEN, F=0.5, F_l=0.0, F_u=2.0, Tao1=0.9, CR=0.1, Tao2=0.45, benchmark='griewank', seed=self.seed)
+		AlgorithmTestCase.algorithm_run_test(self, jde_griewank, jde_griewankc)
+
+class dynNpMsjDETestCase(AlgorithmTestCase):
+	def test_custom_works_fine(self):
+		jde_custom = DynNpMultiStrategySelfAdaptiveDifferentialEvolution(D=self.D, NP=40, nFES=self.nFES, nGEN=self.nGEN, F=0.5, F_l=0.0, F_u=2.0, Tao1=0.9, CR=0.1, Tao2=0.45, benchmark=MyBenchmark(), seed=self.seed)
+		jde_customc = DynNpMultiStrategySelfAdaptiveDifferentialEvolution(D=self.D, NP=40, nFES=self.nFES, nGEN=self.nGEN, F=0.5, F_l=0.0, F_u=2.0, Tao1=0.9, CR=0.1, Tao2=0.45, benchmark=MyBenchmark(), seed=self.seed)
+		AlgorithmTestCase.algorithm_run_test(self, jde_custom, jde_customc)
+
+	def test_griewank_works_fine(self):
+		jde_griewank = DynNpMultiStrategySelfAdaptiveDifferentialEvolution(D=self.D, NP=40, nFES=self.nFES, nGEN=self.nGEN, F=0.5, F_l=0.0, F_u=2.0, Tao1=0.9, CR=0.1, Tao2=0.45, benchmark='griewank', seed=self.seed)
+		jde_griewankc = MultiStrategySelfAdaptiveDifferentialEvolution(D=self.D, NP=40, nFES=self.nFES, nGEN=self.nGEN, F=0.5, F_l=0.0, F_u=2.0, Tao1=0.9, CR=0.1, Tao2=0.45, benchmark='griewank', seed=self.seed)
+		AlgorithmTestCase.algorithm_run_test(self, jde_griewank, jde_griewankc)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

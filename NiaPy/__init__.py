@@ -27,7 +27,7 @@ NiaPyAlgos = [
 	balgos.BatAlgorithm,
 	balgos.DifferentialEvolution,
 	balgos.DynNpDifferentialEvolution,
-	balgos.DynNpStrategyDifferentialEvolution,
+	balgos.AgingNpDifferentialEvolution,
 	balgos.MultiStrategyDifferentialEvolution,
 	balgos.DynNpMultiStrategyDifferentialEvolution,
 	balgos.FireflyAlgorithm,
@@ -74,7 +74,7 @@ NiaPyAlgos += [
 	malgos.DynNpMultiStrategyDifferentialEvolutionMTS,
 	malgos.DynNpMultiStrategyDifferentialEvolutionMTSv1,
 	malgos.SelfAdaptiveDifferentialEvolution,
-	malgos.DynNPSelfAdaptiveDifferentialEvolutionAlgorithm,
+	malgos.DynNpSelfAdaptiveDifferentialEvolutionAlgorithm,
 	malgos.MultiStrategySelfAdaptiveDifferentialEvolution,
 	malgos.DynNpMultiStrategySelfAdaptiveDifferentialEvolution
 ]

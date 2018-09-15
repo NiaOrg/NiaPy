@@ -246,5 +246,4 @@ class ExpandedScaffer:
 			return g(x[D - 1], x[0]) + val
 		return f
 
->>>>>>> c863d801fda8e1949a3ca716a4de7c7ca3d0ea16
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

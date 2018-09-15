@@ -62,7 +62,7 @@ def getOptType(otype):
 
 if __name__ == '__main__':
 	# pargs, algo = getDictArgs(sys.argv[1:]), Runner.getAlgorithm('SelfAdaptiveDifferentialEvolution')
-	pargs, algo = getDictArgs(sys.argv[1:]), Runner.getAlgorithm('dynNpMsjDE')
+	pargs, algo = getDictArgs(sys.argv[1:]), Runner.getAlgorithm('jDE')
 	optFunc = getOptType(pargs['optType'])
 	if not pargs['runType']: simple_example(algo, optFunc=optFunc, **pargs)
 	elif pargs['runType'] == 'log': logging_example(algo, optFunc=optFunc, **pargs)

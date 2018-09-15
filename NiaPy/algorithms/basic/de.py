@@ -4,7 +4,7 @@ import logging
 from numpy import random as rand, argmin, argmax, concatenate, mean, asarray
 from NiaPy.algorithms.algorithm import Algorithm, Individual
 
-__all__ = ['DifferentialEvolution', 'DynNpDifferentialEvolution', 'DynNpStrategyDifferentialEvolution', 'MultiStrategyDifferentialEvolution', 'DynNpMultiStrategyDifferentialEvolution', 'CrossRand1', 'CrossBest2', 'CrossBest1', 'CrossBest2', 'CrossCurr2Rand1', 'CrossCurr2Best1']
+__all__ = ['DifferentialEvolution', 'DynNpDifferentialEvolution', 'AgingNpDifferentialEvolution', 'MultiStrategyDifferentialEvolution', 'DynNpMultiStrategyDifferentialEvolution', 'CrossRand1', 'CrossBest2', 'CrossBest1', 'CrossBest2', 'CrossCurr2Rand1', 'CrossCurr2Best1']
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.basic')
@@ -12,37 +12,37 @@ logger.setLevel('INFO')
 
 def CrossRand1(pop, ic, x_b, f, cr, rnd=rand):
 	j = rnd.randint(len(pop[0]))
-	r = rnd.choice(len(pop), 3, replace=False)
+	r = rnd.choice(len(pop), 3, replace=not len(pop) >= 3)
 	x = [pop[r[0]][i] + f * (pop[r[1]][i] - pop[r[2]][i]) if rnd.rand() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
 	return asarray(x)
 
 def CrossBest1(pop, ic, x_b, f, cr, rnd=rand):
 	j = rnd.randint(len(pop[0]))
-	r = rnd.choice(len(pop), 2, replace=False)
+	r = rnd.choice(len(pop), 2, replace=not len(pop) >= 2)
 	x = [x_b[i] + f * (pop[r[0]][i] - pop[r[1]][i]) if rnd.rand() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
 	return asarray(x)
 
 def CrossRand2(pop, ic, x_b, f, cr, rnd=rand):
 	j = rnd.randint(len(pop[0]))
-	r = rnd.choice(len(pop), 5, replace=False)
+	r = rnd.choice(len(pop), 5, replace=not len(pop) >= 5)
 	x = [pop[r[0]][i] + f * (pop[r[1]][i] - pop[r[2]][i]) + f * (pop[r[3]][i] - pop[r[4]][i]) if rnd.rand() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
 	return asarray(x)
 
 def CrossBest2(pop, ic, x_b, f, cr, rnd=rand):
 	j = rnd.randint(len(pop[0]))
-	r = rnd.choice(len(pop), 4, replace=False)
+	r = rnd.choice(len(pop), 4, replace=not len(pop) >= 4)
 	x = [x_b[i] + f * (pop[r[0]][i] - pop[r[1]][i]) + f * (pop[r[2]][i] - pop[r[3]][i]) if rnd.rand() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
 	return asarray(x)
 
 def CrossCurr2Rand1(pop, ic, x_b, f, cr, rnd=rand):
 	j = rnd.randint(len(pop[0]))
-	r = rnd.choice(len(pop), 4, replace=False)
+	r = rnd.choice(len(pop), 4, replace=not len(pop) >= 4)
 	x = [pop[ic][i] + f * (pop[r[0]][i] - pop[r[1]][i]) + f * (pop[r[2]][i] - pop[r[3]][i]) if rnd.rand() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
 	return asarray(x)
 
 def CrossCurr2Best1(pop, ic, x_b, f, cr, rnd=rand):
 	j = rnd.randint(len(pop[0]))
-	r = rnd.choice(len(pop), 3, replace=False)
+	r = rnd.choice(len(pop), 3, replace=not len(pop) >= 3)
 	x = [pop[ic][i] + f * (x_b[i] - pop[r[0]][i]) + f * (pop[r[1]][i] - pop[r[2]][i]) if rnd.rand() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
 	return asarray(x)
 
@@ -98,6 +98,16 @@ class DifferentialEvolution(Algorithm):
 		return x_b, x_bf
 
 class DynNpDifferentialEvolution(DifferentialEvolution):
+	r"""Implementation of Dynamic poulation size Differential evolution algorithm.
+
+	**Algorithm:** Dynamic poulation size Differential evolution algorithm
+
+	**Date:** 2018
+
+	**Author:** Klemen Berkovič
+
+	**License:** MIT
+	"""
 	Name = ['DynNpDifferentialEvolution', 'dynNpDE']
 
 	@staticmethod
@@ -117,7 +127,7 @@ class DynNpDifferentialEvolution(DifferentialEvolution):
 		SR {decimal} -- search reange for best (normalized)
 		CrossMutt {function} -- crossover and mutation strategy
 		"""
-		DifferentialEvolution.setParameters(ukwargs)
+		DifferentialEvolution.setParameters(self, **ukwargs)
 		self.pmax, self.rp = pmax, rp
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
@@ -149,9 +159,18 @@ class AgingIndividual(Individual):
 		Individual.__init__(self, **kwargs)
 		self.age = 0
 
-class DynNpStrategyDifferentialEvolution(DifferentialEvolution):
-	r"""Implementation base on our idea."""
-	Name = ['DynNpStrategyDifferentialEvolution', 'dynNpSDE']
+class AgingNpDifferentialEvolution(DifferentialEvolution):
+	r"""Implementation of Differential evolution algorithm with aging individuals.
+
+	**Algorithm:** Differential evolution algorithm with dynamic population size that is defined by the quality of population
+
+	**Date:** 2018
+
+	**Author:** Klemen Berkovič
+
+	**License:** MIT
+	"""
+	Name = ['AgingNpDifferentialEvolution', 'ANpSDE']
 
 	@staticmethod
 	def typeParameters():
@@ -194,7 +213,16 @@ class DynNpStrategyDifferentialEvolution(DifferentialEvolution):
 		return x_b.x, x_b.f
 
 class MultiStrategyDifferentialEvolution(DifferentialEvolution):
-	r"""Method uses multiple mutation strategys tof mutation and after mutation it selects the best individual."""
+	r"""Implementation of Differential evolution algorithm with multiple mutation strateys.
+
+	**Algorithm:** Implementation of Differential evolution algorithm with multiple mutation strateys
+
+	**Date:** 2018
+
+	**Author:** Klemen Berkovič
+
+	**License:** MIT
+	"""
 	Name = ['MultiStrategyDifferentialEvolution', 'MsDE']
 
 	@staticmethod
@@ -232,7 +260,16 @@ class MultiStrategyDifferentialEvolution(DifferentialEvolution):
 		return x_b, x_bf
 
 class DynNpMultiStrategyDifferentialEvolution(MultiStrategyDifferentialEvolution):
-	r"""Method uses multiple mutation strategys tof mutation and after mutation it selects the best individual."""
+	r"""Implementation of Dynamic population size Differential evolution algorithm with dynamic population size that is defined by the quality of population.
+
+	**Algorithm:** Dynamic population size Differential evolution algorithm with dynamic population size that is defined by the quality of population
+
+	**Date:** 2018
+
+	**Author:** Klemen Berkovič
+
+	**License:** MIT
+	"""
 	Name = ['DynNpMultiStrategyDifferentialEvolution', 'dynNpMsDE']
 
 	@staticmethod
