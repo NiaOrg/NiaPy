@@ -52,7 +52,7 @@ class BareBonesFireworksAlgorithm(Algorithm):
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def runTask(self, task):
-		x, A = self.uniform(task.Lower, task.Upper, task.D), task.Range
+		x, A = self.uniform(task.Lower, task.Upper, task.D), task.bRange
 		x_fit = task.eval(x)
 		while not task.stopCond():
 			S = self.uniform(x - A, x + A, [self.n, task.D])
