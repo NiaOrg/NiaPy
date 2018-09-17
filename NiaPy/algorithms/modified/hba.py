@@ -42,7 +42,7 @@ class HybridBatAlgorithm(BatAlgorithm):
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def runTask(self, task):
-		v, Sol = full([self.NP, task.D], 0.0), task.bcLower() + task.bcRange() * self.rand([self.NP, task.D])
+		v, Sol = full([self.NP, task.D], 0.0), task.Lower + task.bRange * self.rand([self.NP, task.D])
 		Fitness = apply_along_axis(task.eval, 1, Sol)
 		ib = argmin(Fitness)
 		best, f_min = Sol[ib], Fitness[ib]

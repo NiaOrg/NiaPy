@@ -189,8 +189,8 @@ class Individual:
 	**License:** MIT
 	"""
 	def __init__(self, **kwargs):
-		self.f = inf
 		task, rnd, x = kwargs.pop('task', None), kwargs.pop('rand', rand), kwargs.pop('x', [])
+		self.f = task.optType.value * inf if task is not None else inf
 		if len(x) > 0: self.x = x if isinstance(x, ndarray) else asarray(x)
 		else: self.generateSolution(task, rnd)
 		if kwargs.pop('e', True) and task is not None: self.evaluate(task, rnd)

@@ -52,7 +52,7 @@ class BareBonesFireworksAlgorithm(Algorithm):
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def runTask(self, task):
-		x, A = self.uniform(task.bcLower(), task.bcUpper(), task.D), task.bcRange()
+		x, A = self.uniform(task.Lower, task.Upper, task.D), task.Range
 		x_fit = task.eval(x)
 		while not task.stopCond():
 			S = self.uniform(x - A, x + A, [self.n, task.D])
@@ -209,7 +209,7 @@ class EnhancedFireworksAlgorithm(FireworksAlgorithm):
 		return FW, FW_f
 
 	def runTask(self, task):
-		FW, Ah = self.uniform(task.bcLower(), task.bcUpper(), [self.N, task.D]), self.initAmplitude(task)
+		FW, Ah = self.uniform(task.Lower, task.Upper, [self.N, task.D]), self.initAmplitude(task)
 		Ainit, Afinal, A_min = self.initRanges(task)
 		FW_f = apply_along_axis(task.eval, 1, FW)
 		ib = argmin(FW_f)

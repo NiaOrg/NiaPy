@@ -95,9 +95,9 @@ class GlowwormSwarmOptimization(Algorithm):
 		else: return xb, xb_f
 
 	def runTask(self, task):
-		rs = euclidean(full(task.D, 0), task.bcRange())
-		GS, GS_f, L, R = self.uniform(task.bcLower(), task.bcUpper(), [self.n, task.D]), full(self.n, inf), full(self.n, self.l0), full(self.n, rs)
-		xb, xb_f = None, inf
+		rs = euclidean(full(task.D, 0), task.bRange)
+		GS, GS_f, L, R = self.uniform(task.Lower, task.Upper, [self.n, task.D]), full(self.n, task.optType.value * inf), full(self.n, self.l0), full(self.n, rs)
+		xb, xb_f = None, task.optType.value * inf
 		while not task.stopCondI():
 			GSo, Ro, GS_f = copy(GS), copy(R), apply_along_axis(task.eval, 1, GS)
 			xb, xb_f = self.getBest(GS, GS_f, xb, xb_f)

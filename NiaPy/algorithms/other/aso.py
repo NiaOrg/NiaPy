@@ -137,7 +137,7 @@ class AnarchicSocietyOptimization(Algorithm):
 	def runTask(self, task):
 		X, (alpha, gamma, theta), rs = self.uniform(task.bcLower(), task.bcUpper(), [self.NP, task.D]), self.init(task), euclidean(full(task.D, 0.0), task.D)
 		X_f = apply_along_axis(task.eval, 1, X)
-		Xpb, Xpb_f, xb, xb_f = self.uBestAndPBest(X, X_f, full([self.NP, task.D], 0.0), full(self.NP, inf))
+		Xpb, Xpb_f, xb, xb_f = self.uBestAndPBest(X, X_f, full([self.NP, task.D], 0.0), full(self.NP, task.optType.value * inf))
 		while not task.stopCondI():
 			Xin = [self.getBestNeighbors(i, X, X_f, rs) for i in range(len(X))]
 			MP_c, MP_s, MP_p = [self.FI(X_f[i], Xpb_f[i], xb_f, alpha[i]) for i in range(len(X))], [self.EI(X_f[i], Xin[i], gamma[i]) for i in range(len(X))], [self.II(X_f[i], Xpb_f[i], theta[i]) for i in range(len(X))]

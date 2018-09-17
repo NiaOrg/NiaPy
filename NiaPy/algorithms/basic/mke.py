@@ -162,7 +162,7 @@ class MonkeyKingEvolutionV3(MonkeyKingEvolutionV1):
 
 	def runTask(self, task):
 		X = task.bcLower() + task.bcRange() * self.rand([self.NP, task.D])
-		x_gb, x_f_gb = self.eval(X, None, inf, task)
+		x_gb, x_f_gb = self.eval(X, None, task.optType.value * inf, task)
 		k, c = int(ceil(self.NP / task.D)), int(ceil(self.C * task.D))
 		while not task.stopCond():
 			X_gb = x_gb + self.FC * X[self.Rand.choice(len(X), c)] - X[self.Rand.choice(len(X), c)]

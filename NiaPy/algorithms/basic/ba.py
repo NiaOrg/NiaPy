@@ -62,7 +62,7 @@ class BatAlgorithm(Algorithm):
 		{decimal} -- minimal value found of objective function
 		"""
 		S, Q, v = full([self.NP, task.D], 0.0), full(self.NP, 0.0), full([self.NP, task.D], 0.0)
-		Sol = task.bcLower() + task.bcRange() * self.uniform(0, 1, [self.NP, task.D])
+		Sol = task.Lower + task.bRange * self.uniform(0, 1, [self.NP, task.D])
 		Fitness = apply_along_axis(task.eval, 1, Sol)
 		j = argmin(Fitness)
 		best, f_min = Sol[j], Fitness[j]

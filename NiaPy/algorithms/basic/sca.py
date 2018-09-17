@@ -54,7 +54,7 @@ class SineCosineAlgorithm(Algorithm):
 	def nextPos(self, x, x_b, r1, r2, r3, r4, task): return task.repair(x + r1 * (sin(r2) if r4 < 0.5 else cos(r2)) * fabs(r3 * x_b - x), self.Rand)
 
 	def runTask(self, task):
-		P, x, x_f = self.uniform(task.bcLower(), task.bcUpper(), [self.NP, task.D]), None, inf
+		P, x, x_f = self.uniform(task.bcLower(), task.bcUpper(), [self.NP, task.D]), None, task.optType.value * inf
 		while not task.stopCondI():
 			P_f = apply_along_axis(task.eval, 1, P)
 			ib = argmin(P_f)

@@ -122,7 +122,7 @@ class KrillHerd(Algorithm):
 	def Cr(self, xf, yf, xf_best, xf_worst): return self._Cr * self.funK(xf, yf, xf_best, xf_worst)
 
 	def runTask(self, task):
-		KH, N, F, x, x_fit = self.uniform(task.bcLower(), task.bcUpper(), [self.N, task.D]), full(self.N, .0), full(self.N, .0), None, inf
+		KH, N, F, x, x_fit = self.uniform(task.Lower, task.Upper, [self.N, task.D]), full(self.N, .0), full(self.N, .0), None, task.optType.value * inf
 		W_n, W_f = self.initWeights(task)
 		while not task.stopCondI():
 			KH_f = apply_along_axis(task.eval, 1, KH)
@@ -285,8 +285,8 @@ class KrillHerdV11(KrillHerd):
 	def Cr(self, KH_f, KHb_f, KHw_f): return 0.8 + 0.2 * (KH_f - KHb_f) / (KHw_f - KHb_f)
 
 	def runTask(self, task):
-		KH, N, F, Dt, x, x_fit = self.uniform(task.bcLower(), task.bcUpper(), [self.N, task.D]), full(self.N, .0), full(self.N, .0), mean(task.bcRange()) / 2, None, inf
-		KHo, KHo_f = full([self.N, task.D], inf), full(self.N, inf)
+		KH, N, F, Dt, x, x_fit = self.uniform(task.bcLower(), task.bcUpper(), [self.N, task.D]), full(self.N, .0), full(self.N, .0), mean(task.bcRange()) / 2, None, task.optType.value * inf
+		KHo, KHo_f = full([self.N, task.D], task.optType.value * inf), full(self.N, task.optType.value * inf)
 		while not task.stopCondI():
 			KH_f, w = apply_along_axis(task.eval, 1, KH), full(task.D, 0.1 + 0.8 * (1 - task.Iters / task.nGEN))
 			KHo, KHo_f = self.ElitistSelection(KH, KH_f, KHo, KHo_f)

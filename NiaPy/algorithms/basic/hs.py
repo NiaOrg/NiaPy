@@ -63,7 +63,7 @@ class HarmonySearch(Algorithm):
 		return H
 
 	def runTask(self, task):
-		HM = self.uniform(task.bcLower(), task.bcUpper(), [self.HMS, task.D])
+		HM = self.uniform(task.Lower, task.Upper, [self.HMS, task.D])
 		HM_f = apply_along_axis(task.eval, 1, HM)
 		while not task.stopCondI():
 			H = self.improvize(HM, task)

@@ -52,7 +52,7 @@ class GreyWolfOptimizer(Algorithm):
 	def runTask(self, task):
 		"""Run."""
 		pop = task.Lower + task.bRange * self.rand([self.NP, task.D])
-		A, A_f, B, B_f, D, D_f = None, inf, None, inf, None, inf
+		A, A_f, B, B_f, D, D_f = None, task.optType.value * inf, None, task.optType.value * inf, None, task.optType.value * inf
 		while not task.stopCond():
 			for i in range(self.NP):
 				pop[i] = self.repair(pop[i], task)
