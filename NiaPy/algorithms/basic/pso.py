@@ -1,7 +1,7 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, line-too-long, singleton-comparison, multiple-statements, attribute-defined-outside-init, no-self-use, logging-not-lazy, unused-variable, arguments-differ, bad-continuation
 import logging
-from numpy import apply_along_axis, argmin, full, inf, where
+from numpy import apply_along_axis, argmin, full, inf, where, any
 from NiaPy.algorithms.algorithm import Algorithm
 from NiaPy.util import fullArray
 
@@ -60,17 +60,17 @@ class ParticleSwarmAlgorithm(Algorithm):
 
 	def repair(self, x, l, u):
 		ir = where(x < l)
-		x[ir] = self.uniform(l[ir], u[ir])
+		x[ir] = l[ir]
 		ir = where(x > u)
-		x[ir] = self.uniform(l[ir], u[ir])
+		x[ir] = u[ir]
 		return x
 
 	def runTask(self, task):
 		"""Move particles in search space."""
 		self.init(task)
-		P, P_fit = task.Lower + task.bRange * self.rand([self.NP, task.D]), full(self.NP, inf)
-		P_pb, P_pb_fit, p_b, p_b_fit, V = P, P_fit, P[0], P_fit[0], full([self.NP, task.D], 0)
-		while not task.stopCond():
+		P, P_fit = task.Lower + task.bRange * self.rand([self.NP, task.D]), full(self.NP, task.optType.value * inf)
+		P_pb, P_pb_fit, p_b, p_b_fit, V = P, P_fit, P[0], P_fit[0], full([self.NP, task.D], 0.0)
+		while not task.stopCondI():
 			P = apply_along_axis(self.repair, 1, P, task.Lower, task.Upper)
 			P_fit = apply_along_axis(task.eval, 1, P)
 			ip_pb = where(P_pb_fit > P_fit)
@@ -78,7 +78,7 @@ class ParticleSwarmAlgorithm(Algorithm):
 			ip_b = argmin(P_fit)
 			if p_b_fit > P_fit[ip_b]: p_b, p_b_fit = P[ip_b], P_fit[ip_b]
 			V = self.w * V + self.C1 * self.rand([self.NP, task.D]) * (P_pb - P) + self.C2 * self.rand([self.NP, task.D]) * (p_b - P)
-			V = apply_along_axis(self.repair, 1, V, self.vMax, self.vMax)
+			V = apply_along_axis(self.repair, 1, V, self.vMin, self.vMax)
 			P = P + V
 		return p_b, p_b_fit
 

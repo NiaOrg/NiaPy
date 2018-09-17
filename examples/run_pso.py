@@ -38,13 +38,13 @@ class MaxMB(MinMB):
 def simple_example(alg, runs=10, D=10, nFES=50000, nGEN=10000, seed=[None], optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kn):
 	for i in range(runs):
 		task = Task(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc())
-		algo = alg(seed=seed[i % len(seed)], task=task)
+		algo = alg(seed=seed[i % len(seed)], task=task, vMin=-1, vMax=1)
 		best = algo.run()
 		logger.info('%s %s' % (best[0], best[1]))
 
 def logging_example(alg, D=10, nFES=50000, nGEN=100000, seed=[None], optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kn):
 	task = TaskConvPrint(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc())
-	algo = alg(seed=seed[0], task=task)
+	algo = alg(seed=seed[0], task=task, vMin=-1, vMax=1)
 	best = algo.run()
 	logger.info('%s %s' % (best[0], best[1]))
 
