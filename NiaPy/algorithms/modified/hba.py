@@ -15,9 +15,13 @@ class HybridBatAlgorithm(BatAlgorithm):
 	r"""Implementation of Hybrid bat algorithm.
 
 	**Algorithm:** Hybrid bat algorithm
+
 	**Date:** 2018
+
 	**Author:** Grega Vrbancic and Klemen Berkovič
+
 	**License:** MIT
+
 	**Reference paper:** Fister Jr., Iztok and Fister, Dusan and Yang, Xin-She. "A Hybrid Bat Algorithm". Elektrotehniski vestnik, 2013. 1-7.
 	"""
 	Name = ['HybridBatAlgorithm', 'HBA']
@@ -35,6 +39,7 @@ class HybridBatAlgorithm(BatAlgorithm):
 		**Arguments:**
 
 		F {decimal} -- scaling factor
+
 		CR {decimal} -- crossover
 		"""
 		BatAlgorithm.setParameters(self, **ukwargs)
