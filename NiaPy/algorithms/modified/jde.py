@@ -23,7 +23,7 @@ class SelfAdaptiveDifferentialEvolutionAlgorithm(DifferentialEvolutionAlgorithm)
 
 	**Date:** 2018
 
-	**Author:** Uros Mlakar and Klemen Berkvoič
+	**Author:** Uros Mlakar and Klemen Berkovič
 
 	**License:** MIT
 
