@@ -30,11 +30,14 @@ class SelfAdaptiveDifferentialEvolution(DifferentialEvolution):
 
 	**Date:** 2018
 
-	**Author:** Uros Mlakar and Klemen Berkvoič
+	**Author:** Uros Mlakar and Klemen Berkovič
 
 	**License:** MIT
 
-	**Reference paper:** Brest, J., Greiner, S., Boskovic, B., Mernik, M., Zumer, V.	Self-adapting control parameters in differential evolution: A comparative study on numerical benchmark problems. IEEE transactions on evolutionary computation, 10(6), 646-657, 2006.
+	**Reference paper:** Brest, J., Greiner, S., Boskovic, B., Mernik, M., Zumer, V.
+	Self-adapting control parameters in differential evolution: A comparative study on
+	numerical benchmark problems. IEEE transactions on evolutionary computation, 10(6),
+	646-657, 2006.
 	"""
 	Name = ['SelfAdaptiveDifferentialEvolution', 'jDE']
 
@@ -89,11 +92,18 @@ class DynNpSelfAdaptiveDifferentialEvolutionAlgorithm(SelfAdaptiveDifferentialEv
 	r"""Implementation of Dynamic population size self-adaptive differential evolution algorithm.
 
 	**Algorithm:** Dynamic population size self-adaptive differential evolution algorithm
+
 	**Date:** 2018
+
 	**Author:** Jan Popič and Klemen Berkovič
+
 	**License:** MIT
+
 	**Reference URL:** https://link.springer.com/article/10.1007/s10489-007-0091-x
-	**Reference paper:** Brest, Janez, and Mirjam Sepesy Maučec. "Population size reduction for the differential evolution algorithm." Applied Intelligence 29.3 (2008): 228-247.
+
+	**Reference paper:** Brest, Janez, and Mirjam Sepesy Maučec.
+	Population size reduction for the differential evolution algorithm.
+	Applied Intelligence 29.3 (2008): 228-247.
 	"""
 	Name = ['DynNpSelfAdaptiveDifferentialEvolutionAlgorithm', 'dynNPjDE']
 
