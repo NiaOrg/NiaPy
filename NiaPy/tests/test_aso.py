@@ -6,7 +6,7 @@ from NiaPy.algorithms.other import AnarchicSocietyOptimization
 from NiaPy.algorithms.other.aso import Elitism, Sequential, Crossover
 
 class ASOTestCase(TestCase):
-
+	pass
 
 class ASOElitismTestCase(AlgorithmTestCase):
 	def test_custom_works_fine(self):
