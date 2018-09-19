@@ -82,7 +82,9 @@ class DynNPSelfAdaptiveDifferentialEvolutionAlgorithm(SelfAdaptiveDifferentialEv
 
 	**Reference URL:** https://link.springer.com/article/10.1007/s10489-007-0091-x
 
-	**Reference paper:** Brest, Janez, and Mirjam Sepesy Maučec. "Population size reduction for the differential evolution algorithm." Applied Intelligence 29.3 (2008): 228-247.
+	**Reference paper:** Brest, Janez, and Mirjam Sepesy Maučec.
+	"Population size reduction for the differential evolution algorithm."
+	Applied Intelligence 29.3 (2008): 228-247.
 	"""
 	def __init__(self, **kwargs): SelfAdaptiveDifferentialEvolutionAlgorithm.__init__(self, name='SelfAdaptiveDifferentialEvolutionAlgorithm', sName='jDE', **kwargs)
 
