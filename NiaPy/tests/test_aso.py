@@ -7,7 +7,20 @@ from NiaPy.algorithms.other import AnarchicSocietyOptimization
 from NiaPy.algorithms.other.aso import Elitism, Sequential, Crossover
 
 class ASOTestCase(TestCase):
-	pass
+	def test_parameter_types(self):
+		d = AnarchicSocietyOptimization.typeParameters()
+		self.assertTrue(d['NP'](1))
+		self.assertFalse(d['NP'](0))
+		self.assertFalse(d['NP'](-1))
+		self.assertTrue(d['F'](10))
+		self.assertFalse(d['F'](0))
+		self.assertFalse(d['F'](-10))
+		self.assertTrue(d['CR'](0.1))
+		self.assertFalse(d['CR'](-19))
+		self.assertFalse(d['CR'](19))
+		self.assertTrue(d['alpha'](10))
+		self.assertTrue(d['gamma'](10))
+		self.assertTrue(d['theta'](10))
 
 class ASOElitismTestCase(AlgorithmTestCase):
 	def test_custom_works_fine(self):

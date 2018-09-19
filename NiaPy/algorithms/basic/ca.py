@@ -77,7 +77,7 @@ class CamelAlgorithm(Algorithm):
 	@staticmethod
 	def typeParameters(): return {
 			'NP': lambda x: isinstance(x, int) and x > 0,
-			'omega': lambda x: isinstance(x, float),
+			'omega': lambda x: isinstance(x, (float, int)),
 			'mu': lambda x: isinstance(x, float) and 0 <= x <= 1,
 			'alpha': lambda x: isinstance(x, float) and 0 <= x <= 1,
 			'S_init': lambda x: isinstance(x, (float, int)) and x > 0,

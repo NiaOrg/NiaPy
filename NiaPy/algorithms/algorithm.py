@@ -120,7 +120,9 @@ class Algorithm:
 		**Arguments**:
 		D {array} -- Shape of returnd random numbers
 		"""
-		return self.Rand.randn() if D is None else self.Rand.randn(*D)
+		if D is None: return self.Rand.randn()
+		elif isinstance(D, int): return self.Rand.randn(D)
+		return self.Rand.randn(*D)
 
 	def randint(self, Nmax, D=1, Nmin=0, skip=[]):
 		r"""Get D shape random full numbers in range Nmin to Nmax.

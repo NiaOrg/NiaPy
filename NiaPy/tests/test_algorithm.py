@@ -3,7 +3,7 @@
 from unittest import TestCase
 from numpy import random as rnd, full, inf, array_equal
 from NiaPy.util import Task, OptimizationType
-from NiaPy.algorithms.algorithm import Individual
+from NiaPy.algorithms.algorithm import Individual, Algorithm
 
 class MyBenchmark:
 	def __init__(self):
@@ -56,6 +56,36 @@ class IndividualTestCase(TestCase):
 
 	def test_len_fine(self):
 		self.assertEqual(len(self.s1), len(self.x))
+
+class AlgorithBaseTestCase(TestCase):
+	def setUp(self):
+		self.algo = Algorithm()
+
+	def test_setParameters(self):
+		a = self.algo.setParameters(t=None, a=20)
+		self.assertEqual(a, None)
+
+	def test_setBenchmark(self):
+		task = Task(D=10, nFES=10, nGEN=10, optType=OptimizationType.MINIMIZATION, benchmark=MyBenchmark())
+		a = self.algo.setBechmark(task)
+
+	def test_randn(self):
+		a = self.algo.randn([1, 2])
+		self.assertEqual(a.shape, (1, 2))
+		a = self.algo.randn(1)
+		self.assertEqual(len(a), 1)
+		a = self.algo.randn(2)
+		self.assertEqual(len(a), 2)
+		a = self.algo.randn()
+		self.assertIsInstance(a, float)
+
+	def test_runYield(self):
+		a = self.algo.runYield(None)
+		self.assertEqual(next(a), (None, None))
+
+	def test_runTask(self):
+		a = self.algo.runTask(None)
+		self.assertEqual(a, (None, None))
 
 class AlgorithmTestCase(TestCase):
 	def setUp(self):

@@ -5,6 +5,18 @@ from NiaPy.algorithms.basic import FireflyAlgorithm
 
 class FATestCase(AlgorithmTestCase):
 
+    def test_type_parameters(self):
+        d = FireflyAlgorithm.typeParameters()
+        self.assertTrue(d['alpha'](10))
+        self.assertFalse(d['alpha'](-10))
+        self.assertTrue(d['betamin'](10))
+        self.assertFalse(d['betamin'](-10))
+        self.assertTrue(d['gamma'](10))
+        self.assertFalse(d['gamma'](-10))
+        self.assertTrue(d['NP'](1))
+        self.assertFalse(d['NP'](0))
+        self.assertFalse(d['NP'](-1))
+
     def test_works_fine(self):
         fa = FireflyAlgorithm(D=self.D, NP=20, nFES=self.nFES, nGEN=self.nGEN, alpha=0.5, betamin=0.2, gamma=1.0, benchmark=MyBenchmark(), seed=self.seed)
         fac = FireflyAlgorithm(D=self.D, NP=20, nFES=self.nFES, nGEN=self.nGEN, alpha=0.5, betamin=0.2, gamma=1.0, benchmark=MyBenchmark(), seed=self.seed)

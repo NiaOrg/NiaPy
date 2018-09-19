@@ -78,7 +78,7 @@ class AnarchicSocietyOptimization(Algorithm):
 			'gamma': lambda x: True,
 			'theta': lambda x: True,
 			'nl': lambda x: True,
-			'F': lambda x: isinstance(x, (int, float)) and x >= 0,
+			'F': lambda x: isinstance(x, (int, float)) and x > 0,
 			'CR': lambda x: isinstance(x, float) and 0 <= x <= 1
 	}
 

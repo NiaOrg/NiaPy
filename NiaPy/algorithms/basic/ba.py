@@ -28,10 +28,10 @@ class BatAlgorithm(Algorithm):
 	@staticmethod
 	def typeParameters(): return {
 			'NP': lambda x: isinstance(x, int) and x > 0,
-			'A': lambda x: isinstance(x, float) and x > 0,
-			'r': lambda x: isinstance(x, float) and x > 0,
-			'Qmin': lambda x: isinstance(x, float),
-			'Qmax': lambda x: isinstance(x, float)
+			'A': lambda x: isinstance(x, (float, int)) and x > 0,
+			'r': lambda x: isinstance(x, (float, int)) and x > 0,
+			'Qmin': lambda x: isinstance(x, (float, int)),
+			'Qmax': lambda x: isinstance(x, (float, int))
 	}
 
 	def setParameters(self, NP=40, A=0.5, r=0.5, Qmin=0.0, Qmax=2.0, **ukwargs):
