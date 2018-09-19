@@ -27,7 +27,10 @@ class SelfAdaptiveDifferentialEvolutionAlgorithm(DifferentialEvolutionAlgorithm)
 
 	**License:** MIT
 
-	**Reference paper:** Brest, J., Greiner, S., Boskovic, B., Mernik, M., Zumer, V.	Self-adapting control parameters in differential evolution: A comparative study on numerical benchmark problems. IEEE transactions on evolutionary computation, 10(6), 646-657, 2006.
+	**Reference paper:** Brest, J., Greiner, S., Boskovic, B., Mernik, M., Zumer, V.
+	Self-adapting control parameters in differential evolution: A comparative study on
+	numerical benchmark problems. IEEE transactions on evolutionary computation, 10(6),
+	646-657, 2006.
 	"""
 	def __init__(self, **kwargs):
 		if kwargs.get('name', None) == None: DifferentialEvolutionAlgorithm.__init__(self, name='SelfAdaptiveDifferentialEvolutionAlgorithm', sName='jDE', **kwargs)
