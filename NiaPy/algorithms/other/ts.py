@@ -26,10 +26,15 @@ class TabuSearch(Algorithm):
 	r"""Implementation of Tabu Search Algorithm.
 
 	**Algorithm:** Tabu Search Algorithm
+
 	**Date:** 2018
+
 	**Authors:** Klemen Berkovič
+
 	**License:** MIT
+
 	**Reference URL:** http://www.cleveralgorithms.com/nature-inspired/stochastic/tabu_search.html
+
 	**Reference paper:**
 	"""
 	Name = ['TabuSearch', 'TS']

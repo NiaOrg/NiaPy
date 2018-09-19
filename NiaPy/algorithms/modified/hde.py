@@ -21,8 +21,11 @@ class DifferentialEvolutionMTS(DifferentialEvolution):
 	r"""Implementation of Differential Evolution withm MTS local searches.
 
 	**Algorithm:** Differential Evolution withm MTS local searches
+
 	**Date:** 2018
+
 	**Author:** Klemen Berkovič
+
 	**License:** MIT
 	"""
 	Name = ['DifferentialEvolutionMTS', 'DEMTS']
@@ -33,7 +36,8 @@ class DifferentialEvolutionMTS(DifferentialEvolution):
 	def setParameters(self, NoGradingRuns=1, NoLs=2, NoEnabled=2, **ukwargs):
 		r"""Set the algorithm parameters.
 
-		Arguments:
+		**Arguments:**
+
 		SR {real} -- Normalized search range
 		"""
 		DifferentialEvolution.setParameters(self, **ukwargs)
