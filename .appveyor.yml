@@ -16,10 +16,10 @@ install:
   - set PATH=%PYTHON%\Scripts;%PATH%
   # Install system dependencies
   - pip install pipenv
-  - pip install pathlib2
   - make doctor
   # Install project dependencies
   - make install
+  - pipenv install pathlib2
 
 build: off
 

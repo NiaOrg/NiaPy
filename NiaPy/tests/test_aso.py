@@ -5,6 +5,9 @@ from NiaPy.benchmarks.griewank import Griewank
 from NiaPy.algorithms.other import AnarchicSocietyOptimization
 from NiaPy.algorithms.other.aso import Elitism, Sequential, Crossover
 
+class ASOTestCase(TestCase):
+
+
 class ASOElitismTestCase(AlgorithmTestCase):
 	def test_custom_works_fine(self):
 		aso_custom = AnarchicSocietyOptimization(NP=40, D=self.D, nGEN=self.nGEN, nFES=self.nFES, Combination=Elitism, benchmark=MyBenchmark(), seed=self.seed)

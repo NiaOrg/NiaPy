@@ -4,6 +4,16 @@ from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
 from NiaPy.algorithms.basic import ArtificialBeeColonyAlgorithm
 
 class ABCTestCase(AlgorithmTestCase):
+	def test_type_parameters(self):
+		d = ArtificialBeeColonyAlgorithm.typeParameters()
+		self.assertEqual(len(d), 2)
+		self.assertTrue(d['NP'](10))
+		self.assertFalse(d['NP'](0))
+		self.assertFalse(d['NP'](-10))
+		self.assertTrue(d['Limit'](10))
+		self.assertFalse(d['Limit'](0))
+		self.assertFalse(d['Limit'](-10))
+
 	def test_custom_works_fine(self):
 		abc_custom = ArtificialBeeColonyAlgorithm(NP=10, D=self.D, nFES=self.nFES, nGEN=self.nGEN, benchmark=MyBenchmark(), seed=self.seed)
 		abc_customc = ArtificialBeeColonyAlgorithm(NP=10, D=self.D, nFES=self.nFES, nGEN=self.nGEN, benchmark=MyBenchmark(), seed=self.seed)
