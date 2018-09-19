@@ -23,11 +23,14 @@ class SelfAdaptiveDifferentialEvolutionAlgorithm(DifferentialEvolutionAlgorithm)
 
 	**Date:** 2018
 
-	**Author:** Uros Mlakar and Klemen Berkvoič
+	**Author:** Uros Mlakar and Klemen Berkovič
 
 	**License:** MIT
 
-	**Reference paper:** Brest, J., Greiner, S., Boskovic, B., Mernik, M., Zumer, V.	Self-adapting control parameters in differential evolution: A comparative study on numerical benchmark problems. IEEE transactions on evolutionary computation, 10(6), 646-657, 2006.
+	**Reference paper:** Brest, J., Greiner, S., Boskovic, B., Mernik, M., Zumer, V.
+	Self-adapting control parameters in differential evolution: A comparative study on
+	numerical benchmark problems. IEEE transactions on evolutionary computation, 10(6),
+	646-657, 2006.
 	"""
 	def __init__(self, **kwargs):
 		if kwargs.get('name', None) == None: DifferentialEvolutionAlgorithm.__init__(self, name='SelfAdaptiveDifferentialEvolutionAlgorithm', sName='jDE', **kwargs)
@@ -79,7 +82,9 @@ class DynNPSelfAdaptiveDifferentialEvolutionAlgorithm(SelfAdaptiveDifferentialEv
 
 	**Reference URL:** https://link.springer.com/article/10.1007/s10489-007-0091-x
 
-	**Reference paper:** Brest, Janez, and Mirjam Sepesy Maučec. "Population size reduction for the differential evolution algorithm." Applied Intelligence 29.3 (2008): 228-247.
+	**Reference paper:** Brest, Janez, and Mirjam Sepesy Maučec.
+	Population size reduction for the differential evolution algorithm.
+	Applied Intelligence 29.3 (2008): 228-247.
 	"""
 	def __init__(self, **kwargs): SelfAdaptiveDifferentialEvolutionAlgorithm.__init__(self, name='SelfAdaptiveDifferentialEvolutionAlgorithm', sName='jDE', **kwargs)
 
