@@ -8,7 +8,7 @@ logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.basic')
 logger.setLevel('INFO')
 
-__all__ = ['GeneticAlgorithm', 'TurnamentSelection', 'TwoPointCrossover', 'MultiPointCrossover', 'UniformCrossover', 'UniformMutation', 'CreepMutation']
+__all__ = ['GeneticAlgorithm', 'TurnamentSelection', 'RouletteSelection', 'TwoPointCrossover', 'MultiPointCrossover', 'UniformCrossover', 'UniformMutation', 'CreepMutation', 'CrossoverUros', 'MutationUros']
 
 def TurnamentSelection(pop, ic, ts, x_b, rnd=rand):
 	comps = [pop[i] for i in rand.choice(len(pop), ts, replace=False)]

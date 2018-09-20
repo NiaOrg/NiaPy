@@ -87,6 +87,13 @@ class ESMLTestCase(AlgorithmTestCase):
 		AlgorithmTestCase.algorithm_run_test(self, es1_griewank, es1_griewankc)
 
 class CMAESTestCase(AlgorithmTestCase):
+	def test_typeParametes(self):
+		d = CovarianceMaatrixAdaptionEvolutionStrategy.typeParameters()
+		self.assertTrue(d['epsilon'](0.234))
+		self.assertFalse(d['epsilon'](-0.234))
+		self.assertFalse(d['epsilon'](10000.234))
+		self.assertFalse(d['epsilon'](10))
+
 	def test_custom_works_fine(self):
 		es_custom = CovarianceMaatrixAdaptionEvolutionStrategy(D=self.D, nFES=self.nFES, nGEN=self.nGEN, benchmark=MyBenchmark(), seed=self.seed)
 		es_customc = CovarianceMaatrixAdaptionEvolutionStrategy(D=self.D, nFES=self.nFES, nGEN=self.nGEN, benchmark=MyBenchmark(), seed=self.seed)
