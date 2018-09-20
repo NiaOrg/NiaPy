@@ -2,8 +2,8 @@
 # pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, unused-argument, singleton-comparison, no-else-return, line-too-long, arguments-differ, no-self-use, superfluous-parens, redefined-builtin, bad-continuation, unused-variable
 import logging
 from math import ceil
-from numpy import argmin, argsort, log, sum, fmax, sqrt, full, exp, eye, diag, apply_along_axis, round, any, asarray, dot, random as rand, tile, inf, where, arange, outer
-from numpy.linalg import norm, cholesky as chol, eig, eigh, solve, lstsq
+from numpy import argmin, argsort, log, sum, fmax, sqrt, full, exp, eye, diag, apply_along_axis, round, any, asarray, dot, random as rand, tile, inf, where
+from numpy.linalg import norm, cholesky as chol, eig, solve, lstsq
 from NiaPy.algorithms.algorithm import Algorithm, Individual
 
 logging.basicConfig()
