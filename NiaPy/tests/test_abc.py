@@ -15,8 +15,8 @@ class ABCTestCase(AlgorithmTestCase):
 		self.assertFalse(d['Limit'](-10))
 
 	def test_custom_works_fine(self):
-		abc_custom = ArtificialBeeColonyAlgorithm(NP=10, D=self.D, nFES=self.nFES, nGEN=self.nGEN, benchmark=MyBenchmark(), seed=self.seed)
-		abc_customc = ArtificialBeeColonyAlgorithm(NP=10, D=self.D, nFES=self.nFES, nGEN=self.nGEN, benchmark=MyBenchmark(), seed=self.seed)
+		abc_custom = ArtificialBeeColonyAlgorithm(NP=10, D=self.D, nFES=self.nFES, nGEN=self.nGEN, Limit=2, benchmark=MyBenchmark(), seed=self.seed)
+		abc_customc = ArtificialBeeColonyAlgorithm(NP=10, D=self.D, nFES=self.nFES, nGEN=self.nGEN, Limit=2, benchmark=MyBenchmark(), seed=self.seed)
 		AlgorithmTestCase.algorithm_run_test(self, abc_custom, abc_customc)
 
 	def test_griewank_works_fine(self):
