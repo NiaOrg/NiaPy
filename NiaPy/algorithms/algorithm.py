@@ -138,7 +138,7 @@ class Algorithm:
 		skip {array} -- numbers to skip
 		"""
 		r = None
-		if isinstance(D, (list, ndarray)): r = self.Rand.randint(Nmin, Nmax, D)
+		if isinstance(D, (list, tuple, ndarray)): r = self.Rand.randint(Nmin, Nmax, D)
 		elif D > 1: r = self.Rand.randint(Nmin, Nmax, D)
 		else: r = self.Rand.randint(Nmin, Nmax)
 		return r if r not in skip else self.randint(Nmax, D, Nmin, skip)

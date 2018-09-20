@@ -5,6 +5,18 @@ from NiaPy.algorithms.basic import FlowerPollinationAlgorithm
 
 class FPATestCase(AlgorithmTestCase):
 
+    def test_type_parameters(self):
+        d = FlowerPollinationAlgorithm.typeParameters()
+        self.assertTrue(d['NP'](10))
+        self.assertFalse(d['NP'](-10))
+        self.assertFalse(d['NP'](0))
+        self.assertTrue(d['beta'](10))
+        self.assertFalse(d['beta'](0))
+        self.assertFalse(d['beta'](-10))
+        self.assertTrue(d['p'](0.5))
+        self.assertFalse(d['p'](-0.5))
+        self.assertFalse(d['p'](1.5))
+
     def test_custom_works_fine(self):
         fpa_custom = FlowerPollinationAlgorithm(NP=10, D=self.D, nFES=self.nFES, nGEN=self.nGEN, p=0.5, benchmark=MyBenchmark(), seed=self.seed)
         fpa_customc = FlowerPollinationAlgorithm(NP=10, D=self.D, nFES=self.nFES, nGEN=self.nGEN, p=0.5, benchmark=MyBenchmark(), seed=self.seed)

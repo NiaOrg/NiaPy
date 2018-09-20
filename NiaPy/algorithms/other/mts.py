@@ -15,7 +15,7 @@ def MTS_LS1(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, sr_f
 	if not improve:
 		SR /= 2
 		ifix = where(SR < 1e-15)
-		SR[ifix] = task.bcRange()[ifix] * sr_fix
+		SR[ifix] = task.bRange[ifix] * sr_fix
 	improve, grade = False, 0.0
 	for i in range(len(Xk)):
 		Xk_i_old = Xk[i]
@@ -61,7 +61,7 @@ def MTS_LS2(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, sr_f
 	if not improve:
 		SR /= 2
 		ifix = where(SR < 1e-15)
-		SR[ifix] = task.bcRange()[ifix] * sr_fix
+		SR[ifix] = task.bRange[ifix] * sr_fix
 	improve, grade = False, 0.0
 	for _ in range(len(Xk)):
 		D = -1 + rnd.rand(len(Xk)) * 2
@@ -98,7 +98,7 @@ def MTS_LS3(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, rnd=
 	return Xk, Xk_fit, Xb, Xb_fit, improve, grade, SR
 
 def MTS_LS3v1(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, phi=3, BONUS1=10, BONUS2=1, rnd=rand, **ukwargs):
-	grade, Disp = 0.0, task.bcRange() / 10
+	grade, Disp = 0.0, task.bRange / 10
 	while True in Disp > 1e-3:
 		Xn = [rnd.permutation(Xk) + Disp * rnd.uniform(-1, 1, len(Xk)) for _ in range(phi)]
 		Xn_f = apply_along_axis(task.eval, 1, Xn)
@@ -110,7 +110,7 @@ def MTS_LS3v1(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, phi=3, BONUS1=10, BONUS
 		elif len(Xn_f[iBetter]) > 0:
 			ib, improve = argmin(Xn_f[iBetter]), True
 			Xk, Xk_fit = Xn[ib], Xn_f[ib]
-		Su, Sl = fmin(task.bcUpper(), Xk + 2 * Disp), fmax(task.bcLower(), Xk - 2 * Disp)
+		Su, Sl = fmin(task.Upper, Xk + 2 * Disp), fmax(task.Lower, Xk - 2 * Disp)
 		Disp = (Su - Sl) / 10
 	return Xk, Xk_fit, Xb, Xb_fit, improve, grade, SR
 
@@ -187,9 +187,9 @@ class MultipleTrajectorySearch(Algorithm):
 	def runTask(self, task):
 		# TODO izgradi simulirano ortogonalno matriko
 		SOA = self.rand([self.M, task.D])
-		X = task.bcLower() + task.bcRange() * SOA / (self.M - 1)
+		X = task.Lower + task.bRange * SOA / (self.M - 1)
 		X_f = apply_along_axis(task.eval, 1, X)
-		enable, improve, SR, grades = full(self.M, True), full(self.M, True), full([self.M, task.D], task.bcRange() / 2), full(self.M, 0.0)
+		enable, improve, SR, grades = full(self.M, True), full(self.M, True), full([self.M, task.D], task.bRange / 2), full(self.M, 0.0)
 		xb, xb_f = self.getBest(X, X_f)
 		while not task.stopCond():
 			for i in range(self.M):

@@ -59,33 +59,41 @@ class IndividualTestCase(TestCase):
 
 class AlgorithBaseTestCase(TestCase):
 	def setUp(self):
-		self.algo = Algorithm()
+		self.a = Algorithm()
+
+	def test_randint(self):
+		o = self.a.randint(Nmax=20, Nmin=10, D=[10, 10])
+		self.assertEqual(o.shape, (10, 10))
+		o = self.a.randint(Nmax=20, Nmin=10, D=(10, 5))
+		self.assertEqual(o.shape, (10, 5))
+		o = self.a.randint(Nmax=20, Nmin=10, D=10)
+		self.assertEqual(o.shape, (10,))
 
 	def test_setParameters(self):
-		a = self.algo.setParameters(t=None, a=20)
+		a = self.a.setParameters(t=None, a=20)
 		self.assertEqual(a, None)
 
 	def test_setBenchmark(self):
 		task = Task(D=10, nFES=10, nGEN=10, optType=OptimizationType.MINIMIZATION, benchmark=MyBenchmark())
-		a = self.algo.setBechmark(task)
+		a = self.a.setBechmark(task)
 		self.assertIsInstance(a, Algorithm)
 
 	def test_randn(self):
-		a = self.algo.randn([1, 2])
+		a = self.a.randn([1, 2])
 		self.assertEqual(a.shape, (1, 2))
-		a = self.algo.randn(1)
+		a = self.a.randn(1)
 		self.assertEqual(len(a), 1)
-		a = self.algo.randn(2)
+		a = self.a.randn(2)
 		self.assertEqual(len(a), 2)
-		a = self.algo.randn()
+		a = self.a.randn()
 		self.assertIsInstance(a, float)
 
 	def test_runYield(self):
-		a = self.algo.runYield(None)
+		a = self.a.runYield(None)
 		self.assertEqual(next(a), (None, None))
 
 	def test_runTask(self):
-		a = self.algo.runTask(None)
+		a = self.a.runTask(None)
 		self.assertEqual(a, (None, None))
 
 class AlgorithmTestCase(TestCase):

@@ -1,10 +1,26 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, multiple-statements, old-style-class
+from unittest import TestCase
 from NiaPy.benchmarks.griewank import Griewank
 from NiaPy.algorithms.other import MultipleTrajectorySearch, MultipleTrajectorySearchV1
 from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
 
 class MTSTestCase(AlgorithmTestCase):
+	def test_type_parameters(self):
+		d = MultipleTrajectorySearch.typeParameters()
+		self.assertTrue(d['NoLsTests'](10))
+		self.assertTrue(d['NoLsTests'](0))
+		self.assertFalse(d['NoLsTests'](-10))
+		self.assertTrue(d['NoLs'](10))
+		self.assertTrue(d['NoLs'](0))
+		self.assertFalse(d['NoLs'](-10))
+		self.assertTrue(d['NoLsBest'](10))
+		self.assertTrue(d['NoLsBest'](0))
+		self.assertFalse(d['NoLsBest'](-10))
+		self.assertTrue(d['NoEnabled'](10))
+		self.assertFalse(d['NoEnabled'](0))
+		self.assertFalse(d['NoEnabled'](-10))
+
 	def test_custom_works_fine(self):
 		mts_custom = MultipleTrajectorySearch(D=self.D, nFES=self.nFES, nGEN=self.nGEN, n=10, C_a=2, C_r=0.5, benchmark=MyBenchmark(), seed=self.seed)
 		mts_customc = MultipleTrajectorySearch(D=self.D, nFES=self.nFES, nGEN=self.nGEN, n=10, C_a=2, C_r=0.5, benchmark=MyBenchmark(), seed=self.seed)

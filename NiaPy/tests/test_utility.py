@@ -2,7 +2,7 @@
 # pylint: disable=mixed-indentation, multiple-statements, unused-variable, unused-argument, redefined-builtin, old-style-class, no-init
 from unittest import TestCase
 from numpy import full, random as rnd, inf, sum, array_equal, asarray
-from NiaPy.util import Utility, Task, fullArray, ScaledTask
+from NiaPy.util import Utility, ATask, Task, fullArray, ScaledTask, TaskConvPrint, TaskComposition
 
 class FullArrayTestCase(TestCase):
 	def test_a_float_fine(self):
@@ -130,6 +130,55 @@ class UtilityTestCase(TestCase):
 		self.assertRaises(TypeError, lambda: self.u.get_benchmark(MyBenchmark))
 		self.assertRaises(TypeError, lambda: self.u.get_benchmark(NoLimits))
 
+class ATaskTestCase(TestCase):
+	def setUp(self):
+		self.task = ATask()
+
+	def test_dim_ok(self):
+		self.assertEqual(self.task.D, 0)
+		self.assertEqual(self.task.dim(), 0)
+
+	def test_lower(self):
+		self.assertTrue(array_equal(self.task.Lower, full(0, .0)))
+		self.assertTrue(array_equal(self.task.bcLower(), full(0, .0)))
+
+	def test_upper(self):
+		self.assertTrue(array_equal(self.task.Upper, full(0, .0)))
+		self.assertTrue(array_equal(self.task.bcUpper(), full(0, .0)))
+
+	def test_range(self):
+		self.assertTrue(array_equal(self.task.bRange, full(0, .0)))
+		self.assertTrue(array_equal(self.task.bcRange(), full(0, .0)))
+
+	def test_ngens(self):
+		self.assertEqual(self.task.nGEN, inf)
+		self.assertEqual(self.task.nGENs(), 100000)
+
+	def test_nfess(self):
+		self.assertEqual(self.task.nFES, inf)
+		self.assertEqual(self.task.nFESs(), 100000)
+
+	def test_stop_cond(self):
+		self.assertFalse(self.task.stopCond())
+
+	def test_stop_condi(self):
+		self.assertFalse(self.task.stopCondI())
+
+	def test_eval(self):
+		self.assertEqual(self.task.eval([]), None)
+
+	def test_evals(self):
+		self.assertEqual(self.task.evals(), None)
+
+	def test_iters(self):
+		self.assertEqual(self.task.iters(), None)
+
+	def test_next_iter(self):
+		self.assertEqual(self.task.nextIter(), None)
+
+	def test_is_feasible(self):
+		self.assertFalse(self.task.isFeasible([1, 2, 3]))
+
 class TaskTestCase(TestCase):
 	def setUp(self):
 		self.D, self.nFES, self.nGEN = 10, 10, 10
@@ -201,6 +250,11 @@ class TaskTestCase(TestCase):
 			self.assertFalse(self.t.stopCond())
 		self.t.nextIter()
 		self.assertTrue(self.t.stopCond())
+
+	def test_unused_evals(self):
+		x = full(self.D, 0.0)
+		for i in range(self.nFES + 10): self.t.eval(x)
+		self.assertEqual(self.t.unused_evals(), 10)
 
 class ScaledTaskTestCase(TestCase):
 	def setUp(self):
@@ -318,5 +372,35 @@ class ScaledTaskTestCase(TestCase):
 		self.tc.nextIter()
 		self.assertTrue(self.t.stopCond())
 		self.assertTrue(self.tc.stopCond())
+
+class TaskConvPrintTestCase(TestCase):
+	def setUp(self):
+		self.D, self.nFES, self.nGEN = 10, 10, 10
+		self.t = TaskConvPrint(D=self.D, nFES=self.nFES, nGEN=self.nGEN, benchmark=MyBenchmark())
+
+	def test_eval(self):
+		self.t.eval(full(self.D, 2.))
+		self.assertTrue(array_equal(full(self.D, 2.), self.t.x))
+		self.t.eval(full(self.D, -1.))
+		self.assertTrue(array_equal(full(self.D, -1.), self.t.x))
+		self.t.eval(full(self.D, .0))
+		self.assertTrue(array_equal(full(self.D, .0), self.t.x))
+
+class TaskConvPlotTestCase(TestCase):
+	def setUp(self):
+		self.D, self.nFES, self.nGEN = 10, 10, 10
+		self.t = TaskConvPrint(D=self.D, nFES=self.nFES, nGEN=self.nGEN, benchmark=MyBenchmark())
+
+	def test_eval(self):
+		pass
+
+class TaskCompositionTestCase(TestCase):
+	def setUp(self):
+		self.D, self.nFES, self.nGEN = 10, 10, 10
+		self.t = TaskConvPrint(D=self.D, nFES=self.nFES, nGEN=self.nGEN, benchmark=MyBenchmark())
+		self.t1 = TaskConvPrint(D=self.D, nFES=self.nFES, nGEN=self.nGEN)
+
+	def test_eval(self):
+		self.assertEqual(self.t.eval(full(self.D, 0)), 0.0)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

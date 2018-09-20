@@ -105,7 +105,7 @@ class ATask(Utility):
 	def __init__(self, **kwargs):
 		r"""Set the default felds of a task class."""
 		Utility.__init__(self)
-		self.D, self.Lower, self.Upper, self.bRange = None, [], [], []
+		self.D, self.Lower, self.Upper, self.bRange = 0, full(0, 0.0), full(0, 0.0), full(0, 0.0)
 		self.Iters, self.Evals = 0, 0
 		self.nGEN, self.nFES = inf, inf
 
@@ -127,7 +127,7 @@ class ATask(Utility):
 
 	def bcRange(self):
 		r"""Get the range of bound contraint."""
-		return fabs(self.bcUpper() - self.bcLower())
+		return fabs(self.Upper - self.Lower)
 
 	def stopCond(self):
 		r"""Check if stoping condition reached."""
@@ -165,7 +165,7 @@ class ATask(Utility):
 		Arguments:
 		A {array} -- Solution to check for feasibility
 		"""
-		pass
+		return False
 
 	def repair(self, x, rnd=rand):
 		r"""Repair solution and put the solution in the random position inside of the bounds of problem.
@@ -259,7 +259,7 @@ class ScaledTask(ATask):
 class TaskConvPrint(Task):
 	def __init__(self, **kwargs):
 		Task.__init__(self, **kwargs)
-		self.x, self.x_f = None, inf
+		self.x, self.x_f = None, self.optType.value * inf
 
 	def eval(self, A):
 		x_f = Task.eval(self, A)
