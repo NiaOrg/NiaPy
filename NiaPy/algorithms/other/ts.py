@@ -15,10 +15,10 @@ def TabuSearchF(task, SR=None, TL_size=25, rnd=rand):
 	x, TL = rnd.uniform(task.Lower, task.Upper), list()
 	x_f = task.eval(x)
 	# while not task.stopCond():
-		# Generate neigours
-		# evaluate x not in ts
-		# get best of of evaluated
-		# compare new best with best
+	# Generate neigours
+	# evaluate x not in ts
+	# get best of of evaluated
+	# compare new best with best
 	return x, x_f
 
 class TabuSearch(Algorithm):
