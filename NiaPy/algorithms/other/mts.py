@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, len-as-condition, singleton-comparison, arguments-differ, line-too-long, unused-argument, consider-using-enumerate, bad-continuation, superfluous-parents
+# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, len-as-condition, singleton-comparison, arguments-differ, line-too-long, unused-argument, consider-using-enumerate, bad-continuation, superfluous-parens
 import logging
 import operator as oper
 from numpy import random as rand, vectorize, where, copy, apply_along_axis, argmin, argmax, argsort, fmin, fmax, full
