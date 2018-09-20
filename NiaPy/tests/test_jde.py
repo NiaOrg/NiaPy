@@ -22,6 +22,21 @@ class SolutionjDETestCase(TestCase):
 		self.assertAlmostEqual(self.s2.CR, self.CR)
 
 class jDETestCase(AlgorithmTestCase):
+	def test_typeParameters(self):
+		d = SelfAdaptiveDifferentialEvolution.typeParameters()
+		self.assertTrue(d['F_l'](10))
+		self.assertFalse(d['F_l'](-10))
+		self.assertFalse(d['F_l'](-0))
+		self.assertTrue(d['F_u'](10))
+		self.assertFalse(d['F_u'](-10))
+		self.assertFalse(d['F_u'](-0))
+		self.assertTrue(d['Tao1'](0.32))
+		self.assertFalse(d['Tao1'](-1.123))
+		self.assertFalse(d['Tao1'](1.123))
+		self.assertTrue(d['Tao2'](0.32))
+		self.assertFalse(d['Tao2'](-1.123))
+		self.assertFalse(d['Tao2'](1.123))
+
 	def test_custom_works_fine(self):
 		jde_custom = SelfAdaptiveDifferentialEvolution(D=self.D, NP=40, nFES=self.nFES, nGEN=self.nGEN, F=0.5, F_l=0.0, F_u=2.0, Tao1=0.9, CR=0.1, Tao2=0.45, benchmark=MyBenchmark(), seed=self.seed)
 		jde_customc = SelfAdaptiveDifferentialEvolution(D=self.D, NP=40, nFES=self.nFES, nGEN=self.nGEN, F=0.5, F_l=0.0, F_u=2.0, Tao1=0.9, CR=0.1, Tao2=0.45, benchmark=MyBenchmark(), seed=self.seed)
@@ -33,6 +48,17 @@ class jDETestCase(AlgorithmTestCase):
 		AlgorithmTestCase.algorithm_run_test(self, jde_griewank, jde_griewankc)
 
 class dyNPjDETestCase(AlgorithmTestCase):
+	def test_typeParameters(self):
+		d = DynNpSelfAdaptiveDifferentialEvolutionAlgorithm.typeParameters()
+		self.assertTrue(d['rp'](10))
+		self.assertTrue(d['rp'](10.10))
+		self.assertFalse(d['rp'](0))
+		self.assertFalse(d['rp'](-10))
+		self.assertTrue(d['pmax'](10))
+		self.assertFalse(d['pmax'](0))
+		self.assertFalse(d['pmax'](-10))
+		self.assertFalse(d['pmax'](10.12))
+
 	def test_custom_works_fine(self):
 		dynnpjde_custom = DynNpSelfAdaptiveDifferentialEvolutionAlgorithm(D=self.D, NP=40, nFES=self.nFES, nGEN=self.nGEN, F=0.5, F_l=0.0, F_u=2.0, Tao1=0.9, CR=0.1, Tao2=0.45, benchmark=MyBenchmark(), seed=self.seed)
 		dynnpjde_customc = DynNpSelfAdaptiveDifferentialEvolutionAlgorithm(D=self.D, NP=40, nFES=self.nFES, nGEN=self.nGEN, F=0.5, F_l=0.0, F_u=2.0, Tao1=0.9, CR=0.1, Tao2=0.45, benchmark=MyBenchmark(), seed=self.seed)
