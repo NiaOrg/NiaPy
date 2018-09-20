@@ -3,11 +3,11 @@
 """Implementations of Step functions."""
 
 import math
+from NiaPy.benchmarks.benchmark import Benchmark
 
 __all__ = ['Step', 'Step2', 'Step3']
 
-
-class Step:
+class Step(Benchmark):
     r"""Implementation of Step function.
 
     Date: 2018
@@ -45,10 +45,10 @@ class Step:
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
     """
+    Name = ['Step']
 
     def __init__(self, Lower=-100.0, Upper=100.0):
-        self.Lower = Lower
-        self.Upper = Upper
+        Benchmark.__init__(self, Lower, Upper)
 
     @classmethod
     def function(cls):
@@ -64,7 +64,7 @@ class Step:
         return evaluate
 
 
-class Step2:
+class Step2(Benchmark):
     r"""Step2 function implementation.
 
     Date: 2018
@@ -100,10 +100,10 @@ class Step2:
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
     """
+    Name = ['Step2']
 
     def __init__(self, Lower=-100.0, Upper=100.0):
-        self.Lower = Lower
-        self.Upper = Upper
+        Benchmark.__init__(self, Lower, Upper)
 
     @classmethod
     def function(cls):
@@ -119,7 +119,7 @@ class Step2:
         return evaluate
 
 
-class Step3:
+class Step3(Benchmark):
     r"""Step3 function implementation.
 
     Date: 2018
@@ -155,10 +155,10 @@ class Step3:
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
     """
+    Name = ['Step3']
 
     def __init__(self, Lower=-100.0, Upper=100.0):
-        self.Lower = Lower
-        self.Upper = Upper
+        Benchmark.__init__(self, Lower, Upper)
 
     @classmethod
     def function(cls):

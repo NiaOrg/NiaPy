@@ -19,6 +19,8 @@ install:
   - make doctor
   # Install project dependencies
   - make install
+  # Install Python 2.7 virtual environment dependencies for tests
+  - pipenv install pathlib2
 
 build: off
 

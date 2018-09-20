@@ -38,7 +38,6 @@ The micro framework features following algorithms:
   - Harmony Search Algorithm ([see example](examples/run_hs.py))
   - Krill Herd Algorithm ([see example](examples/run_khv1.py), [see example](examples/run_khv2.py), [see example](examples/run_khv3.py), [see example](examples/run_khv4.py), [see example](examples/run_khV11.py))
   - Monkey King Evolution ([see example](examples/run_mkev1.py), [see example](examples/run_mkev2.py), [see example](examples/run_mkev3.py))
-  - Multiple trajectory search ([see example](examples/run_mts.py), [see example](examples/run_mtsv1.py))
   - Particle swarm optimization ([see example](examples/run_pso.py))
   - Sine Cosine Algorithm ([see example](examples/run_sca.py))
 - modified:
@@ -46,12 +45,13 @@ The micro framework features following algorithms:
   - Self-adaptive differential evolution algorithm ([see example](examples/run_jde.py))
   - Dynamic population size self-adaptive differential evolution algorithm ([see example](examples/run_dynnpjde.py))
 - other:
-  - Anarchic society optimization algorithm ([see example](examples/run_aso.py))
-  - Hill climbing algorithm ([see example](examples/run_ihc.py))
-  - Multiple trajectory search ([see example](examples/run_mts.py))
-  - Nelder mead method or downhill simplex method or amoeba method ([see example](examples/run_nmm.py))
-  - Simulated annealing algorithm
-  
+  - Anarchic society optimization ([see example](examples/run_aso.py))
+  - Hill climb algorithm ([see example](examples/run_hc.py))
+  - Multiple trajectory search ([see example](examples/run_mts.py), [see example](examples/run_mtsv1.py))
+  - Nelder mead method ([see example](examples/run_nmm.py))
+  - Simulated annealing algorithm ([see example](examples/run_sa.py))
+  - Tabu search algorithm ([see example](examples/run_sa.py))
+
 The following benchmark functions are included in NiaPy:
 - Ackley
 - Alpine
@@ -105,11 +105,14 @@ The following benchmark functions are included in NiaPy:
 
 ### Dependencies
 
-- click == *
+- pytest == 3.7.1
+- coverage == 4.4.2
+- coverage-space == 1.0.2
+- click == 6.0
 - numpy == 1.14.0
 - scipy == 1.0.0
 - xlsxwriter == 1.0.2
-- matplotlib == *
+- matplotlib == 2.2.2
 
 List of development dependencies and requirements can be found [here](CONTRIBUTING.md#development-dependencies).
 

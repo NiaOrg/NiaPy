@@ -1,9 +1,9 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, line-too-long, singleton-comparison, multiple-statements, attribute-defined-outside-init, no-self-use, logging-not-lazy, unused-variable, arguments-differ
+# pylint: disable=mixed-indentation, line-too-long, singleton-comparison, multiple-statements, attribute-defined-outside-init, no-self-use, logging-not-lazy, unused-variable, arguments-differ, bad-continuation
 import logging
 from numpy import apply_along_axis, argmin, full, inf, where
 from NiaPy.algorithms.algorithm import Algorithm
-from NiaPy.benchmarks.utility import fullArray
+from NiaPy.util import fullArray
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.basic')
@@ -24,8 +24,17 @@ class ParticleSwarmAlgorithm(Algorithm):
 
 	**Reference paper:** Kennedy, J. and Eberhart, R. "Particle Swarm Optimization". Proceedings of IEEE International Conference on Neural Networks. IV. pp. 1942--1948, 1995.
 	"""
+	Name = ['ParticleSwarmAlgorithm', 'PSO']
 
-	def __init__(self, **kwargs): Algorithm.__init__(self, name='ParticleSwarmAlgorithm', sName='PSO', **kwargs)
+	@staticmethod
+	def typeParameters(): return {
+			'NP': lambda x: isinstance(x, int) and x > 0,
+			'C1': lambda x: isinstance(x, (int, float)) and x >= 0,
+			'C2': lambda x: isinstance(x, (int, float)) and x >= 0,
+			'w': lambda x: isinstance(x, float) and x >= 0,
+			'vMin': lambda x: isinstance(x, (int, float)),
+			'vMax': lambda x: isinstance(x, (int, float))
+	}
 
 	def setParameters(self, NP=25, C1=2.0, C2=2.0, w=0.7, vMin=-4, vMax=4, **ukwargs):
 		r"""Set the parameters for the algorith.
@@ -59,11 +68,9 @@ class ParticleSwarmAlgorithm(Algorithm):
 	def runTask(self, task):
 		"""Move particles in search space."""
 		self.init(task)
-		P, P_fit = task.Lower + task.bRange * self.rand([self.NP, task.D]), full(self.NP, inf)
-		P_pb, P_pb_fit = P, P_fit
-		p_b, p_b_fit = P[0], P_fit[0]
-		V = full([self.NP, task.D], 0)
-		while not task.stopCond():
+		P, P_fit = task.Lower + task.bRange * self.rand([self.NP, task.D]), full(self.NP, task.optType.value * inf)
+		P_pb, P_pb_fit, p_b, p_b_fit, V = P, P_fit, P[0], P_fit[0], full([self.NP, task.D], 0.0)
+		while not task.stopCondI():
 			P = apply_along_axis(self.repair, 1, P, task.Lower, task.Upper)
 			P_fit = apply_along_axis(task.eval, 1, P)
 			ip_pb = where(P_pb_fit > P_fit)

@@ -1,7 +1,7 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, line-too-long, expression-not-assigned, singleton-comparison, len-as-condition, no-self-use, unused-argument, no-else-return, old-style-class, dangerous-default-value
+# pylint: disable=mixed-indentation, multiple-statements, line-too-long, expression-not-assigned, len-as-condition, no-self-use, unused-argument, no-else-return, old-style-class, dangerous-default-value
 from numpy import random as rand, inf, ndarray, asarray, array_equal
-from NiaPy.benchmarks.utility import Task, OptimizationType
+from NiaPy.util import Task, OptimizationType
 
 __all__ = ['Algorithm', 'Individual']
 
@@ -14,6 +14,8 @@ class Algorithm:
 
 	**License:** MIT
 	"""
+	Name = ['Algorithm', 'AAA']
+
 	def __init__(self, **kwargs):
 		r"""Initialize algorithm and create name for an algorithm.
 
@@ -42,8 +44,8 @@ class Algorithm:
 		**See**:
 		Algorithm.setParameters(self, **kwargs)
 		"""
-		task, self.name, self.sName, self.Rand = kwargs.pop('task', None), kwargs.pop('name', 'Algorith'), kwargs.pop('sName', 'algo'), rand.RandomState(kwargs.pop('seed', 1))
-		self.task = task if task != None else Task(kwargs.pop('D', 10), kwargs.pop('nFES', 100000), kwargs.pop('nGEN', None), kwargs.pop('benchmark', 'ackley'), optType=kwargs.pop('optType', OptimizationType.MINIMIZATION))
+		task, self.Rand = kwargs.pop('task', None), rand.RandomState(kwargs.pop('seed', None))
+		self.task = task if task is not None else Task(kwargs.pop('D', 10), kwargs.pop('nFES', inf), kwargs.pop('nGEN', inf), kwargs.pop('benchmark', 'ackley'), optType=kwargs.pop('optType', OptimizationType.MINIMIZATION))
 		self.setParameters(**kwargs)
 
 	def setParameters(self, **kwargs):
@@ -54,6 +56,26 @@ class Algorithm:
 		kwargs {dict} -- Dictionary with values of the parametres
 		"""
 		pass
+
+	def setTask(self, task):
+		r"""Set the benchmark for the algorithm.
+
+		**Arguments**:
+		bech {Task} -- Optimization task to perform
+		"""
+		self.task = task
+		return self
+
+	def setBechmark(self, bech):
+		r"""Set the benchmark for the algorithm.
+
+		**Arguments**:
+		bech {Task} -- Optimization task to perform
+
+		**See**:
+		Algorithm.setTask
+		"""
+		return self.setTask(bech)
 
 	def rand(self, D=1):
 		r"""Get random numbers of shape D in range from 0 to 1.
@@ -77,7 +99,7 @@ class Algorithm:
 
 		D {array} or {int} -- Shape of returnd random uniform numbers
 		"""
-		return self.Rand.uniform(Lower, Upper, D) if D != None else self.Rand.uniform(Lower, Upper)
+		return self.Rand.uniform(Lower, Upper, D) if D is not None else self.Rand.uniform(Lower, Upper)
 
 	def normal(self, loc, scale, D=None):
 		r"""Get D shape random normal distributed numbers.
@@ -90,7 +112,17 @@ class Algorithm:
 
 		D {array} or {int} -- Shape of returnd random uniform numbers
 		"""
-		return self.Rand.normal(loc, scale, D) if D != None else self.Rand.normal(loc, scale)
+		return self.Rand.normal(loc, scale, D) if D is not None else self.Rand.normal(loc, scale)
+
+	def randn(self, D=None):
+		r"""Get D shape random normal distributed numbers.
+
+		**Arguments**:
+		D {array} -- Shape of returnd random numbers
+		"""
+		if D is None: return self.Rand.randn()
+		elif isinstance(D, int): return self.Rand.randn(D)
+		return self.Rand.randn(*D)
 
 	def randint(self, Nmax, D=1, Nmin=0, skip=[]):
 		r"""Get D shape random full numbers in range Nmin to Nmax.
@@ -106,7 +138,7 @@ class Algorithm:
 		skip {array} -- numbers to skip
 		"""
 		r = None
-		if isinstance(D, (list, ndarray)): r = self.Rand.randint(Nmin, Nmax, D)
+		if isinstance(D, (list, tuple, ndarray)): r = self.Rand.randint(Nmin, Nmax, D)
 		elif D > 1: r = self.Rand.randint(Nmin, Nmax, D)
 		else: r = self.Rand.randint(Nmin, Nmax)
 		return r if r not in skip else self.randint(Nmax, D, Nmin, skip)
@@ -159,11 +191,11 @@ class Individual:
 	**License:** MIT
 	"""
 	def __init__(self, **kwargs):
-		self.f = inf
 		task, rnd, x = kwargs.pop('task', None), kwargs.pop('rand', rand), kwargs.pop('x', [])
+		self.f = task.optType.value * inf if task is not None else inf
 		if len(x) > 0: self.x = x if isinstance(x, ndarray) else asarray(x)
 		else: self.generateSolution(task, rnd)
-		if kwargs.pop('e', True) and task != None: self.evaluate(task)
+		if kwargs.pop('e', True) and task is not None: self.evaluate(task, rnd)
 
 	def generateSolution(self, task, rnd=rand):
 		r"""Generate new solution.
@@ -176,26 +208,26 @@ class Individual:
 
 		rnd {random} -- Object for generating random numbers
 		"""
-		self.x = task.Lower + task.bRange * rnd.rand(task.D)
+		if task is not None: self.x = task.bcLower() + task.bcRange() * rnd.rand(task.dim())
 
-	def evaluate(self, task):
+	def evaluate(self, task, rnd=rand):
 		r"""Evaluate the solution.
 
 		**Arguments:**
 
 		task {Task} -- Object with objective function for optimization
 		"""
-		self.repair(task)
+		self.repair(task, rnd=rnd)
 		self.f = task.eval(self.x)
 
-	def repair(self, task):
+	def repair(self, task, rnd=rand):
 		r"""Reper solution and put the solution in the bounds of problem.
 
 		**Arguments:**
 
 		task {Task}
 		"""
-		self.x = task.repair(self.x)
+		self.x = task.repair(self.x, rnd=rnd)
 
 	def __eq__(self, other):
 		r"""Compare the individuals if they are one of the same."""

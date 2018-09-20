@@ -27,7 +27,7 @@ class MyBenchmark(object):
 
 
 algorithms = ['BatAlgorithm',
-              'DifferentialEvolutionAlgorithm',
+              'DifferentialEvolution',
               'FireflyAlgorithm',
               'FlowerPollinationAlgorithm',
               'GreyWolfOptimizer',
@@ -35,7 +35,7 @@ algorithms = ['BatAlgorithm',
               'GeneticAlgorithm',
               'ParticleSwarmAlgorithm',
               'HybridBatAlgorithm',
-              'SelfAdaptiveDifferentialEvolutionAlgorithm']
+              'SelfAdaptiveDifferentialEvolution']
 benchmarks = ['ackley', 'alpine1', 'alpine2', 'chungReynolds',
               'csendes', 'griewank', 'happyCat', 'pinter',
               'quing', 'quintic', 'rastrigin', 'ridge',

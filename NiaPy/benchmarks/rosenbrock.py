@@ -1,11 +1,12 @@
 # encoding=utf8
 # pylint: disable=anomalous-backslash-in-string, old-style-class
 import math
+from NiaPy.benchmarks.benchmark import Benchmark
 
 __all__ = ['Rosenbrock']
 
 
-class Rosenbrock:
+class Rosenbrock(Benchmark):
     r"""Implementation of Rosenbrock benchmark function.
 
     Date: 2018
@@ -42,10 +43,10 @@ class Rosenbrock:
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
     """
+    Name = ['Rosenbrock']
 
     def __init__(self, Lower=-30.0, Upper=30.0):
-        self.Lower = Lower
-        self.Upper = Upper
+        Benchmark.__init__(self, Lower, Upper)
 
     @classmethod
     def function(cls):

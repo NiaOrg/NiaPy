@@ -1,11 +1,12 @@
 # encoding=utf8
 # pylint: disable=anomalous-backslash-in-string, mixed-indentation, multiple-statements, line-too-long, old-style-class
 from math import sqrt, cos
+from NiaPy.benchmarks.benchmark import Benchmark
 
 __all__ = ['Griewank', 'ExpandedGriewankPlusRosenbrock']
 
 
-class Griewank:
+class Griewank(Benchmark):
 	r"""Implementation of Griewank function.
 
 	Date: 2018
@@ -42,7 +43,9 @@ class Griewank:
 	International Journal of Mathematical Modelling and Numerical Optimisation,
 	4(2), 150-194.
 	"""
-	def __init__(self, Lower=-100.0, Upper=100.0): self.Lower, self.Upper = Lower, Upper
+	Name = ['Griewank']
+
+	def __init__(self, Lower=-100.0, Upper=100.0): Benchmark.__init__(self, Lower, Upper)
 
 	@classmethod
 	def function(cls):
@@ -54,7 +57,7 @@ class Griewank:
 			return val1 - val2 + 1.0
 		return evaluate
 
-class ExpandedGriewankPlusRosenbrock:
+class ExpandedGriewankPlusRosenbrock(Benchmark):
 	r"""Implementation of Expanded Griewank's plus Rosenbrock function.
 
 	Date: 2018
@@ -87,7 +90,9 @@ class ExpandedGriewankPlusRosenbrock:
 	Reference:
 	http://www5.zzu.edu.cn/__local/A/69/BC/D3B5DFE94CD2574B38AD7CD1D12_C802DAFE_BC0C0.pdf
 	"""
-	def __init__(self, Lower=-100.0, Upper=100.0): self.Lower, self.Upper = Lower, Upper
+	Name = ['ExpandedGriewankPlusRosenbrock']
+
+	def __init__(self, Lower=-100.0, Upper=100.0): Benchmark.__init__(self, Lower, Upper)
 
 	@classmethod
 	def function(cls):

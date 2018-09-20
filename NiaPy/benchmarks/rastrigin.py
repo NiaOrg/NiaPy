@@ -1,11 +1,12 @@
 # encoding=utf8
 # pylint: disable=anomalous-backslash-in-string, old-style-class
 import math
+from NiaPy.benchmarks.benchmark import Benchmark
 
 __all__ = ['Rastrigin']
 
 
-class Rastrigin:
+class Rastrigin(Benchmark):
     r"""Implementation of Rastrigin benchmark function.
 
     Date: 2018
@@ -38,10 +39,10 @@ class Rastrigin:
 
     Reference: https://www.sfu.ca/~ssurjano/rastr.html
     """
+    Name = ['Rastrigin']
 
     def __init__(self, Lower=-5.12, Upper=5.12):
-        self.Lower = Lower
-        self.Upper = Upper
+        Benchmark.__init__(self, Lower, Upper)
 
     @classmethod
     def function(cls):

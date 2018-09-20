@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, line-too-long, singleton-comparison, arguments-differ
+# pylint: disable=mixed-indentation, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, line-too-long, singleton-comparison, arguments-differ, bad-continuation
 import logging
 from numpy import full, apply_along_axis, argmin
 from NiaPy.algorithms.algorithm import Algorithm
@@ -21,21 +21,20 @@ class BatAlgorithm(Algorithm):
 
 	**License:** MIT
 
-	**Reference paper:**
-	Yang, Xin-She. "A new metaheuristic bat-inspired algorithm."
-	Nature inspired cooperative strategies for optimization (NICSO 2010).
-	Springer, Berlin, Heidelberg, 2010. 65-74.
+	**Reference paper:** Yang, Xin-She. "A new metaheuristic bat-inspired algorithm." Nature inspired cooperative strategies for optimization (NICSO 2010). Springer, Berlin, Heidelberg, 2010. 65-74.
 	"""
-	def __init__(self, **kwargs):
-		r"""**__init__(self, D, NP, nFES, A, r, Qmin, Qmax, benchmark)**.
+	Name = ['BatAlgorithm', 'BA']
 
-		**See**:
-		Algorithm.__init__(self, **kwargs)
-		"""
-		if kwargs.get('name', None) == None: Algorithm.__init__(self, name=kwargs.get('name', 'BatAlgorithm'), sName=kwargs.get('sName', 'BA'), **kwargs)
-		else: Algorithm.__init__(self, **kwargs)
+	@staticmethod
+	def typeParameters(): return {
+			'NP': lambda x: isinstance(x, int) and x > 0,
+			'A': lambda x: isinstance(x, (float, int)) and x > 0,
+			'r': lambda x: isinstance(x, (float, int)) and x > 0,
+			'Qmin': lambda x: isinstance(x, (float, int)),
+			'Qmax': lambda x: isinstance(x, (float, int))
+	}
 
-	def setParameters(self, NP, A, r, Qmin, Qmax, **ukwargs):
+	def setParameters(self, NP=40, A=0.5, r=0.5, Qmin=0.0, Qmax=2.0, **ukwargs):
 		r"""Set the parameters of the algorithm.
 
 		**Arguments:**
@@ -69,13 +68,8 @@ class BatAlgorithm(Algorithm):
 		best, f_min = Sol[j], Fitness[j]
 		while not task.stopCond():
 			for i in range(self.NP):
-				Q[i] = self.Qmin + (self.Qmax - self.Qmin) * self.uniform(0, 1)
-				v[i] = v[i] + (Sol[i] - best) * Q[i]
-				S[i] = Sol[i] + v[i]
-				S[i] = task.repair(S[i])
-				if self.rand() > self.r:
-					S[i] = best + 0.001 * self.normal(0, 1, task.D)
-					S[i] = task.repair(S[i])
+				Q[i], v[i], S[i] = self.Qmin + (self.Qmax - self.Qmin) * self.uniform(0, 1), v[i] + (Sol[i] - best) * Q[i], task.repair(Sol[i] + v[i], rnd=self.Rand)
+				if self.rand() > self.r: S[i] = task.repair(best + 0.001 * self.normal(0, 1, task.D), rnd=self.Rand)
 				Fnew = task.eval(S[i])
 				if (Fnew <= Fitness[i]) and (self.rand() < self.A): Sol[i], Fitness[i] = S[i], Fnew
 				if Fnew <= f_min: best, f_min = S[i], Fnew

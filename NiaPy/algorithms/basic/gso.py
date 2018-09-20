@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, line-too-long, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, redefined-builtin, singleton-comparison, unused-argument, arguments-differ, no-else-return
+# pylint: disable=mixed-indentation, trailing-whitespace, line-too-long, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, redefined-builtin, singleton-comparison, unused-argument, arguments-differ, no-else-return, bad-continuation
 import logging
 from scipy.spatial.distance import euclidean
 from numpy import full, apply_along_axis, argmin, copy, sum, inf, fmax, pi, where
@@ -26,9 +26,18 @@ class GlowwormSwarmOptimization(Algorithm):
 
 	**Reference paper:** Kaipa, Krishnanand N., and Debasish Ghose. Glowworm swarm optimization: theory, algorithms, and applications. Vol. 698. Springer, 2017.
 	"""
-	def __init__(self, **kwargs):
-		if kwargs.get('name', None) == None: Algorithm.__init__(self, name='GlowwormSwarmOptimization', sName='GSO', **kwargs)
-		else: Algorithm.__init__(self, **kwargs)
+	Name = ['GlowwormSwarmOptimization', 'GSO']
+
+	@staticmethod
+	def typeParameters(): return {
+			'n': lambda x: isinstance(x, int) and x > 0,
+			'l0': lambda x: isinstance(x, (float, int)) and x > 0,
+			'nt': lambda x: isinstance(x, (float, int)) and x > 0,
+			'rho': lambda x: isinstance(x, float) and 0 < x < 1,
+			'gamma': lambda x: isinstance(x, float) and 0 < x < 1,
+			'beta': lambda x: isinstance(x, float) and x > 0,
+			's': lambda x: isinstance(x, float) and x > 0
+	}
 
 	def setParameters(self, n=25, l0=5, nt=5, rho=0.4, gamma=0.6, beta=0.08, s=0.03, **ukwargs):
 		r"""Set the arguments of an algorithm.
@@ -87,8 +96,8 @@ class GlowwormSwarmOptimization(Algorithm):
 
 	def runTask(self, task):
 		rs = euclidean(full(task.D, 0), task.bRange)
-		GS, GS_f, L, R = self.uniform(task.Lower, task.Upper, [self.n, task.D]), full(self.n, inf), full(self.n, self.l0), full(self.n, rs)
-		xb, xb_f = None, inf
+		GS, GS_f, L, R = self.uniform(task.Lower, task.Upper, [self.n, task.D]), full(self.n, task.optType.value * inf), full(self.n, self.l0), full(self.n, rs)
+		xb, xb_f = None, task.optType.value * inf
 		while not task.stopCondI():
 			GSo, Ro, GS_f = copy(GS), copy(R), apply_along_axis(task.eval, 1, GS)
 			xb, xb_f = self.getBest(GS, GS_f, xb, xb_f)
@@ -96,7 +105,7 @@ class GlowwormSwarmOptimization(Algorithm):
 			N = [self.getNeighbors(i, Ro[i], GSo, L) for i in range(self.n)]
 			P = [self.probabilityes(i, N[i], L) for i in range(self.n)]
 			j = [self.moveSelect(P[i], i) for i in range(self.n)]
-			for i in range(self.n): GS[i] = task.repair(GSo[i] + self.s * ((GSo[j[i]] - GSo[i]) / (euclidean(GSo[j[i]], GSo[i]) + 1e-31)))
+			for i in range(self.n): GS[i] = task.repair(GSo[i] + self.s * ((GSo[j[i]] - GSo[i]) / (euclidean(GSo[j[i]], GSo[i]) + 1e-31)), rnd=self.Rand)
 			for i in range(self.n): R[i] = max(0, min(rs, self.rangeUpdate(Ro[i], N[i], rs)))
 		return xb, xb_f
 
@@ -115,7 +124,7 @@ class GlowwormSwarmOptimizationV1(GlowwormSwarmOptimization):
 
 	**Reference paper:** Kaipa, Krishnanand N., and Debasish Ghose. Glowworm swarm optimization: theory, algorithms, and applications. Vol. 698. Springer, 2017.
 	"""
-	def __init__(self, **kwargs): GlowwormSwarmOptimization.__init__(self, name='GlowwormSwarmOptimizationV1', sName='GSOv1', **kwargs)
+	Name = ['GlowwormSwarmOptimizationV1', 'GSOv1']
 
 	def setParameters(self, **kwargs):
 		self.__setParams(**kwargs)
@@ -150,7 +159,7 @@ class GlowwormSwarmOptimizationV2(GlowwormSwarmOptimization):
 
 	**Reference paper:** Kaipa, Krishnanand N., and Debasish Ghose. Glowworm swarm optimization: theory, algorithms, and applications. Vol. 698. Springer, 2017.
 	"""
-	def __init__(self, **kwargs): GlowwormSwarmOptimization.__init__(self, name='GlowwormSwarmOptimizationV2', sName='GSOv2', **kwargs)
+	Name = ['GlowwormSwarmOptimizationV2', 'GSOv2']
 
 	def setParameters(self, **kwargs):
 		self.__setParams(alpha=kwargs.pop('alpha', 0.2), **kwargs)
@@ -185,7 +194,7 @@ class GlowwormSwarmOptimizationV3(GlowwormSwarmOptimization):
 
 	**Reference paper:** Kaipa, Krishnanand N., and Debasish Ghose. Glowworm swarm optimization: theory, algorithms, and applications. Vol. 698. Springer, 2017.
 	"""
-	def __init__(self, **kwargs): GlowwormSwarmOptimization.__init__(self, name='GlowwormSwarmOptimizationV2', sName='GSOv2', **kwargs)
+	Name = ['GlowwormSwarmOptimizationV3', 'GSOv3']
 
 	def setParameters(self, **kwargs):
 		self.__setParams(beta1=kwargs.pop('beta1', 0.2), **kwargs)

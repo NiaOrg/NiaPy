@@ -9,7 +9,7 @@ import random
 import logging
 from NiaPy.algorithms.basic import BareBonesFireworksAlgorithm
 from NiaPy.benchmarks import Benchmark, Katsuura, Elliptic
-from NiaPy.benchmarks.utility import TaskConvPrint, TaskConvPlot
+from NiaPy.util import TaskConvPrint, TaskConvPlot
 
 logging.basicConfig()
 logger = logging.getLogger('examples')

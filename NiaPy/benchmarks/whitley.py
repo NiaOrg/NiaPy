@@ -1,11 +1,11 @@
 # encoding=utf8
 # pylint: disable=anomalous-backslash-in-string, old-style-class
 import math
+from NiaPy.benchmarks.benchmark import Benchmark
 
 __all__ = ['Whitley']
 
-
-class Whitley:
+class Whitley(Benchmark):
     r"""Implementation of Whitley function.
 
     Date: 2018
@@ -47,10 +47,10 @@ class Whitley:
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
     """
+    Name = ['Whitley']
 
     def __init__(self, Lower=-10.24, Upper=10.24):
-        self.Lower = Lower
-        self.Upper = Upper
+        Benchmark.__init__(self, Lower, Upper)
 
     @classmethod
     def function(cls):

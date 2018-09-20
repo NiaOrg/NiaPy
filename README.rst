@@ -130,11 +130,14 @@ Requirements
 Dependencies
 ~~~~~~~~~~~~
 
--  click == *
+-  pytest == 3.7.1
+-  coverage == 4.4.2
+-  coverage-space == 1.0.2
+-  click == 6.0
 -  numpy == 1.14.0
 -  scipy == 1.0.0
 -  xlsxwriter == 1.0.2
--  matplotlib == *
+-  matplotlib == 2.2.2
 
 List of development dependencies and requirements can be found in the `installation section of NiaPy documentation <http://niapy.readthedocs.io/en/stable/installation.html>`_.
 
