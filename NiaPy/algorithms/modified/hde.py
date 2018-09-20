@@ -161,7 +161,7 @@ class MultiStratgyDifferentialEvolutionMTS(DifferentialEvolutionMTS):
 		pop = [MtsIndividual(task.bcRange() * 0.06, task=task, rand=self.Rand, e=True) for _i in range(self.Np)]
 		x_b = pop[argmin([x.f for x in pop])]
 		while not task.stopCondI():
-			npop = [MtsIndividual(pop[i].SR, x=self.CrossMutt(pop, i, x_b, self.F, self.CR, self.Rand), task=task, rand=self.Rand, e=True) for i in range(len(pop))]
+			npop = [self.multiMutations(pop, i, x_b, task) for i in range(len(pop))]
 			for i, e in enumerate(npop): npop[i], x_b = self.LSprocedure(e, x_b, task)
 			pop = [np if np.f < pop[i].f else pop[i] for i, np in enumerate(npop)]
 			for i in argsort([x.grade for x in pop])[:self.NoEnabled]: pop[i].enable = True

@@ -99,7 +99,7 @@ def MTS_LS3(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, rnd=
 
 def MTS_LS3v1(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, phi=3, BONUS1=10, BONUS2=1, rnd=rand, **ukwargs):
 	grade, Disp = 0.0, task.bRange / 10
-	while True in Disp > 1e-3:
+	while True in (Disp > 1e-3):
 		Xn = [rnd.permutation(Xk) + Disp * rnd.uniform(-1, 1, len(Xk)) for _ in range(phi)]
 		Xn_f = apply_along_axis(task.eval, 1, Xn)
 		iBetter, iBetterBest = where(Xn_f < Xk_fit), where(Xn_f < Xb_fit)

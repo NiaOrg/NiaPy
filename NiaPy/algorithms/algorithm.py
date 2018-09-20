@@ -208,7 +208,7 @@ class Individual:
 
 		rnd {random} -- Object for generating random numbers
 		"""
-		self.x = task.bcLower() + task.bcRange() * rnd.rand(task.dim())
+		if task is not None: self.x = task.bcLower() + task.bcRange() * rnd.rand(task.dim())
 
 	def evaluate(self, task, rnd=rand):
 		r"""Evaluate the solution.

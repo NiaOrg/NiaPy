@@ -46,6 +46,17 @@ class DETestCase(AlgorithmTestCase):
 		AlgorithmTestCase.algorithm_run_test(self, de_curr2best1, de_curr2best1c)
 
 class dynNpDETestCase(AlgorithmTestCase):
+	def test_typeParameters(self):
+		d = DynNpDifferentialEvolution.typeParameters()
+		self.assertTrue(d['rp'](10))
+		self.assertTrue(d['rp'](10.10))
+		self.assertFalse(d['rp'](0))
+		self.assertFalse(d['rp'](-10))
+		self.assertTrue(d['pmax'](10))
+		self.assertFalse(d['pmax'](0))
+		self.assertFalse(d['pmax'](-10))
+		self.assertFalse(d['pmax'](10.12))
+
 	def test_Custom_works_fine(self):
 		de_custom = DynNpDifferentialEvolution(D=self.D, NP=40, nFES=self.nFES, nGEN=self.nGEN, F=0.5, CR=0.9, benchmark=MyBenchmark(), seed=self.seed)
 		de_customc = DynNpDifferentialEvolution(D=self.D, NP=40, nFES=self.nFES, nGEN=self.nGEN, F=0.5, CR=0.9, benchmark=MyBenchmark(), seed=self.seed)
@@ -79,6 +90,17 @@ class MsDETestCase(AlgorithmTestCase):
 		AlgorithmTestCase.algorithm_run_test(self, de_griewank, de_griewankc)
 
 class dynNpMsDETestCase(AlgorithmTestCase):
+	def test_typeParameters(self):
+		d = DynNpMultiStrategyDifferentialEvolution.typeParameters()
+		self.assertTrue(d['rp'](10))
+		self.assertTrue(d['rp'](10.10))
+		self.assertFalse(d['rp'](0))
+		self.assertFalse(d['rp'](-10))
+		self.assertTrue(d['pmax'](10))
+		self.assertFalse(d['pmax'](0))
+		self.assertFalse(d['pmax'](-10))
+		self.assertFalse(d['pmax'](10.12))
+
 	def test_Custom_works_fine(self):
 		de_custom = DynNpMultiStrategyDifferentialEvolution(D=self.D, NP=40, nFES=self.nFES, nGEN=self.nGEN, F=0.5, CR=0.9, benchmark=MyBenchmark(), seed=self.seed)
 		de_customc = DynNpMultiStrategyDifferentialEvolution(D=self.D, NP=40, nFES=self.nFES, nGEN=self.nGEN, F=0.5, CR=0.9, benchmark=MyBenchmark(), seed=self.seed)

@@ -21,7 +21,7 @@ def SimulatedAnnealingF(task, delta=1.5, delta_t=0.564, T=2000, cool=coolDelta, 
 	curT, xfit = T, task.eval(x)
 	xb, xb_f = x, xfit
 	while not task.stopCond() and curT >= epsilon:
-		c = task.repair(x - delta / 2 + rnd.rand(task.D) * delta)
+		c = task.repair(x - delta / 2 + rnd.rand(task.D) * delta, rnd=rnd)
 		cfit = task.eval(c)
 		deltaFit, r = cfit - xfit, rnd.rand()
 		if deltaFit < 0 or r < exp(deltaFit / curT): x, xfit = c, cfit
@@ -44,7 +44,7 @@ class SimulatedAnnealing(Algorithm):
 
 	**Reference paper:**
 	"""
-	Name = ['SimulatedAnnealing', 'BBFA']
+	Name = ['SimulatedAnnealing', 'SA']
 
 	@staticmethod
 	def typeParameters(): return {
@@ -58,15 +58,20 @@ class SimulatedAnnealing(Algorithm):
 		r"""Set the algorithm parameters/arguments.
 
 		Arguments:
+
 		delta {real} -- Movemt for neighbour search
+
 		T {real} -- Starting temperature
+
 		deltaT {real} -- Change in temperature
+
 		coolingMethod {function} -- Neigborhud function
+
 		epsilon {real} -- Error value
 		"""
 		self.delta, self.T, self.deltaT, self.cool, self.epsilon = delta, T, deltaT, coolingMethod, epsilon
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def runTask(self, task): return SimulatedAnnealingF(task, self.delta, self.deltaT, self.T, self.cool, self.epsilon, self.Rand)
+	def runTask(self, task): return SimulatedAnnealingF(task, self.delta, self.deltaT, self.T, self.cool, self.epsilon, rnd=self.Rand)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

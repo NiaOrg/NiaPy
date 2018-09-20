@@ -74,10 +74,11 @@ setuptools.setup(
     ],
 
     tests_requires=[
-        'pylint ~= 2.1.1'
+        'pylint >= 2.1.1',
+        'astroid >= 2.0.4',
         'pytest ~= 3.7.1',
         'coverage ~= 4.4.2',
-        'coverage-space ~= 1.0.2',
+        'coverage-space ~= 1.0.2'
     ],
 
     install_requires=[
@@ -87,6 +88,6 @@ setuptools.setup(
         'click ~= 6.0',
         'scipy ~= 1.1.0',
         'xlsxwriter ~= 1.0.2',
-        'matplotlib ~= 2.2.3'
+        'matplotlib ~= 2.2.3',
     ]
 )

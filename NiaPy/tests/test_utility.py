@@ -397,10 +397,9 @@ class TaskConvPlotTestCase(TestCase):
 class TaskCompositionTestCase(TestCase):
 	def setUp(self):
 		self.D, self.nFES, self.nGEN = 10, 10, 10
-		self.t = TaskConvPrint(D=self.D, nFES=self.nFES, nGEN=self.nGEN, benchmark=MyBenchmark())
-		self.t1 = TaskConvPrint(D=self.D, nFES=self.nFES, nGEN=self.nGEN)
+		self.t = TaskComposition(D=self.D, nFES=self.nFES, nGEN=self.nGEN, benchmark=MyBenchmark())
 
 	def test_eval(self):
-		self.assertEqual(self.t.eval(full(self.D, 0)), 0.0)
+		self.assertEqual(self.t.eval(full(self.D, 0)), inf)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

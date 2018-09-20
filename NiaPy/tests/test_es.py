@@ -1,8 +1,19 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, multiple-statements, old-style-class, line-too-long
+from unittest import TestCase
 from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
 from NiaPy.benchmarks.griewank import Griewank
 from NiaPy.algorithms.basic import EvolutionStrategy1p1, EvolutionStrategyMp1, EvolutionStrategyMpL, EvolutionStrategyML, CovarianceMaatrixAdaptionEvolutionStrategy
+from NiaPy.algorithms.basic.es import IndividualES
+
+class IndividualESTestCase(TestCase):
+	def test_init_ok_one(self):
+		i = IndividualES()
+		self.assertEqual(i.rho, 1.0)
+
+	def test_init_ok_two(self):
+		i = IndividualES(rho=10)
+		self.assertEqual(i.rho, 10)
 
 class ES1p1TestCase(AlgorithmTestCase):
 	def test_custom_works_fine(self):
@@ -27,6 +38,13 @@ class ESMp1TestCase(AlgorithmTestCase):
 		AlgorithmTestCase.algorithm_run_test(self, es_griewank, es_griewankc)
 
 class ESMpLTestCase(AlgorithmTestCase):
+	def test_typeParametes(self):
+		d = EvolutionStrategyML.typeParameters()
+		self.assertTrue(d['lam'](10))
+		self.assertFalse(d['lam'](10.10))
+		self.assertFalse(d['lam'](0))
+		self.assertFalse(d['lam'](-10))
+
 	def test_custom_works_fine(self):
 		es_custom = EvolutionStrategyMpL(D=self.D, nFES=self.nFES, nGEN=self.nGEN, mu=45, lam=55, k=50, c_a=1.1, c_r=0.5, benchmark=MyBenchmark(), seed=self.seed)
 		es_customc = EvolutionStrategyMpL(D=self.D, nFES=self.nFES, nGEN=self.nGEN, mu=45, lam=55, k=50, c_a=1.1, c_r=0.5, benchmark=MyBenchmark(), seed=self.seed)
