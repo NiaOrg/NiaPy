@@ -2,9 +2,11 @@
 # pylint: disable=mixed-indentation, multiple-statements, old-style-class
 """Implementations of Levy function."""
 
+from NiaPy.benchmarks.benchmark import Benchmark
+
 __all__ = ['Trid']
 
-class Trid:
+class Trid(Benchmark):
 	r"""Implementations of Trid functions.
 
 	Date: 2018
@@ -38,7 +40,9 @@ class Trid:
 	Reference:
 	https://www.sfu.ca/~ssurjano/trid.html
 	"""
-	def __init__(self, D=2): self.Lower, self.Upper, = -D ** 2, D ** 2
+	Name = ['Trid']
+
+	def __init__(self, D=2): Benchmark.__init__(self, -(D ** 2), D ** 2)
 
 	@classmethod
 	def function(cls):

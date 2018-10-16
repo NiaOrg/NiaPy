@@ -1,33 +1,32 @@
-# pylint: disable=old-style-class
-from unittest import TestCase
-
+# pylint: disable=old-style-class, line-too-long
 from NiaPy.algorithms.basic import ParticleSwarmAlgorithm
+from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
 
 
-class MyBenchmark:
+class PSOTestCase(AlgorithmTestCase):
 
-    def __init__(self):
-        self.Lower = -5.12
-        self.Upper = 5.12
-
-    @classmethod
-    def function(cls):
-        def evaluate(D, sol):
-            val = 0.0
-            for i in range(D):
-                val = val + sol[i] * sol[i]
-            return val
-        return evaluate
-
-
-class CSTestCase(TestCase):
-
-    def setUp(self):
-        self.pso_custom = ParticleSwarmAlgorithm(NP=40, D=40, nFES=1000, C1=2.0, C2=2.0, w=0.7, vMin=-4, vMax=4, benchmark=MyBenchmark())
-        self.pso_griewank = ParticleSwarmAlgorithm(NP=40, D=40, nFES=1000, C1=2.0, C2=2.0, w=0.7, vMin=-4, vMax=4, benchmark='griewank')
+    def test_parameter_type(self):
+        d = ParticleSwarmAlgorithm.typeParameters()
+        self.assertTrue(d['C1'](10))
+        self.assertTrue(d['C2'](10))
+        self.assertTrue(d['C1'](0))
+        self.assertTrue(d['C2'](0))
+        self.assertFalse(d['C1'](-10))
+        self.assertFalse(d['C2'](-10))
+        self.assertTrue(d['vMax'](10))
+        self.assertTrue(d['vMin'](10))
+        self.assertTrue(d['NP'](10))
+        self.assertFalse(d['NP'](-10))
+        self.assertFalse(d['NP'](0))
+        self.assertFalse(d['vMin'](None))
+        self.assertFalse(d['vMax'](None))
 
     def test_custom_works_fine(self):
-        self.assertTrue(self.pso_custom.run())
+        pso_custom = ParticleSwarmAlgorithm(NP=40, D=self.D, nFES=self.nFES, nGEN=self.nGEN, C1=2.0, C2=2.0, w=0.7, vMin=-4, vMax=4, benchmark=MyBenchmark(), seed=self.seed)
+        pso_customc = ParticleSwarmAlgorithm(NP=40, D=self.D, nFES=self.nFES, nGEN=self.nGEN, C1=2.0, C2=2.0, w=0.7, vMin=-4, vMax=4, benchmark=MyBenchmark(), seed=self.seed)
+        AlgorithmTestCase.algorithm_run_test(self, pso_custom, pso_customc)
 
     def test_griewank_works_fine(self):
-        self.assertTrue(self.pso_griewank.run())
+        pso_griewank = ParticleSwarmAlgorithm(NP=40, D=self.D, nFES=self.nFES, nGEN=self.nGEN, C1=2.0, C2=2.0, w=0.7, vMin=-4, vMax=4, benchmark='griewank', seed=self.seed)
+        pso_griewankc = ParticleSwarmAlgorithm(NP=40, D=self.D, nFES=self.nFES, nGEN=self.nGEN, C1=2.0, C2=2.0, w=0.7, vMin=-4, vMax=4, benchmark='griewank', seed=self.seed)
+        AlgorithmTestCase.algorithm_run_test(self, pso_griewank, pso_griewankc)

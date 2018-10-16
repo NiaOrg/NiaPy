@@ -5,8 +5,8 @@ name = "pypi"
 
 [packages]
 click = "*"
-numpy = "==1.14.0"
-scipy = "==1.0.0"
+numpy = "==1.15.0"
+scipy = "==1.1.0"
 xlsxwriter = "==1.0.2"
 matplotlib = "*"
 

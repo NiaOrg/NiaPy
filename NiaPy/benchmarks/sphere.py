@@ -2,11 +2,11 @@
 # pylint: disable=anomalous-backslash-in-string, mixed-indentation, redefined-builtin, multiple-statements, old-style-class
 
 from numpy import abs
+from NiaPy.benchmarks.benchmark import Benchmark
 
 __all__ = ['Sphere', 'Sphere2', 'Sphere3']
 
-
-class Sphere:
+class Sphere(Benchmark):
 	r"""Implementation of Sphere functions.
 
 	Date: 2018
@@ -41,9 +41,9 @@ class Sphere:
 	International Journal of Mathematical Modelling and Numerical Optimisation,
 	4(2), 150-194.
 	"""
-	def __init__(self, Lower=-5.12, Upper=5.12):
-		self.Lower = Lower
-		self.Upper = Upper
+	Name = ['Sphere']
+
+	def __init__(self, Lower=-5.12, Upper=5.12): Benchmark.__init__(self, Lower, Upper)
 
 	@classmethod
 	def function(cls):
@@ -53,7 +53,7 @@ class Sphere:
 			return val
 		return evaluate
 
-class Sphere2:
+class Sphere2(Benchmark):
 	r"""Implementation of Sphere with different powers function.
 
 	Date: 2018
@@ -85,9 +85,9 @@ class Sphere2:
 	Reference URL:
 	https://www.sfu.ca/~ssurjano/sumpow.html
 	"""
-	def __init__(self, Lower=-1., Upper=1.):
-		self.Lower = Lower
-		self.Upper = Upper
+	Name = ['Sphere2']
+
+	def __init__(self, Lower=-1., Upper=1.): Benchmark.__init__(self, Lower, Upper)
 
 	@classmethod
 	def function(cls):
@@ -97,7 +97,7 @@ class Sphere2:
 			return val
 		return evaluate
 
-class Sphere3:
+class Sphere3(Benchmark):
 	r"""Implementation of rotated hyper-ellipsoid function.
 
 	Date: 2018
@@ -129,9 +129,9 @@ class Sphere3:
 	Reference URL:
 	https://www.sfu.ca/~ssurjano/rothyp.html
 	"""
-	def __init__(self, Lower=-65.536, Upper=65.536):
-		self.Lower = Lower
-		self.Upper = Upper
+	Name = ['Sphere3']
+
+	def __init__(self, Lower=-65.536, Upper=65.536): Benchmark.__init__(self, Lower, Upper)
 
 	@classmethod
 	def function(cls):

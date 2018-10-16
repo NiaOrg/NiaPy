@@ -8,8 +8,7 @@ sys.path.append('../')
 import random
 import logging
 from NiaPy.algorithms.basic import GravitationalSearchAlgorithm
-from NiaPy.benchmarks.utility import TaskConvPrint, TaskConvPlot, OptimizationType
-from margparser import getArgs
+from NiaPy.util import Task, TaskConvPrint, TaskConvPlot, OptimizationType, getDictArgs
 
 logging.basicConfig()
 logger = logging.getLogger('examples')
@@ -20,8 +19,8 @@ random.seed(1234)
 
 class MinMB(object):
 	def __init__(self):
-		self.Lower = -5.12
-		self.Upper = 5.12
+		self.Lower = -11
+		self.Upper = 11
 
 	def function(self):
 		def evaluate(D, sol):
@@ -36,35 +35,36 @@ class MaxMB(MinMB):
 		def e(D, sol): return -f(D, sol)
 		return e
 
-def simple_example(runs=10, D=10, nFES=50000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB):
+def simple_example(alg, runs=10, D=10, nFES=50000, nGEN=10000, seed=[None], optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kn):
 	for i in range(runs):
-		algo = GravitationalSearchAlgorithm(D=D, NP=40, nFES=nFES, F=0.5, CR=0.9, seed=seed + 1 if seed != None else seed, optType=optType, benchmark=optFunc())
-		Best = algo.run()
-		logger.info('%s %s' % (Best[0], Best[1]))
+		task = Task(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc())
+		algo = alg(seed=seed[i % len(seed)], task=task)
+		best = algo.run()
+		logger.info('%s %s' % (best[0], best[1]))
 
-def logging_example(D=10, nFES=50000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB):
-	task = TaskConvPrint(D=D, nFES=nFES, nGEN=50000, optType=optType, benchmark=optFunc())
-	algo = GravitationalSearchAlgorithm(NP=40, F=0.5, CR=0.9, seed=seed, task=task)
+def logging_example(alg, D=10, nFES=50000, nGEN=100000, seed=[None], optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kn):
+	task = TaskConvPrint(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc())
+	algo = alg(seed=seed[0], task=task)
 	best = algo.run()
 	logger.info('%s %s' % (best[0], best[1]))
 
-def plot_example(D=10, nFES=50000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB):
-	task = TaskConvPlot(D=D, nFES=nFES, nGEN=10000, optType=optType, benchmark=optFunc())
-	algo = GravitationalSearchAlgorithm(NP=40, F=0.5, CR=0.9, seed=seed, task=task)
+def plot_example(alg, D=10, nFES=50000, nGEN=100000, seed=[None], optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kn):
+	task = TaskConvPlot(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc())
+	algo = alg(seed=seed[0], task=task)
 	best = algo.run()
 	logger.info('%s %s' % (best[0], best[1]))
 	input('Press [enter] to continue')
 
-def getOptType(strtype):
-	if strtype == 'min': return OptimizationType.MINIMIZATION, MinMB
-	elif strtype == 'max': return OptimizationType.MAXIMIZATION, MaxMB
+def getOptType(otype):
+	if otype == OptimizationType.MINIMIZATION: return MinMB
+	elif otype == OptimizationType.MAXIMIZATION: return MaxMB
 	else: return None
 
 if __name__ == '__main__':
-	pargs = getArgs(sys.argv[1:])
-	optType, optFunc = getOptType(pargs.optType)
-	if not pargs.runType: simple_example(D=pargs.D, nFES=pargs.nFES, seed=pargs.seed, optType=optType, optFunc=optFunc)
-	elif pargs.runType == 'log': logging_example(D=pargs.D, nFES=pargs.nFES, seed=pargs.seed, optType=optType, optFunc=optFunc)
-	elif pargs.runType == 'plot': plot_example(D=pargs.D, nFES=pargs.nFES, seed=pargs.seed, optType=optType, optFunc=optFunc)
+	pargs, algo = getDictArgs(sys.argv[1:]), GravitationalSearchAlgorithm
+	optFunc = getOptType(pargs['optType'])
+	if not pargs['runType']: simple_example(algo, optFunc=optFunc, **pargs)
+	elif pargs['runType'] == 'log': logging_example(algo, optFunc=optFunc, **pargs)
+	elif pargs['runType'] == 'plot': plot_example(algo, optFunc=optFunc, **pargs)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

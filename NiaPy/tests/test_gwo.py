@@ -1,34 +1,17 @@
 # encoding=utf8
 # pylint: disable=too-many-function-args, old-style-class
-from unittest import TestCase
-
+from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
 from NiaPy.algorithms.basic import GreyWolfOptimizer
 
 
-class MyBenchmark:
-
-    def __init__(self):
-        self.Lower = -5.12
-        self.Upper = 5.12
-
-    @classmethod
-    def function(cls):
-        def evaluate(D, sol):
-            val = 0.0
-            for i in range(D):
-                val = val + sol[i] * sol[i]
-            return val
-        return evaluate
-
-
-class GWOTestCase(TestCase):
-
-    def setUp(self):
-        self.gwo_custom = GreyWolfOptimizer(D=10, NP=20, nFES=1000, benchmark=MyBenchmark())
-        self.gwo_sphere = GreyWolfOptimizer(NP=10, D=20, nFES=1000, benchmark='sphere')
+class GWOTestCase(AlgorithmTestCase):
 
     def test_custom_works_fine(self):
-        self.assertTrue(self.gwo_custom.run())
+        gwo_custom = GreyWolfOptimizer(D=self.D, NP=20, nFES=self.nFES, nGEN=self.nGEN, benchmark=MyBenchmark(), seed=self.seed)
+        gwo_customc = GreyWolfOptimizer(D=self.D, NP=20, nFES=self.nFES, nGEN=self.nGEN, benchmark=MyBenchmark(), seed=self.seed)
+        AlgorithmTestCase.algorithm_run_test(self, gwo_custom, gwo_customc)
 
-    def test_sphere_works_fine(self):
-        self.assertTrue(self.gwo_sphere.run())
+    def test_griewank_works_fine(self):
+        gwo_griewank = GreyWolfOptimizer(NP=10, D=self.D, nFES=self.nFES, nGEN=self.nGEN, benchmark='griewank', seed=self.seed)
+        gwo_griewankc = GreyWolfOptimizer(NP=10, D=self.D, nFES=self.nFES, nGEN=self.nGEN, benchmark='griewank', seed=self.seed)
+        AlgorithmTestCase.algorithm_run_test(self, gwo_griewank, gwo_griewankc)

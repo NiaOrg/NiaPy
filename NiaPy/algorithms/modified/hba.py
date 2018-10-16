@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, logging-not-lazy, attribute-defined-outside-init, arguments-differ
+# pylint: disable=mixed-indentation, multiple-statements, logging-not-lazy, attribute-defined-outside-init, arguments-differ, bad-continuation
 import logging
 from numpy import full, apply_along_axis, argmin
 from NiaPy.algorithms.basic import BatAlgorithm
@@ -22,24 +22,27 @@ class HybridBatAlgorithm(BatAlgorithm):
 
 	**License:** MIT
 
-	**Reference paper:**
-	Fister Jr., Iztok and Fister, Dusan and Yang, Xin-She.
-	"A Hybrid Bat Algorithm". Elektrotehniski vestnik, 2013. 1-7.
+	**Reference paper:** Fister Jr., Iztok and Fister, Dusan and Yang, Xin-She. "A Hybrid Bat Algorithm". Elektrotehniski vestnik, 2013. 1-7.
 	"""
-	def __init__(self, **kwargs): BatAlgorithm.__init__(self, name='HybridBatAlgorithm', sName='HBA', **kwargs)
+	Name = ['HybridBatAlgorithm', 'HBA']
 
-	def setParameters(self, **kwargs):
-		BatAlgorithm.setParameters(self, **kwargs)
-		self.__setParams(**kwargs)
+	@staticmethod
+	def typeParameters():
+		d = BatAlgorithm.typeParameters()
+		d['F'] = lambda x: isinstance(x, (int, float)) and x > 0
+		d['CR'] = lambda x: isinstance(x, float) and 0 <= x <= 1
+		return d
 
-	def __setParams(self, F=0.78, CR=0.35, CrossMutt=CrossBest1, **ukwargs):
+	def setParameters(self, F=0.78, CR=0.35, CrossMutt=CrossBest1, **ukwargs):
 		r"""**__init__(self, D, NP, nFES, A, r, Qmin, Qmax, benchmark)**.
 
 		**Arguments:**
 
 		F {decimal} -- scaling factor
+
 		CR {decimal} -- crossover
 		"""
+		BatAlgorithm.setParameters(self, **ukwargs)
 		self.F, self.CR, self.CrossMutt = F, CR, CrossMutt
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
@@ -52,10 +55,10 @@ class HybridBatAlgorithm(BatAlgorithm):
 			Q = self.Qmin + (self.Qmax - self.Qmin) * self.uniform(0, 1, self.NP)
 			for i in range(self.NP):
 				v[i] = v[i] + (Sol[i] - best) * Q[i]
-				S = task.repair(Sol[i] + v[i])
-				if self.rand() > self.r: S = task.repair(self.CrossMutt(Sol, i, best, self.F, self.CR, self.Rand))
+				S = task.repair(Sol[i] + v[i], rnd=self.Rand)
+				if self.rand() > self.r: S = task.repair(self.CrossMutt(Sol, i, best, self.F, self.CR, rnd=self.Rand), rnd=self.Rand)
 				f_new = task.eval(S)
-				if Fitness[i] <= f_new and self.rand() < self.A: Sol[i], Fitness[i] = S, f_new
+				if f_new <= Fitness[i] and self.rand() < self.A: Sol[i], Fitness[i] = S, f_new
 				if f_new < f_min: best, f_min = S, f_new
 		return best, f_min
 

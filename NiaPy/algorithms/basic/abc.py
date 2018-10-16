@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, line-too-long, multiple-statements, attribute-defined-outside-init, logging-not-lazy, arguments-differ
+# pylint: disable=mixed-indentation, line-too-long, multiple-statements, attribute-defined-outside-init, logging-not-lazy, arguments-differ, bad-continuation
 import copy
 import logging
 from NiaPy.algorithms.algorithm import Algorithm, Individual
@@ -11,7 +11,7 @@ logger.setLevel('INFO')
 __all__ = ['ArtificialBeeColonyAlgorithm']
 
 class SolutionABC(Individual):
-	def __init__(self, task): Individual.__init__(self, task=task, e=False)
+	def __init__(self, task, rand): Individual.__init__(self, task=task, e=False, rand=rand)
 
 class ArtificialBeeColonyAlgorithm(Algorithm):
 	r"""Implementation of Artificial Bee Colony algorithm.
@@ -29,13 +29,13 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 	numerical function optimization: artificial bee colony (ABC) algorithm."
 	Journal of global optimization 39.3 (2007): 459-471.
 	"""
-	def __init__(self, **kwargs):
-		"""**__init__(self, D, NP, nFES, benchmark)**.
+	Name = ['ArtificialBeeColonyAlgorithm', 'ABC']
 
-		**See**:
-		Algorithm.__init__(self, **kwargs)
-		"""
-		Algorithm.__init__(self, name='ArtificialBeeColonyAlgorithm', sName='ABC', **kwargs)
+	@staticmethod
+	def typeParameters(): return {
+			'NP': lambda x: isinstance(x, int) and x > 0,
+			'Limit': lambda x: isinstance(x, int) and x > 0
+	}
 
 	def setParameters(self, NP=10, Limit=100, **ukwargs):
 		r"""Set the arguments of an algorithm.
@@ -58,10 +58,10 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 		"""Initialize positions."""
 		self.Probs = [0 for i in range(self.FoodNumber)]
 		self.Trial = [0 for i in range(self.FoodNumber)]
-		self.Best = SolutionABC(task)
+		self.Best = SolutionABC(task, self.Rand)
 		for i in range(self.FoodNumber):
-			self.Foods.append(SolutionABC(task))
-			self.Foods[i].evaluate(task)
+			self.Foods.append(SolutionABC(task, self.Rand))
+			self.Foods[i].evaluate(task, rnd=self.Rand)
 			self.checkForBest(self.Foods[i])
 
 	def CalculateProbs(self):
@@ -72,7 +72,7 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 
 	def checkForBest(self, Solution):
 		"""Check best solution."""
-		if Solution.f <= self.Best.f: self.Best = copy.deepcopy(Solution)
+		if Solution.f <= self.Best.f: self.Best.x, self.Best.f = Solution.x, Solution.f
 
 	def runTask(self, task):
 		"""Run."""
@@ -83,7 +83,7 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 				param2change = int(self.rand() * task.D)
 				neighbor = int(self.FoodNumber * self.rand())
 				newSolution.x[param2change] = self.Foods[i].x[param2change] + (-1 + 2 * self.rand()) * (self.Foods[i].x[param2change] - self.Foods[neighbor].x[param2change])
-				newSolution.evaluate(task)
+				newSolution.evaluate(task, rnd=self.Rand)
 				if newSolution.f < self.Foods[i].f:
 					self.checkForBest(newSolution)
 					self.Foods[i] = newSolution
@@ -99,18 +99,17 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 					neighbor = int(self.FoodNumber * self.rand())
 					while neighbor == s: neighbor = int(self.FoodNumber * self.rand())
 					Solution.x[param2change] = self.Foods[s].x[param2change] + (-1 + 2 * self.rand()) * (self.Foods[s].x[param2change] - self.Foods[neighbor].x[param2change])
-					Solution.evaluate(task)
+					Solution.evaluate(task, rnd=self.Rand)
 					if Solution.f < self.Foods[s].f:
 						self.checkForBest(newSolution)
-						self.Foods[s] = Solution
-						self.Trial[s] = 0
+						self.Foods[s], self.Trial[s] = Solution, 0
 					else: self.Trial[s] += 1
 				s += 1
 				if s == self.FoodNumber: s = 0
 			mi = self.Trial.index(max(self.Trial))
 			if self.Trial[mi] >= self.Limit:
-				self.Foods[mi] = SolutionABC(task)
-				self.Foods[mi].evaluate(task)
+				self.Foods[mi] = SolutionABC(task, self.Rand)
+				self.Foods[mi].evaluate(task, rnd=self.Rand)
 				self.Trial[mi] = 0
 		return self.Best.x, self.Best.f
 

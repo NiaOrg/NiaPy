@@ -13,6 +13,8 @@ logger.setLevel('INFO')
 __all__ = ['Benchmark']
 
 class Benchmark:
+	Name = ['Benchmark', 'BBB']
+
 	def __init__(self, Lower, Upper, **kwargs):
 		self.Lower, self.Upper = Lower, Upper
 

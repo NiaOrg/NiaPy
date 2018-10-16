@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, line-too-long, singleton-comparison, multiple-statements, attribute-defined-outside-init, no-self-use, logging-not-lazy, unused-variable, arguments-differ, old-style-class
+# pylint: disable=mixed-indentation, line-too-long, singleton-comparison, multiple-statements, attribute-defined-outside-init, no-self-use, logging-not-lazy, unused-variable, arguments-differ, old-style-class, bad-continuation
 import logging
 from numpy import vectorize, argmin, exp
 from NiaPy.algorithms.algorithm import Algorithm
@@ -72,7 +72,19 @@ class CamelAlgorithm(Algorithm):
 	**Reference paper:**
 	Ali, Ramzy. (2016). Novel Optimization Algorithm Inspired by Camel Traveling Behavior. Iraq J. Electrical and Electronic Engineering. 12. 167-177.
 	"""
-	def __init__(self, **kwargs): Algorithm.__init__(self, name='CamelAlgorithm', sName='CA', **kwargs)
+	Name = ['CamelAlgorithm', 'CA']
+
+	@staticmethod
+	def typeParameters(): return {
+			'NP': lambda x: isinstance(x, int) and x > 0,
+			'omega': lambda x: isinstance(x, (float, int)),
+			'mu': lambda x: isinstance(x, float) and 0 <= x <= 1,
+			'alpha': lambda x: isinstance(x, float) and 0 <= x <= 1,
+			'S_init': lambda x: isinstance(x, (float, int)) and x > 0,
+			'E_init': lambda x: isinstance(x, (float, int)) and x > 0,
+			'T_min': lambda x: isinstance(x, (float, int)) and x > 0,
+			'T_max': lambda x: isinstance(x, (float, int)) and x > 0
+	}
 
 	def setParameters(self, NP=50, omega=0.25, mu=0.5, alpha=0.5, S_init=10, E_init=10, T_min=-10, T_max=10, **ukwargs):
 		r"""Set the arguments of an algorithm.
@@ -111,13 +123,13 @@ class CamelAlgorithm(Algorithm):
 
 	def lifeCycle(self, c, fit, fitn, mu, task):
 		if fit < mu * fitn:
-			cn = Camel(c.rand(task.D) * task.bRange, c.rand)
+			cn = Camel(c.rand(task.D) * task.bcRange(), c.rand)
 			return cn, task.eval(cn.x)
 		return c, fitn
 
 	def runTask(self, task):
 		Camel.E_init, Camel.S_init = self.E_init, self.S_init
-		ccaravan = [Camel(self.uniform(task.Lower, task.Upper, [task.D]), self.Rand.rand) for i in range(self.NP)]
+		ccaravan = [Camel(self.uniform(task.bcLower(), task.bcUpper(), [task.D]), self.Rand.rand) for i in range(self.NP)]
 		c_fits = [task.eval(c.x) for c in ccaravan]
 		ic_b = argmin(c_fits)
 		c_best, c_best_fit = ccaravan[ic_b], c_fits[ic_b]

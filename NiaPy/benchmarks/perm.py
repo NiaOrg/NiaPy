@@ -2,9 +2,11 @@
 # pylint: disable=mixed-indentation, multiple-statements, old-style-class
 """Implementations of Perm function."""
 
+from NiaPy.benchmarks.benchmark import Benchmark
+
 __all__ = ['Perm']
 
-class Perm:
+class Perm(Benchmark):
 	r"""Implementations of Perm functions.
 
 	Date: 2018
@@ -41,7 +43,11 @@ class Perm:
 	Reference:
 	https://www.sfu.ca/~ssurjano/perm0db.html
 	"""
-	def __init__(self, D=10.0, beta=.5): self.Lower, self.Upper, Perm.beta = -D, D, beta
+	Name = ['Perm']
+
+	def __init__(self, D=10.0, beta=.5):
+		Benchmark.__init__(self, -D, D)
+		Perm.beta = beta
 
 	@classmethod
 	def function(cls):

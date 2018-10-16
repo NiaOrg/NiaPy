@@ -1,11 +1,11 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, line-too-long, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, arguments-differ
+# pylint: disable=mixed-indentation, trailing-whitespace, line-too-long, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, arguments-differ, bad-continuation
 import logging
 from numpy import apply_along_axis, argmin, pi, inf, fabs, sin, cos
 from NiaPy.algorithms.algorithm import Algorithm
 
 logging.basicConfig()
-logger = logging.getLogger('NiaPy.algorithms.basic')
+logger = logging.getLogger('NiaPy.algorithms.basic.SineCosineAlgorithm')
 logger.setLevel('INFO')
 
 __all__ = ['SineCosineAlgorithm']
@@ -25,7 +25,15 @@ class SineCosineAlgorithm(Algorithm):
 
 	**Reference paper:** Seyedali Mirjalili, SCA: A Sine Cosine Algorithm for solving optimization problems, Knowledge-Based Systems, Volume 96, 2016, Pages 120-133, ISSN 0950-7051, https://doi.org/10.1016/j.knosys.2015.12.022.
 	"""
-	def __init__(self, **kwargs): Algorithm.__init__(self, name='SineCosineAlgorithm', sName='SCA', **kwargs)
+	Name = ['SineCosineAlgorithm', 'SCA']
+
+	@staticmethod
+	def typeParameters(): return {
+			'NP': lambda x: isinstance(x, int) and x > 0,
+			'a': lambda x: isinstance(x, (float, int)) and x > 0,
+			'Rmin': lambda x: isinstance(x, (float, int)),
+			'Rmax': lambda x: isinstance(x, (float, int))
+	}
 
 	def setParameters(self, NP=25, a=3, Rmin=0, Rmax=2, **ukwargs):
 		r"""Set the arguments of an algorithm.
@@ -43,15 +51,15 @@ class SineCosineAlgorithm(Algorithm):
 		self.NP, self.a, self.Rmin, self.Rmax = NP, a, Rmin, Rmax
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def nextPos(self, x, x_b, r1, r2, r3, r4, task): return task.repair(x + r1 * (sin(r2) if r4 < 0.5 else cos(r2)) * fabs(r3 * x_b - x))
+	def nextPos(self, x, x_b, r1, r2, r3, r4, task): return task.repair(x + r1 * (sin(r2) if r4 < 0.5 else cos(r2)) * fabs(r3 * x_b - x), self.Rand)
 
 	def runTask(self, task):
-		P, x, x_f = self.uniform(task.Lower, task.Upper, [self.NP, task.D]), None, inf
+		P, x, x_f = self.uniform(task.bcLower(), task.bcUpper(), [self.NP, task.D]), None, task.optType.value * inf
 		while not task.stopCondI():
 			P_f = apply_along_axis(task.eval, 1, P)
 			ib = argmin(P_f)
 			if P_f[ib] < x_f: x, x_f = P[ib], P_f[ib]
-			r1, r2, r3, r4 = self.a - task.Iters * (self.a / task.nGEN), self.uniform(0, 2 * pi), self.uniform(self.Rmin, self.Rmax), self.rand()
+			r1, r2, r3, r4 = self.a - task.Iters * (self.a / task.nGENs()), self.uniform(0, 2 * pi), self.uniform(self.Rmin, self.Rmax), self.rand()
 			P = apply_along_axis(self.nextPos, 1, P, x, r1, r2, r3, r4, task)
 		return x, x_f
 

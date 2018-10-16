@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, line-too-long, unused-argument, no-self-use, no-self-use, attribute-defined-outside-init, logging-not-lazy, len-as-condition, singleton-comparison, arguments-differ, redefined-builtin
+# pylint: disable=mixed-indentation, multiple-statements, line-too-long, unused-argument, no-self-use, no-self-use, attribute-defined-outside-init, logging-not-lazy, len-as-condition, singleton-comparison, arguments-differ, redefined-builtin, bad-continuation
 import logging
 from numpy import apply_along_axis, asarray, inf, argmin, argmax, sum, full
 from NiaPy.algorithms.algorithm import Algorithm
@@ -25,9 +25,14 @@ class GravitationalSearchAlgorithm(Algorithm):
 
 	**Reference paper:** Esmat Rashedi, Hossein Nezamabadi-pour, Saeid Saryazdi, GSA: A Gravitational Search Algorithm, Information Sciences, Volume 179, Issue 13, 2009, Pages 2232-2248, ISSN 0020-0255
 	"""
-	def __init__(self, **kwargs):
-		if kwargs.get('name', None) == None: Algorithm.__init__(self, name=kwargs.get('name', 'DifferentialEvolutionAlgorithm'), sName=kwargs.get('sName', 'DE'), **kwargs)
-		else: Algorithm.__init__(self, **kwargs)
+	Name = ['GravitationalSearchAlgorithm', 'GSA']
+
+	@staticmethod
+	def typeParameters(): return {
+			'NP': lambda x: isinstance(x, int) and x > 0,
+			'G_0': lambda x: isinstance(x, (int, float)) and x >= 0,
+			'epsilon': lambda x: isinstance(x, float) and 0 < x < 1
+	}
 
 	def setParameters(self, NP=40, G_0=2.467, epsilon=1e-17, **ukwargs):
 		r"""Set the algorithm parameters.
@@ -47,7 +52,7 @@ class GravitationalSearchAlgorithm(Algorithm):
 
 	def runTask(self, task):
 		X, v = self.uniform(task.Lower, task.Upper, [self.NP, task.D]), full([self.NP, task.D], 0.0)
-		xb, xb_f = None, inf
+		xb, xb_f = None, task.optType.value * inf
 		while not task.stopCondI():
 			X_f = apply_along_axis(task.eval, 1, X)
 			ib, iw = argmin(X_f), argmax(X_f)
@@ -58,7 +63,7 @@ class GravitationalSearchAlgorithm(Algorithm):
 			F = sum(self.rand([self.NP, task.D]) * Fi, axis=1)
 			a = F.T / (M + self.epsilon)
 			v = self.rand([self.NP, task.D]) * v + a.T
-			X = apply_along_axis(task.repair, 1, X + v)
+			X = apply_along_axis(task.repair, 1, X + v, self.Rand)
 		return xb, xb_f
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
