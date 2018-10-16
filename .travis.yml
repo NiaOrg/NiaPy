@@ -1,9 +1,11 @@
 language: python
+sudo: required
+dist: xenial
 python:
 - 2.7.14
 - 2.7.15
 - 3.6 # latest 3.6.x version
-- 3.7 # latest 3.7.x version
+- "3.7" # latest 3.7.x version
 
 cache:
   pip: true
