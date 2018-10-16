@@ -19,7 +19,7 @@ Our mission is to build a collection of nature-inspired algorithms and create a 
 
 # Overview
 
-Python micro framework for building nature-inspired algorithms. Official documentation is available [here](http://niapy.readthedocs.io/en/1.0.0).
+Python micro framework for building nature-inspired algorithms. Official documentation is available [here](https://niapy.readthedocs.io/en/stable/).
 
 The micro framework features following algorithms:
 
