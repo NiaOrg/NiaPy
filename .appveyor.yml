@@ -2,8 +2,9 @@ environment:
   global:
     RANDOM_SEED: 0
   matrix:
-    - PYTHON: "C:\\Python27-x64"
-    - PYTHON: "C:\\Python36-x64"
+    - PYTHON: "C:\\Python27-x64" # latest 2.7.x version
+    - PYTHON: "C:\\Python36-x64" # latest 3.6.x version
+    - PYTHON: "C:\\Python37-x64" # latest 3.7.x version
 
 cache:
   - .venv -> Makefile

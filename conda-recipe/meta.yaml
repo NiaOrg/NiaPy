@@ -14,5 +14,4 @@ requirements:
 about:
   home: https://github.com/NiaOrg/NiaPy
   license: MIT
-  license_file: ../LICENSE
   summary: NiaPy - Python micro-framework for building nature-inspired algorithms.

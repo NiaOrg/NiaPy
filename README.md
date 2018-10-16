@@ -109,7 +109,7 @@ The following benchmark functions are included in NiaPy:
 - numpy == 1.14.0
 - scipy == 1.0.0
 - xlsxwriter == 1.0.2
-- matplotlib == *
+- matplotlib == 2.2.2
 
 List of development dependencies and requirements can be found [here](CONTRIBUTING.md#development-dependencies).
 
@@ -119,6 +119,12 @@ Install NiaPy with pip:
 
 ```sh
 $ pip install NiaPy
+```
+
+Install NiaPy with conda:
+
+```sh
+conda install -c niaorg niapy
 ```
 
 or directly from the source code:
