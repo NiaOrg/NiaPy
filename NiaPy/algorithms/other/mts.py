@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, len-as-condition, singleton-comparison, arguments-differ, line-too-long, unused-argument, consider-using-enumerate
+# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, len-as-condition, singleton-comparison, arguments-differ, line-too-long, unused-argument, consider-using-enumerate, bad-continuation, superfluous-parens
 import logging
 import operator as oper
 from numpy import random as rand, vectorize, where, copy, apply_along_axis, argmin, argmax, argsort, fmin, fmax, full
@@ -11,13 +11,12 @@ logger.setLevel('INFO')
 
 __all__ = ['MultipleTrajectorySearch', 'MultipleTrajectorySearchV1', 'MTS_LS1', 'MTS_LS1v1', 'MTS_LS2', 'MTS_LS3', 'MTS_LS3v1']
 
-def MTS_LS1(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, rnd=rand):
-	grade = 0.0
+def MTS_LS1(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, sr_fix=0.4, rnd=rand, **ukwargs):
 	if not improve:
 		SR /= 2
 		ifix = where(SR < 1e-15)
-		SR[ifix] = task.bRange[ifix] * 0.4
-	improve = False
+		SR[ifix] = task.bRange[ifix] * sr_fix
+	improve, grade = False, 0.0
 	for i in range(len(Xk)):
 		Xk_i_old = Xk[i]
 		Xk[i] = Xk_i_old - SR[i]
@@ -34,13 +33,12 @@ def MTS_LS1(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, rnd=
 			else: grade, improve, Xk_fit = grade + BONUS2, True, Xk_fit_new
 	return Xk, Xk_fit, Xb, Xb_fit, improve, grade, SR
 
-def MTS_LS1v1(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, rnd=rand):
-	grade = 0.0
+def MTS_LS1v1(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, sr_fix=0.4, rnd=rand, **ukwargs):
 	if not improve:
 		SR /= 2
 		ifix = where(SR < 1e-15)
-		SR[ifix] = task.bRange[ifix] * 0.4
-	improve, D = False, rnd.uniform(-1, 1, task.D)
+		SR[ifix] = task.bcRange()[ifix] * sr_fix
+	improve, D, grade = False, rnd.uniform(-1, 1, task.D), 0.0
 	for i in range(len(Xk)):
 		Xk_i_old = Xk[i]
 		Xk[i] = Xk_i_old - SR[i] * D[i]
@@ -59,13 +57,12 @@ def MTS_LS1v1(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, rn
 
 def genNewX(x, r, d, SR, op): return op(x, SR * d) if r == 0 else x
 
-def MTS_LS2(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, rnd=rand):
-	grade = 0.0
+def MTS_LS2(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, sr_fix=0.4, rnd=rand, **ukwargs):
 	if not improve:
 		SR /= 2
 		ifix = where(SR < 1e-15)
-		SR[ifix] = task.bRange[ifix] * 0.4
-	improve = False
+		SR[ifix] = task.bRange[ifix] * sr_fix
+	improve, grade = False, 0.0
 	for _ in range(len(Xk)):
 		D = -1 + rnd.rand(len(Xk)) * 2
 		R = rnd.choice([0, 1, 2, 3], len(Xk))
@@ -77,11 +74,11 @@ def MTS_LS2(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, rnd=
 				Xk_new = vectorize(genNewX)(Xk, R, D, SR, oper.add)
 				Xk_fit_new = task.eval(Xk_new)
 				if Xk_fit_new < Xb_fit: grade, Xb, Xb_fit = grade + BONUS1, Xk_new, Xk_fit_new
-				if Xk_fit_new < Xk_fit: grade, improve, Xk, Xk_fit = grade + BONUS2, True, Xk_new, Xk_fit_new
-			else: grade, improve, Xk, Xk_fit = grade + BONUS2, True, Xk_new, Xk_fit_new
+				if Xk_fit_new < Xk_fit: grade, Xk, Xk_fit, improve = grade + BONUS2, Xk_new, Xk_fit_new, True
+			else: grade, Xk, Xk_fit, improve = grade + BONUS2, Xk_new, Xk_fit_new, True
 	return Xk, Xk_fit, Xb, Xb_fit, improve, grade, SR
 
-def MTS_LS3(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, rnd=rand):
+def MTS_LS3(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, rnd=rand, **ukwargs):
 	Xk_new, grade = copy(Xk), 0.0
 	for i in range(len(Xk)):
 		Xk1, Xk2, Xk3 = copy(Xk_new), copy(Xk_new), copy(Xk_new)
@@ -97,12 +94,12 @@ def MTS_LS3(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, rnd=
 		a, b, c = 0.4 + rnd.rand() * 0.1, 0.1 + rnd.rand() * 0.2, rnd.rand()
 		Xk_new[i] += a * (D1 - D2) + b * (D3 - 2 * D1) + c
 		Xk_fit_new = task.eval(Xk_new)
-	if Xk_fit_new < Xk_fit: Xk, Xk_fit = Xk_new, Xk_fit_new
+	if Xk_fit_new < Xk_fit: Xk, Xk_fit, improve = Xk_new, Xk_fit_new, True
 	return Xk, Xk_fit, Xb, Xb_fit, improve, grade, SR
 
-def MTS_LS3v1(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, phi=3, BONUS1=10, BONUS2=1, rnd=rand):
+def MTS_LS3v1(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, phi=3, BONUS1=10, BONUS2=1, rnd=rand, **ukwargs):
 	grade, Disp = 0.0, task.bRange / 10
-	while True in Disp > 1e-3:
+	while True in (Disp > 1e-3):
 		Xn = [rnd.permutation(Xk) + Disp * rnd.uniform(-1, 1, len(Xk)) for _ in range(phi)]
 		Xn_f = apply_along_axis(task.eval, 1, Xn)
 		iBetter, iBetterBest = where(Xn_f < Xk_fit), where(Xn_f < Xb_fit)
@@ -133,17 +130,25 @@ class MultipleTrajectorySearch(Algorithm):
 
 	**Reference paper:** Lin-Yu Tseng and Chun Chen, "Multiple trajectory search for Large Scale Global Optimization," 2008 IEEE Congress on Evolutionary Computation (IEEE World Congress on Computational Intelligence), Hong Kong, 2008, pp. 3052-3059. doi: 10.1109/CEC.2008.4631210
 	"""
+	Name = ['MultipleTrajectorySearch', 'MTS']
+
 	def __init__(self, **kwargs):
-		if kwargs.get('name', None) is None: Algorithm.__init__(self, name='MultipleTrajectorySearch', sName='MTS', **kwargs)
-		else: Algorithm.__init__(self, **kwargs)
+		Algorithm.__init__(self, **kwargs)
 		self.LSs = [MTS_LS1, MTS_LS2, MTS_LS3]
 
-	def setParameters(self, NP=40, NoLsTests=5, NoLs=5, NoLsBest=5, NoEnabled=17, **ukwargs):
+	@staticmethod
+	def typeParameters(): return {
+		'NoLsTests': lambda x: isinstance(x, int) and x >= 0,
+		'NoLs': lambda x: isinstance(x, int) and x >= 0,
+		'NoLsBest': lambda x: isinstance(x, int) and x >= 0,
+		'NoEnabled': lambda x: isinstance(x, int) and x > 0
+	}
+
+	def setParameters(self, M=40, NoLsTests=5, NoLs=5, NoLsBest=5, NoEnabled=17, **ukwargs):
 		r"""Set the arguments of the algorithm.
 
-		**Arguments:**
-
-		NP, M {integer} -- population size
+		Arguments:
+		M {integer} -- number of individuals in population
 
 		NoLsTests {integer} -- number of test runs on local search algorihms
 
@@ -153,7 +158,7 @@ class MultipleTrajectorySearch(Algorithm):
 
 		NoEnabled {integer} -- number of best solution for testing
 		"""
-		self.M, self.NoLsTests, self.NoLs, self.NoLsBest, self.NoEnabled = NP, NoLsTests, NoLs, NoLsBest, NoEnabled
+		self.M, self.NoLsTests, self.NoLs, self.NoLsBest, self.NoEnabled = M, NoLsTests, NoLs, NoLsBest, NoEnabled
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def GradingRun(self, x, x_f, xb, xb_f, improve, SR, task):
@@ -192,7 +197,7 @@ class MultipleTrajectorySearch(Algorithm):
 				enable[i], grades[i] = False, 0
 				X[i], X_f[i], xb, xb_f, k = self.GradingRun(X[i], X_f[i], xb, xb_f, improve[i], SR[i], task)
 				X[i], X_f[i], xb, xb_f, improve[i], SR[i], grades[i] = self.LsRun(k, X[i], X_f[i], xb, xb_f, improve[i], SR[i], grades[i], task)
-			for _ in range(self.NoLsBest): _, _, xb, xb_f, _, _, _ = MTS_LS1(xb, xb_f, xb, xb_f, False, task.bRange, task, rnd=self.Rand)
+			for _ in range(self.NoLsBest): _, _, xb, xb_f, _, _, _ = MTS_LS1(xb, xb_f, xb, xb_f, False, task.bcRange(), task, rnd=self.Rand)
 			enable[argsort(grades)[:self.NoEnabled]] = True
 		return xb, xb_f
 
@@ -211,23 +216,14 @@ class MultipleTrajectorySearchV1(MultipleTrajectorySearch):
 
 	**Reference paper:** Tseng, Lin-Yu, and Chun Chen. "Multiple trajectory search for unconstrained/constrained multi-objective optimization." Evolutionary Computation, 2009. CEC'09. IEEE Congress on. IEEE, 2009.
 	"""
+	Name = ['MultipleTrajectorySearchV1', 'MTSv1']
+
 	def __init__(self, **kwargs):
-		MultipleTrajectorySearch.__init__(self, name='MultipleTrajectorySearchV1', sName='MTSv1', **kwargs)
+		MultipleTrajectorySearch.__init__(self, **kwargs)
 		self.LSs = [MTS_LS1v1, MTS_LS2, MTS_LS3v1]
 
-	def runTask(self, task):
-		SOA = self.rand([self.M, task.D])
-		X = task.Lower + task.bRange * SOA / (self.M - 1)
-		X_f = apply_along_axis(task.eval, 1, X)
-		enable, improve, SR, grades = full(self.M, True), full(self.M, True), full([self.M, task.D], task.bRange / 2), full(self.M, 0.0)
-		xb, xb_f = self.getBest(X, X_f)
-		while not task.stopCond():
-			for i in range(self.M):
-				if not enable[i]: continue
-				enable[i], grades[i] = False, 0
-				X[i], X_f[i], xb, xb_f, k = self.GradingRun(X[i], X_f[i], xb, xb_f, improve[i], SR[i], task)
-				X[i], X_f[i], xb, xb_f, improve[i], SR[i], grades[i] = self.LsRun(k, X[i], X_f[i], xb, xb_f, improve[i], SR[i], grades[i], task)
-			enable[argsort(grades)[:self.NoEnabled]] = True
-		return xb, xb_f
+	def setParameters(self, **kwargs):
+		kwargs.pop('NoLsBest', None)
+		MultipleTrajectorySearch.setParameters(self, NoLsBest=0, **kwargs)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

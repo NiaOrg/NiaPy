@@ -1,11 +1,12 @@
 # encoding=utf8
 # pylint: disable=anomalous-backslash-in-string, old-style-class
 import math
+from NiaPy.benchmarks.benchmark import Benchmark
 
 __all__ = ['HappyCat']
 
 
-class HappyCat:
+class HappyCat(Benchmark):
     r"""Implementation of Happy cat function.
 
     Date: 2018
@@ -42,10 +43,10 @@ class HappyCat:
     Beyer, H. G., & Finck, S. (2012). HappyCat - A Simple Function Class Where Well-Known Direct Search Algorithms Do Fail.
     In International Conference on Parallel Problem Solving from Nature (pp. 367-376). Springer, Berlin, Heidelberg.
     """
+    Name = ['HappyCat']
 
     def __init__(self, Lower=-100.0, Upper=100.0):
-        self.Lower = Lower
-        self.Upper = Upper
+        Benchmark.__init__(self, Lower, Upper)
 
     @classmethod
     def function(cls):

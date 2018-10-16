@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, redefined-builtin, line-too-long, no-self-use, arguments-differ, no-else-return
+# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, redefined-builtin, line-too-long, no-self-use, arguments-differ, no-else-return, bad-continuation
 import logging
 from numpy import argsort, argmin, sum, exp, apply_along_axis, asarray, where, inf
 from NiaPy.algorithms.algorithm import Algorithm
@@ -23,7 +23,15 @@ class FireflyAlgorithm(Algorithm):
 
 	**Reference paper:** Fister, I., Fister Jr, I., Yang, X. S., & Brest, J. (2013). A comprehensive review of firefly algorithms. Swarm and Evolutionary Computation, 13, 34-46.
 	"""
-	def __init__(self, **kwargs): Algorithm.__init__(self, name='FireflyAlgorithm', sName='FA', **kwargs)
+	Name = ['FireflyAlgorithm', 'FA']
+
+	@staticmethod
+	def typeParameters(): return {
+			'NP': lambda x: isinstance(x, int) and x > 0,
+			'alpha': lambda x: isinstance(x, (float, int)) and x > 0,
+			'betamin': lambda x: isinstance(x, (float, int)) and x > 0,
+			'gamma': lambda x: isinstance(x, (float, int)) and x > 0,
+	}
 
 	def setParameters(self, NP=20, alpha=1, betamin=1, gamma=2, **ukwargs):
 		r"""Set the parameters of the algorithm.
@@ -54,7 +62,7 @@ class FireflyAlgorithm(Algorithm):
 			if Intensity[i] <= Intensity[j]: continue
 			beta = (1.0 - self.betamin) * exp(-self.gamma * r ** 2.0) + self.betamin
 			tmpf = alpha * (self.uniform(0, 1, task.D) - 0.5) * task.bRange
-			Fireflies[i] = task.repair(Fireflies[i] * (1.0 - beta) + oFireflies[j] * beta + tmpf)
+			Fireflies[i] = task.repair(Fireflies[i] * (1.0 - beta) + oFireflies[j] * beta + tmpf, rnd=self.Rand)
 			moved = True
 		return Fireflies[i], moved
 
@@ -67,7 +75,7 @@ class FireflyAlgorithm(Algorithm):
 		"""Run."""
 		Fireflies = self.uniform(task.Lower, task.Upper, [self.NP, task.D])
 		Intensity = apply_along_axis(task.eval, 1, Fireflies)
-		(xb, xb_f), alpha = self.getBest(None, inf, Fireflies, Intensity), self.alpha
+		(xb, xb_f), alpha = self.getBest(None, task.optType.value * inf, Fireflies, Intensity), self.alpha
 		while not task.stopCondI():
 			alpha = self.alpha_new(task.nFES / self.NP, alpha)
 			Index = argsort(Intensity)

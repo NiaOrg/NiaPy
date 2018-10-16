@@ -1,9 +1,9 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, arguments-differ, line-too-long, redefined-builtin, no-self-use, singleton-comparison, unused-argument
+# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, arguments-differ, line-too-long, redefined-builtin, no-self-use, singleton-comparison, unused-argument, bad-continuation
 import logging
 from numpy import apply_along_axis, argmin, argmax, sum, sqrt, round, argsort, fabs, asarray, where
 from NiaPy.algorithms.algorithm import Algorithm
-from NiaPy.benchmarks.utility import fullArray
+from NiaPy.util import fullArray
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.basic')
@@ -28,7 +28,14 @@ class BareBonesFireworksAlgorithm(Algorithm):
 	**Reference paper:**
 	Junzhi Li, Ying Tan, The bare bones fireworks algorithm: A minimalist global optimizer, Applied Soft Computing, Volume 62, 2018, Pages 454-462, ISSN 1568-4946, https://doi.org/10.1016/j.asoc.2017.10.046.
 	"""
-	def __init__(self, **kwargs): Algorithm.__init__(self, name='BareBonesFireworksAlgorithm', sName='BBFA', **kwargs)
+	Name = ['BareBonesFireworksAlgorithm', 'BBFWA']
+
+	@staticmethod
+	def typeParameters(): return {
+			'n': lambda x: isinstance(x, int) and x > 0,
+			'C_a': lambda x: isinstance(x, (float, int)) and x > 1,
+			'C_r': lambda x: isinstance(x, (float, int)) and 0 < x < 1
+	}
 
 	def setParameters(self, n=10, C_a=1.5, C_r=0.5, **ukwargs):
 		r"""Set the arguments of an algorithm.
@@ -70,9 +77,16 @@ class FireworksAlgorithm(Algorithm):
 
 	**Reference paper:** Tan, Ying. "Firework Algorithm: A Novel Swarm Intelligence Optimization Method." (2015).
 	"""
-	def __init__(self, **kwargs):
-		if kwargs.get('name', None) == None: Algorithm.__init__(self, name=kwargs.get('name', 'FireworksAlgorithm'), sName=kwargs.get('sName', 'FWA'), **kwargs)
-		else: Algorithm.__init__(self, **kwargs)
+	Name = ['FireworksAlgorithm', 'FWA']
+
+	@staticmethod
+	def typeParameters(): return {
+			'N': lambda x: isinstance(x, int) and x > 0,
+			'm': lambda x: isinstance(x, int) and x > 0,
+			'a': lambda x: isinstance(x, (int, float)) and x > 0,
+			'b': lambda x: isinstance(x, (int, float)) and x > 0,
+			'epsilon': lambda x: isinstance(x, float) and 0 < x < 1
+	}
 
 	def setParameters(self, N=40, m=40, a=1, b=2, A=40, epsilon=1e-31, **ukwargs):
 		r"""Set the arguments of an algorithm.
@@ -158,9 +172,14 @@ class EnhancedFireworksAlgorithm(FireworksAlgorithm):
 
 	**Reference paper:** S. Zheng, A. Janecek and Y. Tan, "Enhanced Fireworks Algorithm," 2013 IEEE Congress on Evolutionary Computation, Cancun, 2013, pp. 2069-2077. doi: 10.1109/CEC.2013.6557813
 	"""
-	def __init__(self, **kwargs):
-		if kwargs.get('name', None) == None: FireworksAlgorithm.__init__(self, name=kwargs.get('name', 'EnhancedFireworksAlgorithm'), sName=kwargs.get('sName', 'EFWA'), **kwargs)
-		else: FireworksAlgorithm.__init__(self, **kwargs)
+	Name = ['EnhancedFireworksAlgorithm', 'EFWA']
+
+	@staticmethod
+	def typeParameters():
+		d = FireworksAlgorithm.typeParameters()
+		d['Ainit'] = lambda x: isinstance(x, (float, int)) and x > 0
+		d['Afinal'] = lambda x: isinstance(x, (float, int)) and x > 0
+		return d
 
 	def setParameters(self, Ainit=20, Afinal=5, **ukwargs):
 		FireworksAlgorithm.setParameters(self, **ukwargs)
@@ -221,15 +240,22 @@ class DynamicFireworksAlgorithmGauss(EnhancedFireworksAlgorithm):
 
 	**Reference paper:** S. Zheng, A. Janecek, J. Li and Y. Tan, "Dynamic search in fireworks algorithm," 2014 IEEE Congress on Evolutionary Computation (CEC), Beijing, 2014, pp. 3222-3229. doi: 10.1109/CEC.2014.6900485
 	"""
-	def __init__(self, **kwargs):
-		if kwargs.get('name', None) == None: EnhancedFireworksAlgorithm.__init__(self, name='DynamicFireworksGaussAlgorithm', sName='dynFWA-G', **kwargs)
-		else: EnhancedFireworksAlgorithm.__init__(self, **kwargs)
+	Name = ['DynamicFireworksAlgorithmGauss', 'dynFWAG']
+
+	@staticmethod
+	def typeParameters():
+		d = FireworksAlgorithm.typeParameters()
+		d['A_cf'] = lambda x: isinstance(x, (float, int)) and x > 0
+		d['C_a'] = lambda x: isinstance(x, (float, int)) and x > 1
+		d['C_r'] = lambda x: isinstance(x, (float, int)) and 0 < x < 1
+		d['epsilon'] = lambda x: isinstance(x, (float, int)) and 0 < x < 1
+		return d
 
 	def setParameters(self, A_cf=20, C_a=1.2, C_r=0.9, epsilon=1e-8, **ukwargs):
 		FireworksAlgorithm.setParameters(self, **ukwargs)
 		self.A_cf, self.C_a, self.C_r, self.epsilon = A_cf, C_a, C_r, epsilon
 
-	def initAmplitude(self, task): return FireworksAlgorithm.initAmplitude(self, task), task.bRange
+	def initAmplitude(self, task): return FireworksAlgorithm.initAmplitude(self, task), task.bcRange()
 
 	def ExplosionAmplitude(self, x_f, xb_f, A, As): return FireworksAlgorithm.ExplosionAmplitude(self, x_f, xb_f, A, As)
 
@@ -295,7 +321,7 @@ class DynamicFireworksAlgorithm(DynamicFireworksAlgorithmGauss):
 
 	**Reference paper:** S. Zheng, A. Janecek, J. Li and Y. Tan, "Dynamic search in fireworks algorithm," 2014 IEEE Congress on Evolutionary Computation (CEC), Beijing, 2014, pp. 3222-3229. doi: 10.1109/CEC.2014.6900485
 	"""
-	def __init__(self, **kwargs): DynamicFireworksAlgorithmGauss.__init__(self, name='DynamicFireworksAlgorithm', sName='dynFWA', **kwargs)
+	Name = ['DynamicFireworksAlgorithm', 'dynFWA']
 
 	def runTask(self, task):
 		FW, (Ah, Ab) = self.uniform(task.Lower, task.Upper, [self.N, task.D]), self.initAmplitude(task)

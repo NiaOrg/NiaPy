@@ -3,7 +3,7 @@
 from math import pow, isnan
 from unittest import TestCase
 from numpy import asarray, pi, full
-from NiaPy.benchmarks.utility import Utility
+from NiaPy.util import Utility
 
 class TestBenchmarkFunctions(TestCase):
 	def setUp(self):
@@ -182,10 +182,20 @@ class TestBenchmarkFunctions(TestCase):
 		self.assertTrue(callable(fun))
 		self.assertAlmostEqual(fun(self.D, self.array), 2.2997, delta=1e2)
 
-	def test_expanded_scaffer(self):
-		fun = self.assertBounds('expandedscaffer', -100, 100)
+	def test_expanded_schaffer(self):
+		fun = self.assertBounds('expandedschaffer', -100, 100)
 		self.assertTrue(callable(fun))
 		self.assertAlmostEqual(fun(self.D, self.array10), 2.616740208857464, delta=1e-4)
+
+	def test_schaffern2(self):
+		fun = self.assertBounds('schaffer2', -100, 100)
+		self.assertTrue(callable(fun))
+		self.assertAlmostEqual(fun(self.D, self.array10), 0.02467, delta=1e-4)
+
+	def test_schaffern4(self):
+		fun = self.assertBounds('schaffer4', -100, 100)
+		self.assertTrue(callable(fun))
+		self.assertAlmostEqual(fun(self.D, self.array10), 0.97545, delta=1e-4)
 
 	def test_hgbat(self):
 		fun = self.assertBounds('hgbat', -100, 100)

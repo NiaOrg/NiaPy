@@ -1,11 +1,12 @@
 # encoding=utf8
 # pylint: disable=anomalous-backslash-in-string, old-style-class
 import math
+from NiaPy.benchmarks.benchmark import Benchmark
 
 __all__ = ['ChungReynolds']
 
 
-class ChungReynolds:
+class ChungReynolds(Benchmark):
     r"""Implementation of Chung Reynolds functions.
 
     Date: 2018
@@ -40,10 +41,10 @@ class ChungReynolds:
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
     """
+    Name = ['ChungReynolds']
 
     def __init__(self, Lower=-100.0, Upper=100.0):
-        self.Lower = Lower
-        self.Upper = Upper
+        Benchmark.__init__(self, Lower, Upper)
 
     @classmethod
     def function(cls):

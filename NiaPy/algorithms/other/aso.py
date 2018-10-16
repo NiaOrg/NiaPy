@@ -1,10 +1,10 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, line-too-long, singleton-comparison, multiple-statements, attribute-defined-outside-init, no-self-use, logging-not-lazy, unused-variable, arguments-differ, unused-argument, dangerous-default-value
+# pylint: disable=mixed-indentation, line-too-long, singleton-comparison, multiple-statements, attribute-defined-outside-init, no-self-use, logging-not-lazy, unused-variable, arguments-differ, unused-argument, dangerous-default-value, bad-continuation, no-else-return
 import logging
 from scipy.spatial.distance import euclidean
 from numpy import apply_along_axis, argmin, full, inf, where, asarray, random as rand, sort, exp
 from NiaPy.algorithms.algorithm import Algorithm
-from NiaPy.benchmarks.utility import fullArray
+from NiaPy.util import fullArray
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.other')
@@ -14,19 +14,19 @@ __all__ = ['AnarchicSocietyOptimization', 'Elitism', 'Sequential', 'Crossover']
 
 def Elitism(x, xpb, xb, xr, MP_c, MP_s, MP_p, F, CR, task, rnd=rand):
 	r"""Select the best of all three strategies."""
-	xn = [task.repair(MP_C(x, F, CR, MP_c, rnd)), task.repair(MP_S(x, xr, xb, CR, MP_s, rnd)), task.repair(MP_P(x, xpb, CR, MP_p, rnd))]
+	xn = [task.repair(MP_C(x, F, CR, MP_c, rnd), rnd=rnd), task.repair(MP_S(x, xr, xb, CR, MP_s, rnd), rnd=rnd), task.repair(MP_P(x, xpb, CR, MP_p, rnd), rnd=rnd)]
 	xn_f = apply_along_axis(task.eval, 1, xn)
 	ib = argmin(xn_f)
 	return xn[ib], xn_f[ib]
 
 def Sequential(x, xpb, xb, xr, MP_c, MP_s, MP_p, F, CR, task, rnd=rand):
 	r"""Sequentialy combines all three strategies."""
-	xn = task.repair(MP_S(MP_P(MP_C(x, F, CR, MP_c, rnd), xpb, CR, MP_p, rnd), xr, xb, CR, MP_s, rnd))
+	xn = task.repair(MP_S(MP_P(MP_C(x, F, CR, MP_c, rnd), xpb, CR, MP_p, rnd), xr, xb, CR, MP_s, rnd), rnd=rnd)
 	return xn, task.eval(xn)
 
 def Crossover(x, xpb, xb, xr, MP_c, MP_s, MP_p, F, CR, task, rnd=rand):
 	r"""Create a crossover over all three strategies."""
-	xns = [task.repair(MP_C(x, F, CR, MP_c, rnd)), task.repair(MP_S(x, xr, xb, CR, MP_s, rnd)), task.repair(MP_P(x, xpb, CR, MP_p, rnd))]
+	xns = [task.repair(MP_C(x, F, CR, MP_c, rnd), rnd=rnd), task.repair(MP_S(x, xr, xb, CR, MP_s, rnd), rnd=rnd), task.repair(MP_P(x, xpb, CR, MP_p, rnd), rnd=rnd)]
 	x = asarray([xns[rnd.randint(len(xns))][i] if rnd.rand() < CR else x[i] for i in range(len(x))])
 	return x, task.eval(x)
 
@@ -42,13 +42,11 @@ def MP_S(x, xr, xb, CR, MP, rnd=rand):
 		b = sort(rnd.choice(len(x), 2, replace=False))
 		x[b[0]:b[1]] = xb[b[0]:b[1]]
 		return x
-	if MP < 0.5:
-		return asarray([xb[i] if rnd.rand() < CR else x[i] for i in range(len(x))])
-	if MP < 0.75:
+	elif MP < 0.5: return asarray([xb[i] if rnd.rand() < CR else x[i] for i in range(len(x))])
+	elif MP < 0.75:
 		b = sort(rnd.choice(len(x), 2, replace=False))
 		x[b[0]:b[1]] = xr[b[0]:b[1]]
 		return x
-
 	return asarray([xr[i] if rnd.rand() < CR else x[i] for i in range(len(x))])
 
 def MP_P(x, xpb, CR, MP, rnd=rand):
@@ -61,7 +59,7 @@ def MP_P(x, xpb, CR, MP, rnd=rand):
 class AnarchicSocietyOptimization(Algorithm):
 	r"""Implementation of Anarchic Society Optimization algorithm.
 
-	**Algorithm:** Particle Swarm Optimization algorithm
+	**Algorithm:** Anarchic Society Optimization algorithm
 
 	**Date:** 2018
 
@@ -71,7 +69,18 @@ class AnarchicSocietyOptimization(Algorithm):
 
 	**Reference paper:** Ahmadi-Javid, Amir. "Anarchic Society Optimization: A human-inspired method." Evolutionary Computation (CEC), 2011 IEEE Congress on. IEEE, 2011.
 	"""
-	def __init__(self, **kwargs): Algorithm.__init__(self, name='ParticleSwarmAlgorithm', sName='PSO', **kwargs)
+	Name = ['AnarchicSocietyOptimization', 'ASO']
+
+	@staticmethod
+	def typeParameters(): return {
+			'NP': lambda x: isinstance(x, int) and x > 0,
+			'alpha': lambda x: True,
+			'gamma': lambda x: True,
+			'theta': lambda x: True,
+			'nl': lambda x: True,
+			'F': lambda x: isinstance(x, (int, float)) and x > 0,
+			'CR': lambda x: isinstance(x, float) and 0 <= x <= 1
+	}
 
 	def setParameters(self, NP=43, alpha=[1, 0.83], gamma=[1.17, 0.56], theta=[0.932, 0.832], d=euclidean, dn=euclidean, nl=1, F=1.2, CR=0.25, Combination=Elitism, **ukwargs):
 		r"""Set the parameters for the algorith.
@@ -126,9 +135,9 @@ class AnarchicSocietyOptimization(Algorithm):
 		return Xpb, Xpb_f, Xpb[ib], Xpb_f[ib]
 
 	def runTask(self, task):
-		X, (alpha, gamma, theta), rs = self.uniform(task.Lower, task.Upper, [self.NP, task.D]), self.init(task), euclidean(full(task.D, 0.0), task.D)
+		X, (alpha, gamma, theta), rs = self.uniform(task.bcLower(), task.bcUpper(), [self.NP, task.D]), self.init(task), euclidean(full(task.D, 0.0), task.D)
 		X_f = apply_along_axis(task.eval, 1, X)
-		Xpb, Xpb_f, xb, xb_f = self.uBestAndPBest(X, X_f, full([self.NP, task.D], 0.0), full(self.NP, inf))
+		Xpb, Xpb_f, xb, xb_f = self.uBestAndPBest(X, X_f, full([self.NP, task.D], 0.0), full(self.NP, task.optType.value * inf))
 		while not task.stopCondI():
 			Xin = [self.getBestNeighbors(i, X, X_f, rs) for i in range(len(X))]
 			MP_c, MP_s, MP_p = [self.FI(X_f[i], Xpb_f[i], xb_f, alpha[i]) for i in range(len(X))], [self.EI(X_f[i], Xin[i], gamma[i]) for i in range(len(X))], [self.II(X_f[i], Xpb_f[i], theta[i]) for i in range(len(X))]

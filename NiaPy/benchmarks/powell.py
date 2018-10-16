@@ -2,9 +2,11 @@
 # pylint: disable=mixed-indentation, multiple-statements, line-too-long, old-style-class
 """Implementations of Levy function."""
 
+from NiaPy.benchmarks.benchmark import Benchmark
+
 __all__ = ['Powell']
 
-class Powell:
+class Powell(Benchmark):
 	r"""Implementations of Powell functions.
 
 	Date: 2018
@@ -38,7 +40,9 @@ class Powell:
 	Reference:
 	https://www.sfu.ca/~ssurjano/levy.html
 	"""
-	def __init__(self, Lower=-4.0, Upper=5.0): self.Lower, self.Upper, = Lower, Upper
+	Name = ['Powell']
+
+	def __init__(self, Lower=-4.0, Upper=5.0): Benchmark.__init__(self, Lower, Upper)
 
 	@classmethod
 	def function(cls):

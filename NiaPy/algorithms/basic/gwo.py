@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, line-too-long, arguments-differ
+# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, line-too-long, arguments-differ, bad-continuation
 import logging
 from numpy import fabs, inf, where
 from NiaPy.algorithms.algorithm import Algorithm
@@ -24,7 +24,12 @@ class GreyWolfOptimizer(Algorithm):
 	**Reference paper:** Mirjalili, Seyedali, Seyed Mohammad Mirjalili, and Andrew Lewis. "Grey wolf optimizer." Advances in engineering software 69 (2014): 46-61.
 	Grey Wold Optimizer (GWO) source code version 1.0 (MATLAB) from MathWorks
 	"""
-	def __init__(self, **kwargs): Algorithm.__init__(self, name='GreyWolfOptimizer', sName='GWO', **kwargs)
+	Name = ['GreyWolfOptimizer', 'GWO']
+
+	@staticmethod
+	def typeParameters(): return {
+			'NP': lambda x: isinstance(x, int) and x > 0
+	}
 
 	def setParameters(self, NP=25, **ukwargs):
 		r"""Set the algorithm parameters.
@@ -38,16 +43,16 @@ class GreyWolfOptimizer(Algorithm):
 
 	def repair(self, x, task):
 		"""Find limits."""
-		ir = where(x > task.Upper)
-		x[ir] = task.Upper[ir]
-		ir = where(x < task.Lower)
-		x[ir] = task.Lower[ir]
+		ir = where(x > task.bcUpper())
+		x[ir] = task.bcUpper()[ir]
+		ir = where(x < task.bcLower())
+		x[ir] = task.bcLower()[ir]
 		return x
 
 	def runTask(self, task):
 		"""Run."""
 		pop = task.Lower + task.bRange * self.rand([self.NP, task.D])
-		A, A_f, B, B_f, D, D_f = None, inf, None, inf, None, inf
+		A, A_f, B, B_f, D, D_f = None, task.optType.value * inf, None, task.optType.value * inf, None, task.optType.value * inf
 		while not task.stopCond():
 			for i in range(self.NP):
 				pop[i] = self.repair(pop[i], task)

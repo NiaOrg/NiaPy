@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, unused-argument, line-too-long, len-as-condition, useless-super-delegation, redefined-builtin, arguments-differ
+# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, unused-argument, line-too-long, len-as-condition, useless-super-delegation, redefined-builtin, arguments-differ, bad-continuation
 import logging
 from numpy import argmin, sort, random as rand, asarray, fmin, fmax, sum
 from NiaPy.algorithms.algorithm import Algorithm, Individual
@@ -8,7 +8,7 @@ logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.basic')
 logger.setLevel('INFO')
 
-__all__ = ['GeneticAlgorithm', 'TurnamentSelection', 'TwoPointCrossover', 'MultiPointCrossover', 'UniformCrossover', 'UniformMutation', 'CreepMutation']
+__all__ = ['GeneticAlgorithm', 'TurnamentSelection', 'RouletteSelection', 'TwoPointCrossover', 'MultiPointCrossover', 'UniformCrossover', 'UniformMutation', 'CreepMutation', 'CrossoverUros', 'MutationUros']
 
 def TurnamentSelection(pop, ic, ts, x_b, rnd=rand):
 	comps = [pop[i] for i in rand.choice(len(pop), ts, replace=False)]
@@ -50,15 +50,15 @@ def CrossoverUros(pop, ic, cr, rnd=rand):
 
 def UniformMutation(pop, ic, mr, task, rnd=rand):
 	j = rnd.randint(task.D)
-	nx = [rnd.uniform(task.Upper[i], task.Lower[i]) if rnd.rand() < mr or i == j else pop[ic][i] for i in range(task.D)]
+	nx = [rnd.uniform(task.bcLower()[i], task.bcUpper()[i]) if rnd.rand() < mr or i == j else pop[ic][i] for i in range(task.D)]
 	return asarray(nx)
 
 def MutationUros(pop, ic, mr, task, rnd=rand):
-	return fmin(fmax(rnd.normal(pop[ic], mr * task.bRange), task.Lower), task.Upper)
+	return fmin(fmax(rnd.normal(pop[ic], mr * task.bcRange()), task.bcLower()), task.bcUpper())
 
 def CreepMutation(pop, ic, mr, task, rnd=rand):
 	ic, j = rnd.randint(len(pop)), rnd.randint(task.D)
-	nx = [rnd.uniform(task.Upper[i], task.Lower[i]) if rnd.rand() < mr or i == j else pop[ic][i] for i in range(task.D)]
+	nx = [rnd.uniform(task.bcLower()[i], task.bcUpper()[i]) if rnd.rand() < mr or i == j else pop[ic][i] for i in range(task.D)]
 	return asarray(nx)
 
 class GeneticAlgorithm(Algorithm):
@@ -72,7 +72,15 @@ class GeneticAlgorithm(Algorithm):
 
 	**License:** MIT
 	"""
-	def __init__(self, **kwargs): Algorithm.__init__(self, name='GeneticAlgorithm', sName='GA', **kwargs)
+	Name = ['GeneticAlgorithm', 'GA']
+
+	@staticmethod
+	def typeParameters(): return {
+			'NP': lambda x: isinstance(x, int) and x > 0,
+			'Ts': lambda x: isinstance(x, int) and x > 1,
+			'Mr': lambda x: isinstance(x, float) and 0 <= x <= 1,
+			'Cr': lambda x: isinstance(x, float) and 0 <= x <= 1
+	}
 
 	def setParameters(self, NP=25, Ts=5, Mr=0.25, Cr=0.25, Selection=TurnamentSelection, Crossover=UniformCrossover, Mutation=UniformMutation, **ukwargs):
 		r"""Set the parameters of the algorithm.
@@ -97,7 +105,7 @@ class GeneticAlgorithm(Algorithm):
 			ind = Individual(x=self.Selection(pop, i, self.Ts, x_bc, self.Rand), e=False)
 			ind.x = self.Crossover(pop, i, self.Cr, self.Rand)
 			ind.x = self.Mutation(pop, i, self.Mr, task, self.Rand)
-			ind.evaluate(task)
+			ind.evaluate(task, rnd=self.Rand)
 			npop.append(ind)
 			if x_b.f > ind.f: x_b = ind
 		return npop, x_b

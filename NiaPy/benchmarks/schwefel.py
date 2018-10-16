@@ -3,11 +3,11 @@
 """Implementations of Schwefels functions."""
 
 from math import sin, fmod, fabs, sqrt
+from NiaPy.benchmarks.benchmark import Benchmark
 
-__all__ = ['Schwefel', 'Schwefel221', 'Schwefel222', 'ModifiedSchwefel', 'ExpandedScaffer']
+__all__ = ['Schwefel', 'Schwefel221', 'Schwefel222', 'ModifiedSchwefel']
 
-
-class Schwefel:
+class Schwefel(Benchmark):
 	r"""Implementation of Schewel function.
 
 	Date: 2018
@@ -39,10 +39,9 @@ class Schwefel:
 
 	Reference: https://www.sfu.ca/~ssurjano/schwef.html
 	"""
+	Name = ['Schwefel']
 
-	def __init__(self, Lower=-500.0, Upper=500.0):
-		self.Lower = Lower
-		self.Upper = Upper
+	def __init__(self, Lower=-500.0, Upper=500.0): Benchmark.__init__(self, Lower, Upper)
 
 	@classmethod
 	def function(cls):
@@ -53,7 +52,7 @@ class Schwefel:
 			return 418.9829 * D - val
 		return evaluate
 
-class Schwefel221:
+class Schwefel221(Benchmark):
 	r"""Schwefel 2.21 function implementation.
 
 	Date: 2018
@@ -88,9 +87,9 @@ class Schwefel221:
 	International Journal of Mathematical Modelling and Numerical Optimisation,
 	4(2), 150-194.
 	"""
-	def __init__(self, Lower=-100.0, Upper=100.0):
-		self.Lower = Lower
-		self.Upper = Upper
+	Name = ['Schwefel221']
+
+	def __init__(self, Lower=-100.0, Upper=100.0): Benchmark.__init__(self, Lower, Upper)
 
 	@classmethod
 	def function(cls):
@@ -102,7 +101,7 @@ class Schwefel221:
 			return maximum
 		return evaluate
 
-class Schwefel222:
+class Schwefel222(Benchmark):
 	r"""Schwefel 2.22 function implementation.
 
 	Date: 2018
@@ -138,9 +137,9 @@ class Schwefel222:
 	International Journal of Mathematical Modelling and Numerical Optimisation,
 	4(2), 150-194.
 	"""
-	def __init__(self, Lower=-100.0, Upper=100.0):
-		self.Lower = Lower
-		self.Upper = Upper
+	Name = ['Schwefel222']
+
+	def __init__(self, Lower=-100.0, Upper=100.0): Benchmark.__init__(self, Lower, Upper)
 
 	@classmethod
 	def function(cls):
@@ -153,7 +152,7 @@ class Schwefel222:
 			return part1 + part2
 		return evaluate
 
-class ModifiedSchwefel:
+class ModifiedSchwefel(Benchmark):
 	r"""Implementations of Modified Schwefel functions.
 
 	Date: 2018
@@ -186,7 +185,9 @@ class ModifiedSchwefel:
 	Reference:
 	http://www5.zzu.edu.cn/__local/A/69/BC/D3B5DFE94CD2574B38AD7CD1D12_C802DAFE_BC0C0.pdf
 	"""
-	def __init__(self, Lower=-100.0, Upper=100.0): self.Lower, self.Upper = Lower, Upper
+	Name = ['ModifiedSchwefel']
+
+	def __init__(self, Lower=-100.0, Upper=100.0): Benchmark.__init__(self, Lower, Upper)
 
 	@classmethod
 	def function(cls):
@@ -234,6 +235,8 @@ class ExpandedScaffer:
 	Reference:
 	http://www5.zzu.edu.cn/__local/A/69/BC/D3B5DFE94CD2574B38AD7CD1D12_C802DAFE_BC0C0.pdf
 	"""
+	Name = ['ExpandedScaffer']
+
 	def __init__(self, Lower=-100.0, Upper=100.0): self.Lower, self.Upper = Lower, Upper
 
 	@classmethod
