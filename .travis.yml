@@ -1,6 +1,4 @@
 language: python
-sudo: required
-dist: xenial
 python:
 - 2.7.14
 - 2.7.15
