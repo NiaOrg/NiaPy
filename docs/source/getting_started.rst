@@ -8,6 +8,12 @@ using following command:
 
     pip install NiaPy
 
+or:
+
+.. code:: bash
+
+    conda install -c niaorg niapy 
+
 When package is successfully installed you are ready to write you first example.
 
 Basic example
