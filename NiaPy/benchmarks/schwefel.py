@@ -7,7 +7,7 @@ import math
 __all__ = ['Schwefel', 'Schwefel221', 'Schwefel222']
 
 
-class Schwefel(object):
+class Schwefel:
     r"""Implementation of Schewel function.
 
     Date: 2018
@@ -58,7 +58,7 @@ class Schwefel(object):
         return evaluate
 
 
-class Schwefel221(object):
+class Schwefel221:
     r"""Schwefel 2.21 function implementation.
 
     Date: 2018
@@ -112,7 +112,7 @@ class Schwefel221(object):
         return evaluate
 
 
-class Schwefel222(object):
+class Schwefel222:
     r"""Schwefel 2.22 function implementation.
 
     Date: 2018

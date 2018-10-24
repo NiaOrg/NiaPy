@@ -5,7 +5,7 @@ from NiaPy.benchmarks.utility import Utility
 __all__ = ['SelfAdaptiveDifferentialEvolutionAlgorithm']
 
 
-class SolutionjDE(object):
+class SolutionjDE:
 
     def __init__(self, D, LB, UB, F, CR):
         self.D = D
@@ -39,7 +39,7 @@ class SolutionjDE(object):
         return self.Solution == other.Solution and self.Fitness == other.Fitness
 
 
-class SelfAdaptiveDifferentialEvolutionAlgorithm(object):
+class SelfAdaptiveDifferentialEvolutionAlgorithm:
     r"""Implementation of Self-adaptive differential evolution algorithm.
 
     **Algorithm:** Self-adaptive differential evolution algorithm

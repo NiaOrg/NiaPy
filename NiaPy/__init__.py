@@ -21,7 +21,7 @@ logger = logging.getLogger('NiaPy')
 logger.setLevel('INFO')
 
 
-class Runner(object):
+class Runner:
     r"""Runner utility feature.
 
     Feature which enables running multiple algorithms with multiple benchmarks.

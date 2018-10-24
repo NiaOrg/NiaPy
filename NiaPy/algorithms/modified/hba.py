@@ -4,7 +4,7 @@ from NiaPy.benchmarks.utility import Utility
 __all__ = ['HybridBatAlgorithm']
 
 
-class HybridBatAlgorithm(object):
+class HybridBatAlgorithm:
     r"""Implementation of Hybrid bat algorithm.
 
     **Algorithm:** Hybrid bat algorithm
@@ -126,7 +126,7 @@ class HybridBatAlgorithm(object):
         while self.eval_flag is not False:
             for i in range(self.NP):
                 rnd = random.uniform(0, 1)
-                self.Q[i] = self.Qmin + (self.Qmin - self.Qmax) * rnd
+                self.Q[i] = self.Qmin + (self.Qmax - self.Qmin) * rnd
 
                 j = None
                 for j in range(self.D):

@@ -6,7 +6,7 @@ from NiaPy.benchmarks.utility import Utility
 __all__ = ['FlowerPollinationAlgorithm']
 
 
-class FlowerPollinationAlgorithm(object):
+class FlowerPollinationAlgorithm:
     r"""Implementation of Flower Pollination algorithm.
 
     **Algorithm:** Flower Pollination algorithm

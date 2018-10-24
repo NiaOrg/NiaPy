@@ -5,7 +5,7 @@ import math
 __all__ = ['SumSquares']
 
 
-class SumSquares(object):
+class SumSquares:
     r"""Implementation of Sum Squares functions.
 
     Date: 2018

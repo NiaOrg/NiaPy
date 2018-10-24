@@ -5,7 +5,7 @@ import math
 __all__ = ['SchumerSteiglitz']
 
 
-class SchumerSteiglitz(object):
+class SchumerSteiglitz:
     r"""Implementation of Schumer Steiglitz function.
 
     Date: 2018

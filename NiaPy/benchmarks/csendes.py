@@ -5,7 +5,7 @@ import math
 __all__ = ['Csendes']
 
 
-class Csendes(object):
+class Csendes:
     r"""Implementation of Csendes function.
 
     Date: 2018

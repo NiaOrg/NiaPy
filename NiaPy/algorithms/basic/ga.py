@@ -5,7 +5,7 @@ from NiaPy.benchmarks.utility import Utility
 __all__ = ['GeneticAlgorithm']
 
 
-class Chromosome(object):
+class Chromosome:
     def __init__(self, D, LB, UB):
         self.D = D
         self.LB = LB
@@ -36,7 +36,7 @@ class Chromosome(object):
         print([i for i in self.Solution])
 
 
-class GeneticAlgorithm(object):
+class GeneticAlgorithm:
     r"""Implementation of Genetic algorithm.
 
     **Algorithm:** Genetic algorithm

@@ -5,7 +5,7 @@ import math
 __all__ = ['StyblinskiTang']
 
 
-class StyblinskiTang(object):
+class StyblinskiTang:
     r"""Implementation of Styblinski-Tang functions.
 
     Date: 2018

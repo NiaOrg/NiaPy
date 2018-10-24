@@ -4,7 +4,7 @@ from NiaPy.benchmarks.utility import Utility
 __all__ = ['BatAlgorithm']
 
 
-class BatAlgorithm(object):
+class BatAlgorithm:
     r"""Implementation of Bat algorithm.
 
     **Algorithm:** Bat algorithm
