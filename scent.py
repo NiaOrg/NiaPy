@@ -1,5 +1,5 @@
 """Configuration file for sniffer."""
-# pylint: disable=superfluous-parens,bad-continuation, unpacking-non-sequence
+# pylint: disable=superfluous-parens,bad-continuation,unpacking-non-sequence,
 
 import time
 import subprocess
@@ -17,6 +17,10 @@ watch_paths = ["NiaPy", "tests"]
 
 
 class Options:
+
+    def __init__(self):
+        pass
+
     group = int(time.time())  # unique per run
     show_coverage = False
     rerun_args = None
