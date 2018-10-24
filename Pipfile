@@ -15,7 +15,7 @@ xlsxwriter = "==1.0.2"
 
 [dev-packages]
 
-pylint = "*"
+pylint = "~=1.9.3"
 pycodestyle = "*"
 pydocstyle = "*"
 pytest = "~=3.3"
