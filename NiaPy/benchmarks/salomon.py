@@ -5,7 +5,7 @@ import math
 __all__ = ['Salomon']
 
 
-class Salomon(object):
+class Salomon:
     r"""Implementation of Salomon function.
 
     Date: 2018

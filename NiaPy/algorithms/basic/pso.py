@@ -6,7 +6,7 @@ from NiaPy.benchmarks.utility import Utility
 __all__ = ['ParticleSwarmAlgorithm']
 
 
-class ParticleSwarmAlgorithm(object):
+class ParticleSwarmAlgorithm:
     r"""Implementation of Particle Swarm Optimization algorithm.
 
     **Algorithm:** Particle Swarm Optimization algorithm

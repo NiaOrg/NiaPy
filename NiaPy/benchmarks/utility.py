@@ -10,7 +10,7 @@ from . import Rastrigin, Rosenbrock, Griewank, \
 __all__ = ['Utility']
 
 
-class Utility(object):
+class Utility:
 
     def __init__(self):
         self.classes = {
@@ -45,11 +45,9 @@ class Utility(object):
     def get_benchmark(self, benchmark):
         if not isinstance(benchmark, ''.__class__):
             return benchmark
-        else:
-            if benchmark in self.classes:
-                return self.classes[benchmark]()
-            else:
-                raise TypeError('Passed benchmark is not defined!')
+        if benchmark in self.classes:
+            return self.classes[benchmark]()
+        raise TypeError('Passed benchmark is not defined!')
 
     @classmethod
     def __raiseLowerAndUpperNotDefined(cls):

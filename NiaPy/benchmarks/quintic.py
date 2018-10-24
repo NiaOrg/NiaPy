@@ -5,7 +5,7 @@ import math
 __all__ = ['Quintic']
 
 
-class Quintic(object):
+class Quintic:
     r"""Implementation of Quintic function.
 
     Date: 2018

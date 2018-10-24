@@ -4,7 +4,7 @@ from NiaPy.benchmarks.utility import Utility
 __all__ = ['GreyWolfOptimizer']
 
 
-class GreyWolfOptimizer(object):
+class GreyWolfOptimizer:
     r"""Implementation of Grey wolf optimizer.
 
     **Algorithm:** Grey wolf optimizer
@@ -104,12 +104,11 @@ class GreyWolfOptimizer(object):
                     self.Alpha_score = Fit
                     self.Alpha_pos = self.Positions[i]
 
-                if ((Fit > self.Alpha_score) and (Fit < self.Beta_score)):
+                if self.Alpha_score < Fit < self.Beta_score:
                     self.Beta_score = Fit
                     self.Beta_pos = self.Positions[i]
 
-                if ((Fit > self.Alpha_score) and (Fit > self.Beta_score) and
-                        (Fit < self.Delta_score)):
+                if self.Alpha_score < Fit and self.Beta_score < Fit < self.Delta_score:
                     self.Delta_score = Fit
                     self.Delta_pos = self.Positions[i]
 

@@ -82,7 +82,7 @@ pydocstyle: install
 
 PYTEST := pipenv run py.test
 COVERAGE := pipenv run coverage
-COVERAGE_SPACE := pipenv run coverage.space
+COVERAGE_SPACE := pipenv run coveragespace
 
 RANDOM_SEED ?= $(shell date +%s)
 FAILURES := .cache/v/cache/lastfailed

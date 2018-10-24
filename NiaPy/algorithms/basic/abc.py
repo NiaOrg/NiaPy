@@ -5,7 +5,7 @@ from NiaPy.benchmarks.utility import Utility
 __all__ = ['ArtificialBeeColonyAlgorithm']
 
 
-class SolutionABC(object):
+class SolutionABC:
 
     def __init__(self, D, LB, UB):
         self.D = D
@@ -34,7 +34,7 @@ class SolutionABC(object):
         pass
 
 
-class ArtificialBeeColonyAlgorithm(object):
+class ArtificialBeeColonyAlgorithm:
     r"""Implementation of Artificial Bee Colony algorithm.
 
     **Algorithm:** Artificial Bee Colony algorithm

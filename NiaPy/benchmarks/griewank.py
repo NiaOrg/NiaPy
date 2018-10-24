@@ -5,7 +5,7 @@ import math
 __all__ = ['Griewank']
 
 
-class Griewank(object):
+class Griewank:
     r"""Implementation of Griewank function.
 
     Date: 2018

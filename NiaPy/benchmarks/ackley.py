@@ -5,7 +5,7 @@ import math
 __all__ = ['Ackley']
 
 
-class Ackley(object):
+class Ackley:
     r"""Implementation of Ackley function.
 
     Date: 2018

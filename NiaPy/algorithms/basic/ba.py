@@ -4,7 +4,7 @@ from NiaPy.benchmarks.utility import Utility
 __all__ = ['BatAlgorithm']
 
 
-class BatAlgorithm(object):
+class BatAlgorithm:
     r"""Implementation of Bat algorithm.
 
     **Algorithm:** Bat algorithm
@@ -126,7 +126,7 @@ class BatAlgorithm(object):
         while self.eval_flag is not False:
             for i in range(self.NP):
                 rnd = random.uniform(0, 1)
-                self.Q[i] = self.Qmin + (self.Qmin - self.Qmax) * rnd
+                self.Q[i] = self.Qmin + (self.Qmax - self.Qmin) * rnd
                 for j in range(self.D):
                     self.v[i][j] = self.v[i][j] + (self.Sol[i][j] -
                                                    self.best[j]) * self.Q[i]

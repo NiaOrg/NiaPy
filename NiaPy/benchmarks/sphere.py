@@ -6,7 +6,7 @@ import math
 __all__ = ['Sphere']
 
 
-class Sphere(object):
+class Sphere:
     r"""Implementation of Sphere functions.
 
     Date: 2018

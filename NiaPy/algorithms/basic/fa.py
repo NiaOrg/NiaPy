@@ -5,7 +5,7 @@ from NiaPy.benchmarks.utility import Utility
 __all__ = ['FireflyAlgorithm']
 
 
-class FireflyAlgorithm(object):
+class FireflyAlgorithm:
     r"""Implementation of Firefly algorithm.
 
     **Algorithm:** Firefly algorithm

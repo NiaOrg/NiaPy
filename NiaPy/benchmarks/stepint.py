@@ -5,7 +5,7 @@ import math
 __all__ = ['Stepint']
 
 
-class Stepint(object):
+class Stepint:
     r"""Implementation of Stepint functions.
 
     Date: 2018

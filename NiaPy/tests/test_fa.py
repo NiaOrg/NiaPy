@@ -3,7 +3,7 @@ from unittest import TestCase
 from NiaPy.algorithms.basic import FireflyAlgorithm
 
 
-class MyBenchmark(object):
+class MyBenchmark:
 
     def __init__(self):
         self.Lower = -5.12

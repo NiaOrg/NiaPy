@@ -5,7 +5,7 @@ from NiaPy.benchmarks.utility import Utility
 __all__ = ['DifferentialEvolutionAlgorithm']
 
 
-class SolutionDE(object):
+class SolutionDE:
 
     def __init__(self, D, LB, UB):
         self.D = D
@@ -34,7 +34,7 @@ class SolutionDE(object):
         return self.Solution == other.Solution and self.Fitness == other.Fitness
 
 
-class DifferentialEvolutionAlgorithm(object):
+class DifferentialEvolutionAlgorithm:
     r"""Implementation of Differential evolution algorithm.
 
     **Algorithm:** Differential evolution algorithm

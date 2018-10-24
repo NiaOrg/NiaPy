@@ -5,7 +5,7 @@ import math
 __all__ = ['Pinter']
 
 
-class Pinter(object):
+class Pinter:
     r"""Implementation of Pintér function.
 
     Date: 2018
