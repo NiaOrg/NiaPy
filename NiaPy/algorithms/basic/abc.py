@@ -34,7 +34,7 @@ class SolutionABC:
         pass
 
 
-class ArtificialBeeColonyAlgorithm(object):
+class ArtificialBeeColonyAlgorithm:
     r"""Implementation of Artificial Bee Colony algorithm.
 
     **Algorithm:** Artificial Bee Colony algorithm

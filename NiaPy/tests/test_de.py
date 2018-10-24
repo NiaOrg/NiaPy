@@ -3,7 +3,7 @@ from unittest import TestCase
 from NiaPy.algorithms.basic import DifferentialEvolutionAlgorithm
 
 
-class MyBenchmark(object):
+class MyBenchmark:
 
     def __init__(self):
         self.Lower = -11

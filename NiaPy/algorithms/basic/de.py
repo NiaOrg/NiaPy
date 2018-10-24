@@ -34,7 +34,7 @@ class SolutionDE:
         return self.Solution == other.Solution and self.Fitness == other.Fitness
 
 
-class DifferentialEvolutionAlgorithm(object):
+class DifferentialEvolutionAlgorithm:
     r"""Implementation of Differential evolution algorithm.
 
     **Algorithm:** Differential evolution algorithm
