@@ -1,5 +1,9 @@
 # Revision History
 
+## 1.0.2 (Oct 24, 2018)
+
+- fix Bat and Hybrid Bat algorithms
+
 ## 1.0.1 (Mar 21, 2018)
 
 This release reflects the changes from Journal of Open Source Software (JOSS) review:

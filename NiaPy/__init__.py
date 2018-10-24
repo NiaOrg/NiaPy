@@ -12,7 +12,7 @@ from NiaPy import algorithms, benchmarks
 
 __all__ = ['algorithms', 'benchmarks']
 __project__ = 'NiaPy'
-__version__ = '1.0.1'
+__version__ = '1.0.2'
 
 VERSION = "{0} v{1}".format(__project__, __version__)
 
