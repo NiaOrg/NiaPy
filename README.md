@@ -35,6 +35,7 @@ The micro framework features following algorithms:
   - Genetic algorithm ([see example](examples/run_ga.py))
   - Glowworm Swarm Optimization ([see example](examples/run_gso.py), [see example](examples/run_gsov1.py), [see example](examples/run_gsov2.py), [see example](examples/run_gsov3.py))
   - Grey wolf optimizer ([see example](examples/run_gwo.py))
+  - Moth flame optimizer ([see example](examples/run_mfo.py))
   - Harmony Search Algorithm ([see example](examples/run_hs.py))
   - Krill Herd Algorithm ([see example](examples/run_khv1.py), [see example](examples/run_khv2.py), [see example](examples/run_khv3.py), [see example](examples/run_khv4.py), [see example](examples/run_khV11.py))
   - Monkey King Evolution ([see example](examples/run_mkev1.py), [see example](examples/run_mkev2.py), [see example](examples/run_mkev3.py))
