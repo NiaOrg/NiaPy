@@ -18,6 +18,7 @@ from NiaPy.algorithms.basic.hs import HarmonySearch, HarmonySearchV1
 from NiaPy.algorithms.basic.kh import KrillHerdV1, KrillHerdV2, KrillHerdV3, KrillHerdV4, KrillHerdV11
 from NiaPy.algorithms.basic.fwa import FireworksAlgorithm, EnhancedFireworksAlgorithm, DynamicFireworksAlgorithm, DynamicFireworksAlgorithmGauss, BareBonesFireworksAlgorithm
 from NiaPy.algorithms.basic.gsa import GravitationalSearchAlgorithm
+from NiaPy.algorithms.basic.mfo import MothFlameOptimizer
 
 __all__ = [
     'BatAlgorithm',
@@ -58,5 +59,6 @@ __all__ = [
     'EnhancedFireworksAlgorithm',
     'DynamicFireworksAlgorithm',
     'DynamicFireworksAlgorithmGauss',
-    'GravitationalSearchAlgorithm'
+    'GravitationalSearchAlgorithm',
+    'MothFlameOptimizer',
 ]
