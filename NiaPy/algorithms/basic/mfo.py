@@ -53,7 +53,7 @@ class MothFlameOptimizer(Algorithm):
 
 	def runTask(self, task):
 		"""Run."""
-		moth_pos = task.Lower + task.bRange * np.random.rand(self.NP, task.D)
+		moth_pos = task.Lower + task.bRange * self.rand([self.NP, task.D])
 		moth_fitness = np.zeros(self.NP)
 
 		sorted_population = np.copy(moth_pos)
@@ -116,7 +116,7 @@ class MothFlameOptimizer(Algorithm):
 				for j in np.arange(0, task.D):
 					distance_to_flame = abs(sorted_population[i, j] - moth_pos[i, j])
 					b = 1
-					t = (a - 1) * np.random.random() + 1
+					t = (a - 1) * self.rand() + 1
 
 					if i <= flame_no:
 						moth_pos[i, j] = distance_to_flame * np.exp(b * t) * np.cos(2 * np.pi * t) + sorted_population[i, j]

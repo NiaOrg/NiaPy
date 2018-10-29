@@ -12,10 +12,6 @@ logging.basicConfig()
 logger = logging.getLogger('examples')
 logger.setLevel('INFO')
 
-# For reproducive results
-random.seed(1234)
-
-
 class MyBenchmark(object):
     def __init__(self):
         self.Lower = -11
@@ -31,6 +27,6 @@ class MyBenchmark(object):
 
 
 for i in range(10):
-    Algorithm = MothFlameOptimizer(D=10, NP=20, nGEN=10000, benchmark=MyBenchmark())
+    Algorithm = MothFlameOptimizer(D=10, NP=20, nGEN=10000, seed=1234, benchmark=MyBenchmark())
     Best = Algorithm.run()
     logger.info(Best)
