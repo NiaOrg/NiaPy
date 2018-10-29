@@ -16,7 +16,6 @@ before_install:
   - make doctor
 install:
   - make install
-  - pipenv install pathlib2
 script:
   - make check
   - make test
