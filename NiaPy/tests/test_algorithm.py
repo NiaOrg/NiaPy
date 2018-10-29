@@ -75,7 +75,7 @@ class AlgorithBaseTestCase(TestCase):
 
 	def test_setBenchmark(self):
 		task = Task(D=10, nFES=10, nGEN=10, optType=OptimizationType.MINIMIZATION, benchmark=MyBenchmark())
-		a = self.a.setBechmark(task)
+		a = self.a.setBenchmark(task)
 		self.assertIsInstance(a, Algorithm)
 
 	def test_randn(self):

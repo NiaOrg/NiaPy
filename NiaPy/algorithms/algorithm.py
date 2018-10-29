@@ -39,7 +39,7 @@ class Algorithm:
 
 		**Raises:**
 
-		TypeError -- Raised when given benchmark function which does not exists.
+		TypeError -- Raised when given benchmark function does not exists.
 
 		**See**:
 		Algorithm.setParameters(self, **kwargs)
@@ -66,7 +66,7 @@ class Algorithm:
 		self.task = task
 		return self
 
-	def setBechmark(self, bech):
+	def setBenchmark(self, bech):
 		r"""Set the benchmark for the algorithm.
 
 		**Arguments**:
@@ -133,7 +133,7 @@ class Algorithm:
 
 		Nmax {integer} --
 
-		D {array} or {int} -- Shape of returnd random uniform numbers
+		D {array} or {int} -- Shape of returned random uniform numbers
 
 		skip {array} -- numbers to skip
 		"""
@@ -152,7 +152,7 @@ class Algorithm:
 		return self.runTask(self.task)
 
 	def runYield(self, task):
-		r"""Run the algorithm for only one iteration and return the gest solution.
+		r"""Run the algorithm for only one iteration and return the best solution.
 
 		**Arguments:**
 
@@ -160,7 +160,7 @@ class Algorithm:
 
 		Return:
 
-		solution {array} -- point of best solution
+		solution {array} -- point of the best solution
 
 		fitness {real} -- fitness value of the best solution
 		"""
@@ -175,7 +175,7 @@ class Algorithm:
 
 		**Return:**
 
-		solution {array} -- point of best solution
+		solution {array} -- point of the best solution
 
 		fitness {real} -- fitness value of best solution
 		"""
