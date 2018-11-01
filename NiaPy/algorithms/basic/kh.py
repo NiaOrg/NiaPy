@@ -1,9 +1,9 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, arguments-differ, line-too-long, redefined-builtin, singleton-comparison, no-self-use
+# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, arguments-differ, line-too-long, redefined-builtin, singleton-comparison, no-self-use, bad-continuation
 import logging
 from scipy.spatial.distance import euclidean as ed
 from numpy import apply_along_axis, argmin, argmax, sum, full, inf, asarray, mean, where, sqrt
-from NiaPy.benchmarks.utility import fullArray
+from NiaPy.util import fullArray
 from NiaPy.algorithms.algorithm import Algorithm
 
 logging.basicConfig()
@@ -27,9 +27,23 @@ class KrillHerd(Algorithm):
 
 	**Reference paper:** Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010.
 	"""
-	def __init__(self, **kwargs):
-		if kwargs.get('name', None) == None: Algorithm.__init__(self, name='KrillHerd', sName='KH', **kwargs)
-		else: Algorithm.__init__(self, **kwargs)
+	Name = ['KrillHerd', 'KH']
+
+	@staticmethod
+	def typeParameters(): return {
+			'NP': lambda x: isinstance(x, int) and x > 0,
+			'N_max': lambda x: isinstance(x, (int, float)) and x > 0,
+			'V_f': lambda x: isinstance(x, (int, float)) and x > 0,
+			'D_max': lambda x: isinstance(x, (int, float)) and x > 0,
+			'C_t': lambda x: isinstance(x, (int, float)) and x > 0,
+			'W_n': lambda x: isinstance(x, (int, float)) and x > 0,
+			'W_f': lambda x: isinstance(x, (int, float)) and x > 0,
+			'd_s': lambda x: isinstance(x, (int, float)) and x > 0,
+			'nn': lambda x: isinstance(x, int) and x > 0,
+			'Cr': lambda x: isinstance(x, float) and 0 <= x <= 1,
+			'Mu': lambda x: isinstance(x, float) and 0 <= x <= 1,
+			'epsilon': lambda x: isinstance(x, float) and 0 < x < 1
+	}
 
 	def setParameters(self, NP=50, N_max=0.01, V_f=0.02, D_max=0.002, C_t=0.93, W_n=0.42, W_f=0.38, d_s=2.63, nn=5, Cr=0.2, Mu=0.05, epsilon=1e-31, **ukwargs):
 		r"""Set the arguments of an algorithm.
@@ -91,7 +105,7 @@ class KrillHerd(Algorithm):
 
 	def inducePhysicalDiffusion(self, task): return self.D_max * (1 - task.Iters / task.nGEN) * self.uniform(-1, 1, task.D)
 
-	def deltaT(self, task): return self.C_t * sum(task.bRange)
+	def deltaT(self, task): return self.C_t * sum(task.bcRange())
 
 	def crossover(self, x, xo, Cr): return [xo[i] if self.rand() < Cr else x[i] for i in range(len(x))]
 
@@ -99,7 +113,7 @@ class KrillHerd(Algorithm):
 		return [x[i] if self.rand() < Mu else (x_b[i] + self.rand()) for i in range(len(x))]
 
 	def getFoodLocation(self, KH, KH_f, task):
-		x_food = task.repair(asarray([sum(KH[:, i] / KH_f) for i in range(task.D)]) / sum(1 / KH_f))
+		x_food = task.repair(asarray([sum(KH[:, i] / KH_f) for i in range(task.D)]) / sum(1 / KH_f), rnd=self.Rand)
 		x_food_f = task.eval(x_food)
 		return x_food, x_food_f
 
@@ -108,7 +122,7 @@ class KrillHerd(Algorithm):
 	def Cr(self, xf, yf, xf_best, xf_worst): return self._Cr * self.funK(xf, yf, xf_best, xf_worst)
 
 	def runTask(self, task):
-		KH, N, F, x, x_fit = self.uniform(task.Lower, task.Upper, [self.N, task.D]), full(self.N, .0), full(self.N, .0), None, inf
+		KH, N, F, x, x_fit = self.uniform(task.Lower, task.Upper, [self.N, task.D]), full(self.N, .0), full(self.N, .0), None, task.optType.value * inf
 		W_n, W_f = self.initWeights(task)
 		while not task.stopCondI():
 			KH_f = apply_along_axis(task.eval, 1, KH)
@@ -124,7 +138,7 @@ class KrillHerd(Algorithm):
 			KH_n = asarray([self.crossover(KH_n[i], KH[i], Cr[i]) for i in range(self.N)])
 			Mu = asarray([self.Mu(KH_f[i], KH_f[ikh_b], KH_f[ikh_b], KH_f[ikh_w]) for i in range(self.N)])
 			KH_n = asarray([self.mutate(KH_n[i], KH[ikh_b], Mu[i]) for i in range(self.N)])
-			KH = apply_along_axis(task.repair, 1, KH_n)
+			KH = apply_along_axis(task.repair, 1, KH_n, rnd=self.Rand)
 		return x, x_fit
 
 class KrillHerdV4(KrillHerd):
@@ -142,9 +156,15 @@ class KrillHerdV4(KrillHerd):
 
 	**Reference paper:** Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010.
 	"""
-	def __init__(self, **kwargs):
-		if kwargs.get('name', None) == None: KrillHerd.__init__(self, name='KrillHerdV4', sName='KHv4', **kwargs)
-		else: KrillHerd.__init__(self, **kwargs)
+	Name = ['KrillHerdV4', 'KHv4']
+
+	@staticmethod
+	def typeParameters():
+		d = KrillHerd.typeParameters()
+		del d['Cr']
+		del d['Mu']
+		del d['epsilon']
+		return d
 
 	def setParameters(self, NP=50, N_max=0.01, V_f=0.02, D_max=0.002, C_t=0.93, W_n=0.42, W_f=0.38, d_s=2.63, **ukwargs): KrillHerd.setParameters(self, NP, N_max, V_f, D_max, C_t, W_n, W_f, d_s, 4, 0.2, 0.05, 1e-31, **ukwargs)
 
@@ -163,9 +183,10 @@ class KrillHerdV1(KrillHerd):
 
 	**Reference paper:** Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010.
 	"""
-	def __init__(self, **kwargs):
-		if kwargs.get('name', None) == None: KrillHerd.__init__(self, name='KrillHerdV1', sName='KHv1', **kwargs)
-		else: KrillHerd.__init__(self, **kwargs)
+	Name = ['KrillHerdV1', 'KHv1']
+
+	@staticmethod
+	def typeParameters(): return KrillHerdV4.typeParameters()
 
 	def crossover(self, x, xo, Cr): return x
 
@@ -186,9 +207,13 @@ class KrillHerdV2(KrillHerd):
 
 	**Reference paper:** Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010.
 	"""
-	def __init__(self, **kwargs):
-		if kwargs.get('name', None) == None: KrillHerd.__init__(self, name='KrillHerdV2', sName='KHv2', **kwargs)
-		else: KrillHerd.__init__(self, **kwargs)
+	Name = ['KrillHerdV2', 'KHv2']
+
+	@staticmethod
+	def typeParameters():
+		d = KrillHerd.typeParameters()
+		del d['Mu']
+		return d
 
 	def mutate(self, x, x_b, Mu): return x
 
@@ -207,9 +232,13 @@ class KrillHerdV3(KrillHerd):
 
 	**Reference paper:** Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010.
 	"""
-	def __init__(self, **kwargs):
-		if kwargs.get('name', None) == None: KrillHerd.__init__(self, name='KrillHerdV3', sName='KHv3', **kwargs)
-		else: KrillHerd.__init__(self, **kwargs)
+	Name = ['KrillHerdV3', 'KHv3']
+
+	@staticmethod
+	def typeParameters():
+		d = KrillHerd.typeParameters()
+		del d['Cr']
+		return d
 
 	def crossover(self, x, xo, Cr): return x
 
@@ -228,9 +257,7 @@ class KrillHerdV11(KrillHerd):
 
 	**Reference paper:**
 	"""
-	def __init__(self, **kwargs):
-		if kwargs.get('name', None) == None: KrillHerd.__init__(self, name='KrillHerdV11', sName='KHv11', **kwargs)
-		else: KrillHerd.__init__(self, **kwargs)
+	Name = ['KrillHerdV11', 'KHv11']
 
 	def ElitistSelection(self, KH, KH_f, KHo, KHo_f):
 		ipb = where(KHo_f >= KH_f)
@@ -258,8 +285,8 @@ class KrillHerdV11(KrillHerd):
 	def Cr(self, KH_f, KHb_f, KHw_f): return 0.8 + 0.2 * (KH_f - KHb_f) / (KHw_f - KHb_f)
 
 	def runTask(self, task):
-		KH, N, F, Dt, x, x_fit = self.uniform(task.Lower, task.Upper, [self.N, task.D]), full(self.N, .0), full(self.N, .0), mean(task.bRange) / 2, None, inf
-		KHo, KHo_f = full([self.N, task.D], inf), full(self.N, inf)
+		KH, N, F, Dt, x, x_fit = self.uniform(task.bcLower(), task.bcUpper(), [self.N, task.D]), full(self.N, .0), full(self.N, .0), mean(task.bcRange()) / 2, None, task.optType.value * inf
+		KHo, KHo_f = full([self.N, task.D], task.optType.value * inf), full(self.N, task.optType.value * inf)
 		while not task.stopCondI():
 			KH_f, w = apply_along_axis(task.eval, 1, KH), full(task.D, 0.1 + 0.8 * (1 - task.Iters / task.nGEN))
 			KHo, KHo_f = self.ElitistSelection(KH, KH_f, KHo, KHo_f)
@@ -272,7 +299,7 @@ class KrillHerdV11(KrillHerd):
 			Cr = asarray([self.Cr(KH_f[i], KH_f[ib], KH_f[iw]) for i in range(self.N)])
 			KH_n = asarray([self.crossover(KH[self.randint(self.N)], KH[i], Cr[i]) for i in range(self.N)])
 			KH_n = KH + Dt * (F + N)
-			KH = apply_along_axis(task.repair, 1, KH_n)
+			KH = apply_along_axis(task.repair, 1, KH_n, self.Rand)
 		return x, x_fit
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

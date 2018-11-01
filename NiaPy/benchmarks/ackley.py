@@ -1,10 +1,11 @@
 # encoding=utf8
 # pylint: disable=anomalous-backslash-in-string, old-style-class
-import math
+from numpy import exp, pi, cos, sqrt
+from NiaPy.benchmarks.benchmark import Benchmark
 
 __all__ = ['Ackley']
 
-class Ackley:
+class Ackley(Benchmark):
     r"""Implementation of Ackley function.
 
     Date: 2018
@@ -41,10 +42,10 @@ class Ackley:
 
     Reference: https://www.sfu.ca/~ssurjano/ackley.html
     """
+    Name = ['Ackley']
 
     def __init__(self, Lower=-32.768, Upper=32.768):
-        self.Lower = Lower
-        self.Upper = Upper
+        Benchmark.__init__(self, Lower, Upper)
 
     @classmethod
     def function(cls):
@@ -53,20 +54,20 @@ class Ackley:
 
             a = 20  # Recommended variable value
             b = 0.2  # Recommended variable value
-            c = 2 * math.pi  # Recommended variable value
+            c = 2 * pi  # Recommended variable value
 
             val = 0.0
             val1 = 0.0
             val2 = 0.0
 
             for i in range(D):
-                val1 += math.pow(sol[i], 2)
-                val2 += math.cos(c * sol[i])
+                val1 += sol[i] ** 2
+                val2 += cos(c * sol[i])
 
-            temp1 = -b * math.sqrt(val1 / D)
+            temp1 = -b * sqrt(val1 / D)
             temp2 = val2 / D
 
-            val = -a * math.exp(temp1) - math.exp(temp2) + a + math.exp(1)
+            val = -a * exp(temp1) - exp(temp2) + a + exp(1)
 
             return val
 

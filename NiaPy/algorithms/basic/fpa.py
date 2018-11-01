@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, line-too-long, logging-not-lazy, no-self-use, attribute-defined-outside-init, arguments-differ
+# pylint: disable=mixed-indentation, multiple-statements, line-too-long, logging-not-lazy, no-self-use, attribute-defined-outside-init, arguments-differ, bad-continuation
 import logging
 from scipy.special import gamma as Gamma
 from numpy import where, argmin, sin, fabs, pi, apply_along_axis, full
@@ -25,7 +25,14 @@ class FlowerPollinationAlgorithm(Algorithm):
 	**Reference paper:** Yang, Xin-She. "Flower pollination algorithm for global optimization. International conference on unconventional computing and natural computation. Springer, Berlin, Heidelberg, 2012.
 	Implementation is based on the following MATLAB code: https://www.mathworks.com/matlabcentral/fileexchange/45112-flower-pollination-algorithm?requestedDomain=true
 	"""
-	def __init__(self, **kwargs): Algorithm.__init__(self, name='FlowerPollinationAlgorithm', sName='FPA', **kwargs)
+	Name = ['FlowerPollinationAlgorithm', 'FPA']
+
+	@staticmethod
+	def typeParameters(): return {
+			'NP': lambda x: isinstance(x, int) and x > 0,
+			'p': lambda x: isinstance(x, float) and 0 <= x <= 1,
+			'beta': lambda x: isinstance(x, (float, int)) and x > 0,
+	}
 
 	def setParameters(self, NP=25, p=0.35, beta=1.5, **ukwargs):
 		r"""**__init__(self, D, NP, nFES, p, benchmark)**.
@@ -44,9 +51,9 @@ class FlowerPollinationAlgorithm(Algorithm):
 	def repair(self, x, task):
 		"""Find limits."""
 		ir = where(x > task.Upper)
-		x[ir] = task.Upper[ir]
+		x[ir] = task.Lower[ir] + x[ir] % task.bRange[ir]
 		ir = where(x < task.Lower)
-		x[ir] = task.Lower[ir]
+		x[ir] = task.Lower[ir] + x[ir] % task.bRange[ir]
 		return x
 
 	def levy(self):

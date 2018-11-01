@@ -1,11 +1,12 @@
 # encoding=utf8
 # pylint: disable=anomalous-backslash-in-string, old-style-class
 import math
+from NiaPy.benchmarks.benchmark import Benchmark
 
 __all__ = ['Ridge']
 
 
-class Ridge:
+class Ridge(Benchmark):
     r"""Implementation of Ridge function.
 
     Date: 2018
@@ -37,10 +38,10 @@ class Ridge:
 
     Reference: http://www.cs.unm.edu/~neal.holts/dga/benchmarkFunction/ridge.html
     """
+    Name = ['Ridge']
 
     def __init__(self, Lower=-64.0, Upper=64.0):
-        self.Lower = Lower
-        self.Upper = Upper
+        Benchmark.__init__(self, Lower, Upper)
 
     @classmethod
     def function(cls):

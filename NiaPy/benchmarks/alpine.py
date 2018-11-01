@@ -3,11 +3,12 @@
 """Implementations of Alpine functions."""
 
 import math
+from NiaPy.benchmarks.benchmark import Benchmark
 
 __all__ = ['Alpine1', 'Alpine2']
 
 
-class Alpine1:
+class Alpine1(Benchmark):
     r"""Implementation of Alpine1 function.
 
     Date: 2018
@@ -42,10 +43,10 @@ class Alpine1:
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
     """
+    Name = ['Alpine1']
 
     def __init__(self, Lower=-10.0, Upper=10.0):
-        self.Lower = Lower
-        self.Upper = Upper
+        Benchmark.__init__(self, Lower, Upper)
 
     @classmethod
     def function(cls):
@@ -97,6 +98,7 @@ class Alpine2:
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
     """
+    Name = ['Alpine2']
 
     def __init__(self, Lower=0.0, Upper=10.0):
         self.Lower = Lower

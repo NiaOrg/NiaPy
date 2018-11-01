@@ -3,6 +3,8 @@
 |Coverage Status|
 |Scrutinizer Code Quality|
 |PyPI Version|
+|PyPI Downloads|
+|Conda Install|
 |Documentation Status|
 |GitHub license|
 
@@ -40,7 +42,7 @@ Mission
 Overview
 ========
 
-Python micro framework for building nature-inspired algorithms. Official documentation is available `here <http://niapy.readthedocs.io/en/1.0.0>`_.
+Python micro framework for building nature-inspired algorithms. Official documentation is available `here <https://niapy.readthedocs.io/en/stable/>`_.
 
 The micro framework features following algorithms:
 
@@ -130,11 +132,14 @@ Requirements
 Dependencies
 ~~~~~~~~~~~~
 
--  click == *
+-  pytest == 3.7.1
+-  coverage == 4.4.2
+-  coverage-space == 1.0.2
+-  click == 6.0
 -  numpy == 1.14.0
 -  scipy == 1.0.0
 -  xlsxwriter == 1.0.2
--  matplotlib == *
+-  matplotlib == 2.2.2
 
 List of development dependencies and requirements can be found in the `installation section of NiaPy documentation <http://niapy.readthedocs.io/en/stable/installation.html>`_.
 
@@ -147,7 +152,13 @@ Install NiaPy with pip:
 
     $ pip install NiaPy
 
-or directly from the source code:
+Install NiaPy with conda:
+
+.. code:: sh
+
+    $ conda install -c niaorg niapy
+
+Or directly from the source code:
 
 .. code:: sh
 
@@ -279,6 +290,10 @@ This release reflects the changes from Journal of Open Source Software (JOSS) re
    :target: https://scrutinizer-ci.com/g/NiaOrg/NiaPy/?branch=master
 .. |PyPI Version| image:: https://img.shields.io/pypi/v/NiaPy.svg
    :target: https://pypi.python.org/pypi/NiaPy
+.. |PyPI Downloads| image:: https://pypistats.com/badge/niapy.svg
+   :target: https://pypistats.com/package/niapy
+.. |Conda Install| image:: https://anaconda.org/niaorg/niapy/badges/installer/conda.svg
+   :target: https://conda.anaconda.org/niaorg
 .. |Documentation Status| image:: https://readthedocs.org/projects/niapy/badge/?version=latest
    :target: http://niapy.readthedocs.io/en/latest/?badge=latest
 .. |Average time to resolve an issue| image:: http://isitmaintained.com/badge/resolution/NiaOrg/NiaPy.svg

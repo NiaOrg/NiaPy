@@ -3,10 +3,11 @@
 """Implementations of HGBat functions."""
 
 from math import fabs
+from NiaPy.benchmarks.benchmark import Benchmark
 
 __all__ = ['HGBat']
 
-class HGBat:
+class HGBat(Benchmark):
 	r"""Implementations of HGBat functions.
 
 	Date: 2018
@@ -17,7 +18,6 @@ class HGBat:
 
 	Function:
 	**HGBat Function**
-
 		:math:``f(\textbf{x}) = \left| \left( \sum_{i=1}^D x_i^2 \right)^2 - \left( \sum_{i=1}^D x_i \right)^2 \right|^{\frac{1}{2}} + \frac{0.5 \sum_{i=1}^D x_i^2 + \sum_{i=1}^D x_i}{D} + 0.5
 
 		**Input domain:**
@@ -40,7 +40,9 @@ class HGBat:
 	Reference:
 	http://www5.zzu.edu.cn/__local/A/69/BC/D3B5DFE94CD2574B38AD7CD1D12_C802DAFE_BC0C0.pdf
 	"""
-	def __init__(self, Lower=-100.0, Upper=100.0): self.Lower, self.Upper = Lower, Upper
+	Name = ['HGBat']
+
+	def __init__(self, Lower=-100.0, Upper=100.0): Benchmark.__init__(self, Lower, Upper)
 
 	@classmethod
 	def function(cls):

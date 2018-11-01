@@ -1,11 +1,11 @@
 # encoding=utf8
 # pylint: disable=anomalous-backslash-in-string, old-style-class
 import math
+from NiaPy.benchmarks.benchmark import Benchmark
 
 __all__ = ['SumSquares']
 
-
-class SumSquares:
+class SumSquares(Benchmark):
     r"""Implementation of Sum Squares functions.
 
     Date: 2018
@@ -40,10 +40,10 @@ class SumSquares:
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
     """
+    Name = ['SumSquares']
 
     def __init__(self, Lower=-10.0, Upper=10.0):
-        self.Lower = Lower
-        self.Upper = Upper
+        Benchmark.__init__(self, Lower, Upper)
 
     @classmethod
     def function(cls):

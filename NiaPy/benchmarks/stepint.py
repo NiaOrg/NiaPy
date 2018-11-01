@@ -1,11 +1,11 @@
 # encoding=utf8
 # pylint: disable=anomalous-backslash-in-string, old-style-class
 import math
+from NiaPy.benchmarks.benchmark import Benchmark
 
 __all__ = ['Stepint']
 
-
-class Stepint:
+class Stepint(Benchmark):
     r"""Implementation of Stepint functions.
 
     Date: 2018
@@ -40,10 +40,10 @@ class Stepint:
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
     """
+    Name = ['Stepint']
 
     def __init__(self, Lower=-5.12, Upper=5.12):
-        self.Lower = Lower
-        self.Upper = Upper
+        Benchmark.__init__(self, Lower, Upper)
 
     @classmethod
     def function(cls):

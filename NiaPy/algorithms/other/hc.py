@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, arguments-differ, redefined-outer-name
+# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, arguments-differ, redefined-outer-name, bad-continuation
 import logging
 from numpy import apply_along_axis, argmin, inf, copy
 from NiaPy.algorithms.algorithm import Algorithm
@@ -39,13 +39,12 @@ class HillClimbAlgorithm(Algorithm):
 
 	**Reference paper:**
 	"""
-	def __init__(self, **kwargs):
-		r"""Initialize Iterative Hillclimb algorithm class.
+	Name = ['HillClimbAlgorithm', 'BBFA']
 
-		**See**:
-		Algorithm.__init__(self, **kwargs)
-		"""
-		Algorithm.__init__(self, name='HillClimbAlgorithm', sName='BBFA', **kwargs)
+	@staticmethod
+	def typeParameters(): return {
+			'delta': lambda x: isinstance(x, (int, float)) and x > 0
+	}
 
 	def setParameters(self, delta=0.5, Neighborhood=Neighborhood, **ukwargs):
 		r"""Set the algorithm parameters/arguments.
@@ -57,9 +56,9 @@ class HillClimbAlgorithm(Algorithm):
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def runTask(self, task):
-		xb, xbfit = None, inf
+		xb, xbfit = None, task.optType.value * inf
 		while not task.stopCond():
-			lo, x = False, task.Lower + task.bRange * self.rand(task.D)
+			lo, x = False, task.bcLower() + task.bcRange() * self.rand(task.D)
 			xfit = task.eval(x)
 			while not lo:
 				Xn, XnFit = self.Neighborhood(x, self.delta, task)

@@ -1,31 +1,32 @@
-# pylint: disable=old-style-class
-from unittest import TestCase
+# pylint: disable=old-style-class, line-too-long
+from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
 from NiaPy.algorithms.basic import BatAlgorithm
 
 
-class MyBenchmark:
+class BATestCase(AlgorithmTestCase):
 
-    def __init__(self):
-        self.Lower = -11
-        self.Upper = 11
-
-    @classmethod
-    def function(cls):
-        def evaluate(D, sol):
-            val = 0.0
-            for i in range(D):
-                val = val + sol[i] * sol[i]
-            return val
-        return evaluate
-
-
-class BATestCase(TestCase):
-    def setUp(self):
-        self.ba_custom = BatAlgorithm(D=10, NP=20, nFES=1000, A=0.5, r=0.5, Qmin=0.0, Qmax=2.0, benchmark=MyBenchmark())
-        self.ba_griewank = BatAlgorithm(NP=10, D=40, nFES=1000, A=0.5, r=0.5, Qmin=0.0, Qmax=2.0, benchmark='griewank')
+    def test_parameter_type(self):
+        d = BatAlgorithm.typeParameters()
+        self.assertTrue(d['Qmax'](10))
+        self.assertTrue(d['Qmin'](10))
+        self.assertTrue(d['r'](10))
+        self.assertFalse(d['r'](-10))
+        self.assertFalse(d['r'](0))
+        self.assertFalse(d['A'](0))
+        self.assertFalse(d['A'](-19))
+        self.assertTrue(d['NP'](10))
+        self.assertFalse(d['NP'](-10))
+        self.assertFalse(d['NP'](0))
+        self.assertTrue(d['A'](10))
+        self.assertFalse(d['Qmin'](None))
+        self.assertFalse(d['Qmax'](None))
 
     def test_custom_works_fine(self):
-        self.assertTrue(self.ba_custom.run())
+        ba_custom = BatAlgorithm(D=self.D, NP=20, nFES=self.nFES, nGEN=self.nGEN, A=0.5, r=0.5, Qmin=0.0, Qmax=2.0, benchmark=MyBenchmark(), seed=self.seed)
+        ba_customc = BatAlgorithm(D=self.D, NP=20, nFES=self.nFES, nGEN=self.nGEN, A=0.5, r=0.5, Qmin=0.0, Qmax=2.0, benchmark=MyBenchmark(), seed=self.seed)
+        AlgorithmTestCase.algorithm_run_test(self, ba_custom, ba_customc)
 
     def test_griewank_works_fine(self):
-        self.assertTrue(self.ba_griewank.run())
+        ba_griewank = BatAlgorithm(NP=10, D=self.D, nFES=self.nFES, nGEN=self.nGEN, A=0.5, r=0.5, Qmin=0.0, Qmax=2.0, benchmark='griewank', seed=self.seed)
+        ba_griewankc = BatAlgorithm(NP=10, D=self.D, nFES=self.nFES, nGEN=self.nGEN, A=0.5, r=0.5, Qmin=0.0, Qmax=2.0, benchmark='griewank', seed=self.seed)
+        AlgorithmTestCase.algorithm_run_test(self, ba_griewank, ba_griewankc)

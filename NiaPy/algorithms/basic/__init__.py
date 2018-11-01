@@ -21,7 +21,6 @@ from NiaPy.algorithms.basic.gsa import GravitationalSearchAlgorithm
 from NiaPy.algorithms.basic.mfo import MothFlameOptimizer
 from NiaPy.algorithms.basic.fss import FishSchoolSearch
 
-
 __all__ = [
     'BatAlgorithm',
     'FireflyAlgorithm',

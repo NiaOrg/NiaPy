@@ -1,11 +1,11 @@
 # encoding=utf8
 # pylint: disable=anomalous-backslash-in-string, old-style-class
 import math
+from NiaPy.benchmarks.benchmark import Benchmark
 
 __all__ = ['StyblinskiTang']
 
-
-class StyblinskiTang:
+class StyblinskiTang(Benchmark):
     r"""Implementation of Styblinski-Tang functions.
 
     Date: 2018
@@ -43,10 +43,10 @@ class StyblinskiTang:
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
     """
+    Name = ['StyblinskiTang']
 
     def __init__(self, Lower=-5.0, Upper=5.0):
-        self.Lower = Lower
-        self.Upper = Upper
+        Benchmark.__init__(self, Lower, Upper)
 
     @classmethod
     def function(cls):

@@ -1,20 +1,33 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, unused-argument, arguments-differ
+# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, unused-argument, arguments-differ, bad-continuation
 import logging
-from numpy import exp
+from numpy import random as rand, exp
 from NiaPy.algorithms.algorithm import Algorithm
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.other')
 logger.setLevel('INFO')
 
-__all__ = ['SimulatedAnnealing', 'coolDelta', 'coolLinear']
+__all__ = ['SimulatedAnnealing', 'SimulatedAnnealingF', 'coolDelta', 'coolLinear']
 
 def coolDelta(currentT, T, deltaT, nFES):
 	return currentT - deltaT
 
 def coolLinear(currentT, T, deltaT, nFES):
 	return currentT - T / nFES
+
+def SimulatedAnnealingF(task, delta=1.5, delta_t=0.564, T=2000, cool=coolDelta, epsilon=1e-20, rnd=rand):
+	x = task.Lower + task.bcRange() * rnd.rand(task.D)
+	curT, xfit = T, task.eval(x)
+	xb, xb_f = x, xfit
+	while not task.stopCond() and curT >= epsilon:
+		c = task.repair(x - delta / 2 + rnd.rand(task.D) * delta, rnd=rnd)
+		cfit = task.eval(c)
+		deltaFit, r = cfit - xfit, rnd.rand()
+		if deltaFit < 0 or r < exp(deltaFit / curT): x, xfit = c, cfit
+		if xb_f > cfit: xb, xb_f = c, cfit
+		curT = cool(curT, T, delta_t, nFES=task.nFES)
+	return xb, xb_f
 
 class SimulatedAnnealing(Algorithm):
 	r"""Implementation of Simulated Annealing Algorithm.
@@ -31,35 +44,34 @@ class SimulatedAnnealing(Algorithm):
 
 	**Reference paper:**
 	"""
-	def __init__(self, **kwargs):
-		r"""Init Simulated Annealing Algorithm.
+	Name = ['SimulatedAnnealing', 'SA']
 
-		**See**:
-		Algorithm.__init__(self, **kwargs)
-		"""
-		Algorithm.__init__(self, name='SimulatedAnnealing', sName='BBFA', **kwargs)
+	@staticmethod
+	def typeParameters(): return {
+			'delta': lambda x: isinstance(x, (int, float)) and x > 0,
+			'T': lambda x: isinstance(x, (int, float)) and x > 0,
+			'deltaT': lambda x: isinstance(x, (int, float)) and x > 0,
+			'epsilon': lambda x: isinstance(x, float) and 0 < x < 1
+	}
 
-	def setParameters(self, delta=0.5, T=20, deltaT=0.8, coolingMethod=coolDelta, **ukwargs):
+	def setParameters(self, delta=0.5, T=2000, deltaT=0.8, coolingMethod=coolDelta, epsilon=1e-23, **ukwargs):
 		r"""Set the algorithm parameters/arguments.
 
-		**See**:
-		SimulatedAnnealing.__setparams(self, n=10, c_a=1.5, c_r=0.5, **ukwargs)
+		Arguments:
+
+		delta {real} -- Movemt for neighbour search
+
+		T {real} -- Starting temperature
+
+		deltaT {real} -- Change in temperature
+
+		coolingMethod {function} -- Neigborhud function
+
+		epsilon {real} -- Error value
 		"""
-		self.delta, self.T, self.curT, self.deltaT, self.cool = delta, T, T, deltaT, coolingMethod
+		self.delta, self.T, self.deltaT, self.cool, self.epsilon = delta, T, deltaT, coolingMethod, epsilon
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def runTask(self, task):
-		x = task.Lower + task.bRange * self.rand(task.D)  # Random solution
-		curT = self.T
-		xfit = task.eval(x)
-		while not task.stopCond() or (curT < 0):
-			c = x - self.delta / 2 + self.rand(task.D) * self.delta
-			c = task.repair(c)
-			cfit = task.eval(c)
-			deltaFit = cfit - xfit
-			rand = self.rand()
-			if deltaFit < 0 or rand < exp(deltaFit / curT): x, xfit = c, cfit
-			curT = self.cool(curT, self.T, self.deltaT, nFES=task.nFES)
-		return x, xfit
+	def runTask(self, task): return SimulatedAnnealingF(task, self.delta, self.deltaT, self.T, self.cool, self.epsilon, rnd=self.Rand)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

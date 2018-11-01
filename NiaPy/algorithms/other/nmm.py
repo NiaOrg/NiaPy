@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, line-too-long, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, arguments-differ, redefined-builtin
+# pylint: disable=mixed-indentation, trailing-whitespace, line-too-long, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, arguments-differ, redefined-builtin, bad-continuation
 import logging
 from numpy import apply_along_axis, argsort, argmin, sum
 from NiaPy.algorithms.algorithm import Algorithm
@@ -23,7 +23,15 @@ class NelderMeadMethod(Algorithm):
 
 	**Reference URL:** https://en.wikipedia.org/wiki/Nelder%E2%80%93Mead_method
 	"""
-	def __init__(self, **kwargs): Algorithm.__init__(self, name='NelderMeadMethod', sName='NMM', **kwargs)
+	Name = ['NelderMeadMethod', 'NMM']
+
+	@staticmethod
+	def typeParameters(): return {
+			'alpha': lambda x: isinstance(x, (int, float)) and x >= 0,
+			'gamma': lambda x: isinstance(x, (int, float)) and x >= 0,
+			'rho': lambda x: isinstance(x, (int, float)),
+			'sigma': lambda x: isinstance(x, (int, float))
+	}
 
 	def setParameters(self, alpha=1.0, gamma=2.0, rho=-0.5, sigma=0.5, **ukwargs):
 		r"""Set the arguments of an algorithm.
