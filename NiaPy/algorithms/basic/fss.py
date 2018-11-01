@@ -3,11 +3,6 @@
 import copy
 import numpy as np
 
-from NiaPy.benchmarks.utility import Utility
-
-
-__all__ = ['FishSchoolSearchAlgorithm']
-
 class Fish(object):
     def __init__(self, D):
         nan = float('nan')
@@ -18,7 +13,7 @@ class Fish(object):
         self.cost = np.nan
         self.has_improved = False
 
-class FishSchoolSearchAlgorithm(object):
+class FishSchoolSearch(object):
     r"""Implementation of Fish School Search algorithm.
 
     **Algorithm:** Fish School Search algorithm
@@ -65,8 +60,8 @@ class FishSchoolSearchAlgorithm(object):
             TypeError -- Raised when given benchmark function which does not exists.
 
         """
-        
-        self.benchmark = Utility().get_benchmark(benchmark)
+
+        self.benchmark = benchmark
         self.Lower = self.benchmark.Lower
         self.Upper = self.benchmark.Upper
         self.D = D

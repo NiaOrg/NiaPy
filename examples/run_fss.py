@@ -7,7 +7,7 @@ sys.path.append('../')
 
 import random
 import logging
-from NiaPy.algorithms.basic import FishSchoolSearchAlgorithm
+from NiaPy.algorithms.basic import FishSchoolSearch
 
 
 logging.basicConfig()
@@ -43,8 +43,8 @@ SV_final = 0.1
 
 logger.info('Running with custom MyBenchmark...')
 for i in range(10):
-    Algorithm = FishSchoolSearchAlgorithm(
+    Algorithm = FishSchoolSearch(
         n_iter=10, school_size=10, D=10, SI_init=0.1, SI_final=0.001, SV_init=1, SV_final=0.1, min_w=1, w_scale=5, benchmark=MyBenchmark()
     )
     Best = Algorithm.run()
-    logger.info(Best)
+    logger.info(Best) 
