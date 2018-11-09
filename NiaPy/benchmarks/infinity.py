@@ -45,6 +45,10 @@ class Infinity(Benchmark):
 
 	def __init__(self, Lower=-1.0, Upper=1.0): Benchmark.__init__(self, Lower, Upper)
 
+	@staticmethod
+	def latex_code():
+		return r'''$f(\textbf{x}) = \sum_{i = 1}^D x_i^6 \left( \sin \left( \frac{1}{x_i} \right) + 2 \right)$'''
+
 	@classmethod
 	def function(cls):
 		def f(D, X):

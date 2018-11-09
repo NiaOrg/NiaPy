@@ -45,6 +45,10 @@ class Stepint(Benchmark):
     def __init__(self, Lower=-5.12, Upper=5.12):
         Benchmark.__init__(self, Lower, Upper)
 
+    @staticmethod
+    def latex_code():
+        return r'''$f(\mathbf{x}) = \sum_{i=1}^D x_i^2$'''
+
     @classmethod
     def function(cls):
         def evaluate(D, sol):

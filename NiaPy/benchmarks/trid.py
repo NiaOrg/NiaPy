@@ -44,6 +44,10 @@ class Trid(Benchmark):
 
 	def __init__(self, D=2): Benchmark.__init__(self, -(D ** 2), D ** 2)
 
+	@staticmethod
+	def latex_code():
+		return r'''$f(\textbf{x}) = \sum_{i = 1}^D \left( x_i - 1 \right)^2 - \sum_{i = 2}^D x_i x_{i - 1}$'''
+
 	@classmethod
 	def function(cls):
 		def f(D, X):

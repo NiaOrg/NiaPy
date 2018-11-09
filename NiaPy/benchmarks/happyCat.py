@@ -48,6 +48,12 @@ class HappyCat(Benchmark):
     def __init__(self, Lower=-100.0, Upper=100.0):
         Benchmark.__init__(self, Lower, Upper)
 
+    @staticmethod
+    def latex_code():
+        return r'''$f(\mathbf{x}) = {\left|\sum_{i = 1}^D {x_i}^2 -
+                D \right|}^{1/4} + (0.5 \sum_{i = 1}^D {x_i}^2 +
+                \sum_{i = 1}^D x_i) / D + 0.5$'''
+
     @classmethod
     def function(cls):
         def evaluate(D, sol):

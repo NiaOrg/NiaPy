@@ -44,6 +44,10 @@ class Zakharov(Benchmark):
 
 	def __init__(self, Lower=-5.0, Upper=10.0): Benchmark.__init__(self, Lower, Upper)
 
+	@staticmethod
+	def latex_code():
+		return r'''$f(\textbf{x}) = \sum_{i = 1}^D x_i^2 + \left( \sum_{i = 1}^D 0.5 i x_i \right)^2 + \left( \sum_{i = 1}^D 0.5 i x_i \right)^4$'''
+
 	@classmethod
 	def function(cls):
 		def f(D, X):

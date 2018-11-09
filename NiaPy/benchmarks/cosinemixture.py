@@ -45,6 +45,10 @@ class CosineMixture(Benchmark):
 
 	def __init__(self, Lower=-1.0, Upper=1.0): Benchmark.__init__(self, Lower, Upper)
 
+	@staticmethod
+	def latex_code():
+		return r'''$f(\textbf{x}) = - 0.1 \sum_{i = 1}^D \cos (5 \pi x_i) - \sum_{i = 1}^D x_i^2$'''
+
 	@classmethod
 	def function(cls):
 		def f(D, X):

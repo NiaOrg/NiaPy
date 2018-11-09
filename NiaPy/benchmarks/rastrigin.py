@@ -44,6 +44,10 @@ class Rastrigin(Benchmark):
     def __init__(self, Lower=-5.12, Upper=5.12):
         Benchmark.__init__(self, Lower, Upper)
 
+    @staticmethod
+    def latex_code():
+        return r'''$f(\mathbf{x}) = 10D + \sum_{i=1}^D \left(x_i^2 -10\cos(2\pi x_i)\right)$'''
+
     @classmethod
     def function(cls):
         def evaluate(D, sol):

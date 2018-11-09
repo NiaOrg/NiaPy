@@ -48,6 +48,10 @@ class Weierstrass(Benchmark):
 		Benchmark.__init__(self, Lower, Upper)
 		Weierstrass.a, Weierstrass.b, Weierstrass.k_max = a, b, k_max
 
+	@staticmethod
+	def latex_code():
+		return r'''$$f(\textbf{x}) = \sum_{i=1}^D \left( \sum_{k=0}^{k_{max}} a^k \cos\left( 2 \pi b^k ( x_i + 0.5) \right) \right) - D \sum_{k=0}^{k_{max}} a^k \cos \left( 2 \pi b^k \cdot 0.5 \right)'''
+
 	@classmethod
 	def function(cls):
 		def f(D, sol, a=cls.a, b=cls.b, k_max=cls.k_max):

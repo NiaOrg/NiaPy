@@ -43,6 +43,10 @@ class Schwefel(Benchmark):
 
 	def __init__(self, Lower=-500.0, Upper=500.0): Benchmark.__init__(self, Lower, Upper)
 
+	@staticmethod
+	def latex_code():
+		return r'''$f(\textbf{x}) = 418.9829d - \sum_{i=1}^{D} x_i \sin(\sqrt{|x_i|})$'''
+
 	@classmethod
 	def function(cls):
 		def evaluate(D, sol):
@@ -90,6 +94,10 @@ class Schwefel221(Benchmark):
 	Name = ['Schwefel221']
 
 	def __init__(self, Lower=-100.0, Upper=100.0): Benchmark.__init__(self, Lower, Upper)
+
+	@staticmethod
+	def latex_code():
+		return r'''$f(\mathbf{x})=\max_{i=1,...,D}|x_i|$'''
 
 	@classmethod
 	def function(cls):
@@ -141,6 +149,10 @@ class Schwefel222(Benchmark):
 
 	def __init__(self, Lower=-100.0, Upper=100.0): Benchmark.__init__(self, Lower, Upper)
 
+	@staticmethod
+	def latex_code():
+		return r'''$f(\mathbf{x})=\sum_{i=1}^{D}|x_i|+\prod_{i=1}^{D}|x_i|$'''
+
 	@classmethod
 	def function(cls):
 		def evaluate(D, sol):
@@ -188,6 +200,10 @@ class ModifiedSchwefel(Benchmark):
 	Name = ['ModifiedSchwefel']
 
 	def __init__(self, Lower=-100.0, Upper=100.0): Benchmark.__init__(self, Lower, Upper)
+
+	@staticmethod
+	def latex_code():
+		return r'''$f(\textbf{x}) = 418.9829 \cdot D - \sum_{i=1}^D h(x_i) \\ h(x) = g(x + 420.9687462275036)  \\ g(z) = \begin{cases} z \sin \left( | z |^{\frac{1}{2}} \right) &\quad | z | \leq 500 \\ \left( 500 - \mod (z, 500) \right) \sin \left( \sqrt{| 500 - \mod (z, 500) |} \right) - \frac{ \left( z - 500 \right)^2 }{ 10000 D }  &\quad z > 500 \\ \left( \mod (| z |, 500) - 500 \right) \sin \left( \sqrt{| \mod (|z|, 500) - 500 |} \right) + \frac{ \left( z - 500 \right)^2 }{ 10000 D } &\quad z < -500\end{cases}$'''
 
 	@classmethod
 	def function(cls):
@@ -238,6 +254,10 @@ class ExpandedScaffer:
 	Name = ['ExpandedScaffer']
 
 	def __init__(self, Lower=-100.0, Upper=100.0): self.Lower, self.Upper = Lower, Upper
+
+	@staticmethod
+	def latex_code():
+		return r'''$f(\textbf{x}) = g(x_D, x_1) + \sum_{i=2}^D g(x_{i - 1}, x_i) \\ g(x, y) = 0.5 + \frac{\sin \left(\sqrt{x^2 + y^2} \right)^2 - 0.5}{\left( 1 + 0.001 (x^2 + y^2) \right)}^2$'''
 
 	@classmethod
 	def function(cls):

@@ -44,6 +44,10 @@ class Elliptic(Benchmark):
 
 	def __init__(self, Lower=-100.0, Upper=100.0): Benchmark.__init__(self, Lower, Upper)
 
+	@staticmethod
+	def latex_code():
+		return r'''$f(\textbf{x}) = \sum_{i=1}^D \left( 10^6 \right)^{ \frac{i - 1}{D - 1} } x_i^2$'''
+
 	@classmethod
 	def function(cls):
 		def evaluate(D, sol):

@@ -44,6 +44,10 @@ class DixonPrice(Benchmark):
 
 	def __init__(self, Lower=-10.0, Upper=10): Benchmark.__init__(self, Lower, Upper)
 
+	@staticmethod
+	def latex_code():
+		return r'''$f(\textbf{x}) = (x_1 - 1)^2 + \sum_{i = 2}^D i (2x_i^2 - x_{i - 1})^2$'''
+
 	@classmethod
 	def function(cls):
 		def f(D, X):

@@ -49,6 +49,10 @@ class Michalewichz(Benchmark):
 		Benchmark.__init__(self, Lower, Upper)
 		Michalewichz.m = m
 
+	@staticmethod
+	def latex_code():
+		return r'''$f(\textbf{x}) = - \sum_{i = 1}^{D} \sin(x_i) \sin\left( \frac{ix_i^2}{\pi} \right)^{2m}$'''
+
 	@classmethod
 	def function(cls):
 		def evaluate(D, X):

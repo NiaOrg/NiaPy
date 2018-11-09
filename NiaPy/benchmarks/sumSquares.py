@@ -45,6 +45,10 @@ class SumSquares(Benchmark):
     def __init__(self, Lower=-10.0, Upper=10.0):
         Benchmark.__init__(self, Lower, Upper)
 
+    @staticmethod
+    def latex_code():
+        return r'''$f(\mathbf{x}) = \sum_{i=1}^D i x_i^2$'''
+
     @classmethod
     def function(cls):
         def evaluate(D, sol):

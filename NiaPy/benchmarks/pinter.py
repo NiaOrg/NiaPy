@@ -57,6 +57,14 @@ class Pinter(Benchmark):
     def __init__(self, Lower=-10.0, Upper=10.0):
         Benchmark.__init__(self, Lower, Upper)
 
+    @staticmethod
+    def latex_code():
+        return r''' $f(\mathbf{x}) =
+                \sum_{i=1}^D ix_i^2 + \sum_{i=1}^D 20i \sin^2 A + \sum_{i=1}^D i
+                \log_{10} (1 + iB^2);
+                A = (x_{i-1}\sin(x_i)+\sin(x_{i+1}))\quad \text{and} \quad
+                B = (x_{i-1}^2 - 2x_i + 3x_{i+1} - \cos(x_i) + 1)$'''
+
     @classmethod
     def function(cls):
         def evaluate(D, sol):
