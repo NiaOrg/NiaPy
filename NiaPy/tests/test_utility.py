@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, unused-variable, unused-argument, redefined-builtin, old-style-class, no-init, line-too-long, bare-except
+# pylint: disable=mixed-indentation, multiple-statements, unused-variable, unused-argument, redefined-builtin, old-style-class, no-init, line-too-long
 from unittest import TestCase
 from numpy import full, random as rnd, inf, sum, array_equal, asarray
 from NiaPy.util import Utility, ATask, Task, fullArray, ScaledTask, TaskConvPrint, TaskComposition, FesException, GenException
@@ -329,10 +329,10 @@ class ScaledTaskTestCase(TestCase):
 		x = full(self.D, 0.0)
 		for i in range(self.nFES // 2):
 			try: self.t.eval(x)
-			except: pass
+			except Exception: pass
 			self.assertEqual(self.t.evals(), 2 * i + 1, 'Error at %s. evaluation' % (i + 1))
 			try: self.tc.eval(x)
-			except: pass
+			except Exception: pass
 			self.assertEqual(self.tc.evals(), 2 * i + 2, 'Error at %s. evaluation' % (i + 1))
 
 	def test_nGEN_count_fine(self):
