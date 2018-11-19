@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, unused-variable, unused-argument, redefined-builtin, old-style-class, no-init, line-too-long
+# pylint: disable=mixed-indentation, multiple-statements, unused-variable, unused-argument, redefined-builtin, old-style-class, no-init, line-too-long, broad-except
 from unittest import TestCase
 from numpy import full, random as rnd, inf, sum, array_equal, asarray
 from NiaPy.util import Utility, ATask, Task, fullArray, ScaledTask, TaskConvPrint, TaskComposition, FesException, GenException
