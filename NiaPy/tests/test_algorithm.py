@@ -22,7 +22,7 @@ class MyBenchmark:
 class IndividualTestCase(TestCase):
 	def setUp(self):
 		self.D = 20
-		self.x, self.task = rnd.uniform(-100, 100, self.D), Task(self.D, 230, inf, MyBenchmark())
+		self.x, self.task = rnd.uniform(-100, 100, self.D), Task(D=self.D, nFES=230, nGEN=inf, benchmark=MyBenchmark())
 		self.s1, self.s2, self.s3 = Individual(x=self.x, e=False), Individual(task=self.task, rand=rnd), Individual(task=self.task)
 
 	def test_x_fine(self):

@@ -1,7 +1,13 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, multiple-statements, line-too-long, expression-not-assigned, len-as-condition, no-self-use, unused-argument, no-else-return, old-style-class, dangerous-default-value
+import logging
 from numpy import random as rand, inf, ndarray, asarray, array_equal
 from NiaPy.util import Task, OptimizationType
+from NiaPy.util import FesException, GenException, TimeException, RefException
+
+logging.basicConfig()
+logger = logging.getLogger('NiaPy.util.utility')
+logger.setLevel('INFO')
 
 __all__ = ['Algorithm', 'Individual']
 
@@ -45,7 +51,7 @@ class Algorithm:
 		Algorithm.setParameters(self, **kwargs)
 		"""
 		task, self.Rand = kwargs.pop('task', None), rand.RandomState(kwargs.pop('seed', None))
-		self.task = task if task is not None else Task(kwargs.pop('D', 10), kwargs.pop('nFES', inf), kwargs.pop('nGEN', inf), kwargs.pop('benchmark', 'ackley'), optType=kwargs.pop('optType', OptimizationType.MINIMIZATION))
+		self.task = task if task is not None else Task(kwargs.pop('D', 10), nFES=kwargs.pop('nFES', inf), nGEN=kwargs.pop('nGEN', inf), benchmark=kwargs.pop('benchmark', 'ackley'), optType=kwargs.pop('optType', OptimizationType.MINIMIZATION))
 		self.setParameters(**kwargs)
 
 	def setParameters(self, **kwargs):
@@ -149,7 +155,12 @@ class Algorithm:
 		**See**:
 		Algorithm.runTask(self, taks)
 		"""
-		return self.runTask(self.task)
+		try:
+			self.task.start()
+			r =  self.runTask(self.task)
+			return r[0], r[1] * self.task.optType.value
+		except (FesException, GenException, TimeException, RefException): return self.task.x, self.task.x_f
+		return None, inf * self.task.optType.value
 
 	def runYield(self, task):
 		r"""Run the algorithm for only one iteration and return the gest solution.
@@ -208,7 +219,7 @@ class Individual:
 
 		rnd {random} -- Object for generating random numbers
 		"""
-		if task is not None: self.x = task.bcLower() + task.bcRange() * rnd.rand(task.dim())
+		if task is not None: self.x = task.Lower + task.bRange * rnd.rand(task.D)
 
 	def evaluate(self, task, rnd=rand):
 		r"""Evaluate the solution.

@@ -2,7 +2,7 @@
 # pylint: disable=mixed-indentation, multiple-statements, unused-variable, unused-argument, redefined-builtin, old-style-class, no-init
 from unittest import TestCase
 from numpy import full, random as rnd, inf, sum, array_equal, asarray
-from NiaPy.util import Utility, ATask, Task, fullArray, ScaledTask, TaskConvPrint, TaskComposition
+from NiaPy.util import Utility, ATask, Task, fullArray, ScaledTask, TaskConvPrint, TaskComposition, FesException, GenException, TimeException, RefException
 
 class FullArrayTestCase(TestCase):
 	def test_a_float_fine(self):
@@ -182,7 +182,7 @@ class ATaskTestCase(TestCase):
 class TaskTestCase(TestCase):
 	def setUp(self):
 		self.D, self.nFES, self.nGEN = 10, 10, 10
-		self.t = Task(self.D, self.nFES, self.nGEN, MyBenchmark())
+		self.t = Task(D=self.D, nFES=self.nFES, nGEN=self.nGEN, benchmark=MyBenchmark())
 
 	def test_isFeasible_fine(self):
 		x = full(self.D, 10)
@@ -210,18 +210,18 @@ class TaskTestCase(TestCase):
 	def test_eval_fine(self):
 		x = full(self.D, 0.0)
 		for i in range(self.nFES): self.assertAlmostEqual(self.t.eval(x), 0.0, msg='Error at %s iteration!!!' % (i))
-		self.assertEqual(self.t.eval(x), inf)
+		self.assertRaises(FesException, lambda: self.t.eval(x))
 
 	def test_eval_over_nFES_fine(self):
 		x = full(self.D, 0.0)
 		for i in range(self.nFES):
 			self.t.eval(x)
-		self.assertEqual(self.t.eval(x), inf)
+		self.assertRaises(FesException, lambda: self.t.eval(x))
 
 	def test_eval_over_nGEN_fine(self):
 		x = full(self.D, 0.0)
 		for i in range(self.nGEN): self.t.nextIter()
-		self.assertEqual(self.t.eval(x), inf)
+		self.assertRaises(GenException, lambda: self.t.eval(x))
 
 	def test_nFES_count_fine(self):
 		x = full(self.D, 0.0)
@@ -251,15 +251,10 @@ class TaskTestCase(TestCase):
 		self.t.nextIter()
 		self.assertTrue(self.t.stopCond())
 
-	def test_unused_evals(self):
-		x = full(self.D, 0.0)
-		for i in range(self.nFES + 10): self.t.eval(x)
-		self.assertEqual(self.t.unused_evals(), 10)
-
 class ScaledTaskTestCase(TestCase):
 	def setUp(self):
 		self.D, self.nFES, self.nGEN = 10, 10, 10
-		self.t = Task(self.D, self.nFES, self.nGEN, MyBenchmark())
+		self.t = Task(D=self.D, nFES=self.nFES, nGEN=self.nGEN, benchmark=MyBenchmark())
 		d1, d2 = self.t.bcLower() + self.t.bcRange() / 2, self.t.bcRange() * 0.2
 		L, U = d1, d1 + d2
 		self.tc = ScaledTask(self.t, L, U)
@@ -310,31 +305,33 @@ class ScaledTaskTestCase(TestCase):
 		for i in range(int(self.nFES / 2)):
 			self.assertAlmostEqual(self.t.eval(x), 0.0, msg='Error at %s iteration!!!' % (i))
 			self.assertAlmostEqual(self.tc.eval(x), 0.0, msg='Error at %s iteration!!!' % (i))
-		self.assertEqual(self.t.eval(x), inf)
-		self.assertEqual(self.tc.eval(x), inf)
+		self.assertRaises(FesException, lambda: self.t.eval(x))
+		self.assertRaises(FesException, lambda: self.tc.eval(x))
 
 	def test_eval_over_nFES_fine(self):
 		x = full(self.D, 0.0)
 		for i in range(int(self.nFES / 2)):
 			self.t.eval(x)
 			self.tc.eval(x)
-		self.assertEqual(self.t.eval(x), inf)
-		self.assertEqual(self.tc.eval(x), inf)
+		self.assertRaises(FesException, lambda: self.t.eval(x))
+		self.assertRaises(FesException, lambda: self.tc.eval(x))
 
 	def test_eval_over_nGEN_fine(self):
 		x = full(self.D, 0.0)
 		for i in range(int(self.nGEN / 2)):
 			self.t.nextIter()
 			self.tc.nextIter()
-		self.assertEqual(self.t.eval(x), inf)
-		self.assertEqual(self.tc.eval(x), inf)
+		self.assertRaises(GenException, lambda: self.t.eval(x))
+		self.assertRaises(GenException, lambda: self.tc.eval(x))
 
 	def test_nFES_count_fine(self):
 		x = full(self.D, 0.0)
-		for i in range(self.nFES):
-			self.t.eval(x)
+		for i in range(self.nFES // 2):
+			try: self.t.eval(x)
+			except: pass
 			self.assertEqual(self.t.evals(), 2 * i + 1, 'Error at %s. evaluation' % (i + 1))
-			self.tc.eval(x)
+			try: self.tc.eval(x)
+			except: pass
 			self.assertEqual(self.tc.evals(), 2 * i + 2, 'Error at %s. evaluation' % (i + 1))
 
 	def test_nGEN_count_fine(self):
