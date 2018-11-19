@@ -2,7 +2,8 @@
 # pylint: disable=mixed-indentation, multiple-statements, unused-variable, unused-argument, redefined-builtin, old-style-class, no-init, line-too-long, bare-except
 from unittest import TestCase
 from numpy import full, random as rnd, inf, sum, array_equal, asarray
-from NiaPy.util import Utility, ATask, Task, fullArray, ScaledTask, TaskConvPrint, TaskComposition, FesException, GenException, # TimeException, RefException
+from NiaPy.util import Utility, ATask, Task, fullArray, ScaledTask, TaskConvPrint, TaskComposition, FesException, GenException
+# TimeException, RefException
 
 class FullArrayTestCase(TestCase):
 	def test_a_float_fine(self):
