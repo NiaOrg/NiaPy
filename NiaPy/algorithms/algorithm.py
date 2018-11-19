@@ -157,7 +157,7 @@ class Algorithm:
 		"""
 		try:
 			self.task.start()
-			r =  self.runTask(self.task)
+			r = self.runTask(self.task)
 			return r[0], r[1] * self.task.optType.value
 		except (FesException, GenException, TimeException, RefException): return self.task.x, self.task.x_f
 		return None, inf * self.task.optType.value

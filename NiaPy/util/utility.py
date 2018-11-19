@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, line-too-long, bad-continuation, multiple-statements, unused-argument, no-self-use, trailing-comma-tuple, logging-not-lazy, no-else-return, old-style-class
+# pylint: disable=mixed-indentation, line-too-long, bad-continuation, multiple-statements, unused-argument, no-self-use, trailing-comma-tuple, logging-not-lazy, no-else-return, old-style-class, dangerous-default-value
 """Implementation of benchmarks utility function."""
 import logging
 from datetime import datetime
