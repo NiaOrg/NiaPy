@@ -1,11 +1,13 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, line-too-long, bad-continuation, multiple-statements, unused-argument, no-self-use, trailing-comma-tuple, logging-not-lazy, no-else-return, old-style-class
+# pylint: disable=mixed-indentation, line-too-long, bad-continuation, multiple-statements, unused-argument, no-self-use, trailing-comma-tuple, logging-not-lazy, no-else-return, old-style-class, dangerous-default-value
 """Implementation of benchmarks utility function."""
 import logging
+from datetime import datetime
 from enum import Enum
 from numpy import ndarray, asarray, full, inf, dot, where, random as rand, fabs, ceil, array_equal
 from matplotlib import pyplot as plt, animation as anim
 from NiaPy.benchmarks import Rastrigin, Rosenbrock, Griewank, Sphere, Ackley, Schwefel, Schwefel221, Schwefel222, Whitley, Alpine1, Alpine2, HappyCat, Ridge, ChungReynolds, Csendes, Pinter, Qing, Quintic, Salomon, SchumerSteiglitz, Step, Step2, Step3, Stepint, SumSquares, StyblinskiTang, BentCigar, Discus, Elliptic, ExpandedGriewankPlusRosenbrock, HGBat, Katsuura, ExpandedSchaffer, ModifiedSchwefel, Weierstrass, Michalewichz, Levy, Sphere2, Sphere3, Trid, Perm, Zakharov, DixonPrice, Powell, CosineMixture, Infinity, SchafferN2, SchafferN4
+from NiaPy.util.exception import FesException, GenException, TimeException, RefException
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.util.utility')
@@ -102,12 +104,23 @@ class OptimizationType(Enum):
 	MAXIMIZATION = -1.0
 
 class ATask(Utility):
-	def __init__(self, **kwargs):
+	def __init__(self, D=0, optType=OptimizationType.MINIMIZATION, benchmark=None, **kwargs):
 		r"""Set the default felds of a task class."""
 		Utility.__init__(self)
-		self.D, self.Lower, self.Upper, self.bRange = 0, full(0, 0.0), full(0, 0.0), full(0, 0.0)
+		self.D = D  # dimension of the problem
+		self.benchmark = self.get_benchmark(benchmark) if benchmark is not None else None
+		if self.benchmark is not None:
+			self.Lower, self.Upper = fullArray(self.benchmark.Lower, self.D), fullArray(self.benchmark.Upper, self.D)
+			self.bRange = fabs(self.Upper - self.Lower)
+			self.Fun = self.benchmark.function() if self.benchmark is not None else None
+		else:
+			self.Lower, self.Upper = fullArray(0, self.D), fullArray(0, self.D)
+			self.bRange = fullArray(0, 0)
 		self.Iters, self.Evals = 0, 0
 		self.nGEN, self.nFES = inf, inf
+		self.optType = optType
+		self.x, self.x_f = None, self.optType.value * inf
+		self.startTime = datetime.now()
 
 	def nGENs(self): return 100000 if self.nGEN == inf else self.nGEN
 
@@ -138,6 +151,14 @@ class ATask(Utility):
 		r = self.stopCond()
 		self.Iters += 1
 		return r
+
+	def stopCondE(self):
+		r"""Throw exception for the given stoping condition."""
+		pass
+
+	def start(self):
+		r"""Set the start time of the optimization run."""
+		self.startTime = datetime.now()
 
 	def eval(self, A):
 		r"""Evaluate the solution A.
@@ -180,7 +201,7 @@ class ATask(Utility):
 		return x
 
 class Task(ATask):
-	def __init__(self, D, nFES=inf, nGEN=inf, benchmark=None, o=None, fo=None, M=None, fM=None, optF=None, optType=OptimizationType.MINIMIZATION, **kwargs):
+	def __init__(self, D, nFES=inf, nGEN=inf, runTime=inf, refPoint=[None, None], benchmark=None, o=None, fo=None, M=None, fM=None, optF=None, optType=OptimizationType.MINIMIZATION, **kwargs):
 		r"""Initialize task class for optimization.
 
 		Arguments:
@@ -194,32 +215,33 @@ class Task(ATask):
 		fM {function} -- Function applied after rotating
 		optF {real} -- Value added to benchmark function return
 		"""
-		ATask.__init__(self)
-		self.D = D  # dimension of the problem
-		self.nGEN, self.nFES = nGEN, nFES
-		self.benchmark = self.get_benchmark(benchmark) if benchmark is not None else None
-		if self.benchmark is not None:
-			self.Lower, self.Upper = fullArray(self.benchmark.Lower, self.D), fullArray(self.benchmark.Upper, self.D)
-			self.bRange = fabs(self.Upper - self.Lower)
-		self.Fun = self.benchmark.function() if self.benchmark is not None else None
+		ATask.__init__(self, D=D, optType=optType, benchmark=benchmark, **kwargs)
+		self.nGEN, self.nFES, self.runTime, self.refPoint = nGEN, nFES, runTime, refPoint
 		self.o = o if isinstance(o, ndarray) or o is None else asarray(o)
 		self.M = M if isinstance(M, ndarray) or M is None else asarray(M)
 		self.fo, self.fM, self.optF = fo, fM, optF
-		self.optType = optType
 
 	def stopCond(self):
 		return (self.Evals >= self.nFES) or (self.Iters >= self.nGEN)
 
+	def stopCondE(self):
+		# TODO add throwing exceptions for time and referece value
+		dtime = datetime.now() - self.startTime
+		if self.Evals >= self.nFES: raise FesException()
+		elif self.Iters >= self.nGEN: raise GenException()
+		elif self.runTime is not inf and self.runTime >= dtime: raise TimeException()
+		elif self.refPoint is not None and ((self.refPoint[0] is not None and self.refPoint[0] == self.x_f) or (self.refPoint[1] is not None and array_equal(self.refPoint[1], self.x))): raise RefException()
+
 	def eval(self, A):
-		if self.stopCond():
-			self.Evals += 1
-			return self.optType.value * inf
+		self.stopCondE()
 		self.Evals += 1
 		X = A - self.o if self.o is not None else A
 		X = self.fo(X) if self.fo is not None else X
 		X = dot(X, self.M) if self.M is not None else X
 		X = self.fM(X) if self.fM is not None else X
-		return self.optType.value * self.Fun(self.D, X) + (self.optF if self.optF is not None else 0)
+		r = self.optType.value * self.Fun(self.D, X) + (self.optF if self.optF is not None else 0)
+		if r <= self.x_f and not (self.x is None or not array_equal(self.x, A)): self.x, self.x_f = r, A
+		return r
 
 	def evals(self): return self.Evals
 
@@ -229,10 +251,6 @@ class Task(ATask):
 
 	def isFeasible(self, A):
 		return (False if True in (A < self.Lower) else True) and (False if True in (A > self.Upper) else True)
-
-	def unused_evals(self):
-		r"""Get the number of times that this class returnd inf in the evaluation function, because of stoping condition error."""
-		return self.Evals - self.nFES
 
 class ScaledTask(ATask):
 	def __init__(self, task, Lower, Upper, **kwargs):
@@ -257,9 +275,7 @@ class ScaledTask(ATask):
 	def isFeasible(self, A): return self._task.isFeasible(A)
 
 class TaskConvPrint(Task):
-	def __init__(self, **kwargs):
-		Task.__init__(self, **kwargs)
-		self.x, self.x_f = None, self.optType.value * inf
+	def __init__(self, **kwargs): Task.__init__(self, **kwargs)
 
 	def eval(self, A):
 		x_f = Task.eval(self, A)

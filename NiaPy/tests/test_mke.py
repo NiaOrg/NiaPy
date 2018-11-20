@@ -11,7 +11,7 @@ from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
 class MkeSolutionTestCase(TestCase):
 	def setUp(self):
 		self.D = 20
-		self.x, self.task = rnd.uniform(-2, 2, self.D), Task(self.D, 230, inf, MyBenchmark())
+		self.x, self.task = rnd.uniform(-2, 2, self.D), Task(self.D, nGEN=230, nFES=inf, benchmark=MyBenchmark())
 		self.sol1, self.sol2, self.sol3 = MkeSolution(x=self.x, e=False), MkeSolution(task=self.task), MkeSolution(x=self.x, e=False)
 
 	def test_uPersonalBest_fine(self):
