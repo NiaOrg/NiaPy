@@ -52,6 +52,12 @@ class Whitley(Benchmark):
     def __init__(self, Lower=-10.24, Upper=10.24):
         Benchmark.__init__(self, Lower, Upper)
 
+    @staticmethod
+    def latex_code():
+        return r'''$f(\mathbf{x}) =
+                \sum_{i=1}^D \sum_{j=1}^D \left(\frac{(100(x_i^2-x_j)^2 +
+                (1-x_j)^2)^2}{4000} - \cos(100(x_i^2-x_j)^2 + (1-x_j)^2)+1\right)$'''
+
     @classmethod
     def function(cls):
         def evaluate(D, sol):

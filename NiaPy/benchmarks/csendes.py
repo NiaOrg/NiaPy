@@ -47,6 +47,10 @@ class Csendes(Benchmark):
     def __init__(self, Lower=-1.0, Upper=1.0):
         Benchmark.__init__(self, Lower, Upper)
 
+    @staticmethod
+    def latex_code():
+        return r'''$f(\mathbf{x}) = \sum_{i=1}^D x_i^6\left( 2 + \sin \frac{1}{x_i}\right)$'''
+
     @classmethod
     def function(cls):
         def evaluate(D, sol):

@@ -50,6 +50,11 @@ class Step(Benchmark):
     def __init__(self, Lower=-100.0, Upper=100.0):
         Benchmark.__init__(self, Lower, Upper)
 
+    @staticmethod
+    def latex_code():
+        return r'''$f(\mathbf{x}) = \sum_{i=1}^D \left( \lfloor \left |
+                x_i \right | \rfloor \right)$'''
+
     @classmethod
     def function(cls):
         def evaluate(D, sol):
@@ -105,6 +110,10 @@ class Step2(Benchmark):
     def __init__(self, Lower=-100.0, Upper=100.0):
         Benchmark.__init__(self, Lower, Upper)
 
+    @staticmethod
+    def latex_code():
+        return r'''$f(\mathbf{x}) = \sum_{i=1}^D \left( \lfloor x_i + 0.5 \rfloor \right)^2$'''
+
     @classmethod
     def function(cls):
         def evaluate(D, sol):
@@ -159,6 +168,10 @@ class Step3(Benchmark):
 
     def __init__(self, Lower=-100.0, Upper=100.0):
         Benchmark.__init__(self, Lower, Upper)
+
+    @staticmethod
+    def latex_code():
+        return r'''$f(\mathbf{x}) = \sum_{i=1}^D \left( \lfloor x_i^2 \rfloor \right)$'''
 
     @classmethod
     def function(cls):

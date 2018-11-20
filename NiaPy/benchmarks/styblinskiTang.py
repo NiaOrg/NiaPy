@@ -48,6 +48,11 @@ class StyblinskiTang(Benchmark):
     def __init__(self, Lower=-5.0, Upper=5.0):
         Benchmark.__init__(self, Lower, Upper)
 
+    @staticmethod
+    def latex_code():
+        return r'''$f(\mathbf{x}) = \frac{1}{2} \sum_{i=1}^D \left(
+                x_i^4 - 16x_i^2 + 5x_i \right) $'''
+
     @classmethod
     def function(cls):
         def evaluate(D, sol):

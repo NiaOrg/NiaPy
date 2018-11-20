@@ -48,6 +48,10 @@ class Alpine1(Benchmark):
     def __init__(self, Lower=-10.0, Upper=10.0):
         Benchmark.__init__(self, Lower, Upper)
 
+    @staticmethod
+    def latex_code():
+        return r'''$f(\mathbf{x}) = \sum_{i=1}^{D} \left |x_i \sin(x_i)+0.1x_i \right|$'''
+
     @classmethod
     def function(cls):
         def evaluate(D, sol):
@@ -103,6 +107,10 @@ class Alpine2:
     def __init__(self, Lower=0.0, Upper=10.0):
         self.Lower = Lower
         self.Upper = Upper
+
+    @staticmethod
+    def latex_code():
+        return r'''$f(\mathbf{x}) = \prod_{i=1}^{D} \sqrt{x_i} \sin(x_i)$'''
 
     @classmethod
     def function(cls):

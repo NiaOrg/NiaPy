@@ -47,6 +47,11 @@ class Griewank(Benchmark):
 
 	def __init__(self, Lower=-100.0, Upper=100.0): Benchmark.__init__(self, Lower, Upper)
 
+	@staticmethod
+	def latex_code():
+		return r'''$f(\mathbf{x}) = \sum_{i=1}^D \frac{x_i^2}{4000} -
+				\prod_{i=1}^D \cos(\frac{x_i}{\sqrt{i}}) + 1$'''
+
 	@classmethod
 	def function(cls):
 		def evaluate(D, sol):
@@ -93,6 +98,10 @@ class ExpandedGriewankPlusRosenbrock(Benchmark):
 	Name = ['ExpandedGriewankPlusRosenbrock']
 
 	def __init__(self, Lower=-100.0, Upper=100.0): Benchmark.__init__(self, Lower, Upper)
+
+	@staticmethod
+	def latex_code():
+		return r'''$f(\textbf{x}) = h(g(x_D, x_1)) + \sum_{i=2}^D h(g(x_{i - 1}, x_i)) \\ g(x, y) = 100 (x^2 - y)^2 + (x - 1)^2 \\ h(z) = \frac{z^2}{4000} - \cos \left( \frac{z}{\sqrt{1}} \right) + 1$'''
 
 	@classmethod
 	def function(cls):

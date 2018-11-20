@@ -44,6 +44,10 @@ class Powell(Benchmark):
 
 	def __init__(self, Lower=-4.0, Upper=5.0): Benchmark.__init__(self, Lower, Upper)
 
+	@staticmethod
+	def latex_code():
+		return r'''$f(\textbf{x}) = \sum_{i = 1}^{D / 4} \left( (x_{4 i - 3} + 10 x_{4 i - 2})^2 + 5 (x_{4 i - 1} - x_{4 i})^2 + (x_{4 i - 2} - 2 x_{4 i - 1})^4 + 10 (x_{4 i - 3} - x_{4 i})^4 \right)$'''
+
 	@classmethod
 	def function(cls):
 		def f(D, X):

@@ -45,6 +45,10 @@ class Levy(Benchmark):
 
 	def __init__(self, Lower=0.0, Upper=pi): Benchmark.__init__(self, Lower, Upper)
 
+	@staticmethod
+	def latex_code():
+		return r'''$f(\textbf{x}) = \sin^2 (\pi w_1) + \sum_{i = 1}^{D - 1} (w_i - 1)^2 \left( 1 + 10 \sin^2 (\pi w_i + 1) \right) + (w_d - 1)^2 (1 + \sin^2 (2 \pi w_d)) \\ w_i = 1 + \frac{x_i - 1}{4}$'''
+
 	@classmethod
 	def function(cls):
 		def w(x): return 1 + (x - 1) / 4

@@ -43,6 +43,10 @@ class Ridge(Benchmark):
     def __init__(self, Lower=-64.0, Upper=64.0):
         Benchmark.__init__(self, Lower, Upper)
 
+    @staticmethod
+    def latex_code():
+        return r'''$f(\mathbf{x}) = \sum_{i=1}^D (\sum_{j=1}^i x_j)^2 $'''
+
     @classmethod
     def function(cls):
         def evaluate(D, sol):

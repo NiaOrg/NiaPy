@@ -48,6 +48,10 @@ class Rosenbrock(Benchmark):
     def __init__(self, Lower=-30.0, Upper=30.0):
         Benchmark.__init__(self, Lower, Upper)
 
+    @staticmethod
+    def latex_code():
+        return r'''$f(\mathbf{x}) = \sum_{i=1}^{D-1} (100 (x_{i+1} - x_i^2)^2 + (x_i - 1)^2)$'''
+
     @classmethod
     def function(cls):
         def evaluate(D, sol):

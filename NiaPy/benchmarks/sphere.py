@@ -45,6 +45,10 @@ class Sphere(Benchmark):
 
 	def __init__(self, Lower=-5.12, Upper=5.12): Benchmark.__init__(self, Lower, Upper)
 
+	@staticmethod
+	def latex_code():
+		return r'''$f(\mathbf{x}) = \sum_{i=1}^D x_i^2$'''
+
 	@classmethod
 	def function(cls):
 		def evaluate(D, sol):
@@ -89,6 +93,10 @@ class Sphere2(Benchmark):
 
 	def __init__(self, Lower=-1., Upper=1.): Benchmark.__init__(self, Lower, Upper)
 
+	@staticmethod
+	def latex_code():
+		return r'''$f(\textbf{x}) = \sum_{i = 1}^D | x_i |^{i + 1}$'''
+
 	@classmethod
 	def function(cls):
 		def evaluate(D, sol):
@@ -132,6 +140,10 @@ class Sphere3(Benchmark):
 	Name = ['Sphere3']
 
 	def __init__(self, Lower=-65.536, Upper=65.536): Benchmark.__init__(self, Lower, Upper)
+
+	@staticmethod
+	def latex_code():
+		return r'''$f(\textbf{x}) = \sum_{i = 1}^D \sum_{j = 1}^i x_j^2$'''
 
 	@classmethod
 	def function(cls):

@@ -49,6 +49,10 @@ class Perm(Benchmark):
 		Benchmark.__init__(self, -D, D)
 		Perm.beta = beta
 
+	@staticmethod
+	def latex_code():
+		return r'''$f(\textbf{x}) = \sum_{i = 1}^D \left( \sum_{j = 1}^D (j - \beta) \left( x_j^i - \frac{1}{j^i} \right) \right)^2$'''
+
 	@classmethod
 	def function(cls):
 		def f(D, X):

@@ -44,6 +44,10 @@ class Katsuura(Benchmark):
 
 	def __init__(self, Lower=-100.0, Upper=100.0, **kwargs): Benchmark.__init__(self, Lower, Upper, **kwargs)
 
+	@staticmethod
+	def latex_code():
+		return r'''$f(\textbf{x}) = \frac{10}{D^2} \prod_{i=1}^D \left( 1 + i \sum_{j=1}^{32} \frac{| 2^j x_i - round\left(2^j x_i \right) |}{2^j} \right)^\frac{10}{D^{1.2}} - \frac{10}{D^2}$'''
+
 	@classmethod
 	def function(cls):
 		def f(D, x):
