@@ -89,7 +89,7 @@ class MonkeyKingEvolutionV1(Algorithm):
 		pop = [MkeSolution(task=task, rand=self.Rand) for i in range(self.NP)]
 		p_b = pop[argmin([x.f for x in pop])]
 		for i in self.Rand.choice(self.NP, int(self.R * len(pop)), replace=False): pop[i].MonkeyKing = True
-		while not task.stopCond():
+		while not task.stopCondI():
 			self.movePopulation(pop, p_b, task)
 			for i in self.Rand.choice(self.NP, int(self.R * len(pop)), replace=False): pop[i].MonkeyKing = True
 			ib = argmin([x.f for x in pop])
@@ -164,7 +164,7 @@ class MonkeyKingEvolutionV3(MonkeyKingEvolutionV1):
 		X = task.bcLower() + task.bcRange() * self.rand([self.NP, task.D])
 		x_gb, x_f_gb = self.eval(X, None, task.optType.value * inf, task)
 		k, c = int(ceil(self.NP / task.D)), int(ceil(self.C * task.D))
-		while not task.stopCond():
+		while not task.stopCondI():
 			X_gb = x_gb + self.FC * X[self.Rand.choice(len(X), c)] - X[self.Rand.choice(len(X), c)]
 			x_gb, x_f_gb = self.eval(X_gb, x_gb, x_f_gb, task)
 			M = full([self.NP, task.D], 1.0)

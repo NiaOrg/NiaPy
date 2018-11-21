@@ -20,6 +20,8 @@ for i in range(10):
 	best = algo.run()
 	print (best)
 
+print ('---------------------------------------')
+
 #1 Number of generations (iterations) as a stopping criteria
 for i in range(10):
 	task = Task(D=10, nGEN=100, optType=OptimizationType.MINIMIZATION, benchmark=Sphere())
@@ -27,9 +29,11 @@ for i in range(10):
 	best = algo.run()
 	print (best)
 
+print ('---------------------------------------')
+
 #3 Reference value as a stopping criteria
 for i in range(10):
-	task = Task(D=10, refPoint=[50.0, None], optType=OptimizationType.MINIMIZATION, benchmark=Sphere())
+	task = Task(D=10, refValue=50.0, optType=OptimizationType.MINIMIZATION, benchmark=Sphere())
 	algo = DifferentialEvolution(task=task, NP=40, CR=0.5)
 	best = algo.run()
 	print (best)
