@@ -201,7 +201,7 @@ class ATask(Utility):
 		return x
 
 class Task(ATask):
-	def __init__(self, D, nFES=inf, nGEN=inf, runTime=inf, refPoint=[None, None], benchmark=None, o=None, fo=None, M=None, fM=None, optF=None, optType=OptimizationType.MINIMIZATION, **kwargs):
+	def __init__(self, D, nFES=inf, nGEN=inf, runTime=None, refValue=inf, benchmark=None, o=None, fo=None, M=None, fM=None, optF=None, optType=OptimizationType.MINIMIZATION, **kwargs):
 		r"""Initialize task class for optimization.
 
 		Arguments:
@@ -216,7 +216,7 @@ class Task(ATask):
 		optF {real} -- Value added to benchmark function return
 		"""
 		ATask.__init__(self, D=D, optType=optType, benchmark=benchmark, **kwargs)
-		self.nGEN, self.nFES, self.runTime, self.refPoint = nGEN, nFES, runTime, refPoint
+		self.nGEN, self.nFES, self.runTime, self.refValue = nGEN, nFES, runTime, refValue
 		self.o = o if isinstance(o, ndarray) or o is None else asarray(o)
 		self.M = M if isinstance(M, ndarray) or M is None else asarray(M)
 		self.fo, self.fM, self.optF = fo, fM, optF
@@ -229,8 +229,8 @@ class Task(ATask):
 		dtime = datetime.now() - self.startTime
 		if self.Evals >= self.nFES: raise FesException()
 		elif self.Iters >= self.nGEN: raise GenException()
-		elif self.runTime is not inf and self.runTime >= dtime: raise TimeException()
-		elif self.refPoint is not None and ((self.refPoint[0] is not None and self.refPoint[0] <= self.x_f) or (self.refPoint[1] is not None and array_equal(self.refPoint[1], self.x))): raise RefException()
+		elif self.runTime is not None and self.runTime >= dtime: raise TimeException()
+		elif self.refValue != inf and self.refValue * self.optType.value >= self.x_f: raise RefException()
 
 	def eval(self, A):
 		self.stopCondE()
@@ -240,7 +240,7 @@ class Task(ATask):
 		X = dot(X, self.M) if self.M is not None else X
 		X = self.fM(X) if self.fM is not None else X
 		r = self.optType.value * self.Fun(self.D, X) + (self.optF if self.optF is not None else 0)
-		if r <= self.x_f and not (self.x is None or not array_equal(self.x, A)): self.x, self.x_f = r, A
+		if r <= self.x_f: self.x, self.x_f = A, r
 		return r
 
 	def evals(self): return self.Evals
