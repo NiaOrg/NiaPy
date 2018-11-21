@@ -230,7 +230,7 @@ class Task(ATask):
 		if self.Evals >= self.nFES: raise FesException()
 		elif self.Iters >= self.nGEN: raise GenException()
 		elif self.runTime is not inf and self.runTime >= dtime: raise TimeException()
-		elif self.refPoint is not None and ((self.refPoint[0] is not None and self.refPoint[0] == self.x_f) or (self.refPoint[1] is not None and array_equal(self.refPoint[1], self.x))): raise RefException()
+		elif self.refPoint is not None and ((self.refPoint[0] is not None and self.refPoint[0] <= self.x_f) or (self.refPoint[1] is not None and array_equal(self.refPoint[1], self.x))): raise RefException()
 
 	def eval(self, A):
 		self.stopCondE()

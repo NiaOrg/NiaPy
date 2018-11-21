@@ -70,7 +70,7 @@ class DifferentialEvolution(Algorithm):
 			# TODO add constraint testing for mutation strategy method
 	}
 
-	def setParameters(self, NP=25, F=2, CR=0.2, CrossMutt=CrossRand1, **ukwargs):
+	def setParameters(self, NP=25, F=0.5, CR=0.9, CrossMutt=CrossRand1, **ukwargs):
 		r"""Set the algorithm parameters.
 
 		**Arguments:**
