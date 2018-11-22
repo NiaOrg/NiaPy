@@ -16,7 +16,7 @@ logger.setLevel('INFO')
 __all__ = ['Utility', 'Task', 'TaskConvPrint', 'TaskConvPlot', 'fullArray', 'TaskComposition', 'OptimizationType', 'ScaledTask']
 
 def fullArray(a, D):
-	r"""Fill or create array of lengthm D, from value or value form a.
+	r"""Fill or create array of length D, from value or value form a.
 
 	Arguments:
 	a {integer} or {real} or {list} or {ndarray} -- Input values for fill
@@ -90,7 +90,7 @@ class Utility:
 		r"""Get the optimization problem.
 
 		Arguments:
-		benchmark {string} or {class} -- String or class that represent the optimization problem
+		benchmark {string} or {class} -- String or class that represents the optimization problem
 		"""
 		if not isinstance(benchmark, str) and not callable(benchmark): return benchmark
 		elif benchmark in self.classes:	return self.classes[benchmark]()
@@ -127,7 +127,7 @@ class ATask(Utility):
 	def nFESs(self): return 100000 if self.nFES == inf else self.nFES
 
 	def dim(self):
-		r"""Get the number of dimesions."""
+		r"""Get the number of dimensions."""
 		return self.D
 
 	def bcLower(self):
@@ -143,17 +143,17 @@ class ATask(Utility):
 		return fabs(self.Upper - self.Lower)
 
 	def stopCond(self):
-		r"""Check if stoping condition reached."""
+		r"""Check if stopping condition reached."""
 		return False
 
 	def stopCondI(self):
-		r"""Check if stoping condition reached and incrise number of iterations."""
+		r"""Check if stopping condition reached and incrise number of iterations."""
 		r = self.stopCond()
 		self.Iters += 1
 		return r
 
 	def stopCondE(self):
-		r"""Throw exception for the given stoping condition."""
+		r"""Throw exception for the given stopping condition."""
 		pass
 
 	def start(self):
@@ -181,7 +181,7 @@ class ATask(Utility):
 		pass
 
 	def isFeasible(self, A):
-		r"""Cehck if the solution is feasible.
+		r"""Check if the solution is feasible.
 
 		Arguments:
 		A {array} -- Solution to check for feasibility
@@ -192,7 +192,7 @@ class ATask(Utility):
 		r"""Repair solution and put the solution in the random position inside of the bounds of problem.
 
 		Arguments:
-		x {array} -- soution to check and repair if needed
+		x {array} -- solution to check and repair if needed
 		"""
 		ir = where(x < self.Lower)
 		x[ir] = rnd.uniform(self.Lower[ir], self.Upper[ir])
@@ -207,7 +207,7 @@ class Task(ATask):
 		Arguments:
 		D {integer} -- Number of dimensions
 		nFES {integer} -- Number of function evaluations
-		nGEN {integer} -- Number of generation or iterations
+		nGEN {integer} -- Number of generations or iterations
 		benchmark {class} or {string} -- Problem to solve
 		o {array} -- Array for shifting
 		of {function} -- Function applied on shifted input
@@ -225,7 +225,7 @@ class Task(ATask):
 		return (self.Evals >= self.nFES) or (self.Iters >= self.nGEN)
 
 	def stopCondE(self):
-		# TODO add throwing exceptions for time and referece value
+		# TODO add throwing exceptions for time and reference value
 		dtime = datetime.now() - self.startTime
 		if self.Evals >= self.nFES: raise FesException()
 		elif self.Iters >= self.nGEN: raise GenException()
@@ -316,7 +316,7 @@ class TaskConvPlot(Task):
 
 class TaskComposition(Task):
 	def __init__(self, benchmarks=None, rho=None, lamb=None, bias=None, **kwargs):
-		r"""Initialize of compisite function problem.
+		r"""Initialize of composite function problem.
 
 		Arguments:
 		benchmarks {array} of {problems} -- optimization function to use in composition
@@ -327,7 +327,7 @@ class TaskComposition(Task):
 		Task.__init__(self, **kwargs)
 
 	def eval(self, A):
-		# TODO uporaba vec funkcij na enkrat
+		# TODO Usage of multiple functions on the same time
 		return inf
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
