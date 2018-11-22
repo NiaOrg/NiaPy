@@ -51,7 +51,7 @@ class HybridBatAlgorithm(BatAlgorithm):
 		Fitness = apply_along_axis(task.eval, 1, Sol)
 		ib = argmin(Fitness)
 		best, f_min = Sol[ib], Fitness[ib]
-		while not task.stopCond():
+		while not task.stopCondI():
 			Q = self.Qmin + (self.Qmax - self.Qmin) * self.uniform(0, 1, self.NP)
 			for i in range(self.NP):
 				v[i] = v[i] + (Sol[i] - best) * Q[i]

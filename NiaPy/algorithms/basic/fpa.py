@@ -65,7 +65,7 @@ class FlowerPollinationAlgorithm(Algorithm):
 		Sol_f = apply_along_axis(task.eval, 1, Sol)
 		ib = argmin(Sol_f)
 		solb, solb_f = Sol[ib], Sol_f[ib]
-		while not task.stopCond():
+		while not task.stopCondI():
 			for i in range(self.NP):
 				S = full(task.D, 0.0)
 				if self.uniform(0, 1) > self.p: S += self.levy() * (Sol[i] - solb)

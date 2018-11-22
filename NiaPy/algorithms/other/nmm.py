@@ -79,7 +79,7 @@ class NelderMeadMethod(Algorithm):
 
 	def runTask(self, task):
 		X, X_f = self.init(task)
-		while not task.stopCond():
+		while not task.stopCondI():
 			inds = argsort(X_f)
 			X, X_f = X[inds], X_f[inds]
 			X, X_f = self.method(X, X_f, task)
