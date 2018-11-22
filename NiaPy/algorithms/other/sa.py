@@ -20,7 +20,7 @@ def SimulatedAnnealingF(task, delta=1.5, delta_t=0.564, T=2000, cool=coolDelta, 
 	x = task.Lower + task.bcRange() * rnd.rand(task.D)
 	curT, xfit = T, task.eval(x)
 	xb, xb_f = x, xfit
-	while not task.stopCond() and curT >= epsilon:
+	while not task.stopCondI() and curT >= epsilon:
 		c = task.repair(x - delta / 2 + rnd.rand(task.D) * delta, rnd=rnd)
 		cfit = task.eval(c)
 		deltaFit, r = cfit - xfit, rnd.rand()

@@ -77,7 +77,7 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 	def runTask(self, task):
 		"""Run."""
 		self.init(task)
-		while not task.stopCond():
+		while not task.stopCondI():
 			for i in range(self.FoodNumber):
 				newSolution = copy.deepcopy(self.Foods[i])
 				param2change = int(self.rand() * task.D)

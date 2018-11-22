@@ -54,7 +54,7 @@ class BareBonesFireworksAlgorithm(Algorithm):
 	def runTask(self, task):
 		x, A = self.uniform(task.Lower, task.Upper, task.D), task.bRange
 		x_fit = task.eval(x)
-		while not task.stopCond():
+		while not task.stopCondI():
 			S = self.uniform(x - A, x + A, [self.n, task.D])
 			S_fit = apply_along_axis(task.eval, 1, S)
 			iS = argmin(S_fit)
@@ -147,7 +147,7 @@ class FireworksAlgorithm(Algorithm):
 		FW_f = apply_along_axis(task.eval, 1, FW)
 		ib = argmin(FW_f)
 		FW[0], FW_f[0] = FW[ib], FW_f[ib]
-		while not task.stopCond():
+		while not task.stopCondI():
 			iw, ib = argmax(FW_f), 0
 			Ss, As = sum(FW_f[iw] - FW_f), sum(FW_f - FW_f[ib])
 			S = [self.SparsksNo(FW_f[i], FW_f[iw], Ss) for i in range(self.N)]

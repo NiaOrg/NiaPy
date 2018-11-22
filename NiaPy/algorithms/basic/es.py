@@ -71,7 +71,7 @@ class EvolutionStrategy1p1(Algorithm):
 
 	def runTask(self, task):
 		c, ki = IndividualES(task=task, rand=self.Rand), 0
-		while not task.stopCond():
+		while not task.stopCondI():
 			if task.Iters % self.k == 0: c.rho, ki = self.updateRho(c.rho, ki), 0
 			cn = [task.repair(self.mutate(c.x, c.rho), self.Rand) for _i in range(self.mu)]
 			cn_f = [task.eval(cn[i]) for i in range(self.mu)]

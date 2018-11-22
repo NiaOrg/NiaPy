@@ -191,7 +191,7 @@ class MultipleTrajectorySearch(Algorithm):
 		X_f = apply_along_axis(task.eval, 1, X)
 		enable, improve, SR, grades = full(self.M, True), full(self.M, True), full([self.M, task.D], task.bRange / 2), full(self.M, 0.0)
 		xb, xb_f = self.getBest(X, X_f)
-		while not task.stopCond():
+		while not task.stopCondI():
 			for i in range(self.M):
 				if not enable[i]: continue
 				enable[i], grades[i] = False, 0

@@ -113,7 +113,7 @@ class GeneticAlgorithm(Algorithm):
 	def runTask(self, task):
 		pop = [Individual(task=task, rand=self.Rand) for _i in range(self.NP)]
 		x_b = pop[argmin([c.f for c in pop])]
-		while not task.stopCond(): pop, x_b = self.evolve(pop, x_b, task)
+		while not task.stopCondI(): pop, x_b = self.evolve(pop, x_b, task)
 		return x_b.x, x_b.f
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

@@ -14,7 +14,7 @@ def TabuSearchF(task, SR=None, TL_size=25, rnd=rand):
 	if SR == None: SR = task.bRange
 	x, TL = rnd.uniform(task.Lower, task.Upper), list()
 	x_f = task.eval(x)
-	# while not task.stopCond():
+	# while not task.stopCondI():
 	# Generate neigours
 	# evaluate x not in ts
 	# get best of of evaluated
