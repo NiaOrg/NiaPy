@@ -55,6 +55,7 @@ The micro framework features following algorithms:
 
 Other examples:
 - Using different termination conditions (nFES, nGEN, reference value) ([see example](examples/stopping_criterions.py))
+- Basic statistics example (min, max, mean, median, std) ([see example](examples/basic_stats.py))
 
 The following benchmark functions are included in NiaPy:
 - Ackley
@@ -144,7 +145,7 @@ $ python setup.py install
 
 # Usage
 
-After installation, the package can imported:
+After installation, the package can be imported:
 
 ```sh
 $ python
