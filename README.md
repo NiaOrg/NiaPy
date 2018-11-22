@@ -53,6 +53,9 @@ The micro framework features following algorithms:
   - Simulated annealing algorithm ([see example](examples/run_sa.py))
   - Tabu search algorithm ([see example](examples/run_sa.py))
 
+Other examples:
+- Using different termination conditions (nFES, nGEN, reference value) ([see example](examples/stopping_criterions.py))
+
 The following benchmark functions are included in NiaPy:
 - Ackley
 - Alpine
