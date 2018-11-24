@@ -14,11 +14,11 @@ class SolutionjDETestCase(TestCase):
 		self.s1, self.s2 = SolutionjDE(task=self.task, e=False), SolutionjDE(x=self.x, CR=self.CR, F=self.F)
 
 	def test_F_fine(self):
-		self.assertAlmostEqual(self.s1.F, 2)
+		self.assertAlmostEqual(self.s1.F, 0.5)
 		self.assertAlmostEqual(self.s2.F, self.F)
 
 	def test_cr_fine(self):
-		self.assertAlmostEqual(self.s1.CR, 0.5)
+		self.assertAlmostEqual(self.s1.CR, 0.9)
 		self.assertAlmostEqual(self.s2.CR, self.CR)
 
 class jDETestCase(AlgorithmTestCase):
