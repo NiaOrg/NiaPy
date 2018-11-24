@@ -1,4 +1,5 @@
-from NiaPy.util.utility import Utility, Task, ScaledTask, TaskComposition, TaskConvPrint, TaskConvPlot, OptimizationType, fullArray, ATask
+# pylint: disable=line-too-long
+from NiaPy.util.utility import Utility, Task, ScaledTask, TaskComposition, TaskConvPrint, TaskConvPlot, TaskConvSave, OptimizationType, fullArray, ATask
 from NiaPy.util.argparser import MakeArgParser, getArgs, getDictArgs
 from NiaPy.util.exception import FesException, GenException, TimeException, RefException
 
@@ -8,6 +9,7 @@ __all__ = [
     'ATask',
     'TaskConvPrint',
     'TaskConvPlot',
+    'TaskConvSave',
     'TaskComposition',
     'OptimizationType',
     'fullArray',
