@@ -1,5 +1,16 @@
 # Revision History
 
+## 2.0.0rc3 (Nov 30, 2018)
+
+- added moth flame optimizer
+- added new examples
+- documentation updates
+- PSO and BBFWA algorithms fixes
+- stopping conditions fixes
+- added new test cases
+- added multiple seed option
+- various bugfixes
+
 ## 2.0.0rc2 (Aug 30, 2018)
 
 - fix PyPI build
@@ -47,6 +58,10 @@ Changes included in release:
 - **breaking changes** in algorithms structure
 - various bugfixes
 
+## 1.0.2 (Oct 24, 2018)
+
+- fix Bat and Hybrid Bat algorithms
+
 ## 1.0.1 (Mar 21, 2018)
 
 This release reflects the changes from Journal of Open Source Software (JOSS) review:
@@ -62,6 +77,7 @@ This release reflects the changes from Journal of Open Source Software (JOSS) re
 ## 1.0.0rc2 (Feb 28, 2018)
 
 - fix PyPI build
+
 ## 1.0.0rc1 (Feb 28, 2018)
 
 - version 1.0.0 release candidate 1
