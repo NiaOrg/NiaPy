@@ -1,5 +1,9 @@
 # Revision History
 
+## 2.0.0rc4 (Nov 30, 2018)
+
+- fix dependecies versions
+
 ## 2.0.0rc3 (Nov 30, 2018)
 
 - added moth flame optimizer

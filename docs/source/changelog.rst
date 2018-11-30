@@ -3,6 +3,11 @@ Changelog
 
 We are using `semantic versioning <https://semver.org/>`_.
 
+2.0.0rc4 (Nov 30, 2018)
+-----------------------
+
+- fix dependecies versions
+
 2.0.0rc3 (Nov 30, 2018)
 -----------------------
 
