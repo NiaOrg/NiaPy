@@ -64,6 +64,7 @@ class BatAlgorithm(Algorithm):
 		S, Q, v = full([self.NP, task.D], 0.0), full(self.NP, 0.0), full([self.NP, task.D], 0.0)
 		Sol = task.Lower + task.bRange * self.uniform(0, 1, [self.NP, task.D])
 		Fitness = apply_along_axis(task.eval, 1, Sol)
+		task.update_init_fes(self.NP)
 		j = argmin(Fitness)
 		best, f_min = Sol[j], Fitness[j]
 		while not task.stopCondI():
