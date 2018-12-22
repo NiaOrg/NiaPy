@@ -1,21 +1,16 @@
 [[source]]
-
 url = "https://pypi.python.org/simple"
 verify_ssl = true
 name = "pypi"
 
-
 [packages]
-
 click = "*"
-numpy = "==1.15.0"
-scipy = "==1.1.0"
-xlsxwriter = "==1.0.2"
-matplotlib = "*"
-
+numpy = ">=1.15.0"
+scipy = ">=1.1.0"
+xlsxwriter = ">=1.0.2"
+matplotlib = "~=2.2.3"
 
 [dev-packages]
-
 pylint = "==1.9.3"
 pycodestyle = "*"
 pydocstyle = "*"

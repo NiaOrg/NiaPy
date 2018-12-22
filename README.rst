@@ -209,6 +209,23 @@ fits your purposes or that it is bug-free. Use it at your own risk!
 Revision History
 ================
 
+2.0.0rc4 (Nov 30, 2018)
+-----------------------
+
+- fix dependecies versions
+
+2.0.0rc3 (Nov 30, 2018)
+-----------------------
+
+- added moth flame optimizer
+- added new examples
+- documentation updates
+- PSO and BBFWA algorithms fixes
+- stopping conditions fixes
+- added new test cases
+- added multiple seed option
+- various bugfixes
+
 2.0.0rc2 (Aug 30, 2018)
 -----------------------
 
@@ -257,6 +274,10 @@ Changes included in release:
 - **breaking changes** in algorithms structure
 - various bugfixes
 
+1.0.2 (Oct 24, 2018)
+--------------------
+- fix Bat and Hybrid Bat algorithms
+
 1.0.1 (Mar 21, 2018)
 --------------------
 This release reflects the changes from Journal of Open Source Software (JOSS) review:
@@ -304,4 +325,3 @@ This release reflects the changes from Journal of Open Source Software (JOSS) re
    :target: https://github.com/NiaOrg/NiaPy/blob/master/LICENSE
 .. |Open Source Helpers| image:: https://www.codetriage.com/niaorg/niapy/badges/users.svg
    :target: https://www.codetriage.com/niaorg/niapy
-

@@ -83,11 +83,11 @@ setuptools.setup(
 
     install_requires=[
         # TODO: Add your library's requirements here
-        'numpy ~= 1.15.0',
-        'enum34 ~= 1.1.6',
-        'click ~= 6.0',
-        'scipy ~= 1.1.0',
-        'xlsxwriter ~= 1.0.2',
-        'matplotlib ~= 2.2.3',
+        'numpy >= 1.15.0',
+        'enum34 >= 1.1.6',
+        'click >= 6.0',
+        'scipy >= 1.1.0',
+        'xlsxwriter >= 1.0.2',
+        'matplotlib >= 2.2.3',
     ]
 )

@@ -15,7 +15,7 @@ from NiaPy.algorithms import basic as balgos, modified as malgos, other as oalgo
 
 __all__ = ['algorithms', 'benchmarks', 'util']
 __project__ = 'NiaPy'
-__version__ = '2.0.0rc2'
+__version__ = '2.0.0rc4'
 
 VERSION = "{0} v{1}".format(__project__, __version__)
 
