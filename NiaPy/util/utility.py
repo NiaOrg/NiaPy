@@ -299,6 +299,8 @@ class Task(ATask):
             self.x, self.x_f = A, r
         return r
 
+    def update_init_fes(self, NP): self.Evals += NP
+
     def evals(self): return self.Evals
 
     def iters(self): return self.Iters

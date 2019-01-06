@@ -75,6 +75,7 @@ class FireflyAlgorithm(Algorithm):
 		"""Run."""
 		Fireflies = self.uniform(task.Lower, task.Upper, [self.NP, task.D])
 		Intensity = apply_along_axis(task.eval, 1, Fireflies)
+		task.update_init_fes(self.NP)
 		(xb, xb_f), alpha = self.getBest(None, task.optType.value * inf, Fireflies, Intensity), self.alpha
 		while not task.stopCondI():
 			alpha = self.alpha_new(task.nFES / self.NP, alpha)
