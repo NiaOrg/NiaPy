@@ -109,14 +109,3 @@ class FATestCase(TestCase):
         algo.run()
         iters = algo.task.iters()
         self.assertEqual(iters, 1000)
-
-    def test_FA_iters_to_fes(self):
-        task = Task(
-            D=10,
-            nGEN=1000,
-            optType=OptimizationType.MINIMIZATION,
-            benchmark=Sphere())
-        algo = FireflyAlgorithm(task=task, NP=10)
-        algo.run()
-        evals = algo.task.evals()
-        self.assertEqual(evals, 10010)
