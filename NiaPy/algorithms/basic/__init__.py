@@ -20,6 +20,8 @@ from NiaPy.algorithms.basic.fwa import FireworksAlgorithm, EnhancedFireworksAlgo
 from NiaPy.algorithms.basic.gsa import GravitationalSearchAlgorithm
 from NiaPy.algorithms.basic.mfo import MothFlameOptimizer
 from NiaPy.algorithms.basic.fss import FishSchoolSearch
+from NiaPy.algorithms.basic.cro import CoralReefsOptimization
+from NiaPy.algorithms.basic.cs import CuckooSearch
 
 __all__ = [
     'BatAlgorithm',
@@ -63,4 +65,6 @@ __all__ = [
     'GravitationalSearchAlgorithm',
     'MothFlameOptimizer',
     'FishSchoolSearch',
+    'CoralReefsOptimization',
+    'CuckooSearch',
 ]
