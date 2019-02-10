@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, line-too-long, singleton-comparison, multiple-statements, attribute-defined-outside-init, no-self-use, logging-not-lazy, unused-variable, arguments-differ, old-style-class, bad-continuation, bad-indentation, redefined-builtin, unused-argument, consider-using-enumerate
+# pylint: disable=mixed-indentation, line-too-long, singleton-comparison, multiple-statements, attribute-defined-outside-init, no-self-use, logging-not-lazy, unused-variable, arguments-differ, old-style-class, bad-continuation, bad-indentation, redefined-builtin, unused-argument, consider-using-enumerate, expression-not-assigned
 import logging
 from scipy.spatial.distance import euclidean
 from numpy import apply_along_axis, argsort, where, inf, random as rand, asarray, concatenate, delete, sqrt, sum, unique
@@ -64,7 +64,7 @@ class CoralReefsOptimization(Algorithm):
 
 	def initRun(self, task):
 		Fa, Fb, Fd = self.N * self.Fa, self.N * self.Fb, self.N * self.Fd
-		if Fa % 2 != 0: Fa + 1
+		if Fa % 2 != 0: Fa += 1
 		Reef = task.Lower + self.rand([self.N, task.D]) * task.bRange
 		Reef_f = apply_along_axis(task.eval, 1, Reef)
 		return Reef, Reef_f, Fa, Fb, Fd
@@ -87,14 +87,14 @@ class CoralReefsOptimization(Algorithm):
 			Xn[I] = MoveCorals(Xn[I], self.P_F, self.k, task, rnd=self.Rand)
 			Xn_f[I] = apply_along_axis(task.eval, 1, Xn)
 		for i in range(self.k): update(X), update(Xn)
-		D = [sqrt(sum((A - e) ** 2, axis=1)) for e in Xn]
+		D = [sqrt(sum((Xn - e) ** 2, axis=1)) for e in Xn]
 		I = unique(where(D >= self.phi)[0])
 		return concatenate(X, Xn[I]), concatenate(X_f, Xn_f[I])
 
 	def runTask(self, task):
 		Reef, Reef_f, Fa, Fb, Fd = self.initRun(task)
 		while task.stopCondI():
-			I = self.Rand.choice(self.p0, size=self.p0, replace=False)
+			I = self.Rand.choice(range(len(Reef)), size=self.k, replace=False)
 			Reefn_s, Reefn_s_f = self.SexualCrossover(Reef[I[Fb:]], self.P_Cr, task, rnd=self.Rand)
 			Reefn_b, Reffn_b_f = self.Brooding(Reef[I[:Fb]], self.P_F, task, rnd=self.Rand)
 			Reefn, Reefn_f = self.setting(Reef, Reef_f, concatenate((Reefn_s, Reefn_b)), concatenate((Reefn_s_f, Reffn_b_f)), task)
