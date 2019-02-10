@@ -12,7 +12,7 @@ logger.setLevel('INFO')
 __all__ = ['CoralReefsOptimization']
 
 def SexualCrossoverSimple(pop, p, task, rnd=rand, **kwargs):
-   for i in range(len(pop)/2): pop[i] = asarray([pop[i, d] if rnd.rand() < p else pop[i * 2, d] for d in range(task.D)])
+   for i in range(len(pop) / 2): pop[i] = asarray([pop[i, d] if rnd.rand() < p else pop[i * 2, d] for d in range(task.D)])
    return pop, apply_along_axis(task.eval, 1, pop)
 
 def BroodingSimple(pop, p, task, rnd=rand, **kwargs):
