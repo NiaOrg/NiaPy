@@ -24,13 +24,13 @@ def MoveCorals(pop, p, F, task, rnd=rand, **kwargs):
    return pop, apply_along_axis(task.eval, 1, pop)
 
 class CoralReefsOptimization(Algorithm):
-	r"""Implementation of Cuckoo behaviour and levy flights.
+	r"""Implementation of Coral Reefs Optimization Algorithm.
 
-	**Algorithm:** Cuckoo Search
+	**Algorithm:** Coral Reefs Optimization Algorithm
 	**Date:** 2018
 	**Authors:** Klemen Berkovič
 	**License:** MIT
-	**Reference URL:** https://www.cs.tufts.edu/comp/150GA/homeworks/hw3/_reading7%20Cuckoo%20search.pdf
+	**Reference:** S. Salcedo-Sanz, J. Del Ser, I. Landa-Torres, S. Gil-López, and J. A. Portilla-Figueras, “The Coral Reefs Optimization Algorithm: A Novel Metaheuristic for Efficiently Solving Optimization Problems,” The Scientific World Journal, vol. 2014, Article ID 739768, 15 pages, 2014. https://doi.org/10.1155/2014/739768.
 	"""
 	Name = ['CoralReefsOptimization', 'CRO']
 	N, phi, Fa, Fb, Fd, k = 0, 0, 0, 0, 0, 0
