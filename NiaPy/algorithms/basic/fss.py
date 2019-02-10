@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, arguments-differ, line-too-long, unused-argument
+# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, arguments-differ, line-too-long, unused-argument, no-self-use
 import copy
 import numpy as np
 
@@ -14,6 +14,8 @@ class Fish(Individual):
         self.has_improved = False
 
 class FishSchoolSearch(Algorithm):
+
+
     r"""Implementation of Fish School Search algorithm.
 
     **Algorithm:** Fish School Search algorithm
@@ -31,6 +33,7 @@ class FishSchoolSearch(Algorithm):
         algorithm based on fish school behavior,” in 2008 IEEE International
         Conference on Systems, Man and Cybernetics, Oct 2008, pp. 2646–2651.
     """
+
     Name = ['FSS', 'FishSchoolSearch']
 
     @staticmethod
