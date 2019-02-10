@@ -25,6 +25,7 @@ def MoveCorals(pop, p, F, task, rnd=rand, **kwargs):
 
 class CoralReefsOptimization(Algorithm):
 	r"""Implementation of Cuckoo behaviour and levy flights.
+
 	**Algorithm:** Cuckoo Search
 	**Date:** 2018
 	**Authors:** Klemen Berkovič

@@ -14,7 +14,6 @@ class Fish(Individual):
         self.has_improved = False
 
 class FishSchoolSearch(Algorithm):
-
     r"""Implementation of Fish School Search algorithm.
 
     **Algorithm:** Fish School Search algorithm
@@ -63,9 +62,8 @@ class FishSchoolSearch(Algorithm):
 
 				benchmark {object} -- benchmark implementation object
 
-		  Raises:
+		 Raises:
 				TypeError -- Raised when given benchmark function which does not exists.
-
 		  """
         self.school_size = NP
         self.step_individual_init = SI_init
