@@ -199,7 +199,7 @@ class FishSchoolSearch(Algorithm):
             new_pos = np.zeros((task.D,), dtype=np.float)
             for dim in range(task.D):
                 if curr_weight_school > prev_weight_school:
-                    new_pos[dim] = fish.x[dim] - ((fish.x[dim] - barycenter[dim]) * self.curr_step_volitive * self.uniform(0, 1))
+                    new_pos[dim] = fish.x[dim] - ((fish.x[dim] - barycenter[dim]) * curr_step_volitive * self.uniform(0, 1))
                 else:
                     new_pos[dim] = fish.x[dim] + ((fish.x[dim] - barycenter[dim]) * curr_step_volitive[dim] * self.uniform(0, 1))
                 if new_pos[dim] < task.Lower[dim]:

@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, line-too-long, expression-not-assigned, len-as-condition, no-self-use, unused-argument, no-else-return, old-style-class, dangerous-default-value
+# pylint: disable=mixed-indentation, multiple-statements, line-too-long, expression-not-assigned, len-as-condition, no-self-use, unused-argument, no-else-return, old-style-class, dangerous-default-value,
 import logging
 from numpy import random as rand, inf, ndarray, asarray, array_equal, argmin
 from NiaPy.util import Task, OptimizationType
@@ -17,8 +17,8 @@ class Algorithm:
 	**Author:** Klemen Berkovič
 	**License:** MIT
 	"""
-	Name = ['Algorithm', 'AAA'],
-	Rand = rand.RandomState(None),
+	Name = ['Algorithm', 'AAA']
+	Rand = rand.RandomState(None)
 	task = None
 
 	@staticmethod
@@ -163,7 +163,7 @@ class Individual:
 	**Author:** Klemen Berkovič
 	**License:** MIT
 	"""
-	x = None,
+	x = None
 	f = inf
 
 	def __init__(self, **kwargs):

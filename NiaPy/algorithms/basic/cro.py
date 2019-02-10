@@ -2,7 +2,7 @@
 # pylint: disable=mixed-indentation, line-too-long, singleton-comparison, multiple-statements, attribute-defined-outside-init, no-self-use, logging-not-lazy, unused-variable, arguments-differ, old-style-class, bad-continuation, bad-indentation, redefined-builtin, unused-argument, consider-using-enumerate
 import logging
 from scipy.spatial.distance import euclidean
-from numpy import apply_along_axis, argmin, argsort, where, inf, random as rand, asarray, concatenate, delete, sqrt, sum, unique
+from numpy import apply_along_axis, argsort, where, inf, random as rand, asarray, concatenate, delete, sqrt, sum, unique
 from NiaPy.algorithms.algorithm import Algorithm
 
 logging.basicConfig()
@@ -56,8 +56,7 @@ class CoralReefsOptimization(Algorithm):
 		SexualCrossover {function} -- Crossover function
 		P_Cr {real} -- Crossover rate $\in [0, 1]$
 		Brooding {function} -- Brooding function
-		F {real} -- Mutation variable $\in [0, \inf)$
-		P_F {real} -- Crossover rate $\in [0, 1]$
+		P_F {real} -- Mutation variable $\in [0, \inf)$
 		"""
 		self.N, self.phi, self.Fa, self.Fb, self.Fd, self.k, self.P_Cr, self.P_F = N, phi, Fa, Fb, Fd, k, P_Cr, P_F
 		self.SexualCrossover, self.Brooding, self.Distance = SexualCrossover, Brooding, Distance
@@ -65,14 +64,14 @@ class CoralReefsOptimization(Algorithm):
 
 	def initRun(self, task):
 		Fa, Fb, Fd = self.N * self.Fa, self.N * self.Fb, self.N * self.Fd
-		if not Fa % 2 == 0: Fa + 1
+		if Fa % 2 != 0: Fa + 1
 		Reef = task.Lower + self.rand([self.N, task.D]) * task.bRange
 		Reef_f = apply_along_axis(task.eval, 1, Reef)
 		return Reef, Reef_f, Fa, Fb, Fd
 
 	def asexualReprodution(self, Reef, Reef_f, Fa, task):
 		I = argsort(Reef_f)[:Fa]
-		Reefn = self.Brooding(Reef[I], self.P_f, task, rnd=self.Rand)
+		Reefn = self.Brooding(Reef[I], self.P_F, task, rnd=self.Rand)
 		Reefn_f = apply_along_axis(task.eval, 1, Reefn)
 		Reef, Reef_f = self.setting(Reef, Reef_f, Reefn, Reefn_f, task)
 		return Reef, Reef_f
@@ -85,12 +84,12 @@ class CoralReefsOptimization(Algorithm):
 		def update(A):
 			D = asarray([sqrt(sum((A - e) ** 2, axis=1)) for e in Xn])
 			I = unique(where(D < self.phi)[0])
-			Xn[I] = MoveCorals(Xn[I], self.P_F, self.F, task, rnd=self.Rand)
+			Xn[I] = MoveCorals(Xn[I], self.P_F, self.k, task, rnd=self.Rand)
 			Xn_f[I] = apply_along_axis(task.eval, 1, Xn)
 		for i in range(self.k): update(X), update(Xn)
 		D = [sqrt(sum((A - e) ** 2, axis=1)) for e in Xn]
 		I = unique(where(D >= self.phi)[0])
-		return concatenate(X, Xn[I]), concatenate(X_f, Xn_f[i])
+		return concatenate(X, Xn[I]), concatenate(X_f, Xn_f[I])
 
 	def runTask(self, task):
 		Reef, Reef_f, Fa, Fb, Fd = self.initRun(task)
@@ -100,7 +99,7 @@ class CoralReefsOptimization(Algorithm):
 			Reefn_b, Reffn_b_f = self.Brooding(Reef[I[:Fb]], self.P_F, task, rnd=self.Rand)
 			Reefn, Reefn_f = self.setting(Reef, Reef_f, concatenate((Reefn_s, Reefn_b)), concatenate((Reefn_s_f, Reffn_b_f)), task)
 			Reef, Reef_f = self.asexualReprodution(Reef, Reef_f, Fa, task)
-			if task.Iters % self.k == 0: Reef, Reef_f = self.depredation(Reef, Reef_f, task)
-		return self.getBest(Reef, Reef_f, None, inf * task.optType.value)
+			if task.Iters % self.k == 0: Reef, Reef_f = self.depredation(Reef, Reef_f, self.Fa, task)
+		return self.getBest(Reef, Reef_f, xb_f=inf * task.optType.value)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
