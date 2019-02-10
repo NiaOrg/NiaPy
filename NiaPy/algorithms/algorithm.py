@@ -24,7 +24,7 @@ class Algorithm:
 
 	@staticmethod
 	def typeParameters():
-		r"""TODO documentation"""
+		r"""Get the type of algorithm parameters."""
 		pass
 
 	def __init__(self, **kwargs):
