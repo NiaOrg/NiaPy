@@ -43,21 +43,22 @@ class FishSchoolSearch(Algorithm):
         }
 
     def setParameters(self, NP=25, SI_init=3, SI_final=10, SV_init=3, SV_final=13, min_w=0.3, w_scale=0.7, **ukwargs):
-        r"""**__init__(self, n_iter, D, school_size, SI_init, SI_final, SV_init, SV_final, min_w, w_scale, benchmark)**.
+        r"""Set the algorithm parameters.
 
-		  Arguments:
-				school_size {integer} -- number of fishes in school
-				SI_init {integer} -- length of initial individual step
-				SI_final {integer} -- length of final individual step
-				SV_init {integer} -- length of initial volatile step
-				SV_final {integer} -- length of final volatile step
-				min_w {float} -- minimum weight of a fish
-				w_scale {float} -- maximum weight of a fish
-				benchmark {object} -- benchmark implementation object
+        **Arguments:**
 
-		 Raises:
-				TypeError -- Raised when given benchmark function which does not exists.
-		  """
+        school_size {integer} -- number of fishes in school
+        SI_init {integer} -- length of initial individual step
+        SI_final {integer} -- length of final individual step
+        SV_init {integer} -- length of initial volatile step
+        SV_final {integer} -- length of final volatile step
+        min_w {float} -- minimum weight of a fish
+        w_scale {float} -- maximum weight of a fish
+        benchmark {object} -- benchmark implementation object
+
+        Raises:
+        TypeError -- Raised when given benchmark function does not exist.
+        """
         self.school_size = NP
         self.step_individual_init = SI_init
         self.step_individual_final = SI_final
