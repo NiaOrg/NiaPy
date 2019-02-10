@@ -15,7 +15,6 @@ class Fish(Individual):
 
 class FishSchoolSearch(Algorithm):
 
-
     r"""Implementation of Fish School Search algorithm.
 
     **Algorithm:** Fish School Search algorithm

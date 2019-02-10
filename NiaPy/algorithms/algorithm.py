@@ -135,6 +135,7 @@ class Algorithm:
 			r = self.runTask(self.task)
 			return r[0], r[1] * self.task.optType.value
 		except (FesException, GenException, TimeException, RefException): return self.task.x, self.task.x_f * self.task.optType.value
+		except Exception as e: logger.error('Error: %s' % e)
 		return None, inf * self.task.optType.value
 
 	def runYield(self, task):
