@@ -1,7 +1,7 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, line-too-long, expression-not-assigned, len-as-condition, no-self-use, unused-argument, no-else-return, old-style-class, dangerous-default-value
+# pylint: disable=mixed-indentation, multiple-statements, line-too-long, expression-not-assigned, len-as-condition, no-self-use, unused-argument, no-else-return, old-style-class, dangerous-default-value, broad-except, logging-not-lazy
 import logging
-from numpy import random as rand, inf, ndarray, asarray, array_equal
+from numpy import random as rand, inf, ndarray, asarray, array_equal, argmin
 from NiaPy.util import Task, OptimizationType
 from NiaPy.util import FesException, GenException, TimeException, RefException
 
@@ -15,38 +15,32 @@ class Algorithm:
 	r"""Class for implementing algorithms.
 
 	**Date:** 2018
-
 	**Author:** Klemen Berkovič
-
 	**License:** MIT
 	"""
 	Name = ['Algorithm', 'AAA']
+	Rand = rand.RandomState(None)
+	task = None
+
+	@staticmethod
+	def typeParameters():
+		r"""Get the type of algorithm parameters."""
+		pass
 
 	def __init__(self, **kwargs):
 		r"""Initialize algorithm and create name for an algorithm.
 
 		**Arguments:**
-
 		name {string} -- full name of algorithm
-
 		shortName {string} -- short name of algorithm
-
 		NP {integer} -- population size
-
 		D {integer} -- dimension of the problem
-
 		nGEN {integer} -- number of generations/iterations
-
 		nFES {integer} -- number of function evaluations
-
 		benchmark {object} -- benchmark implementation object
-
 		task {Task} -- optimization task to perform
-
 		**Raises:**
-
 		TypeError -- raised when given benchmark function does not exist
-
 		**See**:
 		Algorithm.setParameters(self, **kwargs)
 		"""
@@ -58,7 +52,6 @@ class Algorithm:
 		r"""Set the parameters/arguments of the algorithm.
 
 		**Arguments:**
-
 		kwargs {dict} -- parameter values dictionary
 		"""
 		pass
@@ -77,7 +70,6 @@ class Algorithm:
 
 		**Arguments**:
 		bech {Task} -- optimization task to perform
-
 		**See**:
 		Algorithm.setTask
 		"""
@@ -87,7 +79,6 @@ class Algorithm:
 		r"""Get random distribution of shape D in range from 0 to 1.
 
 		**Arguments:**
-
 		D {array} or {int} -- shape of returned random distribution
 		"""
 		if isinstance(D, (ndarray, list)): return self.Rand.rand(*D)
@@ -98,11 +89,8 @@ class Algorithm:
 		r"""Get uniform random distribution of shape D in range from "Lower" to "Upper".
 
 		**Arguments:**
-
 		Lower {array} or {real} or {int} -- lower bound
-
 		Upper {array} or {real} or {int} -- upper bound
-
 		D {array} or {int} -- shape of returned uniform random distribution
 		"""
 		return self.Rand.uniform(Lower, Upper, D) if D is not None else self.Rand.uniform(Lower, Upper)
@@ -111,11 +99,8 @@ class Algorithm:
 		r"""Get normal random distribution of shape D with mean "loc" and standard deviation "scale".
 
 		**Arguments:**
-
 		loc {} -- mean of the normal random distribution
-
 		scale {} -- standard deviation of the normal random distribution
-
 		D {array} or {int} -- shape of returned normal random distribution
 		"""
 		return self.Rand.normal(loc, scale, D) if D is not None else self.Rand.normal(loc, scale)
@@ -134,13 +119,9 @@ class Algorithm:
 		r"""Get discrete uniform (integer) random distribution of D shape in range from "Nmin" to "Nmax".
 
 		**Arguments:**
-
 		Nmin {integer} -- lower integer bound
-
 		Nmax {integer} -- one above upper integer bound
-
 		D {array} or {int} -- shape of returned discrete uniform random distribution
-
 		skip {array} -- numbers to skip
 		"""
 		r = None
@@ -148,6 +129,19 @@ class Algorithm:
 		elif D > 1: r = self.Rand.randint(Nmin, Nmax, D)
 		else: r = self.Rand.randint(Nmin, Nmax)
 		return r if r not in skip else self.randint(Nmax, D, Nmin, skip)
+
+	def getBest(self, X, X_f, xb=None, xb_f=inf):
+		r"""Get the best individual for population.
+
+		***Arguments:***
+		X {array} -- Population
+		X_f {array} -- Fitness values of alinged individuals
+		xb {array} -- Best individual
+		xb_f {real} -- Fitness value of best individal
+		"""
+		ib = argmin(X_f)
+		if xb_f >= X_f[ib]: return X[ib], X_f[ib]
+		else: return xb, xb_f
 
 	def run(self):
 		r"""Start the optimization.
@@ -160,19 +154,17 @@ class Algorithm:
 			r = self.runTask(self.task)
 			return r[0], r[1] * self.task.optType.value
 		except (FesException, GenException, TimeException, RefException): return self.task.x, self.task.x_f * self.task.optType.value
+		except Exception as e: logger.error('Error: %s' % e)
 		return None, inf * self.task.optType.value
 
 	def runYield(self, task):
 		r"""Run the algorithm for a single iteration and return the best solution.
 
 		**Arguments:**
-
 		task {Task} -- task with bounds and objective function for optimization
 
 		Return:
-
 		solution {array} -- point of the best solution
-
 		fitness {real} -- fitness value of the best solution
 		"""
 		yield None, None
@@ -181,13 +173,10 @@ class Algorithm:
 		r"""Start the optimization.
 
 		**Arguments:**
-
 		task {Task} -- task with bounds and objective function for optimization
 
 		**Return:**
-
 		solution {array} -- point of the best solution
-
 		fitness {real} -- fitness value of best solution
 		"""
 		return None, None
@@ -196,11 +185,12 @@ class Individual:
 	r"""Class that represents one solution in population of solutions.
 
 	**Date:** 2018
-
 	**Author:** Klemen Berkovič
-
 	**License:** MIT
 	"""
+	x = None
+	f = inf
+
 	def __init__(self, **kwargs):
 		task, rnd, x = kwargs.pop('task', None), kwargs.pop('rand', rand), kwargs.pop('x', [])
 		self.f = task.optType.value * inf if task is not None else inf
@@ -239,6 +229,9 @@ class Individual:
 		task {Task}
 		"""
 		self.x = task.repair(self.x, rnd=rnd)
+
+	def copy(self):
+		return Individual(x=self.x, f=self.f, e=False)
 
 	def __eq__(self, other):
 		r"""Compare the individuals for equalities."""
