@@ -25,7 +25,6 @@ docutils = "*"
 pygments = "*"
 "pathlib2" = "*"
 wheel = "*"
-pyinstaller = "*"
 twine = "*"
 sniffer = "*"
 macfsevents = {version = "*",sys_platform = "== 'darwin'"}
