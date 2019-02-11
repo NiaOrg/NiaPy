@@ -135,7 +135,7 @@ class Algorithm:
 
 		***Arguments:***
 		X {array} -- Population
-		X_f {array} -- Fitness values of alinged individuals
+		X_f {array} -- Fitness values of aligned individuals
 		xb {array} -- Best individual
 		xb_f {real} -- Fitness value of best individal
 		"""
