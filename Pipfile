@@ -11,7 +11,7 @@ xlsxwriter = ">=1.0.2"
 matplotlib = "~=2.2.3"
 
 [dev-packages]
-pylint = "==1.9.3"
+pylint = "==1.9.4"
 pycodestyle = "*"
 pydocstyle = "*"
 pytest = "~=3.3"
