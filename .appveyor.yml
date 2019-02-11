@@ -3,7 +3,10 @@ environment:
     RANDOM_SEED: 0
   matrix:
     - PYTHON: "C:\\Python27-x64" # latest 2.7.x version
+    - PYTHON: "C:\\Python34-x64" # latest 3.4.x version
+    - PYTHON: "C:\\Python35-x64" # latest 3.5.x version
     - PYTHON: "C:\\Python36-x64" # latest 3.6.x version
+    - PYTHON: "C:\\Python37-x64" # latest 3.7.x version
 
 cache:
   - .venv -> Makefile
@@ -28,4 +31,5 @@ test_script:
 
 notifications:
   - provider: Slack
-    incoming_webhook: https://hooks.slack.com/services/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
+    incoming_webhook:
+      secure: pOtkIG6sWisx6PnW52iPzyTGj7q52D12er8ctpwYxs4ASoR4hynEnMPMuvRXlenHj6N6kU3FdO8EBXn79WxfuKGLW8JXhgVUMdAvdEvF4Dk=
