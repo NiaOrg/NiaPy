@@ -28,7 +28,7 @@ wheel = "*"
 pyinstaller = "*"
 twine = "*"
 sniffer = "*"
-macfsevents = {version = "*", sys_platform = "== 'darwin'"}
+macfsevents = {version = "*",sys_platform = "== 'darwin'"}
 "enum34" = "*"
 singledispatch = "*"
 "backports.functools-lru-cache" = "*"
@@ -39,3 +39,4 @@ funcsigs = "*"
 futures = "==3.1.1"
 "autopep8" = "*"
 sphinx-autobuild = "*"
+scandir = "*"
