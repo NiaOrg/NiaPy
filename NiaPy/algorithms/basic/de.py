@@ -52,13 +52,9 @@ class DifferentialEvolution(Algorithm):
 	r"""Implementation of Differential evolution algorithm.
 
 	**Algorithm:** Differential evolution algorithm
-
 	**Date:** 2018
-
 	**Author:** Uros Mlakar and Klemen Berkovič
-
 	**License:** MIT
-
 	**Reference paper:**
 	Storn, Rainer, and Kenneth Price. "Differential evolution - a simple and efficient heuristic for global optimization over continuous spaces." Journal of global optimization 11.4 (1997): 341-359.
 	"""
@@ -73,17 +69,13 @@ class DifferentialEvolution(Algorithm):
 			# TODO add constraint testing for mutation strategy method
 	}
 
-	def setParameters(self, NP=25, F=0.2, CR=1, CrossMutt=CrossRand1, **ukwargs):
+	def setParameters(self, NP=50, F=1, CR=0.8, CrossMutt=CrossRand1, **ukwargs):
 		r"""Set the algorithm parameters.
 
 		**Arguments:**
-
 		NP {integer} -- population size
-
 		F {decimal} -- scaling factor
-
 		CR {decimal} -- crossover rate
-
 		CrossMutt {function} -- crossover and mutation strategy
 		"""
 		self.NP, self.F, self.CR, self.CrossMutt = NP, F, CR, CrossMutt
@@ -110,11 +102,8 @@ class CrowdingDifferentialEvolution(DifferentialEvolution):
 	r"""Implementation of Differential evolution algorithm with multiple mutation strateys.
 
 	**Algorithm:** Implementation of Differential evolution algorithm with multiple mutation strateys
-
 	**Date:** 2018
-
 	**Author:** Klemen Berkovič
-
 	**License:** MIT
 	"""
 	Name = ['CrowdingDifferentialEvolution', 'CDE']
@@ -141,11 +130,8 @@ class DynNpDifferentialEvolution(DifferentialEvolution):
 	r"""Implementation of Dynamic poulation size Differential evolution algorithm.
 
 	**Algorithm:** Dynamic poulation size Differential evolution algorithm
-
 	**Date:** 2018
-
 	**Author:** Klemen Berkovič
-
 	**License:** MIT
 	"""
 	Name = ['DynNpDifferentialEvolution', 'dynNpDE']
@@ -205,11 +191,8 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 	r"""Implementation of Differential evolution algorithm with aging individuals.
 
 	**Algorithm:** Differential evolution algorithm with dynamic population size that is defined by the quality of population
-
 	**Date:** 2018
-
 	**Author:** Klemen Berkovič
-
 	**License:** MIT
 	"""
 	Name = ['AgingNpDifferentialEvolution', 'ANpDE']
@@ -285,11 +268,8 @@ class MultiStrategyDifferentialEvolution(DifferentialEvolution):
 	r"""Implementation of Differential evolution algorithm with multiple mutation strateys.
 
 	**Algorithm:** Implementation of Differential evolution algorithm with multiple mutation strateys
-
 	**Date:** 2018
-
 	**Author:** Klemen Berkovič
-
 	**License:** MIT
 	"""
 	Name = ['MultiStrategyDifferentialEvolution', 'MsDE']
@@ -328,11 +308,8 @@ class DynNpMultiStrategyDifferentialEvolution(MultiStrategyDifferentialEvolution
 	r"""Implementation of Dynamic population size Differential evolution algorithm with dynamic population size that is defined by the quality of population.
 
 	**Algorithm:** Dynamic population size Differential evolution algorithm with dynamic population size that is defined by the quality of population
-
 	**Date:** 2018
-
 	**Author:** Klemen Berkovič
-
 	**License:** MIT
 	"""
 	Name = ['DynNpMultiStrategyDifferentialEvolution', 'dynNpMsDE']
@@ -377,11 +354,8 @@ class AgingNpMultiMutationDifferentialEvolution(AgingNpDifferentialEvolution, Mu
 	r"""Implementation of Differential evolution algorithm with aging individuals.
 
 	**Algorithm:** Differential evolution algorithm with dynamic population size that is defined by the quality of population
-
 	**Date:** 2018
-
 	**Author:** Klemen Berkovič
-
 	**License:** MIT
 	"""
 	Name = ['AgingNpMultiMutationDifferentialEvolution', 'ANpMSDE']

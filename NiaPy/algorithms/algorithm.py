@@ -72,6 +72,7 @@ class Algorithm:
 
 	def rand(self, D=1):
 		r"""Get random distribution of shape D in range from 0 to 1.
+
 		**Arguments:**
 		D {array} or {int} -- shape of returned random distribution
 		"""
@@ -81,6 +82,7 @@ class Algorithm:
 
 	def uniform(self, Lower, Upper, D=None):
 		r"""Get uniform random distribution of shape D in range from "Lower" to "Upper".
+
 		**Arguments:**
 		Lower {array} or {real} or {int} -- lower bound
 		Upper {array} or {real} or {int} -- upper bound
@@ -90,6 +92,7 @@ class Algorithm:
 
 	def normal(self, loc, scale, D=None):
 		r"""Get normal random distribution of shape D with mean "loc" and standard deviation "scale".
+
 		**Arguments:**
 		loc {} -- mean of the normal random distribution
 		scale {} -- standard deviation of the normal random distribution
@@ -99,6 +102,7 @@ class Algorithm:
 
 	def randn(self, D=None):
 		r"""Get standard normal distribution of shape D.
+
 		**Arguments**:
 		D {array} -- shape of returned standard normal distribution
 		"""
@@ -108,6 +112,7 @@ class Algorithm:
 
 	def randint(self, Nmax, D=1, Nmin=0, skip=[]):
 		r"""Get discrete uniform (integer) random distribution of D shape in range from "Nmin" to "Nmax".
+
 		**Arguments:**
 		Nmin {integer} -- lower integer bound
 		Nmax {integer} -- one above upper integer bound
@@ -135,11 +140,12 @@ class Algorithm:
 
 	def run(self):
 		r"""Start the optimization.
+
 		**See**:
 		Algorithm.runTask(self, taks)
 		"""
 		try:
-			self.task.start()
+			# self.task.start()
 			r = self.runTask(self.task)
 			return r[0], r[1] * self.task.optType.value
 		except (FesException, GenException, TimeException, RefException): return self.task.x, self.task.x_f * self.task.optType.value
@@ -147,6 +153,7 @@ class Algorithm:
 
 	def runYield(self, task):
 		r"""Run the algorithm for a single iteration and return the best solution.
+
 		**Arguments:**
 		task {Task} -- task with bounds and objective function for optimization
 		Return:

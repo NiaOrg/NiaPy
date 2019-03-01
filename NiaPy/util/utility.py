@@ -114,35 +114,40 @@ class OptimizationType(Enum):
 	MINIMIZATION = 1.0
 	MAXIMIZATION = -1.0
 
-class ATask(Utility):
+class Task(Utility):
 	D = 0
-	refValue = None
-	nGEN, Iters = inf, 0
-	nFES, Evals = inf, 0
 	benchmark = None
 	Lower, Upper, bRange = inf, inf, inf
 	optType = OptimizationType.MINIMIZATION
-	x, x_f = None, inf
 
-	def __init__(self, D=0, optType=OptimizationType.MINIMIZATION, benchmark=None, **kwargs):
-		r"""Set the default felds of a task class."""
+	def __init__(self, D=0, optType=OptimizationType.MINIMIZATION, benchmark=None, Lower=None, Upper=None, **kwargs):
+		r"""Initialize task class for optimization.
+
+		Arguments:
+		D {integer} -- Number of dimensions
+		optType {OptimizationType} -- Set the type of optimization
+		benchmark {class} or {string} -- Problem to solve
+		Lower {array} or {real} -- Lower limits of the problem
+		Upper {array} or {real} -- Upper limits of the problem
+		"""
 		Utility.__init__(self)
-		self.D = D  # dimension of the problem
-		self.benchmark = self.get_benchmark(benchmark) if benchmark is not None else None
-		if self.benchmark is not None:
-			self.Lower, self.Upper = fullArray(self.benchmark.Lower, self.D), fullArray(self.benchmark.Upper, self.D)
-			self.bRange = fabs(self.Upper - self.Lower)
-			self.Fun = self.benchmark.function() if self.benchmark is not None else None
-		else:
-			self.Lower, self.Upper = fullArray(0, self.D), fullArray(0, self.D)
-			self.bRange = fullArray(0, 0)
+		# dimension of the problem
+		self.D = D  
+		# set optimization type
 		self.optType = optType
-		self.x, self.x_f = None, self.optType.value * inf
-		self.startTime = datetime.now()
-
-	def nGENs(self): return 100000 if self.nGEN == inf else self.nGEN
-
-	def nFESs(self): return 100000 if self.nFES == inf else self.nFES
+		# set optimization function
+		self.benchmark = self.get_benchmark(benchmark) if benchmark is not None else None
+		if self.benchmark is not None: self.Fun = self.benchmark.function() if self.benchmark is not None else None
+		# set Lower limits
+		if Lower is not None: self.Lower = fullArray(Lower, self.D)
+		elif Lower is None and benchmark is not None: self.Lower = fullArray(self.benchmark.Lower, self.D)
+		else: self.Lower = fullArray(0, self.D)
+		# set Upper limits
+		if Upper is not None: self.Upper = fullArray(Upper, self.D)
+		elif Upper is None and benchmark is not None: self.Upper = fullArray(self.benchmark.Upper, self.D)
+		else: self.Upper = fullArray(0, self.D)
+		# set range
+		self.bRange = self.Upper - self.Lower
 
 	def dim(self):
 		r"""Get the number of dimensions."""
@@ -158,25 +163,11 @@ class ATask(Utility):
 
 	def bcRange(self):
 		r"""Get the range of bound constraint."""
-		return fabs(self.Upper - self.Lower)
-
-	def stopCond(self):
-		r"""Check if stopping condition reached."""
-		return (self.Evals >= self.nFES) or (self.Iters >= self.nGEN) or (self.refValue is not None and self.refValue * self.optType.value >= self.x_f)
+		return self.Upper - self.Lower
 
 	def stopCondI(self):
 		r"""Check if stopping condition reached and increase number of iterations."""
-		r = self.stopCond()
-		self.Iters += 1
-		return r
-
-	def stopCondE(self):
-		r"""Throw exception for the given stopping condition."""
-		pass
-
-	def start(self):
-		r"""Set the start time of the optimization run."""
-		self.startTime = datetime.now()
+		return False
 
 	def eval(self, A):
 		r"""Evaluate the solution A.
@@ -184,7 +175,7 @@ class ATask(Utility):
 		Arguments:
 		A {array} -- Solution to evaluate
 		"""
-		pass
+		return self.Fun(self.D, A) * self.optType.value
 
 	def repair(self, x, rnd=rand):
 		r"""Repair solution and put the solution in the random position inside of the bounds of problem.
@@ -198,6 +189,29 @@ class ATask(Utility):
 		x[ir] = rnd.uniform(self.Lower[ir], self.Upper[ir])
 		return x
 
+	def isFeasible(self, A):
+		r"""Check if the solution is feasible.
+
+		Arguments:
+		A {array} -- Solution to check for feasibility
+		"""
+		return (False if True in (A < self.Lower) else True) and (False if True in (A > self.Upper) else True)
+
+class CountingTask(Task):
+	Iters, Evals = 0, 0
+
+	def __init__(self, **kwargs):
+		Task.__init__(self, **kwargs)
+
+	def eval(self, A):
+		r"""Evaluate the solution A.
+		
+		Arguments:
+		A {array} -- Solutions to evaluate
+		"""
+		self.Evals += 1
+		return Task.eval(self, A)
+
 	def evals(self):
 		r"""Get the number of evaluations made."""
 		return self.Evals
@@ -210,49 +224,87 @@ class ATask(Utility):
 		r"""Increases the number of algorithm iterations made."""
 		self.Iters += 1
 
-	def isFeasible(self, A):
-		r"""Check if the solution is feasible.
+	def stopCondI(self):
+		r"""Check if stoping condition and increment number of generations/iterations."""
+		self.Iters += 1
+		return Task.stopCondI(self)
 
-		Arguments:
-		A {array} -- Solution to check for feasibility
-		"""
-		return (False if True in (A < self.Lower) else True) and (False if True in (A > self.Upper) else True)
+class StopingTask(CountingTask):
+	nGEN, nFES = inf, inf
+	refValue, x, x_f = None, None, None
 
-class Task(ATask):
-	def __init__(self, D, nFES=inf, nGEN=inf, runTime=None, refValue=None, benchmark=None, o=None, fo=None, M=None, fM=None, optF=None, optType=OptimizationType.MINIMIZATION, **kwargs):
+	def __init__(self, nFES=inf, nGEN=inf, refValue=None, **kwargs):
 		r"""Initialize task class for optimization.
 
 		Arguments:
-		D {integer} -- Number of dimensions
 		nFES {integer} -- Number of function evaluations
 		nGEN {integer} -- Number of generations or iterations
-		benchmark {class} or {string} -- Problem to solve
+		"""
+		CountingTask.__init__(self, **kwargs)
+		self.refValue = (-inf if refValue is None else refValue) * self.optType.value
+		self.x_f = inf * self.optType.value
+		self.nFES, self.nGEN = nFES, nGEN
+
+	def eval(self, A):
+		if self.stopCond(): return inf * self.optType.value
+		else: return CountingTask.eval(self, A)
+
+	def stopCond(self):
+		r"""Check if stopping condition reached."""
+		return (self.Evals >= self.nFES) or (self.Iters >= self.nGEN) or (self.refValue > self.x_f)
+
+	def stopCondI(self):
+		r"""Check if stopping condition reached and increase number of iterations."""
+		CountingTask.stopCondI(self)
+		return self.stopCond()
+
+	def stopCondE(self):
+		r"""Throw exception for the given stopping condition."""
+		pass
+
+class ThrowingTask(StopingTask):
+	def __init__(self, **kwargs): 
+		StopingTask.__init__(self, **kwargs)
+
+	def stopCondE(self):
+		# dtime = datetime.now() - self.startTime
+		if self.Evals >= self.nFES: raise FesException()
+		elif self.Iters >= self.nGEN: raise GenException()
+		# elif self.runTime is not None and self.runTime >= dtime: raise TimeException()
+		elif self.refValue is not None and self.refValue != inf and self.refValue * self.optType.value >= self.x_f: raise RefException()
+
+	def eval(self, A):
+		self.stopCondE()
+		return StopingTask.eval(self, A)
+
+class MoveTask(ThrowingTask):
+	def __init__(self, o=None, fo=None, M=None, fM=None, optF=None, **kwargs):
+		r"""Initialize task class for optimization.
+
+		Arguments:
 		o {array} -- Array for shifting
 		of {function} -- Function applied on shifted input
 		M {matrix} -- Matrix for rotating
 		fM {function} -- Function applied after rotating
-		optF {real} -- Value added to benchmark function return
 		"""
-		ATask.__init__(self, D=D, optType=optType, benchmark=benchmark, **kwargs)
-		self.nGEN, self.nFES, self.runTime, self.refValue = nGEN, nFES, runTime, refValue
+		StopingTask.__init__(self, **kwargs)
 		self.o = o if isinstance(o, ndarray) or o is None else asarray(o)
 		self.M = M if isinstance(M, ndarray) or M is None else asarray(M)
 		self.fo, self.fM, self.optF = fo, fM, optF
 
 	def eval(self, A):
 		if self.stopCond(): return inf * self.optType.value
-		self.Evals += 1
 		X = A - self.o if self.o is not None else A
 		X = self.fo(X) if self.fo is not None else X
 		X = dot(X, self.M) if self.M is not None else X
 		X = self.fM(X) if self.fM is not None else X
-		r = self.optType.value * self.Fun(self.D, X) + (self.optF if self.optF is not None else 0)
+		r = StopingTask.eval(self, X) + (self.optF if self.optF is not None else 0)
 		if r <= self.x_f:  self.x, self.x_f = A, r
 		return r
 
-class ScaledTask(ATask):
+class ScaledTask(Task):
 	def __init__(self, task, Lower, Upper, **kwargs):
-		ATask.__init__(self)
+		Task.__init__(self)
 		self._task = task
 		self.D = self._task.D
 		self.Lower, self.Upper = fullArray(Lower, self.D), fullArray(Upper, self.D)
@@ -272,40 +324,28 @@ class ScaledTask(ATask):
 
 	def isFeasible(self, A): return self._task.isFeasible(A)
 
-class TaskE(Task):
-	def __init__(self, **kwargs): Task.__init__(self, **kwargs)
-
-	def stopCondE(self):
-		dtime = datetime.now() - self.startTime
-		if self.Evals >= self.nFES: raise FesException()
-		elif self.Iters >= self.nGEN: raise GenException()
-		elif self.runTime is not None and self.runTime >= dtime: raise TimeException()
-		elif self.refValue is not None and self.refValue != inf and self.refValue * self.optType.value >= self.x_f: raise RefException()
-
-	def eval(self, A):
-		self.stopCondE()
-		return Task.eval(self, A)
-
 class ScaledTaskE(ScaledTask):
 	x, x_f = None, inf
 
-	def __init__(self, **kwargs): ScaledTask.__init__(self, **kwargs)
+	def __init__(self, **kwargs):
+		ScaledTask.__init__(self, **kwargs)
 
 	def eval(self, A):
 		self.stopCond()
 		return ScaledTask.eval(A)
 
-class TaskConvPrint(Task):
-	def __init__(self, **kwargs): Task.__init__(self, **kwargs)
+class TaskConvPrint(StopingTask):
+	def __init__(self, **kwargs):
+		StopingTask.__init__(self, **kwargs)
 
 	def eval(self, A):
-		x_f = Task.eval(self, A)
+		x_f = StopingTask.eval(self, A)
 		if x_f <= self.x_f:
 			self.x, self.x_f = A, x_f
 			logger.info('nFES:%d nGEN:%d => %s -> %s' % (self.Evals, self.Iters, self.x, self.x_f))
 		return x_f
 
-class TaskConvSave(Task):
+class TaskConvSave(StopingTask):
 	def __init__(self, **kwargs):
 		Task.__init__(self, **kwargs)
 		self.evals = []
@@ -320,9 +360,9 @@ class TaskConvSave(Task):
 
 	def return_conv(self): return self.evals, self.x_f_vals
 
-class TaskConvPlot(Task):
+class TaskConvPlot(StopingTask):
 	def __init__(self, **kwargs):
-		Task.__init__(self, **kwargs)
+		StopingTask.__init__(self, **kwargs)
 		self.x_fs, self.iters = [], []
 		self.fig = plt.figure()
 		self.ax = self.fig.subplots(nrows=1, ncols=1)
@@ -350,7 +390,7 @@ class TaskConvPlot(Task):
 			self.line.set_data(self.iters, self.x_fs)
 		return self.line,
 
-class TaskComposition(Task):
+class TaskComposition(MoveTask):
 	def __init__(self, benchmarks=None, rho=None, lamb=None, bias=None, **kwargs):
 		r"""Initialize of composite function problem.
 
@@ -360,7 +400,7 @@ class TaskComposition(Task):
 		lamb {array} of {real} --
 		bias {array} of {real} --
 		"""
-		Task.__init__(self, **kwargs)
+		MoveTask.__init__(self, **kwargs)
 
 	def eval(self, A):
 		# TODO Usage of multiple functions on the same time
