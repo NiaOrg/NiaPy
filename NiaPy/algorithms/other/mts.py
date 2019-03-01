@@ -23,36 +23,34 @@ def MTS_LS1(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, sr_f
 		Xk_fit_new = task.eval(Xk)
 		if Xk_fit_new < Xb_fit: grade, Xb, Xb_fit = grade + BONUS1, Xk, Xk_fit_new
 		if Xk_fit_new == Xk_fit: Xk[i] = Xk_i_old
-		else:
-			if Xk_fit_new > Xk_fit:
-				Xk[i] = Xk_i_old + 0.5 * SR[i]
-				Xk_fit_new = task.eval(Xk)
-				if Xk_fit_new < Xb_fit: grade, Xb, Xb_fit = grade + BONUS1, copy(Xk), Xk_fit_new
-				if Xk_fit_new >= Xk_fit: Xk[i] = Xk_i_old
-				else: grade, improve, Xk_fit = grade + BONUS2, True, Xk_fit_new
+		elif Xk_fit_new > Xk_fit:
+			Xk[i] = Xk_i_old + 0.5 * SR[i]
+			Xk_fit_new = task.eval(Xk)
+			if Xk_fit_new < Xb_fit: grade, Xb, Xb_fit = grade + BONUS1, copy(Xk), Xk_fit_new
+			if Xk_fit_new >= Xk_fit: Xk[i] = Xk_i_old
 			else: grade, improve, Xk_fit = grade + BONUS2, True, Xk_fit_new
+		else: grade, improve, Xk_fit = grade + BONUS2, True, Xk_fit_new
 	return Xk, Xk_fit, Xb, Xb_fit, improve, grade, SR
 
 def MTS_LS1v1(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, sr_fix=0.4, rnd=rand, **ukwargs):
 	if not improve:
 		SR /= 2
 		ifix = where(SR < 1e-15)
-		SR[ifix] = task.bcRange()[ifix] * sr_fix
+		SR[ifix] = task.bRange[ifix] * sr_fix
 	improve, D, grade = False, rnd.uniform(-1, 1, task.D), 0.0
 	for i in range(len(Xk)):
 		Xk_i_old = Xk[i]
 		Xk[i] = Xk_i_old - SR[i] * D[i]
 		Xk_fit_new = task.eval(Xk)
 		if Xk_fit_new < Xb_fit: grade, Xb, Xb_fit = grade + BONUS1, Xk, Xk_fit_new
-		if Xk_fit_new == Xk_fit: Xk[i] = Xk_i_old
-		else:
-			if Xk_fit_new > Xk_fit:
-				Xk[i] = Xk_i_old + 0.5 * SR[i]
-				Xk_fit_new = task.eval(Xk)
-				if Xk_fit_new < Xb_fit: grade, Xb, Xb_fit = grade + BONUS1, Xk, Xk_fit_new
-				if Xk_fit_new >= Xk_fit: Xk[i] = Xk_i_old
-				else: grade, improve, Xk_fit = grade + BONUS2, True, Xk_fit_new
+		elif Xk_fit_new == Xk_fit: Xk[i] = Xk_i_old
+		elif Xk_fit_new > Xk_fit:
+			Xk[i] = Xk_i_old + 0.5 * SR[i]
+			Xk_fit_new = task.eval(Xk)
+			if Xk_fit_new < Xb_fit: grade, Xb, Xb_fit = grade + BONUS1, Xk, Xk_fit_new
+			if Xk_fit_new >= Xk_fit: Xk[i] = Xk_i_old
 			else: grade, improve, Xk_fit = grade + BONUS2, True, Xk_fit_new
+		else: grade, improve, Xk_fit = grade + BONUS2, True, Xk_fit_new
 	return Xk, Xk_fit, Xb, Xb_fit, improve, grade, SR
 
 def genNewX(x, r, d, SR, op): return op(x, SR * d) if r == 0 else x
@@ -69,7 +67,7 @@ def MTS_LS2(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, sr_f
 		Xk_new = vectorize(genNewX)(Xk, R, D, SR, oper.sub)
 		Xk_fit_new = task.eval(Xk_new)
 		if Xk_fit_new < Xb_fit: grade, Xb, Xb_fit = grade + BONUS1, Xk_new, Xk_fit_new
-		if Xk_fit_new != Xk_fit:
+		elif Xk_fit_new != Xk_fit:
 			if Xk_fit_new > Xk_fit:
 				Xk_new = vectorize(genNewX)(Xk, R, D, SR, oper.add)
 				Xk_fit_new = task.eval(Xk_new)
@@ -119,15 +117,10 @@ class MultipleTrajectorySearch(Algorithm):
 	r"""Implementation of Multiple trajectory search.
 
 	**Algorithm:** Multiple trajectory search
-
 	**Date:** 2018
-
 	**Authors:** Klemen Berkovic
-
 	**License:** MIT
-
 	**Reference URL:** https://ieeexplore.ieee.org/document/4631210/
-
 	**Reference paper:** Lin-Yu Tseng and Chun Chen, "Multiple trajectory search for Large Scale Global Optimization," 2008 IEEE Congress on Evolutionary Computation (IEEE World Congress on Computational Intelligence), Hong Kong, 2008, pp. 3052-3059. doi: 10.1109/CEC.2008.4631210
 	"""
 	Name = ['MultipleTrajectorySearch', 'MTS']
@@ -149,13 +142,9 @@ class MultipleTrajectorySearch(Algorithm):
 
 		Arguments:
 		M {integer} -- number of individuals in population
-
 		NoLsTests {integer} -- number of test runs on local search algorihms
-
 		NoLs {integer} -- number of local search algoritm runs
-
 		NoLsBest {integer} -- number of locals search algorithm runs on best solution
-
 		NoEnabled {integer} -- number of best solution for testing
 		"""
 		self.M, self.NoLsTests, self.NoLs, self.NoLsBest, self.NoEnabled = M, NoLsTests, NoLs, NoLsBest, NoEnabled
@@ -205,15 +194,10 @@ class MultipleTrajectorySearchV1(MultipleTrajectorySearch):
 	r"""Implementation of Multiple trajectory search.
 
 	**Algorithm:** Multiple trajectory search
-
 	**Date:** 2018
-
 	**Authors:** Klemen Berkovic
-
 	**License:** MIT
-
 	**Reference URL:** https://ieeexplore.ieee.org/document/4983179/
-
 	**Reference paper:** Tseng, Lin-Yu, and Chun Chen. "Multiple trajectory search for unconstrained/constrained multi-objective optimization." Evolutionary Computation, 2009. CEC'09. IEEE Congress on. IEEE, 2009.
 	"""
 	Name = ['MultipleTrajectorySearchV1', 'MTSv1']

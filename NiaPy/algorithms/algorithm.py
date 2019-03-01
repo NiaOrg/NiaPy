@@ -2,7 +2,7 @@
 # pylint: disable=mixed-indentation, multiple-statements, line-too-long, expression-not-assigned, len-as-condition, no-self-use, unused-argument, no-else-return, old-style-class, dangerous-default-value
 import logging
 from numpy import random as rand, inf, ndarray, asarray, array_equal, argmin
-from NiaPy.util import Task, OptimizationType
+from NiaPy.util import StopingTask, OptimizationType
 from NiaPy.util import FesException, GenException, TimeException, RefException
 
 logging.basicConfig()
@@ -43,7 +43,7 @@ class Algorithm:
 		Algorithm.setParameters(self, **kwargs)
 		"""
 		task, self.Rand = kwargs.pop('task', None), rand.RandomState(kwargs.pop('seed', None))
-		self.task = task if task is not None else Task(kwargs.pop('D', 10), nFES=kwargs.pop('nFES', inf), nGEN=kwargs.pop('nGEN', inf), benchmark=kwargs.pop('benchmark', 'ackley'), optType=kwargs.pop('optType', OptimizationType.MINIMIZATION))
+		self.task = task if task is not None else StopingTask(D=kwargs.pop('D', 10), nFES=kwargs.pop('nFES', inf), nGEN=kwargs.pop('nGEN', inf), benchmark=kwargs.pop('benchmark', 'ackley'), optType=kwargs.pop('optType', OptimizationType.MINIMIZATION))
 		self.setParameters(**kwargs)
 
 	def setParameters(self, **kwargs):
