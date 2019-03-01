@@ -17,7 +17,7 @@ class CuckooSearch(Algorithm):
 	**Date:** 2018
 	**Authors:** Klemen Berkovič
 	**License:** MIT
-	**Reference URL:** https://www.cs.tufts.edu/comp/150GA/homeworks/hw3/_reading7%20Cuckoo%20search.pdf
+	**Reference:** Yang, Xin-She, and Suash Deb. "Cuckoo search via Lévy flights." Nature & Biologically Inspired Computing, 2009. NaBIC 2009. World Congress on. IEEE, 2009.
 	"""
 	Name = ['CuckooSearch', 'CS']
 	N, pa, alpha = 50, 0.2, 0.5

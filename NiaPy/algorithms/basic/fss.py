@@ -21,15 +21,17 @@ class FishSchoolSearch(Algorithm):
     **Date:** 2019
 
     **Authors:**
-        Clodomir Santana Jr, Elliackin Figueredo, Mariana Maceds,
-        Pedro Santos. Ported to NiaPy with small changes by Kristian Järvenpää and Klemen Berkovič
+    Clodomir Santana Jr, Elliackin Figueredo, Mariana Maceds,
+    Pedro Santos.
+    Ported to NiaPy with small changes by Kristian Järvenpää (2018)
+    Ported to the NiaPy 2.0 by Klemen Berkovič (2019)
 
     **License:** MIT
 
     **Reference paper:**
-        Bastos Filho, Lima Neto, Lins, D. O. Nascimento and P. Lima, “A novel search
-        algorithm based on fish school behavior,” in 2008 IEEE International
-        Conference on Systems, Man and Cybernetics, Oct 2008, pp. 2646–2651.
+    Bastos Filho, Lima Neto, Lins, D. O. Nascimento and P. Lima, “A novel search
+    algorithm based on fish school behavior,” in 2008 IEEE International
+    Conference on Systems, Man and Cybernetics, Oct 2008, pp. 2646–2651.
     """
     Name = ['FSS', 'FishSchoolSearch']
 

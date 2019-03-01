@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=line-too-long, mixed-indentation, bad-continuation,multiple-statements, unused-argument, no-self-use, trailing-comma-tuple, logging-not-lazy, no-else-return, old-style-class, dangerous-default-value
+# pylint: disable=line-too-long, mixed-indentation, bad-continuation,multiple-statements, unused-argument, no-self-use, trailing-comma-tuple, logging-not-lazy, no-else-return, old-style-class, dangerous-default-value, assignment-from-no-return
 
 """Implementation of benchmarks utility function."""
 import logging

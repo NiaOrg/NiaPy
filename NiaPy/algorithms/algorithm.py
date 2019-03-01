@@ -121,6 +121,14 @@ class Algorithm:
 		return r if r not in skip else self.randint(Nmax, D, Nmin, skip)
 
 	def getBest(self, X, X_f, xb=None, xb_f=inf):
+		r"""Get the best individual for population.
+
+		***Arguments:***
+		X {array} -- Population
+		X_f {array} -- Fitness values of aligned individuals
+		xb {array} -- Best individual
+		xb_f {real} -- Fitness value of best individal
+		"""
 		ib = argmin(X_f)
 		if xb_f >= X_f[ib]: return X[ib], X_f[ib]
 		else: return xb, xb_f
