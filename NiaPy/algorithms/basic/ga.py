@@ -50,26 +50,22 @@ def CrossoverUros(pop, ic, cr, rnd=rand):
 
 def UniformMutation(pop, ic, mr, task, rnd=rand):
 	j = rnd.randint(task.D)
-	nx = [rnd.uniform(task.bcLower()[i], task.bcUpper()[i]) if rnd.rand() < mr or i == j else pop[ic][i] for i in range(task.D)]
+	nx = [rnd.uniform(task.Lower[i], task.Upper[i]) if rnd.rand() < mr or i == j else pop[ic][i] for i in range(task.D)]
 	return asarray(nx)
 
 def MutationUros(pop, ic, mr, task, rnd=rand):
-	return fmin(fmax(rnd.normal(pop[ic], mr * task.bcRange()), task.bcLower()), task.bcUpper())
+	return fmin(fmax(rnd.normal(pop[ic], mr * task.bRange), task.Lower), task.Upper)
 
 def CreepMutation(pop, ic, mr, task, rnd=rand):
 	ic, j = rnd.randint(len(pop)), rnd.randint(task.D)
-	nx = [rnd.uniform(task.bcLower()[i], task.bcUpper()[i]) if rnd.rand() < mr or i == j else pop[ic][i] for i in range(task.D)]
+	nx = [rnd.uniform(task.Lower[i], task.Upper[i]) if rnd.rand() < mr or i == j else pop[ic][i] for i in range(task.D)]
 	return asarray(nx)
 
 class GeneticAlgorithm(Algorithm):
 	r"""Implementation of Genetic algorithm.
-
 	**Algorithm:** Genetic algorithm
-
 	**Date:** 2018
-
-	**Author:** Uros Mlakar and Klemen Berkovič
-
+	**Author:** Klemen Berkovič
 	**License:** MIT
 	"""
 	Name = ['GeneticAlgorithm', 'GA']
@@ -84,15 +80,10 @@ class GeneticAlgorithm(Algorithm):
 
 	def setParameters(self, NP=25, Ts=5, Mr=0.25, Cr=0.25, Selection=TurnamentSelection, Crossover=UniformCrossover, Mutation=UniformMutation, **ukwargs):
 		r"""Set the parameters of the algorithm.
-
 		**Arguments:**
-
 		NP {integer} -- population size
-
 		Ts {integer} -- tournament selection
-
 		Mr {decimal} -- mutation rate
-
 		Cr {decimal} -- crossover rate
 		"""
 		self.NP, self.Ts, self.Mr, self.Cr = NP, Ts, Mr, Cr

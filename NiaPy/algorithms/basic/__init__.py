@@ -3,7 +3,7 @@
 
 from NiaPy.algorithms.basic.ba import BatAlgorithm
 from NiaPy.algorithms.basic.fa import FireflyAlgorithm
-from NiaPy.algorithms.basic.de import DifferentialEvolution, MultiStrategyDifferentialEvolution, DynNpDifferentialEvolution, AgingNpDifferentialEvolution, DynNpMultiStrategyDifferentialEvolution
+from NiaPy.algorithms.basic.de import DifferentialEvolution, MultiStrategyDifferentialEvolution, DynNpDifferentialEvolution, AgingNpDifferentialEvolution, DynNpMultiStrategyDifferentialEvolution, AgingNpMultiMutationDifferentialEvolution, CrowdingDifferentialEvolution
 from NiaPy.algorithms.basic.fpa import FlowerPollinationAlgorithm
 from NiaPy.algorithms.basic.gwo import GreyWolfOptimizer
 from NiaPy.algorithms.basic.ga import GeneticAlgorithm
@@ -20,17 +20,19 @@ from NiaPy.algorithms.basic.fwa import FireworksAlgorithm, EnhancedFireworksAlgo
 from NiaPy.algorithms.basic.gsa import GravitationalSearchAlgorithm
 from NiaPy.algorithms.basic.mfo import MothFlameOptimizer
 from NiaPy.algorithms.basic.fss import FishSchoolSearch
-from NiaPy.algorithms.basic.cro import CoralReefsOptimization
 from NiaPy.algorithms.basic.cs import CuckooSearch
+from NiaPy.algorithms.basic.cro import CoralReefsOptimization
 
 __all__ = [
     'BatAlgorithm',
     'FireflyAlgorithm',
     'DifferentialEvolution',
+    'CrowdingDifferentialEvolution',
     'AgingNpDifferentialEvolution',
     'DynNpDifferentialEvolution',
     'MultiStrategyDifferentialEvolution',
     'DynNpMultiStrategyDifferentialEvolution',
+    'AgingNpMultiMutationDifferentialEvolution',
     'FlowerPollinationAlgorithm',
     'GreyWolfOptimizer',
     'GeneticAlgorithm',
@@ -65,6 +67,6 @@ __all__ = [
     'GravitationalSearchAlgorithm',
     'MothFlameOptimizer',
     'FishSchoolSearch',
-    'CoralReefsOptimization',
     'CuckooSearch',
+    'CoralReefsOptimization',
 ]

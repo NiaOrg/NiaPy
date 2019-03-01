@@ -45,10 +45,10 @@ class MothFlameOptimizer(Algorithm):
 
 	def repair(self, x, task):
 		"""Find limits."""
-		ir = np.where(x > task.bcUpper())
-		x[ir] = task.bcUpper()[ir]
-		ir = np.where(x < task.bcLower())
-		x[ir] = task.bcLower()[ir]
+		ir = np.where(x > task.Upper)
+		x[ir] = task.Upper[ir]
+		ir = np.where(x < task.Lower)
+		x[ir] = task.Lower[ir]
 		return x
 
 	def runTask(self, task):
@@ -62,6 +62,8 @@ class MothFlameOptimizer(Algorithm):
 		best_flames = np.copy(moth_pos)
 		best_flame_fitness = np.zeros(self.NP)
 
+		best_flame_pos, best_flame_score = np.copy(moth_pos), np.inf
+
 		double_population = np.zeros((2 * self.NP, task.D))
 		double_fitness = np.zeros(2 * self.NP)
 
@@ -71,16 +73,14 @@ class MothFlameOptimizer(Algorithm):
 		previous_population = np.zeros((self.NP, task.D))
 		previous_fitness = np.zeros(self.NP)
 
-		generation = 1
-
-		while generation < task.nGEN:
-			flame_no = round(self.NP - generation * ((self.NP - 1) / task.nGEN))
+		while task.stopCondI():
+			flame_no = round(self.NP - task.Iters * ((self.NP - 1) / task.nGEN))
 
 			for i in np.arange(0, self.NP):
 				self.repair(moth_pos[i], task)
 				moth_fitness[i] = task.eval(moth_pos[i])
 
-			if generation == 1:
+			if task.Iters == 1:
 				sorted_fitness = np.sort(moth_fitness)
 				indexes = np.argsort(moth_fitness)
 
@@ -110,7 +110,7 @@ class MothFlameOptimizer(Algorithm):
 			previous_population = moth_pos
 			previous_fitness = moth_fitness
 
-			a = -1 + generation * ((-1) / task.nGEN)
+			a = -1 + task.Iters * ((-1) / task.nGEN)
 
 			for i in np.arange(0, self.NP):
 				for j in np.arange(0, task.D):
@@ -122,8 +122,6 @@ class MothFlameOptimizer(Algorithm):
 						moth_pos[i, j] = distance_to_flame * np.exp(b * t) * np.cos(2 * np.pi * t) + sorted_population[i, j]
 					else:
 						moth_pos[i, j] = distance_to_flame * np.exp(b * t) * np.cos(2 * np.pi * t) + sorted_population[flame_no, j]
-
-			generation += 1
 
 		return best_flame_pos, best_flame_score
 

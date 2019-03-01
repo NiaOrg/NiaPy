@@ -39,7 +39,7 @@ class GlowwormSwarmOptimization(Algorithm):
 			's': lambda x: isinstance(x, float) and x > 0
 	}
 
-	def setParameters(self, n=25, l0=5, nt=5, rho=0.4, gamma=0.6, beta=0.08, s=0.03, **ukwargs):
+	def setParameters(self, n=25, l0=5, nt=5, rho=0.4, gamma=0.6, beta=0.08, s=0.03, Distance=euclidean, **ukwargs):
 		r"""Set the arguments of an algorithm.
 
 		**Arguments:**
@@ -60,7 +60,7 @@ class GlowwormSwarmOptimization(Algorithm):
 
 		s {real} --
 		"""
-		self.n, self.l0, self.nt, self.rho, self.gamma, self.beta, self.s = n, l0, nt, rho, gamma, beta, s
+		self.n, self.l0, self.nt, self.rho, self.gamma, self.beta, self.s, self.Distance = n, l0, nt, rho, gamma, beta, s, Distance
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def randMove(self, i):
@@ -70,7 +70,7 @@ class GlowwormSwarmOptimization(Algorithm):
 
 	def getNeighbors(self, i, r, GS, L):
 		N = full(self.n, 0)
-		for j, gw in enumerate(GS): N[j] = 1 if i != j and euclidean(GS[i], gw) <= r and L[i] >= L[j] else 0
+		for j, gw in enumerate(GS): N[j] = 1 if i != j and self.Distance(GS[i], gw) <= r and L[i] >= L[j] else 0
 		return N
 
 	def probabilityes(self, i, N, L):
@@ -105,7 +105,7 @@ class GlowwormSwarmOptimization(Algorithm):
 			N = [self.getNeighbors(i, Ro[i], GSo, L) for i in range(self.n)]
 			P = [self.probabilityes(i, N[i], L) for i in range(self.n)]
 			j = [self.moveSelect(P[i], i) for i in range(self.n)]
-			for i in range(self.n): GS[i] = task.repair(GSo[i] + self.s * ((GSo[j[i]] - GSo[i]) / (euclidean(GSo[j[i]], GSo[i]) + 1e-31)), rnd=self.Rand)
+			for i in range(self.n): GS[i] = task.repair(GSo[i] + self.s * ((GSo[j[i]] - GSo[i]) / (self.Distance(GSo[j[i]], GSo[i]) + 1e-31)), rnd=self.Rand)
 			for i in range(self.n): R[i] = max(0, min(rs, self.rangeUpdate(Ro[i], N[i], rs)))
 		return xb, xb_f
 

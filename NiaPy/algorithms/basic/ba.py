@@ -24,6 +24,7 @@ class BatAlgorithm(Algorithm):
 	**Reference paper:** Yang, Xin-She. "A new metaheuristic bat-inspired algorithm." Nature inspired cooperative strategies for optimization (NICSO 2010). Springer, Berlin, Heidelberg, 2010. 65-74.
 	"""
 	Name = ['BatAlgorithm', 'BA']
+	NP, A, r, Qmin, Qmax = 40, 0.5, 0.5, 0.0, 2.0
 
 	@staticmethod
 	def typeParameters(): return {
@@ -64,7 +65,6 @@ class BatAlgorithm(Algorithm):
 		S, Q, v = full([self.NP, task.D], 0.0), full(self.NP, 0.0), full([self.NP, task.D], 0.0)
 		Sol = task.Lower + task.bRange * self.uniform(0, 1, [self.NP, task.D])
 		Fitness = apply_along_axis(task.eval, 1, Sol)
-		task.update_init_fes(self.NP)
 		j = argmin(Fitness)
 		best, f_min = Sol[j], Fitness[j]
 		while not task.stopCondI():

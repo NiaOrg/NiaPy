@@ -15,7 +15,7 @@ from NiaPy.algorithms import basic as balgos, modified as malgos, other as oalgo
 
 __all__ = ['algorithms', 'benchmarks', 'util']
 __project__ = 'NiaPy'
-__version__ = '2.0.0rc4'
+__version__ = '2.0.0rc2'
 
 VERSION = "{0} v{1}".format(__project__, __version__)
 
@@ -26,10 +26,12 @@ logger.setLevel('INFO')
 NiaPyAlgos = [
 	balgos.BatAlgorithm,
 	balgos.DifferentialEvolution,
+	balgos.CrowdingDifferentialEvolution,
 	balgos.DynNpDifferentialEvolution,
 	balgos.AgingNpDifferentialEvolution,
 	balgos.MultiStrategyDifferentialEvolution,
 	balgos.DynNpMultiStrategyDifferentialEvolution,
+	balgos.AgingNpMultiMutationDifferentialEvolution,
 	balgos.FireflyAlgorithm,
 	balgos.FlowerPollinationAlgorithm,
 	balgos.GreyWolfOptimizer,
@@ -62,8 +64,10 @@ NiaPyAlgos = [
 	balgos.DynamicFireworksAlgorithmGauss,
 	balgos.GravitationalSearchAlgorithm,
 	balgos.CovarianceMaatrixAdaptionEvolutionStrategy,
-	balgos.CoralReefsOptimization,
-	balgos.CuckooSearch
+	balgos.FishSchoolSearch,
+	balgos.MothFlameOptimizer,
+	balgos.CuckooSearch,
+	balgos.CoralReefsOptimization
 ]
 
 NiaPyAlgos += [

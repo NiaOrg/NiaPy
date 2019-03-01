@@ -25,6 +25,7 @@ class GreyWolfOptimizer(Algorithm):
 	Grey Wold Optimizer (GWO) source code version 1.0 (MATLAB) from MathWorks
 	"""
 	Name = ['GreyWolfOptimizer', 'GWO']
+	NP = 25
 
 	@staticmethod
 	def typeParameters(): return {

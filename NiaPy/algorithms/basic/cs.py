@@ -1,7 +1,7 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, line-too-long, singleton-comparison, multiple-statements, attribute-defined-outside-init, no-self-use, logging-not-lazy, unused-variable, arguments-differ, old-style-class, bad-continuation
 import logging
-from numpy import apply_along_axis, argsort, inf
+from numpy import apply_along_axis, argmin, argsort, where, inf
 from scipy.stats import levy
 from NiaPy.algorithms.algorithm import Algorithm
 
@@ -13,7 +13,6 @@ __all__ = ['CuckooSearch']
 
 class CuckooSearch(Algorithm):
 	r"""Implementation of Cuckoo behaviour and levy flights.
-
 	**Algorithm:** Cuckoo Search
 	**Date:** 2018
 	**Authors:** Klemen Berkovič
@@ -32,7 +31,6 @@ class CuckooSearch(Algorithm):
 
 	def setParameters(self, N=50, pa=0.2, alpha=0.5, **ukwargs):
 		r"""Set the arguments of an algorithm.
-
 		**Arguments:**
 		N {integer} -- population size $\in [1, \infty)$
 		pa {real} -- factor $\in [0, 1]$

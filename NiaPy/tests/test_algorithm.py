@@ -1,9 +1,14 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, function-redefined, multiple-statements, old-style-class, function-redefined
+import logging
 from unittest import TestCase
 from numpy import random as rnd, full, inf, array_equal
 from NiaPy.util import Task, OptimizationType
 from NiaPy.algorithms.algorithm import Individual, Algorithm
+
+logging.basicConfig()
+logger = logging.getLogger('NiaPy.test')
+logger.setLevel('INFO')
 
 class MyBenchmark:
 	def __init__(self):
@@ -103,8 +108,10 @@ class AlgorithmTestCase(TestCase):
 	def algorithm_run_test(self, a, b):
 		x = a.run()
 		self.assertTrue(x)
+		logger.info(x)
 		y = b.run()
 		self.assertTrue(y)
+		logger.info(y)
 		self.assertTrue(array_equal(x[0], y[0]), 'Results can not be reproduced, check usages of random number generator')
 		self.assertEqual(x[1], y[1], 'Results can not be reproduced or bad function value')
 		self.assertEqual(a.task.Iters, b.task.Iters)

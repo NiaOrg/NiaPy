@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, arguments-differ, line-too-long, unused-argument, no-self-use
+# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, arguments-differ, line-too-long, unused-argument
 import copy
 import numpy as np
 
@@ -31,7 +31,6 @@ class FishSchoolSearch(Algorithm):
         algorithm based on fish school behavior,” in 2008 IEEE International
         Conference on Systems, Man and Cybernetics, Oct 2008, pp. 2646–2651.
     """
-
     Name = ['FSS', 'FishSchoolSearch']
 
     @staticmethod
@@ -47,16 +46,24 @@ class FishSchoolSearch(Algorithm):
 
 		  Arguments:
 				school_size {integer} -- number of fishes in school
+
 				SI_init {integer} -- length of initial individual step
+
 				SI_final {integer} -- length of final individual step
+
 				SV_init {integer} -- length of initial volatile step
+
 				SV_final {integer} -- length of final volatile step
+
 				min_w {float} -- minimum weight of a fish
+
 				w_scale {float} -- maximum weight of a fish
+
 				benchmark {object} -- benchmark implementation object
 
-		 Raises:
+		  Raises:
 				TypeError -- Raised when given benchmark function which does not exists.
+
 		  """
         self.school_size = NP
         self.step_individual_init = SI_init

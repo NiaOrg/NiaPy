@@ -24,6 +24,7 @@ class NelderMeadMethod(Algorithm):
 	**Reference URL:** https://en.wikipedia.org/wiki/Nelder%E2%80%93Mead_method
 	"""
 	Name = ['NelderMeadMethod', 'NMM']
+	alpha, gmma, rho, sigma, = 0.3, 0.6, -0.4, 0.2
 
 	@staticmethod
 	def typeParameters(): return {
@@ -33,7 +34,7 @@ class NelderMeadMethod(Algorithm):
 			'sigma': lambda x: isinstance(x, (int, float))
 	}
 
-	def setParameters(self, alpha=1.0, gamma=2.0, rho=-0.5, sigma=0.5, **ukwargs):
+	def setParameters(self, alpha=0.1, gamma=0.3, rho=-0.2, sigma=-0.2, **ukwargs):
 		r"""Set the arguments of an algorithm.
 
 		**Arguments:**
