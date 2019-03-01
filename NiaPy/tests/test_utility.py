@@ -2,7 +2,7 @@
 # pylint: disable=mixed-indentation, multiple-statements, unused-variable, unused-argument, redefined-builtin, old-style-class, no-init, line-too-long, broad-except
 from unittest import TestCase
 from numpy import full, random as rnd, inf, sum, array_equal, asarray
-from NiaPy.util import Utility, ATask, Task, fullArray, ScaledTask, TaskConvPrint, TaskComposition, FesException, GenException
+from NiaPy.util import Utility, StopingTask, Task, fullArray, ScaledTask, TaskConvPrint, TaskComposition, FesException, GenException
 # TimeException, RefException
 
 class FullArrayTestCase(TestCase):
@@ -131,9 +131,9 @@ class UtilityTestCase(TestCase):
 		self.assertRaises(TypeError, lambda: self.u.get_benchmark(MyBenchmark))
 		self.assertRaises(TypeError, lambda: self.u.get_benchmark(NoLimits))
 
-class ATaskTestCase(TestCase):
+class StopingTaskBaseTestCase(TestCase):
 	def setUp(self):
-		self.task = ATask()
+		self.task = StopingTask()
 
 	def test_dim_ok(self):
 		self.assertEqual(self.task.D, 0)
@@ -180,10 +180,10 @@ class ATaskTestCase(TestCase):
 	def test_is_feasible(self):
 		self.assertFalse(self.task.isFeasible([1, 2, 3]))
 
-class TaskTestCase(TestCase):
+class StoppingTaskTestCase(TestCase):
 	def setUp(self):
 		self.D, self.nFES, self.nGEN = 10, 10, 10
-		self.t = Task(D=self.D, nFES=self.nFES, nGEN=self.nGEN, benchmark=MyBenchmark())
+		self.t = StopingTask(D=self.D, nFES=self.nFES, nGEN=self.nGEN, benchmark=MyBenchmark())
 
 	def test_isFeasible_fine(self):
 		x = full(self.D, 10)
