@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=anomalous-backslash-in-string, old-style-class
+# pylint: disable=anomalous-backslash-in-string
 """Implementations of Step functions."""
 
 import math

@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=anomalous-backslash-in-string, old-style-class
+# pylint: disable=anomalous-backslash-in-string
 from numpy import exp, pi, cos, sqrt
 from NiaPy.benchmarks.benchmark import Benchmark
 

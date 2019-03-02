@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, line-too-long, multiple-statements, too-many-function-args, old-style-class
+# pylint: disable=mixed-indentation, line-too-long, multiple-statements, too-many-function-args
 import sys
 import logging
 from argparse import ArgumentParser

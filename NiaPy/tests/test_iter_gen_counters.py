@@ -1,4 +1,4 @@
-# pylint: disable=old-style-class, line-too-long
+# pylint: disable=line-too-long
 
 from unittest import TestCase
 from NiaPy.algorithms.basic import BatAlgorithm, FireflyAlgorithm

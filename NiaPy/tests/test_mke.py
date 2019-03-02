@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, too-many-function-args, old-style-class
+# pylint: disable=mixed-indentation, multiple-statements, too-many-function-args
 from unittest import TestCase
 from numpy import array_equal, full, inf, random as rnd
 from NiaPy.benchmarks import Griewank

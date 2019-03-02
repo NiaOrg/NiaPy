@@ -1,4 +1,4 @@
-# pylint: disable=old-style-class, line-too-long
+# pylint: disable=line-too-long
 from NiaPy.algorithms.basic import ParticleSwarmAlgorithm
 from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
 

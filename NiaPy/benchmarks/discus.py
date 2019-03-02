@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, old-style-class
+# pylint: disable=mixed-indentation, multiple-statements
 """Implementations of Discus functions."""
 
 from NiaPy.benchmarks.benchmark import Benchmark

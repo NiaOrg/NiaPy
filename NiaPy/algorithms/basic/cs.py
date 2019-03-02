@@ -1,7 +1,7 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, line-too-long, singleton-comparison, multiple-statements, attribute-defined-outside-init, no-self-use, logging-not-lazy, unused-variable, arguments-differ, old-style-class, bad-continuation
+# pylint: disable=mixed-indentation, line-too-long, singleton-comparison, multiple-statements, attribute-defined-outside-init, no-self-use, logging-not-lazy, unused-variable, arguments-differ, bad-continuation
 import logging
-from numpy import apply_along_axis, argmin, argsort, where, inf
+from numpy import apply_along_axis, argsort, inf
 from scipy.stats import levy
 from NiaPy.algorithms.algorithm import Algorithm
 
@@ -13,10 +13,15 @@ __all__ = ['CuckooSearch']
 
 class CuckooSearch(Algorithm):
 	r"""Implementation of Cuckoo behaviour and levy flights.
+
 	**Algorithm:** Cuckoo Search
+
 	**Date:** 2018
+
 	**Authors:** Klemen Berkovič
+
 	**License:** MIT
+
 	**Reference:** Yang, Xin-She, and Suash Deb. "Cuckoo search via Lévy flights." Nature & Biologically Inspired Computing, 2009. NaBIC 2009. World Congress on. IEEE, 2009.
 	"""
 	Name = ['CuckooSearch', 'CS']
@@ -31,6 +36,7 @@ class CuckooSearch(Algorithm):
 
 	def setParameters(self, N=50, pa=0.2, alpha=0.5, **ukwargs):
 		r"""Set the arguments of an algorithm.
+
 		**Arguments:**
 		N {integer} -- population size $\in [1, \infty)$
 		pa {real} -- factor $\in [0, 1]$

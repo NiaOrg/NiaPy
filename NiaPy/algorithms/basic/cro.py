@@ -1,8 +1,8 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, line-too-long, singleton-comparison, multiple-statements, attribute-defined-outside-init, no-self-use, logging-not-lazy, unused-variable, arguments-differ, old-style-class, bad-continuation
+# pylint: disable=mixed-indentation, line-too-long, singleton-comparison, multiple-statements, attribute-defined-outside-init, no-self-use, logging-not-lazy, unused-variable, arguments-differ, bad-continuation, redefined-builtin, unused-argument, consider-using-enumerate, expression-not-assigned
 import logging
 from scipy.spatial.distance import euclidean
-from numpy import apply_along_axis, argmin, argsort, where, inf, random as rand, asarray, concatenate, delete, sqrt, sum, unique, append
+from numpy import apply_along_axis, argsort, where, inf, random as rand, asarray, delete, sqrt, sum, unique, append
 from NiaPy.algorithms.algorithm import Algorithm
 
 logging.basicConfig()
@@ -67,7 +67,7 @@ class CoralReefsOptimization(Algorithm):
 
 	def initRun(self, task):
 		Fa, Fb, Fd = self.N * self.Fa, self.N * self.Fb, self.N * self.Fd
-		if not Fa % 2 == 0: Fa += 1
+		if Fa % 2 != 0: Fa += 1
 		Reef = task.Lower + self.rand([self.N, task.D]) * task.bRange
 		Reef_f = apply_along_axis(task.eval, 1, Reef)
 		return Reef, Reef_f, int(Fa), int(Fb), int(Fd)
@@ -78,7 +78,7 @@ class CoralReefsOptimization(Algorithm):
 		Reef, Reef_f = self.setting(Reef, Reef_f, Reefn, Reefn_f, task)
 		return Reef, Reef_f
 
-	def depredation(self, Reef, Reef_f, Fd, task):
+	def depredation(self, Reef, Reef_f, Fd):
 		I = argsort(Reef_f)[::-1][:Fd]
 		return delete(Reef, I), delete(Reef_f, I)
 
@@ -86,7 +86,7 @@ class CoralReefsOptimization(Algorithm):
 		def update(A):
 			D = asarray([sqrt(sum((A - e) ** 2, axis=1)) for e in Xn])
 			I = unique(where(D < self.phi)[0])
-			if len(I) > 0: Xn[I], Xn_f[I] = MoveCorals(Xn[I], self.P_F, self.P_F, task, rnd=self.Rand)
+			if I: Xn[I], Xn_f[I] = MoveCorals(Xn[I], self.P_F, self.P_F, task, rnd=self.Rand)
 		for i in range(self.k): update(X), update(Xn)
 		D = asarray([sqrt(sum((X - e) ** 2, axis=1)) for e in Xn])
 		I = unique(where(D >= self.phi)[0])
@@ -100,7 +100,7 @@ class CoralReefsOptimization(Algorithm):
 			Reefn_b, Reffn_b_f = self.Brooding(delete(Reef, I, 0), self.P_F, task, rnd=self.Rand)
 			Reefn, Reefn_f = self.setting(Reef, Reef_f, append(Reefn_s, Reefn_b, 0), append(Reefn_s_f, Reffn_b_f, 0), task)
 			Reef, Reef_f = self.asexualReprodution(Reef, Reef_f, Fa, task)
-			if task.Iters % self.k == 0: Reef, Reef_f = self.depredation(Reef, Reef_f, task)
+			if task.Iters % self.k == 0: Reef, Reef_f = self.depredation(Reef, Reef_f, Fd)
 		return self.getBest(Reef, Reef_f, None, inf * task.optType.value)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

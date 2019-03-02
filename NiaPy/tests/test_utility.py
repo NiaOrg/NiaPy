@@ -1,8 +1,8 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, unused-variable, unused-argument, redefined-builtin, old-style-class, no-init, line-too-long, broad-except
+# pylint: disable=mixed-indentation, multiple-statements, unused-variable, unused-argument, redefined-builtin, no-init, line-too-long, broad-except
 from unittest import TestCase
 from numpy import full, random as rnd, inf, sum, array_equal, asarray
-from NiaPy.util import Utility, StopingTask, Task, fullArray, ScaledTask, TaskConvPrint, TaskComposition, FesException, GenException
+from NiaPy.util import Utility, StopingTask, fullArray, ScaledTask, TaskConvPrint, TaskComposition, FesException, GenException
 # TimeException, RefException
 
 class FullArrayTestCase(TestCase):
@@ -153,11 +153,9 @@ class StopingTaskBaseTestCase(TestCase):
 
 	def test_ngens(self):
 		self.assertEqual(self.task.nGEN, inf)
-		self.assertEqual(self.task.nGENs(), 100000)
 
 	def test_nfess(self):
 		self.assertEqual(self.task.nFES, inf)
-		self.assertEqual(self.task.nFESs(), 100000)
 
 	def test_stop_cond(self):
 		self.assertFalse(self.task.stopCond())
@@ -204,8 +202,7 @@ class StoppingTaskTestCase(TestCase):
 		self.assertTrue(self.t.stopCond())
 
 	def test_stopCondI(self):
-		for i in range(self.nGEN):
-			self.assertFalse(self.t.stopCondI())
+		for i in range(self.nGEN): self.assertFalse(self.t.stopCondI())
 		self.assertTrue(self.t.stopCondI())
 
 	def test_eval_fine(self):
@@ -255,7 +252,7 @@ class StoppingTaskTestCase(TestCase):
 class ScaledTaskTestCase(TestCase):
 	def setUp(self):
 		self.D, self.nFES, self.nGEN = 10, 10, 10
-		self.t = Task(D=self.D, nFES=self.nFES, nGEN=self.nGEN, benchmark=MyBenchmark())
+		self.t = StopingTask(D=self.D, nFES=self.nFES, nGEN=self.nGEN, benchmark=MyBenchmark())
 		d1, d2 = self.t.bcLower() + self.t.bcRange() / 2, self.t.bcRange() * 0.2
 		L, U = d1, d1 + d2
 		self.tc = ScaledTask(self.t, L, U)

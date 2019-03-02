@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, line-too-long, expression-not-assigned, len-as-condition, no-self-use, unused-argument, no-else-return, old-style-class, dangerous-default-value
+# pylint: disable=mixed-indentation, multiple-statements, line-too-long, expression-not-assigned, len-as-condition, no-self-use, unused-argument, no-else-return, dangerous-default-value, unnecessary-pass
 import logging
 from numpy import random as rand, inf, ndarray, asarray, array_equal, argmin
 from NiaPy.util import StopingTask, OptimizationType
@@ -13,21 +13,25 @@ __all__ = ['Algorithm', 'Individual']
 
 class Algorithm:
 	r"""Class for implementing algorithms.
+
 	**Date:** 2018
+
 	**Author:** Klemen Berkovič
+
 	**License:** MIT
 	"""
-	Name = ['Algorithm', 'AAA'],
-	Rand = rand.RandomState(None),
+	Name = ['Algorithm', 'AAA']
+	Rand = rand.RandomState(None)
 	task = None
 
 	@staticmethod
 	def typeParameters():
-		r"""TODO documentation"""
+		r"""TODO documentation."""
 		pass
 
 	def __init__(self, **kwargs):
 		r"""Initialize algorithm and create name for an algorithm.
+
 		**Arguments:**
 		name {string} -- full name of algorithm
 		shortName {string} -- short name of algorithm
@@ -37,8 +41,10 @@ class Algorithm:
 		nFES {integer} -- number of function evaluations
 		benchmark {object} -- benchmark implementation object
 		task {Task} -- optimization task to perform
+
 		**Raises:**
 		TypeError -- raised when given benchmark function does not exist
+
 		**See**:
 		Algorithm.setParameters(self, **kwargs)
 		"""
@@ -48,6 +54,7 @@ class Algorithm:
 
 	def setParameters(self, **kwargs):
 		r"""Set the parameters/arguments of the algorithm.
+
 		**Arguments:**
 		kwargs {dict} -- parameter values dictionary
 		"""
@@ -55,6 +62,7 @@ class Algorithm:
 
 	def setTask(self, task):
 		r"""Set the benchmark function for the algorithm.
+
 		**Arguments**:
 		bech {Task} -- optimization task to perform
 		"""
@@ -63,8 +71,10 @@ class Algorithm:
 
 	def setBenchmark(self, bech):
 		r"""Set the benchmark for the algorithm.
+
 		**Arguments**:
 		bech {Task} -- optimization task to perform
+
 		**See**:
 		Algorithm.setTask
 		"""
@@ -156,6 +166,7 @@ class Algorithm:
 
 		**Arguments:**
 		task {Task} -- task with bounds and objective function for optimization
+
 		Return:
 		solution {array} -- point of the best solution
 		fitness {real} -- fitness value of the best solution
@@ -164,8 +175,10 @@ class Algorithm:
 
 	def runTask(self, task):
 		r"""Start the optimization.
+
 		**Arguments:**
 		task {Task} -- task with bounds and objective function for optimization
+
 		**Return:**
 		solution {array} -- point of the best solution
 		fitness {real} -- fitness value of best solution
@@ -174,11 +187,14 @@ class Algorithm:
 
 class Individual:
 	r"""Class that represents one solution in population of solutions.
+
 	**Date:** 2018
+
 	**Author:** Klemen Berkovič
+
 	**License:** MIT
 	"""
-	x = None,
+	x = None
 	f = inf
 
 	def __init__(self, **kwargs):
@@ -192,11 +208,8 @@ class Individual:
 		r"""Generate new solution.
 
 		**Arguments:**
-
 		task {Task}
-
 		e {bool} -- evaluate the solution
-
 		rnd {random} -- random numbers generator object
 		"""
 		if task is not None: self.x = task.Lower + task.bRange * rnd.rand(task.D)
@@ -205,7 +218,6 @@ class Individual:
 		r"""Evaluate the solution.
 
 		**Arguments:**
-
 		task {Task} -- objective function object
 		"""
 		self.repair(task, rnd=rnd)
@@ -215,12 +227,12 @@ class Individual:
 		r"""Repair solution and put the solution in the bounds of problem.
 
 		**Arguments:**
-
 		task {Task}
 		"""
 		self.x = task.repair(self.x, rnd=rnd)
 
 	def copy(self):
+		r"""Return a copy of self."""
 		return Individual(x=self.x, f=self.f, e=False)
 
 	def __eq__(self, other):
@@ -235,10 +247,18 @@ class Individual:
 		r"""Get the value of i-th component of the solution.
 
 		**Arguments:**
-
 		i {integer} -- position of the solution component
 		"""
 		return self.x[i]
+
+	def __setitem__(self, i, v):
+		r"""Set the value of i-th component of the solution to v value.
+
+		**Arguments:**
+		i {integer} -- position of the solution component
+		v {dynamic} -- value to set to i-th component
+		"""
+		self.x[i] = v
 
 	def __len__(self):
 		r"""Get the length of the solution or the number of components."""

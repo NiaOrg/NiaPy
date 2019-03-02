@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, logging-not-lazy, attribute-defined-outside-init, line-too-long, arguments-differ, singleton-comparison, bad-continuation, dangerous-default-value
+# pylint: disable=mixed-indentation, multiple-statements, logging-not-lazy, attribute-defined-outside-init, line-too-long, arguments-differ, singleton-comparison, bad-continuation, dangerous-default-value, consider-using-enumerate
 import logging
 from numpy import argmin, apply_along_axis
 from NiaPy.algorithms.algorithm import Individual
@@ -55,13 +55,9 @@ class SelfAdaptiveDifferentialEvolution(DifferentialEvolution):
 		r"""Set the parameters of an algorithm.
 
 		**Arguments:**
-
 		F_l {decimal} -- scaling factor lower limit
-
 		F_u {decimal} -- scaling factor upper limit
-
 		Tao1 {decimal} -- change rate for F parameter update
-
 		Tao2 {decimal} -- change rate for CR parameter update
 		"""
 		DifferentialEvolution.setParameters(self, **ukwargs)
@@ -119,7 +115,7 @@ class AgingSelfAdaptiveDifferentialEvolution(SelfAdaptiveDifferentialEvolution):
 		# FIXME
 		return d
 
-	def setParameters(self, LT_min=1, LT_max=7, age=proportional, CrossMutt=CrossBest1, **ukwargs):
+	def setParameters(self, LT_min=1, LT_max=7, age=proportional, **ukwargs):
 		SelfAdaptiveDifferentialEvolution.setParameters(self, **ukwargs)
 		self.LT_min, self.LT_max, self.age = LT_min, LT_max, age
 		self.mu = abs(self.LT_max - self.LT_min) / 2

@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, unused-argument, line-too-long, len-as-condition, useless-super-delegation, redefined-builtin, arguments-differ, bad-continuation
+# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, unused-argument, line-too-long, len-as-condition, useless-super-delegation, redefined-builtin, arguments-differ, bad-continuation, not-an-iterable
 import logging
 from numpy import argmin, sort, random as rand, asarray, fmin, fmax, sum
 from NiaPy.algorithms.algorithm import Algorithm, Individual
@@ -63,9 +63,13 @@ def CreepMutation(pop, ic, mr, task, rnd=rand):
 
 class GeneticAlgorithm(Algorithm):
 	r"""Implementation of Genetic algorithm.
+
 	**Algorithm:** Genetic algorithm
+
 	**Date:** 2018
+
 	**Author:** Klemen Berkovič
+
 	**License:** MIT
 	"""
 	Name = ['GeneticAlgorithm', 'GA']
@@ -80,6 +84,7 @@ class GeneticAlgorithm(Algorithm):
 
 	def setParameters(self, NP=25, Ts=5, Mr=0.25, Cr=0.25, Selection=TurnamentSelection, Crossover=UniformCrossover, Mutation=UniformMutation, **ukwargs):
 		r"""Set the parameters of the algorithm.
+
 		**Arguments:**
 		NP {integer} -- population size
 		Ts {integer} -- tournament selection

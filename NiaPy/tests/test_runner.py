@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, line-too-long, multiple-statements, old-style-class
+# pylint: disable=mixed-indentation, line-too-long, multiple-statements
 from unittest import TestCase
 import NiaPy
 

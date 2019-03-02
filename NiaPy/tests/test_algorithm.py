@@ -1,9 +1,9 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, function-redefined, multiple-statements, old-style-class, function-redefined
+# pylint: disable=mixed-indentation, function-redefined, multiple-statements, function-redefined, unsubscriptable-object, no-member
 import logging
 from unittest import TestCase
 from numpy import random as rnd, full, inf, array_equal
-from NiaPy.util import Task, OptimizationType
+from NiaPy.util import StopingTask, OptimizationType
 from NiaPy.algorithms.algorithm import Individual, Algorithm
 
 logging.basicConfig()
@@ -27,7 +27,7 @@ class MyBenchmark:
 class IndividualTestCase(TestCase):
 	def setUp(self):
 		self.D = 20
-		self.x, self.task = rnd.uniform(-100, 100, self.D), Task(D=self.D, nFES=230, nGEN=inf, benchmark=MyBenchmark())
+		self.x, self.task = rnd.uniform(-100, 100, self.D), StopingTask(D=self.D, nFES=230, nGEN=inf, benchmark=MyBenchmark())
 		self.s1, self.s2, self.s3 = Individual(x=self.x, e=False), Individual(task=self.task, rand=rnd), Individual(task=self.task)
 
 	def test_x_fine(self):
@@ -75,11 +75,11 @@ class AlgorithBaseTestCase(TestCase):
 		self.assertEqual(o.shape, (10,))
 
 	def test_setParameters(self):
-		a = self.a.setParameters(t=None, a=20)
-		self.assertEqual(a, None)
+		self.a.setParameters(t=None, a=20)
+		self.assertEqual(self.a.a, None)
 
 	def test_setBenchmark(self):
-		task = Task(D=10, nFES=10, nGEN=10, optType=OptimizationType.MINIMIZATION, benchmark=MyBenchmark())
+		task = StopingTask(D=10, nFES=10, nGEN=10, optType=OptimizationType.MINIMIZATION, benchmark=MyBenchmark())
 		a = self.a.setBenchmark(task)
 		self.assertIsInstance(a, Algorithm)
 

@@ -1,7 +1,7 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, line-too-long, unused-argument, no-self-use, no-self-use, attribute-defined-outside-init, logging-not-lazy, len-as-condition, singleton-comparison, arguments-differ, bad-continuation, dangerous-default-value
+# pylint: disable=mixed-indentation, multiple-statements, line-too-long, unused-argument, no-self-use, no-self-use, attribute-defined-outside-init, logging-not-lazy, len-as-condition, singleton-comparison, arguments-differ, bad-continuation, dangerous-default-value, keyword-arg-before-vararg
 import logging
-from numpy import random as rand, argmin, argmax, mean, asarray, cos, apply_along_axis
+from numpy import random as rand, argmin, argmax, mean, asarray, cos
 from scipy.spatial.distance import euclidean
 
 from NiaPy.algorithms.algorithm import Algorithm, Individual

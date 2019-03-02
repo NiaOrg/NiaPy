@@ -73,7 +73,7 @@ class DifferentialEvolutionMTS(DifferentialEvolution):
 		return x, xb
 
 	def runTask(self, task):
-		pop = [MtsIndividual(task.bcRange() * 0.06, task=task, rand=self.Rand, e=True) for _i in range(self.Np)]
+		pop = [MtsIndividual(task.bcRange() * 0.06, task=task, rand=self.Rand, e=True) for _i in range(self.NP)]
 		x_b = pop[argmin([x.f for x in pop])]
 		while not task.stopCondI():
 			npop = [MtsIndividual(pop[i].SR, x=self.CrossMutt(pop, i, x_b, self.F, self.CR, self.Rand), task=task, rand=self.Rand, e=True) for i in range(len(pop))]
@@ -111,8 +111,8 @@ class DynNpDifferentialEvolutionMTS(DifferentialEvolutionMTS):
 		self.pmax, self.rp = pmax, rp
 
 	def runTask(self, task):
-		Gr = task.nFES // (self.pmax * self.Np) + self.rp
-		pop = [MtsIndividual(task.bcRange() * 0.06, task=task, rand=self.Rand, e=True) for _i in range(self.Np)]
+		Gr = task.nFES // (self.pmax * self.NP) + self.rp
+		pop = [MtsIndividual(task.bcRange() * 0.06, task=task, rand=self.Rand, e=True) for _i in range(self.NP)]
 		x_b = pop[argmin([x.f for x in pop])]
 		while not task.stopCondI():
 			npop = [MtsIndividual(pop[i].SR, x=self.CrossMutt(pop, i, x_b, self.F, self.CR, self.Rand), task=task, rand=self.Rand, e=True) for i in range(len(pop))]
@@ -158,7 +158,7 @@ class MultiStratgyDifferentialEvolutionMTS(DifferentialEvolutionMTS):
 		return L[argmin([x.f for x in L])]
 
 	def runTask(self, task):
-		pop = [MtsIndividual(task.bcRange() * 0.06, task=task, rand=self.Rand, e=True) for _i in range(self.Np)]
+		pop = [MtsIndividual(task.bcRange() * 0.06, task=task, rand=self.Rand, e=True) for _i in range(self.NP)]
 		x_b = pop[argmin([x.f for x in pop])]
 		while not task.stopCondI():
 			npop = [self.multiMutations(pop, i, x_b, task) for i in range(len(pop))]
@@ -196,8 +196,8 @@ class DynNpMultiStrategyDifferentialEvolutionMTS(MultiStratgyDifferentialEvoluti
 		self.pmax, self.rp = pmax, rp
 
 	def runTask(self, task):
-		Gr = task.nFES // (self.pmax * self.Np) + self.rp
-		pop = [MtsIndividual(task.bcRange() * 0.06, task=task, rand=self.Rand, e=True) for _i in range(self.Np)]
+		Gr = task.nFES // (self.pmax * self.NP) + self.rp
+		pop = [MtsIndividual(task.bcRange() * 0.06, task=task, rand=self.Rand, e=True) for _i in range(self.NP)]
 		x_b = pop[argmin([x.f for x in pop])]
 		while not task.stopCondI():
 			npop = [MtsIndividual(pop[i].SR, x=self.CrossMutt(pop, i, x_b, self.F, self.CR, self.Rand), task=task, rand=self.Rand, e=True) for i in range(len(pop))]

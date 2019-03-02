@@ -1,14 +1,14 @@
 # encoding=utf8
-# pylint: disable=line-too-long, mixed-indentation, bad-continuation,multiple-statements, unused-argument, no-self-use, trailing-comma-tuple, logging-not-lazy, no-else-return, old-style-class, dangerous-default-value, assignment-from-no-return
+# pylint: disable=line-too-long, mixed-indentation, bad-continuation,multiple-statements, unused-argument, no-self-use, trailing-comma-tuple, logging-not-lazy, no-else-return, dangerous-default-value, assignment-from-no-return
 
 """Implementation of benchmarks utility function."""
 import logging
-from datetime import datetime
+# from datetime import datetime
 from enum import Enum
-from numpy import ndarray, asarray, full, inf, dot, where, random as rand, fabs, ceil, array_equal
+from numpy import ndarray, asarray, full, inf, dot, where, random as rand, fabs, ceil
 from matplotlib import pyplot as plt, animation as anim
 from NiaPy.benchmarks import Rastrigin, Rosenbrock, Griewank, Sphere, Ackley, Schwefel, Schwefel221, Schwefel222, Whitley, Alpine1, Alpine2, HappyCat, Ridge, ChungReynolds, Csendes, Pinter, Qing, Quintic, Salomon, SchumerSteiglitz, Step, Step2, Step3, Stepint, SumSquares, StyblinskiTang, BentCigar, Discus, Elliptic, ExpandedGriewankPlusRosenbrock, HGBat, Katsuura, ExpandedSchaffer, ModifiedSchwefel, Weierstrass, Michalewichz, Levy, Sphere2, Sphere3, Trid, Perm, Zakharov, DixonPrice, Powell, CosineMixture, Infinity, SchafferN2, SchafferN4
-from NiaPy.util.exception import FesException, GenException, TimeException, RefException
+from NiaPy.util.exception import FesException, GenException, RefException #TimeException,
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.util.utility')
@@ -132,7 +132,7 @@ class Task(Utility):
 		"""
 		Utility.__init__(self)
 		# dimension of the problem
-		self.D = D  
+		self.D = D
 		# set optimization type
 		self.optType = optType
 		# set optimization function
@@ -195,7 +195,7 @@ class Task(Utility):
 		Arguments:
 		A {array} -- Solution to check for feasibility
 		"""
-		return (False if True in (A < self.Lower) else True) and (False if True in (A > self.Upper) else True)
+		return not True in A < self.Lower and not True in A > self.Upper
 
 class CountingTask(Task):
 	Iters, Evals = 0, 0
@@ -205,7 +205,7 @@ class CountingTask(Task):
 
 	def eval(self, A):
 		r"""Evaluate the solution A.
-		
+
 		Arguments:
 		A {array} -- Solutions to evaluate
 		"""
@@ -258,26 +258,23 @@ class StopingTask(CountingTask):
 		CountingTask.stopCondI(self)
 		return self.stopCond()
 
-	def stopCondE(self):
-		r"""Throw exception for the given stopping condition."""
-		pass
-
 class ThrowingTask(StopingTask):
-	def __init__(self, **kwargs): 
+	def __init__(self, **kwargs):
 		StopingTask.__init__(self, **kwargs)
 
 	def stopCondE(self):
+		r"""Throw exception for the given stopping condition."""
 		# dtime = datetime.now() - self.startTime
 		if self.Evals >= self.nFES: raise FesException()
-		elif self.Iters >= self.nGEN: raise GenException()
-		# elif self.runTime is not None and self.runTime >= dtime: raise TimeException()
-		elif self.refValue is not None and self.refValue != inf and self.refValue * self.optType.value >= self.x_f: raise RefException()
+		if self.Iters >= self.nGEN: raise GenException()
+		# if self.runTime is not None and self.runTime >= dtime: raise TimeException()
+		if self.refValue >= self.x_f: raise RefException()
 
 	def eval(self, A):
 		self.stopCondE()
 		return StopingTask.eval(self, A)
 
-class MoveTask(ThrowingTask):
+class MoveTask(StopingTask):
 	def __init__(self, o=None, fo=None, M=None, fM=None, optF=None, **kwargs):
 		r"""Initialize task class for optimization.
 
@@ -299,7 +296,7 @@ class MoveTask(ThrowingTask):
 		X = dot(X, self.M) if self.M is not None else X
 		X = self.fM(X) if self.fM is not None else X
 		r = StopingTask.eval(self, X) + (self.optF if self.optF is not None else 0)
-		if r <= self.x_f:  self.x, self.x_f = A, r
+		if r <= self.x_f: self.x, self.x_f = A, r
 		return r
 
 class ScaledTask(Task):
@@ -332,7 +329,7 @@ class ScaledTaskE(ScaledTask):
 
 	def eval(self, A):
 		self.stopCond()
-		return ScaledTask.eval(A)
+		return ScaledTask.eval(self, A)
 
 class TaskConvPrint(StopingTask):
 	def __init__(self, **kwargs):
@@ -347,12 +344,12 @@ class TaskConvPrint(StopingTask):
 
 class TaskConvSave(StopingTask):
 	def __init__(self, **kwargs):
-		Task.__init__(self, **kwargs)
+		StopingTask.__init__(self, **kwargs)
 		self.evals = []
 		self.x_f_vals = []
 
 	def eval(self, A):
-		x_f = Task.eval(self, A)
+		x_f = StopingTask.eval(self, A)
 		if x_f <= self.x_f:
 			self.evals.append(self.Evals)
 			self.x_f_vals.append(x_f)
@@ -372,7 +369,7 @@ class TaskConvPlot(StopingTask):
 		self.showPlot()
 
 	def eval(self, A):
-		x_f = Task.eval(self, A)
+		x_f = StopingTask.eval(self, A)
 		if not self.x_fs: self.x_fs.append(x_f)
 		elif x_f < self.x_fs[-1]: self.x_fs.append(x_f)
 		else: self.x_fs.append(self.x_fs[-1])

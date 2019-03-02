@@ -11,6 +11,7 @@ xlsxwriter = ">=1.0.2"
 matplotlib = "~=2.2.3"
 
 [dev-packages]
+#pylint = [{version = "==1.9.3", markers = "python_version < '3.4'"}, {version = ">=2.3.0", markers = "python_version >= '3.4'"}]
 pylint = ">=2.3.0"
 pycodestyle = "*"
 pydocstyle = "*"
