@@ -181,8 +181,11 @@ class MultiStrategySelfAdaptiveDifferentialEvolution(SelfAdaptiveDifferentialEvo
 	r"""Implementation of self-adaptive differential evolution algorithm with multiple mutation strategys.
 
 	**Algorithm:** Self-adaptive differential evolution algorithm with multiple mutation strategys
+
 	**Date:** 2018
+
 	**Author:** Klemen Berkovič
+
 	**License:** MIT
 	"""
 	Name = ['MultiStrategySelfAdaptiveDifferentialEvolution', 'MsjDE']
@@ -212,8 +215,11 @@ class DynNpMultiStrategySelfAdaptiveDifferentialEvolution(MultiStrategySelfAdapt
 	r"""Implementation of Dynamic population size self-adaptive differential evolution algorithm with multiple mutation strategys.
 
 	**Algorithm:** Dynamic population size self-adaptive differential evolution algorithm with multiple mutation strategys
+
 	**Date:** 2018
+
 	**Author:** Klemen Berkovič
+
 	**License:** MIT
 	"""
 	Name = ['DynNpMultiStrategySelfAdaptiveDifferentialEvolution', 'dynNpMsjDE']
