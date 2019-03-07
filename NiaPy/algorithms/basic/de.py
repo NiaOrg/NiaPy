@@ -82,11 +82,14 @@ class DifferentialEvolution(Algorithm):
 		self.IndividualType = Individual
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def evolve(self, pop, xb, task):
+	def evolve(self, pop, xb, task, **kwargs):
 		return [self.IndividualType(x=self.CrossMutt(pop, i, xb, self.F, self.CR, self.Rand), task=task, rand=self.Rand, e=True) for i in range(len(pop))]
 
-	def selection(self, pop, npop):
+	def selection(self, pop, npop, **kwargs):
 		return [e if e.f < pop[i].f else pop[i] for i, e in enumerate(npop)]
+
+	def postSelection(self, pop, task, **kwargs):
+		return pop
 
 	def runTask(self, task):
 		pop = [self.IndividualType(task=task, e=True, rand=self.Rand) for _ in range(self.NP)]
@@ -96,6 +99,7 @@ class DifferentialEvolution(Algorithm):
 			pop = self.selection(pop, npop)
 			ib = argmin([x.f for x in pop])
 			if xb.f >= pop[ib].f: xb = pop[ib]
+			pop = self.postSelection(pop, task)
 		return xb.x, xb.f
 
 class CrowdingDifferentialEvolution(DifferentialEvolution):
@@ -157,20 +161,11 @@ class DynNpDifferentialEvolution(DifferentialEvolution):
 		self.pmax, self.rp = pmax, rp
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def runTask(self, task):
-		Gr = task.nFES // (self.pmax * self.NP) + self.rp
-		pop = [Individual(task=task, rand=self.Rand, e=True) for _ in range(self.NP)]
-		x_b = pop[argmin([x.f for x in pop])]
-		while not task.stopCondI():
-			npop = [self.IndividualType(x=self.CrossMutt(pop, i, x_b, self.F, self.CR, self.Rand), task=task, rand=self.Rand, e=True) for i in range(len(pop))]
-			pop = self.selection(pop, npop)
-			ix_b = argmin([x.f for x in pop])
-			if x_b.f > pop[ix_b].f: x_b = pop[ix_b]
-			if task.Iters == Gr and len(pop) > 3:
-				NP = int(len(pop) / 2)
-				pop = [pop[i] if pop[i].f < pop[i + NP].f else pop[i + NP] for i in range(NP)]
-				Gr += task.nFES // (self.pmax * NP) + self.rp
-		return x_b.x, x_b.f
+	def postSelection(self, pop, task):
+		def postSelection(self, pop, task):
+			Gr = task.nFES // (self.pmax * len(pop)) + self.rp
+			if task.Iters == Gr and len(pop) > 3: pop = [pop[i] if pop[i].f < pop[i + NP].f else pop[i + NP] for i in range(len(pop) // 2)]
+		return pop
 
 def proportional(Lt_min, Lt_max, mu, x_f, avg, *args): return min(Lt_min + mu * avg / x_f, Lt_max)
 
@@ -207,7 +202,7 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 	def setParameters(self, Lt_min=0, Lt_max=12, delta_np=0.3, omega=0.3, age=proportional, CrossMutt=CrossBest1, **ukwargs):
 		r"""Set the algorithm parameters.
 
-		Arguments:
+		**Arguments**:
 		Lt_min {integer} -- Minimu life time
 		Lt_max {integer} -- Maximum life time
 		age {function} -- Function for calculation of age for individual
@@ -293,16 +288,8 @@ class MultiStrategyDifferentialEvolution(DifferentialEvolution):
 		DifferentialEvolution.setParameters(self, **ukwargs)
 		self.CrossMutt, self.strategys = multiMutations, strategys
 
-	def runTask(self, task):
-		pop = [self.IndividualType(task=task, e=True, rand=self.Rand) for _i in range(self.NP)]
-		ib = argmin([x.f for x in pop])
-		x_b, x_bf = pop[ib].x, pop[ib].f
-		while not task.stopCondI():
-			npop = [self.CrossMutt(pop, i, x_b, self.F, self.CR, self.Rand, task, self.IndividualType, self.strategys) for i in range(self.NP)]
-			pop = self.selection(pop, npop)
-			ib = argmin([x.f for x in pop])
-			if x_bf > pop[ib].f: x_b, x_bf = pop[ib].x, pop[ib].f
-		return x_b, x_bf
+	def evolve(self, pop, xb, task, **kwargs):
+		return [self.CrossMutt(pop, i, x_b, self.F, self.CR, self.Rand, task, self.IndividualType, self.strategys) for i in range(self.NP)]
 
 class DynNpMultiStrategyDifferentialEvolution(MultiStrategyDifferentialEvolution):
 	r"""Implementation of Dynamic population size Differential evolution algorithm with dynamic population size that is defined by the quality of population.
@@ -334,21 +321,10 @@ class DynNpMultiStrategyDifferentialEvolution(MultiStrategyDifferentialEvolution
 		MultiStrategyDifferentialEvolution.setParameters(self, **ukwargs)
 		self.pmax, self.rp = pmax, rp
 
-	def runTask(self, task):
-		Gr = task.nFES // (self.pmax * self.NP) + self.rp
-		pop = [Individual(task=task, e=True, rand=self.Rand) for _i in range(self.NP)]
-		ib = argmin([x.f for x in pop])
-		x_b, x_bf = pop[ib].x, pop[ib].f
-		while not task.stopCondI():
-			npop = [self.CrossMutt(pop, i, x_b, self.F, self.CR, self.Rand, task, self.IndividualType, self.strategys) for i in range(len(pop))]
-			pop = self.selection(pop, npop)
-			ib = argmin([x.f for x in pop])
-			if x_bf > pop[ib].f: x_b, x_bf = pop[ib].x, pop[ib].f
-			if task.Iters == Gr and len(pop) > 3:
-				NP = int(len(pop) / 2)
-				pop = [pop[i] if pop[i].f < pop[i + NP].f else pop[i + NP] for i in range(NP)]
-				Gr += task.nFES // (self.pmax * NP) + self.rp
-		return x_b, x_bf
+	def postSelection(self, pop, task, **kwargs):
+		Gr = task.nFES // (self.pmax * len(pop)) + self.rp
+		if task.Iters == Gr and len(pop) > 3: pop = [pop[i] if pop[i].f < pop[i + NP].f else pop[i + NP] for i in range(len(pop) // 2)]
+		return pop
 
 class AgingNpMultiMutationDifferentialEvolution(AgingNpDifferentialEvolution, MultiStrategyDifferentialEvolution):
 	r"""Implementation of Differential evolution algorithm with aging individuals.

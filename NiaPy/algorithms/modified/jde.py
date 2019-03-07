@@ -61,29 +61,19 @@ class SelfAdaptiveDifferentialEvolution(DifferentialEvolution):
 		Tao2 {decimal} -- change rate for CR parameter update
 		"""
 		DifferentialEvolution.setParameters(self, **ukwargs)
+		self.IndividualType = SolutionjDE
 		self.F_l, self.F_u, self.Tao1, self.Tao2 = F_l, F_u, Tao1, Tao2
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def AdaptiveGen(self, x):
 		f = self.F_l + self.rand() * (self.F_u - self.F_l) if self.rand() < self.Tao1 else x.F
 		cr = self.rand() if self.rand() < self.Tao2 else x.CR
-		return SolutionjDE(x=x.x, F=f, CR=cr, e=False)
+		return self.IndividualType(x=x.x, F=f, CR=cr, e=False)
 
-	def evalPopulation(self, x, x_old, task):
-		"""Evaluate element."""
-		x.evaluate(task, rnd=self.Rand)
-		return selectBetter(x, x_old)
-
-	def runTask(self, task):
-		pop = [SolutionjDE(task=task, F=self.F, CR=self.CR, rand=self.Rand) for _i in range(self.NP)]
-		x_b = pop[argmin([x.f for x in pop])]
-		while not task.stopCondI():
-			npop = [self.AdaptiveGen(e) for e in pop]
-			for i in range(len(npop)): npop[i].x = self.CrossMutt(npop, i, x_b, self.F, self.CR, rnd=self.Rand)
-			pop = [self.evalPopulation(npop[i], pop[i], task) for i in range(len(npop))]
-			ix_b = argmin([x.f for x in pop])
-			if x_b.f > pop[ix_b].f: x_b = pop[ix_b]
-		return x_b.x, x_b.f
+	def evolve(self, pop, xb, task):
+		npop = [self.AdaptiveGen(e) for e in pop]
+		for e in npop: e.x = self.CrossMutt(npop, i, x_b, e.F, e.CR, rnd=self.Rand)
+		return npop
 
 class AgingIndividualJDE(SolutionjDE):
 	def __init__(self, **kwargs):
@@ -112,6 +102,7 @@ class AgingSelfAdaptiveDifferentialEvolution(SelfAdaptiveDifferentialEvolution):
 	@staticmethod
 	def typeParameters():
 		d = SelfAdaptiveDifferentialEvolution.typeParameters()
+		self.IndividualType = SolutionjDE
 		# FIXME
 		return d
 
@@ -120,7 +111,6 @@ class AgingSelfAdaptiveDifferentialEvolution(SelfAdaptiveDifferentialEvolution):
 		self.LT_min, self.LT_max, self.age = LT_min, LT_max, age
 		self.mu = abs(self.LT_max - self.LT_min) / 2
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
-
 
 class DynNpSelfAdaptiveDifferentialEvolutionAlgorithm(SelfAdaptiveDifferentialEvolution):
 	r"""Implementation of Dynamic population size self-adaptive differential evolution algorithm.
@@ -161,21 +151,10 @@ class DynNpSelfAdaptiveDifferentialEvolutionAlgorithm(SelfAdaptiveDifferentialEv
 		self.rp, self.pmax = rp, pmax
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def runTask(self, task):
-		pop = [SolutionjDE(task=task, e=True, F=self.F, CR=self.CR, rand=self.Rand) for _i in range(self.NP)]
-		Gr = task.nFES // (self.pmax * self.NP) + self.rp
-		x_b = pop[argmin([x.f for x in pop])]
-		while not task.stopCondI():
-			npop = [self.AdaptiveGen(pop[i]) for i in range(len(pop))]
-			for i, e in enumerate(npop): e.x = self.CrossMutt(npop, i, x_b, self.F, self.CR, rnd=self.Rand)
-			pop = [self.evalPopulation(npop[i], pop[i], task) for i in range(len(npop))]
-			ix_b = argmin([x.f for x in pop])
-			if x_b.f > pop[ix_b].f: x_b = pop[ix_b]
-			if task.Iters == Gr and len(pop) > 3:
-				NP = int(len(pop) / 2)
-				pop = [pop[i] if pop[i].f < pop[i + NP].f else pop[i + NP] for i in range(NP)]
-				Gr += task.nFES // (self.pmax * NP) + self.rp
-		return x_b.x, x_b.f
+	def postSelection(self, pop, task):
+		Gr = task.nFES // (self.pmax * len(pop)) + self.rp
+		if task.Iters == Gr and len(pop) > 3: pop = [pop[i] if pop[i].f < pop[i + NP].f else pop[i + NP] for i in range(len(pop) // 2)]
+		return pop
 
 class MultiStrategySelfAdaptiveDifferentialEvolution(SelfAdaptiveDifferentialEvolution):
 	r"""Implementation of self-adaptive differential evolution algorithm with multiple mutation strategys.
@@ -192,6 +171,7 @@ class MultiStrategySelfAdaptiveDifferentialEvolution(SelfAdaptiveDifferentialEvo
 
 	def setParameters(self, strategys=[CrossCurr2Rand1, CrossCurr2Best1, CrossRand1, CrossBest1, CrossBest2], **kwargs):
 		SelfAdaptiveDifferentialEvolution.setParameters(self, **kwargs)
+		self.IndividualType = SolutionjDE
 		self.strategys = strategys
 
 	def multiMutations(self, pop, i, x_b, task):
@@ -201,7 +181,7 @@ class MultiStrategySelfAdaptiveDifferentialEvolution(SelfAdaptiveDifferentialEvo
 		return L[ib], L_f[ib]
 
 	def runTask(self, task):
-		pop = [SolutionjDE(task=task, F=self.F, CR=self.CR, rand=self.Rand) for _i in range(self.NP)]
+		pop = [self.IndividualType(task=task, F=self.F, CR=self.CR, rand=self.Rand) for _i in range(self.NP)]
 		x_b = pop[argmin([x.f for x in pop])]
 		while not task.stopCondI():
 			npop = [self.AdaptiveGen(pop[i]) for i in range(len(pop))]

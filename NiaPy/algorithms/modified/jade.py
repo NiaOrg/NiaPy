@@ -1,4 +1,4 @@
-# encoding=utf8
+# encoding=utf9
 # pylint: disable=mixed-indentation, multiple-statements, logging-not-lazy, attribute-defined-outside-init, line-too-long, arguments-differ, singleton-comparison, bad-continuation, dangerous-default-value, consider-using-enumerate
 import logging
 from numpy import random as rand, argmin, argmax, mean, asarray, cos
@@ -10,14 +10,15 @@ logger = logging.getLogger('NiaPy.algorithms.modified')
 logger.setLevel('INFO')
 
 __all__ = [
-	'AdaptiveArchiveDifferentialEvolution'
+	'AdaptiveArchiveDifferentialEvolution',
+	'CrossRandCurr2Pbest'
 ]
 
 def CrossRandCurr2Pbest(pop, ic, x_b, f, cr, rnd=rand, *args):
 	pass
 
 class AdaptiveArchiveDifferentialEvolution(DifferentialEvolution):
-	r"""Implementation of Dynamic population size with aging self-adaptive differential evolution algorithm.
+	r"""Implementation of Adaptive Differential Evolution With Optional External Archive algorithm.
 
 	**Algorithm:** Adaptive Differential Evolution With Optional External Archive
 
