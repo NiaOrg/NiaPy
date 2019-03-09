@@ -3,6 +3,8 @@
 from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
 from NiaPy.algorithms.basic import CoralReefsOptimization
 
+# FIXME algorithm has some problems
+
 class CROTestCase(AlgorithmTestCase):
 	def test_custom_works_fine(self):
 		cro_custom = CoralReefsOptimization(D=self.D, N=20, nFES=self.nFES, nGEN=self.nGEN, benchmark=MyBenchmark(), seed=self.seed)

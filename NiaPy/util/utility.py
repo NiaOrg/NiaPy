@@ -195,7 +195,7 @@ class Task(Utility):
 		Arguments:
 		A {array} -- Solution to check for feasibility
 		"""
-		return not True in A < self.Lower and not True in A > self.Upper
+		return not False in (A > self.Lower) and not False in (A < self.Upper)
 
 class CountingTask(Task):
 	Iters, Evals = 0, 0

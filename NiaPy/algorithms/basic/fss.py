@@ -153,7 +153,7 @@ class FishSchoolSearch(Algorithm):
                 elif new_pos[dim] > task.Upper[dim]: new_pos[dim] = task.Upper[dim]
             cost = task.eval(new_pos)
             if cost < fish.f:
-                fish.delta_cost = abs(cost - fish.cost)
+                fish.delta_cost = abs(cost - fish.f)
                 fish.cost = cost
                 delta_pos = np.zeros((task.D,), dtype=np.float)
                 for idx in range(task.D): delta_pos[idx] = new_pos[idx] - fish.x[idx]
@@ -213,4 +213,4 @@ class FishSchoolSearch(Algorithm):
             school = self.collective_volitive_movement(school=school, curr_step_volitive=curr_step_volitive, prev_weight_school=prev_weight_school, curr_weight_school=curr_weight_school, task=task)
             curr_step_individual, curr_step_volitive = self.update_steps(task)
             best_fish = self.update_best_fish(school, best_fish)
-        return (best_fish.x, best_fish.cost)
+        return (best_fish.x, best_fish.f)

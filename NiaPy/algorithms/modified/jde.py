@@ -72,7 +72,7 @@ class SelfAdaptiveDifferentialEvolution(DifferentialEvolution):
 
 	def evolve(self, pop, xb, task):
 		npop = [self.AdaptiveGen(e) for e in pop]
-		for e in npop: e.x = self.CrossMutt(npop, i, x_b, e.F, e.CR, rnd=self.Rand)
+		for i, e in enumerate(npop): e.x = self.CrossMutt(npop, i, x_b, e.F, e.CR, rnd=self.Rand)
 		return npop
 
 class AgingIndividualJDE(SolutionjDE):

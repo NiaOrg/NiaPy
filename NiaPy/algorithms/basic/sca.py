@@ -59,7 +59,7 @@ class SineCosineAlgorithm(Algorithm):
 			P_f = apply_along_axis(task.eval, 1, P)
 			ib = argmin(P_f)
 			if P_f[ib] < x_f: x, x_f = P[ib], P_f[ib]
-			r1, r2, r3, r4 = self.a - task.Iters * (self.a / task.nGENs()), self.uniform(0, 2 * pi), self.uniform(self.Rmin, self.Rmax), self.rand()
+			r1, r2, r3, r4 = self.a - task.Iters * (self.a / task.Iters), self.uniform(0, 2 * pi), self.uniform(self.Rmin, self.Rmax), self.rand()
 			P = apply_along_axis(self.nextPos, 1, P, x, r1, r2, r3, r4, task)
 		return x, x_f
 

@@ -76,7 +76,8 @@ class AlgorithBaseTestCase(TestCase):
 
 	def test_setParameters(self):
 		self.a.setParameters(t=None, a=20)
-		self.assertEqual(self.a.a, None)
+		self.assertRaises(AttributeError, lambda: self.assertEqual(self.a.a, None))
+
 
 	def test_setBenchmark(self):
 		task = StopingTask(D=10, nFES=10, nGEN=10, optType=OptimizationType.MINIMIZATION, benchmark=MyBenchmark())

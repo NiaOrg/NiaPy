@@ -5,10 +5,10 @@ name = "pypi"
 
 [packages]
 click = "*"
-numpy = ">=1.15.0"
-scipy = ">=1.1.0"
-xlsxwriter = ">=1.0.2"
-matplotlib = "~=2.2.3"
+numpy = ">=1.16.2"
+scipy = ">=1.2.1"
+xlsxwriter = ">=1.1.5"
+matplotlib = "~=3.0.2"
 
 [dev-packages]
 #pylint = [{version = "==1.9.3", markers = "python_version < '3.4'"}, {version = ">=2.3.0", markers = "python_version >= '3.4'"}]

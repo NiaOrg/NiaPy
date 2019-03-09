@@ -7,6 +7,8 @@ from NiaPy.algorithms.modified import SelfAdaptiveDifferentialEvolution, DynNpSe
 from NiaPy.algorithms.modified.jde import SolutionjDE
 from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
 
+# FIXME algorithm has some problems
+
 class SolutionjDETestCase(TestCase):
 	def setUp(self):
 		self.D, self.F, self.CR = 10, 0.9, 0.3

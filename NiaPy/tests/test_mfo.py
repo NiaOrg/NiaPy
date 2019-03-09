@@ -3,6 +3,7 @@
 from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
 from NiaPy.algorithms.basic import MothFlameOptimizer
 
+# FIXME Algoritm not working
 
 class MFOTestCase(AlgorithmTestCase):
 
