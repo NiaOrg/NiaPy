@@ -72,7 +72,7 @@ class SelfAdaptiveDifferentialEvolution(DifferentialEvolution):
 
 	def evolve(self, pop, xb, task):
 		npop = [self.AdaptiveGen(e) for e in pop]
-		for i, e in enumerate(npop): e.x = self.CrossMutt(npop, i, x_b, e.F, e.CR, rnd=self.Rand)
+		for i, e in enumerate(npop): e.x = self.CrossMutt(npop, i, xb, e.F, e.CR, rnd=self.Rand)
 		return npop
 
 class AgingIndividualJDE(SolutionjDE):
@@ -102,7 +102,6 @@ class AgingSelfAdaptiveDifferentialEvolution(SelfAdaptiveDifferentialEvolution):
 	@staticmethod
 	def typeParameters():
 		d = SelfAdaptiveDifferentialEvolution.typeParameters()
-		self.IndividualType = SolutionjDE
 		# FIXME
 		return d
 
@@ -153,7 +152,8 @@ class DynNpSelfAdaptiveDifferentialEvolutionAlgorithm(SelfAdaptiveDifferentialEv
 
 	def postSelection(self, pop, task):
 		Gr = task.nFES // (self.pmax * len(pop)) + self.rp
-		if task.Iters == Gr and len(pop) > 3: pop = [pop[i] if pop[i].f < pop[i + NP].f else pop[i + NP] for i in range(len(pop) // 2)]
+		nNP = len(pop) // 2
+		if task.Iters == Gr and len(pop) > 3: pop = [pop[i] if pop[i].f < pop[i + nNP].f else pop[i + nNP] for i in range(nNP)]
 		return pop
 
 class MultiStrategySelfAdaptiveDifferentialEvolution(SelfAdaptiveDifferentialEvolution):

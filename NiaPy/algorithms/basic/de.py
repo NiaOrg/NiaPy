@@ -162,9 +162,9 @@ class DynNpDifferentialEvolution(DifferentialEvolution):
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def postSelection(self, pop, task):
-		def postSelection(self, pop, task):
-			Gr = task.nFES // (self.pmax * len(pop)) + self.rp
-			if task.Iters == Gr and len(pop) > 3: pop = [pop[i] if pop[i].f < pop[i + NP].f else pop[i + NP] for i in range(len(pop) // 2)]
+		Gr = task.nFES // (self.pmax * len(pop)) + self.rp
+		nNP = len(pop) // 2
+		if task.Iters == Gr and len(pop) > 3: pop = [pop[i] if pop[i].f < pop[i + nNP].f else pop[i + nNP] for i in range(nNP)]
 		return pop
 
 def proportional(Lt_min, Lt_max, mu, x_f, avg, *args): return min(Lt_min + mu * avg / x_f, Lt_max)
@@ -289,7 +289,7 @@ class MultiStrategyDifferentialEvolution(DifferentialEvolution):
 		self.CrossMutt, self.strategys = multiMutations, strategys
 
 	def evolve(self, pop, xb, task, **kwargs):
-		return [self.CrossMutt(pop, i, x_b, self.F, self.CR, self.Rand, task, self.IndividualType, self.strategys) for i in range(self.NP)]
+		return [self.CrossMutt(pop, i, xb, self.F, self.CR, self.Rand, task, self.IndividualType, self.strategys) for i in range(self.NP)]
 
 class DynNpMultiStrategyDifferentialEvolution(MultiStrategyDifferentialEvolution):
 	r"""Implementation of Dynamic population size Differential evolution algorithm with dynamic population size that is defined by the quality of population.
@@ -323,7 +323,8 @@ class DynNpMultiStrategyDifferentialEvolution(MultiStrategyDifferentialEvolution
 
 	def postSelection(self, pop, task, **kwargs):
 		Gr = task.nFES // (self.pmax * len(pop)) + self.rp
-		if task.Iters == Gr and len(pop) > 3: pop = [pop[i] if pop[i].f < pop[i + NP].f else pop[i + NP] for i in range(len(pop) // 2)]
+		nNP = len(pop) // 2
+		if task.Iters == Gr and len(pop) > 3: pop = [pop[i] if pop[i].f < pop[i + nNP].f else pop[i + nNP] for i in range(nNP)]
 		return pop
 
 class AgingNpMultiMutationDifferentialEvolution(AgingNpDifferentialEvolution, MultiStrategyDifferentialEvolution):
