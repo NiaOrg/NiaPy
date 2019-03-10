@@ -20,9 +20,9 @@ __all__ = [
 def selectBetter(x, y): return x if x.f < y.f else y
 
 class SolutionjDE(Individual):
-	def __init__(self, **kwargs):
+	def __init__(self, F=2, CR=0.5, **kwargs):
 		Individual.__init__(self, **kwargs)
-		self.F, self.CR = kwargs.get('F', 2), kwargs.get('CR', 0.5)
+		self.F, self.CR = F, CR
 
 class SelfAdaptiveDifferentialEvolution(DifferentialEvolution):
 	r"""Implementation of Self-adaptive differential evolution algorithm.
@@ -51,7 +51,7 @@ class SelfAdaptiveDifferentialEvolution(DifferentialEvolution):
 		d['Tao2'] = lambda x: isinstance(x, (float, int)) and 0 <= x <= 1
 		return d
 
-	def setParameters(self, F_l=0.0, F_u=2.0, Tao1=0.4, Tao2=0.6, **ukwargs):
+	def setParameters(self, F_l=0.0, F_u=1.0, Tao1=0.4, Tao2=0.2, **ukwargs):
 		r"""Set the parameters of an algorithm.
 
 		**Arguments:**
@@ -64,6 +64,9 @@ class SelfAdaptiveDifferentialEvolution(DifferentialEvolution):
 		self.IndividualType = SolutionjDE
 		self.F_l, self.F_u, self.Tao1, self.Tao2 = F_l, F_u, Tao1, Tao2
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
+
+	def initPop(self, task):
+		return [self.IndividualType(task=task, e=True, F=self.F_l + self.rand() * (self.F_u - self.F_l), CR=self.rand(), rand=self.Rand) for _ in range(self.NP)]
 
 	def AdaptiveGen(self, x):
 		f = self.F_l + self.rand() * (self.F_u - self.F_l) if self.rand() < self.Tao1 else x.F

@@ -91,8 +91,11 @@ class DifferentialEvolution(Algorithm):
 	def postSelection(self, pop, task, **kwargs):
 		return pop
 
+	def initPop(self, task):
+		return [self.IndividualType(task=task, e=True, rand=self.Rand) for _ in range(self.NP)]
+
 	def runTask(self, task):
-		pop = [self.IndividualType(task=task, e=True, rand=self.Rand) for _ in range(self.NP)]
+		pop = self.initPop(task)
 		xb = pop[argmin([x.f for x in pop])]
 		while not task.stopCondI():
 			npop = self.evolve(pop, xb, task)
