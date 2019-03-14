@@ -74,7 +74,7 @@ class EvolutionStrategy1p1(Algorithm):
 		while not task.stopCondI():
 			if task.Iters % self.k == 0: c.rho, ki = self.updateRho(c.rho, ki), 0
 			cn = [task.repair(self.mutate(c.x, c.rho), self.Rand) for _i in range(self.mu)]
-			cn_f = [task.eval(cn[i]) for i in range(self.mu)]
+			cn_f = [task.eval(cn[i]) for i in range(len(cn))]
 			ib = argmin(cn_f)
 			if cn_f[ib] < c.f: c.x, c.f, ki = cn[ib], cn_f[ib], ki + 1
 		return c.x, c.f

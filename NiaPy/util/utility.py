@@ -231,7 +231,7 @@ class CountingTask(Task):
 
 class StopingTask(CountingTask):
 	nGEN, nFES = inf, inf
-	refValue, x, x_f = None, None, None
+	refValue, x, x_f = inf, None, inf
 
 	def __init__(self, nFES=inf, nGEN=inf, refValue=None, **kwargs):
 		r"""Initialize task class for optimization.
@@ -241,13 +241,15 @@ class StopingTask(CountingTask):
 		nGEN {integer} -- Number of generations or iterations
 		"""
 		CountingTask.__init__(self, **kwargs)
-		self.refValue = (-inf if refValue is None else refValue) * self.optType.value
-		self.x_f = inf * self.optType.value
+		self.refValue = (-inf if refValue is None else refValue)
+		self.x_f = inf
 		self.nFES, self.nGEN = nFES, nGEN
 
 	def eval(self, A):
 		if self.stopCond(): return inf * self.optType.value
-		else: return CountingTask.eval(self, A)
+		x_f = CountingTask.eval(self, A)
+		if x_f < self.x_f: self.x_f = x_f
+		return x_f
 
 	def stopCond(self):
 		r"""Check if stopping condition reached."""
@@ -322,8 +324,6 @@ class ScaledTask(Task):
 	def isFeasible(self, A): return self._task.isFeasible(A)
 
 class ScaledTaskE(ScaledTask):
-	x, x_f = None, inf
-
 	def __init__(self, **kwargs):
 		ScaledTask.__init__(self, **kwargs)
 
@@ -332,14 +332,16 @@ class ScaledTaskE(ScaledTask):
 		return ScaledTask.eval(self, A)
 
 class TaskConvPrint(StopingTask):
+	xb, xb_f = inf, None
+
 	def __init__(self, **kwargs):
 		StopingTask.__init__(self, **kwargs)
 
 	def eval(self, A):
 		x_f = StopingTask.eval(self, A)
-		if x_f <= self.x_f:
-			self.x, self.x_f = A, x_f
-			logger.info('nFES:%d nGEN:%d => %s -> %s' % (self.Evals, self.Iters, self.x, self.x_f))
+		if not self.x_f == self.xb_f:
+			self.xb, self.xb_f = A, x_f
+			logger.info('nFES:%d nGEN:%d => %s -> %s' % (self.Evals, self.Iters, self.xb, self.xb_f * self.optType.value))
 		return x_f
 
 class TaskConvSave(StopingTask):
