@@ -5,7 +5,7 @@
 import logging
 # from datetime import datetime
 from enum import Enum
-from numpy import ndarray, asarray, full, inf, dot, where, random as rand, fabs, ceil
+from numpy import ndarray, asarray, full, inf, dot, where, random as rand, fabs, ceil, amin, amax
 from matplotlib import pyplot as plt, animation as anim
 from NiaPy.benchmarks import Rastrigin, Rosenbrock, Griewank, Sphere, Ackley, Schwefel, Schwefel221, Schwefel222, Whitley, Alpine1, Alpine2, HappyCat, Ridge, ChungReynolds, Csendes, Pinter, Qing, Quintic, Salomon, SchumerSteiglitz, Step, Step2, Step3, Stepint, SumSquares, StyblinskiTang, BentCigar, Discus, Elliptic, ExpandedGriewankPlusRosenbrock, HGBat, Katsuura, ExpandedSchaffer, ModifiedSchwefel, Weierstrass, Michalewichz, Levy, Sphere2, Sphere3, Trid, Perm, Zakharov, DixonPrice, Powell, CosineMixture, Infinity, SchafferN2, SchafferN4
 from NiaPy.util.exception import FesException, GenException, RefException #TimeException,
@@ -16,6 +16,10 @@ logger.setLevel('INFO')
 
 __all__ = [
 	'Utility',
+	'limitRepair',
+	'limitInversRepair',
+	'wangRepair',
+	'randRepair',
 	'Task',
 	'TaskConvPrint',
 	'TaskConvPlot',
@@ -114,13 +118,64 @@ class OptimizationType(Enum):
 	MINIMIZATION = 1.0
 	MAXIMIZATION = -1.0
 
+def limitRepair(x, Lower, Upper, **kwargs):
+	r"""Repair solution and put the solution in the random position inside of the bounds of problem.
+
+	Arguments:
+	x {array} -- solution to check and repair if needed
+	"""
+	ir = where(x < Lower)
+	x[ir] = Lower[ir]
+	ir = where(x > Upper)
+	x[ir] = Lower[ir]
+	return x
+
+def limitInversRepair(x, Lower, Upper, **kwargs):
+	r"""Repair solution and put the solution in the random position inside of the bounds of problem.
+
+	Arguments:
+	x {array} -- solution to check and repair if needed
+	"""
+	ir = where(x < Lower)
+	x[ir] = Upper[ir]
+	ir = where(x > Upper)
+	x[ir] = Lower[ir]
+	return x
+
+def wangRepair(x, Lower, Upper, **kwargs):
+	r"""Repair solution and put the solution in the random position inside of the bounds of problem.
+
+	Arguments:
+	x {array} -- solution to check and repair if needed
+	"""
+	ir = where(x < Lower)
+	x[ir] = amin([Upper[ir], 2 * Lower[ir] - x[ir]], axis=0)
+	ir = where(x > Upper)
+	x[ir] = amax([Lower[ir], 2 * Upper[ir] - x[ir]], axis=0)
+	return x
+
+def randRepair(x, Lower, Upper, rnd=rand, **kwargs):
+	r"""Repair solution and put the solution in the random position inside of the bounds of problem.
+
+	Arguments:
+	x {array} -- solution to check and repair if needed
+	Lower {array}
+	Upper {array}
+	rnd {function}
+	"""
+	ir = where(x < Lower)
+	x[ir] = rnd.uniform(Lower[ir], Upper[ir])
+	ir = where(x > Upper)
+	x[ir] = rnd.uniform(Lower[ir], Upper[ir])
+	return x
+
 class Task(Utility):
 	D = 0
 	benchmark = None
 	Lower, Upper, bRange = inf, inf, inf
 	optType = OptimizationType.MINIMIZATION
 
-	def __init__(self, D=0, optType=OptimizationType.MINIMIZATION, benchmark=None, Lower=None, Upper=None, **kwargs):
+	def __init__(self, D=0, optType=OptimizationType.MINIMIZATION, benchmark=None, Lower=None, Upper=None, repair=randRepair **kwargs):
 		r"""Initialize task class for optimization.
 
 		Arguments:
@@ -148,6 +203,8 @@ class Task(Utility):
 		else: self.Upper = fullArray(0, self.D)
 		# set range
 		self.bRange = self.Upper - self.Lower
+		# set repair function
+		self.repair = repair
 
 	def dim(self):
 		r"""Get the number of dimensions."""
@@ -165,6 +222,14 @@ class Task(Utility):
 		r"""Get the range of bound constraint."""
 		return self.Upper - self.Lower
 
+	def repair(self, x, rnd=rand):
+		r"""Repair solution and put the solution in the random position inside of the bounds of problem.
+
+		Arguments:
+		x {array} -- solution to check and repair if needed
+		"""
+		return self.repair(x, self.Lower, self.Upper, rnd)
+
 	def stopCondI(self):
 		r"""Check if stopping condition reached and increase number of iterations."""
 		return False
@@ -176,18 +241,6 @@ class Task(Utility):
 		A {array} -- Solution to evaluate
 		"""
 		return self.Fun(self.D, A) * self.optType.value
-
-	def repair(self, x, rnd=rand):
-		r"""Repair solution and put the solution in the random position inside of the bounds of problem.
-
-		Arguments:
-		x {array} -- solution to check and repair if needed
-		"""
-		ir = where(x < self.Lower)
-		x[ir] = rnd.uniform(self.Lower[ir], self.Upper[ir])
-		ir = where(x > self.Upper)
-		x[ir] = rnd.uniform(self.Lower[ir], self.Upper[ir])
-		return x
 
 	def isFeasible(self, A):
 		r"""Check if the solution is feasible.

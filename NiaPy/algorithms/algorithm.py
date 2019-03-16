@@ -19,10 +19,14 @@ class Algorithm:
 	**Author:** Klemen Berkovič
 
 	**License:** MIT
+
+	**Fields**:
+	Name {array} -- List of names for algorithm
+	Rand {class) -- Random generator
+	task {class} -- Optimization task
 	"""
 	Name = ['Algorithm', 'AAA']
 	Rand = rand.RandomState(None)
-	task = None
 
 	@staticmethod
 	def typeParameters():
@@ -59,15 +63,6 @@ class Algorithm:
 		kwargs {dict} -- parameter values dictionary
 		"""
 		pass
-
-	def setTask(self, task):
-		r"""Set the benchmark function for the algorithm.
-
-		**Arguments**:
-		bech {Task} -- optimization task to perform
-		"""
-		self.task = task
-		return self
 
 	def setBenchmark(self, bech):
 		r"""Set the benchmark for the algorithm.
@@ -148,6 +143,62 @@ class Algorithm:
 		if xb_f >= X_f[ib]: return X[ib], X_f[ib]
 		else: return xb, xb_f
 
+	def initPopulation(self, task):
+		r"""Initialization for starting population of optimization algorithm.
+
+		**Arguments:**
+		task {class} -- Optimization task.
+
+		**Return:**
+		"""
+		return None, None
+
+	def runIteration(self, task, pop, fpop, xb, fxb, **kwargs):
+		r"""
+
+		:param task:
+		:param pop:
+		:param fpop:
+		:param xb:
+		:param fxb:
+		:param kwargs:
+		:return:
+		"""
+		return pop, fpop
+
+	def runYield(self, task):
+		r"""Run the algorithm for a single iteration and return the best solution.
+
+		**Arguments:**
+		task {Task} -- task with bounds and objective function for optimization
+
+		**Return:**
+		solution {array} -- point of the best solution
+		fitness {real} -- fitness value of the best solution
+		"""
+		pop, fpop = self.initPopulation(task)
+		# TODO find best individual
+		yield None, None
+		while True:
+			# run iteration of algorithm and find best individual and then return best individual
+			pop, fpop = self.runIteration(task. pop, fpop, xb, fxb)
+			xb, fxb = None, None
+			yield xb, fxb
+
+	def runTask(self, task):
+		r"""Start the optimization.
+
+		**Arguments:**
+		task {Task} -- task with bounds and objective function for optimization
+
+		**Return:**
+		solution {array} -- point of the best solution
+		fitness {real} -- fitness value of best solution
+		"""
+		algo = self.runYield(task)
+		while not task.stopCondI(): xb, fxb = next(algo)
+		return xb, fxb
+
 	def run(self):
 		r"""Start the optimization.
 
@@ -160,30 +211,6 @@ class Algorithm:
 			return r[0], r[1] * self.task.optType.value
 		except (FesException, GenException, TimeException, RefException): return self.task.x, self.task.x_f * self.task.optType.value
 		return None, inf * self.task.optType.value
-
-	def runYield(self, task):
-		r"""Run the algorithm for a single iteration and return the best solution.
-
-		**Arguments:**
-		task {Task} -- task with bounds and objective function for optimization
-
-		Return:
-		solution {array} -- point of the best solution
-		fitness {real} -- fitness value of the best solution
-		"""
-		yield None, None
-
-	def runTask(self, task):
-		r"""Start the optimization.
-
-		**Arguments:**
-		task {Task} -- task with bounds and objective function for optimization
-
-		**Return:**
-		solution {array} -- point of the best solution
-		fitness {real} -- fitness value of best solution
-		"""
-		return None, None
 
 class Individual:
 	r"""Class that represents one solution in population of solutions.
