@@ -39,12 +39,6 @@ class Algorithm:
 		**Arguments:**
 		name {string} -- full name of algorithm
 		shortName {string} -- short name of algorithm
-		NP {integer} -- population size
-		D {integer} -- dimension of the problem
-		nGEN {integer} -- number of generations/iterations
-		nFES {integer} -- number of function evaluations
-		benchmark {object} -- benchmark implementation object
-		task {Task} -- optimization task to perform
 
 		**Raises:**
 		TypeError -- raised when given benchmark function does not exist
@@ -52,8 +46,7 @@ class Algorithm:
 		**See**:
 		Algorithm.setParameters(self, **kwargs)
 		"""
-		task, self.Rand = kwargs.pop('task', None), rand.RandomState(kwargs.pop('seed', None))
-		self.task = task if task is not None else StopingTask(D=kwargs.pop('D', 10), nFES=kwargs.pop('nFES', inf), nGEN=kwargs.pop('nGEN', inf), benchmark=kwargs.pop('benchmark', 'ackley'), optType=kwargs.pop('optType', OptimizationType.MINIMIZATION))
+		self.Rand = rand.RandomState(kwargs.pop('seed', None))
 		self.setParameters(**kwargs)
 
 	def setParameters(self, **kwargs):
@@ -150,10 +143,13 @@ class Algorithm:
 		task {class} -- Optimization task.
 
 		**Return:**
+		New population.
+		New population fitness values.
+		Additional arguments.
 		"""
-		return None, None
+		return [], [], {}
 
-	def runIteration(self, task, pop, fpop, xb, fxb, **kwargs):
+	def runIteration(self, task, pop, fpop, xb, fxb, **dparams):
 		r"""
 
 		:param task:
@@ -176,13 +172,12 @@ class Algorithm:
 		solution {array} -- point of the best solution
 		fitness {real} -- fitness value of the best solution
 		"""
-		pop, fpop = self.initPopulation(task)
-		# TODO find best individual
-		yield None, None
+		pop, fpop, dparams = self.initPopulation(task)
+		xb, fxb = self.getBest(pop, fpop)
+		yield xb, fxb
 		while True:
-			# run iteration of algorithm and find best individual and then return best individual
-			pop, fpop = self.runIteration(task. pop, fpop, xb, fxb)
-			xb, fxb = None, None
+			pop, fpop, dparams = self.runIteration(task, pop, fpop, xb, fxb, **dparams)
+			xb, fxb = self.getBest(pop, fpop, xb, fxb)
 			yield xb, fxb
 
 	def runTask(self, task):
@@ -196,21 +191,23 @@ class Algorithm:
 		fitness {real} -- fitness value of best solution
 		"""
 		algo = self.runYield(task)
-		while not task.stopCondI(): xb, fxb = next(algo)
+		while not task.stopCond():
+			xb, fxb = next(algo)
+			task.nextIter()
 		return xb, fxb
 
-	def run(self):
+	def run(self, task):
 		r"""Start the optimization.
 
 		**See**:
 		Algorithm.runTask(self, taks)
 		"""
 		try:
-			# self.task.start()
-			r = self.runTask(self.task)
-			return r[0], r[1] * self.task.optType.value
-		except (FesException, GenException, TimeException, RefException): return self.task.x, self.task.x_f * self.task.optType.value
-		return None, inf * self.task.optType.value
+			task.start()
+			r = self.runTask(task)
+			return r[0], r[1] * task.optType.value
+		except (FesException, GenException, TimeException, RefException): return task.x, task.x_f * task.optType.value
+		return None, inf * task.optType.value
 
 class Individual:
 	r"""Class that represents one solution in population of solutions.

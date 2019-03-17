@@ -69,15 +69,18 @@ class EvolutionStrategy1p1(Algorithm):
 		elif phi > 0.2: return self.c_a * rho if rho > self.epsilon else 1
 		else: return rho
 
-	def runTask(self, task):
+	def initPopulation(self, task):
 		c, ki = IndividualES(task=task, rand=self.Rand), 0
-		while not task.stopCondI():
-			if task.Iters % self.k == 0: c.rho, ki = self.updateRho(c.rho, ki), 0
-			cn = [task.repair(self.mutate(c.x, c.rho), self.Rand) for _i in range(self.mu)]
-			cn_f = [task.eval(cn[i]) for i in range(len(cn))]
-			ib = argmin(cn_f)
-			if cn_f[ib] < c.f: c.x, c.f, ki = cn[ib], cn_f[ib], ki + 1
-		return c.x, c.f
+		return [c], [c.f], {'ki': ki}
+
+	def runIteration(self, task, pop, fpop, xb, fxb, ki, **dparams):
+		c = pop[0]
+		if task.Iters % self.k == 0: c.rho, ki = self.updateRho(c.rho, ki), 0
+		cn = [task.repair(self.mutate(c.x, c.rho), self.Rand) for _i in range(self.mu)]
+		cn_f = [task.eval(cn[i]) for i in range(len(cn))]
+		ib = argmin(cn_f)
+		if cn_f[ib] < c.f: c.x, c.f, ki = cn[ib], cn_f[ib], ki + 1
+		return [c], [c.f], {'ki': ki}
 
 class EvolutionStrategyMp1(EvolutionStrategy1p1):
 	r"""Implementation of (mu + 1) evolution strategy algorithm. Algorithm creates mu mutants but into new generation goes only one individual.
@@ -153,17 +156,18 @@ class EvolutionStrategyMpL(EvolutionStrategy1p1):
 		i = self.randint(self.mu)
 		return task.repair(self.mutate(pop[i].x, pop[i].rho), rnd=self.Rand)
 
-	def runTask(self, task):
+	def initPopulation(self, task):
 		c, ki = [IndividualES(task=task, rand=self.Rand) for _i in range(self.mu)], 0
-		while not task.stopCondI():
-			if task.Iters % self.k == 0: _, ki = self.updateRho(c, ki), 0
-			cm = [self.mutateRepair(c, task) for i in range(self.lam)]
-			cn = [IndividualES(x=cm[i], task=task, rand=self.Rand) for i in range(self.lam)]
-			cn.extend(c)
-			cn = [cn[i] for i in argsort([i.f for i in cn])[:self.mu]]
-			ki += self.changeCount(c, cn)
-			c = cn
-		return c[0].x, c[0].f
+		return c, [x.f for x in c], {'ki': ki}
+
+	def runIteration(self, task, c, fpop, xb, fxb, ki, **dparams):
+		if task.Iters % self.k == 0: _, ki = self.updateRho(c, ki), 0
+		cm = [self.mutateRepair(c, task) for i in range(self.lam)]
+		cn = [IndividualES(x=cm[i], task=task, rand=self.Rand) for i in range(self.lam)]
+		cn.extend(c)
+		cn = [cn[i] for i in argsort([i.f for i in cn])[:self.mu]]
+		ki += self.changeCount(c, cn)
+		return c, [x.f for x in cn], {'ki': ki}
 
 class EvolutionStrategyML(EvolutionStrategyMpL):
 	r"""Implementation of (mu, lambda) evolution strategy algorithm. Algorithm is good for dynamic environments. Mu individual create lambda chields. Only best mu chields go to new generation. Mu parents are discarded.
@@ -189,13 +193,15 @@ class EvolutionStrategyML(EvolutionStrategyMpL):
 		for i in range(int(ceil(float(self.mu) / self.lam))): npop.extend(pop[:self.lam if (self.mu - i * self.lam) >= self.lam else self.mu - i * self.lam])
 		return npop
 
-	def runTask(self, task):
+	def initPopulation(self, task):
 		c = [IndividualES(task=task, rand=self.Rand) for _i in range(self.mu)]
-		while not task.stopCondI():
-			cm = [self.mutateRepair(c, task) for i in range(self.lam)]
-			cn = [IndividualES(x=cm[i], task=task, rand=self.Rand) for i in range(self.lam)]
-			c = self.newPop(cn)
-		return c[0].x, c[0].f
+		return c, [x.f for x in c], {}
+
+	def runIteration(self, task, c, fpop, xb, fxb, **dparams):
+		cm = [self.mutateRepair(c, task) for i in range(self.lam)]
+		cn = [IndividualES(x=cm[i], task=task, rand=self.Rand) for i in range(self.lam)]
+		c = self.newPop(cn)
+		return c, [x.f for x in c], {}
 
 def CovarianceMaatrixAdaptionEvolutionStrategyF(task, epsilon=1e-20, rnd=rand):
 	lam, alpha_mu, hs, sigma0 = (4 + round(3 * log(task.D))) * 10, 2, 0, 0.3 * task.bcRange()

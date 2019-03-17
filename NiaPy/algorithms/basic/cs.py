@@ -44,25 +44,26 @@ class CuckooSearch(Algorithm):
 		self.N, self.pa, self.alpha = N, pa, alpha
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def emptyNests(self, N, N_f, pa_v, task):
-		si = argsort(N_f)[::-1]
-		for i, e in enumerate(si):
-			if i <= pa_v: N[e], N_f[e] = self.rand(task.D) * task.bRange, task.eval(N[e])
-			else: break
-		return N, N_f
+	def emptyNests(self, pop, fpop, pa_v, task):
+		si = argsort(fpop)[:int(pa_v):-1]
+		pop[si] = task.Lower + self.rand(task.D) * task.bRange
+		fpop[si] = apply_along_axis(task.eval, 1, pop[si])
+		return pop, fpop
 
-	def runTask(self, task):
+	def initPopulation(self, task):
 		pa_v = self.N * self.pa
 		N = task.Lower + self.rand([self.N, task.D]) * task.bRange
 		N_f = apply_along_axis(task.eval, 1, N)
-		while not task.stopCondI():
-			i = self.randint(self.N)
-			Nn = task.repair(N[i] + self.alpha * levy.rvs(size=[task.D], random_state=self.Rand), rnd=self.Rand)
-			Nn_f = task.eval(Nn)
-			j = self.randint(self.N)
-			while i == j: j = self.randint(self.N)
-			if Nn_f <= N_f[j]: N[j], N_f[j] = Nn, Nn_f
-			N, N_f = self.emptyNests(N, N_f, pa_v, task)
-		return self.getBest(N, N_f, None, inf * task.optType.value)
+		return N, N_f, {'pa_v': pa_v}
+
+	def runIteration(self, task, pop, fpop, xb, fxb, pa_v, **dparams):
+		i = self.randint(self.N)
+		Nn = task.repair(pop[i] + self.alpha * levy.rvs(size=[task.D], random_state=self.Rand), rnd=self.Rand)
+		Nn_f = task.eval(Nn)
+		j = self.randint(self.N)
+		while i == j: j = self.randint(self.N)
+		if Nn_f <= fpop[j]: pop[j], fpop[j] = Nn, Nn_f
+		pop, fpop = self.emptyNests(pop, fpop, pa_v, task)
+		return pop, fpop, {'pa_v': pa_v}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

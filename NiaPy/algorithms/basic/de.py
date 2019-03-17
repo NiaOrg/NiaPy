@@ -14,37 +14,43 @@ logger.setLevel('INFO')
 
 def CrossRand1(pop, ic, x_b, f, cr, rnd=rand, *args):
 	j = rnd.randint(len(pop[ic]))
-	r = rnd.choice(len(pop), 3, replace=not len(pop) >= 3, p=[1 / (len(pop) - 1) if i != ic else 0 for i in range(len(pop))])
+	p = [1 / (len(pop) - 1) if i != ic else 0 for i in range(len(pop))] if len(pop) > 3 else None
+	r = rnd.choice(len(pop), 3, replace=not len(pop) >= 3, p=p)
 	x = [pop[r[0]][i] + f * (pop[r[1]][i] - pop[r[2]][i]) if rnd.rand() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
 	return asarray(x)
 
 def CrossBest1(pop, ic, x_b, f, cr, rnd=rand, *args):
 	j = rnd.randint(len(pop[ic]))
-	r = rnd.choice(len(pop), 2, replace=not len(pop) >= 2, p=[1 / (len(pop) - 1) if i != ic else 0 for i in range(len(pop))])
+	p = [1 / (len(pop) - 1) if i != ic else 0 for i in range(len(pop))] if len(pop) > 2 else None
+	r = rnd.choice(len(pop), 2, replace=not len(pop) >= 2, p=p)
 	x = [x_b[i] + f * (pop[r[0]][i] - pop[r[1]][i]) if rnd.rand() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
 	return asarray(x)
 
 def CrossRand2(pop, ic, x_b, f, cr, rnd=rand, *args):
 	j = rnd.randint(len(pop[ic]))
-	r = rnd.choice(len(pop), 5, replace=not len(pop) >= 5, p=[1 / (len(pop) - 1) if i != ic else 0 for i in range(len(pop))])
+	p = [1 / (len(pop) - 1) if i != ic else 0 for i in range(len(pop))] if len(pop) > 5 else None
+	r = rnd.choice(len(pop), 5, replace=not len(pop) >= 5, p=p)
 	x = [pop[r[0]][i] + f * (pop[r[1]][i] - pop[r[2]][i]) + f * (pop[r[3]][i] - pop[r[4]][i]) if rnd.rand() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
 	return asarray(x)
 
 def CrossBest2(pop, ic, x_b, f, cr, rnd=rand, *args):
 	j = rnd.randint(len(pop[ic]))
-	r = rnd.choice(len(pop), 4, replace=not len(pop) >= 4, p=[1 / (len(pop) - 1) if i != ic else 0 for i in range(len(pop))])
+	p = [1 / (len(pop) - 1) if i != ic else 0 for i in range(len(pop))] if len(pop) > 4 else None
+	r = rnd.choice(len(pop), 4, replace=not len(pop) >= 4, p=p)
 	x = [x_b[i] + f * (pop[r[0]][i] - pop[r[1]][i]) + f * (pop[r[2]][i] - pop[r[3]][i]) if rnd.rand() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
 	return asarray(x)
 
 def CrossCurr2Rand1(pop, ic, x_b, f, cr, rnd=rand, *args):
 	j = rnd.randint(len(pop[ic]))
-	r = rnd.choice(len(pop), 4, replace=not len(pop) >= 4, p=[1 / (len(pop) - 1) if i != ic else 0 for i in range(len(pop))])
+	p = [1 / (len(pop) - 1) if i != ic else 0 for i in range(len(pop))] if len(pop) > 4 else None
+	r = rnd.choice(len(pop), 4, replace=not len(pop) >= 4, p=p)
 	x = [pop[ic][i] + f * (pop[r[0]][i] - pop[r[1]][i]) + f * (pop[r[2]][i] - pop[r[3]][i]) if rnd.rand() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
 	return asarray(x)
 
 def CrossCurr2Best1(pop, ic, x_b, f, cr, rnd=rand, **kwargs):
 	j = rnd.randint(len(pop[ic]))
-	r = rnd.choice(len(pop), 3, replace=not len(pop) >= 3, p=[1 / (len(pop) - 1) if i != ic else 0 for i in range(len(pop))])
+	p = [1 / (len(pop) - 1) if i != ic else 0 for i in range(len(pop))] if len(pop) > 3 else None
+	r = rnd.choice(len(pop), 3, replace=not len(pop) >= 3, p=p)
 	x = [pop[ic][i] + f * (x_b[i] - pop[r[0]][i]) + f * (pop[r[1]][i] - pop[r[2]][i]) if rnd.rand() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
 	return asarray(x)
 
@@ -91,19 +97,16 @@ class DifferentialEvolution(Algorithm):
 	def postSelection(self, pop, task, **kwargs):
 		return pop
 
-	def initPop(self, task):
-		return [self.IndividualType(task=task, e=True, rand=self.Rand) for _ in range(self.NP)]
+	def initPopulation(self, task):
+		pop = [self.IndividualType(task=task, e=True, rand=self.Rand) for _ in range(self.NP)]
+		fpop = [x.f for x in pop]
+		return pop, fpop, {}
 
-	def runTask(self, task):
-		pop = self.initPop(task)
-		xb = pop[argmin([x.f for x in pop])]
-		while not task.stopCondI():
-			npop = self.evolve(pop, xb, task)
-			pop = self.selection(pop, npop)
-			ib = argmin([x.f for x in pop])
-			if xb.f >= pop[ib].f: xb = pop[ib]
-			pop = self.postSelection(pop, task)
-		return xb.x, xb.f
+	def runIteration(self, task, pop, fpop, xb, fxb, **dparams):
+		npop = self.evolve(pop, xb, task)
+		pop = self.selection(pop, npop)
+		pop = self.postSelection(pop, task)
+		return pop, [x.f for x in pop], {}
 
 class CrowdingDifferentialEvolution(DifferentialEvolution):
 	r"""Implementation of Differential evolution algorithm with multiple mutation strateys.
@@ -246,17 +249,13 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 			elif self.rand() >= self.omega: npop.append(e)
 		return npop
 
-	def runTask(self, task):
-		pop = [self.IndividualType(task=task, rand=self.Rand, e=True) for _i in range(self.NP)]
-		xb = pop[argmin([x.f for x in pop])]
-		while not task.stopCondI():
-			npop = self.evolve(pop, xb, task)
-			npop = self.selection(pop, npop)
-			npop.extend(self.popIncrement(pop, task, xb))
-			pop, xbn = self.aging(task, npop)
-			if xbn.f <= xb.f: xb = xbn
-			if len(pop) > self.NP: pop = self.popDecrement(pop, task, xb)
-		return xb.x, xb.f
+	def runIteration(self, task, pop, fpop, xb, fxb, **dparams):
+		npop = self.evolve(pop, xb, task)
+		npop = self.selection(pop, npop)
+		npop.extend(self.popIncrement(pop, task, xb))
+		pop, xbn = self.aging(task, npop)
+		if len(pop) > self.NP: pop = self.popDecrement(pop, task, xbn)
+		return pop, [x.f for x in pop], {}
 
 def multiMutations(pop, i, xb, F, CR, rnd, task, IndividualType, strategys, **kwargs):
 	L = [IndividualType(x=strategy(pop, i, xb, F, CR, rnd=rnd), task=task, e=True, rand=rnd) for strategy in strategys]
@@ -292,7 +291,7 @@ class MultiStrategyDifferentialEvolution(DifferentialEvolution):
 		self.CrossMutt, self.strategys = multiMutations, strategys
 
 	def evolve(self, pop, xb, task, **kwargs):
-		return [self.CrossMutt(pop, i, xb, self.F, self.CR, self.Rand, task, self.IndividualType, self.strategys) for i in range(self.NP)]
+		return [self.CrossMutt(pop, i, xb, self.F, self.CR, self.Rand, task, self.IndividualType, self.strategys) for i in range(len(pop))]
 
 class DynNpMultiStrategyDifferentialEvolution(MultiStrategyDifferentialEvolution):
 	r"""Implementation of Dynamic population size Differential evolution algorithm with dynamic population size that is defined by the quality of population.

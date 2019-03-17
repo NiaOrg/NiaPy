@@ -102,20 +102,33 @@ class AlgorithBaseTestCase(TestCase):
 		a = self.a.runTask(None)
 		self.assertEqual(a, (None, None))
 
+class TestingTask(StopingTask, TestCase):
+	def eval(self, A):
+		r"""Check if is algorithm trying to evaluate solution out of bounds."""
+		self.assertTrue(self.isFeasible(A), 'Solution %s is not in feasible space!!!' % A)
+		return StopingTask.eval(self, A)
+
 class AlgorithmTestCase(TestCase):
 	def setUp(self):
 		self.D, self.nGEN, self.nFES, self.seed = 40, 1000, 1000, 1
 
-	def algorithm_run_test(self, a, b):
-		x = a.run()
+	def setUpTasks(self, bech='griewank'):
+		taskOne, taskTwo = TestingTask(D=self.D, nFES=self.nFES, nGEN=self.nGEN, benchmark=bech), TestingTask(D=self.D, nFES=self.nFES, nGEN=self.nGEN, benchmark=bech)
+		return taskOne, taskTwo
+
+	def algorithm_run_test(self, a, b, benc='griewank'):
+		tOne, tTwo = self.setUpTasks(benc)
+		x = a.run(tOne)
 		self.assertTrue(x)
-		logger.info(x)
-		y = b.run()
+		logger.info('%s -> %s' % (x[0], x[1]))
+		y = b.run(tTwo)
 		self.assertTrue(y)
-		logger.info(y)
+		logger.info('%s -> %s' % (y[0], y[1]))
 		self.assertTrue(array_equal(x[0], y[0]), 'Results can not be reproduced, check usages of random number generator')
 		self.assertEqual(x[1], y[1], 'Results can not be reproduced or bad function value')
-		self.assertEqual(a.task.Iters, b.task.Iters)
-		self.assertEqual(a.task.Evals, b.task.Evals)
+		self.assertTrue(self.nFES >= tOne.Evals)
+		self.assertEqual(tOne.Evals, tTwo.Evals)
+		self.assertTrue(self.nGEN >= tOne.Iters)
+		self.assertEqual(tOne.Iters, tTwo.Iters)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

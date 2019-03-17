@@ -175,7 +175,7 @@ class Task(Utility):
 	Lower, Upper, bRange = inf, inf, inf
 	optType = OptimizationType.MINIMIZATION
 
-	def __init__(self, D=0, optType=OptimizationType.MINIMIZATION, benchmark=None, Lower=None, Upper=None, repair=randRepair **kwargs):
+	def __init__(self, D=0, optType=OptimizationType.MINIMIZATION, benchmark=None, Lower=None, Upper=None, frepair=randRepair, **kwargs):
 		r"""Initialize task class for optimization.
 
 		Arguments:
@@ -184,6 +184,7 @@ class Task(Utility):
 		benchmark {class} or {string} -- Problem to solve
 		Lower {array} or {real} -- Lower limits of the problem
 		Upper {array} or {real} -- Upper limits of the problem
+		frepair {function} -- Function for reparing individuals components to desired limits
 		"""
 		Utility.__init__(self)
 		# dimension of the problem
@@ -204,7 +205,7 @@ class Task(Utility):
 		# set range
 		self.bRange = self.Upper - self.Lower
 		# set repair function
-		self.repair = repair
+		self.frepair = frepair
 
 	def dim(self):
 		r"""Get the number of dimensions."""
@@ -228,11 +229,15 @@ class Task(Utility):
 		Arguments:
 		x {array} -- solution to check and repair if needed
 		"""
-		return self.repair(x, self.Lower, self.Upper, rnd)
+		return self.frepair(x, self.Lower, self.Upper, rnd)
 
-	def stopCondI(self):
-		r"""Check if stopping condition reached and increase number of iterations."""
-		return False
+	def nextIter(self):
+		r"""Increments the number of algorithm iterations."""
+		pass
+
+	def start(self):
+		r"""Start stopwatch."""
+		pass
 
 	def eval(self, A):
 		r"""Evaluate the solution A.
@@ -249,6 +254,10 @@ class Task(Utility):
 		A {array} -- Solution to check for feasibility
 		"""
 		return not False in (A > self.Lower) and not False in (A < self.Upper)
+
+	def stopCond(self):
+		r"""TODO."""
+		return False
 
 class CountingTask(Task):
 	Iters, Evals = 0, 0
