@@ -2,7 +2,7 @@
 # pylint: disable=mixed-indentation, line-too-long, singleton-comparison, multiple-statements, attribute-defined-outside-init, no-self-use, logging-not-lazy, unused-variable, arguments-differ, bad-continuation
 import logging
 from numpy import vectorize, argmin, exp
-from NiaPy.algorithms.algorithm import Algorithm
+from NiaPy.algorithms.algorithm import Algorithm, Individual
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.basic')
@@ -10,7 +10,7 @@ logger.setLevel('INFO')
 
 __all__ = ['CamelAlgorithm']
 
-class Camel:
+class Camel(Individual):
 	r"""Implementation of population individual that is a camel for Camel algorithm.
 
 	**Algorithm:** Camel algorithm
@@ -52,8 +52,6 @@ class Camel:
 	def refill(self, S=None, E=None):
 		self.S = Camel.S_init if S == None else S
 		self.E = Camel.E_init if E == None else E
-
-	def __getitem__(self, i): return self.x[i]
 
 class CamelAlgorithm(Algorithm):
 	r"""Implementation of Camel traveling behavior.

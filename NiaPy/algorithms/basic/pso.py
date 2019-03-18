@@ -56,8 +56,6 @@ class ParticleSwarmAlgorithm(Algorithm):
 		self.NP, self.C1, self.C2, self.w, self.vMin, self.vMax = NP, C1, C2, w, vMin, vMax
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def init(self, task): self.w, self.vMin, self.vMax = fullArray(self.w, task.D), fullArray(self.vMin, task.D), fullArray(self.vMax, task.D)
-
 	def repair(self, x, l, u):
 		ir = where(x < l)
 		x[ir] = l[ir]
@@ -65,21 +63,24 @@ class ParticleSwarmAlgorithm(Algorithm):
 		x[ir] = u[ir]
 		return x
 
-	def runTask(self, task):
+	def init(self, task): return {'w':fullArray(self.w, task.D), 'vMin':fullArray(self.vMin, task.D), 'vMax':fullArray(self.vMax, task.D), 'V':full([self.NP, task.D], 0.0)}
+
+	def initPopulation(self, task):
+		d = self.init(task)
+		pop = task.Lower + task.bRange * self.rand([self.NP, task.D])
+		fpop = apply_along_axis(task.eval, 1, pop)
+		d.update({'popb':pop, 'fpopb':fpop})
+		return pop, fpop, d
+
+	def runIteration(self, task, pop, fpop, xb, fxb, popb, fpopb, w, vMin, vMax, V, **dparams):
 		"""Move particles in search space."""
-		self.init(task)
-		P, P_fit = task.Lower + task.bRange * self.rand([self.NP, task.D]), full(self.NP, task.optType.value * inf)
-		P_pb, P_pb_fit, p_b, p_b_fit, V = P, P_fit, P[0], P_fit[0], full([self.NP, task.D], 0.0)
-		while not task.stopCondI():
-			P = apply_along_axis(self.repair, 1, P, task.Lower, task.Upper)
-			P_fit = apply_along_axis(task.eval, 1, P)
-			ip_pb = where(P_pb_fit > P_fit)
-			P_pb[ip_pb], P_pb_fit[ip_pb] = P[ip_pb], P_fit[ip_pb]
-			ip_b = argmin(P_fit)
-			if p_b_fit > P_fit[ip_b]: p_b, p_b_fit = P[ip_b], P_fit[ip_b]
-			V = self.w * V + self.C1 * self.rand([self.NP, task.D]) * (P_pb - P) + self.C2 * self.rand([self.NP, task.D]) * (p_b - P)
-			V = apply_along_axis(self.repair, 1, V, self.vMin, self.vMax)
-			P = P + V
-		return p_b, p_b_fit
+		V = w * V + self.C1 * self.rand([self.NP, task.D]) * (popb - pop) + self.C2 * self.rand([self.NP, task.D]) * (xb - pop)
+		V = apply_along_axis(self.repair, 1, V, vMin, vMax)
+		pop += V
+		pop = apply_along_axis(task.repair, 1, pop, rnd=self.Rand)
+		fpop = apply_along_axis(task.eval, 1, pop)
+		ip_pb = where(fpop > fpopb)
+		popb[ip_pb], fpopb[ip_pb] = pop[ip_pb], fpop[ip_pb]
+		return pop, fpop, {'popb':popb, 'fpopb':fpopb, 'w':w, 'vMin':vMin, 'vMax':vMax, 'V':V}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
