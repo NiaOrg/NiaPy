@@ -1,7 +1,7 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, redefined-builtin, line-too-long, no-self-use, arguments-differ, no-else-return, bad-continuation
 import logging
-from numpy import random as rand, where, apply_along_axis, zeros, append, ndarray, delete, arange, argmin, absolute
+from numpy import where, apply_along_axis, zeros, append, ndarray, delete, arange, argmin, absolute
 from NiaPy.algorithms.algorithm import Algorithm
 from NiaPy.util import OptimizationType
 
@@ -29,12 +29,12 @@ class ForestOptimizationAlgorithm(Algorithm):
 
     @staticmethod
     def typeParameters(): return {
-            'NP': lambda x: isinstance(x, int) and x > 0,
-            'lt': lambda x: isinstance(x, int) and x > 0,
-            'al': lambda x: isinstance(x, int) and x > 0,
-            'lsc': lambda x: isinstance(x, int) and x > 0,
-            'gsc': lambda x: isinstance(x, int) and x > 0,
-            'tr': lambda x: isinstance(x, float) and x >= 0 and x <= 1,
+        'NP': lambda x: isinstance(x, int) and x > 0,
+        'lt': lambda x: isinstance(x, int) and x > 0,
+        'al': lambda x: isinstance(x, int) and x > 0,
+        'lsc': lambda x: isinstance(x, int) and x > 0,
+        'gsc': lambda x: isinstance(x, int) and x > 0,
+        'tr': lambda x: isinstance(x, (float, int)) and x >= 0 and x <= 1,
     }
 
     def setParameters(self, NP=20, lt=1, al=1, lsc=1, gsc=1, tr=0, **ukwargs):
@@ -68,9 +68,9 @@ class ForestOptimizationAlgorithm(Algorithm):
     def localSeeding(self, task, trees, dx):
         """Local optimum search stage."""
         n = trees.shape[0]
-        deltas = rand.uniform(-dx, dx, (n, self.lsc))
+        deltas = self.uniform(-dx, dx, (n, self.lsc))
         deltas = append(deltas, zeros((n, task.D - self.lsc)), axis=1)
-        perms = rand.rand(*deltas.shape).argsort(1)
+        perms = self.rand([deltas.shape[0], deltas.shape[1]]).argsort(1)
         deltas = deltas[arange(deltas.shape[0])[:, None], perms]
         trees[:, :-1] += deltas
         trees[:, :-1] = apply_along_axis(self.repair, 1, trees[:, :-1], task.Lower, task.Upper)
@@ -78,10 +78,10 @@ class ForestOptimizationAlgorithm(Algorithm):
 
     def globalSeeding(self, task, candidates, size):
         """Global optimum search stage that should prevent getting stuck in a local optimum."""
-        seeds = candidates[rand.randint(len(candidates), size=size), :-1]
-        deltas = rand.uniform(task.benchmark.Lower, task.benchmark.Upper, (size, self.gsc))
+        seeds = candidates[self.randint(len(candidates), D=size), :-1]
+        deltas = self.uniform(task.benchmark.Lower, task.benchmark.Upper, (size, self.gsc))
         deltas = append(deltas, zeros((size, task.D - self.gsc)), axis=1)
-        perms = rand.rand(*deltas.shape).argsort(1)
+        perms = self.rand([deltas.shape[0], deltas.shape[1]]).argsort(1)
         deltas = deltas[arange(deltas.shape[0])[:, None], perms]
 
         deltas = deltas.flatten()
