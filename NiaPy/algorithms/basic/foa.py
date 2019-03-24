@@ -1,7 +1,7 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, redefined-builtin, line-too-long, no-self-use, arguments-differ, no-else-return, bad-continuation
 import logging
-from numpy import random as rand, where, apply_along_axis, zeros, append, ndarray, array, delete, argsort, arange, argmin, inf, absolute
+from numpy import random as rand, where, apply_along_axis, zeros, append, ndarray, delete, arange, argmin, absolute
 from NiaPy.algorithms.algorithm import Algorithm
 from NiaPy.util import OptimizationType
 
@@ -73,7 +73,7 @@ class ForestOptimizationAlgorithm(Algorithm):
         perms = rand.rand(*deltas.shape).argsort(1)
         deltas = deltas[arange(deltas.shape[0])[:, None], perms]
         trees[:, :-1] += deltas
-        trees[:,:-1] = apply_along_axis(self.repair, 1, trees[:,:-1], task.Lower, task.Upper)
+        trees[:, :-1] = apply_along_axis(self.repair, 1, trees[:, :-1], task.Lower, task.Upper)
         return trees
 
     def globalSeeding(self, task, candidates, size):
@@ -92,21 +92,21 @@ class ForestOptimizationAlgorithm(Algorithm):
 
     def removeLifeTimeExceeded(self, trees, candidates):
         """Remove dead trees."""
-        lifeTimeExceeded = where(trees[:,-1] > self.lt)
+        lifeTimeExceeded = where(trees[:, -1] > self.lt)
         candidates = append(candidates, trees[lifeTimeExceeded], axis=0)
         trees = delete(trees, lifeTimeExceeded, axis=0)
         return trees, candidates
 
     def survivalOfTheFittest(self, task, trees, candidates):
         """Evaluation and filtering of current population."""
-        evaluations = apply_along_axis(task.eval, 1, trees[:,:-1])
+        evaluations = apply_along_axis(task.eval, 1, trees[:, :-1])
         ei = evaluations.argsort()
         candidates = append(candidates, trees[self.al:], axis=0)
         trees = trees[ei[:self.al]]
         evaluations = evaluations[ei[:self.al]]
         return trees, candidates, evaluations
 
-    def getBest(self, bestTree, bestTreeEvaluation, trees, evaluations):
+    def getBest(self, trees, evaluations):
         """Get currently best individual."""
         ib = argmin(evaluations)
         return trees[ib], evaluations[ib]
@@ -124,17 +124,17 @@ class ForestOptimizationAlgorithm(Algorithm):
         z = zeros((self.NP, 1))
         forest = append(forest, z, axis=1)
 
-        evaluations = apply_along_axis(task.eval, 1, forest[:,:-1])
-        bestTree, bestTreeEvaluation = self.getBest(None, task.optType.value * inf, forest, evaluations)
+        evaluations = apply_along_axis(task.eval, 1, forest[:, :-1])
+        bestTree, bestTreeEvaluation = self.getBest(forest, evaluations)
 
         dx = absolute(task.benchmark.Upper) / 5
 
         while not task.stopCondI():
             candidatePopulation = ndarray((0, task.D + 1))
-            zeroAgeTrees = forest[forest[:,-1] == 0]
+            zeroAgeTrees = forest[forest[:, -1] == 0]
 
             localSeeds = self.localSeeding(task, zeroAgeTrees, dx)
-            forest[:,-1] += 1
+            forest[:, -1] += 1
 
             forest, candidatePopulation = self.removeLifeTimeExceeded(forest, candidatePopulation)
             forest = append(forest, localSeeds, axis=0)
@@ -144,10 +144,10 @@ class ForestOptimizationAlgorithm(Algorithm):
             if gsn > 0:
                 globalSeeds = self.globalSeeding(task, candidatePopulation, gsn)
                 forest = append(forest, globalSeeds, axis=0)
-                gste = apply_along_axis(task.eval, 1, globalSeeds[:,:-1])
+                gste = apply_along_axis(task.eval, 1, globalSeeds[:, :-1])
                 evaluations = append(evaluations, gste)
             
-            bestTree, bestTreeEvaluation = self.getBest(bestTree, bestTreeEvaluation, forest, evaluations)
+            bestTree, bestTreeEvaluation = self.getBest(forest, evaluations)
             ib = argmin(evaluations)
             forest[ib, -1] = 0
         
@@ -170,5 +170,5 @@ class MyBenchmark(object):
             return val
         return evaluate
 
-algorithm = ForestOptimizationAlgorithm(nFES=200000, NP=30, D=5, lt=6, lsc=2, gsc=2, al=30, tr=0.3, benchmark=MyBenchmark())
+algorithm = ForestOptimizationAlgorithm(nFES=100000, NP=10, D=9, lt=6, lsc=1, gsc=1, al=10, tr=0.3, benchmark=MyBenchmark())
 print(algorithm.run())
