@@ -93,7 +93,7 @@ class ForestOptimizationAlgorithm(Algorithm):
     def removeLifeTimeExceeded(self, trees, candidates):
         """Remove dead trees."""
         lifeTimeExceeded = where(trees[:, -1] > self.lt)
-        candidates = append(candidates, trees[lifeTimeExceeded], axis=0)
+        candidates = trees[lifeTimeExceeded]
         trees = delete(trees, lifeTimeExceeded, axis=0)
         return trees, candidates
 
@@ -101,7 +101,7 @@ class ForestOptimizationAlgorithm(Algorithm):
         """Evaluation and filtering of current population."""
         evaluations = apply_along_axis(task.eval, 1, trees[:, :-1])
         ei = evaluations.argsort()
-        candidates = append(candidates, trees[self.al:], axis=0)
+        candidates = append(candidates, trees[ei[self.al:]], axis=0)
         trees = trees[ei[:self.al]]
         evaluations = evaluations[ei[:self.al]]
         return trees, candidates, evaluations
@@ -170,5 +170,5 @@ class MyBenchmark(object):
             return val
         return evaluate
 
-algorithm = ForestOptimizationAlgorithm(nFES=100000, NP=10, D=9, lt=6, lsc=1, gsc=1, al=10, tr=0.3, benchmark=MyBenchmark())
+algorithm = ForestOptimizationAlgorithm(nFES=200000, NP=10, D=10, lt=10, lsc=2, gsc=2, al=10, tr=0.3, benchmark=MyBenchmark())
 print(algorithm.run())
