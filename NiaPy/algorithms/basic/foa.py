@@ -3,14 +3,12 @@
 import logging
 from numpy import where, apply_along_axis, zeros, append, ndarray, delete, arange, argmin, absolute
 from NiaPy.algorithms.algorithm import Algorithm
-from NiaPy.util import OptimizationType
 
 __all__ = ['ForestOptimizationAlgorithm']
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.basic')
 logger.setLevel('INFO')
-
 
 class ForestOptimizationAlgorithm(Algorithm):
     r"""Implementation of Forest Optimization Algorithm.
@@ -37,7 +35,7 @@ class ForestOptimizationAlgorithm(Algorithm):
         'tr': lambda x: isinstance(x, (float, int)) and x >= 0 and x <= 1,
     }
 
-    def setParameters(self, NP=20, lt=1, al=1, lsc=1, gsc=1, tr=0, **ukwargs):
+    def setParameters(self, NP=10, lt=3, al=10, lsc=1, gsc=1, tr=0.3, **ukwargs):
         r"""Set the parameters of the algorithm.
 
         **Arguments:**
@@ -98,7 +96,7 @@ class ForestOptimizationAlgorithm(Algorithm):
         return trees, candidates
 
     def survivalOfTheFittest(self, task, trees, candidates):
-        """Evaluation and filtering of current population."""
+        """Evaluate and filter current population."""
         evaluations = apply_along_axis(task.eval, 1, trees[:, :-1])
         ei = evaluations.argsort()
         candidates = append(candidates, trees[ei[self.al:]], axis=0)
@@ -146,29 +144,9 @@ class ForestOptimizationAlgorithm(Algorithm):
                 forest = append(forest, globalSeeds, axis=0)
                 gste = apply_along_axis(task.eval, 1, globalSeeds[:, :-1])
                 evaluations = append(evaluations, gste)
-            
+
             bestTree, bestTreeEvaluation = self.getBest(forest, evaluations)
             ib = argmin(evaluations)
             forest[ib, -1] = 0
-        
+
         return bestTree, bestTreeEvaluation
-
-# TODO delete this
-class MyBenchmark(object):
-    def __init__(self):
-        # define lower bound of benchmark function
-        self.Lower = -11
-        # define upper bound of benchmark function
-        self.Upper = 11
-
-    # function which returns evaluate function
-    def function(self):
-        def evaluate(D, sol):
-            val = 0.0
-            for i in range(D):
-                val = val + sol[i] * sol[i]
-            return val
-        return evaluate
-
-algorithm = ForestOptimizationAlgorithm(nFES=200000, NP=10, D=10, lt=10, lsc=2, gsc=2, al=10, tr=0.3, benchmark=MyBenchmark())
-print(algorithm.run())
