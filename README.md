@@ -32,6 +32,7 @@ The micro framework features following algorithms:
   - Firefly algorithm ([see example](examples/run_fa.py))
   - Fireworks algorithm ([see example](examples/run_fwa.py), [see example](examples/run_efwa.py), [see example](examples/run_dfwa.py), [see example](examples/run_bbfwa.py))
   - Flower pollination algorithm ([see example](examples/run_fpa.py))
+  - Forest optimization algorithm ([see example](examples/run_foa.py))
   - Genetic algorithm ([see example](examples/run_ga.py))
   - Glowworm Swarm Optimization ([see example](examples/run_gso.py), [see example](examples/run_gsov1.py), [see example](examples/run_gsov2.py), [see example](examples/run_gsov3.py))
   - Grey wolf optimizer ([see example](examples/run_gwo.py))
@@ -216,7 +217,7 @@ Everyone interacting in NiaPy's codebases, issue trackers, chat rooms and mailin
 ## Contributors
 [<img alt="GregaVrbancic" src="https://avatars0.githubusercontent.com/u/1894788?v=4&s=117" width="117">](https://github.com/GregaVrbancic) |[<img alt="firefly-cpp" src="https://avatars2.githubusercontent.com/u/1633361?v=4&s=117" width="117">](https://github.com/firefly-cpp) |[<img alt="lucijabrezocnik" src="https://avatars2.githubusercontent.com/u/36370699?v=4&s=117" width="117">](https://github.com/lucijabrezocnik) |[<img alt="mlaky88" src="https://avatars1.githubusercontent.com/u/23091578?v=4&s=117" width="117">](https://github.com/mlaky88) |[<img alt="rhododendrom" src="https://avatars1.githubusercontent.com/u/3198785?v=4&s=117" width="117">](https://github.com/rhododendrom) |[<img alt="kb2623" src="https://avatars3.githubusercontent.com/u/7480221?s=460&v=4" width="117">](https://github.com/kb2623)| [<img alt="flyzoor" src="https://avatars2.githubusercontent.com/u/38717032?s=40&v=4" width="117">](https://github.com/Flyzoor) |
 :---: |:---: |:---: |:---: |:---: |:---: |:---: |
-[GregaVrbancic](https://github.com/GregaVrbancic) |[firefly-cpp](https://github.com/firefly-cpp) |[lucijabrezocnik](https://github.com/lucijabrezocnik) |[mlaky88](https://github.com/mlaky88) |[rhododendrom](https://github.com/rhododendrom) |[kb2623](https://github.com/kb2623) |[Flyzoor](https://github.com/Flyzoor) |
+[GregaVrbancic](https://github.com/GregaVrbancic) |[firefly-cpp](https://github.com/firefly-cpp) |[lucijabrezocnik](https://github.com/lucijabrezocnik) |[mlaky88](https://github.com/mlaky88) |[rhododendrom](https://github.com/rhododendrom) |[kb2623](https://github.com/kb2623) |[Flyzoor](https://github.com/Flyzoor) |[lukapecnik](https://github.com/lukapecnik)
 
 
 ## Licence
