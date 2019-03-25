@@ -63,7 +63,8 @@ NiaPyAlgos = [
 	balgos.GravitationalSearchAlgorithm,
 	balgos.CovarianceMaatrixAdaptionEvolutionStrategy,
 	balgos.CoralReefsOptimization,
-	balgos.CuckooSearch
+	balgos.CuckooSearch,
+	balgos.ForestOptimizationAlgorithm
 ]
 
 NiaPyAlgos += [
