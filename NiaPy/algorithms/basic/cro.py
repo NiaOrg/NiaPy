@@ -65,12 +65,12 @@ class CoralReefsOptimization(Algorithm):
 		self.SexualCrossover, self.Brooding, self.Distance = SexualCrossover, Brooding, Distance
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def initRun(self, task):
+	def initPopulation(self, task):
 		Fa, Fb, Fd = self.N * self.Fa, self.N * self.Fb, self.N * self.Fd
 		if Fa % 2 != 0: Fa += 1
 		Reef = task.Lower + self.rand([self.N, task.D]) * task.bRange
 		Reef_f = apply_along_axis(task.eval, 1, Reef)
-		return Reef, Reef_f, int(Fa), int(Fb), int(Fd)
+		return Reef, Reef_f, {'Fa':int(Fa), 'Fb':int(Fb), 'Fd':int(Fd)}
 
 	def asexualReprodution(self, Reef, Reef_f, Fa, task):
 		I = argsort(Reef_f)[:Fa]
@@ -86,21 +86,19 @@ class CoralReefsOptimization(Algorithm):
 		def update(A):
 			D = asarray([sqrt(sum((A - e) ** 2, axis=1)) for e in Xn])
 			I = unique(where(D < self.phi)[0])
-			if I: Xn[I], Xn_f[I] = MoveCorals(Xn[I], self.P_F, self.P_F, task, rnd=self.Rand)
+			if I.any(): Xn[I], Xn_f[I] = MoveCorals(Xn[I], self.P_F, self.P_F, task, rnd=self.Rand)
 		for i in range(self.k): update(X), update(Xn)
 		D = asarray([sqrt(sum((X - e) ** 2, axis=1)) for e in Xn])
 		I = unique(where(D >= self.phi)[0])
 		return append(X, Xn[I], 0), append(X_f, Xn_f[I], 0)
 
-	def runTask(self, task):
-		Reef, Reef_f, Fa, Fb, Fd = self.initRun(task)
-		while not task.stopCondI():
-			I = self.Rand.choice(len(Reef), size=Fb, replace=False)
-			Reefn_s, Reefn_s_f = self.SexualCrossover(Reef[I], self.P_Cr, task, rnd=self.Rand)
-			Reefn_b, Reffn_b_f = self.Brooding(delete(Reef, I, 0), self.P_F, task, rnd=self.Rand)
-			Reefn, Reefn_f = self.setting(Reef, Reef_f, append(Reefn_s, Reefn_b, 0), append(Reefn_s_f, Reffn_b_f, 0), task)
-			Reef, Reef_f = self.asexualReprodution(Reef, Reef_f, Fa, task)
-			if task.Iters % self.k == 0: Reef, Reef_f = self.depredation(Reef, Reef_f, Fd)
-		return self.getBest(Reef, Reef_f, None, inf * task.optType.value)
+	def runIteration(self, task, Reef, Reef_f, xb, fxb, Fa, Fb, Fd, **dparams):
+		I = self.Rand.choice(len(Reef), size=Fb, replace=False)
+		Reefn_s, Reefn_s_f = self.SexualCrossover(Reef[I], self.P_Cr, task, rnd=self.Rand)
+		Reefn_b, Reffn_b_f = self.Brooding(delete(Reef, I, 0), self.P_F, task, rnd=self.Rand)
+		Reefn, Reefn_f = self.setting(Reef, Reef_f, append(Reefn_s, Reefn_b, 0), append(Reefn_s_f, Reffn_b_f, 0), task)
+		Reef, Reef_f = self.asexualReprodution(Reef, Reef_f, Fa, task)
+		if task.Iters % self.k == 0: Reef, Reef_f = self.depredation(Reef, Reef_f, Fd)
+		return Reef, Reef_f, {'Fa':Fa, 'Fb':Fb, 'Fd':Fd}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

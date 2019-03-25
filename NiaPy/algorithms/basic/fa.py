@@ -66,23 +66,17 @@ class FireflyAlgorithm(Algorithm):
 			moved = True
 		return Fireflies[i], moved
 
-	def getBest(self, xb, xb_f, Fireflies, Intensity):
-		ib = argmin(Intensity)
-		if xb_f > Intensity[ib]: return Fireflies[ib], Intensity[ib]
-		else: return xb, xb_f
-
-	def runTask(self, task):
-		"""Run."""
+	def initPopulation(self, task):
 		Fireflies = self.uniform(task.Lower, task.Upper, [self.NP, task.D])
 		Intensity = apply_along_axis(task.eval, 1, Fireflies)
-		(xb, xb_f), alpha = self.getBest(None, task.optType.value * inf, Fireflies, Intensity), self.alpha
-		while not task.stopCondI():
-			alpha = self.alpha_new(task.nFES / self.NP, alpha)
-			Index = argsort(Intensity)
-			tmp = [self.move_ffa(i, Fireflies[Index], Intensity[Index], Fireflies, alpha, task) for i in range(self.NP)]
-			Fireflies, evalF = asarray([tmp[i][0] for i in range(len(tmp))]), asarray([tmp[i][1] for i in range(len(tmp))])
-			Intensity[where(evalF)] = apply_along_axis(task.eval, 1, Fireflies[where(evalF)])
-			xb, xb_f = self.getBest(xb, xb_f, Fireflies, Intensity)
-		return xb, xb_f
+		return Fireflies, Intensity, {'alpha':self.alpha}
+
+	def runIteration(self, task, Fireflies, Intensity, xb, fxb, alpha, **dparams):
+		alpha = self.alpha_new(task.nFES / self.NP, alpha)
+		Index = argsort(Intensity)
+		tmp = [self.move_ffa(i, Fireflies[Index], Intensity[Index], Fireflies, alpha, task) for i in range(self.NP)]
+		Fireflies, evalF = asarray([tmp[i][0] for i in range(len(tmp))]), asarray([tmp[i][1] for i in range(len(tmp))])
+		Intensity[where(evalF)] = apply_along_axis(task.eval, 1, Fireflies[where(evalF)])
+		return Fireflies, Intensity, {'alpha':alpha}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

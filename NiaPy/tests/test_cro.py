@@ -7,13 +7,13 @@ from NiaPy.algorithms.basic import CoralReefsOptimization
 
 class CROTestCase(AlgorithmTestCase):
 	def test_custom_works_fine(self):
-		cro_custom = CoralReefsOptimization(D=self.D, N=20, nFES=self.nFES, nGEN=self.nGEN, benchmark=MyBenchmark(), seed=self.seed)
-		cro_customc = CoralReefsOptimization(D=self.D, N=20, nFES=self.nFES, nGEN=self.nGEN, benchmark=MyBenchmark(), seed=self.seed)
-		AlgorithmTestCase.algorithm_run_test(self, cro_custom, cro_customc)
+		cro_custom = CoralReefsOptimization(N=20, seed=self.seed)
+		cro_customc = CoralReefsOptimization(N=20, seed=self.seed)
+		AlgorithmTestCase.algorithm_run_test(self, cro_custom, cro_customc, MyBenchmark())
 
 	def test_griewank_works_fine(self):
-		cro_griewank = CoralReefsOptimization(N=10, D=self.D, nFES=self.nFES, nGEN=self.nGEN, benchmark='griewank', seed=self.seed)
-		cro_griewankc = CoralReefsOptimization(N=10, D=self.D, nFES=self.nFES, nGEN=self.nGEN, benchmark='griewank', seed=self.seed)
+		cro_griewank = CoralReefsOptimization(N=10, seed=self.seed)
+		cro_griewankc = CoralReefsOptimization(N=10, seed=self.seed)
 		AlgorithmTestCase.algorithm_run_test(self, cro_griewank, cro_griewankc)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

@@ -53,27 +53,18 @@ class BatAlgorithm(Algorithm):
 		self.NP, self.A, self.r, self.Qmin, self.Qmax = NP, A, r, Qmin, Qmax
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def runTask(self, task):
-		r"""Run algorithm with initialized parameters.
-
-		**Return:**
-
-		{decimal} -- coordinates of minimal found objective function
-
-		{decimal} -- minimal value found of objective function
-		"""
+	def initPopulation(self, task):
 		S, Q, v = full([self.NP, task.D], 0.0), full(self.NP, 0.0), full([self.NP, task.D], 0.0)
 		Sol = task.Lower + task.bRange * self.uniform(0, 1, [self.NP, task.D])
 		Fitness = apply_along_axis(task.eval, 1, Sol)
-		j = argmin(Fitness)
-		best, f_min = Sol[j], Fitness[j]
-		while not task.stopCondI():
-			for i in range(self.NP):
-				Q[i], v[i], S[i] = self.Qmin + (self.Qmax - self.Qmin) * self.uniform(0, 1), v[i] + (Sol[i] - best) * Q[i], task.repair(Sol[i] + v[i], rnd=self.Rand)
-				if self.rand() > self.r: S[i] = task.repair(best + 0.001 * self.normal(0, 1, task.D), rnd=self.Rand)
-				Fnew = task.eval(S[i])
-				if (Fnew <= Fitness[i]) and (self.rand() < self.A): Sol[i], Fitness[i] = S[i], Fnew
-				if Fnew <= f_min: best, f_min = S[i], Fnew
-		return best, f_min
+		return Sol, Fitness, {'S': S, 'Q':Q, 'v':v}
+
+	def runIteration(self, task, Sol, Fitness, xb, fxb, S, Q, v, **dparams):
+		for i in range(self.NP):
+			Q[i], v[i], S[i] = self.Qmin + (self.Qmax - self.Qmin) * self.uniform(0, 1), v[i] + (Sol[i] - xb) * Q[i], task.repair(Sol[i] + v[i], rnd=self.Rand)
+			if self.rand() > self.r: S[i] = task.repair(xb + 0.001 * self.normal(0, 1, task.D), rnd=self.Rand)
+			Fnew = task.eval(S[i])
+			if (Fnew <= Fitness[i]) and (self.rand() < self.A): Sol[i], Fitness[i] = S[i], Fnew
+		return Sol, Fitness, {'S': S, 'Q':Q, 'v':v}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

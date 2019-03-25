@@ -22,11 +22,11 @@ class BATestCase(AlgorithmTestCase):
         self.assertFalse(d['Qmax'](None))
 
     def test_custom_works_fine(self):
-        ba_custom = BatAlgorithm(D=self.D, NP=20, nFES=self.nFES, nGEN=self.nGEN, A=0.5, r=0.5, Qmin=0.0, Qmax=2.0, benchmark=MyBenchmark(), seed=self.seed)
-        ba_customc = BatAlgorithm(D=self.D, NP=20, nFES=self.nFES, nGEN=self.nGEN, A=0.5, r=0.5, Qmin=0.0, Qmax=2.0, benchmark=MyBenchmark(), seed=self.seed)
-        AlgorithmTestCase.algorithm_run_test(self, ba_custom, ba_customc)
+        ba_custom = BatAlgorithm(NP=20, A=0.5, r=0.5, Qmin=0.0, Qmax=2.0, seed=self.seed)
+        ba_customc = BatAlgorithm(NP=20, A=0.5, r=0.5, Qmin=0.0, Qmax=2.0, seed=self.seed)
+        AlgorithmTestCase.algorithm_run_test(self, ba_custom, ba_customc, MyBenchmark())
 
     def test_griewank_works_fine(self):
-        ba_griewank = BatAlgorithm(NP=10, D=self.D, nFES=self.nFES, nGEN=self.nGEN, A=0.5, r=0.5, Qmin=0.0, Qmax=2.0, benchmark='griewank', seed=self.seed)
-        ba_griewankc = BatAlgorithm(NP=10, D=self.D, nFES=self.nFES, nGEN=self.nGEN, A=0.5, r=0.5, Qmin=0.0, Qmax=2.0, benchmark='griewank', seed=self.seed)
+        ba_griewank = BatAlgorithm(NP=10, A=0.5, r=0.5, Qmin=0.0, Qmax=2.0, seed=self.seed)
+        ba_griewankc = BatAlgorithm(NP=10, A=0.5, r=0.5, Qmin=0.0, Qmax=2.0, seed=self.seed)
         AlgorithmTestCase.algorithm_run_test(self, ba_griewank, ba_griewankc)

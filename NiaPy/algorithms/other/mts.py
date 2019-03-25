@@ -169,10 +169,6 @@ class MultipleTrajectorySearch(Algorithm):
 		xb, xb_f = min(XBn, key=lambda x: x[1])
 		return x, x_f, xb, xb_f, improve, SR, g
 
-	def getBest(self, X, X_f):
-		ib = argmin(X_f)
-		return X[ib], X_f[ib]
-
 	def runTask(self, task):
 		# TODO izgradi simulirano ortogonalno matriko
 		SOA = self.rand([self.M, task.D])

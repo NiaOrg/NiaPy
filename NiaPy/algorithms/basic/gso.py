@@ -89,11 +89,6 @@ class GlowwormSwarmOptimization(Algorithm):
 
 	def rangeUpdate(self, R, N, rs): return R + self.beta * (self.nt - sum(N))
 
-	def getBest(self, GS, GS_f, xb, xb_f):
-		ib = argmin(GS_f)
-		if GS_f[ib] < xb_f: return GS[ib], GS_f[ib]
-		else: return xb, xb_f
-
 	def runTask(self, task):
 		rs = euclidean(full(task.D, 0), task.bRange)
 		GS, GS_f, L, R = self.uniform(task.Lower, task.Upper, [self.n, task.D]), full(self.n, task.optType.value * inf), full(self.n, self.l0), full(self.n, rs)

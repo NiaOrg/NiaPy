@@ -11,7 +11,7 @@ logger.setLevel('INFO')
 __all__ = ['ArtificialBeeColonyAlgorithm']
 
 class SolutionABC(Individual):
-	def __init__(self, task, rand): Individual.__init__(self, task=task, e=False, rand=rand)
+	def __init__(self, task, rand): Individual.__init__(self, task=task, rand=rand)
 
 class ArtificialBeeColonyAlgorithm(Algorithm):
 	r"""Implementation of Artificial Bee Colony algorithm.
@@ -49,67 +49,48 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 		self.NP = NP  # population size; number of search agents
 		self.FoodNumber = int(self.NP / 2)
 		self.Limit = Limit
-		self.Trial = []  # trials
-		self.Foods = []  # foods
-		self.Probs = []  # probs
+
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def init(self, task):
-		"""Initialize positions."""
-		self.Probs = [0 for i in range(self.FoodNumber)]
-		self.Trial = [0 for i in range(self.FoodNumber)]
-		self.Best = SolutionABC(task, self.Rand)
-		for i in range(self.FoodNumber):
-			self.Foods.append(SolutionABC(task, self.Rand))
-			self.Foods[i].evaluate(task, rnd=self.Rand)
-			self.checkForBest(self.Foods[i])
-
-	def CalculateProbs(self):
+	def CalculateProbs(self, Foods, Probs):
 		"""Calculate probs."""
-		self.Probs = [1.0 / (self.Foods[i].f + 0.01)	for i in range(self.FoodNumber)]
-		s = sum(self.Probs)
-		self.Probs = [self.Probs[i] / s for i in range(self.FoodNumber)]
+		Probs = [1.0 / (Foods[i].f + 0.01) for i in range(self.FoodNumber)]
+		s = sum(Probs)
+		Probs = [Probs[i] / s for i in range(self.FoodNumber)]
+		return Probs
 
-	def checkForBest(self, Solution):
-		"""Check best solution."""
-		if Solution.f <= self.Best.f: self.Best.x, self.Best.f = Solution.x, Solution.f
+	def initPopulation(self, task):
+		"""Initialize positions."""
+		Foods, Probs, Trial = [], [0 for i in range(self.FoodNumber)], [0 for i in range(self.FoodNumber)]
+		# self.Best = SolutionABC(task, self.Rand)
+		for i in range(self.FoodNumber): Foods.append(SolutionABC(task, self.Rand))
+		return Foods, [f.f for f in Foods], {'Probs':Probs, 'Trial':Trial}
 
-	def runTask(self, task):
-		"""Run."""
-		self.init(task)
-		while not task.stopCondI():
-			for i in range(self.FoodNumber):
-				newSolution = copy.deepcopy(self.Foods[i])
+	def runIteration(self, task, Foods, fpop, xb, fxb, Probs, Trial, **dparams):
+		for i in range(self.FoodNumber):
+			newSolution = copy.deepcopy(Foods[i])
+			param2change = int(self.rand() * task.D)
+			neighbor = int(self.FoodNumber * self.rand())
+			newSolution.x[param2change] = Foods[i].x[param2change] + (-1 + 2 * self.rand()) * (Foods[i].x[param2change] - Foods[neighbor].x[param2change])
+			newSolution.evaluate(task, rnd=self.Rand)
+			if newSolution.f < Foods[i].f: Foods[i], Trial[i] = newSolution, 0
+			else: Trial[i] += 1
+		Probs, t, s = self.CalculateProbs(Foods, Probs), 0, 0
+		while t < self.FoodNumber:
+			if self.rand() < Probs[s]:
+				t += 1
+				Solution = copy.deepcopy(Foods[s])
 				param2change = int(self.rand() * task.D)
 				neighbor = int(self.FoodNumber * self.rand())
-				newSolution.x[param2change] = self.Foods[i].x[param2change] + (-1 + 2 * self.rand()) * (self.Foods[i].x[param2change] - self.Foods[neighbor].x[param2change])
-				newSolution.evaluate(task, rnd=self.Rand)
-				if newSolution.f < self.Foods[i].f:
-					self.checkForBest(newSolution)
-					self.Foods[i], self.Trial[i] = newSolution, 0
-				else: self.Trial[i] += 1
-			self.CalculateProbs()
-			t, s = 0, 0
-			while t < self.FoodNumber:
-				if self.rand() < self.Probs[s]:
-					t += 1
-					Solution = copy.deepcopy(self.Foods[s])
-					param2change = int(self.rand() * task.D)
-					neighbor = int(self.FoodNumber * self.rand())
-					while neighbor == s: neighbor = int(self.FoodNumber * self.rand())
-					Solution.x[param2change] = self.Foods[s].x[param2change] + (-1 + 2 * self.rand()) * (self.Foods[s].x[param2change] - self.Foods[neighbor].x[param2change])
-					Solution.evaluate(task, rnd=self.Rand)
-					if Solution.f < self.Foods[s].f:
-						self.checkForBest(newSolution)
-						self.Foods[s], self.Trial[s] = Solution, 0
-					else: self.Trial[s] += 1
-				s += 1
-				if s == self.FoodNumber: s = 0
-			mi = self.Trial.index(max(self.Trial))
-			if self.Trial[mi] >= self.Limit:
-				self.Foods[mi] = SolutionABC(task, self.Rand)
-				self.Foods[mi].evaluate(task, rnd=self.Rand)
-				self.Trial[mi] = 0
-		return self.Best.x, self.Best.f
+				while neighbor == s: neighbor = int(self.FoodNumber * self.rand())
+				Solution.x[param2change] = Foods[s].x[param2change] + (-1 + 2 * self.rand()) * (Foods[s].x[param2change] - Foods[neighbor].x[param2change])
+				Solution.evaluate(task, rnd=self.Rand)
+				if Solution.f < Foods[s].f: Foods[s], Trial[s] = Solution, 0
+				else: Trial[s] += 1
+			s += 1
+			if s == self.FoodNumber: s = 0
+		mi = Trial.index(max(Trial))
+		if Trial[mi] >= self.Limit: Foods[mi], Trial[mi] = SolutionABC(task, self.Rand), 0
+		return Foods, [f.f for f in Foods], {'Probs':Probs, 'Trial':Trial}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
