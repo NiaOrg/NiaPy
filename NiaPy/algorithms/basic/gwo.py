@@ -1,7 +1,7 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, line-too-long, arguments-differ, bad-continuation
 import logging
-from numpy import fabs, inf, where
+from numpy import fabs, inf, where, apply_along_axis
 from NiaPy.algorithms.algorithm import Algorithm
 
 logging.basicConfig()
@@ -42,34 +42,31 @@ class GreyWolfOptimizer(Algorithm):
 		self.NP = NP
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def repair(self, x, task):
-		"""Find limits."""
-		ir = where(x > task.bcUpper())
-		x[ir] = task.bcUpper()[ir]
-		ir = where(x < task.bcLower())
-		x[ir] = task.bcLower()[ir]
-		return x
-
-	def runTask(self, task):
-		"""Run."""
+	def initPopulation(self, task):
 		pop = task.Lower + task.bRange * self.rand([self.NP, task.D])
+		fpop = apply_along_axis(task.eval, 1, pop)
 		A, A_f, B, B_f, D, D_f = None, task.optType.value * inf, None, task.optType.value * inf, None, task.optType.value * inf
-		while not task.stopCondI():
-			for i in range(self.NP):
-				pop[i] = self.repair(pop[i], task)
-				f = task.eval(pop[i])
-				if f < A_f: A, A_f = pop[i], f
-				elif A_f < f < B_f: B, B_f = pop[i], f
-				elif B_f < f < D_f: D, D_f = pop[i], f
-			a = 2 - task.Evals * (2 / task.nFES)
-			for i, w in enumerate(pop):
-				A1, C1 = 2 * a * self.rand(task.D) - a, 2 * self.rand(task.D)
-				X1 = A - A1 * fabs(C1 * A - w)
-				A2, C2 = 2 * a * self.rand(task.D) - a, 2 * self.rand(task.D)
-				X2 = B - A2 * fabs(C2 * B - w)
-				A3, C3 = 2 * a * self.rand(task.D) - a, 2 * self.rand(task.D)
-				X3 = D - A3 * fabs(C3 * D - w)
-				pop[i] = (X1 + X2 + X3) / 3
-		return A, A_f
+		for i, f in enumerate(fpop):
+			if f < A_f: A, A_f = pop[i], f
+			elif A_f < f < B_f: B, B_f = pop[i], f
+			elif B_f < f < D_f: D, D_f = pop[i], f
+		return pop, fpop, {'A':A, 'A_f':A_f, 'B':B, 'B_f':B_f, 'D':D, 'D_f':D_f}
+
+	def runIteration(self, task, pop, fpop, xb, fxb, A, A_f, B, B_f, D, D_f, **dparams):
+		a = 2 - task.Evals * (2 / task.nFES)
+		for i, w in enumerate(pop):
+			A1, C1 = 2 * a * self.rand(task.D) - a, 2 * self.rand(task.D)
+			X1 = A - A1 * fabs(C1 * A - w)
+			A2, C2 = 2 * a * self.rand(task.D) - a, 2 * self.rand(task.D)
+			X2 = B - A2 * fabs(C2 * B - w)
+			A3, C3 = 2 * a * self.rand(task.D) - a, 2 * self.rand(task.D)
+			X3 = D - A3 * fabs(C3 * D - w)
+			pop[i] = task.repair((X1 + X2 + X3) / 3, self.Rand)
+			fpop[i] = task.eval(pop[i])
+		for i, f in enumerate(fpop):
+			if f < A_f: A, A_f = pop[i], f
+			elif A_f < f < B_f: B, B_f = pop[i], f
+			elif B_f < f < D_f: D, D_f = pop[i], f
+		return pop, fpop, {'A':A, 'A_f':A_f, 'B':B, 'B_f':B_f, 'D':D, 'D_f':D_f}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

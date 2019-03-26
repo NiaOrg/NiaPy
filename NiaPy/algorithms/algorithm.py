@@ -133,7 +133,8 @@ class Algorithm:
 		xb_f {real} -- Fitness value of best individal
 		"""
 		ib = argmin(X_f)
-		if xb_f >= X_f[ib]: return X[ib], X_f[ib]
+		if isinstance(X_f, (ndarray, list)) and xb_f >= X_f[ib]: return X[ib], X_f[ib]
+		elif xb_f >= X_f: return X, X_f
 		else: return xb, xb_f
 
 	def initPopulation(self, task):
@@ -160,7 +161,7 @@ class Algorithm:
 		:param kwargs:
 		:return:
 		"""
-		return pop, fpop
+		return pop, fpop, {}
 
 	def runYield(self, task):
 		r"""Run the algorithm for a single iteration and return the best solution.

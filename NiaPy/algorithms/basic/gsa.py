@@ -50,20 +50,21 @@ class GravitationalSearchAlgorithm(Algorithm):
 
 	def d(self, x, y, ln=2): return sum((x - y) ** ln) ** (1 / ln)
 
-	def runTask(self, task):
+	def initPopulation(self, task):
 		X, v = self.uniform(task.Lower, task.Upper, [self.NP, task.D]), full([self.NP, task.D], 0.0)
-		xb, xb_f = None, task.optType.value * inf
-		while not task.stopCondI():
-			X_f = apply_along_axis(task.eval, 1, X)
-			ib, iw = argmin(X_f), argmax(X_f)
-			if xb_f > X_f[ib]: xb, xb_f = X[ib], X_f[ib]
-			m = (X_f - X_f[iw]) / (X_f[ib] - X_f[iw])
-			M = m / sum(m)
-			Fi = asarray([[self.G(task.Iters) * ((M[i] * M[j]) / (self.d(X[i], X[j]) + self.epsilon)) * (X[j] - X[i]) for j in range(len(M))] for i in range(len(M))])
-			F = sum(self.rand([self.NP, task.D]) * Fi, axis=1)
-			a = F.T / (M + self.epsilon)
-			v = self.rand([self.NP, task.D]) * v + a.T
-			X = apply_along_axis(task.repair, 1, X + v, self.Rand)
-		return xb, xb_f
+		X_f = apply_along_axis(task.eval, 1, X)
+		return X, X_f, {'v':v}
+
+	def runIteration(self, task, X, X_f, xb, fxb, v, **dparams):
+		ib, iw = argmin(X_f), argmax(X_f)
+		m = (X_f - X_f[iw]) / (X_f[ib] - X_f[iw])
+		M = m / sum(m)
+		Fi = asarray([[self.G(task.Iters) * ((M[i] * M[j]) / (self.d(X[i], X[j]) + self.epsilon)) * (X[j] - X[i]) for j in range(len(M))] for i in range(len(M))])
+		F = sum(self.rand([self.NP, task.D]) * Fi, axis=1)
+		a = F.T / (M + self.epsilon)
+		v = self.rand([self.NP, task.D]) * v + a.T
+		X = apply_along_axis(task.repair, 1, X + v, self.Rand)
+		X_f = apply_along_axis(task.eval, 1, X)
+		return X, X_f, {'v':v}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

@@ -132,10 +132,6 @@ class CrowdingDifferentialEvolution(DifferentialEvolution):
 			P.append(pop[i] if pop[i].f < e.f else e)
 		return P
 
-	def runTask(self, task):
-		# FIXME Dodaj telo funkcije, ki uporablja grucenje
-		return None, None
-
 class DynNpDifferentialEvolution(DifferentialEvolution):
 	r"""Implementation of Dynamic poulation size Differential evolution algorithm.
 

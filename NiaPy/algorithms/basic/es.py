@@ -10,7 +10,7 @@ logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.basic')
 logger.setLevel('INFO')
 
-__all__ = ['EvolutionStrategy1p1', 'EvolutionStrategyMp1', 'EvolutionStrategyMpL', 'EvolutionStrategyML', 'CovarianceMaatrixAdaptionEvolutionStrategy']
+__all__ = ['EvolutionStrategy1p1', 'EvolutionStrategyMp1', 'EvolutionStrategyMpL', 'EvolutionStrategyML', 'CovarianceMatrixAdaptionEvolutionStrategy']
 
 class IndividualES(Individual):
 	def __init__(self, **kwargs):
@@ -241,7 +241,7 @@ def CovarianceMaatrixAdaptionEvolutionStrategyF(task, epsilon=1e-20, rnd=rand):
 			C = lstsq(V.T, dot(V, diag(E)).T, rcond=None)[0].T
 	return x, x_f
 
-class CovarianceMaatrixAdaptionEvolutionStrategy(Algorithm):
+class CovarianceMatrixAdaptionEvolutionStrategy(Algorithm):
 	r"""Implementation of (mu, lambda) evolution strategy algorithm. Algorithm is good for dynamic environments. Mu individual create lambda chields. Only best mu chields go to new generation. Mu parents are discarded.
 
 	**Algorithm:** ($mu$ + $lambda$) Evolution Strategy Algorithm
@@ -256,7 +256,7 @@ class CovarianceMaatrixAdaptionEvolutionStrategy(Algorithm):
 
 	**Reference paper:** Hansen, Nikolaus. "The CMA evolution strategy: A tutorial." arXiv preprint arXiv:1604.00772 (2016).
 	"""
-	Name = ['CovarianceMaatrixAdaptionEvolutionStrategy', 'CMA-ES', 'CMAES']
+	Name = ['CovarianceMatrixAdaptionEvolutionStrategy', 'CMA-ES', 'CMAES']
 
 	@staticmethod
 	def typeParameters(): return {

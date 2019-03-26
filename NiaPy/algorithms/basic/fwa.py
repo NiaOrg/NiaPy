@@ -51,16 +51,18 @@ class BareBonesFireworksAlgorithm(Algorithm):
 		self.n, self.C_a, self.C_r = n, C_a, C_r
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def runTask(self, task):
+	def initPopulation(self, task):
 		x, A = self.uniform(task.Lower, task.Upper, task.D), task.bRange
 		x_fit = task.eval(x)
-		while not task.stopCondI():
-			S = self.uniform(x - A, x + A, [self.n, task.D])
-			S_fit = apply_along_axis(task.eval, 1, S)
-			iS = argmin(S_fit)
-			if S_fit[iS] < x_fit: x, x_fit, A = S[iS], S_fit[iS], self.C_a * A
-			else: A = self.C_r * A
-		return x, x_fit
+		return x, x_fit, {'A': A}
+
+	def runIteration(self, task, x, x_fit, xb, fxb, A, **dparams):
+		S = apply_along_axis(task.repair, 1, self.uniform(x - A, x + A, [self.n, task.D]), self.Rand)
+		S_fit = apply_along_axis(task.eval, 1, S)
+		iS = argmin(S_fit)
+		if S_fit[iS] < x_fit: x, x_fit, A = S[iS], S_fit[iS], self.C_a * A
+		else: A = self.C_r * A
+		return x, x_fit, {'A': A}
 
 class FireworksAlgorithm(Algorithm):
 	r"""Implementation of fireworks algorithm.
@@ -142,20 +144,20 @@ class FireworksAlgorithm(Algorithm):
 		FW[1:], FW_f[1:] = asarray(FWn)[isort], FWn_f[isort]
 		return FW, FW_f
 
-	def runTask(self, task):
+	def initPopulation(self, task):
 		FW, Ah = self.uniform(task.Lower, task.Upper, [self.N, task.D]), self.initAmplitude(task)
 		FW_f = apply_along_axis(task.eval, 1, FW)
-		ib = argmin(FW_f)
-		FW[0], FW_f[0] = FW[ib], FW_f[ib]
-		while not task.stopCondI():
-			iw, ib = argmax(FW_f), 0
-			Ss, As = sum(FW_f[iw] - FW_f), sum(FW_f - FW_f[ib])
-			S = [self.SparsksNo(FW_f[i], FW_f[iw], Ss) for i in range(self.N)]
-			A = [self.ExplosionAmplitude(FW_f[i], FW_f[ib], Ah, As) for i in range(self.N)]
-			FWn = [self.ExplodeSpark(FW[i], A[i], task) for i in range(self.N) for _ in range(S[i])]
-			for i in range(self.m): FWn.append(self.GaussianSpark(self.randint(self.N), task))
-			FW, FW_f = self.NextGeneration(FW, FW_f, FWn, task)
-		return FW[0], FW_f[0]
+		return FW, FW_f, {'Ah':Ah}
+
+	def runIteration(self, task, FW, FW_f, xb, fxb, Ah, **dparams):
+		iw, ib = argmax(FW_f), 0
+		Ss, As = sum(FW_f[iw] - FW_f), sum(FW_f - FW_f[ib])
+		S = [self.SparsksNo(FW_f[i], FW_f[iw], Ss) for i in range(self.N)]
+		A = [self.ExplosionAmplitude(FW_f[i], FW_f[ib], Ah, As) for i in range(self.N)]
+		FWn = [self.ExplodeSpark(FW[i], A[i], task) for i in range(self.N) for _ in range(S[i])]
+		for i in range(self.m): FWn.append(self.GaussianSpark(self.randint(self.N), task))
+		FW, FW_f = self.NextGeneration(FW, FW_f, FWn, task)
+		return FW, FW_f, {'Ah':Ah}
 
 class EnhancedFireworksAlgorithm(FireworksAlgorithm):
 	r"""Implementation of enganced fireworks algorithm.
@@ -208,22 +210,22 @@ class EnhancedFireworksAlgorithm(FireworksAlgorithm):
 			if FWn_f[r] < FW_f[i]: FW[i], FW_f[i] = FWn[r], FWn_f[r]
 		return FW, FW_f
 
-	def runTask(self, task):
-		FW, Ah = self.uniform(task.Lower, task.Upper, [self.N, task.D]), self.initAmplitude(task)
+	def initPopulation(self, task):
+		FW, FW_f, d = FireworksAlgorithm.initPopulation(self, task)
 		Ainit, Afinal, A_min = self.initRanges(task)
-		FW_f = apply_along_axis(task.eval, 1, FW)
-		ib = argmin(FW_f)
-		FW[0], FW_f[0] = FW[ib], FW_f[ib]
-		while not task.stopCondI():
-			iw, ib = argmax(FW_f), 0
-			Ss, As = sum(FW_f[iw] - FW_f), sum(FW_f - FW_f[ib])
-			S = [self.SparsksNo(FW_f[i], FW_f[iw], Ss) for i in range(self.N)]
-			A = [self.ExplosionAmplitude(FW_f[i], FW_f[ib], A_min, Ah, As, task) for i in range(self.N)]
-			A_min = self.uAmin(Ainit, Afinal, task)
-			FWn = [self.ExplodeSpark(FW[i], A[i], task) for i in range(self.N) for _ in range(S[i])]
-			for i in range(self.m): FWn.append(self.GaussianSpark(self.randint(self.N), FW[ib], task))
-			FW, FW_f = self.NextGeneration(FW, FW_f, FWn, task)
-		return FW[0], FW_f[0]
+		d.update({'Ainit':Ainit, 'Afinal':Afinal, 'A_min':A_min})
+		return FW, FW_f, d
+
+	def runIteration(self, task, FW, FW_f, xb, fxb, Ah, Ainit, Afinal, A_min, **dparams):
+		iw, ib = argmax(FW_f), 0
+		Ss, As = sum(FW_f[iw] - FW_f), sum(FW_f - FW_f[ib])
+		S = [self.SparsksNo(FW_f[i], FW_f[iw], Ss) for i in range(self.N)]
+		A = [self.ExplosionAmplitude(FW_f[i], FW_f[ib], A_min, Ah, As, task) for i in range(self.N)]
+		A_min = self.uAmin(Ainit, Afinal, task)
+		FWn = [self.ExplodeSpark(FW[i], A[i], task) for i in range(self.N) for _ in range(S[i])]
+		for i in range(self.m): FWn.append(self.GaussianSpark(self.randint(self.N), FW[ib], task))
+		FW, FW_f = self.NextGeneration(FW, FW_f, FWn, task)
+		return FW, FW_f, {'Ah':Ah, 'Ainit':Ainit, 'Afinal':Afinal, 'A_min':A_min}
 
 class DynamicFireworksAlgorithmGauss(EnhancedFireworksAlgorithm):
 	r"""Implementation of dynamic fireworks algorithm.
@@ -255,7 +257,7 @@ class DynamicFireworksAlgorithmGauss(EnhancedFireworksAlgorithm):
 		FireworksAlgorithm.setParameters(self, **ukwargs)
 		self.A_cf, self.C_a, self.C_r, self.epsilon = A_cf, C_a, C_r, epsilon
 
-	def initAmplitude(self, task): return FireworksAlgorithm.initAmplitude(self, task), task.bcRange()
+	def initAmplitude(self, task): return FireworksAlgorithm.initAmplitude(self, task), task.bRange
 
 	def ExplosionAmplitude(self, x_f, xb_f, A, As): return FireworksAlgorithm.ExplosionAmplitude(self, x_f, xb_f, A, As)
 
@@ -290,21 +292,22 @@ class DynamicFireworksAlgorithmGauss(EnhancedFireworksAlgorithm):
 		else: Acf = Acf * self.C_r
 		return xb, xb_f, Acf
 
-	def runTask(self, task):
+	def initPopulation(self, task):
 		FW, (Ah, Ab) = self.uniform(task.Lower, task.Upper, [self.N, task.D]), self.initAmplitude(task)
 		FW_f = apply_along_axis(task.eval, 1, FW)
+		return FW, FW_f, {'Ah':Ah, 'Ab':Ab}
+
+	def runIteration(self, task, FW, FW_f, xb, fxb, Ah, Ab, **dparams):
 		iw, ib = argmax(FW_f), argmin(FW_f)
-		xb, xb_f = FW[ib], FW_f[ib]
-		while not task.stopCondI():
-			Ss, As = sum(FW_f[iw] - FW_f), sum(FW_f - FW_f[ib])
-			S, sb = [self.SparsksNo(FW_f[i], FW_f[iw], Ss) for i in range(len(FW))], self.SparsksNo(xb_f, FW_f[iw], Ss)
-			A = [self.ExplosionAmplitude(FW_f[i], FW_f[ib], Ah, As) for i in range(len(FW))]
-			FWn, xnb = [self.ExplodeSpark(FW[i], A[i], task) for i in range(self.N) for _ in range(S[i])], [self.ExplodeSpark(xb, Ab, task) for _ in range(sb)]
-			for i in range(self.m): FWn.append(self.GaussianSpark(self.randint(self.N), FW[ib], task))
-			FW, FW_f = self.NextGeneration(FW, FW_f, FWn, task)
-			iw, ib = argmax(FW_f), 0
-			xb, xb_f, Ab = self.uCF(xnb, FW[ib], FW_f[ib], xb, xb_f, Ab, task)
-		return xb, xb_f
+		Ss, As = sum(FW_f[iw] - FW_f), sum(FW_f - FW_f[ib])
+		S, sb = [self.SparsksNo(FW_f[i], FW_f[iw], Ss) for i in range(len(FW))], self.SparsksNo(fxb, FW_f[iw], Ss)
+		A = [self.ExplosionAmplitude(FW_f[i], FW_f[ib], Ah, As) for i in range(len(FW))]
+		FWn, xnb = [self.ExplodeSpark(FW[i], A[i], task) for i in range(self.N) for _ in range(S[i])], [self.ExplodeSpark(xb, Ab, task) for _ in range(sb)]
+		for i in range(self.m): FWn.append(self.GaussianSpark(self.randint(self.N), FW[ib], task))
+		FW, FW_f = self.NextGeneration(FW, FW_f, FWn, task)
+		iw, ib = argmax(FW_f), 0
+		_, _, Ab = self.uCF(xnb, FW[ib], FW_f[ib], xb, fxb, Ab, task)
+		return FW, FW_f, {'Ah':Ah, 'Ab':Ab}
 
 class DynamicFireworksAlgorithm(DynamicFireworksAlgorithmGauss):
 	r"""Implementation of dynamic fireworks algorithm.
@@ -323,19 +326,15 @@ class DynamicFireworksAlgorithm(DynamicFireworksAlgorithmGauss):
 	"""
 	Name = ['DynamicFireworksAlgorithm', 'dynFWA']
 
-	def runTask(self, task):
-		FW, (Ah, Ab) = self.uniform(task.Lower, task.Upper, [self.N, task.D]), self.initAmplitude(task)
-		FW_f = apply_along_axis(task.eval, 1, FW)
+	def runIteration(self, task, FW, FW_f, xb, fxb, Ah, Ab, **dparams):
 		iw, ib = argmax(FW_f), argmin(FW_f)
-		xb, xb_f = FW[ib], FW_f[ib]
-		while not task.stopCondI():
-			Ss, As = sum(FW_f[iw] - FW_f), sum(FW_f - FW_f[ib])
-			S, sb = [self.SparsksNo(FW_f[i], FW_f[iw], Ss) for i in range(len(FW))], self.SparsksNo(xb_f, FW_f[iw], Ss)
-			A = [self.ExplosionAmplitude(FW_f[i], FW_f[ib], Ah, As) for i in range(len(FW))]
-			FWn, xnb = [self.ExplodeSpark(FW[i], A[i], task) for i in range(self.N) for _ in range(S[i])], [self.ExplodeSpark(xb, Ab, task) for _ in range(sb)]
-			FW, FW_f = self.NextGeneration(FW, FW_f, FWn, task)
-			iw, ib = argmax(FW_f), 0
-			xb, xb_f, Ab = self.uCF(xnb, FW[ib], FW_f[ib], xb, xb_f, Ab, task)
-		return xb, xb_f
+		Ss, As = sum(FW_f[iw] - FW_f), sum(FW_f - FW_f[ib])
+		S, sb = [self.SparsksNo(FW_f[i], FW_f[iw], Ss) for i in range(len(FW))], self.SparsksNo(fxb, FW_f[iw], Ss)
+		A = [self.ExplosionAmplitude(FW_f[i], FW_f[ib], Ah, As) for i in range(len(FW))]
+		FWn, xnb = [self.ExplodeSpark(FW[i], A[i], task) for i in range(self.N) for _ in range(S[i])], [self.ExplodeSpark(xb, Ab, task) for _ in range(sb)]
+		FW, FW_f = self.NextGeneration(FW, FW_f, FWn, task)
+		iw, ib = argmax(FW_f), 0
+		_, _, Ab = self.uCF(xnb, FW[ib], FW_f[ib], xb, fxb, Ab, task)
+		return FW, FW_f, {'Ah':Ah, 'Ab':Ab}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

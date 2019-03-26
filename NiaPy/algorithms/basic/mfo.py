@@ -1,7 +1,7 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, line-too-long, arguments-differ, bad-continuation
 import logging
-import numpy as np
+from numpy import apply_along_axis, zeros, copy, argsort, concatenate, sort, array, exp, cos, pi
 from NiaPy.algorithms.algorithm import Algorithm
 
 logging.basicConfig()
@@ -9,7 +9,6 @@ logger = logging.getLogger('NiaPy.algorithms.basic')
 logger.setLevel('INFO')
 
 __all__ = ['MothFlameOptimizer']
-
 
 class MothFlameOptimizer(Algorithm):
 	r"""MothFlameOptimizer of Moth flame optimizer.
@@ -43,86 +42,37 @@ class MothFlameOptimizer(Algorithm):
 		self.NP = NP
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def repair(self, x, task):
-		"""Find limits."""
-		ir = np.where(x > task.Upper)
-		x[ir] = task.Upper[ir]
-		ir = np.where(x < task.Lower)
-		x[ir] = task.Lower[ir]
-		return x
-
-	def runTask(self, task):
-		"""Run."""
+	def initPopulation(self, task):
+		# Init population and evaluate population
 		moth_pos = task.Lower + task.bRange * self.rand([self.NP, task.D])
-		moth_fitness = np.zeros(self.NP)
+		moth_fitness = apply_along_axis(task.eval, 1, moth_pos)
+		# Create best population
+		indexes = argsort(moth_fitness)
+		best_flames, best_flame_fitness = moth_pos[indexes], moth_fitness[indexes]
+		# Init previous population
+		previous_population, previous_fitness = zeros((self.NP, task.D)), zeros(self.NP)
+		return moth_pos, moth_fitness, {'best_flames':best_flames, 'best_flame_fitness':best_flame_fitness, 'previous_population': previous_population, 'previous_fitness': previous_fitness}
 
-		sorted_population = np.copy(moth_pos)
-		sorted_fitness = np.zeros(self.NP)
-
-		best_flames = np.copy(moth_pos)
-		best_flame_fitness = np.zeros(self.NP)
-
-		best_flame_pos, best_flame_score = np.copy(moth_pos), np.inf
-
-		double_population = np.zeros((2 * self.NP, task.D))
-		double_fitness = np.zeros(2 * self.NP)
-
-		double_sorted_population = np.zeros((2 * self.NP, task.D))
-		double_sorted_fitness = np.zeros(2 * self.NP)
-
-		previous_population = np.zeros((self.NP, task.D))
-		previous_fitness = np.zeros(self.NP)
-
-		while task.stopCondI():
-			flame_no = round(self.NP - task.Iters * ((self.NP - 1) / task.nGEN))
-
-			for i in np.arange(0, self.NP):
-				self.repair(moth_pos[i], task)
-				moth_fitness[i] = task.eval(moth_pos[i])
-
-			if task.Iters == 1:
-				sorted_fitness = np.sort(moth_fitness)
-				indexes = np.argsort(moth_fitness)
-
-				sorted_population = moth_pos[indexes, :]
-
-				best_flames = sorted_population
-				best_flame_fitness = sorted_fitness
-			else:
-				double_population = np.concatenate((previous_population, best_flames), axis=0)
-				double_fitness = np.concatenate((previous_fitness, best_flame_fitness), axis=0)
-
-				double_sorted_fitness = np.sort(double_fitness)
-				indexes = np.argsort(double_fitness)
-
-				for newIdx in np.arange(0, 2 * self.NP):
-					double_sorted_population[newIdx, :] = np.array(double_population[indexes[newIdx], :])
-
-				sorted_fitness = double_sorted_fitness[0:self.NP]
-				sorted_population = double_sorted_population
-
-				best_flames = sorted_population
-				best_flame_fitness = sorted_fitness
-
-			best_flame_score = sorted_fitness[0]
-			best_flame_pos = sorted_population[0, :]
-
-			previous_population = moth_pos
-			previous_fitness = moth_fitness
-
-			a = -1 + task.Iters * ((-1) / task.nGEN)
-
-			for i in np.arange(0, self.NP):
-				for j in np.arange(0, task.D):
-					distance_to_flame = abs(sorted_population[i, j] - moth_pos[i, j])
-					b = 1
-					t = (a - 1) * self.rand() + 1
-
-					if i <= flame_no:
-						moth_pos[i, j] = distance_to_flame * np.exp(b * t) * np.cos(2 * np.pi * t) + sorted_population[i, j]
-					else:
-						moth_pos[i, j] = distance_to_flame * np.exp(b * t) * np.cos(2 * np.pi * t) + sorted_population[flame_no, j]
-
-		return best_flame_pos, best_flame_score
+	def runIteration(self, task, moth_pos, moth_fitness, xb, fxb, best_flames, best_flame_fitness, previous_population, previous_fitness, **dparams):
+		# Previous positions
+		previous_population, previous_fitness = moth_pos, moth_fitness
+		# Create sorted population
+		indexes = argsort(moth_fitness)
+		sorted_fitness, sorted_population = moth_fitness[indexes], moth_pos[indexes]
+		# Some parameters
+		flame_no, a = round(self.NP - task.Iters * ((self.NP - 1) / task.nGEN)), -1 + task.Iters * ((-1) / task.nGEN)
+		for i in range(self.NP):
+			for j in range(task.D):
+				distance_to_flame, b, t = abs(sorted_population[i, j] - moth_pos[i, j]), 1, (a - 1) * self.rand() + 1
+				if i <= flame_no: moth_pos[i, j] = distance_to_flame * exp(b * t) * cos(2 * pi * t) + sorted_population[i, j]
+				else: moth_pos[i, j] = distance_to_flame * exp(b * t) * cos(2 * pi * t) + sorted_population[flame_no, j]
+		moth_pos = apply_along_axis(task.repair, 1, moth_pos, self.Rand)
+		moth_fitness = apply_along_axis(task.eval, 1, moth_pos)
+		double_population, double_fitness = concatenate((previous_population, best_flames), axis=0), concatenate((previous_fitness, best_flame_fitness), axis=0)
+		indexes = argsort(double_fitness)
+		double_sorted_fitness, double_sorted_population = double_fitness[indexes], double_population[indexes]
+		for newIdx in range(2 * self.NP): double_sorted_population[newIdx] = array(double_population[indexes[newIdx], :])
+		best_flame_fitness, best_flames = double_sorted_fitness[:self.NP], double_sorted_population[:self.NP]
+		return moth_pos, moth_fitness, {'best_flames':best_flames, 'best_flame_fitness':best_flame_fitness, 'previous_population': previous_population, 'previous_fitness': previous_fitness}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

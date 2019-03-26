@@ -62,16 +62,17 @@ class HarmonySearch(Algorithm):
 			H[i] = HM[j, i] if r > self.r_accept else self.adjustment(HM[j, i], task) if r > self.r_pa else self.uniform(task.Lower[i], task.Upper[i])
 		return H
 
-	def runTask(self, task):
+	def initPopulation(self, task):
 		HM = self.uniform(task.Lower, task.Upper, [self.HMS, task.D])
 		HM_f = apply_along_axis(task.eval, 1, HM)
-		while not task.stopCondI():
-			H = self.improvize(HM, task)
-			H_f = task.eval(task.repair(H, self.Rand))
-			iw = argmax(HM_f)
-			if H_f <= HM_f[iw]: HM[iw], HM_f[iw] = H, H_f
-		ib = argmin(HM_f)
-		return HM[ib], HM_f[ib]
+		return HM, HM_f, {}
+
+	def runIteration(self, task, HM, HM_f, xb, fxb, **dparams):
+		H = self.improvize(HM, task)
+		H_f = task.eval(task.repair(H, self.Rand))
+		iw = argmax(HM_f)
+		if H_f <= HM_f[iw]: HM[iw], HM_f[iw] = H, H_f
+		return HM, HM_f, {}
 
 class HarmonySearchV1(HarmonySearch):
 	r"""Implementation of harmony search algorithm.

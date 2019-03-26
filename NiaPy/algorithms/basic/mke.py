@@ -2,7 +2,7 @@
 # pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, len-as-condition, singleton-comparison, arguments-differ, bad-continuation
 import logging
 from math import ceil
-from numpy import apply_along_axis, vectorize, argmin, inf, full, tril
+from numpy import apply_along_axis, vectorize, argmin, argmax, inf, full, tril
 from NiaPy.algorithms.algorithm import Algorithm, Individual
 
 logging.basicConfig()
@@ -79,22 +79,21 @@ class MonkeyKingEvolutionV1(Algorithm):
 		ib = argmin(A_f)
 		p.x, p.f = A[ib], A_f[ib]
 
-	def movePopulation(self, pop, p_b, task):
+	def movePopulation(self, pop, xb, task):
 		for p in pop:
 			if p.MonkeyKing: self.moveMokeyKingPartice(p, task)
-			else: self.movePartice(p, p_b, task)
+			else: self.movePartice(p, xb, task)
 			p.uPersonalBest()
 
-	def runTask(self, task):
+	def initPopulation(self, task):
 		pop = [MkeSolution(task=task, rand=self.Rand) for i in range(self.NP)]
-		p_b = pop[argmin([x.f for x in pop])]
 		for i in self.Rand.choice(self.NP, int(self.R * len(pop)), replace=False): pop[i].MonkeyKing = True
-		while not task.stopCondI():
-			self.movePopulation(pop, p_b, task)
-			for i in self.Rand.choice(self.NP, int(self.R * len(pop)), replace=False): pop[i].MonkeyKing = True
-			ib = argmin([x.f for x in pop])
-			if pop[ib].f < p_b.f: p_b = pop[ib]
-		return p_b.x, p_b.f
+		return pop, [m.f for m in pop], {}
+
+	def runIteration(self, task, pop, fpop, xb, fxb, **dparams):
+		self.movePopulation(pop, xb, task)
+		for i in self.Rand.choice(self.NP, int(self.R * len(pop)), replace=False): pop[i].MonkeyKing = True
+		return pop, [m.f for m in pop], {}
 
 class MonkeyKingEvolutionV2(MonkeyKingEvolutionV1):
 	r"""Implementation of monkey king evolution algorithm version 2.
@@ -127,10 +126,10 @@ class MonkeyKingEvolutionV2(MonkeyKingEvolutionV1):
 			if a_f < p_f: p_b, p_f = a, a_f
 		p.x, p.f = p_b, p_f
 
-	def movePopulation(self, pop, p_b, task):
+	def movePopulation(self, pop, xb, task):
 		for p in pop:
 			if p.MonkeyKing: self.moveMokeyKingPartice(p, pop, task)
-			else: self.movePartice(p, p_b, task)
+			else: self.movePartice(p, xb, task)
 			p.uPersonalBest()
 
 class MonkeyKingEvolutionV3(MonkeyKingEvolutionV1):
@@ -153,25 +152,28 @@ class MonkeyKingEvolutionV3(MonkeyKingEvolutionV1):
 	Name = ['MonkeyKingEvolutionV3', 'MKEv3']
 
 	def eval(self, X, x, x_f, task):
-		X_f = apply_along_axis(task.eval, 1, X)
 		igb = argmin(X_f)
 		if X_f[igb] <= x_f: x, x_f = X[igb], X_f[igb]
 		return x, x_f
 
 	def neg(self, x): return 0.0 if x == 1.0 else 1.0
 
-	def runTask(self, task):
+	def initPopulation(self, task):
 		X = task.bcLower() + task.bcRange() * self.rand([self.NP, task.D])
-		x_gb, x_f_gb = self.eval(X, None, task.optType.value * inf, task)
+		X_f = apply_along_axis(task.eval, 1, X)
 		k, c = int(ceil(self.NP / task.D)), int(ceil(self.C * task.D))
-		while not task.stopCondI():
-			X_gb = x_gb + self.FC * X[self.Rand.choice(len(X), c)] - X[self.Rand.choice(len(X), c)]
-			x_gb, x_f_gb = self.eval(X_gb, x_gb, x_f_gb, task)
-			M = full([self.NP, task.D], 1.0)
-			for i in range(k): M[i * task.D:(i + 1) * task.D] = tril(M[i * task.D:(i + 1) * task.D])
-			for i in range(self.NP): self.Rand.shuffle(M[i])
-			X = M * X + vectorize(self.neg)(M) * x_gb
-			x_gb, x_f_gb = self.eval(X, x_gb, x_f_gb, task)
-		return x_gb, x_f_gb
+		return X, X_f, {'k':k, 'c':c}
+
+	def runIteration(self, task, X, X_f, xb, fxb, k, c, **dparams):
+		X_gb = apply_along_axis(task.repair, 1, xb + self.FC * X[self.Rand.choice(len(X), c)] - X[self.Rand.choice(len(X), c)], self.Rand)
+		X_gb_f = apply_along_axis(task.eval, 1, X_gb)
+		M = full([self.NP, task.D], 1.0)
+		for i in range(k): M[i * task.D:(i + 1) * task.D] = tril(M[i * task.D:(i + 1) * task.D])
+		for i in range(self.NP): self.Rand.shuffle(M[i])
+		X = apply_along_axis(task.repair, 1, M * X + vectorize(self.neg)(M) * xb, self.Rand)
+		X_f = apply_along_axis(task.eval, 1, X)
+		iw, ib_gb = argmax(X_f), argmin(X_gb_f)
+		if X_gb_f[ib_gb] <= X_f[iw]: X[iw], X_f[iw] = X_gb[ib_gb], X_gb_f[ib_gb]
+		return X, X_f, {'k':k, 'c':c}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

@@ -63,7 +63,7 @@ NiaPyAlgos = [
 	balgos.DynamicFireworksAlgorithm,
 	balgos.DynamicFireworksAlgorithmGauss,
 	balgos.GravitationalSearchAlgorithm,
-	balgos.CovarianceMaatrixAdaptionEvolutionStrategy,
+	balgos.CovarianceMatrixAdaptionEvolutionStrategy,
 	balgos.FishSchoolSearch,
 	balgos.MothFlameOptimizer,
 	balgos.CuckooSearch,

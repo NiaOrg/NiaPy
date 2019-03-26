@@ -89,20 +89,22 @@ class GlowwormSwarmOptimization(Algorithm):
 
 	def rangeUpdate(self, R, N, rs): return R + self.beta * (self.nt - sum(N))
 
-	def runTask(self, task):
+	def initPopulation(self, task):
 		rs = euclidean(full(task.D, 0), task.bRange)
-		GS, GS_f, L, R = self.uniform(task.Lower, task.Upper, [self.n, task.D]), full(self.n, task.optType.value * inf), full(self.n, self.l0), full(self.n, rs)
-		xb, xb_f = None, task.optType.value * inf
-		while not task.stopCondI():
-			GSo, Ro, GS_f = copy(GS), copy(R), apply_along_axis(task.eval, 1, GS)
-			xb, xb_f = self.getBest(GS, GS_f, xb, xb_f)
-			L = self.calcLuciferin(L, GS_f)
-			N = [self.getNeighbors(i, Ro[i], GSo, L) for i in range(self.n)]
-			P = [self.probabilityes(i, N[i], L) for i in range(self.n)]
-			j = [self.moveSelect(P[i], i) for i in range(self.n)]
-			for i in range(self.n): GS[i] = task.repair(GSo[i] + self.s * ((GSo[j[i]] - GSo[i]) / (self.Distance(GSo[j[i]], GSo[i]) + 1e-31)), rnd=self.Rand)
-			for i in range(self.n): R[i] = max(0, min(rs, self.rangeUpdate(Ro[i], N[i], rs)))
-		return xb, xb_f
+		GS, L, R = self.uniform(task.Lower, task.Upper, [self.n, task.D]), full(self.n, self.l0), full(self.n, rs)
+		GS_f = apply_along_axis(task.eval, 1, GS)
+		return GS, GS_f, {'L':L, 'R':R, 'rs':rs}
+
+	def runIteration(self, task, GS, GS_f, xb, fxb, L, R, rs, **dparams):
+		GSo, Ro = copy(GS), copy(R)
+		L = self.calcLuciferin(L, GS_f)
+		N = [self.getNeighbors(i, Ro[i], GSo, L) for i in range(self.n)]
+		P = [self.probabilityes(i, N[i], L) for i in range(self.n)]
+		j = [self.moveSelect(P[i], i) for i in range(self.n)]
+		for i in range(self.n): GS[i] = task.repair(GSo[i] + self.s * ((GSo[j[i]] - GSo[i]) / (self.Distance(GSo[j[i]], GSo[i]) + 1e-31)), rnd=self.Rand)
+		for i in range(self.n): R[i] = max(0, min(rs, self.rangeUpdate(Ro[i], N[i], rs)))
+		GS_f = apply_along_axis(task.eval, 1, GS)
+		return GS, GS_f, {'L':L, 'R':R, 'rs':rs}
 
 class GlowwormSwarmOptimizationV1(GlowwormSwarmOptimization):
 	r"""Implementation of glowwarm swarm optimization.
