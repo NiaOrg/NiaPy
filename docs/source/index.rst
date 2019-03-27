@@ -30,7 +30,7 @@ The main documentation is organized into a couple sections:
 .. _user-docs:
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: User Documentation
 
    getting_started
@@ -40,7 +40,7 @@ The main documentation is organized into a couple sections:
 .. _dev-docs:
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: Developer Documentation
 
    changelog
@@ -52,7 +52,7 @@ The main documentation is organized into a couple sections:
 .. _about-docs:
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: About NiaPy
 
    about

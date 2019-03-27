@@ -57,12 +57,26 @@ def CrossCurr2Best1(pop, ic, x_b, f, cr, rnd=rand, **kwargs):
 class DifferentialEvolution(Algorithm):
 	r"""Implementation of Differential evolution algorithm.
 
-	**Algorithm:** Differential evolution algorithm
-	**Date:** 2018
-	**Author:** Uros Mlakar and Klemen Berkovič
-	**License:** MIT
-	**Reference paper:**
-	Storn, Rainer, and Kenneth Price. "Differential evolution - a simple and efficient heuristic for global optimization over continuous spaces." Journal of global optimization 11.4 (1997): 341-359.
+	Algorithm:
+	 	Differential evolution algorithm
+
+	Date:
+		2018
+
+	Author:
+		Uros Mlakar and Klemen Berkovič
+
+	License:
+		MIT
+
+	Reference paper:
+		Storn, Rainer, and Kenneth Price. "Differential evolution - a simple and efficient heuristic for global optimization over continuous spaces." Journal of global optimization 11.4 (1997): 341-359.
+
+	Attributes:
+		Name (list of str): List of string of names for algorithm
+		NP (int): Population size
+		F (float): Scale factor
+		CR (float): Crossover probability
 	"""
 	Name = ['DifferentialEvolution', 'DE']
 	NP, F, CR = 100, 0.5, 0.9
@@ -111,10 +125,21 @@ class DifferentialEvolution(Algorithm):
 class CrowdingDifferentialEvolution(DifferentialEvolution):
 	r"""Implementation of Differential evolution algorithm with multiple mutation strateys.
 
-	**Algorithm:** Implementation of Differential evolution algorithm with multiple mutation strateys
-	**Date:** 2018
-	**Author:** Klemen Berkovič
-	**License:** MIT
+	Algorithm:
+		Implementation of Differential evolution algorithm with multiple mutation strateys
+
+	Date:
+		2018
+
+	Author:
+		Klemen Berkovič
+
+	License:
+		MIT
+
+	Attributes:
+		Name (list of str): List of names for algorithm
+		CrowPop (float): Proportion of range for cowding
 	"""
 	Name = ['CrowdingDifferentialEvolution', 'CDE']
 	CrowPop = 0.1

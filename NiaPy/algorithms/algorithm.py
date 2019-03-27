@@ -16,15 +16,15 @@ class Algorithm:
 	Date:
 		2018
 
-	Author:
+	Author
 		Klemen Berkovič
 
 	License:
 		MIT
 
 	Attributes:
-		Name (array, list): List of names for algorithm
-		Rand (:py:class:RandomState): Random generator
+		Name (array or list): List of names for algorithm
+		Rand (RandomState): 	Random generator
 	"""
 	Name = ['Algorithm', 'AAA']
 	Rand = rand.RandomState(None)
@@ -34,7 +34,7 @@ class Algorithm:
 		r"""TODO documentation.
 
 		Returns:
-			(dict): Dictionary where key represents the argument name and values represents a function for testing the correctnes of paramether with given key
+			dict: Dictionary where key represents the argument name and values represents a function for testing the correctnes of paramether with given key
 		"""
 		return {}
 
@@ -42,14 +42,10 @@ class Algorithm:
 		r"""Initialize algorithm and create name for an algorithm.
 
 		Args:
-			name (str): Full name of algorithm
-			shortName (str): Short name of algorithm
-
-		Raises:
-			TypeError -- raised when given benchmark function does not exist
+			seed (int): Starting seed for random generator
 
 		See Also:
-			:py:meth:Algorithm.setParameters(self, **kwargs)
+			Algorithm.setParameters(self, **kwargs)
 		"""
 		self.Rand = rand.RandomState(kwargs.pop('seed', None))
 		self.setParameters(**kwargs)
@@ -58,7 +54,7 @@ class Algorithm:
 		r"""Set the parameters/arguments of the algorithm.
 
 		Args:
-			kwargs (dict): Parameter values dictionary
+			**kwargs: Parameter values dictionary
 		"""
 		pass
 
@@ -66,10 +62,10 @@ class Algorithm:
 		r"""Get random distribution of shape D in range from 0 to 1.
 
 		Args:
-			D (array, int): Shape of returned random distribution
+			D (array or int): Shape of returned random distribution
 
 		Returns:
-			(array, float): TODO
+			array or float: TODO
 		"""
 		if isinstance(D, (ndarray, list)): return self.Rand.rand(*D)
 		elif D > 1: return self.Rand.rand(D)
@@ -79,12 +75,12 @@ class Algorithm:
 		r"""Get uniform random distribution of shape D in range from "Lower" to "Upper".
 
 		Args:
-			Lower (array, float, int): Lower bound
-			Upper (array, float, int): Upper bound
-			D (array, int): Shape of returned uniform random distribution
+			Lower (array or float or int): Lower bound
+			Upper (array or float or int): Upper bound
+			D (array or int): Shape of returned uniform random distribution
 
 		Returns:
-			(array): TODO
+			array: TODO
 		"""
 		return self.Rand.uniform(Lower, Upper, D) if D is not None else self.Rand.uniform(Lower, Upper)
 
@@ -92,12 +88,12 @@ class Algorithm:
 		r"""Get normal random distribution of shape D with mean "loc" and standard deviation "scale".
 
 		Args:
-			loc (): Mean of the normal random distribution
-			scale (): Standard deviation of the normal random distribution
-			D (array, int): Shape of returned normal random distribution
+			loc (float): Mean of the normal random distribution
+			scale (float): Standard deviation of the normal random distribution
+			D (array or float): Shape of returned normal random distribution
 
 		Returns:
-			(array, float): TODO
+			array or float: TODO
 		"""
 		return self.Rand.normal(loc, scale, D) if D is not None else self.Rand.normal(loc, scale)
 
@@ -105,10 +101,10 @@ class Algorithm:
 		r"""Get standard normal distribution of shape D.
 
 		Args:
-			D (array): Shape of returned standard normal distribution
+			D (array or int): Shape of returned standard normal distribution
 
 		Returns:
-			(array): Random generated numbers or one random generated number in rage [0, 1]
+			array or float: Random generated numbers or one random generated number in rage [0, 1]
 		"""
 		if D is None: return self.Rand.randn()
 		elif isinstance(D, int): return self.Rand.randn(D)
@@ -120,11 +116,11 @@ class Algorithm:
 		Args:
 			Nmin (int): Lower integer bound
 			Nmax (int): One above upper integer bound
-			D (array, int) -- shape of returned discrete uniform random distribution
-			skip {array} -- numbers to skip
+			D (array of int or int): shape of returned discrete uniform random distribution
+			skip (array): numbers to skip
 
 		Returns:
-			(int): Random generated integer number
+			int: Random generated integer number
 		"""
 		r = None
 		if isinstance(D, (list, tuple, ndarray, array)): r = self.Rand.randint(Nmin, Nmax, D)
@@ -136,15 +132,15 @@ class Algorithm:
 		r"""Get the best individual for population.
 
 		Args:
-			X (array): Population
-			X_f (array): Fitness values of aligned individuals
-			xb (array): Best individual
+			X (array of array of (float or int)): Population
+			X_f (array of float): Fitness values of aligned individuals
+			xb (array of (float or int)): Best individual
 			xb_f (real): Fitness value of best individal
 
 		Returns:
-			(tuple): tuple containing:
-				xb (array): coordinates of best solution
-				xb_f (float): beset fitnes value
+			Tuple[array of (float or int), float]:
+				1. Coordinates of best solution
+				2. beset fitnes value
 		"""
 		ib = argmin(X_f)
 		if isinstance(X_f, (float, int)) and xb_f >= X_f: return X, X_f
@@ -155,13 +151,14 @@ class Algorithm:
 		r"""Initialization for starting population of optimization algorithm.
 
 		Args:
-			task (:class:Task): Optimization task.
+			task (obj:Task): Optimization task.
 
 		Returns:
-			(tuple): tuple containing
-				(array): New population
-				(array): New population fitness values.
-				(dict): Additional arguments.
+			Tuple[array of (float or int), array of float, dict]:
+				1. New population
+				2. New population fitness values.
+				3. dict:
+					* Additional arguments.
 		"""
 		return [], [], {}
 
@@ -171,18 +168,18 @@ class Algorithm:
 		This function is called on every algorithm iteration.
 
 		Args:
-			task (:class:Task): Optimization task
-			pop (array): Current population coordinates
-			fpop (array): Current population fitness value
-			xb (array): Current generation best individuals coordinates
-			xb_f (float): Current generation best individuals fitness value
-			dparams (dict): Additional arguments for algorithms
+			task (Task): Optimization task
+			pop (array of array of (float or int)): Current population coordinates
+			fpop (array of float): Current population fitness value
+			xb (array of (float or int)): Current generation best individuals coordinates
+			xb_f (float): current generation best individuals fitness value
+			**dparams: Additional arguments for algorithms
 
 		Returns:
-			(tuple): tuple containing:
-				pop (array): New populations coordinates
-				fpop (array): New populations fitness values
-				(dict): Additional arguments of the algorithm
+			Tuple[array of (float or int), array of float, dict]:
+				1. New populations coordinates
+				2. New populations fitness values
+				3. Additional arguments of the algorithm
 		"""
 		return pop, fpop, {}
 
@@ -190,11 +187,12 @@ class Algorithm:
 		r"""Run the algorithm for a single iteration and return the best solution.
 
 		Args:
-			task (:class:Task): Task with bounds and objective function for optimization
+			task (Task): Task with bounds and objective function for optimization
 
-		Yields:
-			xb (array): New population best individuals coordinates
-			fxb (float): Fitness value of the best solution
+		Yield:
+			Tuple[array of array of (float or int), float]:
+				1. New population best individuals coordinates
+				2. Fitness value of the best solution
 		"""
 		pop, fpop, dparams = self.initPopulation(task)
 		xb, fxb = self.getBest(pop, fpop)
@@ -208,12 +206,12 @@ class Algorithm:
 		r"""Start the optimization.
 
 		Args:
-			task (:class:Task); Task with bounds and objective function for optimization
+			task (Task): Task with bounds and objective function for optimization
 
 		Returns:
-			(tuple): Tuple containing:
-				xb (array): Best individual found in optimization process
-				fxb (real): Best fitness value found in optimization process
+			Tuple[array of array of (float or int), float]:
+				1. Best individuals components found in optimization process
+				2. Best fitness value found in optimization process
 		"""
 		algo, xb, fxb = self.runYield(task), None, inf
 		while not task.stopCond():
@@ -225,15 +223,15 @@ class Algorithm:
 		r"""Start the optimization.
 
 		Args:
-			task (:py:class:Task): Optimization task
+			task (Task): Optimization task
 
 		Returns:
-			(tuple): Tuple containing:
-				(array): Best individuals components found in optimization process
-				(float): Best fitness value found in optimization process
+			Tuple[array of array of (float or int), float]:
+				1. Best individuals components found in optimization process
+				2. Best fitness value found in optimization process
 
 		See Also:
-			:py:meth:Algorithm.runTask(self, taks)
+			Algorithm.runTask(self, taks)
 		"""
 		try:
 			task.start()
@@ -254,51 +252,63 @@ class Individual:
 		MIT
 
 	Attributes:
-		x (array): Coordinates of inidividual
+		x (array of (float or int)): Coordinates of inidividual
 		f (float): Function/fitness value of individual
 	"""
 	x = None
 	f = inf
 
-	def __init__(self, **kwargs):
-		task, rnd, x = kwargs.pop('task', None), kwargs.pop('rand', rand), kwargs.pop('x', None)
+	def __init__(self, x=None, task=None, e=True, rnd=rand, **kwargs):
+		r"""Initialize new individual.
+
+		Parameters:
+			task (Optional[Task]): Optimization task
+			rand (Optional[RandomState]): Random generator
+			x (Optional[array of (float or int)]): Individuals components
+			e (bool): True to evaluate the individual on initialization. Default value is True.
+			**kwargs: Additional arguments
+		"""
 		self.f = task.optType.value * inf if task is not None else inf
 		if x is not None: self.x = x if isinstance(x, ndarray) else asarray(x)
 		else: self.generateSolution(task, rnd)
-		if kwargs.pop('e', True) and task is not None: self.evaluate(task, rnd)
+		if e and task is not None: self.evaluate(task, rnd)
 
 	def generateSolution(self, task, rnd=rand):
 		r"""Generate new solution.
 
+		Generate new solution for this individual and set it to ``self.x``.
+		This method uses ``rnd`` for getting random numbers.
+		For generating random components ``rnd`` and ``task`` is used.
+
 		Args:
-			task (:py:class:Task): Optimization task
-			e (bool): Evaluate the solution
-			rnd (:py:class:RandomState): Random numbers generator object
+			task (Task): Optimization task
+			rnd (Optional[RandomState]: Random numbers generator object
 		"""
 		if task is not None: self.x = task.Lower + task.bRange * rnd.rand(task.D)
 
 	def evaluate(self, task, rnd=rand):
 		r"""Evaluate the solution.
 
+		Evaluate solution ``this.x`` with the help of task.
+		Task is used for reparing the solution and then evaluating it.
+
 		Args:
 			task (Task): Objective function object
+			rnd (Optional[RandomState]: Random generator
+
+		See Also:
+			:obj:Task.repair
 		"""
-		self.repair(task, rnd=rnd)
+		task.repair(task, rnd=rnd)
 		self.f = task.eval(self.x)
-
-	def repair(self, task, rnd=rand):
-		r"""Repair solution and put the solution in the bounds of problem.
-
-		Args:
-			task (:py:class:Task): Optimization task
-		"""
-		self.x = task.repair(self.x, rnd=rnd)
 
 	def copy(self):
 		r"""Return a copy of self.
 
+		Method returns copy of ``this`` object so it is safe for editing.
+
 		Returns:
-			(:py:class:Individual): Copy of self
+			Individual: Copy of self
 		"""
 		return Individual(x=self.x, f=self.f, e=False)
 
@@ -306,10 +316,10 @@ class Individual:
 		r"""Compare the individuals for equalities.
 
 		Args:
-			other (object, :py:class:Individual): Object that we want to compare this object to
+			other (object or :py:class:Individual): Object that we want to compare this object to
 
 		Returns:
-			(bool): ``True`` if equal or ``False`` if no equal
+			bool: ``True`` if equal or ``False`` if no equal
 		"""
 		return array_equal(self.x, other.x) and self.f == other.f
 
@@ -317,7 +327,7 @@ class Individual:
 		r"""Print the individual with the solution and objective value.
 
 		Returns:
-			(str): String representation of self
+			str: String representation of self
 		"""
 		return '%s -> %s' % (self.x, self.f)
 
@@ -328,7 +338,7 @@ class Individual:
 			i (int): Position of the solution component
 
 		Returns:
-			(float, int): Value of ith component
+			float or int: Value of ith component
 		"""
 		return self.x[i]
 
@@ -345,7 +355,7 @@ class Individual:
 		r"""Get the length of the solution or the number of components.
 
 		Returns:
-			(int): Number of components
+			int: Number of components
 		"""
 		return len(self.x)
 

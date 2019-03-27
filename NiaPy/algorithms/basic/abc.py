@@ -19,8 +19,9 @@ class SolutionABC(Individual):
 	Author:
 		Klemen Berkovič
 
-	See Also:
-		:py:class:Individual
+	See Also
+	--------
+	:py:class:Individual
 	"""
 	def __init__(self, task, rand): Individual.__init__(self, task=task, rand=rand)
 
@@ -42,23 +43,34 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 	Reference paper:
 		Karaboga, D., and Bahriye B. "A powerful and efficient algorithm for numerical function optimization: artificial bee colony (ABC) algorithm." Journal of global optimization 39.3 (2007): 459-471.
 
-	Arguments:
-		Name (list): List containing strings that represent algorithm names
+	Arguments
+	---------
+	Name : list of str
+		List containing strings that represent algorithm names
 	"""
 	Name = ['ArtificialBeeColonyAlgorithm', 'ABC']
 
 	@staticmethod
-	def typeParameters(): return {
+	def typeParameters():
+		r"""Returns functions for checking values of parametes.
+
+		Returns:
+			dict:
+				* NP (func): TODO
+				* Limit (func): TODO
+		"""
+		return {
 			'NP': lambda x: isinstance(x, int) and x > 0,
 			'Limit': lambda x: isinstance(x, int) and x > 0
-	}
+		}
 
 	def setParameters(self, NP=10, Limit=100, **ukwargs):
-		r"""Set the arguments of an algorithm.
+		r"""Set the parameters of Artificial Bee Colony Algorithm.
 
-		Args:
-			NP (int): Population size
-			Limit (int): Limit
+		Parameters:
+			NP (int): Number of individuals in population
+			Limit (int): Limt
+			**ukwargs:	Additional arguments
 		"""
 		self.NP = NP  # population size; number of search agents
 		self.FoodNumber = int(self.NP / 2)
@@ -66,14 +78,14 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def CalculateProbs(self, Foods, Probs):
-		"""Calculate probs.
+		r"""Calculates the probes.
 
-		Args:
-			Foods (array): TODO
-			Probs (array): TODO
+		Parameters:
+			Foods (array of array of (float or int)): TODO
+			Probs (array of array of (float or int)): TODO
 
 		Returns:
-			Probs (array): TODO
+			array of array of (float or int): TODO
 		"""
 		Probs = [1.0 / (Foods[i].f + 0.01) for i in range(self.FoodNumber)]
 		s = sum(Probs)
@@ -81,19 +93,18 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 		return Probs
 
 	def initPopulation(self, task):
-		"""Initialize positions.
+		r"""Initializes the starting population.
 
-		Args:
-			task (:py:class:Task): Optimization task
+		Parameters:
+			task (Task): Optimization task
 
 		Returns:
-			(tuple): Tuple containing:
-				Foods (array): TODO
-				(list): TODO
-				(dict): TODO
-
-		See Also:
-			:py:meth:Algorithm.initPopulation
+			Tuple[array of array of (float or int), array of float, dict]:
+				1. New population
+				2. New population fitness/function values
+				3. dict:
+					* Probes (array of int): TODO
+					* Trial (array of int): TODO
 		"""
 		Foods, Probs, Trial = [], [0 for i in range(self.FoodNumber)], [0 for i in range(self.FoodNumber)]
 		# self.Best = SolutionABC(task, self.Rand)
@@ -101,23 +112,25 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 		return Foods, [f.f for f in Foods], {'Probs':Probs, 'Trial':Trial}
 
 	def runIteration(self, task, Foods, fpop, xb, fxb, Probs, Trial, **dparams):
-		r"""Core function of algorithm.
+		r"""Core funciton of  the algorithm.
 
-		Args:
-			task (:py:class:Task): Optimization task
-			Foods (array): TODO
-			fpop (array): TODO
-			xb (array): TODO
-			fxb (float): TODO
-			Probs (array): TODO
-			Trial (array): TODO
-			dparams (dict): TODO
+		Parameters:
+			task (Task): Optimization task
+			Foods (array of array of (float or int)): Current population
+			fpop (array of float): Function/fitness values of current population
+			xb (array of (float or int)): Current best individual
+			fxb (float): Current best individual fitness/function value
+			Probs (array of array of (float or int)): TODO
+			Trial (array of array of (float or int)): TODO
+			dparams (dict): Additional parameters
 
 		Returns:
-			(tuple): Tuple containing:
-				Foods (array): TODO
-				(list): TODO
-				(dict): TODO
+			Tuple[array of array of (float or int), array of float, dict]:
+				1. New population
+				2. New population fitness/function values
+				3. ditc:
+					* Probes (array of int): TODO
+					* Trial (array of int): TODO
 		"""
 		for i in range(self.FoodNumber):
 			newSolution = copy.deepcopy(Foods[i])

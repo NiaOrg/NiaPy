@@ -181,5 +181,21 @@ todo_include_todos = True
 # A boolean that decides whether parentheses are appended to function and method role text (e.g. the content of :func:`input`) to signify that the name is callable. Default is True
 add_function_parentheses = True
 
+# Napolen settings
+# chekc https://sphinxcontrib-napoleon.readthedocs.io/en/latest/sphinxcontrib.napoleon.html
+napoleon_google_docstring = True
+napoleon_numpy_docstring = False
+napoleon_include_init_with_doc = True
+napoleon_include_private_with_doc = True
+napoleon_include_special_with_doc = True
+napoleon_use_admonition_for_examples = False
+napoleon_use_admonition_for_notes = False
+napoleon_use_admonition_for_references = False
+napoleon_use_ivar = True
+napoleon_use_param = True
+napoleon_use_rtype = True
+napoleon_use_keyword = True
+napoleon_custom_sections = None
+
 import matplotlib
 matplotlib.use('agg')

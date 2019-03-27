@@ -15,17 +15,26 @@ __all__ = ['SineCosineAlgorithm']
 class SineCosineAlgorithm(Algorithm):
 	r"""Implementation of sine cosine algorithm.
 
-	**Algorithm:** Sine Cosine Algorithm
+	Algorithm:
+		Sine Cosine Algorithm
 
-	**Date:** 2018
+	Date:
+		2018
 
-	**Authors:** Klemen Berkovič
+	Authors:
+		Klemen Berkovič
 
-	**License:** MIT
+	License:
+		MIT
 
-	**Reference URL:** https://www.sciencedirect.com/science/article/pii/S0950705115005043
+	Reference URL:
+		https://www.sciencedirect.com/science/article/pii/S0950705115005043
 
-	**Reference paper:** Seyedali Mirjalili, SCA: A Sine Cosine Algorithm for solving optimization problems, Knowledge-Based Systems, Volume 96, 2016, Pages 120-133, ISSN 0950-7051, https://doi.org/10.1016/j.knosys.2015.12.022.
+	Reference paper:
+		Seyedali Mirjalili, SCA: A Sine Cosine Algorithm for solving optimization problems, Knowledge-Based Systems, Volume 96, 2016, Pages 120-133, ISSN 0950-7051, https://doi.org/10.1016/j.knosys.2015.12.022.
+
+	Attribures:
+		Name (list of str): List of string representing algorithm names
 	"""
 	Name = ['SineCosineAlgorithm', 'SCA']
 
@@ -40,27 +49,63 @@ class SineCosineAlgorithm(Algorithm):
 	def setParameters(self, NP=25, a=3, Rmin=0, Rmax=2, **ukwargs):
 		r"""Set the arguments of an algorithm.
 
-		**Arguments:**
-
-		NP {integer} -- number of individual in population
-
-		a {real} -- parameter for controlon $r_1$ value
-
-		Rmin {integer} -- minium value for $r_3$ value
-
-		Rmax {integer} -- maximum value for $r_3$ value
+		Args:
+			NP (int): Number of individual in population
+			a (float): Parameter for controlon $r_1$ value
+			Rmin (float): Minium value for $r_3$ value
+			Rmax (float): Maximum value for $r_3$ value
 		"""
 		self.NP, self.a, self.Rmin, self.Rmax = NP, a, Rmin, Rmax
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def nextPos(self, x, x_b, r1, r2, r3, r4, task): return task.repair(x + r1 * (sin(r2) if r4 < 0.5 else cos(r2)) * fabs(r3 * x_b - x), self.Rand)
+	def nextPos(self, x, x_b, r1, r2, r3, r4, task):
+		r"""Move individual to new position in search space.
+
+		Args:
+			x (array): Individual represented with components
+			x_b (array): Best individual represented with components
+			r1 (float): TODO
+			r2 (float): TODO
+			r3 (float): TODO
+			r4 (float): TODO
+			task (:obj:Task): Optimization task
+
+		Returns:
+			array: New individual that is moved based on individual ``x``
+		"""
+		return task.repair(x + r1 * (sin(r2) if r4 < 0.5 else cos(r2)) * fabs(r3 * x_b - x), self.Rand)
 
 	def initPopulation(self, task):
+		r"""Initialization of individuals.
+
+		Args:
+			task (:obj:Task): Optimization task
+
+		Returns:
+			array of array: Initialized population of individuals
+			array of float: Function/fitness values for individuals
+			dict: Additional arguments
+		"""
 		P = self.uniform(task.bcLower(), task.bcUpper(), [self.NP, task.D])
 		P_f = apply_along_axis(task.eval, 1, P)
 		return P, P_f, {}
 
 	def runIteration(self, task, P, P_f, xb, fxb, **dparams):
+		r"""Core fuction of Sine Cosine Algorithm.
+
+		Args:
+			task (:obj:util.utility.Task): Optimization task
+			P (array of array): Current population individuals
+			P_f (array of float): Current population individulas function/fitness values
+			xb (array of float or int): Current best solution to optimization task
+			fxb (float): Current best function/fitness value
+			dparams (dict): Additional parameters
+
+		Returns:
+			array of array: New population
+			array of float: New population function/fitness values
+			dict: Additional arguments
+		"""
 		r1, r2, r3, r4 = self.a - task.Iters * (self.a / task.Iters), self.uniform(0, 2 * pi), self.uniform(self.Rmin, self.Rmax), self.rand()
 		P = apply_along_axis(self.nextPos, 1, P, xb, r1, r2, r3, r4, task)
 		P_f = apply_along_axis(task.eval, 1, P)
