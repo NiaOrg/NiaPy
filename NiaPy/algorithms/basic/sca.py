@@ -10,6 +10,8 @@ logger.setLevel('INFO')
 
 __all__ = ['SineCosineAlgorithm']
 
+# FIXME test if algorithm realy works OK
+
 class SineCosineAlgorithm(Algorithm):
 	r"""Implementation of sine cosine algorithm.
 
@@ -53,15 +55,15 @@ class SineCosineAlgorithm(Algorithm):
 
 	def nextPos(self, x, x_b, r1, r2, r3, r4, task): return task.repair(x + r1 * (sin(r2) if r4 < 0.5 else cos(r2)) * fabs(r3 * x_b - x), self.Rand)
 
-	def runTask(self, task):
-		P, x, x_f = self.uniform(task.bcLower(), task.bcUpper(), [self.NP, task.D]), None, task.optType.value * inf
+	def initPopulation(self, task):
+		P = self.uniform(task.bcLower(), task.bcUpper(), [self.NP, task.D])
 		P_f = apply_along_axis(task.eval, 1, P)
-		while not task.stopCondI():
-			ib = argmin(P_f)
-			if P_f[ib] < x_f: x, x_f = P[ib], P_f[ib]
-			r1, r2, r3, r4 = self.a - task.Iters * (self.a / task.Iters), self.uniform(0, 2 * pi), self.uniform(self.Rmin, self.Rmax), self.rand()
-			P = apply_along_axis(self.nextPos, 1, P, x, r1, r2, r3, r4, task)
-			P_f = apply_along_axis(task.eval, 1, P)
-		return x, x_f
+		return P, P_f, {}
+
+	def runIteration(self, task, P, P_f, xb, fxb, **dparams):
+		r1, r2, r3, r4 = self.a - task.Iters * (self.a / task.Iters), self.uniform(0, 2 * pi), self.uniform(self.Rmin, self.Rmax), self.rand()
+		P = apply_along_axis(self.nextPos, 1, P, xb, r1, r2, r3, r4, task)
+		P_f = apply_along_axis(task.eval, 1, P)
+		return P, P_f, {}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

@@ -13,15 +13,20 @@ __all__ = ['BatAlgorithm']
 class BatAlgorithm(Algorithm):
 	r"""Implementation of Bat algorithm.
 
-	**Algorithm:** Bat algorithm
+	Algorithm:
+		Bat algorithm
 
-	**Date:** 2015
+	Date:
+		2015
 
-	**Authors:** Iztok Fister Jr., Marko Burjek and Klemen Berkovič
+	Authors:
+		Iztok Fister Jr., Marko Burjek and Klemen Berkovič
 
-	**License:** MIT
+	License:
+		MIT
 
-	**Reference paper:** Yang, Xin-She. "A new metaheuristic bat-inspired algorithm." Nature inspired cooperative strategies for optimization (NICSO 2010). Springer, Berlin, Heidelberg, 2010. 65-74.
+	Reference paper:
+		Yang, Xin-She. "A new metaheuristic bat-inspired algorithm." Nature inspired cooperative strategies for optimization (NICSO 2010). Springer, Berlin, Heidelberg, 2010. 65-74.
 	"""
 	Name = ['BatAlgorithm', 'BA']
 	NP, A, r, Qmin, Qmax = 40, 0.5, 0.5, 0.0, 2.0
@@ -38,17 +43,12 @@ class BatAlgorithm(Algorithm):
 	def setParameters(self, NP=40, A=0.5, r=0.5, Qmin=0.0, Qmax=2.0, **ukwargs):
 		r"""Set the parameters of the algorithm.
 
-		**Arguments:**
-
-		NP {integer} -- population size
-
-		A {decimal} -- loudness
-
-		r {decimal} -- pulse rate
-
-		Qmin {decimal} -- minimum frequency
-
-		Qmax {decimal} -- maximum frequency
+		Args:
+			NP (int): Population size
+			A (float): loudness
+			r (float): pulse rate
+			Qmin (float): minimum frequency
+			Qmax (float): maximum frequency
 		"""
 		self.NP, self.A, self.r, self.Qmin, self.Qmax = NP, A, r, Qmin, Qmax
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
@@ -60,6 +60,25 @@ class BatAlgorithm(Algorithm):
 		return Sol, Fitness, {'S': S, 'Q':Q, 'v':v}
 
 	def runIteration(self, task, Sol, Fitness, xb, fxb, S, Q, v, **dparams):
+		r"""Core function of Bat Algorithm.
+
+		Args:
+			task (:py:class:Task): Optimization task
+			Sol (array): TODO
+			Fitness (array): TODO
+			xb (array): TODO
+			fxb (float):
+			S (array): TODO
+			Q (array): TODO
+			v (array): TODO
+			dparams (dict): TODO
+
+		Returns:
+			(tuple): Tuple containing:
+				Sol (array): TODO
+				Fitness (array): TODO
+				(dict): TODO
+		"""
 		for i in range(self.NP):
 			Q[i], v[i], S[i] = self.Qmin + (self.Qmax - self.Qmin) * self.uniform(0, 1), v[i] + (Sol[i] - xb) * Q[i], task.repair(Sol[i] + v[i], rnd=self.Rand)
 			if self.rand() > self.r: S[i] = task.repair(xb + 0.001 * self.normal(0, 1, task.D), rnd=self.Rand)

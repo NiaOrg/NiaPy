@@ -11,23 +11,39 @@ logger.setLevel('INFO')
 __all__ = ['ArtificialBeeColonyAlgorithm']
 
 class SolutionABC(Individual):
+	r"""Representation of solution for Artificial Bee Colony Algorithm.
+
+	Date:
+		2018
+
+	Author:
+		Klemen Berkovič
+
+	See Also:
+		:py:class:Individual
+	"""
 	def __init__(self, task, rand): Individual.__init__(self, task=task, rand=rand)
 
 class ArtificialBeeColonyAlgorithm(Algorithm):
 	r"""Implementation of Artificial Bee Colony algorithm.
 
-	**Algorithm:** Artificial Bee Colony algorithm
+	Algorithm:
+		Artificial Bee Colony algorithm
 
-	**Date:** 2018
+	Date:
+		2018
 
-	**Author:** Uros Mlakar and Klemen Berkovič
+	Author:
+		Uros Mlakar and Klemen Berkovič
 
-	**License:** MIT
+	License:
+		MIT
 
-	**Reference paper:**
-	Karaboga, D., and Bahriye B. "A powerful and efficient algorithm for
-	numerical function optimization: artificial bee colony (ABC) algorithm."
-	Journal of global optimization 39.3 (2007): 459-471.
+	Reference paper:
+		Karaboga, D., and Bahriye B. "A powerful and efficient algorithm for numerical function optimization: artificial bee colony (ABC) algorithm." Journal of global optimization 39.3 (2007): 459-471.
+
+	Arguments:
+		Name (list): List containing strings that represent algorithm names
 	"""
 	Name = ['ArtificialBeeColonyAlgorithm', 'ABC']
 
@@ -40,33 +56,69 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 	def setParameters(self, NP=10, Limit=100, **ukwargs):
 		r"""Set the arguments of an algorithm.
 
-		**Arguments:**
-
-		NP {integer} -- population size
-
-		Limit {integer} -- Limit
+		Args:
+			NP (int): Population size
+			Limit (int): Limit
 		"""
 		self.NP = NP  # population size; number of search agents
 		self.FoodNumber = int(self.NP / 2)
 		self.Limit = Limit
-
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def CalculateProbs(self, Foods, Probs):
-		"""Calculate probs."""
+		"""Calculate probs.
+
+		Args:
+			Foods (array): TODO
+			Probs (array): TODO
+
+		Returns:
+			Probs (array): TODO
+		"""
 		Probs = [1.0 / (Foods[i].f + 0.01) for i in range(self.FoodNumber)]
 		s = sum(Probs)
 		Probs = [Probs[i] / s for i in range(self.FoodNumber)]
 		return Probs
 
 	def initPopulation(self, task):
-		"""Initialize positions."""
+		"""Initialize positions.
+
+		Args:
+			task (:py:class:Task): Optimization task
+
+		Returns:
+			(tuple): Tuple containing:
+				Foods (array): TODO
+				(list): TODO
+				(dict): TODO
+
+		See Also:
+			:py:meth:Algorithm.initPopulation
+		"""
 		Foods, Probs, Trial = [], [0 for i in range(self.FoodNumber)], [0 for i in range(self.FoodNumber)]
 		# self.Best = SolutionABC(task, self.Rand)
 		for i in range(self.FoodNumber): Foods.append(SolutionABC(task, self.Rand))
 		return Foods, [f.f for f in Foods], {'Probs':Probs, 'Trial':Trial}
 
 	def runIteration(self, task, Foods, fpop, xb, fxb, Probs, Trial, **dparams):
+		r"""Core function of algorithm.
+
+		Args:
+			task (:py:class:Task): Optimization task
+			Foods (array): TODO
+			fpop (array): TODO
+			xb (array): TODO
+			fxb (float): TODO
+			Probs (array): TODO
+			Trial (array): TODO
+			dparams (dict): TODO
+
+		Returns:
+			(tuple): Tuple containing:
+				Foods (array): TODO
+				(list): TODO
+				(dict): TODO
+		"""
 		for i in range(self.FoodNumber):
 			newSolution = copy.deepcopy(Foods[i])
 			param2change = int(self.rand() * task.D)
