@@ -14,21 +14,33 @@ __all__ = ['FireworksAlgorithm', 'EnhancedFireworksAlgorithm', 'DynamicFireworks
 class BareBonesFireworksAlgorithm(Algorithm):
 	r"""Implementation of bare bone fireworks algorithm.
 
-	**Algorithm:** Bare Bones Fireworks Algorithm
+	Algorithm:
+		Bare Bones Fireworks Algorithm
 
-	**Date:** 2018
+	Date:
+		2018
 
-	**Authors:** Klemen Berkovič
+	Authors:
+		Klemen Berkovič
 
-	**License:** MIT
+	License:
+		MIT
 
-	**Reference URL:**
-	https://www.sciencedirect.com/science/article/pii/S1568494617306609
+	Reference URL:
+		https://www.sciencedirect.com/science/article/pii/S1568494617306609
 
-	**Reference paper:**
-	Junzhi Li, Ying Tan, The bare bones fireworks algorithm: A minimalist global optimizer, Applied Soft Computing, Volume 62, 2018, Pages 454-462, ISSN 1568-4946, https://doi.org/10.1016/j.asoc.2017.10.046.
+	Reference paper:
+		Junzhi Li, Ying Tan, The bare bones fireworks algorithm: A minimalist global optimizer, Applied Soft Computing, Volume 62, 2018, Pages 454-462, ISSN 1568-4946, https://doi.org/10.1016/j.asoc.2017.10.046.
+
+	Attributes:
+		Name (lsit of str): List of strings representing algorithm names
+		n (int): Number of spraks
+		C_a (float): amplification coefficient
+		C_r (float): reduction coefficient
 	"""
 	Name = ['BareBonesFireworksAlgorithm', 'BBFWA']
+	C_a, C_r = 1.5, 0.5
+	n = 10
 
 	@staticmethod
 	def typeParameters(): return {
@@ -40,23 +52,50 @@ class BareBonesFireworksAlgorithm(Algorithm):
 	def setParameters(self, n=10, C_a=1.5, C_r=0.5, **ukwargs):
 		r"""Set the arguments of an algorithm.
 
-		**Arguments:**
-
-		n {integer} -- number of sparks $\in [1, \infty)$
-
-		C_a {real} -- amplification coefficient $\in [1, \infty)$
-
-		C_r {real} -- reduction coefficient $\in (0, 1)$
+		Arguments:
+			n (int): Number of sparks $\in [1, \infty)$
+			C_a (float): Amplification coefficient :math:`\in [1, \infty)`
+			C_r (float): Reduction coefficient :math:`\in (0, 1)`
 		"""
 		self.n, self.C_a, self.C_r = n, C_a, C_r
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def initPopulation(self, task):
+		r"""Initialize starting population
+
+		Args:
+			task (Task): Optimization task
+
+		Returns:
+			Tuple[array of (float or int), float, dict]:
+				1. Initial solution
+				2. Initial solution function/fitness value
+				3. dict:
+					* A (array of (float or int)): Starting aplitude or search range
+		"""
 		x, A = self.uniform(task.Lower, task.Upper, task.D), task.bRange
 		x_fit = task.eval(x)
 		return x, x_fit, {'A': A}
 
 	def runIteration(self, task, x, x_fit, xb, fxb, A, **dparams):
+		r"""Core function of Bare Bones Fireworks Algorithm.
+
+		Args:
+			task (Task): Optimization task
+			x (array of (float or int)): Current solution
+			x_fit (float): Current solution fitness/function value
+			xb (array of (float or int)): Current best solution
+			fxb (float): Current best solution fitness/function value
+			A (array of float): Serach range
+			**dparams: Additional parameters
+
+		Returns:
+			Tuple[array of (float or int), float, ditc]:
+				1. New solution
+				2. New solution fitness/function value
+				3. dict
+					* A (array of float): Serach range
+		"""
 		S = apply_along_axis(task.repair, 1, self.uniform(x - A, x + A, [self.n, task.D]), self.Rand)
 		S_fit = apply_along_axis(task.eval, 1, S)
 		iS = argmin(S_fit)
@@ -67,17 +106,26 @@ class BareBonesFireworksAlgorithm(Algorithm):
 class FireworksAlgorithm(Algorithm):
 	r"""Implementation of fireworks algorithm.
 
-	**Algorithm:** Fireworks Algorithm
+	Algorithm:
+		Fireworks Algorithm
 
-	**Date:** 2018
+	Date:
+		2018
 
-	**Authors:** Klemen Berkovič
+	Authors:
+		Klemen Berkovič
 
-	**License:** MIT
+	License:
+		MIT
 
-	**Reference URL:** https://www.springer.com/gp/book/9783662463529
+	Reference URL:
+		https://www.springer.com/gp/book/9783662463529
 
-	**Reference paper:** Tan, Ying. "Firework Algorithm: A Novel Swarm Intelligence Optimization Method." (2015).
+	Reference paper:
+		Tan, Ying. "Firework Algorithm: A Novel Swarm Intelligence Optimization Method." (2015).
+
+	Attributes:
+		Name (list of str): List of stirngs representing algorithm names
 	"""
 	Name = ['FireworksAlgorithm', 'FWA']
 
@@ -162,46 +210,124 @@ class FireworksAlgorithm(Algorithm):
 class EnhancedFireworksAlgorithm(FireworksAlgorithm):
 	r"""Implementation of enganced fireworks algorithm.
 
-	**Algorithm:** Enhanced Fireworks Algorithm
+	Algorithm:
+		Enhanced Fireworks Algorithm
 
-	**Date:** 2018
+	Date:
+		2018
 
-	**Authors:** Klemen Berkovič
+	Authors:
+		Klemen Berkovič
 
-	**License:** MIT
+	License:
+		MIT
 
-	**Reference URL:** https://ieeexplore.ieee.org/document/6557813/
+	Reference URL:
+		https://ieeexplore.ieee.org/document/6557813/
 
-	**Reference paper:** S. Zheng, A. Janecek and Y. Tan, "Enhanced Fireworks Algorithm," 2013 IEEE Congress on Evolutionary Computation, Cancun, 2013, pp. 2069-2077. doi: 10.1109/CEC.2013.6557813
+	Reference paper:
+		S. Zheng, A. Janecek and Y. Tan, "Enhanced Fireworks Algorithm," 2013 IEEE Congress on Evolutionary Computation, Cancun, 2013, pp. 2069-2077. doi: 10.1109/CEC.2013.6557813
+
+	Attributes:
+		Name (list of str): List of strings representing algorithm names
 	"""
 	Name = ['EnhancedFireworksAlgorithm', 'EFWA']
 
 	@staticmethod
 	def typeParameters():
+		r"""
+
+		Returns:
+
+		"""
 		d = FireworksAlgorithm.typeParameters()
 		d['Ainit'] = lambda x: isinstance(x, (float, int)) and x > 0
 		d['Afinal'] = lambda x: isinstance(x, (float, int)) and x > 0
 		return d
 
 	def setParameters(self, Ainit=20, Afinal=5, **ukwargs):
+		r"""
+
+		Args:
+			Ainit:
+			Afinal:
+			**ukwargs:
+
+		Returns:
+
+		"""
 		FireworksAlgorithm.setParameters(self, **ukwargs)
 		self.Ainit, self.Afinal = Ainit, Afinal
 
 	def initRanges(self, task):
+		r"""
+
+		Args:
+			task:
+
+		Returns:
+
+		"""
 		Ainit, Afinal = fullArray(self.Ainit, task.D), fullArray(self.Afinal, task.D)
 		return Ainit, Afinal, self.uAmin(Ainit, Afinal, task)
 
-	def uAmin(self, Ainit, Afinal, task): return Ainit - sqrt(task.Evals * (2 * task.nFES - task.Evals)) * (Ainit - Afinal) / task.nFES
+	def uAmin(self, Ainit, Afinal, task):
+		r"""
+
+		Args:
+			Ainit:
+			Afinal:
+			task:
+
+		Returns:
+
+		"""
+		return Ainit - sqrt(task.Evals * (2 * task.nFES - task.Evals)) * (Ainit - Afinal) / task.nFES
 
 	def ExplosionAmplitude(self, x_f, xb_f, A_min, Ah, As, task):
+		r"""
+
+		Args:
+			x_f:
+			xb_f:
+			A_min:
+			Ah:
+			As:
+			task:
+
+		Returns:
+
+		"""
 		A = FireworksAlgorithm.ExplosionAmplitude(self, x_f, xb_f, Ah, As)
 		ifix = where(A < A_min)
 		A[ifix] = A_min[ifix]
 		return A
 
-	def GaussianSpark(self, x, xb, task): return self.Mapping(x + self.rand(task.D) * (xb - x) * self.normal(1, 1, task.D), task)
+	def GaussianSpark(self, x, xb, task):
+		r"""
+
+		Args:
+			x:
+			xb:
+			task:
+
+		Returns:
+
+		"""
+		return self.Mapping(x + self.rand(task.D) * (xb - x) * self.normal(1, 1, task.D), task)
 
 	def NextGeneration(self, FW, FW_f, FWn, task):
+		r"""
+
+		Args:
+			FW:
+			FW_f:
+			FWn:
+			task:
+
+		Returns:
+
+		"""
 		FWn_f = apply_along_axis(task.eval, 1, FWn)
 		ib = argmin(FWn_f)
 		if FWn_f[ib] < FW_f[0]: FW[0], FW_f[0] = FWn[ib], FWn_f[ib]
@@ -211,12 +337,37 @@ class EnhancedFireworksAlgorithm(FireworksAlgorithm):
 		return FW, FW_f
 
 	def initPopulation(self, task):
+		r"""
+
+		Args:
+			task:
+
+		Returns:
+
+		"""
 		FW, FW_f, d = FireworksAlgorithm.initPopulation(self, task)
 		Ainit, Afinal, A_min = self.initRanges(task)
 		d.update({'Ainit':Ainit, 'Afinal':Afinal, 'A_min':A_min})
 		return FW, FW_f, d
 
 	def runIteration(self, task, FW, FW_f, xb, fxb, Ah, Ainit, Afinal, A_min, **dparams):
+		r"""
+
+		Args:
+			task:
+			FW:
+			FW_f:
+			xb:
+			fxb:
+			Ah:
+			Ainit:
+			Afinal:
+			A_min:
+			**dparams:
+
+		Returns:
+
+		"""
 		iw, ib = argmax(FW_f), 0
 		Ss, As = sum(FW_f[iw] - FW_f), sum(FW_f - FW_f[ib])
 		S = [self.SparsksNo(FW_f[i], FW_f[iw], Ss) for i in range(self.N)]
@@ -230,17 +381,26 @@ class EnhancedFireworksAlgorithm(FireworksAlgorithm):
 class DynamicFireworksAlgorithmGauss(EnhancedFireworksAlgorithm):
 	r"""Implementation of dynamic fireworks algorithm.
 
-	**Algorithm:** Dynamic Fireworks Algorithm
+	Algorithm:
+		Dynamic Fireworks Algorithm
 
-	**Date:** 2018
+	Date:
+		2018
 
-	**Authors:** Klemen Berkovič
+	Authors:
+		Klemen Berkovič
 
-	**License:** MIT
+	License:
+		MIT
 
-	**Reference URL:** http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6900485&isnumber=6900223
+	Reference URL:
+		http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6900485&isnumber=6900223
 
-	**Reference paper:** S. Zheng, A. Janecek, J. Li and Y. Tan, "Dynamic search in fireworks algorithm," 2014 IEEE Congress on Evolutionary Computation (CEC), Beijing, 2014, pp. 3222-3229. doi: 10.1109/CEC.2014.6900485
+	Reference paper:
+		S. Zheng, A. Janecek, J. Li and Y. Tan, "Dynamic search in fireworks algorithm," 2014 IEEE Congress on Evolutionary Computation (CEC), Beijing, 2014, pp. 3222-3229. doi: 10.1109/CEC.2014.6900485
+
+	Attributes:
+		Name (list of str): List of strings representing algorithm names
 	"""
 	Name = ['DynamicFireworksAlgorithmGauss', 'dynFWAG']
 
@@ -254,14 +414,56 @@ class DynamicFireworksAlgorithmGauss(EnhancedFireworksAlgorithm):
 		return d
 
 	def setParameters(self, A_cf=20, C_a=1.2, C_r=0.9, epsilon=1e-8, **ukwargs):
+		r"""
+
+		Args:
+			A_cf:
+			C_a:
+			C_r:
+			epsilon:
+			**ukwargs:
+
+		Returns:
+
+		"""
 		FireworksAlgorithm.setParameters(self, **ukwargs)
 		self.A_cf, self.C_a, self.C_r, self.epsilon = A_cf, C_a, C_r, epsilon
 
-	def initAmplitude(self, task): return FireworksAlgorithm.initAmplitude(self, task), task.bRange
+	def initAmplitude(self, task):
+		r"""
 
-	def ExplosionAmplitude(self, x_f, xb_f, A, As): return FireworksAlgorithm.ExplosionAmplitude(self, x_f, xb_f, A, As)
+		Args:
+			task:
+
+		Returns:
+
+		"""
+		return FireworksAlgorithm.initAmplitude(self, task), task.bRange
+
+	def ExplosionAmplitude(self, x_f, xb_f, A, As):
+		r"""
+
+		Args:
+			x_f:
+			xb_f:
+			A:
+			As:
+
+		Returns:
+
+		"""
+		return FireworksAlgorithm.ExplosionAmplitude(self, x_f, xb_f, A, As)
 
 	def Mapping(self, x, task):
+		r"""
+
+		Args:
+			x:
+			task:
+
+		Returns:
+
+		"""
 		ir = where(x > task.Upper)
 		x[ir] = self.uniform(task.Lower[ir], task.Upper[ir])
 		ir = where(x < task.Lower)
@@ -269,12 +471,32 @@ class DynamicFireworksAlgorithmGauss(EnhancedFireworksAlgorithm):
 		return x
 
 	def repair(self, x, d, epsilon):
+		r"""
+
+		Args:
+			x:
+			d:
+			epsilon:
+
+		Returns:
+
+		"""
 		ir = where(x <= epsilon)
 		x[ir] = d[ir]
 		return x
 
 	def NextGeneration(self, FW, FW_f, FWn, task):
-		r"""Elitism Random Selection."""
+		r"""
+
+		Args:
+			FW:
+			FW_f:
+			FWn:
+			task:
+
+		Returns:
+
+		"""
 		FWn_f = apply_along_axis(task.eval, 1, FWn)
 		ib = argmin(FWn_f)
 		for i, f in enumerate(FW_f):
@@ -284,6 +506,20 @@ class DynamicFireworksAlgorithmGauss(EnhancedFireworksAlgorithm):
 		return FW, FW_f
 
 	def uCF(self, xnb, xcb, xcb_f, xb, xb_f, Acf, task):
+		r"""
+
+		Args:
+			xnb:
+			xcb:
+			xcb_f:
+			xb:
+			xb_f:
+			Acf:
+			task:
+
+		Returns:
+
+		"""
 		xnb_f = apply_along_axis(task.eval, 1, xnb)
 		ib_f = argmin(xnb_f)
 		if xnb_f[ib_f] <= xb_f: xb, xb_f = xnb[ib_f], xnb_f[ib_f]
@@ -293,6 +529,14 @@ class DynamicFireworksAlgorithmGauss(EnhancedFireworksAlgorithm):
 		return xb, xb_f, Acf
 
 	def initPopulation(self, task):
+		r"""
+
+		Args:
+			task:
+
+		Returns:
+
+		"""
 		FW, (Ah, Ab) = self.uniform(task.Lower, task.Upper, [self.N, task.D]), self.initAmplitude(task)
 		FW_f = apply_along_axis(task.eval, 1, FW)
 		return FW, FW_f, {'Ah':Ah, 'Ab':Ab}
@@ -312,21 +556,53 @@ class DynamicFireworksAlgorithmGauss(EnhancedFireworksAlgorithm):
 class DynamicFireworksAlgorithm(DynamicFireworksAlgorithmGauss):
 	r"""Implementation of dynamic fireworks algorithm.
 
-	**Algorithm:** Dynamic Fireworks Algorithm
+	Algorithm:
+		Dynamic Fireworks Algorithm
 
-	**Date:** 2018
+	Date:
+		2018
 
-	**Authors:** Klemen Berkovič
+	Authors:
+		Klemen Berkovič
 
-	**License:** MIT
+	License:
+		MIT
 
-	**Reference URL:** http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6900485&isnumber=6900223
+	Reference URL:
+		http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6900485&isnumber=6900223
 
-	**Reference paper:** S. Zheng, A. Janecek, J. Li and Y. Tan, "Dynamic search in fireworks algorithm," 2014 IEEE Congress on Evolutionary Computation (CEC), Beijing, 2014, pp. 3222-3229. doi: 10.1109/CEC.2014.6900485
+	Reference paper:
+	 	S. Zheng, A. Janecek, J. Li and Y. Tan, "Dynamic search in fireworks algorithm," 2014 IEEE Congress on Evolutionary Computation (CEC), Beijing, 2014, pp. 3222-3229. doi: 10.1109/CEC.2014.6900485
+
+	Attributes:
+		Name (list of str): List of strings representing algorithm name
+
+	See Also:
+		DynamicFireworksAlgorithmGauss
 	"""
 	Name = ['DynamicFireworksAlgorithm', 'dynFWA']
 
 	def runIteration(self, task, FW, FW_f, xb, fxb, Ah, Ab, **dparams):
+		r"""Core function of Dynamic Fireworks Algorithm.
+
+		Args:
+			task (Task): Optimization task
+			FW (array of array of (float or int)): Current population
+			FW_f (array of float): Current population fitness/function values
+			xb (array of (float or int)): Current best solution
+			fxb (float): Current best solution's fitness/function value
+			Ah (): TODO
+			Ab (): TODO
+			**dparams:
+
+		Returns:
+			Tuple[array of array of (float or int), array of float, dict]:
+				1. New population
+				2. New population function/fitness values
+				3. dict:
+					* Ah (): TODO
+					* Ab (): TODO
+		"""
 		iw, ib = argmax(FW_f), argmin(FW_f)
 		Ss, As = sum(FW_f[iw] - FW_f), sum(FW_f - FW_f[ib])
 		S, sb = [self.SparsksNo(FW_f[i], FW_f[iw], Ss) for i in range(len(FW))], self.SparsksNo(fxb, FW_f[iw], Ss)

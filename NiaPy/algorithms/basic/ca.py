@@ -31,6 +31,9 @@ class Camel(Individual):
 		x_past (array of (float of int): Camel's past position
 		f_past (float): Camel's past funciton/fitness value
 		steps (int): Age of camel
+
+	See Also:
+		:func:`NiaPy.algorithms.algorithm.Individual`
 	"""
 	def __init__(self, E_init=None, S_init=None, **kwargs):
 		r"""Initialize the Camel.
@@ -41,7 +44,7 @@ class Camel(Individual):
 			**kwargs: Additional arguments
 
 		See Also:
-				Individual.__init__()
+			:func:`NiaPy.algorithms.algorithm.Individual.__init__`
 		"""
 		Individual.__init__(self, **kwargs)
 		self.E, self.E_past = E_init, E_init
@@ -135,6 +138,9 @@ class CamelAlgorithm(Algorithm):
 		T_max (float): Maximal temperature of environment
 		E_init (float): Starting value of energy
 		S_init (float): Starting value of supplys
+
+	See Also:
+		:func:`NiaPy.algorithms.algorithm.Algorithm`
 	"""
 	Name = ['CamelAlgorithm', 'CA']
 	T_min, T_max = -1, 1
@@ -146,7 +152,6 @@ class CamelAlgorithm(Algorithm):
 
 		Returns:
 			dict:
-				* NP (func): TODO
 				* omega (func): TODO
 				* mu (func): TODO
 				* alpha (func): TODO
@@ -154,8 +159,12 @@ class CamelAlgorithm(Algorithm):
 				* E_init (func): TODO
 				* T_min (func): TODO
 				* T_max (func): TODO
+
+		See Also:
+			:func:`NiaPy.algorithms.algorithm.Algorithm.typeParameters`
 		"""
-		return {
+		d = Algorithm.typeParameters()
+		d.update({
 			'NP': lambda x: isinstance(x, int) and x > 0,
 			'omega': lambda x: isinstance(x, (float, int)),
 			'mu': lambda x: isinstance(x, float) and 0 <= x <= 1,
@@ -164,7 +173,8 @@ class CamelAlgorithm(Algorithm):
 			'E_init': lambda x: isinstance(x, (float, int)) and x > 0,
 			'T_min': lambda x: isinstance(x, (float, int)) and x > 0,
 			'T_max': lambda x: isinstance(x, (float, int)) and x > 0
-		}
+		})
+		return d
 
 	def setParameters(self, NP=50, omega=0.25, mu=0.5, alpha=0.5, S_init=10, E_init=10, T_min=-10, T_max=10, **ukwargs):
 		r"""Set the arguments of an algorithm.
@@ -177,8 +187,12 @@ class CamelAlgorithm(Algorithm):
 			mu (float): Dying rate $\in [0, 1]$
 			S_init (float): Initial supply $\in (0, \infty)$
 			E_init (float): Initial endurance $\in (0, \infty)$
+
+		See Also:
+			:func:`NiaPy.algorithms.algorithm.Algorithm.setParameters`
 		"""
-		self.NP, self.omega, self.mu, self.alpha, self.S_init, self.E_init, self.T_min, self.T_max = NP, omega, mu, alpha, S_init, E_init, T_min, T_max
+		Algorithm.setParameters(self, NP)
+		self.omega, self.mu, self.alpha, self.S_init, self.E_init, self.T_min, self.T_max = NP, omega, mu, alpha, S_init, E_init, T_min, T_max
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def walk(self, c, cb, task):

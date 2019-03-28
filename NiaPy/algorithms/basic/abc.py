@@ -19,11 +19,20 @@ class SolutionABC(Individual):
 	Author:
 		Klemen Berkovič
 
-	See Also
-	--------
-	:py:class:Individual
+	See Also:
+		:func:`NiaPy.algorithms.algorithm.Individual`
 	"""
-	def __init__(self, task, rand): Individual.__init__(self, task=task, rand=rand)
+	def __init__(self, task, rand):
+		r"""Initialize individual.
+
+		Args:
+			task (Task): Optimization task
+			rand (RandomState): Random generator
+
+		See Also:
+			:func:`NiaPy.algorithms.algorithm.Individual.__init__`
+		"""
+		Individual.__init__(self, task=task, rand=rand)
 
 class ArtificialBeeColonyAlgorithm(Algorithm):
 	r"""Implementation of Artificial Bee Colony algorithm.
@@ -44,9 +53,10 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 		Karaboga, D., and Bahriye B. "A powerful and efficient algorithm for numerical function optimization: artificial bee colony (ABC) algorithm." Journal of global optimization 39.3 (2007): 459-471.
 
 	Arguments
-	---------
-	Name : list of str
-		List containing strings that represent algorithm names
+		Name (list of str): List containing strings that represent algorithm names
+
+	See Also:
+		:func:`NiaPy.algorithms.algorithm.Algorithm`
 	"""
 	Name = ['ArtificialBeeColonyAlgorithm', 'ABC']
 
@@ -56,23 +66,26 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 
 		Returns:
 			dict:
-				* NP (func): TODO
 				* Limit (func): TODO
+
+		See Also:
+			:func:`NiaPy.algorithms.Algorithm.typeParameters`
 		"""
-		return {
-			'NP': lambda x: isinstance(x, int) and x > 0,
-			'Limit': lambda x: isinstance(x, int) and x > 0
-		}
+		d = Algorithm.typeParameters()
+		d.update({'Limit': lambda x: isinstance(x, int) and x > 0})
+		return d
 
 	def setParameters(self, NP=10, Limit=100, **ukwargs):
 		r"""Set the parameters of Artificial Bee Colony Algorithm.
 
 		Parameters:
-			NP (int): Number of individuals in population
-			Limit (int): Limt
+			Limit (Optional[int]): Limt
 			**ukwargs:	Additional arguments
+
+		See Also:
+			:func:`NiaPy.algorithms.Algorithm.setParameters`
 		"""
-		self.NP = NP  # population size; number of search agents
+		Algorithm.setParameters(self, NP, SolutionABC, **ukwargs)
 		self.FoodNumber = int(self.NP / 2)
 		self.Limit = Limit
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
@@ -105,11 +118,13 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 				3. dict:
 					* Probes (array of int): TODO
 					* Trial (array of int): TODO
+
+		See Also:
+			:func:`NiaPy.algorithms.Algorithm.initPopulation`
 		"""
-		Foods, Probs, Trial = [], [0 for i in range(self.FoodNumber)], [0 for i in range(self.FoodNumber)]
-		# self.Best = SolutionABC(task, self.Rand)
-		for i in range(self.FoodNumber): Foods.append(SolutionABC(task, self.Rand))
-		return Foods, [f.f for f in Foods], {'Probs':Probs, 'Trial':Trial}
+		Foods, fpop = Algorithm.initPopulation(self, task)
+		Probs, Trial = [0 for i in range(self.FoodNumber)], [0 for i in range(self.FoodNumber)]
+		return Foods, fpop, {'Probs':Probs, 'Trial':Trial}
 
 	def runIteration(self, task, Foods, fpop, xb, fxb, Probs, Trial, **dparams):
 		r"""Core funciton of  the algorithm.

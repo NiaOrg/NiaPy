@@ -1,7 +1,7 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, multiple-statements, line-too-long, expression-not-assigned, len-as-condition, no-self-use, unused-argument, no-else-return, dangerous-default-value, unnecessary-pass
 import logging
-from numpy import random as rand, inf, ndarray, array, asarray, array_equal, argmin
+from numpy import random as rand, inf, ndarray, array, asarray, array_equal, argmin, apply_along_axis
 from NiaPy.util import FesException, GenException, TimeException, RefException
 
 logging.basicConfig()
@@ -25,9 +25,13 @@ class Algorithm:
 	Attributes:
 		Name (array or list): List of names for algorithm
 		Rand (RandomState): 	Random generator
+		NP (int): Number of inidividuals in populatin
+		individualType (class or None): Type of individual used in algorithm
 	"""
 	Name = ['Algorithm', 'AAA']
 	Rand = rand.RandomState(None)
+	NP = 50
+	individualType = None
 
 	@staticmethod
 	def typeParameters():
@@ -45,18 +49,20 @@ class Algorithm:
 			seed (int): Starting seed for random generator
 
 		See Also:
-			Algorithm.setParameters(self, **kwargs)
+			:func:`NiaPy.algorithms.Algorithm.setParameters`
 		"""
 		self.Rand = rand.RandomState(kwargs.pop('seed', None))
 		self.setParameters(**kwargs)
 
-	def setParameters(self, **kwargs):
+	def setParameters(self, NP=50, individualType=None, **kwargs):
 		r"""Set the parameters/arguments of the algorithm.
 
 		Args:
+			NP (Optional[int]): Number of individuals in population
+			individualType (Optional[class]): Type of individuals used by algorithm
 			**kwargs: Parameter values dictionary
 		"""
-		pass
+		self.NP = NP
 
 	def rand(self, D=1):
 		r"""Get random distribution of shape D in range from 0 to 1.
@@ -151,7 +157,7 @@ class Algorithm:
 		r"""Initialization for starting population of optimization algorithm.
 
 		Args:
-			task (obj:Task): Optimization task.
+			task (Task): Optimization task.
 
 		Returns:
 			Tuple[array of (float or int), array of float, dict]:
@@ -159,8 +165,18 @@ class Algorithm:
 				2. New population fitness values.
 				3. dict:
 					* Additional arguments.
+
+		See Also:
+			:class:`NiaPy.algorithms.algorithm.Individual`
 		"""
-		return [], [], {}
+		pop, fpop = None, None
+		if issubclass(self.individualType, Individual):
+			pop = ndarray([self.individualType(task=task, rnd=self.Rand) for _ in range(self.NP)])
+			fpop = ndarray([x.f for x in pop])
+		else:
+			pop = task.Lower + self.rand([self.NP, task.D]) * task.bRange
+			fpop = apply_along_axis(task.eval, 1, pop)
+		return pop, fpop, {}
 
 	def runIteration(self, task, pop, fpop, xb, fxb, **dparams):
 		r"""Core functionality of algorithm.
@@ -180,6 +196,9 @@ class Algorithm:
 				1. New populations coordinates
 				2. New populations fitness values
 				3. Additional arguments of the algorithm
+
+		See Also:
+			:func:`NiaPy.algorithms.algorithm.Algorithm.runYield`
 		"""
 		return pop, fpop, {}
 
@@ -193,6 +212,10 @@ class Algorithm:
 			Tuple[array of array of (float or int), float]:
 				1. New population best individuals coordinates
 				2. Fitness value of the best solution
+
+		See Also:
+			:func:`NiaPy.algorithms.algorithm.Algorithm.runIteration`
+			:func:`NiaPy.algorithms.algorithm.Algorithm.initPopulation`
 		"""
 		pop, fpop, dparams = self.initPopulation(task)
 		xb, fxb = self.getBest(pop, fpop)
@@ -212,6 +235,9 @@ class Algorithm:
 			Tuple[array of array of (float or int), float]:
 				1. Best individuals components found in optimization process
 				2. Best fitness value found in optimization process
+
+		See Also:
+			:func:`NiaPy.algorithms.algorithm.Algorithm.runYield`
 		"""
 		algo, xb, fxb = self.runYield(task), None, inf
 		while not task.stopCond():
@@ -231,7 +257,7 @@ class Algorithm:
 				2. Best fitness value found in optimization process
 
 		See Also:
-			Algorithm.runTask(self, taks)
+			:func:`NiaPy.algorithms.algorithm.Algorithm.runTask`
 		"""
 		try:
 			task.start()
@@ -297,7 +323,7 @@ class Individual:
 			rnd (Optional[RandomState]: Random generator
 
 		See Also:
-			:obj:Task.repair
+			:func:`NiaPy.util.utillity.Task.repair`
 		"""
 		task.repair(task, rnd=rnd)
 		self.f = task.eval(self.x)
@@ -308,7 +334,7 @@ class Individual:
 		Method returns copy of ``this`` object so it is safe for editing.
 
 		Returns:
-			Individual: Copy of self
+			:class:`NiaPy.algorithms.algorithm.Individual`: Copy of self
 		"""
 		return Individual(x=self.x, f=self.f, e=False)
 
@@ -316,7 +342,7 @@ class Individual:
 		r"""Compare the individuals for equalities.
 
 		Args:
-			other (object or :py:class:Individual): Object that we want to compare this object to
+			other (object or :class:`NiaPy.algorithms.algorithm.Individual`): Object that we want to compare this object to
 
 		Returns:
 			bool: ``True`` if equal or ``False`` if no equal

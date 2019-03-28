@@ -91,7 +91,7 @@ class FireflyAlgorithm(Algorithm):
 		Returns:
 			Tuple[array of (float or int), bool]:
 				1. New individual
-				2. ``True`` if individual vas moved
+				2. ``True`` if individual vas moved, ``False`` if individual was not moved
 		"""
 		moved = False
 		for j in range(self.NP):

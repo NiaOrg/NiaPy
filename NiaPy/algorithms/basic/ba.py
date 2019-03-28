@@ -29,7 +29,7 @@ class BatAlgorithm(Algorithm):
 		Yang, Xin-She. "A new metaheuristic bat-inspired algorithm." Nature inspired cooperative strategies for optimization (NICSO 2010). Springer, Berlin, Heidelberg, 2010. 65-74.
 	"""
 	Name = ['BatAlgorithm', 'BA']
-	NP, A, r, Qmin, Qmax = 40, 0.5, 0.5, 0.0, 2.0
+	A, r, Qmin, Qmax = 0.5, 0.5, 0.0, 2.0
 
 	@staticmethod
 	def typeParameters():
@@ -37,37 +37,37 @@ class BatAlgorithm(Algorithm):
 
 		Returns:
 			dict:
-				* NP (func): TODO
 				* A (func): TODO
 				* r (func): TODO
 				* Qmin (func): TODO
 				* Qmax (func): TODO
+
+		See Also:
+			:func:`NiaPy.algorithm.Algorithm.typeParameters`
 		"""
-		return {
-			'NP': lambda x: isinstance(x, int) and x > 0,
+		d = Algorithm.typeParameters()
+		d.update({
 			'A': lambda x: isinstance(x, (float, int)) and x > 0,
 			'r': lambda x: isinstance(x, (float, int)) and x > 0,
 			'Qmin': lambda x: isinstance(x, (float, int)),
 			'Qmax': lambda x: isinstance(x, (float, int))
-		}
+		})
+		return d
 
 	def setParameters(self, NP=40, A=0.5, r=0.5, Qmin=0.0, Qmax=2.0, **ukwargs):
 		r"""Set the parameters of the algorithm.
 
-		Args
-		----
-		NP : int
-			Population size
-		A : float
-			loudness
-		r : float
-			pulse rate
-		Qmin : float
-			minimum frequency
-		Qmax : float
-			maximum frequency
+		Args:
+			A (float): loudness
+			r (float): pulse rate
+			Qmin (float): minimum frequency
+			Qmax (float): maximum frequency
+
+		See Also:
+			:func:`NiaPy.algorithm.Algorithm.setParameters`
 		"""
-		self.NP, self.A, self.r, self.Qmin, self.Qmax = NP, A, r, Qmin, Qmax
+		Algorithm.setParameters(NP, **ukwargs)
+		self.A, self.r, self.Qmin, self.Qmax = A, r, Qmin, Qmax
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def initPopulation(self, task):
@@ -84,10 +84,12 @@ class BatAlgorithm(Algorithm):
 					* S (array of array of (float)): TODO
 					* Q (array of float): 	TODO
 					* v (array of array of (float)): TODO
+
+		See Also:
+			:func:`NiaPy.algorithm.Algorithm.initPopulation`
 		"""
+		Sol, Fitness = Algorithm.initPopulation(self, task)
 		S, Q, v = full([self.NP, task.D], 0.0), full(self.NP, 0.0), full([self.NP, task.D], 0.0)
-		Sol = task.Lower + task.bRange * self.uniform(0, 1, [self.NP, task.D])
-		Fitness = apply_along_axis(task.eval, 1, Sol)
 		return Sol, Fitness, {'S': S, 'Q':Q, 'v':v}
 
 	def runIteration(self, task, Sol, Fitness, xb, fxb, S, Q, v, **dparams):

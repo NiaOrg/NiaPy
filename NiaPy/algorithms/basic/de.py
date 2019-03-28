@@ -92,31 +92,84 @@ class DifferentialEvolution(Algorithm):
 	def setParameters(self, NP=50, F=1, CR=0.8, CrossMutt=CrossRand1, **ukwargs):
 		r"""Set the algorithm parameters.
 
-		**Arguments:**
-		NP {integer} -- population size
-		F {decimal} -- scaling factor
-		CR {decimal} -- crossover rate
-		CrossMutt {function} -- crossover and mutation strategy
+		Arguments:
+			NP (int): population size
+			F (float): scaling factor
+			CR (float): crossover rate
+			CrossMutt (function): crossover and mutation strategy
+			ukwargs: Additional arguments
 		"""
 		self.NP, self.F, self.CR, self.CrossMutt = NP, F, CR, CrossMutt
 		self.IndividualType = Individual
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def evolve(self, pop, xb, task, **kwargs):
+		r"""
+
+		Args:
+			pop:
+			xb:
+			task:
+			**kwargs:
+
+		Returns:
+
+		"""
 		return [self.IndividualType(x=self.CrossMutt(pop, i, xb, self.F, self.CR, self.Rand), task=task, rand=self.Rand, e=True) for i in range(len(pop))]
 
 	def selection(self, pop, npop, **kwargs):
+		r"""
+
+		Args:
+			pop:
+			npop:
+			**kwargs:
+
+		Returns:
+
+		"""
 		return [e if e.f < pop[i].f else pop[i] for i, e in enumerate(npop)]
 
 	def postSelection(self, pop, task, **kwargs):
+		r"""
+
+		Args:
+			pop:
+			task:
+			**kwargs:
+
+		Returns:
+
+		"""
 		return pop
 
 	def initPopulation(self, task):
+		r"""
+
+		Args:
+			task:
+
+		Returns:
+
+		"""
 		pop = [self.IndividualType(task=task, e=True, rand=self.Rand) for _ in range(self.NP)]
 		fpop = [x.f for x in pop]
 		return pop, fpop, {}
 
 	def runIteration(self, task, pop, fpop, xb, fxb, **dparams):
+		r"""
+
+		Args:
+			task:
+			pop:
+			fpop:
+			xb:
+			fxb:
+			**dparams:
+
+		Returns:
+
+		"""
 		npop = self.evolve(pop, xb, task)
 		pop = self.selection(pop, npop)
 		pop = self.postSelection(pop, task)
@@ -147,10 +200,28 @@ class CrowdingDifferentialEvolution(DifferentialEvolution):
 	def __init__(self, **kwargs): DifferentialEvolution.__init__(self, **kwargs)
 
 	def setParameters(self, CrowPop=0.1, **ukwargs):
+		r"""
+
+		Args:
+			CrowPop:
+			**ukwargs:
+
+		Returns:
+
+		"""
 		DifferentialEvolution.setParameters(self, **ukwargs)
 		self.CrowPop = CrowPop
 
 	def selection(self, pop, npop):
+		r"""
+
+		Args:
+			pop:
+			npop:
+
+		Returns:
+
+		"""
 		P = []
 		for e in npop:
 			i = argmin([euclidean(e, f) for f in pop])
@@ -160,12 +231,25 @@ class CrowdingDifferentialEvolution(DifferentialEvolution):
 class DynNpDifferentialEvolution(DifferentialEvolution):
 	r"""Implementation of Dynamic poulation size Differential evolution algorithm.
 
-	**Algorithm:** Dynamic poulation size Differential evolution algorithm
-	**Date:** 2018
-	**Author:** Klemen Berkovič
-	**License:** MIT
+	Algorithm:
+		Dynamic poulation size Differential evolution algorithm
+
+	Date:
+		2018
+
+	Author:
+		Klemen Berkovič
+
+	License:
+		MIT
+
+	Attributes:
+		Name (list of str): list of strings representing algorithm names.
+		pmax (int): TODO
+		rp (int): TODO
 	"""
 	Name = ['DynNpDifferentialEvolution', 'dynNpDE']
+	pmax, rp = 50, 3
 
 	@staticmethod
 	def typeParameters():
@@ -178,44 +262,121 @@ class DynNpDifferentialEvolution(DifferentialEvolution):
 		r"""Set the algorithm parameters.
 
 		Arguments:
-		NP {integer} -- population size
-		F {decimal} -- scaling factor
-		CR {decimal} -- crossover rate
-		SR {decimal} -- search reange for best (normalized)
-		CrossMutt {function} -- crossover and mutation strategy
+			pmax (int): TODO
+			rp (int): TODO
+
+		See Also:
+			DifferentialEvoluton.setParameters
 		"""
 		DifferentialEvolution.setParameters(self, **ukwargs)
 		self.pmax, self.rp = pmax, rp
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def postSelection(self, pop, task):
+		r"""
+
+		Args:
+			pop:
+			task:
+
+		Returns:
+
+		"""
 		Gr = task.nFES // (self.pmax * len(pop)) + self.rp
 		nNP = len(pop) // 2
 		if task.Iters == Gr and len(pop) > 3: pop = [pop[i] if pop[i].f < pop[i + nNP].f else pop[i + nNP] for i in range(nNP)]
 		return pop
 
-def proportional(Lt_min, Lt_max, mu, x_f, avg, *args): return min(Lt_min + mu * avg / x_f, Lt_max)
+def proportional(Lt_min, Lt_max, mu, x_f, avg, *args):
+	r"""
 
-def linear(Lt_min, Lt_max, mu, x_f, avg, x_gw, x_gb, *args): return Lt_min + 2 * mu * (x_f - x_gw) / (x_gb - x_gw)
+	Args:
+		Lt_min:
+		Lt_max:
+		mu:
+		x_f:
+		avg:
+		*args:
+
+	Returns:
+
+	"""
+	return min(Lt_min + mu * avg / x_f, Lt_max)
+
+def linear(Lt_min, Lt_max, mu, x_f, avg, x_gw, x_gb, *args):
+	r"""
+
+	Args:
+		Lt_min:
+		Lt_max:
+		mu:
+		x_f:
+		avg:
+		x_gw:
+		x_gb:
+		*args:
+
+	Returns:
+
+	"""
+	return Lt_min + 2 * mu * (x_f - x_gw) / (x_gb - x_gw)
 
 def bilinear(Lt_min, Lt_max, mu, x_f, avg, x_gw, x_gb, *args):
+	r"""
+
+	Args:
+		Lt_min:
+		Lt_max:
+		mu:
+		x_f:
+		avg:
+		x_gw:
+		x_gb:
+		*args:
+
+	Returns:
+
+	"""
 	if avg < x_f: return Lt_min + mu * (x_f - x_gw) / (x_gb - x_gw)
 	return 0.5 * (Lt_min + Lt_max) + mu * (x_f - avg) / (x_gb - avg)
 
 class AgingIndividual(Individual):
+	r"""
+
+	Attributes:
+		age (int): Age of individual.
+	"""
 	age = 0
 
 	def __init__(self, **kwargs):
+		r"""
+
+		Args:
+			**kwargs:
+		"""
 		Individual.__init__(self, **kwargs)
 		self.age = 0
 
 class AgingNpDifferentialEvolution(DifferentialEvolution):
 	r"""Implementation of Differential evolution algorithm with aging individuals.
 
-	**Algorithm:** Differential evolution algorithm with dynamic population size that is defined by the quality of population
-	**Date:** 2018
-	**Author:** Klemen Berkovič
-	**License:** MIT
+	Algorithm:
+		Differential evolution algorithm with dynamic population size that is defined by the quality of population
+
+	Date:
+		2018
+	Author:
+		Klemen Berkovič
+
+	License:
+		MIT
+
+	Attributes:
+		Name (list of str): list of strings representing algorithm names
+		Lt_min (int): minimal age of individual
+		Lt_max (int): maximal age of individual
+		delta_np (float): TODO
+		omega (float): TODO
 	"""
 	Name = ['AgingNpDifferentialEvolution', 'ANpDE']
 	Lt_min, Lt_max, delta_np, omega = 1, 12, 0.3, 0.3
@@ -229,10 +390,10 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 	def setParameters(self, Lt_min=0, Lt_max=12, delta_np=0.3, omega=0.3, age=proportional, CrossMutt=CrossBest1, **ukwargs):
 		r"""Set the algorithm parameters.
 
-		**Arguments**:
-		Lt_min {integer} -- Minimu life time
-		Lt_max {integer} -- Maximum life time
-		age {function} -- Function for calculation of age for individual
+		Arguments:
+			Lt_min (int): Minimu life time
+			Lt_max (int): Maximum life time
+			age (function): Function for calculation of age for individual
 		"""
 		DifferentialEvolution.setParameters(self, **ukwargs)
 		self.IndividualType = AgingIndividual
@@ -240,11 +401,38 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 		self.mu = abs(self.Lt_max - self.Lt_min) / 2
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def deltaPopE(self, t): return self.delta_np * abs(cos(t))
+	def deltaPopE(self, t):
+		r"""
 
-	def deltaPopC(self, t): return self.delta_np * abs(cos(t + 78))
+		Args:
+			t:
+
+		Returns:
+
+		"""
+		return self.delta_np * abs(cos(t))
+
+	def deltaPopC(self, t):
+		r"""
+
+		Args:
+			t:
+
+		Returns:
+
+		"""
+		return self.delta_np * abs(cos(t + 78))
 
 	def aging(self, task, pop):
+		r"""
+
+		Args:
+			task:
+			pop:
+
+		Returns:
+
+		"""
 		fpop = asarray([x.f for x in pop])
 		x_b, x_w = pop[argmin(fpop)], pop[argmax(fpop)]
 		avg, npop = mean(fpop), []
@@ -256,11 +444,31 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 		return npop, x_b
 
 	def popIncrement(self, pop, task, xb):
+		r"""
+
+		Args:
+			pop:
+			task:
+			xb:
+
+		Returns:
+
+		"""
 		deltapop = int(round(max(1, self.NP * self.deltaPopE(task.Iters))))
 		ni = self.Rand.choice(len(pop), deltapop, replace=False)
 		return [self.IndividualType(task=task, rand=self.Rand, e=True) for i in ni]
 
 	def popDecrement(self, pop, task, xb):
+		r"""
+
+		Args:
+			pop:
+			task:
+			xb:
+
+		Returns:
+
+		"""
 		deltapop = int(round(max(1, self.NP * self.deltaPopC(task.Iters))))
 		if len(pop) - deltapop <= 0: return pop
 		ni = self.Rand.choice(len(pop), deltapop, replace=False)
@@ -271,6 +479,19 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 		return npop
 
 	def runIteration(self, task, pop, fpop, xb, fxb, **dparams):
+		r"""
+
+		Args:
+			task:
+			pop:
+			fpop:
+			xb:
+			fxb:
+			**dparams:
+
+		Returns:
+
+		"""
 		npop = self.evolve(pop, xb, task)
 		npop = self.selection(pop, npop)
 		npop.extend(self.popIncrement(pop, task, xb))
@@ -279,16 +500,43 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 		return pop, [x.f for x in pop], {}
 
 def multiMutations(pop, i, xb, F, CR, rnd, task, IndividualType, strategys, **kwargs):
+	r"""
+
+	Args:
+		pop:
+		i:
+		xb:
+		F:
+		CR:
+		rnd:
+		task:
+		IndividualType:
+		strategys:
+		**kwargs:
+
+	Returns:
+
+	"""
 	L = [IndividualType(x=strategy(pop, i, xb, F, CR, rnd=rnd), task=task, e=True, rand=rnd) for strategy in strategys]
 	return L[argmin([x.f for x in L])]
 
 class MultiStrategyDifferentialEvolution(DifferentialEvolution):
 	r"""Implementation of Differential evolution algorithm with multiple mutation strateys.
 
-	**Algorithm:** Implementation of Differential evolution algorithm with multiple mutation strateys
-	**Date:** 2018
-	**Author:** Klemen Berkovič
-	**License:** MIT
+	Algorithm:
+		Implementation of Differential evolution algorithm with multiple mutation strateys
+
+	Date:
+		2018
+
+	Author:
+		Klemen Berkovič
+
+	License:
+		MIT
+
+	Attributes:
+		Name (list of str): list of strings representing algorithm names
 	"""
 	Name = ['MultiStrategyDifferentialEvolution', 'MsDE']
 
@@ -303,24 +551,47 @@ class MultiStrategyDifferentialEvolution(DifferentialEvolution):
 		r"""Set the arguments of the algorithm.
 
 		Arguments:
-		strategys {array} of {function} -- Mutation stratgeys to use
+			strategys (array of function): Mutation stratgeys to use
 
-		See:
-		DifferentialEvolution.setParameters
+		See Also:
+			DifferentialEvolution.setParameters
 		"""
 		DifferentialEvolution.setParameters(self, **ukwargs)
 		self.CrossMutt, self.strategys = multiMutations, strategys
 
 	def evolve(self, pop, xb, task, **kwargs):
+		r"""
+
+		Args:
+			pop:
+			xb:
+			task:
+			**kwargs:
+
+		Returns:
+
+		"""
 		return [self.CrossMutt(pop, i, xb, self.F, self.CR, self.Rand, task, self.IndividualType, self.strategys) for i in range(len(pop))]
 
 class DynNpMultiStrategyDifferentialEvolution(MultiStrategyDifferentialEvolution):
 	r"""Implementation of Dynamic population size Differential evolution algorithm with dynamic population size that is defined by the quality of population.
 
-	**Algorithm:** Dynamic population size Differential evolution algorithm with dynamic population size that is defined by the quality of population
-	**Date:** 2018
-	**Author:** Klemen Berkovič
-	**License:** MIT
+	Algorithm:
+		Dynamic population size Differential evolution algorithm with dynamic population size that is defined by the quality of population
+
+	Date:
+		2018
+
+	Author:
+		Klemen Berkovič
+
+	License:
+		MIT
+
+	Attributes:
+		Name (list of str): list of strings representing algorithm name
+		pmax (int): TODO
+		rp (int): TODO
 	"""
 	Name = ['DynNpMultiStrategyDifferentialEvolution', 'dynNpMsDE']
 	pmax, rp = 10, 3
@@ -336,15 +607,25 @@ class DynNpMultiStrategyDifferentialEvolution(MultiStrategyDifferentialEvolution
 		r"""Set the arguments of the algorithm.
 
 		Arguments:
-		strategys {array} of {function} -- Mutation stratgeys to use
+			strategys (array of function): Mutation stratgeys to use
 
 		See:
-		DifferentialEvolution.setParameters
+			DifferentialEvolution.setParameters
 		"""
 		MultiStrategyDifferentialEvolution.setParameters(self, **ukwargs)
 		self.pmax, self.rp = pmax, rp
 
 	def postSelection(self, pop, task, **kwargs):
+		r"""
+
+		Args:
+			pop:
+			task:
+			**kwargs:
+
+		Returns:
+
+		"""
 		Gr = task.nFES // (self.pmax * len(pop)) + self.rp
 		nNP = len(pop) // 2
 		if task.Iters == Gr and len(pop) > 3: pop = [pop[i] if pop[i].f < pop[i + nNP].f else pop[i + nNP] for i in range(nNP)]
@@ -353,10 +634,20 @@ class DynNpMultiStrategyDifferentialEvolution(MultiStrategyDifferentialEvolution
 class AgingNpMultiMutationDifferentialEvolution(AgingNpDifferentialEvolution, MultiStrategyDifferentialEvolution):
 	r"""Implementation of Differential evolution algorithm with aging individuals.
 
-	**Algorithm:** Differential evolution algorithm with dynamic population size that is defined by the quality of population
-	**Date:** 2018
-	**Author:** Klemen Berkovič
-	**License:** MIT
+	Algorithm:
+		Differential evolution algorithm with dynamic population size that is defined by the quality of population
+
+	Date:
+		2018
+
+	Author:
+		Klemen Berkovič
+
+	License:
+		MIT
+
+	Attributes:
+		Name (list of str): List of strings representing algorithm names
 	"""
 	Name = ['AgingNpMultiMutationDifferentialEvolution', 'ANpMSDE']
 
@@ -367,14 +658,39 @@ class AgingNpMultiMutationDifferentialEvolution(AgingNpDifferentialEvolution, Mu
 		return r
 
 	def setParameters(self, **ukwargs):
+		r"""
+
+		Args:
+			**ukwargs:
+		"""
 		AgingNpDifferentialEvolution.setParameters(self, **ukwargs)
 		MultiStrategyDifferentialEvolution.setParameters(self, stratgeys=[CrossRand1, CrossBest1, CrossCurr2Rand1, CrossRand2], **ukwargs)
 		self.IndividualType = AgingIndividual
 
 	def evolve(self, pop, xb, task):
+		r"""
+
+		Args:
+			pop:
+			xb:
+			task:
+
+		Returns:
+
+		"""
 		return [self.CrossMutt(pop, i, xb, self.F, self.CR, self.Rand, task, self.IndividualType, self.strategys) for i in range(len(pop))]
 
 	def popIncrement(self, pop, task, xb):
+		r"""
+
+		Args:
+			pop:
+			task:
+			xb:
+
+		Returns:
+
+		"""
 		deltapop = int(round(max(1, self.NP * self.deltaPopE(task.Iters))))
 		ni = self.Rand.choice(len(pop), deltapop, replace=False)
 		return [self.CrossMutt(pop, i, xb, self.F, self.CR, self.Rand, task, self.IndividualType, self.strategys) for i in ni]
