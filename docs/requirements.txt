@@ -23,4 +23,3 @@ xlsxWriter>=1.1.5
 numpy>=1.16.2
 scipy>=1.2.1
 matplotlib>=3.0.2
-

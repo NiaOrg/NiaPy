@@ -33,18 +33,28 @@ class SineCosineAlgorithm(Algorithm):
 	Reference paper:
 		Seyedali Mirjalili, SCA: A Sine Cosine Algorithm for solving optimization problems, Knowledge-Based Systems, Volume 96, 2016, Pages 120-133, ISSN 0950-7051, https://doi.org/10.1016/j.knosys.2015.12.022.
 
-	Attribures:
+	Attributes:
 		Name (list of str): List of string representing algorithm names
 	"""
 	Name = ['SineCosineAlgorithm', 'SCA']
 
 	@staticmethod
-	def typeParameters(): return {
+	def typeParameters():
+		r"""TODO.
+
+		Returns:
+			dict:
+				* NP (func): TODO
+				* a (func): TODO
+				* Rmin (func): TODO
+				* Rmax (func): TODO
+		"""
+		return {
 			'NP': lambda x: isinstance(x, int) and x > 0,
 			'a': lambda x: isinstance(x, (float, int)) and x > 0,
 			'Rmin': lambda x: isinstance(x, (float, int)),
 			'Rmax': lambda x: isinstance(x, (float, int))
-	}
+		}
 
 	def setParameters(self, NP=25, a=3, Rmin=0, Rmax=2, **ukwargs):
 		r"""Set the arguments of an algorithm.
@@ -64,11 +74,11 @@ class SineCosineAlgorithm(Algorithm):
 		Args:
 			x (array): Individual represented with components
 			x_b (array): Best individual represented with components
-			r1 (float): TODO
-			r2 (float): TODO
-			r3 (float): TODO
-			r4 (float): TODO
-			task (:obj:Task): Optimization task
+			r1 (float): Number dependent on algorithm iteration/generations
+			r2 (float): Random number in range of 0 and 2 * PI
+			r3 (float): Random number in range [Rmin, Rmax]
+			r4 (float): Random number in range [0, 1]
+			task (Task): Optimization task
 
 		Returns:
 			array: New individual that is moved based on individual ``x``
@@ -79,19 +89,20 @@ class SineCosineAlgorithm(Algorithm):
 		r"""Initialization of individuals.
 
 		Args:
-			task (:obj:Task): Optimization task
+			task (Task): Optimization task
 
 		Returns:
-			array of array: Initialized population of individuals
-			array of float: Function/fitness values for individuals
-			dict: Additional arguments
+			Tuple[array of array of (float or int), array of float, dict]:
+				1. Initialized population of individuals
+				2. Function/fitness values for individuals
+				3. Additional arguments
 		"""
 		P = self.uniform(task.bcLower(), task.bcUpper(), [self.NP, task.D])
 		P_f = apply_along_axis(task.eval, 1, P)
 		return P, P_f, {}
 
 	def runIteration(self, task, P, P_f, xb, fxb, **dparams):
-		r"""Core fuction of Sine Cosine Algorithm.
+		r"""Core function of Sine Cosine Algorithm.
 
 		Args:
 			task (:obj:util.utility.Task): Optimization task
@@ -102,9 +113,10 @@ class SineCosineAlgorithm(Algorithm):
 			dparams (dict): Additional parameters
 
 		Returns:
-			array of array: New population
-			array of float: New population function/fitness values
-			dict: Additional arguments
+			Tuple[array of array of (float or int), array of float, dict]:
+				1. New population
+				2. New populations fitness/function values
+				3. Additional arguments
 		"""
 		r1, r2, r3, r4 = self.a - task.Iters * (self.a / task.Iters), self.uniform(0, 2 * pi), self.uniform(self.Rmin, self.Rmax), self.rand()
 		P = apply_along_axis(self.nextPos, 1, P, xb, r1, r2, r3, r4, task)
