@@ -13,19 +13,23 @@ __all__ = ['GreyWolfOptimizer']
 class GreyWolfOptimizer(Algorithm):
 	r"""Implementation of Grey wolf optimizer.
 
-	**Algorithm:** Grey wolf optimizer
+	Algorithm:
+		Grey wolf optimizer
 
-	**Date:** 2018
+	Date:
+		2018
 
-	**Author:** Iztok Fister Jr. and Klemen Berkovič
+	Author:
+		Iztok Fister Jr. and Klemen Berkovič
 
-	**License:** MIT
+	License:
+		MIT
 
-	**Reference paper:** Mirjalili, Seyedali, Seyed Mohammad Mirjalili, and Andrew Lewis. "Grey wolf optimizer." Advances in engineering software 69 (2014): 46-61.
-	Grey Wold Optimizer (GWO) source code version 1.0 (MATLAB) from MathWorks
+	Reference paper:
+		* Mirjalili, Seyedali, Seyed Mohammad Mirjalili, and Andrew Lewis. "Grey wolf optimizer." Advances in engineering software 69 (2014): 46-61.
+		* Grey Wold Optimizer (GWO) source code version 1.0 (MATLAB) from MathWorks
 	"""
 	Name = ['GreyWolfOptimizer', 'GWO']
-	NP = 25
 
 	@staticmethod
 	def typeParameters(): return {
@@ -35,16 +39,17 @@ class GreyWolfOptimizer(Algorithm):
 	def setParameters(self, NP=25, **ukwargs):
 		r"""Set the algorithm parameters.
 
-		**Arguments:**
+		Arguments:
+			NP (int): Number of individuals in population
 
-		NP {integer} -- Number of individuals in population
+		See Also:
+			:func:`Algorithm.setParameters`
 		"""
-		self.NP = NP
+		Algorithm.setParameters(self, NP=NP)
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def initPopulation(self, task):
-		pop = task.Lower + task.bRange * self.rand([self.NP, task.D])
-		fpop = apply_along_axis(task.eval, 1, pop)
+		pop, fpop, = Algorithm.initPopulation(self, task)
 		A, A_f, B, B_f, D, D_f = None, task.optType.value * inf, None, task.optType.value * inf, None, task.optType.value * inf
 		for i, f in enumerate(fpop):
 			if f < A_f: A, A_f = pop[i], f
@@ -53,6 +58,25 @@ class GreyWolfOptimizer(Algorithm):
 		return pop, fpop, {'A':A, 'A_f':A_f, 'B':B, 'B_f':B_f, 'D':D, 'D_f':D_f}
 
 	def runIteration(self, task, pop, fpop, xb, fxb, A, A_f, B, B_f, D, D_f, **dparams):
+		r"""
+
+		Args:
+			task:
+			pop:
+			fpop:
+			xb:
+			fxb:
+			A:
+			A_f:
+			B:
+			B_f:
+			D:
+			D_f:
+			**dparams:
+
+		Returns:
+
+		"""
 		a = 2 - task.Evals * (2 / task.nFES)
 		for i, w in enumerate(pop):
 			A1, C1 = 2 * a * self.rand(task.D) - a, 2 * self.rand(task.D)

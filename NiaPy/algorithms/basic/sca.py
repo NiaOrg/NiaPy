@@ -61,8 +61,8 @@ class SineCosineAlgorithm(Algorithm):
 
 		Args:
 			NP (int): Number of individual in population
-			a (float): Parameter for controlon $r_1$ value
-			Rmin (float): Minium value for $r_3$ value
+			a (float): Parameter for control in $r_1$ value
+			Rmin (float): Minimu value for $r_3$ value
 			Rmax (float): Maximum value for $r_3$ value
 		"""
 		self.NP, self.a, self.Rmin, self.Rmax = NP, a, Rmin, Rmax

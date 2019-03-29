@@ -124,9 +124,8 @@ class ParticleSwarmAlgorithm(Algorithm):
 		See Also:
 			init()
 		"""
+		pop, fpop = Algorithm.initPopulation(self, task)
 		d = self.init(task)
-		pop = task.Lower + task.bRange * self.rand([self.NP, task.D])
-		fpop = apply_along_axis(task.eval, 1, pop)
 		d.update({'popb':pop, 'fpopb':fpop})
 		return pop, fpop, d
 

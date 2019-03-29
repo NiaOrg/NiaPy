@@ -351,9 +351,11 @@ class MonkeyKingEvolutionV3(MonkeyKingEvolutionV1):
 				3. dict:
 					* k (int): TODO
 					* c (int): TODO
+
+		See Also:
+			:func:`Algorithm.initPopulation`
 		"""
-		X = task.bLower + task.bRange * self.rand([self.NP, task.D])
-		X_f = apply_along_axis(task.eval, 1, X)
+		X, X_f, = Algorithm.initPopulation(self, task)
 		k, c = int(ceil(self.NP / task.D)), int(ceil(self.C * task.D))
 		return X, X_f, {'k':k, 'c':c}
 

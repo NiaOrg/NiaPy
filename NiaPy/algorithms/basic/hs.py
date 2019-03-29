@@ -13,17 +13,29 @@ __all__ = ['HarmonySearch', 'HarmonySearchV1']
 class HarmonySearch(Algorithm):
 	r"""Implementation of harmony search algorithm.
 
-	**Algorithm:** Harmony Search Algorithm
+	Algorithm:
+		Harmony Search Algorithm
 
-	**Date:** 2018
+	Date:
+		2018
 
-	**Authors:** Klemen Berkovič
+	Authors:
+		Klemen Berkovič
 
-	**License:** MIT
+	License:
+		MIT
 
-	**Reference URL:** https://link.springer.com/chapter/10.1007/978-3-642-00185-7_1
+	Reference URL:
+		https://link.springer.com/chapter/10.1007/978-3-642-00185-7_1
 
-	**Reference paper:** Yang, Xin-She. "Harmony search as a metaheuristic algorithm." Music-inspired harmony search algorithm. Springer, Berlin, Heidelberg, 2009. 1-14.
+	Reference paper:
+		Yang, Xin-She. "Harmony search as a metaheuristic algorithm." Music-inspired harmony search algorithm. Springer, Berlin, Heidelberg, 2009. 1-14.
+
+	Attributes:
+		Name (list of str): List of strings representing algorithm names
+		r_accept (float): TODO
+		r_pa (float): TODO
+		b_range (float): TODO
 	"""
 	Name = ['HarmonySearch', 'HS']
 
@@ -38,24 +50,52 @@ class HarmonySearch(Algorithm):
 	def setParameters(self, HMS=30, r_accept=0.7, r_pa=0.35, b_range=1.42, **ukwargs):
 		r"""Set the arguments of the algorithm.
 
-		**Arguments:**
+		Arguments:
+			HMS (int): Number of harmonys in the memory
+			r_accept (float): --
+			r_pa (float): --
+			b_range (float): --
 
-		HMS {integer} -- Number of harmonys in the memory
-
-		r_accept {real} --
-
-		r_pa {real} --
-
-		b_range {real} --
+		See Also:
+			:func:`Algorithm.setParameters`
 		"""
-		self.HMS, self.r_accept, self.r_pa, self.b_range = HMS, r_accept, r_pa, b_range
+		Algorithm.setParameters(NP=HMS, **ukwargs)
+		self.r_accept, self.r_pa, self.b_range = r_accept, r_pa, b_range
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def bw(self, task): return self.uniform(-1, 1) * self.b_range
+	def bw(self, task):
+		r"""
 
-	def adjustment(self, x, task): return x + self.bw(task)
+		Args:
+			task:
+
+		Returns:
+
+		"""
+		return self.uniform(-1, 1) * self.b_range
+
+	def adjustment(self, x, task):
+		r"""
+
+		Args:
+			x:
+			task:
+
+		Returns:
+
+		"""
+		return x + self.bw(task)
 
 	def improvize(self, HM, task):
+		r"""
+
+		Args:
+			HM:
+			task:
+
+		Returns:
+
+		"""
 		H = full(task.D, .0)
 		for i in range(task.D):
 			r, j = self.rand(), self.randint(self.HMS)
@@ -63,9 +103,21 @@ class HarmonySearch(Algorithm):
 		return H
 
 	def initPopulation(self, task):
-		HM = self.uniform(task.Lower, task.Upper, [self.HMS, task.D])
-		HM_f = apply_along_axis(task.eval, 1, HM)
-		return HM, HM_f, {}
+		r"""
+
+		Args:
+			task:
+
+		Returns:
+			Tuple[array of array of (float or int), array of float, dict]:
+				1. New population
+				2. New population fitness/function values
+				3. Additional parameters
+
+		See Also:
+			:func:`Algorithm.initPopulation`
+		"""
+		return Algorithm.initPopulation(self, task)
 
 	def runIteration(self, task, HM, HM_f, xb, fxb, **dparams):
 		H = self.improvize(HM, task)
@@ -77,17 +129,28 @@ class HarmonySearch(Algorithm):
 class HarmonySearchV1(HarmonySearch):
 	r"""Implementation of harmony search algorithm.
 
-	**Algorithm:** Harmony Search Algorithm
+	Algorithm:
+		Harmony Search Algorithm
 
-	**Date:** 2018
+	Date:
+		2018
 
-	**Authors:** Klemen Berkovič
+	Authors:
+		Klemen Berkovič
 
-	**License:** MIT
+	License:
+		MIT
 
-	**Reference URL:** https://link.springer.com/chapter/10.1007/978-3-642-00185-7_1
+	Reference URL:
+		https://link.springer.com/chapter/10.1007/978-3-642-00185-7_1
 
-	**Reference paper:** Yang, Xin-She. "Harmony search as a metaheuristic algorithm." Music-inspired harmony search algorithm. Springer, Berlin, Heidelberg, 2009. 1-14.
+	Reference paper:
+		Yang, Xin-She. "Harmony search as a metaheuristic algorithm." Music-inspired harmony search algorithm. Springer, Berlin, Heidelberg, 2009. 1-14.
+
+	Attributes:
+		Name (list of str): List of strings representing algorithm name
+		bw_min (float): TODO
+		bw_max (float): TODO
 	"""
 	Name = ['HarmonySearchV1', 'HSv1']
 
@@ -102,15 +165,25 @@ class HarmonySearchV1(HarmonySearch):
 	def setParameters(self, bw_min=1, bw_max=2, **kwargs):
 		r"""Set the parameters of the algorithm.
 
-		**Arguments:**
+		Arguments:
+			bw_min (float): Minimal bandwidth
+			bw_max (float): Maximal bandwidth
 
-		bw_min {real} -- Minimal bandwidth
-
-		bw_max {real} -- Maximal bandwidth
+		See Also:
+			:func:`HarmonySearch.setParameters`
 		"""
 		self.bw_min, self.bw_max = bw_min, bw_max
 		HarmonySearch.setParameters(self, **kwargs)
 
-	def bw(self, task): return self.bw_min * exp(log(self.bw_min / self.bw_max) * task.Iters / task.nGEN)
+	def bw(self, task):
+		r"""
+
+		Args:
+			task:
+
+		Returns:
+
+		"""
+		return self.bw_min * exp(log(self.bw_min / self.bw_max) * task.Iters / task.nGEN)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

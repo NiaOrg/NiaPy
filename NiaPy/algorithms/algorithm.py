@@ -10,6 +10,23 @@ logger.setLevel('INFO')
 
 __all__ = ['Algorithm', 'Individual']
 
+def defaultNumPyInit(NP, task, rnd=rand):
+	r"""Initialize starting population that is represented with `NumPy.ndarrray` with shape `{NP, task.D}`.
+
+	Args:
+		NP (int): Number of inidividuals in population
+		task (Task): Optimization task
+		rnd (RandomState): Random number generator
+
+	Returns:
+		Tuple[array of array of (float or int), array of float]:
+			1. New population with shape `{NP, task.D}`
+			2. New population fucntion/fitness values
+	"""
+	pop = task.Lower + self.rand([self.NP, task.D]) * task.bRange
+	fpop = apply_along_axis(task.eval, 1, pop)
+	return pop, fpop
+
 class Algorithm:
 	r"""Class for implementing algorithms.
 
@@ -26,12 +43,12 @@ class Algorithm:
 		Name (array or list): List of names for algorithm
 		Rand (RandomState): 	Random generator
 		NP (int): Number of inidividuals in populatin
-		individualType (class or None): Type of individual used in algorithm
+		InitPopFunc (function): Idividual initialization function
 	"""
 	Name = ['Algorithm', 'AAA']
 	Rand = rand.RandomState(None)
 	NP = 50
-	individualType = None
+	InitPopFunc = defaultNumPyInit
 
 	@staticmethod
 	def typeParameters():
@@ -54,15 +71,18 @@ class Algorithm:
 		self.Rand = rand.RandomState(kwargs.pop('seed', None))
 		self.setParameters(**kwargs)
 
-	def setParameters(self, NP=50, individualType=None, **kwargs):
+	def setParameters(self, NP=50, InitPopFunc=defaultNumPyInit, **kwargs):
 		r"""Set the parameters/arguments of the algorithm.
 
 		Args:
 			NP (Optional[int]): Number of individuals in population
 			individualType (Optional[class]): Type of individuals used by algorithm
 			**kwargs: Parameter values dictionary
+
+		See Also:
+			:func:`defaultNumPyInit`
 		"""
-		self.NP = NP
+		self.NP, self.InitPopFunc = NP, InitPopFunc
 
 	def rand(self, D=1):
 		r"""Get random distribution of shape D in range from 0 to 1.
@@ -163,19 +183,12 @@ class Algorithm:
 			Tuple[array of (float or int), array of float, dict]:
 				1. New population
 				2. New population fitness values.
-				3. dict:
-					* Additional arguments.
+				3. dict: Additional arguments.
 
 		See Also:
-			:class:`NiaPy.algorithms.algorithm.Individual`
+			:func:`NiaPy.algorithms.algorithm.setParameters`
 		"""
-		pop, fpop = None, None
-		if issubclass(self.individualType, Individual):
-			pop = ndarray([self.individualType(task=task, rnd=self.Rand) for _ in range(self.NP)])
-			fpop = ndarray([x.f for x in pop])
-		else:
-			pop = task.Lower + self.rand([self.NP, task.D]) * task.bRange
-			fpop = apply_along_axis(task.eval, 1, pop)
+		pop, fpop = self.InitPopFunc(self.NP, task, self.Rand)
 		return pop, fpop, {}
 
 	def runIteration(self, task, pop, fpop, xb, fxb, **dparams):
@@ -214,8 +227,8 @@ class Algorithm:
 				2. Fitness value of the best solution
 
 		See Also:
-			:func:`NiaPy.algorithms.algorithm.Algorithm.runIteration`
 			:func:`NiaPy.algorithms.algorithm.Algorithm.initPopulation`
+			:func:`NiaPy.algorithms.algorithm.Algorithm.runIteration`
 		"""
 		pop, fpop, dparams = self.initPopulation(task)
 		xb, fxb = self.getBest(pop, fpop)
