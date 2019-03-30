@@ -1,154 +1,107 @@
-import random
-from NiaPy.benchmarks.utility import Utility
+# encoding=utf8
+# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, line-too-long, arguments-differ, bad-continuation
+import logging
+from numpy import fabs, inf, where, apply_along_axis
+from NiaPy.algorithms.algorithm import Algorithm
+
+logging.basicConfig()
+logger = logging.getLogger('NiaPy.algorithms.basic')
+logger.setLevel('INFO')
 
 __all__ = ['GreyWolfOptimizer']
 
+class GreyWolfOptimizer(Algorithm):
+	r"""Implementation of Grey wolf optimizer.
 
-class GreyWolfOptimizer(object):
-    r"""Implementation of Grey wolf optimizer.
+	Algorithm:
+		Grey wolf optimizer
 
-    **Algorithm:** Grey wolf optimizer
+	Date:
+		2018
 
-    **Date:** 2018
+	Author:
+		Iztok Fister Jr. and Klemen Berkovič
 
-    **Author:** Iztok Fister Jr.
+	License:
+		MIT
 
-    **License:** MIT
+	Reference paper:
+		* Mirjalili, Seyedali, Seyed Mohammad Mirjalili, and Andrew Lewis. "Grey wolf optimizer." Advances in engineering software 69 (2014): 46-61.
+		* Grey Wold Optimizer (GWO) source code version 1.0 (MATLAB) from MathWorks
+	"""
+	Name = ['GreyWolfOptimizer', 'GWO']
 
-    **Reference paper:**
-        Mirjalili, Seyedali, Seyed Mohammad Mirjalili, and Andrew Lewis.
-        "Grey wolf optimizer." Advances in engineering software 69 (2014): 46-61.
-        & Grey Wold Optimizer (GWO) source code version 1.0 (MATLAB) from MathWorks
-    """
+	@staticmethod
+	def typeParameters(): return {
+			'NP': lambda x: isinstance(x, int) and x > 0
+	}
 
-    def __init__(self, D, NP, nFES, benchmark):
-        r"""**__init__(self, D, NP, nFES, benchmark)**.
+	def setParameters(self, NP=25, **ukwargs):
+		r"""Set the algorithm parameters.
 
-        Arguments:
-            D {integer} -- dimension of problem
+		Arguments:
+			NP (int): Number of individuals in population
 
-            NP {integer} -- population size
+		See Also:
+			:func:`Algorithm.setParameters`
+		"""
+		Algorithm.setParameters(self, NP=NP)
+		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-            nFES {integer} -- number of function evaluations
+	def initPopulation(self, task):
+		r"""
 
-            benchmark {object} -- benchmark implementation object
+		Args:
+			task:
 
-        Raises:
-            TypeError -- Raised when given benchmark function which does not exists.
+		Returns:
 
-        """
+		"""
+		pop, fpop, = Algorithm.initPopulation(self, task)
+		A, A_f, B, B_f, D, D_f = None, task.optType.value * inf, None, task.optType.value * inf, None, task.optType.value * inf
+		for i, f in enumerate(fpop):
+			if f < A_f: A, A_f = pop[i], f
+			elif A_f < f < B_f: B, B_f = pop[i], f
+			elif B_f < f < D_f: D, D_f = pop[i], f
+		return pop, fpop, {'A':A, 'A_f':A_f, 'B':B, 'B_f':B_f, 'D':D, 'D_f':D_f}
 
-        self.benchmark = Utility().get_benchmark(benchmark)
-        self.D = D  # dimension of the problem
-        self.NP = NP  # population size; number of search agents
-        self.nFES = nFES  # number of function evaluations
-        self.Lower = self.benchmark.Lower  # lower bound
-        self.Upper = self.benchmark.Upper  # upper bound
-        self.Fun = self.benchmark.function()
+	def runIteration(self, task, pop, fpop, xb, fxb, A, A_f, B, B_f, D, D_f, **dparams):
+		r"""Core funciton of GreyWolfOptimizer algorithm.
 
-        self.Positions = [[0 for _i in range(self.D)]  # positions of search agents
-                          for _j in range(self.NP)]
+		Args:
+			task:
+			pop:
+			fpop:
+			xb:
+			fxb:
+			A:
+			A_f:
+			B:
+			B_f:
+			D:
+			D_f:
+			**dparams:
 
-        self.eval_flag = True  # evaluations flag
-        self.evaluations = 0  # evaluations counter
+		Returns:
+			Tuple[array of array of (float or int), array of float, dict]:
+				1. New population
+				2. New population fitness/function values
+				3. TODO
+		"""
+		a = 2 - task.Evals * (2 / task.nFES)
+		for i, w in enumerate(pop):
+			A1, C1 = 2 * a * self.rand(task.D) - a, 2 * self.rand(task.D)
+			X1 = A - A1 * fabs(C1 * A - w)
+			A2, C2 = 2 * a * self.rand(task.D) - a, 2 * self.rand(task.D)
+			X2 = B - A2 * fabs(C2 * B - w)
+			A3, C3 = 2 * a * self.rand(task.D) - a, 2 * self.rand(task.D)
+			X3 = D - A3 * fabs(C3 * D - w)
+			pop[i] = task.repair((X1 + X2 + X3) / 3, self.Rand)
+			fpop[i] = task.eval(pop[i])
+		for i, f in enumerate(fpop):
+			if f < A_f: A, A_f = pop[i], f
+			elif A_f < f < B_f: B, B_f = pop[i], f
+			elif B_f < f < D_f: D, D_f = pop[i], f
+		return pop, fpop, {'A':A, 'A_f':A_f, 'B':B, 'B_f':B_f, 'D':D, 'D_f':D_f}
 
-        self.Alpha_pos = [0] * self.D  # init of alpha
-        self.Alpha_score = float("inf")
-
-        self.Beta_pos = [0] * self.D  # init of beta
-        self.Beta_score = float("inf")
-
-        self.Delta_pos = [0] * self.D  # init of delta
-        self.Delta_score = float("inf")
-
-    def initialization(self):
-        """Initialize positions."""
-        for i in range(self.NP):
-            for j in range(self.D):
-                self.Positions[i][j] = random.random(
-                ) * (self.Upper - self.Lower) + self.Lower
-
-    def eval_true(self):
-        """Check evaluations."""
-
-        if self.evaluations == self.nFES:
-            self.eval_flag = False
-
-    def bounds(self, position):
-        for i in range(self.D):
-            if position[i] < self.Lower:
-                position[i] = self.Lower
-            if position[i] > self.Upper:
-                position[i] = self.Upper
-        return position
-
-    # pylint: disable=too-many-locals
-    def move(self):
-
-        self.initialization()
-
-        while self.eval_flag is not False:
-
-            for i in range(self.NP):
-                self.Positions[i] = self.bounds(self.Positions[i])
-
-                self.eval_true()
-                if self.eval_flag is not True:
-                    break
-
-                Fit = self.Fun(self.D, self.Positions[i])
-                self.evaluations = self.evaluations + 1
-
-                if Fit < self.Alpha_score:
-                    self.Alpha_score = Fit
-                    self.Alpha_pos = self.Positions[i]
-
-                if ((Fit > self.Alpha_score) and (Fit < self.Beta_score)):
-                    self.Beta_score = Fit
-                    self.Beta_pos = self.Positions[i]
-
-                if ((Fit > self.Alpha_score) and (Fit > self.Beta_score) and
-                        (Fit < self.Delta_score)):
-                    self.Delta_score = Fit
-                    self.Delta_pos = self.Positions[i]
-
-            a = 2 - self.evaluations * ((2) / self.nFES)
-
-            for i in range(self.NP):
-                for j in range(self.D):
-
-                    r1 = random.random()
-                    r2 = random.random()
-
-                    A1 = 2 * a * r1 - a
-                    C1 = 2 * r2
-
-                    D_alpha = abs(
-                        C1 * self.Alpha_pos[j] - self.Positions[i][j])
-                    X1 = self.Alpha_pos[j] - A1 * D_alpha
-
-                    r1 = random.random()
-                    r2 = random.random()
-
-                    A2 = 2 * a * r1 - a
-                    C2 = 2 * r2
-
-                    D_beta = abs(C2 * self.Beta_pos[j] - self.Positions[i][j])
-                    X2 = self.Beta_pos[j] - A2 * D_beta
-
-                    r1 = random.random()
-                    r2 = random.random()
-
-                    A3 = 2 * a * r1 - a
-                    C3 = 2 * r2
-
-                    D_delta = abs(
-                        C3 * self.Delta_pos[j] - self.Positions[i][j])
-                    X3 = self.Delta_pos[j] - A3 * D_delta
-
-                    self.Positions[i][j] = (X1 + X2 + X3) / 3
-
-        return self.Alpha_score
-
-    def run(self):
-        return self.move()
+# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

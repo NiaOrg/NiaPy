@@ -1,11 +1,12 @@
 # encoding=utf8
 # pylint: disable=anomalous-backslash-in-string
 import math
+from NiaPy.benchmarks.benchmark import Benchmark
 
 __all__ = ['Csendes']
 
 
-class Csendes(object):
+class Csendes(Benchmark):
     r"""Implementation of Csendes function.
 
     Date: 2018
@@ -41,10 +42,14 @@ class Csendes(object):
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
     """
+    Name = ['Csendes']
 
     def __init__(self, Lower=-1.0, Upper=1.0):
-        self.Lower = Lower
-        self.Upper = Upper
+        Benchmark.__init__(self, Lower, Upper)
+
+    @staticmethod
+    def latex_code():
+        return r'''$f(\mathbf{x}) = \sum_{i=1}^D x_i^6\left( 2 + \sin \frac{1}{x_i}\right)$'''
 
     @classmethod
     def function(cls):

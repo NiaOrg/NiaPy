@@ -1,35 +1,33 @@
-from unittest import TestCase
-
+# pylint: disable=line-too-long
+from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
 from NiaPy.algorithms.basic import FlowerPollinationAlgorithm
 
 
-class MyBenchmark(object):
+class FPATestCase(AlgorithmTestCase):
 
-    def __init__(self):
-        self.Lower = -5.12
-        self.Upper = 5.12
-
-    @classmethod
-    def function(cls):
-        def evaluate(D, sol):
-            val = 0.0
-            for i in range(D):
-                val = val + sol[i] * sol[i]
-            return val
-        return evaluate
-
-
-class FPATestCase(TestCase):
-
-    def setUp(self):
-        self.fpa_custom = FlowerPollinationAlgorithm(
-            10, 20, 10000, 0.5, MyBenchmark())
-
-        self.fpa_griewank = FlowerPollinationAlgorithm(
-            10, 20, 10000, 0.5, 'griewank')
+    def test_type_parameters(self):
+        d = FlowerPollinationAlgorithm.typeParameters()
+        self.assertTrue(d['NP'](10))
+        self.assertFalse(d['NP'](-10))
+        self.assertFalse(d['NP'](0))
+        self.assertTrue(d['beta'](10))
+        self.assertFalse(d['beta'](0))
+        self.assertFalse(d['beta'](-10))
+        self.assertTrue(d['p'](0.5))
+        self.assertFalse(d['p'](-0.5))
+        self.assertFalse(d['p'](1.5))
 
     def test_custom_works_fine(self):
-        self.assertTrue(self.fpa_custom.run())
+        fpa_custom = FlowerPollinationAlgorithm(NP=10, p=0.5, seed=self.seed)
+        fpa_customc = FlowerPollinationAlgorithm(NP=10, p=0.5, seed=self.seed)
+        AlgorithmTestCase.algorithm_run_test(self, fpa_custom, fpa_customc, MyBenchmark())
 
     def test_griewank_works_fine(self):
-        self.assertTrue(self.fpa_griewank.run())
+        fpa_griewank = FlowerPollinationAlgorithm(NP=20, p=0.5, seed=self.seed)
+        fpa_griewankc = FlowerPollinationAlgorithm(NP=20, p=0.5, seed=self.seed)
+        AlgorithmTestCase.algorithm_run_test(self, fpa_griewank, fpa_griewankc)
+
+    def test_griewank_works_fine_with_beta(self):
+        fpa_beta_griewank = FlowerPollinationAlgorithm(NP=20, p=0.5, beta=1.2, seed=self.seed)
+        fpa_beta_griewankc = FlowerPollinationAlgorithm(NP=20, p=0.5, beta=1.2, seed=self.seed)
+        AlgorithmTestCase.algorithm_run_test(self, fpa_beta_griewank, fpa_beta_griewankc)

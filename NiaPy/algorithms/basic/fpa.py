@@ -1,170 +1,133 @@
-import random
-import numpy as np
+# encoding=utf8
+# pylint: disable=mixed-indentation, multiple-statements, line-too-long, logging-not-lazy, no-self-use, attribute-defined-outside-init, arguments-differ, bad-continuation
+import logging
 from scipy.special import gamma as Gamma
-from NiaPy.benchmarks.utility import Utility
+from numpy import where, argmin, sin, fabs, pi, apply_along_axis, full
+from NiaPy.algorithms.algorithm import Algorithm
+
+logging.basicConfig()
+logger = logging.getLogger('NiaPy.algorithms.basic')
+logger.setLevel('INFO')
 
 __all__ = ['FlowerPollinationAlgorithm']
 
+class FlowerPollinationAlgorithm(Algorithm):
+	r"""Implementation of Flower Pollination algorithm.
 
-class FlowerPollinationAlgorithm(object):
-    r"""Implementation of Flower Pollination algorithm.
+	Algorithm:
+		Flower Pollination algorithm
 
-    **Algorithm:** Flower Pollination algorithm
+	Date:
+		2018
 
-    **Date:** 2018
+	Authors:
+		Dusan Fister, Iztok Fister Jr. and Klemen Berkovič
 
-    **Authors:** Dusan Fister & Iztok Fister Jr.
+	License:
+		MIT
 
-    **License:** MIT
+	Reference paper:
+		Yang, Xin-She. "Flower pollination algorithm for global optimization. International conference on unconventional computing and natural computation. Springer, Berlin, Heidelberg, 2012.
 
-    **Reference paper:**
-        Yang, Xin-She. "Flower pollination algorithm for global optimization."
-        International conference on unconventional computing and natural computation.
-        Springer, Berlin, Heidelberg, 2012.
+	References URL:
+		Implementation is based on the following MATLAB code: https://www.mathworks.com/matlabcentral/fileexchange/45112-flower-pollination-algorithm?requestedDomain=true
 
-    Implementation is based on the following MATLAB code:
-    https://www.mathworks.com/matlabcentral/fileexchange/45112-flower-pollination-algorithm?requestedDomain=true
-    """
+	Attributes:
+		Name (list of str): List of strings representing algorithm names
+		p (float): probability switch
+		beta (float): TODO
+	"""
+	Name = ['FlowerPollinationAlgorithm', 'FPA']
+	p, beta = 0.35, 1.5
 
-    def __init__(self, D, NP, nFES, p, benchmark):
-        r"""**__init__(self, D, NP, nFES, p, benchmark)**.
+	@staticmethod
+	def typeParameters():
+		r"""TODO.
 
-        Arguments:
-            D {integer} -- dimension of problem
+		Returns:
+			dict:
+				* NP (function): TODO
+				* p (function): TODO
+				* beta (function): TODO
+		"""
+		return {
+			'NP': lambda x: isinstance(x, int) and x > 0,
+			'p': lambda x: isinstance(x, float) and 0 <= x <= 1,
+			'beta': lambda x: isinstance(x, (float, int)) and x > 0,
+		}
 
-            NP {integer} -- population size
+	def setParameters(self, NP=25, p=0.35, beta=1.5, **ukwargs):
+		r"""**__init__(self, D, NP, nFES, p, benchmark)**.
 
-            nFES {integer} -- number of function evaluations
+		Arguments:
+			NP (int): population size
+			p (float): probability switch
+			beta (float): TODO
+		"""
+		self.NP, self.p, self.beta = NP, p, beta
+		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-            p {decimal} -- probability switch
+	def repair(self, x, task):
+		r"""
 
-            benchmark {object} -- benchmark implementation object
+		Args:
+			x:
+			task:
 
-        Raises:
-            TypeError -- Raised when given benchmark function which does not exists.
+		Returns:
 
-        """
+		"""
+		ir = where(x > task.Upper)
+		x[ir] = task.Lower[ir] + x[ir] % task.bRange[ir]
+		ir = where(x < task.Lower)
+		x[ir] = task.Lower[ir] + x[ir] % task.bRange[ir]
+		return x
 
-        self.benchmark = Utility().get_benchmark(benchmark)
-        self.D = D  # dimension
-        self.NP = NP  # population size
-        self.nFES = nFES  # number of function evaluations
-        self.p = p  # probability switch
-        self.Lower = self.benchmark.Lower  # lower bound
-        self.Upper = self.benchmark.Upper  # upper bound
-        self.Fun = self.benchmark.function()  # function
+	def levy(self):
+		r"""
 
-        self.f_min = 0.0  # minimum fitness
+		Returns:
 
-        self.Lb = [0] * self.D  # lower bound
-        self.Ub = [0] * self.D  # upper bound
+		"""
+		sigma = (Gamma(1 + self.beta) * sin(pi * self.beta / 2) / (Gamma(1 + self.beta) * self.beta * 2 ** ((self.beta - 1) / 2))) ** (1 / self.beta)
+		return 0.01 * (self.normal(0, 1) * sigma / fabs(self.normal(0, 1)) ** (1 / self.beta))
 
-        self.dS = [[0 for _i in range(self.D)]
-                   for _j in range(self.NP)]  # differential
-        self.Sol = [[0 for _i in range(self.D)]
-                    for _j in range(self.NP)]  # population of solutions
-        self.Fitness = [0] * self.NP  # fitness
-        self.best = [0] * self.D  # best solution
-        self.eval_flag = True  # evaluations flag
-        self.evaluations = 0  # evaluations counter
+	def initPopulation(self, task):
+		r"""
 
-    def best_flower(self):
-        i = 0
-        j = 0
-        for i in range(self.NP):
-            if self.Fitness[i] < self.Fitness[j]:
-                j = i
-        for i in range(self.D):
-            self.best[i] = self.Sol[j][i]
-        self.f_min = self.Fitness[j]
+		Args:
+			task:
 
-    def eval_true(self):
-        """Check evaluations."""
+		Returns:
 
-        if self.evaluations == self.nFES:
-            self.eval_flag = False
+		"""
+		Sol = self.uniform(task.Lower, task.Upper, [self.NP, task.D])
+		Sol_f = apply_along_axis(task.eval, 1, Sol)
+		return Sol, Sol_f, {}
 
-    @classmethod
-    def simplebounds(cls, val, lower, upper):
-        if val < lower:
-            val = lower
-        if val > upper:
-            val = upper
-        return val
+	def runIteration(self, task, Sol, Sol_f, xb, fxb, **dparams):
+		r"""
 
-    def init_flower(self):
-        for i in range(self.D):
-            self.Lb[i] = self.Lower
-            self.Ub[i] = self.Upper
+		Args:
+			task:
+			Sol:
+			Sol_f:
+			xb:
+			fxb:
+			**dparams:
 
-        for i in range(self.NP):
-            for j in range(self.D):
-                rnd = random.uniform(0, 1)
-                self.dS[i][j] = 0.0
-                self.Sol[i][j] = self.Lb[j] + (self.Ub[j] - self.Lb[j]) * rnd
-            self.Fitness[i] = self.Fun(self.D, self.Sol[i])
-            self.evaluations = self.evaluations + 1
-        self.best_flower()
+		Returns:
 
-    def move_flower(self):
-        S = [[0.0 for i in range(self.D)] for j in range(self.NP)]
-        self.init_flower()
+		"""
+		for i in range(self.NP):
+			S = full(task.D, 0.0)
+			if self.uniform(0, 1) > self.p: S += self.levy() * (Sol[i] - xb)
+			else:
+				JK = self.Rand.permutation(self.NP)
+				S += self.uniform(0, 1) * (Sol[JK[0]] - Sol[JK[1]])
+			S = self.repair(S, task)
+			f_i = task.eval(S)
+			if f_i <= Sol_f[i]: Sol[i], Sol_f[i] = S, f_i
+		return Sol, Sol_f, {}
 
-        while self.eval_flag is not False:
-            for i in range(self.NP):
-                if random.uniform(0, 1) > self.p:  # probability switch
-                    L = self.Levy()
-                    for j in range(self.D):
-                        self.dS[i][j] = L[j] * (self.Sol[i][j] - self.best[j])
-                        S[i][j] = self.Sol[i][j] + self.dS[i][j]
-
-                        S[i][j] = self.simplebounds(
-                            S[i][j], self.Lb[j], self.Ub[j])
-                else:
-                    epsilon = random.uniform(0, 1)
-                    JK = np.random.permutation(self.NP)
-
-                    for j in range(self.D):
-                        S[i][j] = S[i][j] + epsilon * \
-                            (self.Sol[JK[0]][j] - self.Sol[JK[1]][j])
-                        S[i][j] = self.simplebounds(
-                            S[i][j], self.Lb[j], self.Ub[j])
-
-                self.eval_true()
-                if self.eval_flag is not True:
-                    break
-
-                Fnew = self.Fun(self.D, S[i])
-                self.evaluations = self.evaluations + 1
-
-                if Fnew <= self.Fitness[i]:
-                    for j in range(self.D):
-                        self.Sol[i][j] = S[i][j]
-                    self.Fitness[i] = Fnew
-
-                if Fnew <= self.f_min:
-                    for j in range(self.D):
-                        self.best[j] = S[i][j]
-                    self.f_min = Fnew
-
-        return self.f_min
-
-    def Levy(self):
-        beta = 1.5
-        sigma = (Gamma(1 + beta) * np.sin(np.pi * beta / 2) /
-                 (Gamma((1 + beta) / 2) * beta * 2**((beta - 1) / 2)))**(1 / beta)
-        u = [[0] for j in range(self.D)]
-        v = [[0] for j in range(self.D)]
-        step = [[0] for j in range(self.D)]
-        L = [[0] for j in range(self.D)]
-
-        for j in range(self.D):
-            u[j] = np.random.normal(0, 1) * sigma
-            v[j] = np.random.normal(0, 1)
-            step[j] = u[j] / abs(v[j])**(1 / beta)
-            L[j] = 0.01 * step[j]
-
-        return L
-
-    def run(self):
-        return self.move_flower()
+# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

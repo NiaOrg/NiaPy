@@ -4,12 +4,16 @@ import sys
 sys.path.append('../')
 # End of fix
 
+import random
 import logging
 from NiaPy.algorithms.basic import GreyWolfOptimizer
 
 logging.basicConfig()
 logger = logging.getLogger('examples')
 logger.setLevel('INFO')
+
+# For reproducive results
+random.seed(1234)
 
 
 class MyBenchmark(object):
@@ -27,8 +31,6 @@ class MyBenchmark(object):
 
 
 for i in range(10):
-
-    Algorithm = GreyWolfOptimizer(10, 20, 10000, 'sphere')
+    Algorithm = GreyWolfOptimizer(D=10, NP=20, nFES=10000, benchmark=MyBenchmark())
     Best = Algorithm.run()
-
     logger.info(Best)

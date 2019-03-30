@@ -1,11 +1,12 @@
 # encoding=utf8
 # pylint: disable=anomalous-backslash-in-string
 import math
+from NiaPy.benchmarks.benchmark import Benchmark
 
 __all__ = ['Rosenbrock']
 
 
-class Rosenbrock(object):
+class Rosenbrock(Benchmark):
     r"""Implementation of Rosenbrock benchmark function.
 
     Date: 2018
@@ -42,10 +43,14 @@ class Rosenbrock(object):
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
     """
+    Name = ['Rosenbrock']
 
     def __init__(self, Lower=-30.0, Upper=30.0):
-        self.Lower = Lower
-        self.Upper = Upper
+        Benchmark.__init__(self, Lower, Upper)
+
+    @staticmethod
+    def latex_code():
+        return r'''$f(\mathbf{x}) = \sum_{i=1}^{D-1} (100 (x_{i+1} - x_i^2)^2 + (x_i - 1)^2)$'''
 
     @classmethod
     def function(cls):

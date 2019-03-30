@@ -1,175 +1,104 @@
 # encoding=utf8
-import random as rnd
-import copy
-import numpy as npx
-from scipy.special import gamma as Gamma
+# pylint: disable=mixed-indentation, line-too-long, singleton-comparison, multiple-statements, attribute-defined-outside-init, no-self-use, logging-not-lazy, unused-variable, arguments-differ, bad-continuation
+import logging
+from numpy import apply_along_axis, argsort, inf
+from scipy.stats import levy
+from NiaPy.algorithms.algorithm import Algorithm
 
-from NiaPy.benchmarks.utility import Utility
+logging.basicConfig()
+logger = logging.getLogger('NiaPy.algorithms.basic')
+logger.setLevel('INFO')
 
-__all__ = ['CuckooSearchAlgorithm']
+__all__ = ['CuckooSearch']
 
+class CuckooSearch(Algorithm):
+	r"""Implementation of Cuckoo behaviour and levy flights.
 
-class Cuckoo(object):
-    """Defines cuckoo for population."""
+	Algorithm:
+		Cuckoo Search
 
-    def __init__(self, D, LB, UB):
-        self.D = D  # dimension of the problem
-        self.LB = LB  # lower bound
-        self.UB = UB  # upper bound
-        self.Solution = []
+	Date:
+		2018
 
-        self.Fitness = float('inf')
-        self.generateCuckoo()
+	Authors:
+		Klemen Berkovič
 
-    def generateCuckoo(self):
-        self.Solution = [self.LB + (self.UB - self.LB) * rnd.random()
-                         for _i in range(self.D)]
+	License:
+		MIT
 
-    def evaluate(self):
-        self.Fitness = Cuckoo.FuncEval(self.D, self.Solution)
+	Reference:
+		Yang, Xin-She, and Suash Deb. "Cuckoo search via Lévy flights." Nature & Biologically Inspired Computing, 2009. NaBIC 2009. World Congress on. IEEE, 2009.
 
-    def simpleBound(self):
-        for i in range(self.D):
-            if self.Solution[i] < self.LB:
-                self.Solution[i] = self.LB
-            if self.Solution[i] > self.UB:
-                self.Solution[i] = self.UB
+	Attributes:
+		Name (list of str): lsit of strings representing algorithm names
+		N (int): populatio size
+		pa (float): probability
+		alpha (float): TODO
+	"""
+	Name = ['CuckooSearch', 'CS']
+	N, pa, alpha = 50, 0.2, 0.5
 
-    def toString(self):
-        return (self.Solution, self.Fitness)
+	@staticmethod
+	def typeParameters():
+		r"""TODO.
 
-    def __eq__(self, other):
-        return self.Solution == other.Solution and self.Fitness == other.Fitness
+		Returns:
+			dict:
+				* N (func): TODO
+				* pa (func): TODO
+				* alpha (func): TODO
+		"""
+		return {
+			'N': lambda x: isinstance(x, int) and x > 0,
+			'pa': lambda x: isinstance(x, float) and 0 <= x <= 1,
+			'alpha': lambda x: isinstance(x, (float, int)),
+		}
 
+	def setParameters(self, N=50, pa=0.2, alpha=0.5, **ukwargs):
+		r"""Set the arguments of an algorithm.
 
-class CuckooSearchAlgorithm(object):
-    r"""Implementation of Cuckoo Search algorithm.
+		Arguments:
+			N (int): Population size $\in [1, \infty)$
+			pa (float): factor $\in [0, 1]$
+			alpah (float): TODO
+			**ukwargs: Additional arguments
+		"""
+		self.N, self.pa, self.alpha = N, pa, alpha
+		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-    **Algorithm:** Cuckoo Search algorithm
+	def emptyNests(self, pop, fpop, pa_v, task):
+		r"""Empty ensts.
 
-    **Date:** 2018
+		Args:
+			pop (array of array of (float or int): Current population
+			fpop (array of float): Current population fitness/funcion values
+			pa_v:
+			task (Task): Optimization task
 
-    **Author:** Uros Mlakar
+		Returns:
+			Tuple[array of array of (float or int), array of float]:
+				1. New population
+				2. New population fitness/function values
+		"""
+		si = argsort(fpop)[:int(pa_v):-1]
+		pop[si] = task.Lower + self.rand(task.D) * task.bRange
+		fpop[si] = apply_along_axis(task.eval, 1, pop[si])
+		return pop, fpop
 
-    **License:** MIT
+	def initPopulation(self, task):
+		pa_v = self.N * self.pa
+		N = task.Lower + self.rand([self.N, task.D]) * task.bRange
+		N_f = apply_along_axis(task.eval, 1, N)
+		return N, N_f, {'pa_v': pa_v}
 
-    **Reference paper:**
-        Yang, Xin-She, and Suash Deb. "Cuckoo search via Lévy flights."
-        Nature & Biologically Inspired Computing, 2009. NaBIC 2009.
+	def runIteration(self, task, pop, fpop, xb, fxb, pa_v, **dparams):
+		i = self.randint(self.N)
+		Nn = task.repair(pop[i] + self.alpha * levy.rvs(size=[task.D], random_state=self.Rand), rnd=self.Rand)
+		Nn_f = task.eval(Nn)
+		j = self.randint(self.N)
+		while i == j: j = self.randint(self.N)
+		if Nn_f <= fpop[j]: pop[j], fpop[j] = Nn, Nn_f
+		pop, fpop = self.emptyNests(pop, fpop, pa_v, task)
+		return pop, fpop, {'pa_v': pa_v}
 
-    """
-
-    def __init__(self, D, Np, nFES, Pa, Alpha, benchmark):
-        r"""**__init__(self, D, NP, nFES, Pa, Alpha, benchmark)**.
-
-        Arguments:
-            D {integer} -- dimension of problem
-
-            NP {integer} -- population size
-
-            nFES {integer} -- number of function evaluations
-
-            Pa {decimal} -- probability
-
-            Alpha {decimal} -- alpha
-
-            benchmark {object} -- benchmark implementation object
-
-        """
-
-        self.benchmark = Utility().get_benchmark(benchmark)
-        self.Np = Np  # population size
-        self.D = D  # dimension
-        self.nFES = nFES  # number of function evaluations
-        self.Pa = Pa
-        self.Alpha = Alpha
-        self.Lower = self.benchmark.Lower
-        self.Upper = self.benchmark.Upper
-        self.Nests = []
-        self.FEs = 0
-        self.Done = False
-        self.Beta = 1.5
-        Cuckoo.FuncEval = staticmethod(self.benchmark.function())
-
-        self.gBest = Cuckoo(self.D, self.Lower, self.Upper)
-
-    def evalNests(self):
-        """Evaluate nests."""
-
-        for c in self.Nests:
-            self.tryEval(c)
-            if c.Fitness <= self.gBest.Fitness:
-                self.gBest = copy.deepcopy(c)
-
-    def initNests(self):
-        """Initialize nests."""
-
-        for _i in range(self.Np):
-            self.Nests.append(Cuckoo(self.D, self.Lower, self.Upper))
-
-    def tryEval(self, c):
-        """Check evaluations."""
-
-        if self.FEs < self.nFES:
-            c.evaluate()
-            self.FEs += 1
-        else:
-            self.Done = True
-
-    def findBest(self, NewNests):
-        TempNests = copy.deepcopy(self.Nests)
-        for i, n in enumerate(NewNests):
-            self.tryEval(n)
-            if n.Fitness <= self.Nests[i].Fitness:
-                TempNests[i] = copy.deepcopy(n)
-                if n.Fitness <= self.gBest.Fitness:
-                    self.gBest = copy.deepcopy(n)
-        return TempNests
-
-    def performLevyFlights(self, Nests):
-        """Move nests."""
-
-        MovedNests = []
-        sigma = (Gamma(1 + self.Beta) * npx.sin(npx.pi * self.Beta / 2) /
-                 (Gamma((1 + self.Beta) / 2) * self.Beta * 2**((self.Beta - 1) / 2)))**(1 / self.Beta)
-
-        for i in range(self.Np):
-            c = Nests[i]
-            u = npx.random.randn(self.D) * sigma
-            v = npx.random.randn(self.D)
-            step = u / (abs(v)**(1 / self.Beta))
-            stepsize = self.Alpha * step * (npx.array(c.Solution) - npx.array(self.gBest.Solution)).flatten().tolist()
-            c.Solution = (npx.array(c.Solution) + npx.array(stepsize) * npx.random.randn(self.D)).tolist()
-            c.simpleBound()
-            MovedNests.append(copy.deepcopy(c))
-        return MovedNests
-
-    def emptyNests(self, NewNests):
-        tNest = npx.zeros((self.Np, self.D))
-        Nest = npx.zeros((self.Np, self.D))
-        # K = npx.random.uniform(0, 1, (self.Np, self.D)) > self.Pa
-        Nests = []
-
-        for i, c in enumerate(NewNests):
-            Nests.append(Cuckoo(self.D, self.Lower, self.Upper))
-            for j in range(self.D):
-                Nest[i, j] = c.Solution[j]
-
-        # stepsize = rnd.random() * (Nest[npx.random.permutation(self.Np), :] - Nest[npx.random.permutation(self.Np), :])
-        # tempnest = Nest + stepsize * K
-
-        for i in range(self.Np):
-            Nests[i].Solution = tNest[i].tolist()
-            Nests[i].simpleBound()
-        return Nests
-
-    def run(self):
-        self.initNests()
-        self.evalNests()
-        while not self.Done:
-            MovedNests = self.performLevyFlights(self.Nests)
-            self.Nests = self.findBest(MovedNests)
-            ResetNests = self.emptyNests(MovedNests)
-            self.Nests = self.findBest(ResetNests)
-
-        return self.gBest.Fitness
+# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

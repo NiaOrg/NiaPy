@@ -3,6 +3,8 @@
 |Coverage Status|
 |Scrutinizer Code Quality|
 |PyPI Version|
+|PyPI Downloads|
+|Conda Install|
 |Documentation Status|
 |GitHub license|
 
@@ -40,23 +42,38 @@ Mission
 Overview
 ========
 
-Python micro framework for building nature-inspired algorithms.
+Python micro framework for building nature-inspired algorithms. Official documentation is available `here <https://niapy.readthedocs.io/en/stable/>`_.
 
 The micro framework features following algorithms:
 
 -  basic:
     -  Artificial bee colony algorithm
     -  Bat algorithm
-    -  Cuckoo Search algorithm
+    -  Camel algorithm
     -  Differential evolution algorithm
+    -  Evolution Strategy
     -  Firefly algorithm
+    -  Fireworks algorithm
     -  Flower pollination algorithm
     -  Genetic algorithm
+    -  Glowworm swarm optimization
     -  Grey wolf optimizer
+    -  Harmony Search algorithm
+    -  Krill herd algorithm
+    -  Monkey king evolution
+    -  Multiple trajectory search
     -  Particle swarm optimization
+    -  Sine cosine algorithm
 -  modified:
     -  Hybrid bat algorithm
     -  Self-adaptive differential evolution algorithm
+    -  Dynamic population size self-adaptive differential evolution algorithm
+-  other:
+    -  Anarchic society optimization algorithm
+    -  Hill climbing algorithm
+    -  Multiple trajectory search
+    -  Nelder mead method or downhill simplex method or amoeba method
+    -  Simulated annealing algorithm
 
 The following benchmark functions are included in NiaPy:
 
@@ -64,11 +81,21 @@ The following benchmark functions are included in NiaPy:
 -  Alpine
     -  Alpine1
     -  Alpine2
+-  Bent Cigar
 -  Chung Reynolds
 -  Csendes
+-  Discus
+-  Dixon-Price
+-  Elliptic
 -  Griewank
 -  Happy cat
+-  HGBat
+-  Katsuura
+-  Levy
+-  Michalewicz
+-  Perm
 -  Pintér
+-  Powell
 -  Qing
 -  Quintic
 -  Rastrigin
@@ -80,13 +107,18 @@ The following benchmark functions are included in NiaPy:
     -  Schwefel 2.21
     -  Schwefel 2.22
 -  Sphere
+    -  Sphere2 -> Sphere with different powers
+    -  Sphere3 -> Rotated hyper-ellipsoid
 -  Step
     -  Step2
     -  Step3
 -  Stepint
 -  Styblinski-Tang
 -  Sum Squares
+-  Trid
+-  Weierstrass
 -  Whitley
+-  Zakharov
 
 Setup
 =====
@@ -97,16 +129,36 @@ Requirements
 -  Python 3.6+ (backward compatibility with 2.7.14)
 -  Pip
 
+Dependencies
+~~~~~~~~~~~~
+
+-  pytest == 3.7.1
+-  coverage == 4.4.2
+-  coverage-space == 1.0.2
+-  click == 6.0
+-  numpy == 1.14.0
+-  scipy == 1.0.0
+-  xlsxwriter == 1.0.2
+-  matplotlib == 2.2.2
+
+List of development dependencies and requirements can be found in the `installation section of NiaPy documentation <http://niapy.readthedocs.io/en/stable/installation.html>`_.
+
 Installation
 ------------
 
-Install NiaPy with pip (will be available soon):
+Install NiaPy with pip:
 
 .. code:: sh
 
     $ pip install NiaPy
 
-or directly from the source code:
+Install NiaPy with conda:
+
+.. code:: sh
+
+    $ conda install -c niaorg niapy
+
+Or directly from the source code:
 
 .. code:: sh
 
@@ -157,22 +209,96 @@ fits your purposes or that it is bug-free. Use it at your own risk!
 Revision History
 ================
 
-0.1.3a2
--------
--  fixes PyPI project description style
+2.0.0rc4 (Nov 30, 2018)
+-----------------------
 
-0.1.3a1
--------
--  fixes image issue in PyPI project description
+- fix dependecies versions
 
-0.1.2a4
--------
--  fixes problem with build scripts
+2.0.0rc3 (Nov 30, 2018)
+-----------------------
 
-0.1.2a3
--------
--  fixes PyPI project description
--  alpha3 version
+- added moth flame optimizer
+- added new examples
+- documentation updates
+- PSO and BBFWA algorithms fixes
+- stopping conditions fixes
+- added new test cases
+- added multiple seed option
+- various bugfixes
+
+2.0.0rc2 (Aug 30, 2018)
+-----------------------
+
+- fix PyPI build
+
+2.0.0rc1 (Aug 30, 2018)
+-----------------------
+Changes included in release:
+
+- Added algorithms:
+    - basic:
+        - Camel algorithm
+        - Evolution Strategy
+        - Fireworks algorithm
+        - Glowworm swarm optimization
+        - Harmony search algorithm
+        - Krill Herd Algorithm
+        - Monkey King Evolution
+        - Multiple trajectory search
+        - Sine Cosine Algorithm
+    - modified:
+        - Dynamic population size self-adaptive differential evolution algorithm
+    - other:
+        - Anarchic society optimization algorithm
+        - Hill climbing algorithm
+        - Multiple trajectory search
+        - Nelder mead method or downhill simplex method or amoeba method
+        - Simulated annealing algorithm
+
+- Added benchmarks functions:
+    - Discus
+    - Dixon-Price
+    - Elliptic
+    - HGBat
+    - Katsuura
+    - Levy
+    - Michalewicz
+    - Perm
+    - Powell
+    - Sphere2 -> Sphere with different powers
+    - Sphere3 -> Rotated hyper-ellipsoid
+    - Trid
+    - Weierstrass
+    - Zakharov
+
+- **breaking changes** in algorithms structure
+- various bugfixes
+
+1.0.2 (Oct 24, 2018)
+--------------------
+- fix Bat and Hybrid Bat algorithms
+
+1.0.1 (Mar 21, 2018)
+--------------------
+This release reflects the changes from Journal of Open Source Software (JOSS) review:
+- Better API Documentation
+- Clarification of set-up requirements in README
+- Improved paper
+
+1.0.0 (Feb 28, 2018)
+--------------------
+- stable release 1.0.0
+
+1.0.0rc2 (Feb 28, 2018)
+-----------------------
+- fix PyPI build
+
+1.0.0rc1 (Feb 28, 2018)
+-----------------------
+- version 1.0.0 release candidate 1
+- added 10 algorithms
+- added 26 benchmark functions
+- added Runner utility with export functionality
 
 
 .. |Unix Build Status| image:: https://img.shields.io/travis/NiaOrg/NiaPy/master.svg
@@ -185,6 +311,10 @@ Revision History
    :target: https://scrutinizer-ci.com/g/NiaOrg/NiaPy/?branch=master
 .. |PyPI Version| image:: https://img.shields.io/pypi/v/NiaPy.svg
    :target: https://pypi.python.org/pypi/NiaPy
+.. |PyPI Downloads| image:: https://pypistats.com/badge/niapy.svg
+   :target: https://pypistats.com/package/niapy
+.. |Conda Install| image:: https://anaconda.org/niaorg/niapy/badges/installer/conda.svg
+   :target: https://conda.anaconda.org/niaorg
 .. |Documentation Status| image:: https://readthedocs.org/projects/niapy/badge/?version=latest
    :target: http://niapy.readthedocs.io/en/latest/?badge=latest
 .. |Average time to resolve an issue| image:: http://isitmaintained.com/badge/resolution/NiaOrg/NiaPy.svg
@@ -195,4 +325,3 @@ Revision History
    :target: https://github.com/NiaOrg/NiaPy/blob/master/LICENSE
 .. |Open Source Helpers| image:: https://www.codetriage.com/niaorg/niapy/badges/users.svg
    :target: https://www.codetriage.com/niaorg/niapy
-

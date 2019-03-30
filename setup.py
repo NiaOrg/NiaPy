@@ -58,7 +58,7 @@ setuptools.setup(
     license='MIT',
     classifiers=[
         # TODO: update this list to match your application: https://pypi.python.org/pypi?%3Aaction=list_classifiers
-        'Development Status :: 2 - Pre-Alpha',
+        'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
         'Intended Audience :: Science/Research',
         'Natural Language :: English',
@@ -68,15 +68,26 @@ setuptools.setup(
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
         'Topic :: Scientific/Engineering',
         'Topic :: Software Development'
     ],
 
+    tests_requires=[
+        'pylint >= 2.1.1',
+        'astroid >= 2.0.4',
+        'pytest ~= 3.7.1',
+        'coverage ~= 4.4.2',
+        'coverage-space ~= 1.0.2'
+    ],
+
     install_requires=[
         # TODO: Add your library's requirements here
-        'numpy ~= 1.14.0',
-        'click ~= 6.0',
-        'scipy ~= 1.0.0',
-        'xlsxwriter ~= 1.0.2'
+        'numpy >= 1.15.0',
+        'enum34 >= 1.1.6',
+        'click >= 6.0',
+        'scipy >= 1.1.0',
+        'xlsxwriter >= 1.0.2',
+        'matplotlib >= 2.2.3',
     ]
 )

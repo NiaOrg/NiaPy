@@ -1,168 +1,183 @@
-import random as rnd
+# encoding=utf8
+# pylint: disable=mixed-indentation, line-too-long, multiple-statements, attribute-defined-outside-init, logging-not-lazy, arguments-differ, bad-continuation
 import copy
-from NiaPy.benchmarks.utility import Utility
+import logging
+from numpy import asarray, full, empty, argmax
+from NiaPy.algorithms.algorithm import Algorithm, Individual, defaultIndividualInit
+
+logging.basicConfig()
+logger = logging.getLogger('NiaPy.algorithms.basic')
+logger.setLevel('INFO')
 
 __all__ = ['ArtificialBeeColonyAlgorithm']
 
+class SolutionABC(Individual):
+	r"""Representation of solution for Artificial Bee Colony Algorithm.
 
-class SolutionABC(object):
+	Date:
+		2018
 
-    def __init__(self, D, LB, UB):
-        self.D = D
-        self.Solution = []
-        self.Fitness = float('inf')
-        self.LB = LB
-        self.UB = UB
-        self.generateSolution()
+	Author:
+		Klemen Berkovič
 
-    def generateSolution(self):
-        self.Solution = [self.LB + (self.UB - self.LB) * rnd.random()
-                         for _i in range(self.D)]
+	See Also:
+		:func:`NiaPy.algorithms.algorithm.Individual`
+	"""
+	def __init__(self, **kargs):
+		r"""Initialize individual.
 
-    def repair(self):
-        for i in range(self.D):
-            if self.Solution[i] > self.UB:
-                self.Solution[i] = self.UB
+		Args:
+			kargs (Dict[str, Any]): Additional arguments.
 
-            if self.Solution[i] < self.LB:
-                self.Solution[i] = self.LB
+		See Also:
+			:func:`NiaPy.algorithms.algorithm.Individual.__init__`
+		"""
+		Individual.__init__(self, **kargs)
 
-    def evaluate(self):
-        self.Fitness = SolutionABC.FuncEval(self.D, self.Solution)
+class ArtificialBeeColonyAlgorithm(Algorithm):
+	r"""Implementation of Artificial Bee Colony algorithm.
 
-    def toString(self):
-        pass
+	Algorithm:
+		Artificial Bee Colony algorithm
 
+	Date:
+		2018
 
-class ArtificialBeeColonyAlgorithm(object):
-    r"""Implementation of Artificial Bee Colony algorithm.
+	Author:
+		Uros Mlakar and Klemen Berkovič
 
-    **Algorithm:** Artificial Bee Colony algorithm
+	License:
+		MIT
 
-    **Date:** 2018
+	Reference paper:
+		Karaboga, D., and Bahriye B. "A powerful and efficient algorithm for numerical function optimization: artificial bee colony (ABC) algorithm." Journal of global optimization 39.3 (2007): 459-471.
 
-    **Author:** Uros Mlakar
+	Arguments
+		Name (List[str]): List containing strings that represent algorithm names
+		Limit (Union[float, numpy.ndarray[float]]): Limt
 
-    **License:** MIT
+	See Also:
+		:func:`NiaPy.algorithms.algorithm.Algorithm`
+	"""
+	Name = ['ArtificialBeeColonyAlgorithm', 'ABC']
 
-    **Reference paper:**
-        Karaboga, D., and Bahriye B. "A powerful and efficient algorithm for
-        numerical function optimization: artificial bee colony (ABC) algorithm."
-        Journal of global optimization 39.3 (2007): 459-471.
+	@staticmethod
+	def typeParameters():
+		r"""Returns functions for checking values of parametes.
 
-    """
+		Returns:
+			Dict[str, Callable]:
+				* Limit (Callable[Union[float, numpy.ndarray[float]]]): TODO
 
-    def __init__(self, D, NP, nFES, benchmark):
-        """**__init__(self, D, NP, nFES, benchmark)**.
+		See Also:
+			:func:`Algorithm.typeParameters`
+		"""
+		d = Algorithm.typeParameters()
+		d.update({'Limit': lambda x: isinstance(x, int) and x > 0})
+		return d
 
-        Arguments:
-            D {integer} -- dimension of problem
+	def setParameters(self, NP=10, Limit=100, **ukwargs):
+		r"""Set the parameters of Artificial Bee Colony Algorithm.
 
-            NP {integer} -- population size
+		Parameters:
+			Limit (Optional[Union[float, numpy.ndarray[float]]]): Limt
+			**ukwargs:	Additional arguments
 
-            nFES {integer} -- number of function evaluations
+		See Also:
+			:func:`Algorithm.setParameters`
+		"""
+		Algorithm.setParameters(self, NP, defaultIndividualInit, SolutionABC, **ukwargs)
+		self.FoodNumber = int(self.NP / 2)
+		self.Limit = Limit
+		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-            benchmark {object} -- benchmark implementation object
+	def CalculateProbs(self, Foods, Probs):
+		r"""Calculates the probes.
 
-        Raises:
-            TypeError -- Raised when given benchmark function which does not exists.
+		Parameters:
+			Foods (numpy.ndarray): TODO
+			Probs (numpy.ndarray): TODO
 
-        """
+		Returns:
+			numpy.ndarray: TODO
+		"""
+		Probs = [1.0 / (Foods[i].f + 0.01) for i in range(self.FoodNumber)]
+		s = sum(Probs)
+		Probs = [Probs[i] / s for i in range(self.FoodNumber)]
+		return Probs
 
-        self.benchmark = Utility().get_benchmark(benchmark)
-        self.D = D
-        self.NP = NP
-        self.FoodNumber = int(self.NP / 2)
-        self.Limit = 100
-        self.Trial = []
-        self.Foods = []
-        self.Probs = []
-        self.nFES = nFES
-        self.Lower = self.benchmark.Lower
-        self.Upper = self.benchmark.Upper
+	def initPop(self, NP, task, rand):
+		pop = empty(NP, dtype=object)
+		for i in range(NP): pop[i] = SolutionABC(task=task, rand=rand, e=True)
+		fpop = asarray([x.f for x in pop])
+		return pop, fpop
 
-        self.FEs = 0
-        self.Done = False
+	def initPopulation(self, task):
+		r"""Initializes the starting population.
 
-        SolutionABC.FuncEval = staticmethod(self.benchmark.function())
-        self.Best = SolutionABC(self.D, self.Lower, self.Upper)
+		Parameters:
+			task (Task): Optimization task
 
-    def init(self):
-        self.Probs = [0 for i in range(self.FoodNumber)]
-        self.Trial = [0 for i in range(self.FoodNumber)]
-        for i in range(self.FoodNumber):
-            self.Foods.append(SolutionABC(self.D, self.Lower, self.Upper))
-            self.Foods[i].evaluate()
-            self.checkForBest(self.Foods[i])
+		Returns:
+			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+				1. New population
+				2. New population fitness/function values
+				3. dict:
+					* Probes (numpy.ndarray): TODO
+					* Trial (numpy.ndarray): TODO
 
-    def CalculateProbs(self):
-        self.Probs = [1.0 / (self.Foods[i].Fitness + 0.01)
-                      for i in range(self.FoodNumber)]
-        s = sum(self.Probs)
-        self.Probs = [self.Probs[i] / s for i in range(self.FoodNumber)]
+		See Also:
+			:func:`Algorithm.initPopulation`
+		"""
+		Foods, fpop, _ = Algorithm.initPopulation(self, task)
+		Probs, Trial = full(self.FoodNumber, 0.0), full(self.FoodNumber, 0.0)
+		return Foods, fpop, {'Probs':Probs, 'Trial':Trial}
 
-    def checkForBest(self, Solution):
-        if Solution.Fitness <= self.Best.Fitness:
-            self.Best = copy.deepcopy(Solution)
+	def runIteration(self, task, Foods, fpop, xb, fxb, Probs, Trial, **dparams):
+		r"""Core funciton of  the algorithm.
 
-    def tryEval(self, b):
-        if self.FEs <= self.nFES:
-            b.evaluate()
-            self.FEs += 1
-        else:
-            self.Done = True
+		Parameters:
+			task (Task): Optimization task
+			Foods (numpy.ndarray): Current population
+			fpop (numpy.ndarray[float]): Function/fitness values of current population
+			xb (numpy.ndarray): Current best individual
+			fxb (float): Current best individual fitness/function value
+			Probs (numpy.ndarray): TODO
+			Trial (numpy.ndarray): TODO
+			dparams (Dict[str, Any]): Additional parameters
 
-    def run(self):
-        self.init()
-        self.FEs = self.FoodNumber
-        while not self.Done:
-            self.Best.toString()
-            for i in range(self.FoodNumber):
-                newSolution = copy.deepcopy(self.Foods[i])
-                param2change = int(rnd.random() * self.D)
-                neighbor = int(self.FoodNumber * rnd.random())
-                newSolution.Solution[param2change] = self.Foods[i].Solution[param2change] \
-                    + (-1 + 2 * rnd.random()) * \
-                    (self.Foods[i].Solution[param2change] -
-                     self.Foods[neighbor].Solution[param2change])
-                newSolution.repair()
-                self.tryEval(newSolution)
-                if newSolution.Fitness < self.Foods[i].Fitness:
-                    self.checkForBest(newSolution)
-                    self.Foods[i] = newSolution
-                    self.Trial[i] = 0
-                else:
-                    self.Trial[i] += 1
+		Returns:
+			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+				1. New population
+				2. New population fitness/function values
+				3. ditc:
+					* Probes (numpy.ndarray): TODO
+					* Trial (numpy.ndarray): TODO
+		"""
+		for i in range(self.FoodNumber):
+			newSolution = copy.deepcopy(Foods[i])
+			param2change = int(self.rand() * task.D)
+			neighbor = int(self.FoodNumber * self.rand())
+			newSolution.x[param2change] = Foods[i].x[param2change] + (-1 + 2 * self.rand()) * (Foods[i].x[param2change] - Foods[neighbor].x[param2change])
+			newSolution.evaluate(task, rnd=self.Rand)
+			if newSolution.f < Foods[i].f: Foods[i], Trial[i] = newSolution, 0
+			else: Trial[i] += 1
+		Probs, t, s = self.CalculateProbs(Foods, Probs), 0, 0
+		while t < self.FoodNumber:
+			if self.rand() < Probs[s]:
+				t += 1
+				Solution = copy.deepcopy(Foods[s])
+				param2change = int(self.rand() * task.D)
+				neighbor = int(self.FoodNumber * self.rand())
+				while neighbor == s: neighbor = int(self.FoodNumber * self.rand())
+				Solution.x[param2change] = Foods[s].x[param2change] + (-1 + 2 * self.rand()) * (Foods[s].x[param2change] - Foods[neighbor].x[param2change])
+				Solution.evaluate(task, rnd=self.Rand)
+				if Solution.f < Foods[s].f: Foods[s], Trial[s] = Solution, 0
+				else: Trial[s] += 1
+			s += 1
+			if s == self.FoodNumber: s = 0
+		mi = argmax(Trial)
+		if Trial[mi] >= self.Limit: Foods[mi], Trial[mi] = SolutionABC(task=task, rnd=self.Rand), 0
+		return Foods, [f.f for f in Foods], {'Probs':Probs, 'Trial':Trial}
 
-            self.CalculateProbs()
-            t, s = 0, 0
-            while t < self.FoodNumber:
-                if rnd.random() < self.Probs[s]:
-                    t += 1
-                    Solution = copy.deepcopy(self.Foods[s])
-                    param2change = int(rnd.random() * self.D)
-                    neighbor = int(self.FoodNumber * rnd.random())
-                    while neighbor == s:
-                        neighbor = int(self.FoodNumber * rnd.random())
-                    Solution.Solution[param2change] = self.Foods[s].Solution[param2change] \
-                        + (-1 + 2 * rnd.random()) * (
-                            self.Foods[s].Solution[param2change] -
-                            self.Foods[neighbor].Solution[param2change])
-                    Solution.repair()
-                    self.tryEval(Solution)
-                    if Solution.Fitness < self.Foods[s].Fitness:
-                        self.checkForBest(newSolution)
-                        self.Foods[s] = Solution
-                        self.Trial[s] = 0
-                    else:
-                        self.Trial[s] += 1
-                s += 1
-                if s == self.FoodNumber:
-                    s = 0
-
-            mi = self.Trial.index(max(self.Trial))
-            if self.Trial[mi] >= self.Limit:
-                self.Foods[mi] = SolutionABC(self.D, self.Lower, self.Upper)
-                self.tryEval(self.Foods[mi])
-                self.Trial[mi] = 0
-        return self.Best.Fitness
+# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

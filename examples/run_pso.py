@@ -1,3 +1,4 @@
+# encoding=utf8
 # This is temporary fix to import module from parent folder
 # It will be removed when package is published on PyPI
 import sys
@@ -5,13 +6,66 @@ sys.path.append('../')
 # End of fix
 
 import random
+import logging
 from NiaPy.algorithms.basic import ParticleSwarmAlgorithm
+from NiaPy.util import Task, TaskConvPrint, TaskConvPlot, OptimizationType, getDictArgs
 
+logging.basicConfig()
+logger = logging.getLogger('examples')
+logger.setLevel('INFO')
 
-for i in range(10):
-    Algorithm = ParticleSwarmAlgorithm(
-        50, 40, 40000, 2.0, 2.0, 0.5, -5, 5, 'sphere')
+# For reproducive results
+random.seed(1234)
 
-    Best = Algorithm.run()
+class MinMB(object):
+	def __init__(self):
+		self.Lower = -11
+		self.Upper = 11
 
-    print(Best)
+	def function(self):
+		def evaluate(D, sol):
+			val = 0.0
+			for i in range(D): val = val + sol[i] * sol[i]
+			return val
+		return evaluate
+
+class MaxMB(MinMB):
+	def function(self):
+		f = MinMB.function(self)
+		def e(D, sol): return -f(D, sol)
+		return e
+
+def simple_example(alg, runs=10, D=10, nFES=50000, nGEN=10000, seed=[None], optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kn):
+	for i in range(runs):
+		task = Task(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc())
+		algo = alg(seed=seed[i % len(seed)], vMin=-1, vMax=1)
+		best = algo.run(task)
+		logger.info('%s %s' % (best[0], best[1]))
+
+def logging_example(alg, D=10, nFES=50000, nGEN=100000, seed=[None], optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kn):
+	task = TaskConvPrint(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc())
+	algo = alg(seed=seed[0], vMin=-1, vMax=1)
+	best = algo.run(task)
+	logger.info('%s %s' % (best[0], best[1]))
+
+def plot_example(alg, D=10, nFES=50000, nGEN=100000, seed=[None], optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kn):
+	task = TaskConvPlot(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc())
+	algo = alg(seed=seed[0])
+	best = algo.run(task)
+	logger.info('%s %s' % (best[0], best[1]))
+	input('Press [enter] to continue')
+
+def getOptType(otype):
+	if otype == OptimizationType.MINIMIZATION: return MinMB
+	elif otype == OptimizationType.MAXIMIZATION: return MaxMB
+	else: return None
+
+if __name__ == '__main__':
+	pargs, algo = getDictArgs(sys.argv[1:]), ParticleSwarmAlgorithm
+	optFunc = getOptType(pargs['optType'])
+	pargs.pop('nFES', None), pargs.pop('nGEN', None)
+	if not pargs['runType']: simple_example(algo, optFunc=optFunc, **pargs)
+	elif pargs['runType'] == 'log': logging_example(algo, optFunc=optFunc, **pargs)
+	elif pargs['runType'] == 'plot': plot_example(algo, optFunc=optFunc, **pargs)
+
+# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

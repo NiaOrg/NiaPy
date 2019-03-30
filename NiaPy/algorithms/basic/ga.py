@@ -1,143 +1,115 @@
-import random as rnd
-import copy
-from NiaPy.benchmarks.utility import Utility
+# encoding=utf8
+# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, unused-argument, line-too-long, len-as-condition, useless-super-delegation, redefined-builtin, arguments-differ, bad-continuation, not-an-iterable
+import logging
+from numpy import argmin, sort, random as rand, asarray, fmin, fmax, sum
+from NiaPy.algorithms.algorithm import Algorithm, Individual
 
-__all__ = ['GeneticAlgorithm']
+logging.basicConfig()
+logger = logging.getLogger('NiaPy.algorithms.basic')
+logger.setLevel('INFO')
 
+__all__ = ['GeneticAlgorithm', 'TurnamentSelection', 'RouletteSelection', 'TwoPointCrossover', 'MultiPointCrossover', 'UniformCrossover', 'UniformMutation', 'CreepMutation', 'CrossoverUros', 'MutationUros']
 
-class Chromosome(object):
-    def __init__(self, D, LB, UB):
-        self.D = D
-        self.LB = LB
-        self.UB = UB
+def TurnamentSelection(pop, ic, ts, x_b, rnd=rand):
+	comps = [pop[i] for i in rand.choice(len(pop), ts, replace=False)]
+	return comps[argmin([c.f for c in comps])]
 
-        self.Solution = []
-        self.Fitness = float('inf')
-        self.generateSolution()
+def RouletteSelection(pop, ic, ts, x_b, rnd=rand):
+	f = sum([x.f for x in pop])
+	qi = sum([pop[i].f / f for i in range(ic + 1)])
+	return pop[ic].x if rnd.rand() < qi else x_b.x
 
-    def generateSolution(self):
-        self.Solution = [self.LB + (self.UB - self.LB) * rnd.random()
-                         for _i in range(self.D)]
+def TwoPointCrossover(pop, ic, cr, rnd=rand):
+	io = ic
+	while io != ic: io = rnd.randint(len(pop))
+	r = sort(rnd.choice(len(pop[ic]), 2))
+	x = pop[ic].x
+	x[r[0]:r[1]] = pop[io].x[r[0]:r[1]]
+	return asarray(x)
 
-    def evaluate(self):
-        self.Fitness = Chromosome.FuncEval(self.D, self.Solution)
+def MultiPointCrossover(pop, ic, n, rnd=rand):
+	io = ic
+	while io != ic: io = rnd.randint(len(pop))
+	r, x = sort(rnd.choice(len(pop[ic]), 2 * n)), pop[ic].x
+	for i in range(n): x[r[2 * i]:r[2 * i + 1]] = pop[io].x[r[2 * i]:r[2 * i + 1]]
+	return asarray(x)
 
-    def repair(self):
-        for i in range(self.D):
-            if self.Solution[i] > self.UB:
-                self.Solution[i] = self.UB
-            if self.Solution[i] < self.LB:
-                self.Solution[i] = self.LB
+def UniformCrossover(pop, ic, cr, rnd=rand):
+	io = ic
+	while io != ic: io = rnd.randint(len(pop))
+	j = rnd.randint(len(pop[ic]))
+	x = [pop[io][i] if rnd.rand() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
+	return asarray(x)
 
-    def __eq__(self, other):
-        return self.Solution == other.Solution and self.Fitness == other.Fitness
+def CrossoverUros(pop, ic, cr, rnd=rand):
+	io = ic
+	while io != ic: io = rnd.randint(len(pop))
+	alpha = cr + (1 + 2 * cr) * rnd.rand(len(pop[ic]))
+	x = alpha * pop[ic] + (1 - alpha) * pop[io]
+	return x
 
-    def toString(self):
-        print([i for i in self.Solution])
+def UniformMutation(pop, ic, mr, task, rnd=rand):
+	j = rnd.randint(task.D)
+	nx = [rnd.uniform(task.Lower[i], task.Upper[i]) if rnd.rand() < mr or i == j else pop[ic][i] for i in range(task.D)]
+	return asarray(nx)
 
+def MutationUros(pop, ic, mr, task, rnd=rand):
+	return fmin(fmax(rnd.normal(pop[ic], mr * task.bRange), task.Lower), task.Upper)
 
-class GeneticAlgorithm(object):
-    r"""Implementation of Genetic algorithm.
+def CreepMutation(pop, ic, mr, task, rnd=rand):
+	ic, j = rnd.randint(len(pop)), rnd.randint(task.D)
+	nx = [rnd.uniform(task.Lower[i], task.Upper[i]) if rnd.rand() < mr or i == j else pop[ic][i] for i in range(task.D)]
+	return asarray(nx)
 
-    **Algorithm:** Genetic algorithm
+class GeneticAlgorithm(Algorithm):
+	r"""Implementation of Genetic algorithm.
 
-    **Date:** 2018
+	**Algorithm:** Genetic algorithm
 
-    **Author:** Uros Mlakar
+	**Date:** 2018
 
-    **License:** MIT
+	**Author:** Klemen Berkovič
 
-    **Reference paper:** TODO.
+	**License:** MIT
+	"""
+	Name = ['GeneticAlgorithm', 'GA']
 
-    TODO:  - BUG is somewhere in code
-    """
+	@staticmethod
+	def typeParameters(): return {
+			'NP': lambda x: isinstance(x, int) and x > 0,
+			'Ts': lambda x: isinstance(x, int) and x > 1,
+			'Mr': lambda x: isinstance(x, float) and 0 <= x <= 1,
+			'Cr': lambda x: isinstance(x, float) and 0 <= x <= 1
+	}
 
-    def __init__(self, D, NP, nFES, Ts, Mr, gamma, benchmark):
-        self.benchmark = Utility().get_benchmark(benchmark)
-        self.NP = NP
-        self.D = D
-        self.Ts = Ts
-        self.Mr = Mr
-        self.gamma = gamma
-        self.Lower = self.benchmark.Lower
-        self.Upper = self.benchmark.Upper
-        self.Population = []
-        self.nFES = nFES
-        self.FEs = 0
-        self.Done = False
-        Chromosome.FuncEval = staticmethod(self.benchmark.function())
+	def setParameters(self, NP=25, Ts=5, Mr=0.25, Cr=0.25, Selection=TurnamentSelection, Crossover=UniformCrossover, Mutation=UniformMutation, **ukwargs):
+		r"""Set the parameters of the algorithm.
 
-        self.Best = Chromosome(self.D, self.Lower, self.Upper)
+		**Arguments:**
+		NP {integer} -- population size
+		Ts {integer} -- tournament selection
+		Mr {decimal} -- mutation rate
+		Cr {decimal} -- crossover rate
+		"""
+		self.NP, self.Ts, self.Mr, self.Cr = NP, Ts, Mr, Cr
+		self.Selection, self.Crossover, self.Mutation = Selection, Crossover, Mutation
+		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-    def checkForBest(self, pChromosome):
-        if pChromosome.Fitness <= self.Best.Fitness:
-            self.Best = copy.deepcopy(pChromosome)
+	def evolve(self, pop, x_b, task):
+		npop, x_bc = list(), pop[argmin([x.f for x in pop])]
+		for i in range(self.NP):
+			ind = Individual(x=self.Selection(pop, i, self.Ts, x_bc, self.Rand), e=False)
+			ind.x = self.Crossover(pop, i, self.Cr, self.Rand)
+			ind.x = self.Mutation(pop, i, self.Mr, task, self.Rand)
+			ind.evaluate(task, rnd=self.Rand)
+			npop.append(ind)
+			if x_b.f > ind.f: x_b = ind
+		return npop, x_b
 
-    def TournamentSelection(self):
-        indices = list(range(self.NP))
-        rnd.shuffle(indices)
-        tPop = []
-        for i in range(self.Ts):
-            tPop.append(self.Population[i])
-        tPop.sort(key=lambda x: x.Fitness)
+	def runTask(self, task):
+		pop = [Individual(task=task, rand=self.Rand) for _i in range(self.NP)]
+		x_b = pop[argmin([c.f for c in pop])]
+		while not task.stopCondI(): pop, x_b = self.evolve(pop, x_b, task)
+		return x_b.x, x_b.f
 
-        self.Population.remove(tPop[0])
-        self.Population.remove(tPop[1])
-        return tPop[0], tPop[1]
-
-    def CrossOver(self, parent1, parent2):
-        alpha = [-self.gamma + (1 + 2 * self.gamma) * rnd.random()
-                 for i in range(self.D)]
-        child1 = Chromosome(self.D, self.Lower, self.Upper)
-        child2 = Chromosome(self.D, self.Lower, self.Upper)
-        child1.Solution = [alpha[i] * parent1.Solution[i] +
-                           (1 - alpha[i]) * parent2.Solution[i] for i in range(self.D)]
-        child2.Solution = [alpha[i] * parent2.Solution[i] +
-                           (1 - alpha[i]) * parent1.Solution[i] for i in range(self.D)]
-        return child1, child2
-
-    def Mutate(self, child):
-        for i in range(self.D):
-            if rnd.random() < self.Mr:
-                sigma = 0.20 * float(child.UB - child.LB)
-                child.Solution[i] = min(
-                    max(rnd.gauss(child.Solution[i], sigma), child.LB), child.UB)
-
-    def init(self):
-        for i in range(self.NP):
-            self.Population.append(Chromosome(self.D, self.Lower, self.Upper))
-            self.Population[i].evaluate()
-            self.checkForBest(self.Population[i])
-
-    def tryEval(self, c):
-        if self.FEs < self.nFES:
-            self.FEs += 1
-            c.evaluate()
-        else:
-            self.Done = True
-
-    def run(self):
-        self.init()
-        self.FEs = self.NP
-        while not self.Done:
-            for _k in range(int(self.NP / 2)):
-                parent1, parent2 = self.TournamentSelection()
-                child1, child2 = self.CrossOver(parent1, parent2)
-
-                self.Mutate(child1)
-                self.Mutate(child2)
-
-                child1.repair()
-                child2.repair()
-
-                self.tryEval(child1)
-                self.tryEval(child2)
-
-                tPop = [parent1, parent2, child1, child2]
-                tPop.sort(key=lambda x: x.Fitness)
-                self.Population.append(tPop[0])
-                self.Population.append(tPop[1])
-
-            for i in range(self.NP):
-                self.checkForBest(self.Population[i])
-        return self.Best.Fitness
+# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

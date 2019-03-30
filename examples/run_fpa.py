@@ -4,12 +4,16 @@ import sys
 sys.path.append('../')
 # End of fix
 
+import random
 import logging
 from NiaPy.algorithms.basic import FlowerPollinationAlgorithm
 
 logging.basicConfig()
 logger = logging.getLogger('examples')
 logger.setLevel('INFO')
+
+# For reproducive results
+random.seed(1234)
 
 
 class MyBenchmark(object):
@@ -25,8 +29,8 @@ class MyBenchmark(object):
             return val
         return evaluate
 
+    
 for i in range(10):
-    Algorithm = FlowerPollinationAlgorithm(10, 20, 10000, 0.5, MyBenchmark())
+    Algorithm = FlowerPollinationAlgorithm(NP=10, D=20, nFES=10000, p=0.5, benchmark=MyBenchmark())
     Best = Algorithm.run()
-
     logger.info(Best)

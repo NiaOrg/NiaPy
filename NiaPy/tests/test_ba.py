@@ -1,33 +1,32 @@
-from unittest import TestCase
-
+# pylint: disable=line-too-long
+from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
 from NiaPy.algorithms.basic import BatAlgorithm
 
 
-class MyBenchmark(object):
+class BATestCase(AlgorithmTestCase):
 
-    def __init__(self):
-        self.Lower = -11
-        self.Upper = 11
-
-    @classmethod
-    def function(cls):
-        def evaluate(D, sol):
-            val = 0.0
-            for i in range(D):
-                val = val + sol[i] * sol[i]
-            return val
-        return evaluate
-
-
-class BATestCase(TestCase):
-    def setUp(self):
-        self.ba_custom = BatAlgorithm(
-            10, 20, 10000, 0.5, 0.5, 0.0, 2.0, MyBenchmark())
-        self.ba_griewank = BatAlgorithm(
-            10, 40, 10000, 0.5, 0.5, 0.0, 2.0, 'griewank')
+    def test_parameter_type(self):
+        d = BatAlgorithm.typeParameters()
+        self.assertTrue(d['Qmax'](10))
+        self.assertTrue(d['Qmin'](10))
+        self.assertTrue(d['r'](10))
+        self.assertFalse(d['r'](-10))
+        self.assertFalse(d['r'](0))
+        self.assertFalse(d['A'](0))
+        self.assertFalse(d['A'](-19))
+        self.assertTrue(d['NP'](10))
+        self.assertFalse(d['NP'](-10))
+        self.assertFalse(d['NP'](0))
+        self.assertTrue(d['A'](10))
+        self.assertFalse(d['Qmin'](None))
+        self.assertFalse(d['Qmax'](None))
 
     def test_custom_works_fine(self):
-        self.assertTrue(self.ba_custom.run())
+        ba_custom = BatAlgorithm(NP=20, A=0.5, r=0.5, Qmin=0.0, Qmax=2.0, seed=self.seed)
+        ba_customc = BatAlgorithm(NP=20, A=0.5, r=0.5, Qmin=0.0, Qmax=2.0, seed=self.seed)
+        AlgorithmTestCase.algorithm_run_test(self, ba_custom, ba_customc, MyBenchmark())
 
     def test_griewank_works_fine(self):
-        self.assertTrue(self.ba_griewank.run())
+        ba_griewank = BatAlgorithm(NP=10, A=0.5, r=0.5, Qmin=0.0, Qmax=2.0, seed=self.seed)
+        ba_griewankc = BatAlgorithm(NP=10, A=0.5, r=0.5, Qmin=0.0, Qmax=2.0, seed=self.seed)
+        AlgorithmTestCase.algorithm_run_test(self, ba_griewank, ba_griewankc)

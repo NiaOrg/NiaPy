@@ -1,11 +1,12 @@
 # encoding=utf8
 # pylint: disable=anomalous-backslash-in-string
 import math
+from NiaPy.benchmarks.benchmark import Benchmark
 
 __all__ = ['Quintic']
 
 
-class Quintic(object):
+class Quintic(Benchmark):
     r"""Implementation of Quintic function.
 
     Date: 2018
@@ -44,10 +45,15 @@ class Quintic(object):
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
     """
+    Name = ['Quintic']
 
     def __init__(self, Lower=-10.0, Upper=10.0):
-        self.Lower = Lower
-        self.Upper = Upper
+        Benchmark.__init__(self, Lower, Upper)
+
+    @staticmethod
+    def latex_code():
+        return r'''$f(\mathbf{x}) = \sum_{i=1}^D \left| x_i^5 - 3x_i^4 +
+                4x_i^3 + 2x_i^2 - 10x_i - 4\right|$'''
 
     @classmethod
     def function(cls):

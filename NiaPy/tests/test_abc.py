@@ -1,34 +1,27 @@
-from unittest import TestCase
-
+# encoding=utf8
+# pylint: disable=mixed-indentation, multiple-statements
+from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
 from NiaPy.algorithms.basic import ArtificialBeeColonyAlgorithm
 
+class ABCTestCase(AlgorithmTestCase):
+	def test_type_parameters(self):
+		d = ArtificialBeeColonyAlgorithm.typeParameters()
+		self.assertEqual(len(d), 2)
+		self.assertTrue(d['NP'](10))
+		self.assertFalse(d['NP'](0))
+		self.assertFalse(d['NP'](-10))
+		self.assertTrue(d['Limit'](10))
+		self.assertFalse(d['Limit'](0))
+		self.assertFalse(d['Limit'](-10))
 
-class MyBenchmark(object):
+	def test_custom_works_fine(self):
+		abc_custom = ArtificialBeeColonyAlgorithm(NP=10, Limit=2, seed=self.seed)
+		abc_customc = ArtificialBeeColonyAlgorithm(NP=10, Limit=2, seed=self.seed)
+		AlgorithmTestCase.algorithm_run_test(self, abc_custom, abc_customc, MyBenchmark())
 
-    def __init__(self):
-        self.Lower = -5.12
-        self.Upper = 5.12
+	def test_griewank_works_fine(self):
+		abc_griewank = ArtificialBeeColonyAlgorithm(NP=10, seed=self.seed)
+		abc_griewankc = ArtificialBeeColonyAlgorithm(NP=10, seed=self.seed)
+		AlgorithmTestCase.algorithm_run_test(self, abc_griewank, abc_griewankc)
 
-    @classmethod
-    def function(cls):
-        def evaluate(D, sol):
-            val = 0.0
-            for i in range(D):
-                val = val + sol[i] * sol[i]
-            return val
-        return evaluate
-
-
-class ABCTestCase(TestCase):
-
-    def setUp(self):
-        self.abc_custom = ArtificialBeeColonyAlgorithm(
-            10, 40, 10000, MyBenchmark())
-        self.abc_griewank = ArtificialBeeColonyAlgorithm(
-            10, 40, 10000, 'griewank')
-
-    def test_custom_works_fine(self):
-        self.assertTrue(self.abc_custom.run())
-
-    def test_griewank_works_fine(self):
-        self.assertTrue(self.abc_griewank.run())
+# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

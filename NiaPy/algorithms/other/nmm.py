@@ -1,0 +1,115 @@
+# encoding=utf8
+# pylint: disable=mixed-indentation, trailing-whitespace, line-too-long, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, arguments-differ, redefined-builtin, bad-continuation
+import logging
+from numpy import apply_along_axis, argsort, argmin, sum
+from NiaPy.algorithms.algorithm import Algorithm
+
+logging.basicConfig()
+logger = logging.getLogger('NiaPy.algorithms.other')
+logger.setLevel('INFO')
+
+__all__ = ['NelderMeadMethod']
+
+class NelderMeadMethod(Algorithm):
+	r"""Implementation of Nelder Mead method or downhill simplex method or amoeba method.
+
+	Algorithm:
+		Nelder Mead Method
+
+	Date:
+		2018
+
+	Authors:
+		Klemen Berkovič
+
+	License:
+		MIT
+
+	Reference URL:
+		https://en.wikipedia.org/wiki/Nelder%E2%80%93Mead_method
+
+	Attributes:
+		Name (list of str): list of strings represeing algorithm name
+		alpha ():
+		gmma ():
+		sigma ()
+	"""
+	Name = ['NelderMeadMethod', 'NMM']
+
+	@staticmethod
+	def typeParameters(): return {
+			'alpha': lambda x: isinstance(x, (int, float)) and x >= 0,
+			'gamma': lambda x: isinstance(x, (int, float)) and x >= 0,
+			'rho': lambda x: isinstance(x, (int, float)),
+			'sigma': lambda x: isinstance(x, (int, float))
+	}
+
+	def setParameters(self, alpha=0.1, gamma=0.3, rho=-0.2, sigma=-0.2, **ukwargs):
+		r"""Set the arguments of an algorithm.
+
+		Arguments:
+			alpha (float): Reflection coefficient parameter
+			gamma (float): Expansion coefficient parameter
+			rho (float): Contraction coefficient parameter
+			sigma (float): Shrink coefficient parameter
+		"""
+		self.alpha, self.gamma, self.rho, self.sigma = alpha, gamma, rho, sigma
+		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
+
+	def init(self, task):
+		r"""
+
+		Args:
+			task:
+
+		Returns:
+
+		"""
+		X = self.uniform(task.Lower, task.Upper, [task.D, task.D])
+		X_f = apply_along_axis(task.eval, 1, X)
+		return X, X_f
+
+	def method(self, X, X_f, task):
+		r"""
+
+		Args:
+			X:
+			X_f:
+			task:
+
+		Returns:
+
+		"""
+		x0 = sum(X[:-1], axis=0) / (len(X) - 1)
+		xr = x0 + self.alpha * (x0 - X[-1])
+		rs = task.eval(xr)
+		if X_f[0] >= rs < X_f[-2]:
+			X[-1], X_f[-1] = xr, rs
+			return X, X_f
+		if rs < X_f[0]:
+			xe = x0 + self.gamma * (x0 - X[-1])
+			re = task.eval(xe)
+			if re < rs: X[-1], X_f[-1] = xe, re
+			else: X[-1], X_f[-1] = xr, rs
+			return X, X_f
+		xc = x0 + self.rho * (x0 - X[-1])
+		rc = task.eval(xc)
+		if rc < X_f[-1]:
+			X[-1], X_f[-1] = xc, rc
+			return X, X_f
+		Xn = X[0] + self.sigma * (X[1:] - X[0])
+		Xn_f = apply_along_axis(task.eval, 1, Xn)
+		X[1:], X_f[1:] = Xn, Xn_f
+		return X, X_f
+
+	def runTask(self, task):
+		# FIXME
+		X, X_f = self.init(task)
+		while not task.stopCondI():
+			inds = argsort(X_f)
+			X, X_f = X[inds], X_f[inds]
+			X, X_f = self.method(X, X_f, task)
+		ib = argmin(X_f)
+		return X[ib], X_f[ib]
+
+# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
