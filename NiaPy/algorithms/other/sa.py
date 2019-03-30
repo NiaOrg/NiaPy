@@ -11,12 +11,48 @@ logger.setLevel('INFO')
 __all__ = ['SimulatedAnnealing', 'SimulatedAnnealingF', 'coolDelta', 'coolLinear']
 
 def coolDelta(currentT, T, deltaT, nFES):
+	r"""
+
+	Args:
+		currentT:
+		T:
+		deltaT:
+		nFES:
+
+	Returns:
+
+	"""
 	return currentT - deltaT
 
 def coolLinear(currentT, T, deltaT, nFES):
+	r"""
+
+	Args:
+		currentT:
+		T:
+		deltaT:
+		nFES:
+
+	Returns:
+
+	"""
 	return currentT - T / nFES
 
 def SimulatedAnnealingF(task, delta=1.5, delta_t=0.564, T=2000, cool=coolDelta, epsilon=1e-20, rnd=rand):
+	r"""
+
+	Args:
+		task:
+		delta:
+		delta_t:
+		T:
+		cool:
+		epsilon:
+		rnd:
+
+	Returns:
+
+	"""
 	x = task.Lower + task.bcRange() * rnd.rand(task.D)
 	curT, xfit = T, task.eval(x)
 	xb, xb_f = x, xfit
@@ -32,17 +68,24 @@ def SimulatedAnnealingF(task, delta=1.5, delta_t=0.564, T=2000, cool=coolDelta, 
 class SimulatedAnnealing(Algorithm):
 	r"""Implementation of Simulated Annealing Algorithm.
 
-	**Algorithm:** Simulated Annealing Algorithm
+	Algorithm:
+		Simulated Annealing Algorithm
 
-	**Date:** 2018
+	Date:
+		2018
 
-	**Authors:** Jan Popič
+	Authors:
+		Jan Popič
 
-	**License:** MIT
+	License:
+		MIT
 
-	**Reference URL:**
+	Reference URL:
 
-	**Reference paper:**
+	Reference paper:
+
+	Attributes:
+		Name (list of str): List of stirngs representiong algorihtm naes
 	"""
 	Name = ['SimulatedAnnealing', 'SA']
 
@@ -58,16 +101,11 @@ class SimulatedAnnealing(Algorithm):
 		r"""Set the algorithm parameters/arguments.
 
 		Arguments:
-
-		delta {real} -- Movemt for neighbour search
-
-		T {real} -- Starting temperature
-
-		deltaT {real} -- Change in temperature
-
-		coolingMethod {function} -- Neigborhud function
-
-		epsilon {real} -- Error value
+			delta (float): Movemnt for neighbour search
+			T (float); Starting temperature
+			deltaT (float): Change in temperature
+			coolingMethod (function): Neigborhud function
+			epsilon (float): Error value
 		"""
 		self.delta, self.T, self.deltaT, self.cool, self.epsilon = delta, T, deltaT, coolingMethod, epsilon
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))

@@ -17,17 +17,26 @@ __all__ = [
 class StrategyAdaptationDifferentialEvolution(DifferentialEvolution):
 	r"""Implementation of Differential Evolution Algorithm With Strategy Adaptation algorihtm.
 
-	**Algorithm:** Differential Evolution Algorithm With StrategyAdaptation
+	Algorithm:
+		Differential Evolution Algorithm With StrategyAdaptation
 
-	**Date:** 2018
+	Date:
+		2019
 
-	**Author:** Klemen Berkovič
+	Author:
+		Klemen Berkovič
 
-	**License:** MIT
+	License:
+		MIT
 
-	**Reference URL:** https://ieeexplore.ieee.org/document/1554904
+	Reference URL:
+		https://ieeexplore.ieee.org/document/1554904
 
-	**Reference paper:** Qin, A. Kai, and Ponnuthurai N. Suganthan. "Self-adaptive differential evolution algorithm for numerical optimization." 2005 IEEE congress on evolutionary computation. Vol. 2. IEEE, 2005.
+	Reference paper:
+		Qin, A. Kai, and Ponnuthurai N. Suganthan. "Self-adaptive differential evolution algorithm for numerical optimization." 2005 IEEE congress on evolutionary computation. Vol. 2. IEEE, 2005.
+
+	Attributes:
+		Name (list of str): List of strings representing algorithm name
 	"""
 	Name = ['StrategyAdaptationDifferentialEvolution', 'SADE', 'SaDE']
 
@@ -37,17 +46,26 @@ class StrategyAdaptationDifferentialEvolution(DifferentialEvolution):
 class StrategyAdaptationDifferentialEvolutionV1(DifferentialEvolution):
 	r"""Implementation of Differential Evolution Algorithm With Strategy Adaptation algorihtm.
 
-	**Algorithm:** Differential Evolution Algorithm With StrategyAdaptation
+	Algorithm:
+		Differential Evolution Algorithm With StrategyAdaptation
 
-	**Date:** 2018
+	Date:
+		2019
 
-	**Author:** Klemen Berkovič
+	Author:
+		Klemen Berkovič
 
-	**License:** MIT
+	License:
+		MIT
 
-	**Reference URL:** https://ieeexplore.ieee.org/document/4632146
+	Reference URL:
+		https://ieeexplore.ieee.org/document/4632146
 
-	**Reference paper:** Qin, A. Kai, Vicky Ling Huang, and Ponnuthurai N. Suganthan. "Differential evolution algorithm with strategy adaptation for global numerical optimization." IEEE transactions on Evolutionary Computation 13.2 (2009): 398-417.
+	Reference paper:
+		Qin, A. Kai, Vicky Ling Huang, and Ponnuthurai N. Suganthan. "Differential evolution algorithm with strategy adaptation for global numerical optimization." IEEE transactions on Evolutionary Computation 13.2 (2009): 398-417.
+
+	Attributes:
+		Name (list of str): List of strings representing algorithm name
 	"""
 	Name = ['StrategyAdaptationDifferentialEvolutionV1', 'SADEV1', 'SaDEV1']
 

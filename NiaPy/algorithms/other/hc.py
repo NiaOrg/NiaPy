@@ -27,17 +27,21 @@ def Neighborhood(x, delta, task):
 class HillClimbAlgorithm(Algorithm):
 	r"""Implementation of iterative hill climbing algorithm.
 
-	**Algorithm:** Hill Climbing Algorithm
+	Algorithm:
+		Hill Climbing Algorithm
 
-	**Date:** 2018
+	Date:
+		2018
 
-	**Authors:** Jan Popič
+	Authors:
+		Jan Popič
 
-	**License:** MIT
+	License:
+		MIT
 
-	**Reference URL:**
+	Reference URL:
 
-	**Reference paper:**
+	Reference paper:
 	"""
 	Name = ['HillClimbAlgorithm', 'BBFA']
 
@@ -49,8 +53,8 @@ class HillClimbAlgorithm(Algorithm):
 	def setParameters(self, delta=0.5, Neighborhood=Neighborhood, **ukwargs):
 		r"""Set the algorithm parameters/arguments.
 
-		**See**:
-		HillClimbAlgorithm.__setparams(self, delta=0.5, Neighborhood=Neighborhood, **ukwargs)
+		See Also:
+			HillClimbAlgorithm.__setparams(self, delta=0.5, Neighborhood=Neighborhood, **ukwargs)
 		"""
 		self.delta, self.Neighborhood = delta, Neighborhood
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))

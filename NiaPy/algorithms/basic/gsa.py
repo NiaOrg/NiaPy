@@ -13,17 +13,26 @@ logger.setLevel('INFO')
 class GravitationalSearchAlgorithm(Algorithm):
 	r"""Implementation of gravitational search algorithm.
 
-	**Algorithm:** Gravitational Search Algorithm
+	Algorithm:
+		Gravitational Search Algorithm
 
-	**Date:** 2018
+	Date:
+		2018
 
-	**Author:** Klemen Berkoivč
+	Author:
+		Klemen Berkoivč
 
-	**License:** MIT
+	License:
+		MIT
 
-	**Reference URL:** https://doi.org/10.1016/j.ins.2009.03.004
+	Reference URL:
+		https://doi.org/10.1016/j.ins.2009.03.004
 
-	**Reference paper:** Esmat Rashedi, Hossein Nezamabadi-pour, Saeid Saryazdi, GSA: A Gravitational Search Algorithm, Information Sciences, Volume 179, Issue 13, 2009, Pages 2232-2248, ISSN 0020-0255
+	Reference paper:
+		Esmat Rashedi, Hossein Nezamabadi-pour, Saeid Saryazdi, GSA: A Gravitational Search Algorithm, Information Sciences, Volume 179, Issue 13, 2009, Pages 2232-2248, ISSN 0020-0255
+
+	Attributes:
+		Name (list of str): TODO
 	"""
 	Name = ['GravitationalSearchAlgorithm', 'GSA']
 
@@ -37,25 +46,68 @@ class GravitationalSearchAlgorithm(Algorithm):
 	def setParameters(self, NP=40, G_0=2.467, epsilon=1e-17, **ukwargs):
 		r"""Set the algorithm parameters.
 
-		**Arguments:**
+		Arguments:
+			G_0 (float): Starting gravitational constant.
 
-		NP {integer} -- number of planets in population
-
-		G_0 {real} -- starting gravitational constant
+		See Also:
+			:func:`Algorithm.setParameters`
 		"""
-		self.NP, self.G_0, self.epsilon = NP, G_0, epsilon
+		Algorithm.setParameters(NP=NP)
+		self.G_0, self.epsilon = G_0, epsilon
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def G(self, t): return self.G_0 / t
+	def G(self, t):
+		r"""
 
-	def d(self, x, y, ln=2): return sum((x - y) ** ln) ** (1 / ln)
+		Args:
+			t:
+
+		Returns:
+
+		"""
+		return self.G_0 / t
+
+	def d(self, x, y, ln=2):
+		r"""
+
+		Args:
+			x:
+			y:
+			ln:
+
+		Returns:
+
+		"""
+		return sum((x - y) ** ln) ** (1 / ln)
 
 	def initPopulation(self, task):
+		r"""
+
+		Args:
+			task:
+
+		Returns:
+
+		"""
 		X, v = self.uniform(task.Lower, task.Upper, [self.NP, task.D]), full([self.NP, task.D], 0.0)
 		X_f = apply_along_axis(task.eval, 1, X)
 		return X, X_f, {'v':v}
 
 	def runIteration(self, task, X, X_f, xb, fxb, v, **dparams):
+		r"""
+
+		Args:
+			task:
+			X:
+			X_f:
+			xb:
+			fxb:
+			v:
+			**dparams:
+
+		Returns:
+
+		"""
 		ib, iw = argmin(X_f), argmax(X_f)
 		m = (X_f - X_f[iw]) / (X_f[ib] - X_f[iw])
 		M = m / sum(m)

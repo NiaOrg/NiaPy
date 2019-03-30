@@ -34,8 +34,11 @@ def fullArray(a, D):
 	r"""Fill or create array of length D, from value or value form a.
 
 	Arguments:
-	a {integer} or {real} or {list} or {ndarray} -- Input values for fill
-	D {integer} -- Length of new array
+		a {integer} or {real} or {list} or {ndarray} -- Input values for fill
+		D {integer} -- Length of new array
+
+	Returns:
+		array: TODo
 	"""
 	A = []
 	if isinstance(a, (int, float)):	A = full(D, a)
@@ -48,7 +51,14 @@ def fullArray(a, D):
 	return A
 
 class Utility:
+	r"""
+	Attributes:
+		classes (dict): TODO
+	"""
 	def __init__(self):
+		r"""
+
+		"""
 		self.classes = {
 			'ackley': Ackley,
 			'alpine1': Alpine1,
@@ -105,16 +115,31 @@ class Utility:
 		r"""Get the optimization problem.
 
 		Arguments:
-		benchmark {string} or {class} -- String or class that represents the optimization problem
+			benchmark {string} or {class} -- String or class that represents the optimization problem
+
+		Returns:
+			class: TODO
 		"""
 		if not isinstance(benchmark, str) and not callable(benchmark): return benchmark
 		elif benchmark in self.classes: return self.classes[benchmark]()
 		else: raise TypeError('Passed benchmark is not defined!')
 
 	@classmethod
-	def __raiseLowerAndUpperNotDefined(cls): raise TypeError('Upper and Lower value must be defined!')
+	def __raiseLowerAndUpperNotDefined(cls):
+		r"""
+
+		Returns:
+
+		"""
+		raise TypeError('Upper and Lower value must be defined!')
 
 class OptimizationType(Enum):
+	r"""TODO.
+
+	Attributes:
+		MINIMIZATION (int):
+		MAXIMIZATION (int):
+	"""
 	MINIMIZATION = 1.0
 	MAXIMIZATION = -1.0
 
@@ -122,7 +147,10 @@ def limitRepair(x, Lower, Upper, **kwargs):
 	r"""Repair solution and put the solution in the random position inside of the bounds of problem.
 
 	Arguments:
-	x {array} -- solution to check and repair if needed
+		x (array): Solution to check and repair if needed
+
+	Returns:
+		array: TODO
 	"""
 	ir = where(x < Lower)
 	x[ir] = Lower[ir]
@@ -134,7 +162,10 @@ def limitInversRepair(x, Lower, Upper, **kwargs):
 	r"""Repair solution and put the solution in the random position inside of the bounds of problem.
 
 	Arguments:
-	x {array} -- solution to check and repair if needed
+		x (array): Solution to check and repair if needed
+
+	Returns:
+		array: TODO
 	"""
 	ir = where(x < Lower)
 	x[ir] = Upper[ir]
@@ -146,7 +177,10 @@ def wangRepair(x, Lower, Upper, **kwargs):
 	r"""Repair solution and put the solution in the random position inside of the bounds of problem.
 
 	Arguments:
-	x {array} -- solution to check and repair if needed
+		x (array) -- solution to check and repair if needed
+
+	Returns:
+		array: TODO
 	"""
 	ir = where(x < Lower)
 	x[ir] = amin([Upper[ir], 2 * Lower[ir] - x[ir]], axis=0)
@@ -158,10 +192,13 @@ def randRepair(x, Lower, Upper, rnd=rand, **kwargs):
 	r"""Repair solution and put the solution in the random position inside of the bounds of problem.
 
 	Arguments:
-	x {array} -- solution to check and repair if needed
-	Lower {array}
-	Upper {array}
-	rnd {function}
+		x (array): -- solution to check and repair if needed
+		Lower (array):
+		Upper (array):
+		rnd (RandomState):
+
+	Returns:
+		array: TODO
 	"""
 	ir = where(x < Lower)
 	x[ir] = rnd.uniform(Lower[ir], Upper[ir])

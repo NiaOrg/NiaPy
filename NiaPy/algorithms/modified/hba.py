@@ -14,15 +14,23 @@ __all__ = ['HybridBatAlgorithm']
 class HybridBatAlgorithm(BatAlgorithm):
 	r"""Implementation of Hybrid bat algorithm.
 
-	**Algorithm:** Hybrid bat algorithm
+	Algorithm:
+		Hybrid bat algorithm
 
-	**Date:** 2018
+	Date:
+		2018
 
-	**Author:** Grega Vrbancic and Klemen Berkovič
+	Author:
+		Grega Vrbancic and Klemen Berkovič
 
-	**License:** MIT
+	License:
+		MIT
 
-	**Reference paper:** Fister Jr., Iztok and Fister, Dusan and Yang, Xin-She. "A Hybrid Bat Algorithm". Elektrotehniski vestnik, 2013. 1-7.
+	Reference paper:
+		Fister Jr., Iztok and Fister, Dusan and Yang, Xin-She. "A Hybrid Bat Algorithm". Elektrotehniski vestnik, 2013. 1-7.
+
+	Attributes:
+		Name (list of str): List of strings representing algorithm name.
 	"""
 	Name = ['HybridBatAlgorithm', 'HBA']
 
@@ -36,17 +44,19 @@ class HybridBatAlgorithm(BatAlgorithm):
 	def setParameters(self, F=0.78, CR=0.35, CrossMutt=CrossBest1, **ukwargs):
 		r"""**__init__(self, D, NP, nFES, A, r, Qmin, Qmax, benchmark)**.
 
-		**Arguments:**
+		Arguments:
+			F (float): Scaling factor
+			CR (float): Crossover
 
-		F {decimal} -- scaling factor
-
-		CR {decimal} -- crossover
+		See Also:
+			:func:`BatAlgorithm.setParameters`
 		"""
 		BatAlgorithm.setParameters(self, **ukwargs)
 		self.F, self.CR, self.CrossMutt = F, CR, CrossMutt
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def runTask(self, task):
+		#FIXME
 		v, Sol = full([self.NP, task.D], 0.0), task.Lower + task.bRange * self.rand([self.NP, task.D])
 		Fitness = apply_along_axis(task.eval, 1, Sol)
 		ib = argmin(Fitness)

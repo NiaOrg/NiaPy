@@ -49,6 +49,14 @@ class GreyWolfOptimizer(Algorithm):
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def initPopulation(self, task):
+		r"""
+
+		Args:
+			task:
+
+		Returns:
+
+		"""
 		pop, fpop, = Algorithm.initPopulation(self, task)
 		A, A_f, B, B_f, D, D_f = None, task.optType.value * inf, None, task.optType.value * inf, None, task.optType.value * inf
 		for i, f in enumerate(fpop):
@@ -58,7 +66,7 @@ class GreyWolfOptimizer(Algorithm):
 		return pop, fpop, {'A':A, 'A_f':A_f, 'B':B, 'B_f':B_f, 'D':D, 'D_f':D_f}
 
 	def runIteration(self, task, pop, fpop, xb, fxb, A, A_f, B, B_f, D, D_f, **dparams):
-		r"""
+		r"""Core funciton of GreyWolfOptimizer algorithm.
 
 		Args:
 			task:
@@ -75,7 +83,10 @@ class GreyWolfOptimizer(Algorithm):
 			**dparams:
 
 		Returns:
-
+			Tuple[array of array of (float or int), array of float, dict]:
+				1. New population
+				2. New population fitness/function values
+				3. TODO
 		"""
 		a = 2 - task.Evals * (2 / task.nFES)
 		for i, w in enumerate(pop):

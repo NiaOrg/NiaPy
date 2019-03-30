@@ -12,6 +12,25 @@ logger.setLevel('INFO')
 __all__ = ['MultipleTrajectorySearch', 'MultipleTrajectorySearchV1', 'MTS_LS1', 'MTS_LS1v1', 'MTS_LS2', 'MTS_LS3', 'MTS_LS3v1']
 
 def MTS_LS1(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, sr_fix=0.4, rnd=rand, **ukwargs):
+	r"""
+
+	Args:
+		Xk:
+		Xk_fit:
+		Xb:
+		Xb_fit:
+		improve:
+		SR:
+		task:
+		BONUS1:
+		BONUS2:
+		sr_fix:
+		rnd:
+		**ukwargs:
+
+	Returns:
+
+	"""
 	if not improve:
 		SR /= 2
 		ifix = where(SR < 1e-15)
@@ -33,6 +52,25 @@ def MTS_LS1(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, sr_f
 	return Xk, Xk_fit, Xb, Xb_fit, improve, grade, SR
 
 def MTS_LS1v1(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, sr_fix=0.4, rnd=rand, **ukwargs):
+	r"""
+
+	Args:
+		Xk:
+		Xk_fit:
+		Xb:
+		Xb_fit:
+		improve:
+		SR:
+		task:
+		BONUS1:
+		BONUS2:
+		sr_fix:
+		rnd:
+		**ukwargs:
+
+	Returns:
+
+	"""
 	if not improve:
 		SR /= 2
 		ifix = where(SR < 1e-15)
@@ -53,9 +91,41 @@ def MTS_LS1v1(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, sr
 		else: grade, improve, Xk_fit = grade + BONUS2, True, Xk_fit_new
 	return Xk, Xk_fit, Xb, Xb_fit, improve, grade, SR
 
-def genNewX(x, r, d, SR, op): return op(x, SR * d) if r == 0 else x
+def genNewX(x, r, d, SR, op):
+	r"""
+
+	Args:
+		x:
+		r:
+		d:
+		SR:
+		op:
+
+	Returns:
+
+	"""
+	return op(x, SR * d) if r == 0 else x
 
 def MTS_LS2(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, sr_fix=0.4, rnd=rand, **ukwargs):
+	r"""
+
+	Args:
+		Xk:
+		Xk_fit:
+		Xb:
+		Xb_fit:
+		improve:
+		SR:
+		task:
+		BONUS1:
+		BONUS2:
+		sr_fix:
+		rnd:
+		**ukwargs:
+
+	Returns:
+
+	"""
 	if not improve:
 		SR /= 2
 		ifix = where(SR < 1e-15)
@@ -77,6 +147,24 @@ def MTS_LS2(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, sr_f
 	return Xk, Xk_fit, Xb, Xb_fit, improve, grade, SR
 
 def MTS_LS3(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, rnd=rand, **ukwargs):
+	r"""
+
+	Args:
+		Xk:
+		Xk_fit:
+		Xb:
+		Xb_fit:
+		improve:
+		SR:
+		task:
+		BONUS1:
+		BONUS2:
+		rnd:
+		**ukwargs:
+
+	Returns:
+
+	"""
 	Xk_new, grade = copy(Xk), 0.0
 	for i in range(len(Xk)):
 		Xk1, Xk2, Xk3 = copy(Xk_new), copy(Xk_new), copy(Xk_new)
@@ -96,6 +184,25 @@ def MTS_LS3(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, rnd=
 	return Xk, Xk_fit, Xb, Xb_fit, improve, grade, SR
 
 def MTS_LS3v1(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, phi=3, BONUS1=10, BONUS2=1, rnd=rand, **ukwargs):
+	r"""
+
+	Args:
+		Xk:
+		Xk_fit:
+		Xb:
+		Xb_fit:
+		improve:
+		SR:
+		task:
+		phi:
+		BONUS1:
+		BONUS2:
+		rnd:
+		**ukwargs:
+
+	Returns:
+
+	"""
 	grade, Disp = 0.0, task.bRange / 10
 	while True in (Disp > 1e-3):
 		Xn = [rnd.permutation(Xk) + Disp * rnd.uniform(-1, 1, len(Xk)) for _ in range(phi)]
@@ -116,12 +223,26 @@ class MultipleTrajectorySearch(Algorithm):
 	BONUS1, BONUS2 = 10, 1
 	r"""Implementation of Multiple trajectory search.
 
-	**Algorithm:** Multiple trajectory search
-	**Date:** 2018
-	**Authors:** Klemen Berkovic
-	**License:** MIT
-	**Reference URL:** https://ieeexplore.ieee.org/document/4631210/
-	**Reference paper:** Lin-Yu Tseng and Chun Chen, "Multiple trajectory search for Large Scale Global Optimization," 2008 IEEE Congress on Evolutionary Computation (IEEE World Congress on Computational Intelligence), Hong Kong, 2008, pp. 3052-3059. doi: 10.1109/CEC.2008.4631210
+	Algorithm:
+		Multiple trajectory search
+		
+	Date:
+		2018
+		
+	Authors:
+		Klemen Berkovic
+		
+	License:
+		MIT
+		
+	Reference URL:
+		https://ieeexplore.ieee.org/document/4631210/
+		
+	Reference paper:
+		Lin-Yu Tseng and Chun Chen, "Multiple trajectory search for Large Scale Global Optimization," 2008 IEEE Congress on Evolutionary Computation (IEEE World Congress on Computational Intelligence), Hong Kong, 2008, pp. 3052-3059. doi: 10.1109/CEC.2008.4631210
+		
+	Attributes:
+		Name (list of str): TODO
 	"""
 	Name = ['MultipleTrajectorySearch', 'MTS']
 
@@ -141,16 +262,30 @@ class MultipleTrajectorySearch(Algorithm):
 		r"""Set the arguments of the algorithm.
 
 		Arguments:
-		M {integer} -- number of individuals in population
-		NoLsTests {integer} -- number of test runs on local search algorihms
-		NoLs {integer} -- number of local search algoritm runs
-		NoLsBest {integer} -- number of locals search algorithm runs on best solution
-		NoEnabled {integer} -- number of best solution for testing
+			M {integer} -- number of individuals in population
+			NoLsTests {integer} -- number of test runs on local search algorihms
+			NoLs {integer} -- number of local search algoritm runs
+			NoLsBest {integer} -- number of locals search algorithm runs on best solution
+			NoEnabled {integer} -- number of best solution for testing
 		"""
 		self.M, self.NoLsTests, self.NoLs, self.NoLsBest, self.NoEnabled = M, NoLsTests, NoLs, NoLsBest, NoEnabled
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def GradingRun(self, x, x_f, xb, xb_f, improve, SR, task):
+		r"""
+
+		Args:
+			x:
+			x_f:
+			xb:
+			xb_f:
+			improve:
+			SR:
+			task:
+
+		Returns:
+
+		"""
 		ls_grades, Xn, Xnb = full(3, 0.0), [[x, x_f]] * len(self.LSs), [xb, xb_f]
 		for _ in range(self.NoLsTests):
 			for k in range(len(self.LSs)):
@@ -161,6 +296,22 @@ class MultipleTrajectorySearch(Algorithm):
 		return xn[0], xn[1], Xnb[0], Xnb[1], k
 
 	def LsRun(self, k, x, x_f, xb, xb_f, improve, SR, g, task):
+		r"""
+
+		Args:
+			k:
+			x:
+			x_f:
+			xb:
+			xb_f:
+			improve:
+			SR:
+			g:
+			task:
+
+		Returns:
+
+		"""
 		XBn = list()
 		for _j in range(self.NoLs):
 			x, x_f, xnb, xnb_f, improve, grade, SR = self.LSs[k](x, x_f, xb, xb_f, improve, SR, task, BONUS1=self.BONUS1, BONUS2=self.BONUS2, rnd=self.Rand)
@@ -189,21 +340,40 @@ class MultipleTrajectorySearch(Algorithm):
 class MultipleTrajectorySearchV1(MultipleTrajectorySearch):
 	r"""Implementation of Multiple trajectory search.
 
-	**Algorithm:** Multiple trajectory search
-	**Date:** 2018
-	**Authors:** Klemen Berkovic
-	**License:** MIT
-	**Reference URL:** https://ieeexplore.ieee.org/document/4983179/
-	**Reference paper:** Tseng, Lin-Yu, and Chun Chen. "Multiple trajectory search for unconstrained/constrained multi-objective optimization." Evolutionary Computation, 2009. CEC'09. IEEE Congress on. IEEE, 2009.
+	Algorithm:
+		Multiple trajectory search
+
+	Date:
+		2018
+
+	Authors:
+		Klemen Berkovic
+
+	License:
+		MIT
+
+	Reference URL:
+		https://ieeexplore.ieee.org/document/4983179/
+
+	Reference paper:
+		Tseng, Lin-Yu, and Chun Chen. "Multiple trajectory search for unconstrained/constrained multi-objective optimization." Evolutionary Computation, 2009. CEC'09. IEEE Congress on. IEEE, 2009.
+
+	Attributes:
+		Name (list of str): TODO
 	"""
 	Name = ['MultipleTrajectorySearchV1', 'MTSv1']
 
-	def __init__(self, **kwargs):
-		MultipleTrajectorySearch.__init__(self, **kwargs)
-		self.LSs = [MTS_LS1v1, MTS_LS2, MTS_LS3v1]
-
 	def setParameters(self, **kwargs):
+		r"""
+
+		Args:
+			**kwargs:
+
+		See Also:
+			:func:`MultipleTrajectorySearch.setParameters`
+		"""
 		kwargs.pop('NoLsBest', None)
 		MultipleTrajectorySearch.setParameters(self, NoLsBest=0, **kwargs)
+		self.LSs = [MTS_LS1v1, MTS_LS2, MTS_LS3v1]
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

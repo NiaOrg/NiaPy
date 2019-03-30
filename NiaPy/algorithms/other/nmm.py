@@ -13,18 +13,28 @@ __all__ = ['NelderMeadMethod']
 class NelderMeadMethod(Algorithm):
 	r"""Implementation of Nelder Mead method or downhill simplex method or amoeba method.
 
-	**Algorithm:** Nelder Mead Method
+	Algorithm:
+		Nelder Mead Method
 
-	**Date:** 2018
+	Date:
+		2018
 
-	**Authors:** Klemen Berkovič
+	Authors:
+		Klemen Berkovič
 
-	**License:** MIT
+	License:
+		MIT
 
-	**Reference URL:** https://en.wikipedia.org/wiki/Nelder%E2%80%93Mead_method
+	Reference URL:
+		https://en.wikipedia.org/wiki/Nelder%E2%80%93Mead_method
+
+	Attributes:
+		Name (list of str): list of strings represeing algorithm name
+		alpha ():
+		gmma ():
+		sigma ()
 	"""
 	Name = ['NelderMeadMethod', 'NMM']
-	alpha, gmma, rho, sigma, = 0.3, 0.6, -0.4, 0.2
 
 	@staticmethod
 	def typeParameters(): return {
@@ -37,25 +47,39 @@ class NelderMeadMethod(Algorithm):
 	def setParameters(self, alpha=0.1, gamma=0.3, rho=-0.2, sigma=-0.2, **ukwargs):
 		r"""Set the arguments of an algorithm.
 
-		**Arguments:**
-
-		alpha {real} -- Reflection coefficient parameter
-
-		gamma {real} -- Expansion coefficient parameter
-
-		rho {real} -- Contraction coefficient parameter
-
-		sigma {real} -- Shrink coefficient parameter
+		Arguments:
+			alpha (float): Reflection coefficient parameter
+			gamma (float): Expansion coefficient parameter
+			rho (float): Contraction coefficient parameter
+			sigma (float): Shrink coefficient parameter
 		"""
 		self.alpha, self.gamma, self.rho, self.sigma = alpha, gamma, rho, sigma
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def init(self, task):
+		r"""
+
+		Args:
+			task:
+
+		Returns:
+
+		"""
 		X = self.uniform(task.Lower, task.Upper, [task.D, task.D])
 		X_f = apply_along_axis(task.eval, 1, X)
 		return X, X_f
 
 	def method(self, X, X_f, task):
+		r"""
+
+		Args:
+			X:
+			X_f:
+			task:
+
+		Returns:
+
+		"""
 		x0 = sum(X[:-1], axis=0) / (len(X) - 1)
 		xr = x0 + self.alpha * (x0 - X[-1])
 		rs = task.eval(xr)

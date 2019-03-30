@@ -15,17 +15,23 @@ __all__ = ['KrillHerdV1', 'KrillHerdV2', 'KrillHerdV3', 'KrillHerdV4', 'KrillHer
 class KrillHerd(Algorithm):
 	r"""Implementation of krill herd algorithm.
 
-	**Algorithm:** Krill Herd Algorithm
+	Algorithm:
+		Krill Herd Algorithm
 
-	**Date:** 2018
+	Date:
+		2018
 
-	**Authors:** Klemen Berkovič
+	Authors:
+		Klemen Berkovič
 
-	**License:** MIT
+	License:
+		MIT
 
-	**Reference URL:** http://www.sciencedirect.com/science/article/pii/S1007570412002171
+	Reference URL:
+		http://www.sciencedirect.com/science/article/pii/S1007570412002171
 
-	**Reference paper:** Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010.
+	Reference paper:
+		Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010.
 	"""
 	Name = ['KrillHerd', 'KH']
 
@@ -154,6 +160,9 @@ class KrillHerdV4(KrillHerd):
 
 	Reference paper:
 		Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010.
+
+	Attributes:
+		Name (list of str): List of strings representing algorithm name
 	"""
 	Name = ['KrillHerdV4', 'KHv4']
 
@@ -165,46 +174,96 @@ class KrillHerdV4(KrillHerd):
 		del d['epsilon']
 		return d
 
-	def setParameters(self, NP=50, N_max=0.01, V_f=0.02, D_max=0.002, C_t=0.93, W_n=0.42, W_f=0.38, d_s=2.63, **ukwargs): KrillHerd.setParameters(self, NP, N_max, V_f, D_max, C_t, W_n, W_f, d_s, 4, 0.2, 0.05, 1e-31, **ukwargs)
+	def setParameters(self, NP=50, N_max=0.01, V_f=0.02, D_max=0.002, C_t=0.93, W_n=0.42, W_f=0.38, d_s=2.63, **ukwargs):
+		r"""Set algorithm core parameters.
+
+		Args:
+			N_max (float): TODO
+			V_f (float): TODO
+			D_max (float): TODO
+			C_t (float): TODO
+			W_n (float): TODO
+			W_f (float): TODO
+			d_s (float): TODO
+			**ukwargs:
+
+      See Also:
+      	:func:KrillHerd.setParameters`
+		"""
+		KrillHerd.setParameters(self, NP, N_max, V_f, D_max, C_t, W_n, W_f, d_s, 4, 0.2, 0.05, 1e-31, **ukwargs)
 
 class KrillHerdV1(KrillHerd):
 	r"""Implementation of krill herd algorithm.
 
-	**Algorithm:** Krill Herd Algorithm
+	Algorithm:
+		Krill Herd Algorithm
 
-	**Date:** 2018
+	Date:
+		2018
 
-	**Authors:** Klemen Berkovič
+	Authors:
+		Klemen Berkovič
 
-	**License:** MIT
+	License:
+		MIT
 
-	**Reference URL:** http://www.sciencedirect.com/science/article/pii/S1007570412002171
+	Reference URL:
+		http://www.sciencedirect.com/science/article/pii/S1007570412002171
 
-	**Reference paper:** Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010.
+	Reference paper:
+		Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010.
 	"""
 	Name = ['KrillHerdV1', 'KHv1']
 
 	@staticmethod
 	def typeParameters(): return KrillHerdV4.typeParameters()
 
-	def crossover(self, x, xo, Cr): return x
+	def crossover(self, x, xo, Cr):
+		r"""Preform a crossover operation on individual.
 
-	def mutate(self, x, x_b, Mu): return x
+		Args:
+			x (array of (float or int)): Current individual
+			xo (array of (float or int)): New individual
+			Cr (float): Crossover probability
+
+		Returns:
+			array of float: Crossoved individual
+		"""
+		return x
+
+	def mutate(self, x, x_b, Mu):
+		r"""
+
+		Args:
+			x:
+			x_b:
+			Mu:
+
+		Returns:
+
+		"""
+		return x
 
 class KrillHerdV2(KrillHerd):
 	r"""Implementation of krill herd algorithm.
 
-	**Algorithm:** Krill Herd Algorithm
+	Algorithm:
+		Krill Herd Algorithm
 
-	**Date:** 2018
+	Date:
+		2018
 
-	**Authors:** Klemen Berkovič
+	Authors:
+		Klemen Berkovič
 
-	**License:** MIT
+	License:
+		MIT
 
-	**Reference URL:** http://www.sciencedirect.com/science/article/pii/S1007570412002171
+	Reference URL:
+		http://www.sciencedirect.com/science/article/pii/S1007570412002171
 
-	**Reference paper:** Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010.
+	Reference paper:
+		Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010.
 	"""
 	Name = ['KrillHerdV2', 'KHv2']
 
@@ -219,17 +278,23 @@ class KrillHerdV2(KrillHerd):
 class KrillHerdV3(KrillHerd):
 	r"""Implementation of krill herd algorithm.
 
-	**Algorithm:** Krill Herd Algorithm
+	Algorithm:
+		Krill Herd Algorithm
 
-	**Date:** 2018
+	Date:
+		2018
 
-	**Authors:** Klemen Berkovič
+	Authors:
+		Klemen Berkovič
 
-	**License:** MIT
+	License:
+		MIT
 
-	**Reference URL:** http://www.sciencedirect.com/science/article/pii/S1007570412002171
+	Reference URL:
+		http://www.sciencedirect.com/science/article/pii/S1007570412002171
 
-	**Reference paper:** Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010.
+	Reference paper:
+		Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010.
 	"""
 	Name = ['KrillHerdV3', 'KHv3']
 

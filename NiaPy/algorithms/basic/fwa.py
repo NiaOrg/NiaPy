@@ -141,47 +141,133 @@ class FireworksAlgorithm(Algorithm):
 	def setParameters(self, N=40, m=40, a=1, b=2, A=40, epsilon=1e-31, **ukwargs):
 		r"""Set the arguments of an algorithm.
 
-		**Arguments:**
-
-		N {integer} -- number of Fireworks
-
-		m {integer} -- number of sparks
-
-		a {integer} -- limitation of sparks
-
-		b {integer} -- limitation of sparks
-
-		A {real} --
-
-		epsilon {real} -- Small number for non 0 devision
+		Arguments:
+			N (int): Number of Fireworks
+			m (int): Number of sparks
+			a (int): Limitation of sparks
+			b (int): Limitation of sparks
+			A (float): --
+			epsilon (float): Small number for non 0 devision
 		"""
 		self.N, self.m, self.a, self.b, self.A, self.epsilon = N, m, a, b, A, epsilon
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def initAmplitude(self, task): return fullArray(self.A, task.D)
+	def initAmplitude(self, task):
+		r"""
+
+		Args:
+			task:
+
+		Returns:
+
+		"""
+		return fullArray(self.A, task.D)
 
 	def SparsksNo(self, x_f, xw_f, Ss):
+		r"""
+
+		Args:
+			x_f:
+			xw_f:
+			Ss:
+
+		Returns:
+
+		"""
 		s = self.m * (xw_f - x_f + self.epsilon) / (Ss + self.epsilon)
 		return round(self.b * self.m) if s > self.b * self.m and self.a < self.b < 1 else round(self.a * self.m)
 
-	def ExplosionAmplitude(self, x_f, xb_f, A, As): return A * (x_f - xb_f - self.epsilon) / (As + self.epsilon)
+	def ExplosionAmplitude(self, x_f, xb_f, A, As):
+		r"""
 
-	def ExplodeSpark(self, x, A, task): return self.Mapping(x + self.rand(task.D) * self.uniform(-A, A, task.D), task)
+		Args:
+			x_f:
+			xb_f:
+			A:
+			As:
 
-	def GaussianSpark(self, x, task): return self.Mapping(x + self.rand(task.D) * self.normal(1, 1, task.D), task)
+		Returns:
+
+		"""
+		return A * (x_f - xb_f - self.epsilon) / (As + self.epsilon)
+
+	def ExplodeSpark(self, x, A, task):
+		r"""
+
+		Args:
+			x:
+			A:
+			task:
+
+		Returns:
+
+		"""
+		return self.Mapping(x + self.rand(task.D) * self.uniform(-A, A, task.D), task)
+
+	def GaussianSpark(self, x, task):
+		r"""
+
+		Args:
+			x:
+			task:
+
+		Returns:
+
+		"""
+		return self.Mapping(x + self.rand(task.D) * self.normal(1, 1, task.D), task)
 
 	def Mapping(self, x, task):
+		r"""
+
+		Args:
+			x:
+			task:
+
+		Returns:
+
+		"""
 		ir = where(x > task.Upper)
 		x[ir] = task.Lower[ir] + x[ir] % task.bRange[ir]
 		ir = where(x < task.Lower)
 		x[ir] = task.Lower[ir] + x[ir] % task.bRange[ir]
 		return x
 
-	def R(self, x, FW): return sqrt(sum(fabs(x - FW)))
+	def R(self, x, FW):
+		r"""
 
-	def p(self, r, Rs): return r / Rs
+		Args:
+			x:
+			FW:
+
+		Returns:
+
+		"""
+		return sqrt(sum(fabs(x - FW)))
+
+	def p(self, r, Rs):
+		r"""
+
+		Args:
+			r:
+			Rs:
+
+		Returns:
+
+		"""
+		return r / Rs
 
 	def NextGeneration(self, FW, FW_f, FWn, task):
+		r"""
+
+		Args:
+			FW:
+			FW_f:
+			FWn:
+			task:
+
+		Returns:
+
+		"""
 		FWn_f = apply_along_axis(task.eval, 1, FWn)
 		ib = argmin(FWn_f)
 		if FWn_f[ib] < FW_f[0]: FW[0], FW_f[0] = FWn[ib], FWn_f[ib]
@@ -193,11 +279,33 @@ class FireworksAlgorithm(Algorithm):
 		return FW, FW_f
 
 	def initPopulation(self, task):
+		r"""
+
+		Args:
+			task:
+
+		Returns:
+
+		"""
 		FW, Ah = self.uniform(task.Lower, task.Upper, [self.N, task.D]), self.initAmplitude(task)
 		FW_f = apply_along_axis(task.eval, 1, FW)
 		return FW, FW_f, {'Ah':Ah}
 
 	def runIteration(self, task, FW, FW_f, xb, fxb, Ah, **dparams):
+		r"""
+
+		Args:
+			task:
+			FW:
+			FW_f:
+			xb:
+			fxb:
+			Ah:
+			**dparams:
+
+		Returns:
+
+		"""
 		iw, ib = argmax(FW_f), 0
 		Ss, As = sum(FW_f[iw] - FW_f), sum(FW_f - FW_f[ib])
 		S = [self.SparsksNo(FW_f[i], FW_f[iw], Ss) for i in range(self.N)]
@@ -423,8 +531,8 @@ class DynamicFireworksAlgorithmGauss(EnhancedFireworksAlgorithm):
 			epsilon:
 			**ukwargs:
 
-		Returns:
-
+		See Also:
+			:func:`FireworksAlgorithm.setParameters`
 		"""
 		FireworksAlgorithm.setParameters(self, **ukwargs)
 		self.A_cf, self.C_a, self.C_r, self.epsilon = A_cf, C_a, C_r, epsilon
@@ -542,6 +650,21 @@ class DynamicFireworksAlgorithmGauss(EnhancedFireworksAlgorithm):
 		return FW, FW_f, {'Ah':Ah, 'Ab':Ab}
 
 	def runIteration(self, task, FW, FW_f, xb, fxb, Ah, Ab, **dparams):
+		r"""
+
+		Args:
+			task:
+			FW:
+			FW_f:
+			xb:
+			fxb:
+			Ah:
+			Ab:
+			**dparams:
+
+		Returns:
+
+		"""
 		iw, ib = argmax(FW_f), argmin(FW_f)
 		Ss, As = sum(FW_f[iw] - FW_f), sum(FW_f - FW_f[ib])
 		S, sb = [self.SparsksNo(FW_f[i], FW_f[iw], Ss) for i in range(len(FW))], self.SparsksNo(fxb, FW_f[iw], Ss)

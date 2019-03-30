@@ -15,22 +15,42 @@ __all__ = [
 ]
 
 def CrossRandCurr2Pbest(pop, ic, x_b, f, cr, rnd=rand, *args):
+	r"""
+
+	Args:
+		pop:
+		ic:
+		x_b:
+		f:
+		cr:
+		rnd:
+		*args:
+
+	Returns:
+
+	"""
 	pass
 
 class AdaptiveArchiveDifferentialEvolution(DifferentialEvolution):
 	r"""Implementation of Adaptive Differential Evolution With Optional External Archive algorithm.
 
-	**Algorithm:** Adaptive Differential Evolution With Optional External Archive
+	Algorithm:
+		Adaptive Differential Evolution With Optional External Archive
 
-	**Date:** 2018
+	Date:
+		2019
 
-	**Author:** Klemen Berkovič
+	Author:
+		Klemen Berkovič
 
-	**License:** MIT
+	License:
+		MIT
 
-	**Reference URL:** https://ieeexplore.ieee.org/document/5208221
+	Reference URL:
+		https://ieeexplore.ieee.org/document/5208221
 
-	**Reference paper:** Zhang, Jingqiao, and Arthur C. Sanderson. "JADE: adaptive differential evolution with optional external archive." IEEE Transactions on evolutionary computation 13.5 (2009): 945-958.
+	Reference paper:
+		Zhang, Jingqiao, and Arthur C. Sanderson. "JADE: adaptive differential evolution with optional external archive." IEEE Transactions on evolutionary computation 13.5 (2009): 945-958.
 	"""
 	Name = ['AdaptiveArchiveDifferentialEvolution', 'JADE']
 

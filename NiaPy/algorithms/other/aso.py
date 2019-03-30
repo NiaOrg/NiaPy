@@ -59,15 +59,23 @@ def MP_P(x, xpb, CR, MP, rnd=rand):
 class AnarchicSocietyOptimization(Algorithm):
 	r"""Implementation of Anarchic Society Optimization algorithm.
 
-	**Algorithm:** Anarchic Society Optimization algorithm
+	Algorithm:
+		Anarchic Society Optimization algorithm
 
-	**Date:** 2018
+	Date:
+		2018
 
-	**Authors:** Klemen Berkovič
+	Authors:
+		Klemen Berkovič
 
-	**License:** MIT
+	License:
+		MIT
 
-	**Reference paper:** Ahmadi-Javid, Amir. "Anarchic Society Optimization: A human-inspired method." Evolutionary Computation (CEC), 2011 IEEE Congress on. IEEE, 2011.
+	Reference paper:
+		Ahmadi-Javid, Amir. "Anarchic Society Optimization: A human-inspired method." Evolutionary Computation (CEC), 2011 IEEE Congress on. IEEE, 2011.
+
+	Attributes:
+		Name (list of str): TODO
 	"""
 	Name = ['AnarchicSocietyOptimization', 'ASO']
 
@@ -85,50 +93,105 @@ class AnarchicSocietyOptimization(Algorithm):
 	def setParameters(self, NP=43, alpha=[1, 0.83], gamma=[1.17, 0.56], theta=[0.932, 0.832], d=euclidean, dn=euclidean, nl=1, F=1.2, CR=0.25, Combination=Elitism, **ukwargs):
 		r"""Set the parameters for the algorith.
 
-		**Arguments:**
+		Arguments:
+			alpha {array} -- factor for fickleness index function $\in [0, 1]$
+			gamma {array} -- factor for external irregularity index function $\in [0, \infty)$
+			theta {array} -- factor for internal irregularity index function $\in [0, \infty)$
+			d {function} -- function that takes two arguments that are function values and calcs the distance between them
+			dn {function} -- function that takes two arguments that are points in function landscape and calcs the distance between them
+			nl {real} -- normalized range for neighborhood search $\in (0, 1]$
+			F {real} -- mutation parameter
+			CR {real} -- crossover parameter $\in [0, 1]$
+			Combination {function} -- Function that combines movment strategies
 
-		NP {integer} -- population size
-
-		alpha {array} -- factor for fickleness index function $\in [0, 1]$
-
-		gamma {array} -- factor for external irregularity index function $\in [0, \infty)$
-
-		theta {array} -- factor for internal irregularity index function $\in [0, \infty)$
-
-		d {function} -- function that takes two arguments that are function values and calcs the distance between them
-
-		dn {function} -- function that takes two arguments that are points in function landscape and calcs the distance between them
-
-		nl {real} -- normalized range for neighborhood search $\in (0, 1]$
-
-		F {real} -- mutation parameter
-
-		CR {real} -- crossover parameter $\in [0, 1]$
-
-		Combination {function} -- Function that combines movment strategies
+		See Also:
+			:func:`Algorithm.setParameters`
 		"""
-		self.NP, self.alpha, self.gamma, self.theta, self.d, self.dn, self.nl, self.F, self.CR, self.Combination = NP, alpha, gamma, theta, d, dn, nl, F, CR, Combination
+		Algorithm.setParameters(self, NP=NP)
+		self.alpha, self.gamma, self.theta, self.d, self.dn, self.nl, self.F, self.CR, self.Combination = alpha, gamma, theta, d, dn, nl, F, CR, Combination
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def init(self, task): return fullArray(self.alpha, self.NP), fullArray(self.gamma, self.NP), fullArray(self.theta, self.NP)
+	def init(self, task):
+		r"""
+
+		Args:
+			task:
+
+		Returns:
+
+		"""
+		return fullArray(self.alpha, self.NP), fullArray(self.gamma, self.NP), fullArray(self.theta, self.NP)
 
 	def FI(self, x_f, xpb_f, xb_f, alpha):
+		r"""
+
+		Args:
+			x_f:
+			xpb_f:
+			xb_f:
+			alpha:
+
+		Returns:
+
+		"""
 		r"""Get fickleness index."""
 		return 1 - alpha * xb_f / x_f - (1 - alpha) * xpb_f / x_f
 
 	def EI(self, x_f, xnb_f, gamma):
+		r"""
+
+		Args:
+			x_f:
+			xnb_f:
+			gamma:
+
+		Returns:
+
+		"""
 		r"""Get external irregularity index."""
 		return 1 - exp(-gamma * self.d(x_f, xnb_f))
 
 	def II(self, x_f, xpb_f, theta):
+		r"""
+
+		Args:
+			x_f:
+			xpb_f:
+			theta:
+
+		Returns:
+
+		"""
 		r"""Get internal irregularity index."""
 		return 1 - exp(-theta * self.d(x_f, xpb_f))
 
 	def getBestNeighbors(self, i, X, X_f, rs):
+		r"""
+
+		Args:
+			i:
+			X:
+			X_f:
+			rs:
+
+		Returns:
+
+		"""
 		nn = asarray([self.dn(X[i], X[j]) / rs for j in range(len(X))])
 		return argmin(X_f[where(nn <= self.nl)])
 
 	def uBestAndPBest(self, X, X_f, Xpb, Xpb_f):
+		r"""
+
+		Args:
+			X:
+			X_f:
+			Xpb:
+			Xpb_f:
+
+		Returns:
+
+		"""
 		ix_pb = where(X_f < Xpb_f)
 		Xpb[ix_pb], Xpb_f[ix_pb] = X[ix_pb], X_f[ix_pb]
 		ib = argmin(Xpb_f)
