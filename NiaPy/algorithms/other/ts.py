@@ -49,6 +49,8 @@ class TabuSearch(Algorithm):
 
 	def move(self): return list()
 
-	def runTask(self, task): return TabuSearchF(task, rnd=self.Rand)
+	def runTask(self, task):
+		# FIXME
+		return TabuSearchF(task, rnd=self.Rand)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

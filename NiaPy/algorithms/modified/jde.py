@@ -288,7 +288,7 @@ class MultiStrategySelfAdaptiveDifferentialEvolution(SelfAdaptiveDifferentialEvo
 		return L[ib], L_f[ib]
 
 	def runTask(self, task):
-		#FIXME
+		# FIXME
 		pop = [self.IndividualType(task=task, F=self.F, CR=self.CR, rand=self.Rand) for _i in range(self.NP)]
 		x_b = pop[argmin([x.f for x in pop])]
 		while not task.stopCondI():

@@ -21,6 +21,8 @@ __all__ = [
 	'wangRepair',
 	'randRepair',
 	'Task',
+	'CountingTask',
+	'StoppingTask',
 	'TaskConvPrint',
 	'TaskConvPlot',
 	'TaskConvSave',
@@ -207,6 +209,21 @@ def randRepair(x, Lower, Upper, rnd=rand, **kwargs):
 	return x
 
 class Task(Utility):
+	r"""Class representing problem to solve with optimization.
+
+	Date:
+		2019
+
+	Author:
+		Klemen Berkovič
+
+	Attributes:
+		D (int): Dimension of the problem.
+		Lower (array of float): Lower bounds of the problem.
+		Upper (array of float): Upper bounds of the problem.
+		bRange (array of float): Search range between upper and lower limits.
+		optType (OptimizationType): Optimization type to use.
+	"""
 	D = 0
 	benchmark = None
 	Lower, Upper, bRange = inf, inf, inf
@@ -216,12 +233,15 @@ class Task(Utility):
 		r"""Initialize task class for optimization.
 
 		Arguments:
-		D {integer} -- Number of dimensions
-		optType {OptimizationType} -- Set the type of optimization
-		benchmark {class} or {string} -- Problem to solve
-		Lower {array} or {real} -- Lower limits of the problem
-		Upper {array} or {real} -- Upper limits of the problem
-		frepair {function} -- Function for reparing individuals components to desired limits
+			D (int): Number of dimensions.
+			optType (OptimizationType): Set the type of optimization.
+			benchmark (str or Benchmark): Problem to solve with optimization.
+			Lower (float or array of float): Lower limits of the problem.
+			Upper (float or array of float): Upper limits of the problem.
+			frepair (function): Function for reparing individuals components to desired limits.
+
+		See Also:
+			`func`:Utility.__init__`
 		"""
 		Utility.__init__(self)
 		# dimension of the problem
@@ -264,7 +284,11 @@ class Task(Utility):
 		r"""Repair solution and put the solution in the random position inside of the bounds of problem.
 
 		Arguments:
-		x {array} -- solution to check and repair if needed
+			x (array of float): Solution to check and repair if needed.
+			rnd (RandomState): Random number generator.
+
+		Returns:
+			array of float: Fixed solution.
 		"""
 		return self.frepair(x, self.Lower, self.Upper, rnd)
 
@@ -280,7 +304,10 @@ class Task(Utility):
 		r"""Evaluate the solution A.
 
 		Arguments:
-		A {array} -- Solution to evaluate
+			A (array): Solution to evaluate
+
+		Returns:
+			float: Fitness/function values of solution.
 		"""
 		return self.Fun(self.D, A) * self.optType.value
 
@@ -288,15 +315,28 @@ class Task(Utility):
 		r"""Check if the solution is feasible.
 
 		Arguments:
-		A {array} -- Solution to check for feasibility
+			A (array of float): Solution to check for feasibility.
+
+		Returns:
+			bool: `True` if solution is in feasible space else `False`.
 		"""
 		return not False in (A > self.Lower) and not False in (A < self.Upper)
 
 	def stopCond(self):
-		r"""TODO."""
+		r"""Check if optimization task should stop.
+
+		Returns:
+			bool: `True` if stopping condition is meet else `False`.
+		"""
 		return False
 
 class CountingTask(Task):
+	r"""Optimization task with added counting of function evaluations and algorithm iterations/generations.
+
+	Attributes:
+		Iters (int): Number of algorithm iterations/generations.
+		Evals (int): Number of function evaluations.
+	"""
 	Iters, Evals = 0, 0
 
 	def __init__(self, **kwargs):
@@ -305,8 +345,13 @@ class CountingTask(Task):
 	def eval(self, A):
 		r"""Evaluate the solution A.
 
+		This function increments function evaluation counter `self.Evals`.
+
 		Arguments:
-		A {array} -- Solutions to evaluate
+			A (array of float): Solutions to evaluate.
+
+		Returns:
+			float: Fitness/function values of solution.
 		"""
 		self.Evals += 1
 		return Task.eval(self, A)
@@ -320,15 +365,34 @@ class CountingTask(Task):
 		return self.Iters
 
 	def nextIter(self):
-		r"""Increases the number of algorithm iterations made."""
+		r"""Increases the number of algorithm iterations made.
+
+		This function increments number of algorithm iterations/generations counter `self.Iters`.
+		"""
 		self.Iters += 1
 
 	def stopCondI(self):
-		r"""Check if stoping condition and increment number of generations/iterations."""
-		self.Iters += 1
+		r"""Check if stoping condition and increment number of generations/iterations.
+
+		Returns:
+			bool: `True` if stopping criteria is meet else `False`
+
+		See Also:
+			:func:`CountingTask.nextIter`
+		"""
+		self.nextIter()
 		return Task.stopCondI(self)
 
-class StopingTask(CountingTask):
+class StoppingTask(CountingTask):
+	r"""Optimization task with implemented checking for stopping criterias.
+
+	Attributes:
+		nGEN (int): Maximum number of algorithm iterations/generations.
+		nFES (int): Maximum number of function evaluations.
+		refValue (float): Reference function/fitness values to reach in optimization.
+		x (array of float): Best found individual.
+		x_f (float): Best found individual function/fitness value.
+	"""
 	nGEN, nFES = inf, inf
 	refValue, x, x_f = inf, None, inf
 
@@ -336,8 +400,11 @@ class StopingTask(CountingTask):
 		r"""Initialize task class for optimization.
 
 		Arguments:
-		nFES {integer} -- Number of function evaluations
-		nGEN {integer} -- Number of generations or iterations
+			nFES (int): Number of function evaluations
+			nGEN (int): Number of generations or iterations
+
+		See Also:
+			:func:`CountingTask.__init__`
 		"""
 		CountingTask.__init__(self, **kwargs)
 		self.refValue = (-inf if refValue is None else refValue)
@@ -345,26 +412,65 @@ class StopingTask(CountingTask):
 		self.nFES, self.nGEN = nFES, nGEN
 
 	def eval(self, A):
+		r"""Evaluate solution.
+
+		Args:
+			A (array of float): Solution to evaluate.
+
+		Returns:
+			float: Fitness/function value of solution
+
+		See Also:
+			:func:`StoppingTask.stopCond`
+			:func:`CountingTask.eval`
+		"""
 		if self.stopCond(): return inf * self.optType.value
 		x_f = CountingTask.eval(self, A)
 		if x_f < self.x_f: self.x_f = x_f
 		return x_f
 
 	def stopCond(self):
-		r"""Check if stopping condition reached."""
+		r"""Check if stopping condition reached.
+
+		Returns:
+			bool: `True` if number of function evaluations or number of algorithm iterations/generations or reference values is reach else `False`
+		"""
 		return (self.Evals >= self.nFES) or (self.Iters >= self.nGEN) or (self.refValue > self.x_f)
 
 	def stopCondI(self):
-		r"""Check if stopping condition reached and increase number of iterations."""
+		r"""Check if stopping condition reached and increase number of iterations.
+
+		Returns:
+			bool: `True` if number of function evaluations or number of algorithm iterations/generations or reference values is reach else `False`
+
+		See Also:
+			:func:`CountingTask.stopCondI`
+			:func:`StoppingTask.stopCond`
+		"""
 		CountingTask.stopCondI(self)
 		return self.stopCond()
 
 class ThrowingTask(StopingTask):
 	def __init__(self, **kwargs):
-		StopingTask.__init__(self, **kwargs)
+		r"""Initialize optimization task.
+
+		Args:
+			**kwargs (dict): Additional arguments.
+
+		See Also:
+			:func:`StoppingTask.__init__`
+		"""
+		StoppingTask.__init__(self, **kwargs)
 
 	def stopCondE(self):
-		r"""Throw exception for the given stopping condition."""
+		r"""Throw exception for the given stopping condition.
+
+		Raises:
+			* FesException: TODO
+			* GenException: TODO
+			* RefException: TODO
+			* TimeException: TODO
+		"""
 		# dtime = datetime.now() - self.startTime
 		if self.Evals >= self.nFES: raise FesException()
 		if self.Iters >= self.nGEN: raise GenException()
@@ -372,95 +478,266 @@ class ThrowingTask(StopingTask):
 		if self.refValue >= self.x_f: raise RefException()
 
 	def eval(self, A):
-		self.stopCondE()
-		return StopingTask.eval(self, A)
+		r"""Evaluate solution.
 
-class MoveTask(StopingTask):
+		Args:
+			A (array of Union[float, int]):
+
+		Returns:
+			float: Function/fitness values of solution.
+
+		See Also:
+			* :func:`ThrowingTask.stopCondE`
+			* :func:`StoppingTask.eval`
+		"""
+		self.stopCondE()
+		return StoppingTask.eval(self, A)
+
+class MoveTask(StoppingTask):
 	def __init__(self, o=None, fo=None, M=None, fM=None, optF=None, **kwargs):
 		r"""Initialize task class for optimization.
 
 		Arguments:
-		o {array} -- Array for shifting
-		of {function} -- Function applied on shifted input
-		M {matrix} -- Matrix for rotating
-		fM {function} -- Function applied after rotating
+			o (array[Union[float, int]]): Array for shifting.
+			of (Callable[array[Union[float, int]]]): Function applied on shifted input.
+			M (array[array[Union[float, int]]]): Matrix for rotating.
+			fM (Callable[array[Union[float, int]]]): Function applied after rotating
+
+		See Also:
+			:func:`StoppingTask.__init__`
 		"""
-		StopingTask.__init__(self, **kwargs)
+		StoppingTask.__init__(self, **kwargs)
 		self.o = o if isinstance(o, ndarray) or o is None else asarray(o)
 		self.M = M if isinstance(M, ndarray) or M is None else asarray(M)
 		self.fo, self.fM, self.optF = fo, fM, optF
 
 	def eval(self, A):
+		r"""Evaluate the solution.
+
+		Args:
+			A (array[Union[float, int]]): Solution to evaluate
+
+		Returns:
+			float: Fitness/function value of solution.
+
+		See Also:
+			* :func:`StoppingTask.stopCond`
+			* :func:`StoppingTask.eval`
+		"""
 		if self.stopCond(): return inf * self.optType.value
 		X = A - self.o if self.o is not None else A
 		X = self.fo(X) if self.fo is not None else X
 		X = dot(X, self.M) if self.M is not None else X
 		X = self.fM(X) if self.fM is not None else X
-		r = StopingTask.eval(self, X) + (self.optF if self.optF is not None else 0)
+		r = StoppingTask.eval(self, X) + (self.optF if self.optF is not None else 0)
 		if r <= self.x_f: self.x, self.x_f = A, r
 		return r
 
 class ScaledTask(Task):
+	r"""
+
+	"""
 	def __init__(self, task, Lower, Upper, **kwargs):
+		r"""TODO
+
+		Args:
+			task (Task): Optimization task to scale to new bounds.
+			Lower (Union[float, int, array[Union[float, int]]]): New lower bounds.
+			Upper (Union[float, int, array[Union[float, int]]]): New upper bounds.
+			**kwargs: Additional arguments.
+
+		See Also:
+			:func:`fullArray`
+		"""
 		Task.__init__(self)
 		self._task = task
 		self.D = self._task.D
 		self.Lower, self.Upper = fullArray(Lower, self.D), fullArray(Upper, self.D)
 		self.bRange = fabs(Upper - Lower)
 
-	def stopCond(self): return self._task.stopCond()
+	def stopCond(self):
+		r"""
 
-	def stopCondI(self): return self._task.stopCondI()
+		Returns:
 
-	def eval(self, A): return self._task.eval(A)
+		"""
+		return self._task.stopCond()
 
-	def evals(self): return self._task.evals()
+	def stopCondI(self):
+		r"""
 
-	def iters(self): return self._task.iters()
+		Returns:
 
-	def nextIter(self): self._task.nextIter()
+		"""
+		return self._task.stopCondI()
 
-	def isFeasible(self, A): return self._task.isFeasible(A)
+	def eval(self, A):
+		r"""
+
+		Args:
+			A:
+
+		Returns:
+
+		"""
+		return self._task.eval(A)
+
+	def evals(self):
+		r"""
+
+		Returns:
+
+		"""
+		return self._task.evals()
+
+	def iters(self):
+		r"""
+
+		Returns:
+
+		"""
+		return self._task.iters()
+
+	def nextIter(self):
+		r"""
+
+		Returns:
+
+		"""
+		self._task.nextIter()
+
+	def isFeasible(self, A):
+		r"""
+
+		Args:
+			A:
+
+		Returns:
+
+		"""
+		return self._task.isFeasible(A)
 
 class ScaledTaskE(ScaledTask):
+	r"""
+
+	"""
 	def __init__(self, **kwargs):
+		r"""
+
+		Args:
+			**kwargs:
+
+		See Also:
+			:func:`ScaledTask.__init__`
+		"""
 		ScaledTask.__init__(self, **kwargs)
 
 	def eval(self, A):
+		r"""
+
+		Args:
+			A:
+
+		Returns:
+
+		"""
 		self.stopCond()
 		return ScaledTask.eval(self, A)
 
-class TaskConvPrint(StopingTask):
+class TaskConvPrint(StoppingTask):
+	r"""
+
+	"""
 	xb, xb_f = inf, None
 
 	def __init__(self, **kwargs):
-		StopingTask.__init__(self, **kwargs)
+		r"""
+
+		Args:
+			**kwargs:
+
+		See Also:
+			:func:`StoppingTask.__init__`
+		"""
+		StoppingTask.__init__(self, **kwargs)
 
 	def eval(self, A):
-		x_f = StopingTask.eval(self, A)
+		r"""
+
+		Args:
+			A:
+
+		Returns:
+			float:
+
+		See Also:
+			:func:`StoppingTask.eval`
+		"""
+		x_f = StoppingTask.eval(self, A)
 		if not self.x_f == self.xb_f:
 			self.xb, self.xb_f = A, x_f
 			logger.info('nFES:%d nGEN:%d => %s -> %s' % (self.Evals, self.Iters, self.xb, self.xb_f * self.optType.value))
 		return x_f
 
-class TaskConvSave(StopingTask):
+class TaskConvSave(StoppingTask):
+	r"""
+
+	"""
 	def __init__(self, **kwargs):
-		StopingTask.__init__(self, **kwargs)
+		r"""
+
+		Args:
+			**kwargs:
+
+		See Also:
+			:func:`StoppingTask.__init__`
+		"""
+		StoppingTask.__init__(self, **kwargs)
 		self.evals = []
 		self.x_f_vals = []
 
 	def eval(self, A):
-		x_f = StopingTask.eval(self, A)
+		r"""
+
+		Args:
+			A:
+
+		Returns:
+			float:
+
+		See Also:
+			:func:`StoppingTask.eval`
+		"""
+		x_f = StoppingTask.eval(self, A)
 		if x_f <= self.x_f:
 			self.evals.append(self.Evals)
 			self.x_f_vals.append(x_f)
 		return x_f
 
-	def return_conv(self): return self.evals, self.x_f_vals
+	def return_conv(self):
+		r"""
 
-class TaskConvPlot(StopingTask):
+		Returns:
+			Tuple[List[int], List[float]]:
+				1. TODO
+				2. TODO
+		"""
+		return self.evals, self.x_f_vals
+
+class TaskConvPlot(StoppingTask):
+	r"""
+
+	"""
 	def __init__(self, **kwargs):
-		StopingTask.__init__(self, **kwargs)
+		r"""
+
+		Args:
+			**kwargs:
+
+		See Also:
+			:func:`StoppingTask.__init__`
+		"""
+		StoppingTask.__init__(self, **kwargs)
 		self.x_fs, self.iters = [], []
 		self.fig = plt.figure()
 		self.ax = self.fig.subplots(nrows=1, ncols=1)
@@ -470,7 +747,15 @@ class TaskConvPlot(StopingTask):
 		self.showPlot()
 
 	def eval(self, A):
-		x_f = StopingTask.eval(self, A)
+		r"""
+
+		Args:
+			A:
+
+		Returns:
+
+		"""
+		x_f = StoppingTask.eval(self, A)
 		if not self.x_fs: self.x_fs.append(x_f)
 		elif x_f < self.x_fs[-1]: self.x_fs.append(x_f)
 		else: self.x_fs.append(self.x_fs[-1])
@@ -478,10 +763,23 @@ class TaskConvPlot(StopingTask):
 		return x_f
 
 	def showPlot(self):
+		r"""
+
+		Returns:
+
+		"""
 		plt.show(block=False)
 		plt.pause(0.001)
 
 	def updatePlot(self, frame):
+		r"""
+
+		Args:
+			frame:
+
+		Returns:
+
+		"""
 		if self.x_fs:
 			max_fs, min_fs = self.x_fs[0], self.x_fs[-1]
 			self.ax.set_ylim(min_fs + 1, max_fs + 1)
@@ -493,15 +791,28 @@ class TaskComposition(MoveTask):
 		r"""Initialize of composite function problem.
 
 		Arguments:
-		benchmarks {array} of {problems} -- optimization function to use in composition
-		delta {array} of {real} --
-		lamb {array} of {real} --
-		bias {array} of {real} --
+			benchmarks {array} of {problems} -- optimization function to use in composition
+			delta {array} of {real} --
+			lamb {array} of {real} --
+			bias {array} of {real} --
+
+		See Also:
+			:func:`MoveTask.__init__`
 		"""
 		MoveTask.__init__(self, **kwargs)
 
 	def eval(self, A):
-		# TODO Usage of multiple functions on the same time
+		r"""
+
+		Args:
+			A:
+
+		Returns:
+			float:
+
+		Todo:
+			Usage of multiple functions on the same time
+		"""
 		return inf
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

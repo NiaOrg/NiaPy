@@ -110,6 +110,8 @@ class SimulatedAnnealing(Algorithm):
 		self.delta, self.T, self.deltaT, self.cool, self.epsilon = delta, T, deltaT, coolingMethod, epsilon
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def runTask(self, task): return SimulatedAnnealingF(task, self.delta, self.deltaT, self.T, self.cool, self.epsilon, rnd=self.Rand)
+	def runTask(self, task):
+		# FIXME
+		return SimulatedAnnealingF(task, self.delta, self.deltaT, self.T, self.cool, self.epsilon, rnd=self.Rand)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

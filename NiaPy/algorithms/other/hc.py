@@ -60,6 +60,7 @@ class HillClimbAlgorithm(Algorithm):
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def runTask(self, task):
+		# FIXME
 		xb, xbfit = None, task.optType.value * inf
 		while not task.stopCondI():
 			lo, x = False, task.bcLower() + task.bcRange() * self.rand(task.D)

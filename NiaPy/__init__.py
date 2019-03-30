@@ -100,6 +100,15 @@ class Runner:
 
 	Feature which enables running multiple algorithms with multiple benchmarks.
 	It also support exporting results in various formats (e.g. LaTeX, Excel, JSON)
+
+	Attributes:
+      D (int): Dimension of problem
+		NP (int): Population size
+		nFES (int): Number of function evaluations
+		nRuns (int): Number of repetitions
+		useAlgorithms (list of Algorithm): List of algorithms to run
+		useBenchmarks (list of Benchmarks): List of benchmarks to run
+		results (): TODO
 	"""
 	def __init__(self, D=10, nFES=1000000, nGEN=100000, useAlgorithms='ArtificialBeeColonyAlgorithm', useBenchmarks='Ackley', **kwargs):
 		r"""Initialize Runner.
@@ -107,83 +116,47 @@ class Runner:
 		**__init__(self, D, NP, nFES, nRuns, useAlgorithms, useBenchmarks, ...)**
 
 		Arguments:
-		D {integer} -- dimension of problem
+			D (int): Dimension of problem
+			NP (int): Population size
+			nFES (int): Number of function evaluations
+			nRuns (int): Number of repetitions
+			useAlgorithms (list of Algorithm): List of algorithms to run
+			useBenchmarks (list of Benchmarks): List of benchmarks to run
 
-		NP {integer} -- population size
-
-		nFES {integer} -- number of function evaluations
-
-		nRuns {integer} -- number of repetitions
-
-		useAlgorithms [] -- array of algorithms to run
-
-		useBenchmarks [] -- array of benchmarks to run
-
-		A {decimal} -- laudness
-
-		r {decimal} -- pulse rate
-
-		Qmin {decimal} -- minimum frequency
-
-		Qmax {decimal} -- maximum frequency
-
-		Pa {decimal} -- probability
-
-		F {decimal} -- scalling factor
-
-		F_l {decimal} -- lower limit of scalling factor
-
-		F_u {decimal} -- upper limit of scalling factor
-
-		CR {decimal} -- crossover rate
-
-		alpha {decimal} -- alpha parameter
-
-		betamin {decimal} -- betamin parameter
-
-		gamma {decimal} -- gamma parameter
-
-		p {decimal} -- probability switch
-
-		Ts {decimal} -- tournament selection
-
-		Mr {decimal} -- mutation rate
-
-		C1 {decimal} -- cognitive component
-
-		C2 {decimal} -- social component
-
-		w {decimal} -- inertia weight
-
-		vMin {decimal} -- minimal velocity
-
-		vMax {decimal} -- maximal velocity
-
-		Tao1 {decimal} --
-
-		Tao2 {decimal} --
-
-		n {integer} -- number of sparks
-
-		mu {decimal} -- mu parameter
-
-		omega {decimal} -- TODO
-
-		S_init {decimal} -- initial supply for camel
-
-		E_init {decimal} -- initial endurance for camel
-
-		T_min {decimal} -- minimal temperature
-
-		T_max {decimal} -- maximal temperature
-
-		C_a {decimal} -- Amplification factor
-
-		C_r {decimal} -- Reduction factor
-
-		Limit {integer} -- Limit
-
-		k {integer} -- Number of runs before adaptive
+		Keyword Args:
+			A (float): Laudness
+			r (float): Pulse rate
+			Qmin (float): Minimum frequency
+			Qmax (float): Maximum frequency
+			Pa (float): Probability
+			F (float): Scalling factor
+			F_l (float): Lower limit of scalling factor
+			F_u (float): Upper limit of scalling factor
+			CR (float): Crossover rate
+			alpha (float): Alpha parameter
+			betamin (float): Betamin parameter
+			gamma (float): Gamma parameter
+			p (float): Probability switch
+			Ts (float): Tournament selection
+			Mr (float): Mutation rate
+			C1 (float): Cognitive component
+			C2 (float): Social component
+			w (float): Inertia weight
+			vMin (float): Minimal velocity
+			vMax (float): Maximal velocity
+			Tao1 (float): Probability
+			Tao2 (float): Probability
+			n (int): Number of sparks
+			mu (float): Mu parameter
+			omega (float): TODO
+			S_init (float): Initial supply for camel
+			E_init (float): Initial endurance for camel
+			T_min (float): Minimal temperature
+			T_max (float): Maximal temperature
+			C_a (float): Amplification factor
+			C_r (float): Reduction factor
+			Limit (int): Limit
+			k (int): Number of runs before adaptive
 		"""
 		self.D = D
 		self.nFES = nFES
@@ -195,39 +168,103 @@ class Runner:
 
 	@staticmethod
 	def getAlgorithm(name):
+		r"""Get algorithm for optimization.
+
+		Args:
+			name (str): Name of the algorithm
+
+		Returns:
+			Algorithm: TODO
+		"""
 		algorithm = None
 		for alg in NiaPyAlgos:
 			if name in alg.Name: algorithm = alg; break
 		if algorithm == None: raise TypeError('Passed algorithm is not defined!')
 		return algorithm
 
-	def benchmarkFactory(self, name): return util.Task(D=self.D, nFES=self.nFES, nGEN=self.nGEN, optType=util.OptimizationType.MINIMIZATION, benchmark=name)
+	def benchmarkFactory(self, name):
+		r"""Create optimization task.
+
+		Args:
+			name (str): Benchmark name.
+
+		Returns:
+			Task: Optimization task to use.
+		"""
+		return util.Task(D=self.D, nFES=self.nFES, nGEN=self.nGEN, optType=util.OptimizationType.MINIMIZATION, benchmark=name)
 
 	def algorithmFactory(self, name):
+		r"""
+
+		Args:
+			name (str): Name of algorithm.
+
+		Returns:
+			Algorithm: Initialized algorithm with parameters.
+		"""
 		algorithm, params = Runner.getAlgorithm(name), dict()
 		for k, v in algorithm.typeParameters().items():
 			val = self.args.get(k, None)
 			if val != None and v(val): params[k] = val
 		return algorithm(**params)
 
-	def __algorithmFactory(self, aname, bname): return self.algorithmFactory(aname).setTask(self.benchmarkFactory(bname))
+	def __algorithmFactory(self, aname, bname):
+		r"""
+
+		Args:
+			aname (str):
+			bname (str):
+
+		Returns:
+
+		"""
+		# FIXME
+		return self.algorithmFactory(aname).setTask(self.benchmarkFactory(bname))
 
 	@classmethod
 	def __createExportDir(cls):
+		r"""
+
+		Returns:
+
+		"""
 		if not os.path.exists('export'): os.makedirs('export')
 
 	@classmethod
-	def __generateExportName(cls, extension): return 'export/' + str(datetime.datetime.now()).replace(':', '.') + '.' + extension
+	def __generateExportName(cls, extension):
+		r"""
 
-	def __exportToLog(self): print(self.results)
+		Args:
+			extension:
+
+		Returns:
+
+		"""
+		return 'export/' + str(datetime.datetime.now()).replace(':', '.') + '.' + extension
+
+	def __exportToLog(self):
+		r"""
+
+		"""
+		print(self.results)
 
 	def __exportToJson(self):
+		r"""
+
+		See Also:
+			:func:`Runner.__createExportDir`
+		"""
 		self.__createExportDir()
 		with open(self.__generateExportName('json'), 'w') as outFile:
 			json.dump(self.results, outFile)
 			logger.info('Export to JSON completed!')
 
 	def __exportToXls(self):
+		r"""
+
+      See Also:
+      	:func:`Runner.__generateExportName`
+		"""
 		self.__createExportDir()
 		workbook = xlsxwriter.Workbook(self.__generateExportName('xlsx'))
 		worksheet = workbook.add_worksheet()
@@ -244,6 +281,12 @@ class Runner:
 		logger.info('Export to XLSX completed!')
 
 	def __exportToLatex(self):
+		r"""
+
+      See Also:
+      	:func:`Runner.__createExportDir`
+      	:func:`Runner.__generateExportName`
+		"""
 		self.__createExportDir()
 		metrics = ['Best', 'Median', 'Worst', 'Mean', 'Std.']
 		def only_upper(s): return "".join(c for c in s if c.isupper())
@@ -294,15 +337,20 @@ class Runner:
 	def run(self, export='log', verbose=False):
 		"""Execute runner.
 
-		Keyword Arguments:
-		export  {string}  -- takes export type (e.g. log, json, xlsx, latex) (default: 'log')
-		verbose {boolean} -- switch for verbose logging (default: {False})
+		Arguments:
+			export (str): Takes export type (e.g. log, json, xlsx, latex) (default: 'log')
+			verbose (bool: Switch for verbose logging (default: {False})
 
 		Raises:
-		TypeError -- Raises TypeError if export type is not supported
+			TypeError: Raises TypeError if export type is not supported
 
 		Returns:
-		Dictionary -- Returns dictionary of results
+			dict: Returns dictionary of results
+
+		See Also:
+			* :func:`Runner.useAlgorithms`
+			* :func:`Runner.useBenchmarks`
+			* :func:`Runner.__algorithmFactory`
 		"""
 		for alg in self.useAlgorithms:
 			self.results[alg] = {}

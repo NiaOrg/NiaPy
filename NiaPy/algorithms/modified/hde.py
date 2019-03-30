@@ -141,6 +141,7 @@ class DifferentialEvolutionMTS(DifferentialEvolution):
 		Returns:
 
 		"""
+		# FIXME
 		pop = [MtsIndividual(task.bcRange() * 0.06, task=task, rand=self.Rand, e=True) for _i in range(self.NP)]
 		x_b = pop[argmin([x.f for x in pop])]
 		while not task.stopCondI():
@@ -209,7 +210,7 @@ class DynNpDifferentialEvolutionMTS(DifferentialEvolutionMTS):
 		self.pmax, self.rp = pmax, rp
 
 	def runTask(self, task):
-		#FIXME
+		# FIXME
 		Gr = task.nFES // (self.pmax * self.NP) + self.rp
 		pop = [MtsIndividual(task.bcRange() * 0.06, task=task, rand=self.Rand, e=True) for _i in range(self.NP)]
 		x_b = pop[argmin([x.f for x in pop])]
@@ -307,7 +308,7 @@ class MultiStratgyDifferentialEvolutionMTS(DifferentialEvolutionMTS):
 		return L[argmin([x.f for x in L])]
 
 	def runTask(self, task):
-		#FIXME
+		# FIXME
 		pop = [MtsIndividual(task.bcRange() * 0.06, task=task, rand=self.Rand, e=True) for _i in range(self.NP)]
 		x_b = pop[argmin([x.f for x in pop])]
 		while not task.stopCondI():
@@ -376,7 +377,7 @@ class DynNpMultiStrategyDifferentialEvolutionMTS(MultiStratgyDifferentialEvoluti
 		self.pmax, self.rp = pmax, rp
 
 	def runTask(self, task):
-		#FIXME
+		# FIXME
 		Gr = task.nFES // (self.pmax * self.NP) + self.rp
 		pop = [MtsIndividual(task.bcRange() * 0.06, task=task, rand=self.Rand, e=True) for _i in range(self.NP)]
 		x_b = pop[argmin([x.f for x in pop])]

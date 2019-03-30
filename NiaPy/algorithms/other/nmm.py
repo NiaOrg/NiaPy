@@ -103,6 +103,7 @@ class NelderMeadMethod(Algorithm):
 		return X, X_f
 
 	def runTask(self, task):
+		# FIXME
 		X, X_f = self.init(task)
 		while not task.stopCondI():
 			inds = argsort(X_f)
