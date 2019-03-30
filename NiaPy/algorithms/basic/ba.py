@@ -27,6 +27,13 @@ class BatAlgorithm(Algorithm):
 
 	Reference paper:
 		Yang, Xin-She. "A new metaheuristic bat-inspired algorithm." Nature inspired cooperative strategies for optimization (NICSO 2010). Springer, Berlin, Heidelberg, 2010. 65-74.
+
+	Attributes:
+		Name (List[str]): List of strings representing algorithm name.
+		A (float): Loudness.
+		r (float): Pulse rate.
+		Qmin (float): Minimum frequency.
+		Qmax (float): Maximum frequency.
 	"""
 	Name = ['BatAlgorithm', 'BA']
 	A, r, Qmin, Qmax = 0.5, 0.5, 0.0, 2.0
@@ -36,11 +43,11 @@ class BatAlgorithm(Algorithm):
 		r"""Returns dict with where key of dict represents parameter name and values represent checking functions for selected parameter.
 
 		Returns:
-			dict:
-				* A (func): TODO
-				* r (func): TODO
-				* Qmin (func): TODO
-				* Qmax (func): TODO
+			Dict[str, Callable]:
+				* A (Callable[[float], bool]): TODO
+				* r (Callable[[float], bool]): TODO
+				* Qmin (Callable[[float], bool]): TODO
+				* Qmax (Callable[[float], bool]): TODO
 
 		See Also:
 			:func:`NiaPy.algorithm.Algorithm.typeParameters`
@@ -58,10 +65,10 @@ class BatAlgorithm(Algorithm):
 		r"""Set the parameters of the algorithm.
 
 		Args:
-			A (float): loudness
-			r (float): pulse rate
-			Qmin (float): minimum frequency
-			Qmax (float): maximum frequency
+			A (Optional[float]): loudness
+			r (Optional[float]): pulse rate
+			Qmin (Optional[float]): minimum frequency
+			Qmax (Optional[float]): maximum frequency
 
 		See Also:
 			:func:`NiaPy.algorithm.Algorithm.setParameters`
@@ -77,13 +84,13 @@ class BatAlgorithm(Algorithm):
 			task (Task): Optimization task
 
 		Returns:
-			Tuple[(array of array of (float or int)), array of float, dict]:
-				1. New population
-				2. New population fintness values
-				3. dict
-					* S (array of array of (float)): TODO
-					* Q (array of float): 	TODO
-					* v (array of array of (float)): TODO
+			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+				1. New population.
+				2. New population fitness/function values.
+				3. Additional arguments:
+					* S (numpy.ndarray): TODO
+					* Q (numpy.ndarray[float]): 	TODO
+					* v (numpy.ndarray[float]): TODO
 
 		See Also:
 			:func:`NiaPy.algorithm.Algorithm.initPopulation`
@@ -96,24 +103,24 @@ class BatAlgorithm(Algorithm):
 		r"""Core function of Bat Algorithm.
 
 		Parameters:
-			task (Task): Optimization task
-			Sol (array of array of (float or int)): Current population
-			Fitness (array of float): Current population fitness/funciton values
-			xb (array of (float or int)): Current best individual
+			task (Task): Optimization task.
+			Sol (numpy.ndarray): Current population
+			Fitness (numpy.ndarray[float]): Current population fitness/funciton values
+			xb (numpy.ndarray): Current best individual
 			fxb (float): Current best individual function/fitness value
-			S (array): TODO
-			Q (array): TODO
-			v (array): TODO
-			dparams (dict): Additional algorithm arguments
+			S (numpy.ndarray): TODO
+			Q (numpy.ndarray[float]): TODO
+			v (numpy.ndarray[float]): TODO
+			dparams (Dict[str, Any]): Additional algorithm arguments
 
 		Returns:
-			Tuple[array of array of (float or int), array of float, dict]:
+			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
 				1. New population
 				2. New population fitness/function vlues
-				3. dict:
-					* S (array of array of (float)): TODO
-					* Q (array of float): TODO
-					* v (array of array of (float)): TODO
+				3. Additional arguments:
+					* S (numpy.ndarray): TODO
+					* Q (numpy.ndarray[float]): TODO
+					* v (numpy.ndarray[float]): TODO
 		"""
 		for i in range(self.NP):
 			Q[i], v[i], S[i] = self.Qmin + (self.Qmax - self.Qmin) * self.uniform(0, 1), v[i] + (Sol[i] - xb) * Q[i], task.repair(Sol[i] + v[i], rnd=self.Rand)

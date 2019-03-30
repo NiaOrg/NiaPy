@@ -3,7 +3,7 @@
 import logging
 from unittest import TestCase
 from numpy import random as rnd, full, inf, array_equal
-from NiaPy.util import StopingTask, OptimizationType
+from NiaPy.util import StoppingTask, OptimizationType
 from NiaPy.algorithms.algorithm import Individual, Algorithm
 
 logging.basicConfig()
@@ -102,11 +102,11 @@ class AlgorithBaseTestCase(TestCase):
 		a = self.a.runTask(None)
 		self.assertEqual(a, (None, None))
 
-class TestingTask(StopingTask, TestCase):
+class TestingTask(StoppingTask, TestCase):
 	def eval(self, A):
 		r"""Check if is algorithm trying to evaluate solution out of bounds."""
 		self.assertTrue(self.isFeasible(A), 'Solution %s is not in feasible space!!!' % A)
-		return StopingTask.eval(self, A)
+		return StoppingTask.eval(self, A)
 
 class AlgorithmTestCase(TestCase):
 	def setUp(self):

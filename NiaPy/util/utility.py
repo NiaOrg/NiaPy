@@ -194,13 +194,13 @@ def randRepair(x, Lower, Upper, rnd=rand, **kwargs):
 	r"""Repair solution and put the solution in the random position inside of the bounds of problem.
 
 	Arguments:
-		x (array): -- solution to check and repair if needed
-		Lower (array):
-		Upper (array):
-		rnd (RandomState):
+		x (array): Solution to check and repair if needed.
+		Lower (numpy.ndarray):
+		Upper (numpy.ndarray):
+		rnd (mtrand.RandomState):
 
 	Returns:
-		array: TODO
+		numpy.ndarray: TODO
 	"""
 	ir = where(x < Lower)
 	x[ir] = rnd.uniform(Lower[ir], Upper[ir])
@@ -219,9 +219,9 @@ class Task(Utility):
 
 	Attributes:
 		D (int): Dimension of the problem.
-		Lower (array of float): Lower bounds of the problem.
-		Upper (array of float): Upper bounds of the problem.
-		bRange (array of float): Search range between upper and lower limits.
+		Lower (numpy.ndarray): Lower bounds of the problem.
+		Upper (numpy.ndarray): Upper bounds of the problem.
+		bRange (numpy.ndarray): Search range between upper and lower limits.
 		optType (OptimizationType): Optimization type to use.
 	"""
 	D = 0
@@ -233,12 +233,12 @@ class Task(Utility):
 		r"""Initialize task class for optimization.
 
 		Arguments:
-			D (int): Number of dimensions.
-			optType (OptimizationType): Set the type of optimization.
-			benchmark (str or Benchmark): Problem to solve with optimization.
-			Lower (float or array of float): Lower limits of the problem.
-			Upper (float or array of float): Upper limits of the problem.
-			frepair (function): Function for reparing individuals components to desired limits.
+			D (Optional[int]): Number of dimensions.
+			optType (Optional[OptimizationType]): Set the type of optimization.
+			benchmark (Union[str, Benchmark]): Problem to solve with optimization.
+			Lower (Optional[numpy.ndarray]): Lower limits of the problem.
+			Upper (Optional[numpy.ndarray]): Upper limits of the problem.
+			frepair (Optional[Callable[[numpy.ndarray, numpy.ndarray, numpy.ndarray, Dict[str, Any]], numpy.ndarray]]): Function for reparing individuals components to desired limits.
 
 		See Also:
 			`func`:Utility.__init__`
@@ -265,32 +265,48 @@ class Task(Utility):
 		self.frepair = frepair
 
 	def dim(self):
-		r"""Get the number of dimensions."""
+		r"""Get the number of dimensions.
+
+		Returns:
+			int: Dimension of problem optimizing.
+		"""
 		return self.D
 
 	def bcLower(self):
-		r"""Get the array of lower bound constraint."""
+		r"""Get the array of lower bound constraint.
+
+		Returns:
+			numpy.ndarray: Lower bound.
+		"""
 		return self.Lower
 
 	def bcUpper(self):
-		r"""Get the array of upper bound constraint."""
+		r"""Get the array of upper bound constraint.
+
+		Returns:
+			numpy.ndarray: Upper bound.
+		"""
 		return self.Upper
 
 	def bcRange(self):
-		r"""Get the range of bound constraint."""
+		r"""Get the range of bound constraint.
+
+		Returns:
+			numpy.ndarray: Range between lower and upper bound.
+		"""
 		return self.Upper - self.Lower
 
 	def repair(self, x, rnd=rand):
 		r"""Repair solution and put the solution in the random position inside of the bounds of problem.
 
 		Arguments:
-			x (array of float): Solution to check and repair if needed.
-			rnd (RandomState): Random number generator.
+			x (numpy.ndarray): Solution to check and repair if needed.
+			rnd (mtrand.RandomState): Random number generator.
 
 		Returns:
-			array of float: Fixed solution.
+			numpy.ndarray: Fixed solution.
 		"""
-		return self.frepair(x, self.Lower, self.Upper, rnd)
+		return self.frepair(x, self.Lower, self.Upper, rnd=rnd)
 
 	def nextIter(self):
 		r"""Increments the number of algorithm iterations."""
@@ -450,7 +466,7 @@ class StoppingTask(CountingTask):
 		CountingTask.stopCondI(self)
 		return self.stopCond()
 
-class ThrowingTask(StopingTask):
+class ThrowingTask(StoppingTask):
 	def __init__(self, **kwargs):
 		r"""Initialize optimization task.
 

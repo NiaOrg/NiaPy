@@ -24,17 +24,25 @@ def TabuSearchF(task, SR=None, TL_size=25, rnd=rand):
 class TabuSearch(Algorithm):
 	r"""Implementation of Tabu Search Algorithm.
 
-	**Algorithm:** Tabu Search Algorithm
+	Algorithm:
+		Tabu Search Algorithm
 
-	**Date:** 2018
+	Date:
+		2018
 
-	**Authors:** Klemen Berkovič
+	Authors:
+		Klemen Berkovič
 
-	**License:** MIT
+	License:
+		MIT
 
-	**Reference URL:** http://www.cleveralgorithms.com/nature-inspired/stochastic/tabu_search.html
+	Reference URL:
+		http://www.cleveralgorithms.com/nature-inspired/stochastic/tabu_search.html
 
-	**Reference paper:**
+	Reference paper:
+
+	Attributes:
+		Name (List[str]): List of strings representing algorithm name.
 	"""
 	Name = ['TabuSearch', 'TS']
 

@@ -432,7 +432,7 @@ class CovarianceMatrixAdaptionEvolutionStrategy(Algorithm):
 		Hansen, Nikolaus. "The CMA evolution strategy: A tutorial." arXiv preprint arXiv:1604.00772 (2016).
 
 	Attributes:
-		Name (list of str): List of names representing algorithm names
+		Name (List[str]): List of names representing algorithm names
 		epsilon (float): TODO
 	"""
 	Name = ['CovarianceMatrixAdaptionEvolutionStrategy', 'CMA-ES', 'CMAES']
