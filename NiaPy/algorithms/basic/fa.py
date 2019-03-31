@@ -29,7 +29,7 @@ class FireflyAlgorithm(Algorithm):
 		Fister, I., Fister Jr, I., Yang, X. S., & Brest, J. (2013). A comprehensive review of firefly algorithms. Swarm and Evolutionary Computation, 13, 34-46.
 
 	Attributes:
-		Name (list of str): List of names for algorithm
+		Name (List[str]): List of string representing algorithm name.
 	"""
 	Name = ['FireflyAlgorithm', 'FA']
 
@@ -38,30 +38,34 @@ class FireflyAlgorithm(Algorithm):
 		r"""TODO.
 
 		Returns:
-			ditc:
-				* NP (func): TODO
+			Dict[str, Callable]:
 				* alpha (func): TODO
 				* betamin (func): TODO
 				* gamma (func): TODO
+
+		See Also:
+			:func:`Algorithm.typeParameters`
 		"""
-		return {
-			'NP': lambda x: isinstance(x, int) and x > 0,
+		d = Algorithm.typeParameters()
+		d.update({
 			'alpha': lambda x: isinstance(x, (float, int)) and x > 0,
 			'betamin': lambda x: isinstance(x, (float, int)) and x > 0,
 			'gamma': lambda x: isinstance(x, (float, int)) and x > 0,
-		}
+		})
+		return d
 
 	def setParameters(self, NP=20, alpha=1, betamin=1, gamma=2, **ukwargs):
 		r"""Set the parameters of the algorithm.
 
 		Args:
-			NP (int): Populatoin size
-			alpha (float): Alpha parameter
-			betamin (float): Betamin parameter
-			gamma (flaot): Gamma parameter
-			**ukwargs: Additional arguments
+			NP (int): Populatoin size.
+			alpha (float): Alpha parameter.
+			betamin (float): Betamin parameter.
+			gamma (flaot): Gamma parameter.
+			**ukwargs (Dict[str, Any]): Additional arguments.
 		"""
-		self.NP, self.alpha, self.betamin, self.gamma = NP, alpha, betamin, gamma
+		Algorithm.setParameters(self, NP=NP)
+		self.alpha, self.betamin, self.gamma = alpha, betamin, gamma
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def alpha_new(self, a, alpha):
@@ -86,10 +90,10 @@ class FireflyAlgorithm(Algorithm):
 			Intensity:
 			oFireflies:
 			alpha:
-			task:
+			task (Task): Optimization task.
 
 		Returns:
-			Tuple[array of (float or int), bool]:
+			Tuple[numpy.ndarray, bool]:
 				1. New individual
 				2. ``True`` if individual vas moved, ``False`` if individual was not moved
 		"""
@@ -110,33 +114,35 @@ class FireflyAlgorithm(Algorithm):
 			task (Task): Optimization task
 
 		Returns:
-			Tuple[array of array of (float or int), array of float, dict]:
-				1. New population
-				2. New population fitness/function values
-				3. dict:
+			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+				1. New population.
+				2. New population fitness/function values.
+				3. Additional arguments:
 					* alpah (float): TODO
+
+		See Also:
+			:func:`Algorithm.initPopulation`
 		"""
-		Fireflies = self.uniform(task.Lower, task.Upper, [self.NP, task.D])
-		Intensity = apply_along_axis(task.eval, 1, Fireflies)
+		Fireflies, Intensity, _ = Algorithm.initPopulation(self, task)
 		return Fireflies, Intensity, {'alpha':self.alpha}
 
 	def runIteration(self, task, Fireflies, Intensity, xb, fxb, alpha, **dparams):
 		r"""Core function of Firefly Algorithm.
 
 		Args:
-			task:
-			Fireflies:
-			Intensity:
-			xb:
-			fxb:
-			alpha:
-			**dparams:
+			task (Task): Optimization task.
+			Fireflies (numpy.ndarray): Current population.
+			Intensity (numpy.ndarray[float]): Current population function/fitness values.
+			xb (numpy.ndarray): Global best individual.
+			fxb (float): Global best individual fitness/function value.
+			alpha (float): TODO.
+			**dparams (Dict[str, Any]): Additional arguments.
 
 		Returns:
-			Tuple[array of array of (float or int), array of float, ditc]:
-				1. New population
-				2. New population fitness/function values
-				3. dict:
+			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+				1. New population.
+				2. New population fitness/function values.
+				3. Additional arguments:
 					* alpha (float): TODO
 
 		"""

@@ -1,10 +1,11 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, multiple-statements, line-too-long, unused-argument, no-self-use, no-self-use, attribute-defined-outside-init, logging-not-lazy, len-as-condition, singleton-comparison, arguments-differ, bad-continuation, dangerous-default-value, keyword-arg-before-vararg
 import logging
-from numpy import random as rand, argmin, argmax, mean, cos, asarray, empty
+from numpy import random as rand, argmin, argmax, mean, cos, asarray, append
 from scipy.spatial.distance import euclidean
 
-from NiaPy.algorithms.algorithm import Algorithm, Individual
+from NiaPy.algorithms.algorithm import Algorithm, Individual, defaultIndividualInit
+from NiaPy.util.utility import objects2array
 
 __all__ = ['DifferentialEvolution', 'DynNpDifferentialEvolution', 'AgingNpDifferentialEvolution', 'CrowdingDifferentialEvolution', 'MultiStrategyDifferentialEvolution', 'DynNpMultiStrategyDifferentialEvolution', 'AgingNpMultiMutationDifferentialEvolution', 'AgingIndividual', 'CrossRand1', 'CrossBest2', 'CrossBest1', 'CrossBest2', 'CrossCurr2Rand1', 'CrossCurr2Best1']
 
@@ -31,11 +32,11 @@ def CrossRand1(pop, ic, x_b, f, cr, rnd=rand, *args):
 	Args:
 		pop (numpy.ndarray[Individual]): Current population.
 		ic (int): Index of individual being mutated.
-		x_b (individual): Current global best individual.
+		x_b (Individual): Current global best individual.
 		f (float): Scale factor.
 		cr (float): Crossover probability.
 		rnd (mtrand.RandomState): Random generator.
-		*args (List): Additional arguments.
+		*args (list): Additional arguments.
 
 	Returns:
 		numpy.ndarray: Mutated and mixed individual
@@ -65,11 +66,11 @@ def CrossBest1(pop, ic, x_b, f, cr, rnd=rand, *args):
 	args:
 		pop (numpy.ndarray[Individual]): Current population.
 		ic (int): Index of individual being mutated.
-		x_b (individual): Current global best individual.
+		x_b (Individual): Current global best individual.
 		f (float): Scale factor.
 		cr (float): Crossover probability.
 		rnd (mtrand.RandomState): Random generator.
-		*args (List): Additional arguments.
+		*args (list): Additional arguments.
 
 	returns:
 		numpy.ndarray: Mutated and mixed individual.
@@ -99,11 +100,11 @@ def CrossRand2(pop, ic, x_b, f, cr, rnd=rand, *args):
 	Args:
 		pop (numpy.ndarray[Individual]): Current population.
 		ic (int): Index of individual being mutated.
-		x_b (individual): Current global best individual.
+		x_b (Individual): Current global best individual.
 		f (float): Scale factor.
 		cr (float): Crossover probability.
 		rnd (mtrand.RandomState): Random generator.
-		*args (List): Additional arguments.
+		*args (list): Additional arguments.
 
 	Returns:
 		numpy.ndarray: mutated and mixed individual
@@ -131,11 +132,11 @@ def CrossBest2(pop, ic, x_b, f, cr, rnd=rand, *args):
 	Args:
 		pop (numpy.ndarray[Individual]): Current population.
 		ic (int): Index of individual being mutated.
-		x_b (individual): Current global best individual.
+		x_b (Individual): Current global best individual.
 		f (float): Scale factor.
 		cr (float): Crossover probability.
 		rnd (mtrand.RandomState): Random generator.
-		*args (List): Additional arguments.
+		*args (list): Additional arguments.
 
 	Returns:
 		numpy.ndarray: mutated and mixed individual
@@ -163,11 +164,11 @@ def CrossCurr2Rand1(pop, ic, x_b, f, cr, rnd=rand, *args):
 	Args:
 		pop (numpy.ndarray[Individual]): Current population.
 		ic (int): Index of individual being mutated.
-		x_b (individual): Current global best individual.
+		x_b (Individual): Current global best individual.
 		f (float): Scale factor.
 		cr (float): Crossover probability.
 		rnd (mtrand.RandomState): Random generator.
-		*args (List): Additional arguments.
+		*args (list): Additional arguments.
 
 	Returns:
 		numpy.ndarray: mutated and mixed individual
@@ -195,11 +196,11 @@ def CrossCurr2Best1(pop, ic, x_b, f, cr, rnd=rand, **kwargs):
 	Args:
 		pop (numpy.ndarray[Individual]): Current population.
 		ic (int): Index of individual being mutated.
-		x_b (individual): Current global best individual.
+		x_b (Individual): Current global best individual.
 		f (float): Scale factor.
 		cr (float): Crossover probability.
 		rnd (mtrand.RandomState): Random generator.
-		*args (List): Additional arguments.
+		*args (list): Additional arguments.
 
 	Returns:
 		numpy.ndarray: mutated and mixed individual
@@ -230,14 +231,12 @@ class DifferentialEvolution(Algorithm):
 
 	Attributes:
 		Name (List[str]): List of string of names for algorithm.
-		NP (int): Population size.
 		F (float): Scale factor.
 		CR (float): Crossover probability.
 		CrossMutt (Callable[numpy.ndarray, int, numpy.ndarray, float, float, mtrand.RandomState, Dict[str, Any]]): crossover and mutation strategy.
-		IndividualType (Individual): Type of individual used in algorithm.
 	"""
 	Name = ['DifferentialEvolution', 'DE']
-	IndividualType = Individual
+	itype = Individual
 	NP, F, CR = 100, 0.5, 0.9
 
 	@staticmethod
@@ -245,7 +244,7 @@ class DifferentialEvolution(Algorithm):
 		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
-			Dict[str, Callable[[Any], bool]]:
+			Dict[str, Callable]:
 				* F (Callable[[Union[float, int]], bool]): Check for correct value of parameter.
 				* CR (Callable[[float], bool]): Check for correct value of parameter.
 		"""
@@ -264,15 +263,15 @@ class DifferentialEvolution(Algorithm):
 			NP (Optional[int]): Population size.
 			F (Optional[float]): Scaling factor.
 			CR (Optional[float]): Crossover rate.
-			CrossMutt (Optional[Callable[numpy.ndarray, int, numpy.ndarray, float, float, mtrand.RandomState, Dict[str, Any]]]): Crossover and mutation strategy.
+			CrossMutt (Optional[Callable[[numpy.ndarray, int, numpy.ndarray, float, float, mtrand.RandomState, list], numpy.ndarray]]): Crossover and mutation strategy.
 			ukwargs (Dict[str, Any]): Additional arguments.
 
 		See Also:
 			:func:`Algorithm.setParameters`
 		"""
-		Algorithm.setParameters(self, NP, self.initPop)
+		itype = ukwargs.pop('itype', None)
+		Algorithm.setParameters(self, NP=NP, InitPopFunc=defaultIndividualInit, itype=Individual if itype is None else itype, **ukwargs)
 		self.F, self.CR, self.CrossMutt = F, CR, CrossMutt
-		self.IndividualType = IndividualType
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def evolve(self, pop, xb, task, **kwargs):
@@ -287,7 +286,7 @@ class DifferentialEvolution(Algorithm):
 		Returns:
 			numpy.ndarray[Individual]: New evolved populations.
 		"""
-		return asarray([self.IndividualType(x=self.CrossMutt(pop, i, xb, self.F, self.CR, self.Rand), task=task, rand=self.Rand, e=True) for i in range(len(pop))])
+		return objects2array([self.itype(x=self.CrossMutt(pop, i, xb, self.F, self.CR, self.Rand), task=task, rnd=self.Rand, e=True) for i in range(len(pop))])
 
 	def selection(self, pop, npop, **kwargs):
 		r"""Selection operator.
@@ -300,7 +299,7 @@ class DifferentialEvolution(Algorithm):
 		Returns:
 			numpy.ndarray[Individual]: New selected individuals.
 		"""
-		return asarray([e if e.f < pop[i].f else pop[i] for i, e in enumerate(npop)])
+		return objects2array([e if e.f < pop[i].f else pop[i] for i, e in enumerate(npop)])
 
 	def postSelection(self, pop, task, **kwargs):
 		r"""Apply additional operation after selection.
@@ -314,22 +313,6 @@ class DifferentialEvolution(Algorithm):
 			numpy.ndarray[Individual]: New population.
 		"""
 		return pop
-
-	def initPop(self, NP, task, rnd):
-		r"""Initialize starting population.
-
-		Args:
-			task (Task): Optimization task.
-
-		Returns:
-			Tuple[numpy.ndarray[Individual], numpy.ndarray[float]]:
-				1. Initialized population.
-				2. Initialized population fitness/function values.
-		"""
-		pop = empty(NP, dtype=object)
-		for i in range(NP): pop[i] = self.IndividualType(task=task, e=True, rnd=rnd)
-		fpop = asarray([x.f for x in pop])
-		return pop, fpop
 
 	def runIteration(self, task, pop, fpop, xb, fxb, **dparams):
 		r"""Core function of Differential Evolution algorithm.
@@ -347,6 +330,11 @@ class DifferentialEvolution(Algorithm):
 				1. New population.
 				2. New population fitness/function values.
 				3. Additional arguments.
+
+		See Also:
+			* :func:`DifferentialEvolution.evolve`
+			* :func:`DifferentialEvolution.selection`
+			* :func:`DifferentialEvolution.postSelection`
 		"""
 		npop = self.evolve(pop, xb, task)
 		pop = self.selection(pop, npop)
@@ -375,7 +363,16 @@ class CrowdingDifferentialEvolution(DifferentialEvolution):
 	Name = ['CrowdingDifferentialEvolution', 'CDE']
 	CrowPop = 0.1
 
-	def __init__(self, **kwargs): DifferentialEvolution.__init__(self, **kwargs)
+	def __init__(self, **kwargs):
+		r"""Init CrowdingDifferentialEvolution algorithm.
+
+		Args:
+			**kwargs (Dict[str, Any]): Additional arguments.
+
+		See Also:
+			:func:`DifferentialEvolution.__init__`
+		"""
+		DifferentialEvolution.__init__(self, **kwargs)
 
 	def setParameters(self, CrowPop=0.1, **ukwargs):
 		r"""Set core parameters of algorithm.
@@ -431,11 +428,12 @@ class DynNpDifferentialEvolution(DifferentialEvolution):
 
 	@staticmethod
 	def typeParameters():
-		r"""
+		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
 			Dict[str, Callable]:
-				* rp (Callable[[Union[float, int]], bool]): TODo
+				* rp (Callable[[Union[float, int]], bool]): TODO
+				* pmax (Callable[[int], bool]): TODO
 
 		See Also:
 			:func:`DifferentialEvolution.typeParameters`
@@ -469,11 +467,11 @@ class DynNpDifferentialEvolution(DifferentialEvolution):
 			task (Task): Optimization task.
 
 		Returns:
-			numpy.ndarray[Individual]: Changed current population
+			numpy.ndarray[Individual]: Changed current population.
 		"""
 		Gr = task.nFES // (self.pmax * len(pop)) + self.rp
 		nNP = len(pop) // 2
-		if task.Iters == Gr and len(pop) > 3: pop = [pop[i] if pop[i].f < pop[i + nNP].f else pop[i + nNP] for i in range(nNP)]
+		if task.Iters == Gr and len(pop) > 3: pop = objects2array([pop[i] if pop[i].f < pop[i + nNP].f else pop[i + nNP] for i in range(nNP)])
 		return pop
 
 def proportional(Lt_min, Lt_max, mu, x_f, avg, *args):
@@ -485,7 +483,7 @@ def proportional(Lt_min, Lt_max, mu, x_f, avg, *args):
 		mu (float): TODO
 		x_f (float): Individuals function/fitness value.
 		avg (float): Average fitness/function value of current population.
-		*args (List): Additional arguments.
+		*args (list): Additional arguments.
 
 	Returns:
 		int: Age of individual.
@@ -503,7 +501,7 @@ def linear(Lt_min, Lt_max, mu, x_f, avg, x_gw, x_gb, *args):
 		avg (float): Average fitness/function value.
 		x_gw (float): Global worst fitness/function value.
 		x_gb (float): Global best fitness/function value.
-		*args (List):
+		*args (list): Additional arguments.
 
 	Returns:
 		int: Age of individual.
@@ -521,7 +519,7 @@ def bilinear(Lt_min, Lt_max, mu, x_f, avg, x_gw, x_gb, *args):
 		avg (float): Average fitness/function value.
 		x_gw (float): Global worst fitness/function value.
 		x_gb (float): Global best fitness/function value.
-		*args (List):
+		*args (list): Additional arguments.
 
 	Returns:
 		int: Age of individual.
@@ -544,7 +542,7 @@ class AgingIndividual(Individual):
 		r"""Initalize Aging Individual.
 
 		Args:
-			**kwargs Dict[str, Any]: Additional arguments sent to parent
+			**kwargs (Dict[str, Any]): Additional arguments sent to parent.
 
 		See Also:
 			:func:`Individual.__init__`
@@ -560,6 +558,7 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 
 	Date:
 		2018
+
 	Author:
 		Klemen Berkovič
 
@@ -572,6 +571,7 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 		Lt_max (int): maximal age of individual
 		delta_np (float): TODO
 		omega (float): TODO
+		mu (int): Mean of individual max and min age.
 		age (Callable[[int, int, float, float, float, float, float], int]): Function for calculation of age for individual
 	"""
 	Name = ['AgingNpDifferentialEvolution', 'ANpDE']
@@ -579,23 +579,39 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 
 	@staticmethod
 	def typeParameters():
+		r"""Get dictionary with functions for checking values of parameters.
+
+		Returns:
+			Dict[str, Callable]:
+				* Lt_min (Callable[[int], bool]): TODO
+				* Lt_max (Callable[[int], bool]): TODO
+				* delta_np (Callable[[float], bool]): TODO
+				* omega (Callable[[float], bool]): TODO
+
+		See Also:
+			:func:`Differential.typeParameters`
+		"""
 		r = DifferentialEvolution.typeParameters()
-		# TODO add other parameters to data check list
+		r.update({
+			'Lt_min': lambda x: isinstance(x, int) and x >= 0,
+			'Lt_max': lambda x: isinstance(x, int) and x >= 0,
+			'delta_np': lambda x: isinstance(x, float) and x >= 0 and x <= 1,
+			'omega': lambda x: isinstance(x, float) and x >= 0
+		})
 		return r
 
 	def setParameters(self, Lt_min=0, Lt_max=12, delta_np=0.3, omega=0.3, age=proportional, CrossMutt=CrossBest1, **ukwargs):
 		r"""Set the algorithm parameters.
 
 		Arguments:
-			Lt_min (Optional[int]): Minimu life time
-			Lt_max (Optional[int]): Maximum life time
-			age (Callable[[int, int, float, float, float, float, float], int]): Function for calculation of age for individual
+			Lt_min (Optional[int]): Minimu life time.
+			Lt_max (Optional[int]): Maximum life time.
+			age (Optional[Callable[[int, int, float, float, float, float, float], int]]): Function for calculation of age for individual.
 
 		See Also:
 			:func:`DifferentialEvolution.setParameters`
 		"""
-		DifferentialEvolution.setParameters(self, **ukwargs)
-		self.IndividualType = AgingIndividual
+		DifferentialEvolution.setParameters(self, itype=AgingIndividual, **ukwargs)
 		self.Lt_min, self.Lt_max, self.age, self.delta_np, self.omega = Lt_min, Lt_max, age, delta_np, omega
 		self.mu = abs(self.Lt_max - self.Lt_min) / 2
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
@@ -630,7 +646,7 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 			pop (numpy.ndarray[Individual]): Current population.
 
 		Returns:
-			Tuple[array of Individual, Individual]:
+			Tuple[numpy.ndarray[Individual], Individual]:
 				1. New population.
 				2. New best individual.
 		"""
@@ -641,8 +657,8 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 			x.age += 1
 			Lt = round(self.age(self.Lt_min, self.Lt_max, self.mu, x.f, avg, x_w, x_b))
 			if x.age <= Lt: npop.append(x)
-		if len(npop) == 0: npop = [self.IndividualType(task=task, rand=self.Rand, e=True) for _i in range(len(pop))]
-		return npop, x_b
+		if len(npop) == 0: npop = objects2array([self.itype(task=task, rnd=self.Rand, e=True) for _i in range(len(pop))])
+		return npop
 
 	def popIncrement(self, pop, task):
 		r"""Function increments population.
@@ -656,7 +672,7 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 		"""
 		deltapop = int(round(max(1, self.NP * self.deltaPopE(task.Iters))))
 		ni = self.Rand.choice(len(pop), deltapop, replace=False)
-		return asarray([self.IndividualType(task=task, rand=self.Rand, e=True) for i in ni])
+		return objects2array([self.itype(task=task, rnd=self.Rand, e=True) for i in ni])
 
 	def popDecrement(self, pop, task):
 		r"""Function decrements population.
@@ -675,7 +691,7 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 		for i, e in enumerate(pop):
 			if i not in ni: npop.append(e)
 			elif self.rand() >= self.omega: npop.append(e)
-		return npop
+		return objects2array(npop)
 
 	def runIteration(self, task, pop, fpop, xb, fxb, **dparams):
 		r"""Core function of AgingNpDifferentialEvolution algorithm.
@@ -696,12 +712,12 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 		"""
 		npop = self.evolve(pop, xb, task)
 		npop = self.selection(pop, npop)
-		npop.extend(self.popIncrement(pop, task, xb))
-		pop, xbn = self.aging(task, npop)
-		if len(pop) > self.NP: pop = self.popDecrement(pop, task, xbn)
+		npop = append(npop, self.popIncrement(pop, task))
+		pop = self.aging(task, npop)
+		if len(pop) > self.NP: pop = self.popDecrement(pop, task)
 		return pop, [x.f for x in pop], {}
 
-def multiMutations(pop, i, xb, F, CR, rnd, task, IndividualType, strategies, **kwargs):
+def multiMutations(pop, i, xb, F, CR, rnd, task, itype, strategies, **kwargs):
 	r"""Mutation strategy that takes more than one strategy and applys them to individual.
 
 	Args:
@@ -719,7 +735,7 @@ def multiMutations(pop, i, xb, F, CR, rnd, task, IndividualType, strategies, **k
 	Returns:
 		Individual: Best individual from applyed mutations strategies.
 	"""
-	L = [IndividualType(x=strategy(pop, i, xb, F, CR, rnd=rnd), task=task, e=True, rand=rnd) for strategy in strategies]
+	L = [itype(x=strategy(pop, i, xb, F, CR, rnd=rnd), task=task, e=True, rnd=rnd) for strategy in strategies]
 	return L[argmin([x.f for x in L])]
 
 class MultiStrategyDifferentialEvolution(DifferentialEvolution):
@@ -745,7 +761,7 @@ class MultiStrategyDifferentialEvolution(DifferentialEvolution):
 
 	@staticmethod
 	def typeParameters():
-		r"""
+		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
 			Dict[str, Callable]:
@@ -783,9 +799,9 @@ class MultiStrategyDifferentialEvolution(DifferentialEvolution):
 		Returns:
 			numpy.ndarray[Individual]: New population of individuals.
 		"""
-		return asarray([self.CrossMutt(pop, i, xb, self.F, self.CR, self.Rand, task, self.IndividualType, self.strategies) for i in range(len(pop))])
+		return objects2array([self.CrossMutt(pop, i, xb, self.F, self.CR, self.Rand, task, self.itype, self.strategies) for i in range(len(pop))])
 
-class DynNpMultiStrategyDifferentialEvolution(MultiStrategyDifferentialEvolution):
+class DynNpMultiStrategyDifferentialEvolution(MultiStrategyDifferentialEvolution, DynNpDifferentialEvolution):
 	r"""Implementation of Dynamic population size Differential evolution algorithm with dynamic population size that is defined by the quality of population.
 
 	Algorithm:
@@ -802,15 +818,12 @@ class DynNpMultiStrategyDifferentialEvolution(MultiStrategyDifferentialEvolution
 
 	Attributes:
 		Name (List[str]): list of strings representing algorithm name
-		pmax (int): TODO
-		rp (int): TODO
 	"""
 	Name = ['DynNpMultiStrategyDifferentialEvolution', 'dynNpMsDE']
-	pmax, rp = 10, 3
 
 	@staticmethod
 	def typeParameters():
-		r"""
+		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
 			Dict[str, Callable]:
@@ -825,34 +838,30 @@ class DynNpMultiStrategyDifferentialEvolution(MultiStrategyDifferentialEvolution
 		r['pmax'] = lambda x: isinstance(x, int) and x > 0
 		return r
 
-	def setParameters(self, pmax=10, rp=3, **ukwargs):
+	def setParameters(self, **ukwargs):
 		r"""Set the arguments of the algorithm.
 
-		Arguments:
-			pmax (Optional[int]): TODO
-			rp (Optional[int]): TODO
-
-		See:
-			:func:`DifferentialEvolution.setParameters`
+		See Also:
+			* :func:`MultiStrategyDifferentialEvolution.setParameters`
+			* :func:`DynNpDifferentialEvolution.setParameters`
 		"""
+		DynNpDifferentialEvolution.setParameters(self, **ukwargs)
 		MultiStrategyDifferentialEvolution.setParameters(self, **ukwargs)
-		self.pmax, self.rp = pmax, rp
 
-	def postSelection(self, pop, task, **kwargs):
-		r"""Function decrease population on specific iterations.
+	def postSelection(self, pop, task):
+		r"""Post selection operator.
 
 		Args:
 			pop (numpy.ndarray[Individual]): Current population.
 			task (Task): Optimization task.
-			**kwargs (Dict[str, Any]): Additional arguments.
 
 		Returns:
-			numpy.ndarray[Individual]: New population.
+			numpy.ndarray: New population.
+
+		See Also:
+			:func:`DynNpDifferentialEvolution.population`
 		"""
-		Gr = task.nFES // (self.pmax * len(pop)) + self.rp
-		nNP = len(pop) // 2
-		if task.Iters == Gr and len(pop) > 3: pop = asarray([pop[i] if pop[i].f < pop[i + nNP].f else pop[i + nNP] for i in range(nNP)])
-		return pop
+		return DynNpDifferentialEvolution.postSelection(self, pop, task)
 
 class AgingNpMultiMutationDifferentialEvolution(AgingNpDifferentialEvolution, MultiStrategyDifferentialEvolution):
 	r"""Implementation of Differential evolution algorithm with aging individuals.
@@ -876,6 +885,16 @@ class AgingNpMultiMutationDifferentialEvolution(AgingNpDifferentialEvolution, Mu
 
 	@staticmethod
 	def typeParameters():
+		r"""Get dictionary with functions for checking values of parameters.
+
+		Returns:
+			Dict[str, Callable]:
+				* rp (Callable[[Union[float, int]], bool]): TODO
+				* pmax (Callable[[int], bool]): TODO
+
+		See Also:
+			:func:`MultiStrategyDifferentialEvolution.typeParameters`
+		"""
 		r = AgingNpDifferentialEvolution.typeParameters()
 		# TODO add other parameters to data check list
 		return r
@@ -890,58 +909,8 @@ class AgingNpMultiMutationDifferentialEvolution(AgingNpDifferentialEvolution, Mu
 			* :func:`AgingNpDifferentialEvolution.setParameters`
 			* :func:`MultiStrategyDifferentialEvolution.setParameters`
 		"""
-		AgingNpDifferentialEvolution.setParameters(self, **ukwargs)
 		MultiStrategyDifferentialEvolution.setParameters(self, stratgeys=[CrossRand1, CrossBest1, CrossCurr2Rand1, CrossRand2], **ukwargs)
+		AgingNpDifferentialEvolution.setParameters(self, **ukwargs)
 		self.IndividualType = AgingIndividual
-
-	def evolve(self, pop, xb, task):
-		r"""Evolve current population.
-
-		Args:
-			pop (numpy.ndarray[Individual]): Current population.
-			xb (Individual): Current best individuals.
-			task (Task): Optimization task.
-
-		Returns:
-			numpy.ndarray[Individual]: New population.
-		"""
-		return asarray([self.CrossMutt(pop, i, xb, self.F, self.CR, self.Rand, task, self.IndividualType, self.strategys) for i in range(len(pop))])
-
-	def popIncrement(self, pop, task, xb):
-		r"""Increment population
-
-		Args:
-			pop (numpy.ndarray[Individual]): Current population
-			task (Task): Optimization task
-			xb (Individual): Current best individual
-
-		Returns:
-			numpy.ndarray[Individual]: New population.
-		"""
-		deltapop = int(round(max(1, self.NP * self.deltaPopE(task.Iters))))
-		ni = self.Rand.choice(len(pop), deltapop, replace=False)
-		return asarray([self.CrossMutt(pop, i, xb, self.F, self.CR, self.Rand, task, self.IndividualType, self.strategys) for i in ni])
-
-	def runIteration(self, task, pop, fpop, xb, fxb, **dparams):
-		r"""Core function of AgingNpMultiMutationDifferentialEvolution algorithm.
-
-		Args:
-			task (Task): Optimization task.
-			pop (numpy.ndarray[Individual]): Current population.
-			fpop (numpy.ndarray[float]): Current population fitness/function values.
-			xb (Individual): Current best individual.
-			fxb (float): Current best individual fitness/function value.
-			**dparams (Dict[str, Any]): Additional arguments.
-
-		Returns:
-			Tuple[numpy.ndarray[Individual], numpy.ndarray[float], Dict[str, Any]]:
-				1. New population.
-				2. New population fitness/function values.
-				3. Additional arguments.
-
-		See Also:
-			:func:`AgingNpDifferentialEvolution.runIteration`
-		"""
-		return AgingNpDifferentialEvolution.runIteration(self, task, pop, fpop, xb, fxb, **dparams)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

@@ -1,8 +1,11 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, multiple-statements, line-too-long, expression-not-assigned, len-as-condition, no-self-use, unused-argument, no-else-return, dangerous-default-value, unnecessary-pass
 import logging
+
 from numpy import random as rand, inf, ndarray, array, asarray, empty, array_equal, argmin, apply_along_axis
+
 from NiaPy.util import FesException, GenException, TimeException, RefException
+from NiaPy.util.utility import objects2array
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.util.utility')
@@ -15,13 +18,13 @@ __all__ = [
 	'defaultNumPyInit'
 ]
 
-def defaultNumPyInit(NP, task, rnd=rand, **kwargs):
+def defaultNumPyInit(task, NP, rnd=rand, **kwargs):
 	r"""Initialize starting population that is represented with `numpy.ndarray` with shape `{NP, task.D}`.
 
 	Args:
-		NP (int): Number of individuals in population.
 		task (Task): Optimization task.
-		rnd (mtrand.RandomState): Random number generator.
+		NP (int): Number of individuals in population.
+		rnd (Optional[mtrand.RandomState]): Random number generator.
 		kwargs (Dict[str, Any]): Additional arguments.
 
 	Returns:
@@ -29,9 +32,26 @@ def defaultNumPyInit(NP, task, rnd=rand, **kwargs):
 			1. New population with shape `{NP, task.D}`
 			2. New population fucntion/fitness values
 	"""
-	pop = task.Lower + self.rand([self.NP, task.D]) * task.bRange
+	pop = task.Lower + rnd.rand(NP, task.D) * task.bRange
 	fpop = apply_along_axis(task.eval, 1, pop)
 	return pop, fpop
+
+def defaultIndividualInit(task, NP, rnd=rand, itype=None, **kwargs):
+	r"""Initialize individuals of type `itype`.
+
+	Args:
+		task (Task): Optimization task.
+		NP (int): Number of individuals in population.
+		rnd (Optional[mtrand.RandomState]): Random number generator.
+		itype (Optional[Individual]): Class of individual in population
+
+	Returns:
+		Tuple[numpy.ndarray[Individual], numpy.ndarray[float]:
+			1. Initialized individuals
+			2. Initialized individuals function/fitness values
+	"""
+	pop = objects2array([itype(task=task, rnd=rnd, e=True) for _ in range(NP)])
+	return pop, asarray([x.f for x in pop])
 
 class Algorithm:
 	r"""Class for implementing algorithms.
@@ -101,7 +121,7 @@ class Algorithm:
 			D (numpy.ndarray[int]): Shape of returned random distribution
 
 		Returns:
-			array or float: TODO
+			Union[numpy.ndarray[float], float]: TODO
 		"""
 		if isinstance(D, (ndarray, list)): return self.Rand.rand(*D)
 		elif D > 1: return self.Rand.rand(D)
@@ -116,7 +136,7 @@ class Algorithm:
 			D (Union[int, Iterable[int]]): Shape of returned uniform random distribution
 
 		Returns:
-			array: TODO
+			Union[numpy.ndarray[float], float]: Array of numbers in range of `Lower` and `Upper` limit.
 		"""
 		return self.Rand.uniform(Lower, Upper, D) if D is not None else self.Rand.uniform(Lower, Upper)
 
@@ -129,7 +149,7 @@ class Algorithm:
 			D (Union[int, Iterable[int]]): Shape of returned normal random distribution
 
 		Returns:
-			array or float: TODO
+			Union[numpy.ndarray[float], float]: Array of numbers.
 		"""
 		return self.Rand.normal(loc, scale, D) if D is not None else self.Rand.normal(loc, scale)
 
@@ -140,7 +160,7 @@ class Algorithm:
 			D (Union[int, Iterable[int]]): Shape of returned standard normal distribution
 
 		Returns:
-			array or float: Random generated numbers or one random generated number in rage [0, 1]
+			Union[numpy.ndarray[float], float]: Random generated numbers or one random generated number in rage [0, 1]
 		"""
 		if D is None: return self.Rand.randn()
 		elif isinstance(D, int): return self.Rand.randn(D)
@@ -159,10 +179,10 @@ class Algorithm:
 			Union[int, numpy.ndarrayj[int]]: Random generated integer number
 		"""
 		r = None
-		if isinstance(D, (list, tuple, ndarray, array)): r = self.Rand.randint(Nmin, Nmax, D)
+		if isinstance(D, (list, tuple, ndarray)): r = self.Rand.randint(Nmin, Nmax, D)
 		elif D > 1: r = self.Rand.randint(Nmin, Nmax, D)
 		else: r = self.Rand.randint(Nmin, Nmax)
-		return r if skip is None and r not in skip else self.randint(Nmax, D, Nmin, skip)
+		return r if skip is None or r not in skip else self.randint(Nmax, D, Nmin, skip)
 
 	def getBest(self, X, X_f, xb=None, xb_f=inf):
 		r"""Get the best individual for population.
@@ -198,7 +218,7 @@ class Algorithm:
 		See Also:
 			:func:`NiaPy.algorithms.algorithm.setParameters`
 		"""
-		pop, fpop = self.InitPopFunc(self.NP, task, self.Rand, self.itype)
+		pop, fpop = self.InitPopFunc(task, self.NP, rnd=self.Rand, itype=self.itype)
 		return pop, fpop, {}
 
 	def runIteration(self, task, pop, fpop, xb, fxb, **dparams):
@@ -291,25 +311,6 @@ class Algorithm:
 			return r[0], r[1] * task.optType.value
 		except (FesException, GenException, TimeException, RefException): return task.x, task.x_f * task.optType.value
 
-def defaultIndividualInit(NP, task, rnd=rand, itype=None, **kwargs):
-	r"""Initialize individuals of type `itype`.
-
-	Args:
-		NP (int): Number of individuals in population.
-		task (Task): Optimization task.
-		rnd (mtrand.RandomState): Random number generator.
-		itype (Individual): Class of individual in population
-
-	Returns:
-		Tuple[numpy.ndarray[Individual], numpy.ndarray[float]:
-			1. Initialized individuals
-			2. Initialized individuals function/fitness values
-	"""
-	pop = empty(NP, dtype=object)
-	for i in range(NP): pop[i] = itype(task=task, rnd=rnd)
-	fpop = asarray([x.f for x in pop])
-	return pop, fpop
-
 class Individual:
 	r"""Class that represents one solution in population of solutions.
 
@@ -392,6 +393,10 @@ class Individual:
 		Returns:
 			bool: ``True`` if equal or ``False`` if no equal
 		"""
+		if isinstance(other, ndarray):
+			for e in other:
+				if self == e: return True
+			return False
 		return array_equal(self.x, other.x) and self.f == other.f
 
 	def __str__(self):

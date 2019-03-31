@@ -30,7 +30,7 @@ class ParticleSwarmAlgorithm(Algorithm):
 		Kennedy, J. and Eberhart, R. "Particle Swarm Optimization". Proceedings of IEEE International Conference on Neural Networks. IV. pp. 1942--1948, 1995.
 
 	Attributes:
-		Name (list of str): List of strings representing algorithm names
+		Name (List[str]): List of strings representing algorithm names
 	"""
 	Name = ['ParticleSwarmAlgorithm', 'PSO']
 
@@ -39,13 +39,13 @@ class ParticleSwarmAlgorithm(Algorithm):
 		r"""TODO.
 
 		Returns:
-			dict:
-				* NP (func): TODO
-				* C1 (func): TODO
-				* C2 (func): TODO
-				* w (func): TODO
-				* vMin (func): TODO
-				* vMax (func): TODO
+			Dict[str, Callable]:
+				* NP (Callable[[int], bool]): TODO
+				* C1 (Callable[[Union[int, float]], bool]): TODO
+				* C2 (Callable[[Union[int, float]], bool]): TODO
+				* w (Callable[[float], bool]): TODO
+				* vMin (Callable[[Union[int, float]], bool]): TODO
+				* vMax (Callable[[Union[int, float], bool]): TODO
 		"""
 		return {
 			'NP': lambda x: isinstance(x, int) and x > 0,
@@ -67,20 +67,24 @@ class ParticleSwarmAlgorithm(Algorithm):
 			vMin (Optional[float]): Mininal velocity
 			vMax (Optional[float]): Maximal velocity
 			**ukwargs: Additional arguments
+
+		See Also:
+			:func:`Algorithm.setParameters`
 		"""
-		self.NP, self.C1, self.C2, self.w, self.vMin, self.vMax = NP, C1, C2, w, vMin, vMax
+		Algorithm.setParameters(self, NP=NP)
+		self.C1, self.C2, self.w, self.vMin, self.vMax = C1, C2, w, vMin, vMax
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def repair(self, x, l, u):
-		r"""Repair array to range
+		r"""Repair array to range.
 
 		Args:
-			x (array): array to repair
-			l (array): lower limit of allowd range
-			u (array): upper limit of allowd range
+			x (numpy.ndarray): Array to repair.
+			l (numpy.ndarray): Lower limit of allowed range.
+			u (numpy.ndarray): Upper limit of allowed range.
 
 		Returns:
-			array: Repaird array
+			numpy.ndarray: Repaired array.
 		"""
 		ir = where(x < l)
 		x[ir] = l[ir]
@@ -89,43 +93,43 @@ class ParticleSwarmAlgorithm(Algorithm):
 		return x
 
 	def init(self, task):
-		r"""Initalize dynamic arguments of Particle Swarm Optimization algorithm.
+		r"""Initialize dynamic arguments of Particle Swarm Optimization algorithm.
 
 		Args:
-			task (Task): Optimization task
+			task (Task): Optimization task.
 
 		Returns:
-			dict:
-				* w (array): Inertial weight
-				* vMin (array): Mininal velocity
-				* vMax (array): Maximal velocity
-				* V (array): Initial velocity of particle
+			Dict[str, Any]:
+				* w (numpy.ndarray): Inertial weight.
+				* vMin (numpy.ndarray): Mininal velocity.
+				* vMax (numpy.ndarray): Maximal velocity.
+				* V (numpy.ndarray): Initial velocity of particle.
 		"""
 		return {'w':fullArray(self.w, task.D), 'vMin':fullArray(self.vMin, task.D), 'vMax':fullArray(self.vMax, task.D), 'V':full([self.NP, task.D], 0.0)}
 
 	def initPopulation(self, task):
-		r"""
+		r"""Initialize population and dynamic arguments of the Particle Swarm Optimization algorithm.
 
 		Args:
-			task (Task): Optimization task
+			task (Task): Optimization task.
 
 		Returns:
-			Tuple[array of array of (float or int), array of float, dict]:
-				1. Initial population
-				2. Initial population fitness/function values
-				3. dict:
-					* popb (array of array of (float or int): paticles best population
-					* fpopb (array of float): particles best positions function/fitness value
-					* w (array): Inertial weight
-					* vMin (array): Mininal velocity
-					* vMax (array): Maximal velocity
-					* V (array of array of (float or int)): Initial velocity of particle
+			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+				1. Initial population.
+				2. Initial population fitness/function values.
+				3. Additional arguments:
+					* popb (numpy.ndarray): particles best population.
+					* fpopb (numpy.ndarray[float]): particles best positions function/fitness value.
+					* w (numpy.ndarray): Inertial weight.
+					* vMin (numpy.ndarray): Minimal velocity.
+					* vMax (numpy.ndarray): Maximal velocity.
+					* V (numpy.ndarray): Initial velocity of particle.
 
 		See Also:
-			init()
+         :func:`Algorithm.initPopulation`
 		"""
-		pop, fpop = Algorithm.initPopulation(self, task)
-		d = self.init(task)
+		pop, fpop, d = Algorithm.initPopulation(self, task)
+		d.update(self.init(task))
 		d.update({'popb':pop, 'fpopb':fpop})
 		return pop, fpop, d
 
@@ -133,30 +137,30 @@ class ParticleSwarmAlgorithm(Algorithm):
 		r"""Core function of Particle Swarm Optimization algorithm.
 
 		Args:
-			task (Task): Optimization task
-			pop (array of array of (float or int): Current populations
-			fpop (array of float): Current population fitness/function vlues
-			xb (array of (float of int): Current best particle
-			fxb (float): Current best poatricle fitness/function value
-			popb (array of array of (float or int): Particles best position
-			fpopb (array of float): Patricles best postion fitness/function values
-			w (array of (float or int)): Inertial weights
-			vMin (array of (float or int)): Mininal velocity
-			vMax (array of (float or int)): Maximal velocity
-			V (array of array of (float or int)): Velocity of paticles
-			**dparams: Additional function arguments
+			task (Task): Optimization task.
+			pop (numpy.ndarray): Current populations.
+			fpop (numpy.ndarray[float]): Current population fitness/function values.
+			xb (numpy.ndarray): Current best particle.
+			fxb (float): Current best particle fitness/function value.
+			popb (numpy.ndarray): Particles best position.
+			fpopb (numpy.ndarray[float]): Particles best positions fitness/function values.
+			w (numpy.ndarray): Inertial weights.
+			vMin (numpy.ndarray): Minimal velocity.
+			vMax (numpy.ndarray): Maximal velocity.
+			V (numpy.ndarray): Velocity of particles.
+			**dparams (Dict[str, Any]): Additional function arguments.
 
 		Returns:
-			Tuple[array of array of (float or int), array of float, dict]:
-				1. New population
-				2. New population fitness/function values
-				3. dict:
-					* popb (array of array of (float or int): paticles best population
-					* fpopb (array of float): particles best positions function/fitness value
-					* w (array): Inertial weight
-					* vMin (array): Mininal velocity
-					* vMax (array): Maximal velocity
-					* V (array): Initial velocity of particle
+			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+				1. New population.
+				2. New population fitness/function values.
+				3. Additional arguments:
+					* popb (numpy.ndarray): Particles best population.
+					* fpopb (numpy.ndarray[float]): Particles best positions function/fitness value.
+					* w (numpy.ndarray): Inertial weight.
+					* vMin (numpy.ndarray): Minimal velocity.
+					* vMax (numpy.ndarray): Maximal velocity.
+					* V (numpy.ndarray): Initial velocity of particle.
 		"""
 		V = w * V + self.C1 * self.rand([self.NP, task.D]) * (popb - pop) + self.C2 * self.rand([self.NP, task.D]) * (xb - pop)
 		V = apply_along_axis(self.repair, 1, V, vMin, vMax)

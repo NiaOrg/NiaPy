@@ -61,17 +61,17 @@ class BareBonesFireworksAlgorithm(Algorithm):
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def initPopulation(self, task):
-		r"""Initialize starting population
+		r"""Initialize starting population.
 
 		Args:
-			task (Task): Optimization task
+			task (Task): Optimization task.
 
 		Returns:
-			Tuple[array of (float or int), float, dict]:
-				1. Initial solution
+			Tuple[numpy.ndarray, float, Dict[str, Any]]:
+				1. Initial solution.
 				2. Initial solution function/fitness value
-				3. dict:
-					* A (array of (float or int)): Starting aplitude or search range
+				3. Additional arguments:
+					* A (numpy.ndarray): Starting aplitude or search range.
 		"""
 		x, A = self.uniform(task.Lower, task.Upper, task.D), task.bRange
 		x_fit = task.eval(x)
@@ -81,20 +81,20 @@ class BareBonesFireworksAlgorithm(Algorithm):
 		r"""Core function of Bare Bones Fireworks Algorithm.
 
 		Args:
-			task (Task): Optimization task
-			x (array of (float or int)): Current solution
-			x_fit (float): Current solution fitness/function value
-			xb (array of (float or int)): Current best solution
-			fxb (float): Current best solution fitness/function value
-			A (array of float): Serach range
-			**dparams: Additional parameters
+			task (Task): Optimization task.
+			x (numpy.ndarray): Current solution.
+			x_fit (float): Current solution fitness/function value.
+			xb (numpy.ndarray): Current best solution.
+			fxb (float): Current best solution fitness/function value.
+			A (numpy.ndarray): Serach range.
+			dparams (Dict[str, Any]): Additional parameters.
 
 		Returns:
-			Tuple[array of (float or int), float, ditc]:
-				1. New solution
-				2. New solution fitness/function value
-				3. dict
-					* A (array of float): Serach range
+			Tuple[numpy.ndarray, float, Dict[str, Any]]:
+				1. New solution.
+				2. New solution fitness/function value.
+				3. Additional arguments:
+					* A (numpy.ndarray): Serach range.
 		"""
 		S = apply_along_axis(task.repair, 1, self.uniform(x - A, x + A, [self.n, task.D]), self.Rand)
 		S_fit = apply_along_axis(task.eval, 1, S)
@@ -637,33 +637,43 @@ class DynamicFireworksAlgorithmGauss(EnhancedFireworksAlgorithm):
 		return xb, xb_f, Acf
 
 	def initPopulation(self, task):
-		r"""
+		r"""Initialize population.
 
 		Args:
-			task:
+			task (Task): Optimization task.
 
 		Returns:
-
+			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+				1. Initialized population.
+				2. Initialized population function/fitness values.
+				3. Additional arguments:
+					* Ah (): TODO
+					* Ab (): TODO
 		"""
-		FW, (Ah, Ab) = self.uniform(task.Lower, task.Upper, [self.N, task.D]), self.initAmplitude(task)
-		FW_f = apply_along_axis(task.eval, 1, FW)
+		FW, FW_f, _ = Algorithm.initPopulation(self, task)
+		Ah, Ab = self.initAmplitude(task)
 		return FW, FW_f, {'Ah':Ah, 'Ab':Ab}
 
 	def runIteration(self, task, FW, FW_f, xb, fxb, Ah, Ab, **dparams):
-		r"""
+		r"""Core function of DynamicFireworksAlgorithmGauss algorithm.
 
 		Args:
-			task:
-			FW:
-			FW_f:
-			xb:
-			fxb:
-			Ah:
-			Ab:
-			**dparams:
+			task (Task): Optimization task.
+			FW (numpy.ndarray): Current population.
+			FW_f (numpy.ndarray[float]): Current populations function/fitness values.
+			xb (numpy.ndarray): Global best individual.
+			fxb (float): Global best fitness/function value.
+			Ah (): TODO
+			Ab (): TODO
+			**dparams (Dict[str, Any]): Additional arguments.
 
 		Returns:
-
+			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+				1. New population.
+				2. New populations fitness/function values.
+				3. Additional arguments:
+					* Ah (): TODO
+					* Ab (): TODO
 		"""
 		iw, ib = argmax(FW_f), argmin(FW_f)
 		Ss, As = sum(FW_f[iw] - FW_f), sum(FW_f - FW_f[ib])
@@ -710,19 +720,19 @@ class DynamicFireworksAlgorithm(DynamicFireworksAlgorithmGauss):
 
 		Args:
 			task (Task): Optimization task
-			FW (array of array of (float or int)): Current population
-			FW_f (array of float): Current population fitness/function values
-			xb (array of (float or int)): Current best solution
+			FW (numpy.ndarray): Current population
+			FW_f (numpy.ndarray[float]): Current population fitness/function values
+			xb (numpy.ndarray): Current best solution
 			fxb (float): Current best solution's fitness/function value
 			Ah (): TODO
 			Ab (): TODO
 			**dparams:
 
 		Returns:
-			Tuple[array of array of (float or int), array of float, dict]:
-				1. New population
-				2. New population function/fitness values
-				3. dict:
+			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+				1. New population.
+				2. New population function/fitness values.
+				3. Additional arguments:
 					* Ah (): TODO
 					* Ab (): TODO
 		"""

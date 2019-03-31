@@ -32,16 +32,18 @@ class GravitationalSearchAlgorithm(Algorithm):
 		Esmat Rashedi, Hossein Nezamabadi-pour, Saeid Saryazdi, GSA: A Gravitational Search Algorithm, Information Sciences, Volume 179, Issue 13, 2009, Pages 2232-2248, ISSN 0020-0255
 
 	Attributes:
-		Name (list of str): TODO
+		Name (List[str]): List of strings representing algorithm name.
 	"""
 	Name = ['GravitationalSearchAlgorithm', 'GSA']
 
 	@staticmethod
-	def typeParameters(): return {
-			'NP': lambda x: isinstance(x, int) and x > 0,
+	def typeParameters():
+		d = Algorithm.typeParameters()
+		d.update({
 			'G_0': lambda x: isinstance(x, (int, float)) and x >= 0,
 			'epsilon': lambda x: isinstance(x, float) and 0 < x < 1
-	}
+		})
+		return d
 
 	def setParameters(self, NP=40, G_0=2.467, epsilon=1e-17, **ukwargs):
 		r"""Set the algorithm parameters.
@@ -52,18 +54,18 @@ class GravitationalSearchAlgorithm(Algorithm):
 		See Also:
 			:func:`Algorithm.setParameters`
 		"""
-		Algorithm.setParameters(NP=NP)
+		Algorithm.setParameters(self, NP=NP)
 		self.G_0, self.epsilon = G_0, epsilon
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def G(self, t):
-		r"""
+		r"""TODO
 
 		Args:
-			t:
+			t (int): TODO
 
 		Returns:
-
+			float: TODo
 		"""
 		return self.G_0 / t
 
@@ -87,26 +89,37 @@ class GravitationalSearchAlgorithm(Algorithm):
 			task:
 
 		Returns:
+			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+				1. Initialized population.
+				2. Initialized populations fitness/function values.
+				3. Additional arguments:
+					* v (numpy.ndarray[float]): TODO
 
+		See Also:
+			:func:`Algorithm.initPopulation`
 		"""
-		X, v = self.uniform(task.Lower, task.Upper, [self.NP, task.D]), full([self.NP, task.D], 0.0)
-		X_f = apply_along_axis(task.eval, 1, X)
+		X, X_f, _ = Algorithm.initPopulation(self, task)
+		v = full([self.NP, task.D], 0.0)
 		return X, X_f, {'v':v}
 
 	def runIteration(self, task, X, X_f, xb, fxb, v, **dparams):
 		r"""
 
 		Args:
-			task:
-			X:
-			X_f:
-			xb:
-			fxb:
-			v:
-			**dparams:
+			task (Task): Optimization task.
+			X (numpy.ndarray): Current population.
+			X_f (numpy.ndarray[float]): Current populations fitness/function values.
+			xb (numpy.ndarray): Global best solution.
+			fxb (float): Global best fitness/function value.
+			v (): TODO
+			**dparams (Dict[str, Any]): Additional arguments.
 
 		Returns:
-
+			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+				1. New population.
+				2. New populations fitness/function values.
+				3. Additional arguments:
+					* v (numpy.ndarray[float]): TODO
 		"""
 		ib, iw = argmin(X_f), argmax(X_f)
 		m = (X_f - X_f[iw]) / (X_f[ib] - X_f[iw])

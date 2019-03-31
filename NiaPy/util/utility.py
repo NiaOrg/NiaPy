@@ -5,7 +5,7 @@
 import logging
 # from datetime import datetime
 from enum import Enum
-from numpy import ndarray, asarray, full, inf, dot, where, random as rand, fabs, ceil, amin, amax
+from numpy import ndarray, asarray, full, empty, inf, dot, where, random as rand, fabs, ceil, amin, amax
 from matplotlib import pyplot as plt, animation as anim
 from NiaPy.benchmarks import Rastrigin, Rosenbrock, Griewank, Sphere, Ackley, Schwefel, Schwefel221, Schwefel222, Whitley, Alpine1, Alpine2, HappyCat, Ridge, ChungReynolds, Csendes, Pinter, Qing, Quintic, Salomon, SchumerSteiglitz, Step, Step2, Step3, Stepint, SumSquares, StyblinskiTang, BentCigar, Discus, Elliptic, ExpandedGriewankPlusRosenbrock, HGBat, Katsuura, ExpandedSchaffer, ModifiedSchwefel, Weierstrass, Michalewichz, Levy, Sphere2, Sphere3, Trid, Perm, Zakharov, DixonPrice, Powell, CosineMixture, Infinity, SchafferN2, SchafferN4
 from NiaPy.util.exception import FesException, GenException, RefException #TimeException,
@@ -27,6 +27,7 @@ __all__ = [
 	'TaskConvPlot',
 	'TaskConvSave',
 	'fullArray',
+	'objects2array',
 	'TaskComposition',
 	'OptimizationType',
 	'ScaledTask'
@@ -36,11 +37,11 @@ def fullArray(a, D):
 	r"""Fill or create array of length D, from value or value form a.
 
 	Arguments:
-		a {integer} or {real} or {list} or {ndarray} -- Input values for fill
-		D {integer} -- Length of new array
+		a (Union[int, float, numpy.ndarray]): Input values for fill
+		D (int): Length of new array
 
 	Returns:
-		array: TODo
+		numpy.ndarray: TODO
 	"""
 	A = []
 	if isinstance(a, (int, float)):	A = full(D, a)
@@ -52,10 +53,23 @@ def fullArray(a, D):
 			A = asarray(A)
 	return A
 
+def objects2array(objs):
+	r"""Convert `Iterable` array or list to `NumPy` array.
+
+	Args:
+		objs (Iterable[Any]): Array or list to convert.
+
+	Returns:
+		numpy.ndarray: Array of objects.
+	"""
+	a = empty(len(objs), dtype=object)
+	for i, e in enumerate(objs): a[i] = e
+	return a
+
 class Utility:
 	r"""
 	Attributes:
-		classes (dict): TODO
+		classes (Dict[str, Benchmark]): TODO
 	"""
 	def __init__(self):
 		r"""
@@ -117,7 +131,7 @@ class Utility:
 		r"""Get the optimization problem.
 
 		Arguments:
-			benchmark {string} or {class} -- String or class that represents the optimization problem
+			benchmark (Union[str, Benchmark]): String or class that represents the optimization problem
 
 		Returns:
 			class: TODO
@@ -130,8 +144,8 @@ class Utility:
 	def __raiseLowerAndUpperNotDefined(cls):
 		r"""
 
-		Returns:
-
+		Raises:
+			TypeError: TODO
 		"""
 		raise TypeError('Upper and Lower value must be defined!')
 
@@ -139,8 +153,8 @@ class OptimizationType(Enum):
 	r"""TODO.
 
 	Attributes:
-		MINIMIZATION (int):
-		MAXIMIZATION (int):
+		MINIMIZATION (int): Represents minimization problems and is default optimization type of all algorithms.
+		MAXIMIZATION (int): Represents maximization problems.
 	"""
 	MINIMIZATION = 1.0
 	MAXIMIZATION = -1.0
@@ -149,10 +163,13 @@ def limitRepair(x, Lower, Upper, **kwargs):
 	r"""Repair solution and put the solution in the random position inside of the bounds of problem.
 
 	Arguments:
-		x (array): Solution to check and repair if needed
+		x (numpy.ndarray): Solution to check and repair if needed.
+		Lower (numpy.ndarray): Lower bounds of search space.
+		Upper (numpy.ndarray): Upper bounds of search space.
+		kwargs (Dict[str, Any]): Additional arguments.
 
 	Returns:
-		array: TODO
+		numpy.ndarray: Solution in search space.
 	"""
 	ir = where(x < Lower)
 	x[ir] = Lower[ir]
@@ -164,10 +181,13 @@ def limitInversRepair(x, Lower, Upper, **kwargs):
 	r"""Repair solution and put the solution in the random position inside of the bounds of problem.
 
 	Arguments:
-		x (array): Solution to check and repair if needed
+		x (numpy.ndarray): Solution to check and repair if needed.
+		Lower (numpy.ndarray): Lower bounds of search space.
+		Upper (numpy.ndarray): Upper bounds of search space.
+		kwargs (Dict[str, Any]): Additional arguments.
 
 	Returns:
-		array: TODO
+		numpy.ndarray: Solution in search space.
 	"""
 	ir = where(x < Lower)
 	x[ir] = Upper[ir]
@@ -179,10 +199,13 @@ def wangRepair(x, Lower, Upper, **kwargs):
 	r"""Repair solution and put the solution in the random position inside of the bounds of problem.
 
 	Arguments:
-		x (array) -- solution to check and repair if needed
+		x (numpy.ndarray): Solution to check and repair if needed.
+		Lower (numpy.ndarray): Lower bounds of search space.
+		Upper (numpy.ndarray): Upper bounds of search space.
+		kwargs (Dict[str, Any]): Additional arguments.
 
 	Returns:
-		array: TODO
+		numpy.ndarray: Solution in search space.
 	"""
 	ir = where(x < Lower)
 	x[ir] = amin([Upper[ir], 2 * Lower[ir] - x[ir]], axis=0)
@@ -195,17 +218,36 @@ def randRepair(x, Lower, Upper, rnd=rand, **kwargs):
 
 	Arguments:
 		x (array): Solution to check and repair if needed.
-		Lower (numpy.ndarray):
-		Upper (numpy.ndarray):
-		rnd (mtrand.RandomState):
+		Lower (numpy.ndarray): Lower bounds of search space.
+		Upper (numpy.ndarray): Upper bounds of search space.
+		rnd (mtrand.RandomState): Random generator.
+		kwargs (Dict[str, Any]): Additional arguments.
 
 	Returns:
-		numpy.ndarray: TODO
+		numpy.ndarray: Fixed solution.
 	"""
 	ir = where(x < Lower)
 	x[ir] = rnd.uniform(Lower[ir], Upper[ir])
 	ir = where(x > Upper)
 	x[ir] = rnd.uniform(Lower[ir], Upper[ir])
+	return x
+
+def reflectRepair(x, Lower, Upper, **kwargs):
+	r"""Repair solution and put the solution in search space with reflection of how much the solution violates a bound.
+
+	Args:
+		x (numpy.ndarray): Solution to be fixed.
+		Lower (numpy.ndarray): Lower bounds of search space.
+		Upper (numpy.ndarray): Upper bounds of search space.
+		kwargs (Dict[str, Any]): Additional arguments.
+
+	Returns:
+		numpy.ndarray: Fix solution.
+	"""
+	ir = where(x > Upper)
+	x[ir] = Lower[ir] + x[ir] % (Upper[ir] - Lower[ir])
+	ir = where(x < Lower)
+	x[ir] = Lower[ir] + x[ir] % (Upper[ir] - Lower[ir])
 	return x
 
 class Task(Utility):
@@ -320,7 +362,7 @@ class Task(Utility):
 		r"""Evaluate the solution A.
 
 		Arguments:
-			A (array): Solution to evaluate
+			A (numpy.ndarray): Solution to evaluate
 
 		Returns:
 			float: Fitness/function values of solution.
@@ -331,7 +373,7 @@ class Task(Utility):
 		r"""Check if the solution is feasible.
 
 		Arguments:
-			A (array of float): Solution to check for feasibility.
+			A (numpy.ndarray): Solution to check for feasibility.
 
 		Returns:
 			bool: `True` if solution is in feasible space else `False`.
@@ -364,7 +406,7 @@ class CountingTask(Task):
 		This function increments function evaluation counter `self.Evals`.
 
 		Arguments:
-			A (array of float): Solutions to evaluate.
+			A (numpy.ndarray): Solutions to evaluate.
 
 		Returns:
 			float: Fitness/function values of solution.
@@ -406,7 +448,7 @@ class StoppingTask(CountingTask):
 		nGEN (int): Maximum number of algorithm iterations/generations.
 		nFES (int): Maximum number of function evaluations.
 		refValue (float): Reference function/fitness values to reach in optimization.
-		x (array of float): Best found individual.
+		x (numpy.ndarray): Best found individual.
 		x_f (float): Best found individual function/fitness value.
 	"""
 	nGEN, nFES = inf, inf
@@ -416,8 +458,8 @@ class StoppingTask(CountingTask):
 		r"""Initialize task class for optimization.
 
 		Arguments:
-			nFES (int): Number of function evaluations
-			nGEN (int): Number of generations or iterations
+			nFES (Optional[int]): Number of function evaluations
+			nGEN (Optional[int]): Number of generations or iterations
 
 		See Also:
 			:func:`CountingTask.__init__`
@@ -431,7 +473,7 @@ class StoppingTask(CountingTask):
 		r"""Evaluate solution.
 
 		Args:
-			A (array of float): Solution to evaluate.
+			A (numpy.ndarray): Solution to evaluate.
 
 		Returns:
 			float: Fitness/function value of solution
@@ -457,7 +499,7 @@ class StoppingTask(CountingTask):
 		r"""Check if stopping condition reached and increase number of iterations.
 
 		Returns:
-			bool: `True` if number of function evaluations or number of algorithm iterations/generations or reference values is reach else `False`
+			bool: `True` if number of function evaluations or number of algorithm iterations/generations or reference values is reach else `False`.
 
 		See Also:
 			:func:`CountingTask.stopCondI`
@@ -471,7 +513,7 @@ class ThrowingTask(StoppingTask):
 		r"""Initialize optimization task.
 
 		Args:
-			**kwargs (dict): Additional arguments.
+			**kwargs (Dict[str, Any]): Additional arguments.
 
 		See Also:
 			:func:`StoppingTask.__init__`
@@ -497,7 +539,7 @@ class ThrowingTask(StoppingTask):
 		r"""Evaluate solution.
 
 		Args:
-			A (array of Union[float, int]):
+			A (numpy.ndarray): Solution to evaluate.
 
 		Returns:
 			float: Function/fitness values of solution.
@@ -514,10 +556,10 @@ class MoveTask(StoppingTask):
 		r"""Initialize task class for optimization.
 
 		Arguments:
-			o (array[Union[float, int]]): Array for shifting.
-			of (Callable[array[Union[float, int]]]): Function applied on shifted input.
-			M (array[array[Union[float, int]]]): Matrix for rotating.
-			fM (Callable[array[Union[float, int]]]): Function applied after rotating
+			o (numpy.ndarray[Union[float, int]]): Array for shifting.
+			of (Callable[numpy.ndarray[Union[float, int]]]): Function applied on shifted input.
+			M (numpy.ndarray[Union[float, int]]): Matrix for rotating.
+			fM (Callable[numpy.ndarray[Union[float, int]]]): Function applied after rotating
 
 		See Also:
 			:func:`StoppingTask.__init__`
@@ -531,7 +573,7 @@ class MoveTask(StoppingTask):
 		r"""Evaluate the solution.
 
 		Args:
-			A (array[Union[float, int]]): Solution to evaluate
+			A (numpy.ndarray): Solution to evaluate
 
 		Returns:
 			float: Fitness/function value of solution.
@@ -558,9 +600,9 @@ class ScaledTask(Task):
 
 		Args:
 			task (Task): Optimization task to scale to new bounds.
-			Lower (Union[float, int, array[Union[float, int]]]): New lower bounds.
-			Upper (Union[float, int, array[Union[float, int]]]): New upper bounds.
-			**kwargs: Additional arguments.
+			Lower (Union[float, int, numpy.ndarray]): New lower bounds.
+			Upper (Union[float, int, numpy.ndarray]): New upper bounds.
+			**kwargs (Dict[str, Any]): Additional arguments.
 
 		See Also:
 			:func:`fullArray`
@@ -575,7 +617,7 @@ class ScaledTask(Task):
 		r"""
 
 		Returns:
-
+			bool: TODO
 		"""
 		return self._task.stopCond()
 
@@ -583,7 +625,7 @@ class ScaledTask(Task):
 		r"""
 
 		Returns:
-
+			bool: TODO
 		"""
 		return self._task.stopCondI()
 
@@ -591,10 +633,10 @@ class ScaledTask(Task):
 		r"""
 
 		Args:
-			A:
+			A (numpy.ndarray): TODO
 
 		Returns:
-
+			float:
 		"""
 		return self._task.eval(A)
 
@@ -602,7 +644,7 @@ class ScaledTask(Task):
 		r"""
 
 		Returns:
-
+			int: TODO
 		"""
 		return self._task.evals()
 
@@ -610,14 +652,12 @@ class ScaledTask(Task):
 		r"""
 
 		Returns:
-
+			int: TODO
 		"""
 		return self._task.iters()
 
 	def nextIter(self):
 		r"""
-
-		Returns:
 
 		"""
 		self._task.nextIter()
@@ -626,10 +666,10 @@ class ScaledTask(Task):
 		r"""
 
 		Args:
-			A:
+			A (numpy.ndarray): TODO
 
 		Returns:
-
+			bool: TODO
 		"""
 		return self._task.isFeasible(A)
 
@@ -641,7 +681,7 @@ class ScaledTaskE(ScaledTask):
 		r"""
 
 		Args:
-			**kwargs:
+			**kwargs (Dict[str, Any]): Additional arguments.
 
 		See Also:
 			:func:`ScaledTask.__init__`
@@ -649,13 +689,17 @@ class ScaledTaskE(ScaledTask):
 		ScaledTask.__init__(self, **kwargs)
 
 	def eval(self, A):
-		r"""
+		r"""Evaluate solution.
 
 		Args:
-			A:
+			A (numpy.ndarray): Solution to evaluate.
 
 		Returns:
+			float: Function/fitness for solution.
 
+		See Also:
+			* :func:`ScaledTask.stopCond`
+			* :func:`ScaledTask.eval`
 		"""
 		self.stopCond()
 		return ScaledTask.eval(self, A)
@@ -670,7 +714,7 @@ class TaskConvPrint(StoppingTask):
 		r"""
 
 		Args:
-			**kwargs:
+			**kwargs (Dict[str, Any]): Additional arguments.
 
 		See Also:
 			:func:`StoppingTask.__init__`
@@ -678,13 +722,13 @@ class TaskConvPrint(StoppingTask):
 		StoppingTask.__init__(self, **kwargs)
 
 	def eval(self, A):
-		r"""
+		r"""Evaluate solution.
 
 		Args:
-			A:
+			A (nupy.ndarray): Solution to evaluate.
 
 		Returns:
-			float:
+			float: Function/Fitness values of solution.
 
 		See Also:
 			:func:`StoppingTask.eval`
@@ -703,7 +747,7 @@ class TaskConvSave(StoppingTask):
 		r"""
 
 		Args:
-			**kwargs:
+			**kwargs (Dict[str, Any]): Additional arguments.
 
 		See Also:
 			:func:`StoppingTask.__init__`
@@ -713,13 +757,13 @@ class TaskConvSave(StoppingTask):
 		self.x_f_vals = []
 
 	def eval(self, A):
-		r"""
+		r"""Evaluate solution.
 
 		Args:
-			A:
+			A (numpy.ndarray): Individual/solution to evaluate.
 
 		Returns:
-			float:
+			float: Function/fitness values of individual.
 
 		See Also:
 			:func:`StoppingTask.eval`
@@ -748,7 +792,7 @@ class TaskConvPlot(StoppingTask):
 		r"""
 
 		Args:
-			**kwargs:
+			**kwargs (Dict[str, Any]): Additional arguments.
 
 		See Also:
 			:func:`StoppingTask.__init__`
@@ -763,13 +807,13 @@ class TaskConvPlot(StoppingTask):
 		self.showPlot()
 
 	def eval(self, A):
-		r"""
+		r"""Evaluate solution.
 
 		Args:
-			A:
+			A (numpy.ndarray): Solution to evaluate.
 
 		Returns:
-
+			float: Fitness/function values of solution.
 		"""
 		x_f = StoppingTask.eval(self, A)
 		if not self.x_fs: self.x_fs.append(x_f)
@@ -781,20 +825,20 @@ class TaskConvPlot(StoppingTask):
 	def showPlot(self):
 		r"""
 
-		Returns:
-
 		"""
 		plt.show(block=False)
 		plt.pause(0.001)
 
 	def updatePlot(self, frame):
-		r"""
+		r"""Update mathplotlib figure.
 
 		Args:
 			frame:
 
 		Returns:
-
+			Tuple[List[float], Any]:
+				1. TODO
+				2. TODo
 		"""
 		if self.x_fs:
 			max_fs, min_fs = self.x_fs[0], self.x_fs[-1]
@@ -807,13 +851,16 @@ class TaskComposition(MoveTask):
 		r"""Initialize of composite function problem.
 
 		Arguments:
-			benchmarks {array} of {problems} -- optimization function to use in composition
-			delta {array} of {real} --
-			lamb {array} of {real} --
-			bias {array} of {real} --
+			benchmarks (List[Benchmark]): Optimization function to use in composition
+			delta (numpy.ndarray[float]): TODO
+			lamb (numpy.ndarray[float]): TODO
+			bias (numpy.ndarray[float]): TODO
 
 		See Also:
 			:func:`MoveTask.__init__`
+
+		TODO:
+			Class is a work in progress.
 		"""
 		MoveTask.__init__(self, **kwargs)
 

@@ -73,7 +73,7 @@ class BatAlgorithm(Algorithm):
 		See Also:
 			:func:`NiaPy.algorithm.Algorithm.setParameters`
 		"""
-		Algorithm.setParameters(NP, **ukwargs)
+		Algorithm.setParameters(self, NP=NP, **ukwargs)
 		self.A, self.r, self.Qmin, self.Qmax = A, r, Qmin, Qmax
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
@@ -95,9 +95,10 @@ class BatAlgorithm(Algorithm):
 		See Also:
 			:func:`NiaPy.algorithm.Algorithm.initPopulation`
 		"""
-		Sol, Fitness = Algorithm.initPopulation(self, task)
+		Sol, Fitness, d = Algorithm.initPopulation(self, task)
 		S, Q, v = full([self.NP, task.D], 0.0), full(self.NP, 0.0), full([self.NP, task.D], 0.0)
-		return Sol, Fitness, {'S': S, 'Q':Q, 'v':v}
+		d.update({'S': S, 'Q':Q, 'v':v})
+		return Sol, Fitness, d
 
 	def runIteration(self, task, Sol, Fitness, xb, fxb, S, Q, v, **dparams):
 		r"""Core function of Bat Algorithm.

@@ -29,56 +29,79 @@ class NelderMeadMethod(Algorithm):
 		https://en.wikipedia.org/wiki/Nelder%E2%80%93Mead_method
 
 	Attributes:
-		Name (list of str): list of strings represeing algorithm name
-		alpha ():
-		gmma ():
-		sigma ()
+		Name (List[str]): list of strings represeing algorithm name
+		alpha (float): Reflection coefficient parameter
+		gamma (float): Expansion coefficient parameter
+		rho (float): Contraction coefficient parameter
+		sigma (float): Shrink coefficient parameter
 	"""
 	Name = ['NelderMeadMethod', 'NMM']
 
 	@staticmethod
-	def typeParameters(): return {
+	def typeParameters():
+		r"""Dictionary with function for testing correctness of parameters.
+
+		Returns:
+			Dict[str, Callable]:
+				* alpha (Callable[[Union[int, float]], bool]): TODO
+				* gamma (Callable[[Union[int, float]], bool]): TODO
+				* rho (Callable[[Union[int, float]], bool]): TODO
+				* sigma (Callable[[Union[int, float]], bool]): TODO
+		"""
+		return {
 			'alpha': lambda x: isinstance(x, (int, float)) and x >= 0,
 			'gamma': lambda x: isinstance(x, (int, float)) and x >= 0,
 			'rho': lambda x: isinstance(x, (int, float)),
 			'sigma': lambda x: isinstance(x, (int, float))
-	}
+		}
 
-	def setParameters(self, alpha=0.1, gamma=0.3, rho=-0.2, sigma=-0.2, **ukwargs):
+	def setParameters(self, NP=None, alpha=0.1, gamma=0.3, rho=-0.2, sigma=-0.2, **ukwargs):
 		r"""Set the arguments of an algorithm.
 
 		Arguments:
-			alpha (float): Reflection coefficient parameter
-			gamma (float): Expansion coefficient parameter
-			rho (float): Contraction coefficient parameter
-			sigma (float): Shrink coefficient parameter
+			NP (Optional[int]): Number of individuals.
+			alpha (Optional[float]): Reflection coefficient parameter
+			gamma (Optional[float]): Expansion coefficient parameter
+			rho (Optional[float]): Contraction coefficient parameter
+			sigma (Optional[float]): Shrink coefficient parameter
+
+		See Also:
+			:func:`Algorithm.setParameters`
 		"""
+		Algorithm.setParameters(self, NP=NP, InitPopFunc=self.initPop)
 		self.alpha, self.gamma, self.rho, self.sigma = alpha, gamma, rho, sigma
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def init(self, task):
-		r"""
+	def initPop(self, task, NP, rnd, **kwargs):
+		r"""Init starting population.
 
 		Args:
-			task:
+			NP (int): Number of individuals in population.
+			task (Task): Optimization task.
+			rnd (mtrand.RandomState): Random number generator.
+			kwargs (Dict[str, Any]): Additional arguments.
 
 		Returns:
-
+			Tuple[numpy.ndarray, numpy.ndarray[float]]:
+				1. New initialized population.
+				2. New initialized population fitness/function values.
 		"""
-		X = self.uniform(task.Lower, task.Upper, [task.D, task.D])
+		X = self.uniform(task.Lower, task.Upper, [task.D if NP is None or NP < task.D else NP, task.D])
 		X_f = apply_along_axis(task.eval, 1, X)
 		return X, X_f
 
 	def method(self, X, X_f, task):
-		r"""
+		r"""Run the main function.
 
 		Args:
-			X:
-			X_f:
-			task:
+			X (numpy.ndarray): Current population.
+			X_f (numpy.ndarray[float]): Current population function/fitness values.
+			task (Task): Optimization task.
 
 		Returns:
-
+			Tuple[numpy.ndarray, numpy.ndarray[float]]:
+				1. New population.
+				2. New population fitness/function values.
 		"""
 		x0 = sum(X[:-1], axis=0) / (len(X) - 1)
 		xr = x0 + self.alpha * (x0 - X[-1])
@@ -102,14 +125,26 @@ class NelderMeadMethod(Algorithm):
 		X[1:], X_f[1:] = Xn, Xn_f
 		return X, X_f
 
-	def runTask(self, task):
-		# FIXME
-		X, X_f = self.init(task)
-		while not task.stopCondI():
-			inds = argsort(X_f)
-			X, X_f = X[inds], X_f[inds]
-			X, X_f = self.method(X, X_f, task)
-		ib = argmin(X_f)
-		return X[ib], X_f[ib]
+	def runIteration(self, task, X, X_f, xb, fxb, **dparams):
+		r"""Core iteration function of NelderMeadMethod algorithm.
+
+		Args:
+			task (Task): Optimization task.
+			X (numpy.ndarray): Current population.
+			X_f (numpy.ndarray[float]): Current populations fitness/function values.
+			xb (numpy.ndarray): Global best individual.
+			fxb (float): Global best function/fitness value.
+			**dparams (Dict[str, Any]): Additional arguments.
+
+		Returns:
+			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+				1. New population.
+				2. New population fitness/function values.
+				3. Additional arguments.
+		"""
+		inds = argsort(X_f)
+		X, X_f = X[inds], X_f[inds]
+		X, X_f = self.method(X, X_f, task)
+		return X, X_f, {}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

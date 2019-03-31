@@ -216,7 +216,7 @@ class AnarchicSocietyOptimization(Algorithm):
 
 		See Also:
 			* :func:`Algorithm.setParameters`
-			* :func:`Elitism'
+			* :func:`Elitism', :func:`Crossover`, :func:`Sequential`
 		"""
 		Algorithm.setParameters(self, NP=NP)
 		self.alpha, self.gamma, self.theta, self.d, self.dn, self.nl, self.F, self.CR, self.Combination = alpha, gamma, theta, d, dn, nl, F, CR, Combination
@@ -330,17 +330,19 @@ class AnarchicSocietyOptimization(Algorithm):
 					* alpha (numpy.ndarray[float]):
 					* gamma (numpy.ndarray[float]):
 					* theta (numpy.ndarray[float]):
+					* rs (float): Distance of search space.
 
 		See Also:
 			* :func:`Algorithm.initPopulation`
 			* :func:`AnarchicSocietyOptimization.init`
 		"""
-		X, X_f, = Algorithm.initPopulation(self, task)
+		X, X_f, d = Algorithm.initPopulation(self, task)
 		alpha, gamma, theta = self.init(task)
 		Xpb, Xpb_f = self.uBestAndPBest(X, X_f, full([self.NP, task.D], 0.0), full(self.NP, task.optType.value * inf))
-		return X, X_f, {'Xpb':Xpb, 'Xpb_f':Xpb_f, 'alpha':alpha, 'gamma':gamma, 'theta':theta}
+		d.update({'Xpb':Xpb, 'Xpb_f':Xpb_f, 'alpha':alpha, 'gamma':gamma, 'theta':theta, 'rs': self.d(task.Upper, task.Lower)})
+		return X, X_f, d
 
-	def runIteration(self, task, X, X_f, xb, fxb, Xpb, Xpb_f, alpha, gamma, theta, **dparams):
+	def runIteration(self, task, X, X_f, xb, fxb, Xpb, Xpb_f, alpha, gamma, theta, rs, **dparams):
 		r"""Core function of AnarchicSocietyOptimization algorithm.
 
 		Args:
@@ -366,12 +368,13 @@ class AnarchicSocietyOptimization(Algorithm):
 					* alpha (numpy.ndarray[float]):
 					* gamma (numpy.ndarray[float]):
 					* theta (numpy.ndarray[float]):
+					* rs (float): Distance of search space.
 		"""
 		Xin = [self.getBestNeighbors(i, X, X_f, rs) for i in range(len(X))]
-		MP_c, MP_s, MP_p = [self.FI(X_f[i], Xpb_f[i], xb_f, alpha[i]) for i in range(len(X))], [self.EI(X_f[i], Xin[i], gamma[i]) for i in range(len(X))], [self.II(X_f[i], Xpb_f[i], theta[i]) for i in range(len(X))]
+		MP_c, MP_s, MP_p = [self.FI(X_f[i], Xpb_f[i], fxb, alpha[i]) for i in range(len(X))], [self.EI(X_f[i], Xin[i], gamma[i]) for i in range(len(X))], [self.II(X_f[i], Xpb_f[i], theta[i]) for i in range(len(X))]
 		Xtmp = asarray([self.Combination(X[i], Xpb[i], xb, X[self.randint(len(X), skip=[i])], MP_c[i], MP_s[i], MP_p[i], self.F, self.CR, task, self.Rand) for i in range(len(X))])
 		X, X_f = asarray([Xtmp[i][0] for i in range(len(X))]), asarray([Xtmp[i][1] for i in range(len(X))])
 		Xpb, Xpb_f = self.uBestAndPBest(X, X_f, Xpb, Xpb_f)
-		return X, X_f, {'Xpb':Xpb, 'Xpb_f':Xpb_f, 'alpha':alpha, 'gamma':gamma, 'theta':theta}
+		return X, X_f, {'Xpb':Xpb, 'Xpb_f':Xpb_f, 'alpha':alpha, 'gamma':gamma, 'theta':theta, 'rs':rs}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
