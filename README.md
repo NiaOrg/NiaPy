@@ -51,7 +51,6 @@ The micro framework features following algorithms:
   - Multiple trajectory search ([see example](examples/run_mts.py), [see example](examples/run_mtsv1.py))
   - Nelder mead method ([see example](examples/run_nmm.py))
   - Simulated annealing algorithm ([see example](examples/run_sa.py))
-  - Tabu search algorithm ([see example](examples/run_sa.py))
 
 Other examples:
 - Using different termination conditions (nFES, nGEN, reference value) ([see example](examples/stopping_criterions.py))
