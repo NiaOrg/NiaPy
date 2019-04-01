@@ -161,6 +161,9 @@ class CoralReefsOptimization(Algorithm):
 					* Fa (int): TODO
 					* Fb (int): TODO
 					* Fd (int): TODO
+
+		See Also:
+			:func:`Algorithm.initPopulation`
 		"""
 		Reef, Reef_f, d = Algorithm.initPopulation(self, task)
 		Fa, Fb, Fd = self.NP * self.Fa, self.NP * self.Fb, self.NP * self.Fd

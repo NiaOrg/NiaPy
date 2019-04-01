@@ -36,7 +36,6 @@ class BatAlgorithm(Algorithm):
 		Qmax (float): Maximum frequency.
 	"""
 	Name = ['BatAlgorithm', 'BA']
-	A, r, Qmin, Qmax = 0.5, 0.5, 0.0, 2.0
 
 	@staticmethod
 	def typeParameters():
@@ -44,10 +43,10 @@ class BatAlgorithm(Algorithm):
 
 		Returns:
 			Dict[str, Callable]:
-				* A (Callable[[float], bool]): TODO
-				* r (Callable[[float], bool]): TODO
-				* Qmin (Callable[[float], bool]): TODO
-				* Qmax (Callable[[float], bool]): TODO
+				* A (Callable[[Union[float, int]], bool]): TODO
+				* r (Callable[[Union[float, int]], bool]): TODO
+				* Qmin (Callable[[Union[float, int]], bool]): TODO
+				* Qmax (Callable[[Union[float, int]], bool]): TODO
 
 		See Also:
 			:func:`NiaPy.algorithm.Algorithm.typeParameters`
