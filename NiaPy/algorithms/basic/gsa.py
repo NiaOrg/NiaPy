@@ -86,7 +86,7 @@ class GravitationalSearchAlgorithm(Algorithm):
 		r"""
 
 		Args:
-			task:
+			task (Task): Optimization task.
 
 		Returns:
 			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
@@ -103,7 +103,7 @@ class GravitationalSearchAlgorithm(Algorithm):
 		return X, X_f, {'v':v}
 
 	def runIteration(self, task, X, X_f, xb, fxb, v, **dparams):
-		r"""
+		r"""Core function of GravitationalSearchAlgorithm algorithm.
 
 		Args:
 			task (Task): Optimization task.

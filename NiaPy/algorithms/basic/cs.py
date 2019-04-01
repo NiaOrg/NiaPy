@@ -58,8 +58,8 @@ class CuckooSearch(Algorithm):
 		r"""Set the arguments of an algorithm.
 
 		Arguments:
-			N (int): Population size $\in [1, \infty)$
-			pa (float): factor $\in [0, 1]$
+			N (int): Population size :math:`\in [1, \infty)`
+			pa (float): factor :math:`\in [0, 1]`
 			alpah (float): TODO
 			**ukwargs: Additional arguments
 
@@ -76,7 +76,7 @@ class CuckooSearch(Algorithm):
 		Args:
 			pop (numpy.ndarray): Current population
 			fpop (numpy.ndarray[float]): Current population fitness/funcion values
-			pa_v:
+			pa_v (): TODO.
 			task (Task): Optimization task
 
 		Returns:

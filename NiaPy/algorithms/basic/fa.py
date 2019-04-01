@@ -85,11 +85,11 @@ class FireflyAlgorithm(Algorithm):
 		r"""Move fireflies.
 
 		Args:
-			i:
-			Fireflies:
-			Intensity:
-			oFireflies:
-			alpha:
+			i (int): Index of current individual.
+			Fireflies (numpy.ndarray):
+			Intensity (numpy.ndarray):
+			oFireflies (numpy.ndarray):
+			alpha (float):
 			task (Task): Optimization task.
 
 		Returns:
@@ -145,10 +145,12 @@ class FireflyAlgorithm(Algorithm):
 				3. Additional arguments:
 					* alpha (float): TODO
 
+		See Also:
+			* :func:`FireflyAlgorithm.move_ffa`
 		"""
 		alpha = self.alpha_new(task.nFES / self.NP, alpha)
 		Index = argsort(Intensity)
-		tmp = [self.move_ffa(i, Fireflies[Index], Intensity[Index], Fireflies, alpha, task) for i in range(self.NP)]
+		tmp = asarray([self.move_ffa(i, Fireflies[Index], Intensity[Index], Fireflies, alpha, task) for i in range(self.NP)])
 		Fireflies, evalF = asarray([tmp[i][0] for i in range(len(tmp))]), asarray([tmp[i][1] for i in range(len(tmp))])
 		Intensity[where(evalF)] = apply_along_axis(task.eval, 1, Fireflies[where(evalF)])
 		return Fireflies, Intensity, {'alpha':alpha}

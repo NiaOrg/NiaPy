@@ -259,6 +259,10 @@ class CoralReefsOptimization(Algorithm):
 					* Fa (int): TODO
 					* Fb (int): TODO
 					* Fd (int): TODO
+
+		See Also:
+			* :func:`CoralReefsOptimization.SexualCrossover`
+			* :func:`CoralReefsOptimization.Brooding`
 		"""
 		I = self.Rand.choice(len(Reef), size=Fb, replace=False)
 		Reefn_s, Reefn_s_f = self.SexualCrossover(Reef[I], self.P_Cr, task, rnd=self.Rand)

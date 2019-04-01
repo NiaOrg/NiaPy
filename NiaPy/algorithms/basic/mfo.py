@@ -27,13 +27,23 @@ class MothFlameOptimizer(Algorithm):
 
 	Reference paper:
 		Mirjalili, Seyedali. "Moth-flame optimization algorithm: A novel nature-inspired heuristic paradigm." Knowledge-Based Systems 89 (2015): 228-249.
+
+	Attributes:
+		Name (List[str]): List of strings representing algorithm name.
 	"""
 	Name = ['MothFlameOptimizer', 'MFO']
 
 	@staticmethod
-	def typeParameters(): return {
-			'NP': lambda x: isinstance(x, int) and x > 0
-	}
+	def typeParameters():
+		r"""
+
+		Returns:
+			Dict[str, Callable]: TODO
+
+		See Also:
+			:func:`Algorithm.typeParameters`
+		"""
+		return Algorithm.typeParameters()
 
 	def setParameters(self, NP=25, **ukwargs):
 		r"""Set the algorithm parameters.
@@ -54,14 +64,17 @@ class MothFlameOptimizer(Algorithm):
 			task (Task): Optimization task
 
 		Returns:
-			Tuple[array of array of (float or int), array of float, dict]:
+			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
 				1. Initialized population
 				2. Initialized population function/fitness values
-				3. dict:
-					* best_flames (array of array of (float or int): Best individuals
-					* best_flame_fitness (array of float): Best individuals fitness/function values
-					* previous_population (array of array of (float or int): Previous population
-					* previous_fitness (array of float): Previous population fitness/function values
+				3. Additional arguments:
+					* best_flames (numpy.ndarray): Best individuals
+					* best_flame_fitness (numpy.ndarray): Best individuals fitness/function values
+					* previous_population (numpy.ndarray): Previous population
+					* previous_fitness (numpy.ndarray[float]): Previous population fitness/function values
+
+		See Also:
+			:func:`Algorithm.initPopulation`
 		"""
 		moth_pos, moth_fitness,  = Algorithm.initPopulation(self, task)
 		# Create best population
@@ -75,26 +88,26 @@ class MothFlameOptimizer(Algorithm):
 		r"""Core function of MothFlameOptimizer algorithm.
 
 		Args:
-			task (Task): Optimization task
-			moth_pos (array of array of (float or int)): Current population
-			moth_fitness (array of float): Current population fitness/function values
-			xb (array of (float or int)): Current population best individual
+			task (Task): Optimization task.
+			moth_pos (numpy.ndarray): Current population.
+			moth_fitness (numpy.ndarray[float]): Current population fitness/function values.
+			xb (numpy.ndarray): Current population best individual.
 			fxb (float): Current best individual
-			best_flames (array of array of (float or int)): Best found individuals
-			best_flame_fitness (array of float): Best found individuals fitness/function values
-			previous_population (array of array of (float or int): Previous population
-			previous_fitness (array of float): Previous population fitness/function values
-			**dparams: Additional parameters
+			best_flames (numpy.ndarray): Best found individuals
+			best_flame_fitness (numpy.ndarray[float]): Best found individuals fitness/function values
+			previous_population (numpy.ndarray): Previous population
+			previous_fitness (numpy.ndarray[float]): Previous population fitness/function values
+			**dparams (Dict[str, Any]): Additional parameters
 
 		Returns:
-			Tuple[array of array of (float or int), array of float, dict]:
-				1. New population
-				2. New population fitness/function values
-				3. dict:
-					* best_flames (array of array of (float or int): Best individuals
-					* best_flame_fitness (array of float): Best individuals fitness/function values
-					* previous_population (array of array of (float or int): Previous population
-					* previous_fitness (array of float): Previous population fitness/function values
+			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+				1. New population.
+				2. New population fitness/function values.
+				3. Additional arguments:
+					* best_flames (numpy.ndarray): Best individuals.
+					* best_flame_fitness (numpy.ndarray[float]): Best individuals fitness/function values.
+					* previous_population (numpy.ndarray): Previous population.
+					* previous_fitness (numpy.ndarray[float]): Previous population fitness/function values.
 		"""
 		# Previous positions
 		previous_population, previous_fitness = moth_pos, moth_fitness

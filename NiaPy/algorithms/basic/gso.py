@@ -167,15 +167,15 @@ class GlowwormSwarmOptimization(Algorithm):
 		r"""
 
 		Args:
-			task:
-			GS:
-			GS_f:
+			task (Task): Optimization taks.
+			GS (numpy.ndarray): Current population.
+			GS_f (numpy.ndarray[float]): Current populations fitness/function values.
 			xb:
 			fxb:
 			L:
 			R:
 			rs:
-			**dparams:
+			**dparams Dict[str, Any]: Additional arguments.
 
 		Returns:
 

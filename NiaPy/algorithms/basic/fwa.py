@@ -39,8 +39,6 @@ class BareBonesFireworksAlgorithm(Algorithm):
 		C_r (float): reduction coefficient
 	"""
 	Name = ['BareBonesFireworksAlgorithm', 'BBFWA']
-	C_a, C_r = 1.5, 0.5
-	n = 10
 
 	@staticmethod
 	def typeParameters(): return {
@@ -53,9 +51,9 @@ class BareBonesFireworksAlgorithm(Algorithm):
 		r"""Set the arguments of an algorithm.
 
 		Arguments:
-			n (int): Number of sparks $\in [1, \infty)$
-			C_a (float): Amplification coefficient :math:`\in [1, \infty)`
-			C_r (float): Reduction coefficient :math:`\in (0, 1)`
+			n (int): Number of sparks :math:`\in [1, \infty)`.
+			C_a (float): Amplification coefficient :math:`\in [1, \infty)`.
+			C_r (float): Reduction coefficient :math:`\in (0, 1)`.
 		"""
 		self.n, self.C_a, self.C_r = n, C_a, C_r
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
@@ -69,7 +67,7 @@ class BareBonesFireworksAlgorithm(Algorithm):
 		Returns:
 			Tuple[numpy.ndarray, float, Dict[str, Any]]:
 				1. Initial solution.
-				2. Initial solution function/fitness value
+				2. Initial solution function/fitness value.
 				3. Additional arguments:
 					* A (numpy.ndarray): Starting aplitude or search range.
 		"""
@@ -125,7 +123,7 @@ class FireworksAlgorithm(Algorithm):
 		Tan, Ying. "Firework Algorithm: A Novel Swarm Intelligence Optimization Method." (2015).
 
 	Attributes:
-		Name (list of str): List of stirngs representing algorithm names
+		Name (List[str]): List of stirngs representing algorithm names.
 	"""
 	Name = ['FireworksAlgorithm', 'FWA']
 
@@ -153,78 +151,78 @@ class FireworksAlgorithm(Algorithm):
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def initAmplitude(self, task):
-		r"""
+		r"""Initialize amplitudes for dimensions.
 
 		Args:
-			task:
+			task (Task): Optimization task.
 
 		Returns:
-
+			numpy.ndarray[float]: Starting amplitudes.
 		"""
 		return fullArray(self.A, task.D)
 
 	def SparsksNo(self, x_f, xw_f, Ss):
-		r"""
+		r"""Calculate number of sparks based on function value of individual.
 
 		Args:
-			x_f:
-			xw_f:
-			Ss:
+			x_f (float): Individuals function/fitness value.
+			xw_f (float): Worst individual function/fitness value.
+			Ss (): TODO
 
 		Returns:
-
+			int: Number of sparks that individual will create.
 		"""
 		s = self.m * (xw_f - x_f + self.epsilon) / (Ss + self.epsilon)
 		return round(self.b * self.m) if s > self.b * self.m and self.a < self.b < 1 else round(self.a * self.m)
 
 	def ExplosionAmplitude(self, x_f, xb_f, A, As):
-		r"""
+		r"""Calculate explosion amplitude.
 
 		Args:
-			x_f:
-			xb_f:
-			A:
-			As:
+			x_f (float): Individuals function/fitness value.
+			xb_f (float): Best individuals function/fitness value.
+			A (numpy.ndarray): Amplitudes.
+			As ():
 
 		Returns:
-
+			numpy.ndarray: TODO.
 		"""
 		return A * (x_f - xb_f - self.epsilon) / (As + self.epsilon)
 
 	def ExplodeSpark(self, x, A, task):
-		r"""
+		r"""Explode a spark.
 
 		Args:
-			x:
-			A:
-			task:
+			x (numpy.ndarray): Individuals creating spark.
+			A (numpy.ndarray): Amplitude of spark.
+			task (Task): Optimization task.
 
 		Returns:
-
+			numpy.ndarray: Sparks exploded in with specified amplitude.
 		"""
 		return self.Mapping(x + self.rand(task.D) * self.uniform(-A, A, task.D), task)
 
 	def GaussianSpark(self, x, task):
-		r"""
+		r"""Create gaussian spark.
 
 		Args:
-			x:
-			task:
+			x (numpy.ndarray): Individual creating a spark.
+			task (Task): Optimization task.
 
 		Returns:
-
+			numpy.ndarray: Spark exploded based on gaussian amplitude.
 		"""
 		return self.Mapping(x + self.rand(task.D) * self.normal(1, 1, task.D), task)
 
 	def Mapping(self, x, task):
-		r"""
+		r"""Fixing function.
 
 		Args:
-			x:
-			task:
+			x (numpy.ndarray): Individual to fix.
+			task (Task): Optimization task.
 
 		Returns:
-
+			numpy.ndarray: Individual in search range.
 		"""
 		ir = where(x > task.Upper)
 		x[ir] = task.Lower[ir] + x[ir] % task.bRange[ir]
@@ -233,78 +231,99 @@ class FireworksAlgorithm(Algorithm):
 		return x
 
 	def R(self, x, FW):
-		r"""
+		r"""Calculate ranges.
 
 		Args:
-			x:
-			FW:
+			x (numpy.ndarray): Individual in population.
+			FW (numpy.ndarray): Current population.
 
 		Returns:
-
+			numpy,ndarray[float]: Ranges values.
 		"""
 		return sqrt(sum(fabs(x - FW)))
 
 	def p(self, r, Rs):
-		r"""
+		r"""Calculate p.
 
 		Args:
-			r:
-			Rs:
+			r (float): Range of individual.
+			Rs (float): Sum of ranges.
 
 		Returns:
-
+			float: p value.
 		"""
 		return r / Rs
 
 	def NextGeneration(self, FW, FW_f, FWn, task):
-		r"""
+		r"""Generate new generation of individuals.
 
 		Args:
-			FW:
-			FW_f:
-			FWn:
-			task:
+			FW (numpy.ndarray): Current population.
+			FW_f (numpy.ndarray[float]): Currents population fitness/function values.
+			FWn (numpy.ndarray): New population.
+			task (Task): Optimization task.
 
 		Returns:
-
+			Tuple[numpy.ndarray, numpy.ndarray[float]]:
+				1. New population.
+				2. New populations fitness/function values.
 		"""
 		FWn_f = apply_along_axis(task.eval, 1, FWn)
 		ib = argmin(FWn_f)
 		if FWn_f[ib] < FW_f[0]: FW[0], FW_f[0] = FWn[ib], FWn_f[ib]
-		R = [self.R(FWn[i], FWn) for i in range(len(FWn))]
+		R = asarray([self.R(FWn[i], FWn) for i in range(len(FWn))])
 		Rs = sum(R)
-		P = [self.p(R[i], Rs) for i in range(len(FWn))]
+		P = asarray([self.p(R[i], Rs) for i in range(len(FWn))])
 		isort = argsort(P)[-(self.N - 1):]
 		FW[1:], FW_f[1:] = asarray(FWn)[isort], FWn_f[isort]
 		return FW, FW_f
 
 	def initPopulation(self, task):
-		r"""
+		r"""Initialize starting population.
 
 		Args:
-			task:
+			task (Task): Optimization task.
 
 		Returns:
+			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+				1. Initialized population.
+				2. Initialized populations function/fitness values.
+				3. Additional arguments:
+					* Ah (numpy.ndarray): Initialized amplitudes.
 
+		See Also:
+			:func:`Algorithm.initPopulation`
 		"""
-		FW, Ah = self.uniform(task.Lower, task.Upper, [self.N, task.D]), self.initAmplitude(task)
-		FW_f = apply_along_axis(task.eval, 1, FW)
-		return FW, FW_f, {'Ah':Ah}
+		FW, FW_f, d = self.uniform(task.Lower, task.Upper, [self.N, task.D])
+		Ah = self.initAmplitude(task)
+		d.update({'Ah':Ah})
+		return FW, FW_f, d
 
 	def runIteration(self, task, FW, FW_f, xb, fxb, Ah, **dparams):
-		r"""
+		r"""Core function of Fireworks algorithm.
 
 		Args:
-			task:
-			FW:
-			FW_f:
-			xb:
-			fxb:
-			Ah:
-			**dparams:
+			task (Task): Optimization task.
+			FW (numpy.ndarray): Current population.
+			FW_f (numpy.ndarray[float]): Current populations function/fitness values.
+			xb (numpy.ndarray): Global best individual.
+			fxb (float): Global best individuals fitness/function value.
+			Ah (numpy.ndarray): Current amplitudes.
+			**dparams (Dict[str, Any)]: Additional arguments
 
 		Returns:
+			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+				1. Initialized population.
+				2. Initialized populations function/fitness values.
+				3. Additional arguments:
+					* Ah (numpy.ndarray): Initialized amplitudes.
 
+		See Also:
+			* :func:`FireworksAlgorithm.SparsksNo`.
+			* :func:`FireworksAlgorithm.ExplosionAmplitude`
+			* :func:`FireworksAlgorithm.ExplodeSpark`
+			* :func:`FireworksAlgorithm.GaussianSpark`
+			* :func:`FireworksAlgorithm.NextGeneration`
 		"""
 		iw, ib = argmax(FW_f), 0
 		Ss, As = sum(FW_f[iw] - FW_f), sum(FW_f - FW_f[ib])
@@ -337,7 +356,9 @@ class EnhancedFireworksAlgorithm(FireworksAlgorithm):
 		S. Zheng, A. Janecek and Y. Tan, "Enhanced Fireworks Algorithm," 2013 IEEE Congress on Evolutionary Computation, Cancun, 2013, pp. 2069-2077. doi: 10.1109/CEC.2013.6557813
 
 	Attributes:
-		Name (list of str): List of strings representing algorithm names
+		Name (List[str]): List of strings representing algorithm names.
+		Ainit (float): TODO
+		Afinal (float): TODO
 	"""
 	Name = ['EnhancedFireworksAlgorithm', 'EFWA']
 
@@ -346,7 +367,12 @@ class EnhancedFireworksAlgorithm(FireworksAlgorithm):
 		r"""
 
 		Returns:
+			Dict[str, Callable]:
+				* Ainit (Callable[[Union[int, float]], bool]): TODO
+				* Afinal (Callable[[Union[int, float]], bool]): TODO
 
+		See Also:
+			:func:`FireworksAlgorithm.typeParameters`
 		"""
 		d = FireworksAlgorithm.typeParameters()
 		d['Ainit'] = lambda x: isinstance(x, (float, int)) and x > 0
@@ -354,57 +380,60 @@ class EnhancedFireworksAlgorithm(FireworksAlgorithm):
 		return d
 
 	def setParameters(self, Ainit=20, Afinal=5, **ukwargs):
-		r"""
+		r"""Set EnhancedFireworksAlgorithm algorithms core parameters.
 
 		Args:
-			Ainit:
-			Afinal:
-			**ukwargs:
+			Ainit (float): TODO
+			Afinal (float): TODO
+			**ukwargs (Dict[str, Any]): Additional arguments.
 
-		Returns:
-
+      See Also:
+      	:func:`FireworksAlgorithm.setParameters`
 		"""
 		FireworksAlgorithm.setParameters(self, **ukwargs)
 		self.Ainit, self.Afinal = Ainit, Afinal
 
 	def initRanges(self, task):
-		r"""
+		r"""Initialize ranges.
 
 		Args:
-			task:
+			task (Task): Optimization task.
 
 		Returns:
-
+			Tuple[numpy.ndarray[float], numpy.ndarray[float], numpy.ndarray[float]]:
+				1. Initial amplitude values over dimensions.
+				2. Final amplitude values over dimensions.
+				3. uAmin.
 		"""
 		Ainit, Afinal = fullArray(self.Ainit, task.D), fullArray(self.Afinal, task.D)
 		return Ainit, Afinal, self.uAmin(Ainit, Afinal, task)
 
 	def uAmin(self, Ainit, Afinal, task):
-		r"""
+		r"""Calculate the value of `uAmin`.
 
 		Args:
-			Ainit:
-			Afinal:
-			task:
+			Ainit (numpy.ndarray[float]): Initial amplitude values over dimensions.
+			Afinal (numpy.ndarray[float]): Final amplitude values over dimensions.
+			task (Task): Optimization task.
 
 		Returns:
-
+			numpy.ndarray[float]: uAmin.
 		"""
 		return Ainit - sqrt(task.Evals * (2 * task.nFES - task.Evals)) * (Ainit - Afinal) / task.nFES
 
 	def ExplosionAmplitude(self, x_f, xb_f, A_min, Ah, As, task):
-		r"""
+		r"""Calculate explosion amplitude.
 
 		Args:
-			x_f:
-			xb_f:
-			A_min:
-			Ah:
-			As:
-			task:
+			x_f (float): Individuals function/fitness value.
+			xb_f (float): Best individual function/fitness value.
+			A_min (numpy.ndarray): Minimal amplitude values.
+			Ah (numpy.ndarray):
+			As (): TODO.
+			task (Task): Optimization task.
 
 		Returns:
-
+			numpy.ndarray: New amplitude.
 		"""
 		A = FireworksAlgorithm.ExplosionAmplitude(self, x_f, xb_f, Ah, As)
 		ifix = where(A < A_min)
@@ -412,29 +441,31 @@ class EnhancedFireworksAlgorithm(FireworksAlgorithm):
 		return A
 
 	def GaussianSpark(self, x, xb, task):
-		r"""
+		r"""Create new individual.
 
 		Args:
-			x:
-			xb:
-			task:
+			x (numpy.ndarray):
+			xb (numpy.ndarray):
+			task (Task): Optimization task.
 
 		Returns:
-
+			numpy.ndarray: New individual generated by gaussian noise.
 		"""
 		return self.Mapping(x + self.rand(task.D) * (xb - x) * self.normal(1, 1, task.D), task)
 
 	def NextGeneration(self, FW, FW_f, FWn, task):
-		r"""
+		r"""Generate new population.
 
 		Args:
-			FW:
-			FW_f:
-			FWn:
-			task:
+			FW (numpy.ndarray): Current population.
+			FW_f (numpy.ndarray[float]): Current populations fitness/function values.
+			FWn (numpy.ndarray): New population.
+			task (Task): Optimization task.
 
 		Returns:
-
+			Tuple[numpy.ndarray, numpy.ndarray[float]]:
+				1. New population.
+				2. New populations fitness/function values.
 		"""
 		FWn_f = apply_along_axis(task.eval, 1, FWn)
 		ib = argmin(FWn_f)
@@ -445,13 +476,22 @@ class EnhancedFireworksAlgorithm(FireworksAlgorithm):
 		return FW, FW_f
 
 	def initPopulation(self, task):
-		r"""
+		r"""Initialize population.
 
 		Args:
-			task:
+			task (Task): Optimization task.
 
 		Returns:
+			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+				1. Initial population.
+				2. Initial populations fitness/function values.
+				3. Additional arguments:
+					* Ainit (numpy.ndarray): Initial amplitude values.
+					* Afinal (numpy.ndarray): Final amplitude values.
+					* A_min (numpy.ndarray): Minimal amplitude values.
 
+		See Also:
+			:func:`FireworksAlgorithm.initPopulation`
 		"""
 		FW, FW_f, d = FireworksAlgorithm.initPopulation(self, task)
 		Ainit, Afinal, A_min = self.initRanges(task)
@@ -459,22 +499,28 @@ class EnhancedFireworksAlgorithm(FireworksAlgorithm):
 		return FW, FW_f, d
 
 	def runIteration(self, task, FW, FW_f, xb, fxb, Ah, Ainit, Afinal, A_min, **dparams):
-		r"""
+		r"""Core function of EnhancedFireworksAlgorithm algorithm.
 
 		Args:
-			task:
-			FW:
-			FW_f:
-			xb:
-			fxb:
-			Ah:
-			Ainit:
-			Afinal:
-			A_min:
-			**dparams:
+			task (Task): Optimization task.
+			FW (numpy.ndarray): Current population.
+			FW_f (numpy.ndarray[float]): Current populations fitness/function values.
+			xb (numpy.ndarray): Global best individual.
+			fxb (float): Global best individuals function/fitness value.
+			Ah (numpy.ndarray[float]): Current amplitude.
+			Ainit (numpy.ndarray[float]): Initial amplitude.
+			Afinal (numpy.ndarray[float]): Final amplitude values.
+			A_min (numpy.ndarray[float]): Minial amplitude values.
+			**dparams (Dict[str, Any]): Additional arguments.
 
 		Returns:
-
+			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+				1. Initial population.
+				2. Initial populations fitness/function values.
+				3. Additional arguments:
+					* Ainit (numpy.ndarray): Initial amplitude values.
+					* Afinal (numpy.ndarray): Final amplitude values.
+					* A_min (numpy.ndarray): Minimal amplitude values.
 		"""
 		iw, ib = argmax(FW_f), 0
 		Ss, As = sum(FW_f[iw] - FW_f), sum(FW_f - FW_f[ib])
@@ -508,12 +554,25 @@ class DynamicFireworksAlgorithmGauss(EnhancedFireworksAlgorithm):
 		S. Zheng, A. Janecek, J. Li and Y. Tan, "Dynamic search in fireworks algorithm," 2014 IEEE Congress on Evolutionary Computation (CEC), Beijing, 2014, pp. 3222-3229. doi: 10.1109/CEC.2014.6900485
 
 	Attributes:
-		Name (list of str): List of strings representing algorithm names
+		Name (List[str]): List of strings representing algorithm names.
+		A_cf (Union[float, int]): TODO
+		C_a (Union[float, int]): TODO
+		C_r (Union[float, int]): TODO
+		epsilon (Union[float, int]): TODO
 	"""
 	Name = ['DynamicFireworksAlgorithmGauss', 'dynFWAG']
 
 	@staticmethod
 	def typeParameters():
+		r"""
+
+		Returns:
+			Dict[str, Callable]:
+				* A_cr (Callable[[Union[float, int], bool]): TODo
+
+		See Also:
+			:func:`FireworksAlgorithm.typeParameters`
+		"""
 		d = FireworksAlgorithm.typeParameters()
 		d['A_cf'] = lambda x: isinstance(x, (float, int)) and x > 0
 		d['C_a'] = lambda x: isinstance(x, (float, int)) and x > 1
@@ -522,14 +581,14 @@ class DynamicFireworksAlgorithmGauss(EnhancedFireworksAlgorithm):
 		return d
 
 	def setParameters(self, A_cf=20, C_a=1.2, C_r=0.9, epsilon=1e-8, **ukwargs):
-		r"""
+		r"""Set core arguments of DynamicFireworksAlgorithmGauss.
 
 		Args:
-			A_cf:
-			C_a:
-			C_r:
-			epsilon:
-			**ukwargs:
+			A_cf (Union[int, float]):
+			C_a (Union[int, float]):
+			C_r (Union[int, float]):
+			epsilon (Union[int, float]):
+			**ukwargs (Dict[str, Any]): Additional arguments.
 
 		See Also:
 			:func:`FireworksAlgorithm.setParameters`
@@ -541,33 +600,19 @@ class DynamicFireworksAlgorithmGauss(EnhancedFireworksAlgorithm):
 		r"""
 
 		Args:
-			task:
+			task (Task): Optimization task.
 
 		Returns:
 
 		"""
 		return FireworksAlgorithm.initAmplitude(self, task), task.bRange
 
-	def ExplosionAmplitude(self, x_f, xb_f, A, As):
-		r"""
-
-		Args:
-			x_f:
-			xb_f:
-			A:
-			As:
-
-		Returns:
-
-		"""
-		return FireworksAlgorithm.ExplosionAmplitude(self, x_f, xb_f, A, As)
-
 	def Mapping(self, x, task):
 		r"""
 
 		Args:
-			x:
-			task:
+			x (numpy.ndarray): Individual.
+			task (Task): Optimization task.
 
 		Returns:
 
@@ -582,9 +627,9 @@ class DynamicFireworksAlgorithmGauss(EnhancedFireworksAlgorithm):
 		r"""
 
 		Args:
-			x:
-			d:
-			epsilon:
+			x (numpy.ndarray): Individual.
+			d (numpy.ndarray): Default value.
+			epsilon (float):
 
 		Returns:
 
@@ -600,7 +645,7 @@ class DynamicFireworksAlgorithmGauss(EnhancedFireworksAlgorithm):
 			FW:
 			FW_f:
 			FWn:
-			task:
+			task (Task): Optimization task.
 
 		Returns:
 
@@ -623,7 +668,7 @@ class DynamicFireworksAlgorithmGauss(EnhancedFireworksAlgorithm):
 			xb:
 			xb_f:
 			Acf:
-			task:
+			task (Task): Optimization task.
 
 		Returns:
 
@@ -708,7 +753,7 @@ class DynamicFireworksAlgorithm(DynamicFireworksAlgorithmGauss):
 	 	S. Zheng, A. Janecek, J. Li and Y. Tan, "Dynamic search in fireworks algorithm," 2014 IEEE Congress on Evolutionary Computation (CEC), Beijing, 2014, pp. 3222-3229. doi: 10.1109/CEC.2014.6900485
 
 	Attributes:
-		Name (list of str): List of strings representing algorithm name
+		Name (List[str]): List of strings representing algorithm name.
 
 	See Also:
 		DynamicFireworksAlgorithmGauss
