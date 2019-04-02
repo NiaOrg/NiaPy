@@ -34,9 +34,11 @@ class CuckooSearch(Algorithm):
 		N (int): populatio size
 		pa (float): probability
 		alpha (float): TODO
+
+	See Also:
+		:class:`NiaPy.algorithms.algorithm.Algorithm`
 	"""
 	Name = ['CuckooSearch', 'CS']
-	N, pa, alpha = 50, 0.2, 0.5
 
 	@staticmethod
 	def typeParameters():
@@ -61,10 +63,10 @@ class CuckooSearch(Algorithm):
 			N (int): Population size :math:`\in [1, \infty)`
 			pa (float): factor :math:`\in [0, 1]`
 			alpah (float): TODO
-			**ukwargs: Additional arguments
+			**ukwargs (Dict[str, Any]): Additional arguments
 
 		See Also:
-			:func:`Algorithm.setParameters`
+			:func:`NiaPy.algorithms.algorithm.Algorithm.setParameters`
 		"""
 		Algorithm.setParameters(self, NP=N)
 		self.pa, self.alpha = pa, alpha
@@ -101,6 +103,9 @@ class CuckooSearch(Algorithm):
 				2. Initialized populations fitness/function values.
 				3. Additional arguments:
 					* pa_v (float): TODO
+
+		See Also:
+			:func:`NiaPy.algorithms.algorithm.Algorithm.initPopulation`
 		"""
 		N, N_f, d = Algorithm.initPopulation(self, task)
 		d.update({'pa_v': self.NP * self.pa})
