@@ -30,7 +30,7 @@ class CuckooSearch(Algorithm):
 		Yang, Xin-She, and Suash Deb. "Cuckoo search via Lévy flights." Nature & Biologically Inspired Computing, 2009. NaBIC 2009. World Congress on. IEEE, 2009.
 
 	Attributes:
-		Name (list of str): lsit of strings representing algorithm names
+		Name (List[str]): lsit of strings representing algorithm names
 		N (int): populatio size
 		pa (float): probability
 		alpha (float): TODO
@@ -43,10 +43,10 @@ class CuckooSearch(Algorithm):
 		r"""TODO.
 
 		Returns:
-			dict:
-				* N (func): TODO
-				* pa (func): TODO
-				* alpha (func): TODO
+			Dict[str, Callable]:
+				* N (Callable[[int], bool]): TODO
+				* pa (Callable[[float], bool]): TODO
+				* alpha (Callable[[Union[int, float]], bool]): TODO
 		"""
 		return {
 			'N': lambda x: isinstance(x, int) and x > 0,
@@ -58,25 +58,29 @@ class CuckooSearch(Algorithm):
 		r"""Set the arguments of an algorithm.
 
 		Arguments:
-			N (int): Population size $\in [1, \infty)$
-			pa (float): factor $\in [0, 1]$
+			N (int): Population size :math:`\in [1, \infty)`
+			pa (float): factor :math:`\in [0, 1]`
 			alpah (float): TODO
 			**ukwargs: Additional arguments
+
+		See Also:
+			:func:`Algorithm.setParameters`
 		"""
-		self.N, self.pa, self.alpha = N, pa, alpha
+		Algorithm.setParameters(self, NP=N)
+		self.pa, self.alpha = pa, alpha
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def emptyNests(self, pop, fpop, pa_v, task):
 		r"""Empty ensts.
 
 		Args:
-			pop (array of array of (float or int): Current population
-			fpop (array of float): Current population fitness/funcion values
-			pa_v:
+			pop (numpy.ndarray): Current population
+			fpop (numpy.ndarray[float]): Current population fitness/funcion values
+			pa_v (): TODO.
 			task (Task): Optimization task
 
 		Returns:
-			Tuple[array of array of (float or int), array of float]:
+			Tuple[numpy.ndarray, numpy.ndarray[float]]:
 				1. New population
 				2. New population fitness/function values
 		"""
@@ -86,17 +90,46 @@ class CuckooSearch(Algorithm):
 		return pop, fpop
 
 	def initPopulation(self, task):
-		pa_v = self.N * self.pa
-		N = task.Lower + self.rand([self.N, task.D]) * task.bRange
-		N_f = apply_along_axis(task.eval, 1, N)
-		return N, N_f, {'pa_v': pa_v}
+		r"""Initialize starting population.
+
+		Args:
+			task (Task): Optimization task.
+
+		Returns:
+			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+				1. Initialized population.
+				2. Initialized populations fitness/function values.
+				3. Additional arguments:
+					* pa_v (float): TODO
+		"""
+		N, N_f, d = Algorithm.initPopulation(self, task)
+		d.update({'pa_v': self.NP * self.pa})
+		return N, N_f, d
 
 	def runIteration(self, task, pop, fpop, xb, fxb, pa_v, **dparams):
-		i = self.randint(self.N)
+		r"""Core function of CuckooSearch algorithm.
+
+		Args:
+			task (Task): Optimization task.
+			pop (numpy.ndarray): Current population.
+			fpop (numpy.ndarray[float]): Current populations fitness/function values.
+			xb (numpy.ndarray): Global best individual.
+			fxb (float): Global best individual function/fitness values.
+			pa_v (float): TODO
+			**dparams (Dict[str, Any]): Additional arguments.
+
+		Returns:
+			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+				1. Initialized population.
+				2. Initialized populations fitness/function values.
+				3. Additional arguments:
+					* pa_v (float): TODO
+		"""
+		i = self.randint(self.NP)
 		Nn = task.repair(pop[i] + self.alpha * levy.rvs(size=[task.D], random_state=self.Rand), rnd=self.Rand)
 		Nn_f = task.eval(Nn)
-		j = self.randint(self.N)
-		while i == j: j = self.randint(self.N)
+		j = self.randint(self.NP)
+		while i == j: j = self.randint(self.NP)
 		if Nn_f <= fpop[j]: pop[j], fpop[j] = Nn, Nn_f
 		pop, fpop = self.emptyNests(pop, fpop, pa_v, task)
 		return pop, fpop, {'pa_v': pa_v}
