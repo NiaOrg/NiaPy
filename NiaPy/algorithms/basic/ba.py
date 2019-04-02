@@ -34,6 +34,9 @@ class BatAlgorithm(Algorithm):
 		r (float): Pulse rate.
 		Qmin (float): Minimum frequency.
 		Qmax (float): Maximum frequency.
+
+	See Also:
+		:class:`NiaPy.algorithms.algorithm.Algorithm`
 	"""
 	Name = ['BatAlgorithm', 'BA']
 
