@@ -33,11 +33,24 @@ class GravitationalSearchAlgorithm(Algorithm):
 
 	Attributes:
 		Name (List[str]): List of strings representing algorithm name.
+
+	See Also:
+		:class:`NiaPy.algorithms.algorithm.Algorithm`
 	"""
 	Name = ['GravitationalSearchAlgorithm', 'GSA']
 
 	@staticmethod
 	def typeParameters():
+		r"""TODO.
+
+		Returns:
+			Dict[str, Callable]:
+				* G_0 (Callable[[Union[int, float]], bool]): TODO
+				* epsilon (Callable[[float], bool]): TODO
+
+		See Also:
+			:func:`NiaPy.algorithms.algorithm.Algorithm.typeParameters`
+		"""
 		d = Algorithm.typeParameters()
 		d.update({
 			'G_0': lambda x: isinstance(x, (int, float)) and x >= 0,
@@ -50,9 +63,10 @@ class GravitationalSearchAlgorithm(Algorithm):
 
 		Arguments:
 			G_0 (float): Starting gravitational constant.
+			epsilon (float): TODO.
 
 		See Also:
-			:func:`Algorithm.setParameters`
+			:func:`NiaPy.algorithms.algorithm.Algorithm.setParameters`
 		"""
 		Algorithm.setParameters(self, NP=NP)
 		self.G_0, self.epsilon = G_0, epsilon
@@ -96,7 +110,7 @@ class GravitationalSearchAlgorithm(Algorithm):
 					* v (numpy.ndarray[float]): TODO
 
 		See Also:
-			:func:`Algorithm.initPopulation`
+			:func:`NiaPy.algorithms.algorithm.Algorithm.initPopulation`
 		"""
 		X, X_f, _ = Algorithm.initPopulation(self, task)
 		v = full([self.NP, task.D], 0.0)

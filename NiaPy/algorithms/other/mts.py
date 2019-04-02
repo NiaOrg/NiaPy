@@ -12,24 +12,30 @@ logger.setLevel('INFO')
 __all__ = ['MultipleTrajectorySearch', 'MultipleTrajectorySearchV1', 'MTS_LS1', 'MTS_LS1v1', 'MTS_LS2', 'MTS_LS3', 'MTS_LS3v1']
 
 def MTS_LS1(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, sr_fix=0.4, rnd=rand, **ukwargs):
-	r"""
+	r"""Multiple trajectory local search one.
 
 	Args:
-		Xk:
-		Xk_fit:
-		Xb:
-		Xb_fit:
-		improve:
-		SR:
-		task:
-		BONUS1:
-		BONUS2:
-		sr_fix:
-		rnd:
-		**ukwargs:
+		Xk (numpy.ndarray): Current solution.
+		Xk_fit (float): Current solutions fitness/function value.
+		Xb (numpy.ndarray): Global best solution.
+		Xb_fit (float): Global best solutions fitness/function value.
+		improve (bool): Has the solution been improved.
+		SR (numpy.ndarray): Search range.
+		task (Task): Optimization task.
+		BONUS1 (int): Bonus reward for improving global best solution.
+		BONUS2 (int): Bonus reward for improving solution.
+		sr_fix (numpy.ndarray): Fix when search range is to small.
+		rnd (mtrand.RandomState): Random number generator.
+		**ukwargs (Dict[str, Any]): Additional arguments.
 
 	Returns:
-
+		Tuple[numpy.ndarray, float, numpy.ndarray, float, bool, numpy.ndarray]:
+			1. New solution.
+			2. New solutions fitness/function value.
+			3. Global best if found else old global best.
+			4. Global bests function/fitness value.
+			5. If solution has improved.
+			6. Search range.
 	"""
 	if not improve:
 		SR /= 2
@@ -39,12 +45,12 @@ def MTS_LS1(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, sr_f
 	for i in range(len(Xk)):
 		Xk_i_old = Xk[i]
 		Xk[i] = Xk_i_old - SR[i]
-		Xk_fit_new = task.eval(Xk)
+		Xk_fit_new = task.eval(task.repair(Xk, rnd))
 		if Xk_fit_new < Xb_fit: grade, Xb, Xb_fit = grade + BONUS1, Xk, Xk_fit_new
 		if Xk_fit_new == Xk_fit: Xk[i] = Xk_i_old
 		elif Xk_fit_new > Xk_fit:
 			Xk[i] = Xk_i_old + 0.5 * SR[i]
-			Xk_fit_new = task.eval(Xk)
+			Xk_fit_new = task.eval(task.repair(Xk, rnd))
 			if Xk_fit_new < Xb_fit: grade, Xb, Xb_fit = grade + BONUS1, copy(Xk), Xk_fit_new
 			if Xk_fit_new >= Xk_fit: Xk[i] = Xk_i_old
 			else: grade, improve, Xk_fit = grade + BONUS2, True, Xk_fit_new
@@ -52,24 +58,30 @@ def MTS_LS1(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, sr_f
 	return Xk, Xk_fit, Xb, Xb_fit, improve, grade, SR
 
 def MTS_LS1v1(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, sr_fix=0.4, rnd=rand, **ukwargs):
-	r"""
+	r"""Multiple trajectory local search one version two.
 
 	Args:
-		Xk:
-		Xk_fit:
-		Xb:
-		Xb_fit:
-		improve:
-		SR:
-		task:
-		BONUS1:
-		BONUS2:
-		sr_fix:
-		rnd:
-		**ukwargs:
+		Xk (numpy.ndarray): Current solution.
+		Xk_fit (float): Current solutions fitness/function value.
+		Xb (numpy.ndarray): Global best solution.
+		Xb_fit (float): Global best solutions fitness/function value.
+		improve (bool): Has the solution been improved.
+		SR (numpy.ndarray): Search range.
+		task (Task): Optimization task.
+		BONUS1 (int): Bonus reward for improving global best solution.
+		BONUS2 (int): Bonus reward for improving solution.
+		sr_fix (numpy.ndarray): Fix when search range is to small.
+		rnd (mtrand.RandomState): Random number generator.
+		**ukwargs (Dict[str, Any]): Additional arguments.
 
 	Returns:
-
+		Tuple[numpy.ndarray, float, numpy.ndarray, float, bool, numpy.ndarray]:
+			1. New solution.
+			2. New solutions fitness/function value.
+			3. Global best if found else old global best.
+			4. Global bests function/fitness value.
+			5. If solution has improved.
+			6. Search range.
 	"""
 	if not improve:
 		SR /= 2
@@ -79,12 +91,12 @@ def MTS_LS1v1(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, sr
 	for i in range(len(Xk)):
 		Xk_i_old = Xk[i]
 		Xk[i] = Xk_i_old - SR[i] * D[i]
-		Xk_fit_new = task.eval(Xk)
+		Xk_fit_new = task.eval(task.repair(Xk, rnd))
 		if Xk_fit_new < Xb_fit: grade, Xb, Xb_fit = grade + BONUS1, Xk, Xk_fit_new
 		elif Xk_fit_new == Xk_fit: Xk[i] = Xk_i_old
 		elif Xk_fit_new > Xk_fit:
 			Xk[i] = Xk_i_old + 0.5 * SR[i]
-			Xk_fit_new = task.eval(Xk)
+			Xk_fit_new = task.eval(task.repair(Xk, rnd))
 			if Xk_fit_new < Xb_fit: grade, Xb, Xb_fit = grade + BONUS1, Xk, Xk_fit_new
 			if Xk_fit_new >= Xk_fit: Xk[i] = Xk_i_old
 			else: grade, improve, Xk_fit = grade + BONUS2, True, Xk_fit_new
@@ -92,39 +104,48 @@ def MTS_LS1v1(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, sr
 	return Xk, Xk_fit, Xb, Xb_fit, improve, grade, SR
 
 def genNewX(x, r, d, SR, op):
-	r"""
+	r"""Move solution to other position based on operator.
 
 	Args:
-		x:
-		r:
-		d:
-		SR:
-		op:
+		x (numpy.ndarray): Solution to move.
+		r (int): Random number.
+		d (float): Scale factor.
+		SR (numpy.ndarray): Search range.
+		op (operator): Operator to use.
 
 	Returns:
-
+		numpy.ndarray: Moved solution based on operator.
 	"""
 	return op(x, SR * d) if r == 0 else x
 
 def MTS_LS2(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, sr_fix=0.4, rnd=rand, **ukwargs):
-	r"""
+	r"""Multiple trajectory local search two.
 
 	Args:
-		Xk:
-		Xk_fit:
-		Xb:
-		Xb_fit:
-		improve:
-		SR:
-		task:
-		BONUS1:
-		BONUS2:
-		sr_fix:
-		rnd:
-		**ukwargs:
+		Xk (numpy.ndarray): Current solution.
+		Xk_fit (float): Current solutions fitness/function value.
+		Xb (numpy.ndarray): Global best solution.
+		Xb_fit (float): Global best solutions fitness/function value.
+		improve (bool): Has the solution been improved.
+		SR (numpy.ndarray): Search range.
+		task (Task): Optimization task.
+		BONUS1 (int): Bonus reward for improving global best solution.
+		BONUS2 (int): Bonus reward for improving solution.
+		sr_fix (numpy.ndarray): Fix when search range is to small.
+		rnd (mtrand.RandomState): Random number generator.
+		**ukwargs (Dict[str, Any]): Additional arguments.
 
 	Returns:
+		Tuple[numpy.ndarray, float, numpy.ndarray, float, bool, numpy.ndarray]:
+			1. New solution.
+			2. New solutions fitness/function value.
+			3. Global best if found else old global best.
+			4. Global bests function/fitness value.
+			5. If solution has improved.
+			6. Search range.
 
+	See Also:
+		:func:`NiaPy.algorithms.other.mts.genNewX`
 	"""
 	if not improve:
 		SR /= 2
@@ -135,41 +156,48 @@ def MTS_LS2(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, sr_f
 		D = -1 + rnd.rand(len(Xk)) * 2
 		R = rnd.choice([0, 1, 2, 3], len(Xk))
 		Xk_new = vectorize(genNewX)(Xk, R, D, SR, oper.sub)
-		Xk_fit_new = task.eval(Xk_new)
+		Xk_fit_new = task.eval(task.repair(Xk_new, rnd))
 		if Xk_fit_new < Xb_fit: grade, Xb, Xb_fit = grade + BONUS1, Xk_new, Xk_fit_new
 		elif Xk_fit_new != Xk_fit:
 			if Xk_fit_new > Xk_fit:
 				Xk_new = vectorize(genNewX)(Xk, R, D, SR, oper.add)
-				Xk_fit_new = task.eval(Xk_new)
+				Xk_fit_new = task.eval(task.repair(Xk_new, rnd))
 				if Xk_fit_new < Xb_fit: grade, Xb, Xb_fit = grade + BONUS1, Xk_new, Xk_fit_new
 				if Xk_fit_new < Xk_fit: grade, Xk, Xk_fit, improve = grade + BONUS2, Xk_new, Xk_fit_new, True
 			else: grade, Xk, Xk_fit, improve = grade + BONUS2, Xk_new, Xk_fit_new, True
 	return Xk, Xk_fit, Xb, Xb_fit, improve, grade, SR
 
 def MTS_LS3(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, rnd=rand, **ukwargs):
-	r"""
+	r"""Multiple trajectory local search three.
 
 	Args:
-		Xk:
-		Xk_fit:
-		Xb:
-		Xb_fit:
-		improve:
-		SR:
-		task:
-		BONUS1:
-		BONUS2:
-		rnd:
-		**ukwargs:
+		Xk (numpy.ndarray): Current solution.
+		Xk_fit (float): Current solutions fitness/function value.
+		Xb (numpy.ndarray): Global best solution.
+		Xb_fit (float): Global best solutions fitness/function value.
+		improve (bool): Has the solution been improved.
+		SR (numpy.ndarray): Search range.
+		task (Task): Optimization task.
+		BONUS1 (int): Bonus reward for improving global best solution.
+		BONUS2 (int): Bonus reward for improving solution.
+		sr_fix (numpy.ndarray): Fix when search range is to small.
+		rnd (mtrand.RandomState): Random number generator.
+		**ukwargs (Dict[str, Any]): Additional arguments.
 
 	Returns:
-
+		Tuple[numpy.ndarray, float, numpy.ndarray, float, bool, numpy.ndarray]:
+			1. New solution.
+			2. New solutions fitness/function value.
+			3. Global best if found else old global best.
+			4. Global bests function/fitness value.
+			5. If solution has improved.
+			6. Search range.
 	"""
 	Xk_new, grade = copy(Xk), 0.0
 	for i in range(len(Xk)):
 		Xk1, Xk2, Xk3 = copy(Xk_new), copy(Xk_new), copy(Xk_new)
 		Xk1[i], Xk2[i], Xk3[i] = Xk1[i] + 0.1, Xk2[i] - 0.1, Xk3[i] + 0.2
-		Xk1_fit, Xk2_fit, Xk3_fit = task.eval(Xk1), task.eval(Xk2), task.eval(Xk3)
+		Xk1_fit, Xk2_fit, Xk3_fit = task.eval(task.repair(Xk1, rnd)), task.eval(task.repair(Xk2, rnd)), task.eval(task.repair(Xk3, rnd))
 		if Xk1_fit < Xb_fit: grade, Xb, Xb_fit, improve = grade + BONUS1, Xk1, Xk1_fit, True
 		if Xk2_fit < Xb_fit: grade, Xb, Xb_fit, improve = grade + BONUS1, Xk2, Xk2_fit, True
 		if Xk3_fit < Xb_fit: grade, Xb, Xb_fit, improve = grade + BONUS1, Xk3, Xk3_fit, True
@@ -179,34 +207,40 @@ def MTS_LS3(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, rnd=
 		if D3 > 0: grade, improve = grade + BONUS2, True
 		a, b, c = 0.4 + rnd.rand() * 0.1, 0.1 + rnd.rand() * 0.2, rnd.rand()
 		Xk_new[i] += a * (D1 - D2) + b * (D3 - 2 * D1) + c
-		Xk_fit_new = task.eval(Xk_new)
+		Xk_fit_new = task.eval(task.repair(Xk_new, rnd))
 	if Xk_fit_new < Xk_fit: Xk, Xk_fit, improve = Xk_new, Xk_fit_new, True
 	return Xk, Xk_fit, Xb, Xb_fit, improve, grade, SR
 
 def MTS_LS3v1(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, phi=3, BONUS1=10, BONUS2=1, rnd=rand, **ukwargs):
-	r"""
+	r"""Multiple trajectory local search three version one.
 
 	Args:
-		Xk:
-		Xk_fit:
-		Xb:
-		Xb_fit:
-		improve:
-		SR:
-		task:
-		phi:
-		BONUS1:
-		BONUS2:
-		rnd:
-		**ukwargs:
+		Xk (numpy.ndarray): Current solution.
+		Xk_fit (float): Current solutions fitness/function value.
+		Xb (numpy.ndarray): Global best solution.
+		Xb_fit (float): Global best solutions fitness/function value.
+		improve (bool): Has the solution been improved.
+		SR (numpy.ndarray): Search range.
+		task (Task): Optimization task.
+		BONUS1 (int): Bonus reward for improving global best solution.
+		BONUS2 (int): Bonus reward for improving solution.
+		sr_fix (numpy.ndarray): Fix when search range is to small.
+		rnd (mtrand.RandomState): Random number generator.
+		**ukwargs (Dict[str, Any]): Additional arguments.
 
 	Returns:
-
+		Tuple[numpy.ndarray, float, numpy.ndarray, float, bool, numpy.ndarray]:
+			1. New solution.
+			2. New solutions fitness/function value.
+			3. Global best if found else old global best.
+			4. Global bests function/fitness value.
+			5. If solution has improved.
+			6. Search range.
 	"""
 	grade, Disp = 0.0, task.bRange / 10
 	while True in (Disp > 1e-3):
 		Xn = [rnd.permutation(Xk) + Disp * rnd.uniform(-1, 1, len(Xk)) for _ in range(phi)]
-		Xn_f = apply_along_axis(task.eval, 1, Xn)
+		Xn_f = apply_along_axis(task.eval, 1, apply_along_axis(task.repair, 1, Xn, rnd))
 		iBetter, iBetterBest = where(Xn_f < Xk_fit), where(Xn_f < Xb_fit)
 		grade += len(iBetterBest) * BONUS1 + (len(iBetter) - len(iBetterBest)) * BONUS2
 		if len(Xn_f[iBetterBest]) > 0:
@@ -220,7 +254,6 @@ def MTS_LS3v1(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, phi=3, BONUS1=10, BONUS
 	return Xk, Xk_fit, Xb, Xb_fit, improve, grade, SR
 
 class MultipleTrajectorySearch(Algorithm):
-	BONUS1, BONUS2 = 10, 1
 	r"""Implementation of Multiple trajectory search.
 
 	Algorithm:
@@ -242,7 +275,13 @@ class MultipleTrajectorySearch(Algorithm):
 		Lin-Yu Tseng and Chun Chen, "Multiple trajectory search for Large Scale Global Optimization," 2008 IEEE Congress on Evolutionary Computation (IEEE World Congress on Computational Intelligence), Hong Kong, 2008, pp. 3052-3059. doi: 10.1109/CEC.2008.4631210
 		
 	Attributes:
-		Name (list of str): TODO
+		Name (List[Str]): List of strings representing algorithm name.
+		BONUS1 (int): Bonus for improving global best solution.
+		BONUS2 (int): Bonus for improving solution.
+		NoLsTests (int): Number of test runs on local search algorithms.
+		NoLs (int): Number of local search algorithm runs.
+		NoLsBest (int): Number of locals search algorithm runs on best solution.
+		NoEnabled (int): Number of best solution for testing.
 	"""
 	Name = ['MultipleTrajectorySearch', 'MTS']
 
@@ -258,38 +297,46 @@ class MultipleTrajectorySearch(Algorithm):
 		'NoEnabled': lambda x: isinstance(x, int) and x > 0
 	}
 
-	def setParameters(self, M=40, NoLsTests=5, NoLs=5, NoLsBest=5, NoEnabled=17, **ukwargs):
+	def setParameters(self, M=40, NoLsTests=5, NoLs=5, NoLsBest=5, NoEnabled=17, BONUS1=10, BONUS2=1, **ukwargs):
 		r"""Set the arguments of the algorithm.
 
 		Arguments:
-			M {integer} -- number of individuals in population
-			NoLsTests {integer} -- number of test runs on local search algorihms
-			NoLs {integer} -- number of local search algoritm runs
-			NoLsBest {integer} -- number of locals search algorithm runs on best solution
-			NoEnabled {integer} -- number of best solution for testing
+			M (int): Number of individuals in population.
+			NoLsTests (int): Number of test runs on local search algorithms.
+			NoLs (int): Number of local search algorithm runs.
+			NoLsBest (int): Number of locals search algorithm runs on best solution.
+			NoEnabled (int): Number of best solution for testing.
+
+		See Also:
+			:func:`NiaPy.algorithms.algorithm.Algorithm.setParameters`
 		"""
-		self.M, self.NoLsTests, self.NoLs, self.NoLsBest, self.NoEnabled = M, NoLsTests, NoLs, NoLsBest, NoEnabled
+		Algorithm.setParameters(self, NP=M)
+		self.NoLsTests, self.NoLs, self.NoLsBest, self.NoEnabled, self.BONUS1, self.BONUS2 = NoLsTests, NoLs, NoLsBest, NoEnabled, BONUS1, BONUS2
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def GradingRun(self, x, x_f, xb, xb_f, improve, SR, task):
-		r"""
+		r"""Run local search for getting scores of local searches.
 
 		Args:
-			x:
-			x_f:
-			xb:
-			xb_f:
-			improve:
-			SR:
-			task:
+			x (numpy.ndarray): Solution for grading.
+			x_f (float): Solutions fitness/function value.
+			xb (numpy.ndarray): Global best solution.
+			xb_f (float): Global best solutions function/fitness value.
+			improve (bool): Info if solution has improved.
+			SR (numpy.ndarray): Search range.
+			task (Task): Optimization task.
 
 		Returns:
-
+			Tuple[numpy.ndarray, float, numpy.ndarray, float]:
+				1. New solution.
+				2. New solutions function/fitness value.
+				3. Global best solution.
+				4. Global best solutions fitness/function value.
 		"""
 		ls_grades, Xn, Xnb = full(3, 0.0), [[x, x_f]] * len(self.LSs), [xb, xb_f]
 		for _ in range(self.NoLsTests):
 			for k in range(len(self.LSs)):
-				Xn[k][0], Xn[k][1], xnb, xnb_f, improve, g, SR = self.LSs[k](Xn[k][0], Xn[k][1], Xnb[0], Xnb[1], improve, SR, task, BONUS1=self.BONUS1, BONUS2=self.BONUS2, rnd=self.Rand)
+				Xn[k][0], Xn[k][1], xnb, xnb_f, improve, g, SR = self.LSs[k](Xn[k][0], Xn[k][1], Xnb[0], Xnb[1], improve, SR, task=task, BONUS1=self.BONUS1, BONUS2=self.BONUS2, rnd=self.Rand)
 				if Xnb[1] > xnb_f: Xnb = [xnb, xnb_f]
 				ls_grades[k] += g
 		xn, k = min(Xn, key=lambda x: x[1]), argmax(ls_grades)
@@ -305,9 +352,9 @@ class MultipleTrajectorySearch(Algorithm):
 			xb:
 			xb_f:
 			improve:
-			SR:
+			SR (numpy.ndarray): Search range.
 			g:
-			task:
+			task (Task): Optimization task.
 
 		Returns:
 
@@ -320,22 +367,23 @@ class MultipleTrajectorySearch(Algorithm):
 		xb, xb_f = min(XBn, key=lambda x: x[1])
 		return x, x_f, xb, xb_f, improve, SR, g
 
-	def runTask(self, task):
-		# TODO izgradi simulirano ortogonalno matriko
-		SOA = self.rand([self.M, task.D])
-		X = task.Lower + task.bRange * SOA / (self.M - 1)
-		X_f = apply_along_axis(task.eval, 1, X)
-		enable, improve, SR, grades = full(self.M, True), full(self.M, True), full([self.M, task.D], task.bRange / 2), full(self.M, 0.0)
-		xb, xb_f = self.getBest(X, X_f)
-		while not task.stopCondI():
-			for i in range(self.M):
-				if not enable[i]: continue
-				enable[i], grades[i] = False, 0
-				X[i], X_f[i], xb, xb_f, k = self.GradingRun(X[i], X_f[i], xb, xb_f, improve[i], SR[i], task)
-				X[i], X_f[i], xb, xb_f, improve[i], SR[i], grades[i] = self.LsRun(k, X[i], X_f[i], xb, xb_f, improve[i], SR[i], grades[i], task)
-			for _ in range(self.NoLsBest): _, _, xb, xb_f, _, _, _ = MTS_LS1(xb, xb_f, xb, xb_f, False, task.bcRange(), task, rnd=self.Rand)
-			enable[argsort(grades)[:self.NoEnabled]] = True
-		return xb, xb_f
+	def initPopulation(self, task):
+		X, X_f, d = Algorithm.initPopulation(self, task)
+		enable, improve, SR, grades = full(self.NP, True), full(self.NP, True), full([self.NP, task.D], task.bRange / 2), full(self.NP, 0.0)
+		d.update({
+			'enable':enable, 'improve':improve, 'SR':SR, 'grades':grades
+		})
+		return X, X_f, d
+
+	def runIteration(self, task, X, X_f, xb, xb_f, enable, improve, SR, grades, **dparams):
+		for i in range(len(X)):
+			if not enable[i]: continue
+			enable[i], grades[i] = False, 0
+			X[i], X_f[i], xb, xb_f, k = self.GradingRun(X[i], X_f[i], xb, xb_f, improve[i], SR[i], task)
+			X[i], X_f[i], xb, xb_f, improve[i], SR[i], grades[i] = self.LsRun(k, X[i], X_f[i], xb, xb_f, improve[i], SR[i], grades[i], task)
+		for _ in range(self.NoLsBest): _, _, xb, xb_f, _, _, _ = MTS_LS1(xb, xb_f, xb, xb_f, False, task.bcRange(), task, rnd=self.Rand)
+		enable[argsort(grades)[:self.NoEnabled]] = True
+		return X, X_f, {'enable':enable, 'improve':improve, 'SR':SR, 'grades':grades}
 
 class MultipleTrajectorySearchV1(MultipleTrajectorySearch):
 	r"""Implementation of Multiple trajectory search.
@@ -359,18 +407,18 @@ class MultipleTrajectorySearchV1(MultipleTrajectorySearch):
 		Tseng, Lin-Yu, and Chun Chen. "Multiple trajectory search for unconstrained/constrained multi-objective optimization." Evolutionary Computation, 2009. CEC'09. IEEE Congress on. IEEE, 2009.
 
 	Attributes:
-		Name (list of str): TODO
+		Name (List[str]): List of strings representing algorithm name.
 	"""
 	Name = ['MultipleTrajectorySearchV1', 'MTSv1']
 
 	def setParameters(self, **kwargs):
-		r"""
+		r"""Set core parameters of MultipleTrajectorySearchV1 algorithm.
 
 		Args:
-			**kwargs:
+			**kwargs (Dict[str, Any]): Additional arguments.
 
 		See Also:
-			:func:`MultipleTrajectorySearch.setParameters`
+			:func:`NiaPy.algorithms.other.mts.MultipleTrajectorySearch.setParameters`
 		"""
 		kwargs.pop('NoLsBest', None)
 		MultipleTrajectorySearch.setParameters(self, NoLsBest=0, **kwargs)

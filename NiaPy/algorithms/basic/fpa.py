@@ -33,12 +33,14 @@ class FlowerPollinationAlgorithm(Algorithm):
 		Implementation is based on the following MATLAB code: https://www.mathworks.com/matlabcentral/fileexchange/45112-flower-pollination-algorithm?requestedDomain=true
 
 	Attributes:
-		Name (List[str]): List of strings representing algorithm names
-		p (float): probability switch
-		beta (float): TODO
+		Name (List[str]): List of strings representing algorithm names.
+		p (float): probability switch.
+		beta (float): TODO.
+
+	See Also:
+		:class:`NiaPy.algorithms.algorithm.Algorithm`
 	"""
 	Name = ['FlowerPollinationAlgorithm', 'FPA']
-	p, beta = 0.35, 1.5
 
 	@staticmethod
 	def typeParameters():
@@ -50,7 +52,7 @@ class FlowerPollinationAlgorithm(Algorithm):
 				* beta (function): TODO
 
 		See Also:
-			:func:`Algorithm.typeParameters`
+			:func:`NiaPy.algorithms.algorithm.Algorithm.typeParameters`
 		"""
 		d = Algorithm.typeParameters()
 		d.update({
@@ -60,15 +62,15 @@ class FlowerPollinationAlgorithm(Algorithm):
 		return d
 
 	def setParameters(self, NP=25, p=0.35, beta=1.5, **ukwargs):
-		r"""**__init__(self, D, NP, nFES, p, benchmark)**.
+		r"""Set core parameters of FlowerPollinationAlgorithm algorithm.
 
 		Arguments:
-			NP (int): population size
-			p (float): probability switch
-			beta (float): TODO
+			NP (int): Population size.
+			p (float): Probability switch.
+			beta (float): TODO.
 
 		See Also:
-			:func:`Algorithm.setParameters`
+			:func:`NiaPy.algorithms.algorithm.Algorithm.setParameters`
 		"""
 		Algorithm.setParameters(self, NP=NP)
 		self.p, self.beta = p, beta

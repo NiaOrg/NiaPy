@@ -30,6 +30,9 @@ class MothFlameOptimizer(Algorithm):
 
 	Attributes:
 		Name (List[str]): List of strings representing algorithm name.
+
+	See Also:
+		:class:`NiaPy.algorithms.algorithm.Algorithm`
 	"""
 	Name = ['MothFlameOptimizer', 'MFO']
 
@@ -41,7 +44,7 @@ class MothFlameOptimizer(Algorithm):
 			Dict[str, Callable]: TODO
 
 		See Also:
-			:func:`Algorithm.typeParameters`
+			:func:`NiaPy.algorithms.algorithm.Algorithm.typeParameters`
 		"""
 		return Algorithm.typeParameters()
 
@@ -52,9 +55,9 @@ class MothFlameOptimizer(Algorithm):
 			NP (int): Number of individuals in population
 
 		See Also:
-			:func:`Algorithm.setParameters`
+			:func:`NiaPy.algorithms.algorithm.Algorithm.setParameters`
 		"""
-		Algorithm.setParameters(NP=NP, **ukwargs)
+		Algorithm.setParameters(self, NP=NP, **ukwargs)
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def initPopulation(self, task):
@@ -74,15 +77,16 @@ class MothFlameOptimizer(Algorithm):
 					* previous_fitness (numpy.ndarray[float]): Previous population fitness/function values
 
 		See Also:
-			:func:`Algorithm.initPopulation`
+			:func:`NiaPy.algorithms.algorithm.Algorithm.initPopulation`
 		"""
-		moth_pos, moth_fitness,  = Algorithm.initPopulation(self, task)
+		moth_pos, moth_fitness, d = Algorithm.initPopulation(self, task)
 		# Create best population
 		indexes = argsort(moth_fitness)
 		best_flames, best_flame_fitness = moth_pos[indexes], moth_fitness[indexes]
 		# Init previous population
 		previous_population, previous_fitness = zeros((self.NP, task.D)), zeros(self.NP)
-		return moth_pos, moth_fitness, {'best_flames':best_flames, 'best_flame_fitness':best_flame_fitness, 'previous_population': previous_population, 'previous_fitness': previous_fitness}
+		d.update({'best_flames':best_flames, 'best_flame_fitness':best_flame_fitness, 'previous_population': previous_population, 'previous_fitness': previous_fitness})
+		return moth_pos, moth_fitness, d
 
 	def runIteration(self, task, moth_pos, moth_fitness, xb, fxb, best_flames, best_flame_fitness, previous_population, previous_fitness, **dparams):
 		r"""Core function of MothFlameOptimizer algorithm.

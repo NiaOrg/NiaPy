@@ -34,6 +34,9 @@ class GlowwormSwarmOptimization(Algorithm):
 
 	Attributes:
 		Name (list of str): List of strings represeinting algorithm name.
+
+	See Also:
+		:class:`NiaPy.algorithms.algorithm.Algorithm`
 	"""
 	Name = ['GlowwormSwarmOptimization', 'GSO']
 
@@ -150,13 +153,19 @@ class GlowwormSwarmOptimization(Algorithm):
 		return R + self.beta * (self.nt - sum(N))
 
 	def initPopulation(self, task):
-		r"""
+		r"""Initialize population.
 
 		Args:
-			task:
+			task (Task): Optimization task.
 
 		Returns:
-
+			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+				1. Initialized population of glowwarms.
+				2. Initialized populations function/fitness values.
+				3. Additional arguments:
+					* L (numpy.ndarray): TODO.
+					* R (numpy.ndarray): TODO.
+					* rs (numpy.ndarray): TODO.
 		"""
 		rs = euclidean(full(task.D, 0), task.bRange)
 		GS, L, R = self.uniform(task.Lower, task.Upper, [self.n, task.D]), full(self.n, self.l0), full(self.n, rs)
@@ -164,21 +173,27 @@ class GlowwormSwarmOptimization(Algorithm):
 		return GS, GS_f, {'L':L, 'R':R, 'rs':rs}
 
 	def runIteration(self, task, GS, GS_f, xb, fxb, L, R, rs, **dparams):
-		r"""
+		r"""Core function of GlowwormSwarmOptimization algorithm.
 
 		Args:
 			task (Task): Optimization taks.
 			GS (numpy.ndarray): Current population.
 			GS_f (numpy.ndarray[float]): Current populations fitness/function values.
-			xb:
-			fxb:
-			L:
-			R:
-			rs:
+			xb (numpy.ndarray): Global best individual.
+			fxb (float): Global best individuals function/fitness value.
+			L (numpy.ndarray):
+			R (numpy.ndarray):
+			rs (numpy.ndarray):
 			**dparams Dict[str, Any]: Additional arguments.
 
 		Returns:
-
+			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+				1. Initialized population of glowwarms.
+				2. Initialized populations function/fitness values.
+				3. Additional arguments:
+					* L (numpy.ndarray): TODO.
+					* R (numpy.ndarray): TODO.
+					* rs (numpy.ndarray): TODO.
 		"""
 		GSo, Ro = copy(GS), copy(R)
 		L = self.calcLuciferin(L, GS_f)

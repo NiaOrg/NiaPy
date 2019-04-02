@@ -30,6 +30,9 @@ class FireflyAlgorithm(Algorithm):
 
 	Attributes:
 		Name (List[str]): List of string representing algorithm name.
+
+	See Also:
+		:class:`NiaPy.algorithms.algorithm.Algorithm`
 	"""
 	Name = ['FireflyAlgorithm', 'FA']
 
@@ -39,12 +42,12 @@ class FireflyAlgorithm(Algorithm):
 
 		Returns:
 			Dict[str, Callable]:
-				* alpha (func): TODO
-				* betamin (func): TODO
-				* gamma (func): TODO
+				* alpha (Callable[[Union[float, int]], bool]): TODO.
+				* betamin (Callable[[Union[float, int]], bool]): TODO.
+				* gamma (Callable[[Union[float, int]], bool]): TODO.
 
 		See Also:
-			:func:`Algorithm.typeParameters`
+			:func:`NiaPy.algorithms.algorithm.Algorithm.typeParameters`
 		"""
 		d = Algorithm.typeParameters()
 		d.update({
@@ -62,7 +65,10 @@ class FireflyAlgorithm(Algorithm):
 			alpha (float): Alpha parameter.
 			betamin (float): Betamin parameter.
 			gamma (flaot): Gamma parameter.
-			**ukwargs (Dict[str, Any]): Additional arguments.
+			ukwargs (Dict[str, Any]): Additional arguments.
+
+		See Also:
+			:func:`NiaPy.algorithms.algorithm.Algorithm.setParameters`
 		"""
 		Algorithm.setParameters(self, NP=NP)
 		self.alpha, self.betamin, self.gamma = alpha, betamin, gamma
@@ -72,8 +78,8 @@ class FireflyAlgorithm(Algorithm):
 		r"""Optionally recalculate the new alpha value.
 
 		Args:
-			a:
-			alpha:
+			a (float):
+			alpha (float):
 
 		Returns:
 			float: New value of parameter alpha
@@ -121,7 +127,7 @@ class FireflyAlgorithm(Algorithm):
 					* alpah (float): TODO
 
 		See Also:
-			:func:`Algorithm.initPopulation`
+			:func:`NiaPy.algorithms.algorithm.Algorithm.initPopulation`
 		"""
 		Fireflies, Intensity, _ = Algorithm.initPopulation(self, task)
 		return Fireflies, Intensity, {'alpha':self.alpha}
@@ -146,7 +152,7 @@ class FireflyAlgorithm(Algorithm):
 					* alpha (float): TODO
 
 		See Also:
-			* :func:`FireflyAlgorithm.move_ffa`
+			* :func:`NiaPy.algorithms.basic.fa.FireflyAlgorithm.move_ffa`
 		"""
 		alpha = self.alpha_new(task.nFES / self.NP, alpha)
 		Index = argsort(Intensity)

@@ -32,10 +32,13 @@ class HarmonySearch(Algorithm):
 		Yang, Xin-She. "Harmony search as a metaheuristic algorithm." Music-inspired harmony search algorithm. Springer, Berlin, Heidelberg, 2009. 1-14.
 
 	Attributes:
-		Name (list of str): List of strings representing algorithm names
+		Name (List[str]): List of strings representing algorithm names
 		r_accept (float): TODO
 		r_pa (float): TODO
 		b_range (float): TODO
+
+	See Also:
+		:class:`NiaPy.algorithms.algorithm.Algorithm`
 	"""
 	Name = ['HarmonySearch', 'HS']
 
@@ -57,9 +60,9 @@ class HarmonySearch(Algorithm):
 			b_range (float): --
 
 		See Also:
-			:func:`Algorithm.setParameters`
+			:func:`NiaPy.algorithms.algorithm.Algorithm.setParameters`
 		"""
-		Algorithm.setParameters(NP=HMS, **ukwargs)
+		Algorithm.setParameters(self, NP=HMS, **ukwargs)
 		self.r_accept, self.r_pa, self.b_range = r_accept, r_pa, b_range
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
@@ -67,7 +70,7 @@ class HarmonySearch(Algorithm):
 		r"""
 
 		Args:
-			task:
+			task (Task): Optimization task.
 
 		Returns:
 
@@ -79,7 +82,7 @@ class HarmonySearch(Algorithm):
 
 		Args:
 			x:
-			task:
+			task (Task): Optimization task.
 
 		Returns:
 
@@ -91,14 +94,14 @@ class HarmonySearch(Algorithm):
 
 		Args:
 			HM:
-			task:
+			task (Task): Optimization task.
 
 		Returns:
 
 		"""
 		H = full(task.D, .0)
 		for i in range(task.D):
-			r, j = self.rand(), self.randint(self.HMS)
+			r, j = self.rand(), self.randint(self.NP)
 			H[i] = HM[j, i] if r > self.r_accept else self.adjustment(HM[j, i], task) if r > self.r_pa else self.uniform(task.Lower[i], task.Upper[i])
 		return H
 
@@ -106,16 +109,16 @@ class HarmonySearch(Algorithm):
 		r"""
 
 		Args:
-			task:
+			task (Task): Optimization task.
 
 		Returns:
-			Tuple[array of array of (float or int), array of float, dict]:
+			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
 				1. New population
 				2. New population fitness/function values
 				3. Additional parameters
 
 		See Also:
-			:func:`Algorithm.initPopulation`
+			:func:`NiaPy.algorithms.algorithm.Algorithm.initPopulation`
 		"""
 		return Algorithm.initPopulation(self, task)
 
@@ -148,9 +151,12 @@ class HarmonySearchV1(HarmonySearch):
 		Yang, Xin-She. "Harmony search as a metaheuristic algorithm." Music-inspired harmony search algorithm. Springer, Berlin, Heidelberg, 2009. 1-14.
 
 	Attributes:
-		Name (list of str): List of strings representing algorithm name
+		Name (List[str]): List of strings representing algorithm name.
 		bw_min (float): TODO
 		bw_max (float): TODO
+
+	See Also:
+		:class:`NiaPy.algorithms.basic.hs.HarmonySearch`
 	"""
 	Name = ['HarmonySearchV1', 'HSv1']
 
@@ -170,7 +176,7 @@ class HarmonySearchV1(HarmonySearch):
 			bw_max (float): Maximal bandwidth
 
 		See Also:
-			:func:`HarmonySearch.setParameters`
+			:func:`NiaPy.algorithms.basic.hs.HarmonySearch.setParameters`
 		"""
 		self.bw_min, self.bw_max = bw_min, bw_max
 		HarmonySearch.setParameters(self, **kwargs)
@@ -179,7 +185,7 @@ class HarmonySearchV1(HarmonySearch):
 		r"""
 
 		Args:
-			task:
+			task (Task): Optimization task.
 
 		Returns:
 

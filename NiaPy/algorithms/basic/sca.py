@@ -65,15 +65,16 @@ class SineCosineAlgorithm(Algorithm):
 			Rmin (float): Minimu value for $r_3$ value
 			Rmax (float): Maximum value for $r_3$ value
 		"""
-		self.NP, self.a, self.Rmin, self.Rmax = NP, a, Rmin, Rmax
+		Algorithm.setParameters(self, NP=NP)
+		self.a, self.Rmin, self.Rmax = a, Rmin, Rmax
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def nextPos(self, x, x_b, r1, r2, r3, r4, task):
 		r"""Move individual to new position in search space.
 
 		Args:
-			x (array): Individual represented with components
-			x_b (array): Best individual represented with components
+			x (numpy.ndarray): Individual represented with components
+			x_b (nmppy.ndarray): Best individual represented with components
 			r1 (float): Number dependent on algorithm iteration/generations
 			r2 (float): Random number in range of 0 and 2 * PI
 			r3 (float): Random number in range [Rmin, Rmax]
@@ -97,9 +98,7 @@ class SineCosineAlgorithm(Algorithm):
 				2. Function/fitness values for individuals
 				3. Additional arguments
 		"""
-		P = self.uniform(task.bcLower(), task.bcUpper(), [self.NP, task.D])
-		P_f = apply_along_axis(task.eval, 1, P)
-		return P, P_f, {}
+		return Algorithm.initPopulation(self, task)
 
 	def runIteration(self, task, P, P_f, xb, fxb, **dparams):
 		r"""Core function of Sine Cosine Algorithm.
