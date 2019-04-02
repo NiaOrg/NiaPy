@@ -59,7 +59,7 @@ def MoveCorals(pop, p, F, task, rnd=rand, **kwargs):
 		**kwargs (Dict[str, Any]): Additional arguments.
 
 	Returns:
-		Tuple[array of array of (float or int), array of float]:
+		Tuple[numpy.ndarray, numpy.ndarray[float]]:
 			1. New population.
 			2. New population function/fitness values.
 	"""
@@ -91,12 +91,14 @@ class CoralReefsOptimization(Algorithm):
 		Fb (int): Value in [0, 1] for Brooding size.
 		Fd (int): Value in [0, 1] for Depredation.
 		k (int): Nomber of trys for larva setting.
-		P_F (float): Mutation variable in [0, \inf].
+		P_F (float): Mutation variable :math:`\in [0, \infty]`.
 		P_Cr(float): Crossover rate in [0, 1].
 		Distance (Callable[[numpy.ndarray, numpy.ndarray], float]): Funciton for calculating distance between corals.
 		SexualCrossover (Callable[[numpy.ndarray, float, Task, mtrand.RandomState, Dict[str, Any]], Tuple[numpy.ndarray, numpy.ndarray[float]]]): Crossover function.
 		Brooding (Callable[[numpy.ndarray, float, Task, mtrand.RandomState, Dict[str, Any]], Tuple[numpy.ndarray, numpy.ndarray[float]]]): Brooding function.
 
+	See Also:
+		:class:`NiaPy.algorithms.algorithm.Algorithm`
 	"""
 	Name = ['CoralReefsOptimization', 'CRO']
 
@@ -140,7 +142,7 @@ class CoralReefsOptimization(Algorithm):
 			Distance (Callable[[numpy.ndarray, numpy.ndarray], float]): Funciton for calculating distance between corals.
 
 		See Also:
-			:func:`Algorithm.setParameters`
+			:func:`NiaPy.algorithms.algorithm.Algorithm.setParameters`
 		"""
 		Algorithm.setParameters(self, NP=N)
 		self.phi, self.Fa, self.Fb, self.Fd, self.k, self.P_Cr, self.P_F = phi, Fa, Fb, Fd, k, P_Cr, P_F
@@ -163,7 +165,7 @@ class CoralReefsOptimization(Algorithm):
 					* Fd (int): TODO
 
 		See Also:
-			:func:`Algorithm.initPopulation`
+			:func:`NiaPy.algorithms.algorithm.Algorithm.initPopulation`
 		"""
 		Reef, Reef_f, d = Algorithm.initPopulation(self, task)
 		Fa, Fb, Fd = self.NP * self.Fa, self.NP * self.Fb, self.NP * self.Fd
@@ -186,8 +188,8 @@ class CoralReefsOptimization(Algorithm):
 				2. New population fitness/funciton values.
 
 		See Also:
-			* :func:`CoralReefsOptimization.setting`
-			* :func:`BroodingSimple`
+			* :func:`NiaPy.algorithms.basic.CoralReefsOptimization.setting`
+			* :func:`NiaPy.algorithms.basic.BroodingSimple`
 		"""
 		I = argsort(Reef_f)[:Fa]
 		Reefn, Reefn_f = self.Brooding(Reef[I], self.P_F, task, rnd=self.Rand)
@@ -261,8 +263,8 @@ class CoralReefsOptimization(Algorithm):
 					* Fd (int): TODO
 
 		See Also:
-			* :func:`CoralReefsOptimization.SexualCrossover`
-			* :func:`CoralReefsOptimization.Brooding`
+			* :func:`NiaPy.algorithms.basic.CoralReefsOptimization.SexualCrossover`
+			* :func:`NiaPy.algorithms.basic.CoralReefsOptimization.Brooding`
 		"""
 		I = self.Rand.choice(len(Reef), size=Fb, replace=False)
 		Reefn_s, Reefn_s_f = self.SexualCrossover(Reef[I], self.P_Cr, task, rnd=self.Rand)
