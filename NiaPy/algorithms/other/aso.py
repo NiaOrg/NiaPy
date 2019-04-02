@@ -179,6 +179,9 @@ class AnarchicSocietyOptimization(Algorithm):
 		F (float): Mutation parameter.
 		CR (float): Crossover parameter :math:`\in [0, 1]`.
 		Combination (Callable[numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray, float, float, float, float, float, float, Task, mtrand.RandomState]): Function for combining individuals to get new position/individual.
+
+	See Also:
+		:class:`NiaPy.algorithms.algorithm.Algorithm`
 	"""
 	Name = ['AnarchicSocietyOptimization', 'ASO']
 
@@ -196,7 +199,7 @@ class AnarchicSocietyOptimization(Algorithm):
 				* CR (Callable[[Union[float, int]], bool]): TODO
 
 		See Also:
-			:func:`Algorithm.typeParameters`
+			:func:`NiaPy.algorithms.algorithm.Algorithm.typeParameters`
 		"""
 		d = Algorithm.typeParameters()
 		d.update({
@@ -224,8 +227,10 @@ class AnarchicSocietyOptimization(Algorithm):
 			Combination (Optional[Callable[numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray, float, float, float, float, float, float, Task, mtrand.RandomState]]): Function for combining individuals to get new position/individual.
 
 		See Also:
-			* :func:`Algorithm.setParameters`
-			* :func:`Elitism', :func:`Crossover`, :func:`Sequential`
+			* :func:`NiaPy.algorithms.algorithm.Algorithm.setParameters`
+			* :func:`NiaPy.algorithms.other.aso.Elitism'
+			* :func:`NiaPy.algorithms.other.aso.Crossover`
+			* :func:`NiaPy.algorithms.other.aso.Sequential`
 		"""
 		Algorithm.setParameters(self, NP=NP)
 		self.alpha, self.gamma, self.theta, self.d, self.dn, self.nl, self.F, self.CR, self.Combination = alpha, gamma, theta, d, dn, nl, F, CR, Combination
@@ -342,8 +347,8 @@ class AnarchicSocietyOptimization(Algorithm):
 					* rs (float): Distance of search space.
 
 		See Also:
-			* :func:`Algorithm.initPopulation`
-			* :func:`AnarchicSocietyOptimization.init`
+			* :func:`NiaPy.algorithms.algorithm.Algorithm.initPopulation`
+			* :func:`NiaPy.algorithms.other.aso.AnarchicSocietyOptimization.init`
 		"""
 		X, X_f, d = Algorithm.initPopulation(self, task)
 		alpha, gamma, theta = self.init(task)
