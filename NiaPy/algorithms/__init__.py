@@ -1,3 +1,5 @@
+# encoding=utf8
+# pylint: disable=bad-continuation
 """Module with implementations of basic and hybrid algorithms."""
 
 from NiaPy.algorithms import basic

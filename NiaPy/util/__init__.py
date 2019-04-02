@@ -9,7 +9,6 @@ __all__ = [
     'CountingTask',
     'StoppingTask',
     'ThrowingTask',
-    'MoveTask',
     'TaskConvPrint',
     'TaskConvPlot',
     'TaskConvSave',

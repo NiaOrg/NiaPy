@@ -1,8 +1,10 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, trailing-whitespace, line-too-long, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, redefined-builtin, singleton-comparison, unused-argument, arguments-differ, no-else-return, bad-continuation
 import logging
+
 from scipy.spatial.distance import euclidean
-from numpy import full, apply_along_axis, argmin, copy, sum, inf, fmax, pi, where
+from numpy import full, apply_along_axis, copy, sum, fmax, pi, where
+
 from NiaPy.algorithms.algorithm import Algorithm
 
 logging.basicConfig()

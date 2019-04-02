@@ -1,7 +1,6 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, multiple-statements, line-too-long
 from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
-from NiaPy.benchmarks.griewank import Griewank
 from NiaPy.algorithms.modified import DifferentialEvolutionMTS, DifferentialEvolutionMTSv1, MultiStratgyDifferentialEvolutionMTS, DynNpMultiStrategyDifferentialEvolutionMTS, DynNpMultiStrategyDifferentialEvolutionMTSv1, DynNpDifferentialEvolutionMTS, DynNpDifferentialEvolutionMTSv1
 
 class DEMTSTestCase(AlgorithmTestCase):

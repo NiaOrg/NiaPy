@@ -1,8 +1,8 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, line-too-long, singleton-comparison, multiple-statements, attribute-defined-outside-init, no-self-use, logging-not-lazy, unused-variable, arguments-differ, bad-continuation
+# pylint: disable=mixed-indentation, line-too-long, singleton-comparison, multiple-statements, attribute-defined-outside-init, no-self-use, logging-not-lazy, unused-variable, arguments-differ, bad-continuation, unused-argument
 import logging
 
-from numpy import vectorize, argmin, exp, random as rand, asarray
+from numpy import exp, random as rand, asarray
 
 from NiaPy.algorithms.algorithm import Algorithm, Individual
 from NiaPy.util.utility import objects2array

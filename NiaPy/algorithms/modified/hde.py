@@ -29,7 +29,7 @@ class MtsIndividual(Individual):
 			grade:
 			enable:
 			improved:
-			**kwargs:
+			**kwargs (Dict[str, Any]): Additional arguments.
 
 		See Also:
 			:func:`Individual.__init__`

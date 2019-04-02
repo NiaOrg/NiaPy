@@ -7,7 +7,7 @@ class MFOTestCase(AlgorithmTestCase):
 
     def test_custom_works_fine(self):
         mfo_custom = MothFlameOptimizer(NP=20, seed=self.seed)
-        mfo_customc = MothFlameOptimizer(NP=20,seed=self.seed)
+        mfo_customc = MothFlameOptimizer(NP=20, seed=self.seed)
         AlgorithmTestCase.algorithm_run_test(self, mfo_custom, mfo_customc, MyBenchmark())
 
     def test_griewank_works_fine(self):

@@ -597,7 +597,7 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 		r.update({
 			'Lt_min': lambda x: isinstance(x, int) and x >= 0,
 			'Lt_max': lambda x: isinstance(x, int) and x >= 0,
-			'delta_np': lambda x: isinstance(x, float) and x >= 0 and x <= 1,
+			'delta_np': lambda x: isinstance(x, float) and 0 <= x <= 1,
 			'omega': lambda x: isinstance(x, float) and x >= 0
 		})
 		return r

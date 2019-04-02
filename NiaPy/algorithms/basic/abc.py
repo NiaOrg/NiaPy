@@ -2,7 +2,9 @@
 # pylint: disable=mixed-indentation, line-too-long, multiple-statements, attribute-defined-outside-init, logging-not-lazy, arguments-differ, bad-continuation
 import copy
 import logging
-from numpy import asarray, full, empty, argmax
+
+from numpy import asarray, full, argmax
+
 from NiaPy.algorithms.algorithm import Algorithm, Individual, defaultIndividualInit
 
 logging.basicConfig()
@@ -104,12 +106,6 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 		s = sum(Probs)
 		Probs = [Probs[i] / s for i in range(self.FoodNumber)]
 		return Probs
-
-	def initPop(self, NP, task, rand):
-		pop = empty(NP, dtype=object)
-		for i in range(NP): pop[i] = SolutionABC(task=task, rand=rand, e=True)
-		fpop = asarray([x.f for x in pop])
-		return pop, fpop
 
 	def initPopulation(self, task):
 		r"""Initializes the starting population.

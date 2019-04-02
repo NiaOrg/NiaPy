@@ -197,7 +197,7 @@ def MTS_LS3(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, rnd=
 	for i in range(len(Xk)):
 		Xk1, Xk2, Xk3 = copy(Xk_new), copy(Xk_new), copy(Xk_new)
 		Xk1[i], Xk2[i], Xk3[i] = Xk1[i] + 0.1, Xk2[i] - 0.1, Xk3[i] + 0.2
-		Xk1_fit, Xk2_fit, Xk3_fit = task.eval(task.repair(Xk1, rnd)), task.eval(task.repair(Xk2, rnd)), task.eval(task.repair(Xk3, rnd))
+		Xk1_fit, Xk2_fit, Xk3_fit = task.eval(Xk1), task.eval(Xk2), task.eval(Xk3)
 		if Xk1_fit < Xb_fit: grade, Xb, Xb_fit, improve = grade + BONUS1, Xk1, Xk1_fit, True
 		if Xk2_fit < Xb_fit: grade, Xb, Xb_fit, improve = grade + BONUS1, Xk2, Xk2_fit, True
 		if Xk3_fit < Xb_fit: grade, Xb, Xb_fit, improve = grade + BONUS1, Xk3, Xk3_fit, True
@@ -207,7 +207,7 @@ def MTS_LS3(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, rnd=
 		if D3 > 0: grade, improve = grade + BONUS2, True
 		a, b, c = 0.4 + rnd.rand() * 0.1, 0.1 + rnd.rand() * 0.2, rnd.rand()
 		Xk_new[i] += a * (D1 - D2) + b * (D3 - 2 * D1) + c
-		Xk_fit_new = task.eval(task.repair(Xk_new, rnd))
+		Xk_fit_new = task.eval(Xk_new)
 	if Xk_fit_new < Xk_fit: Xk, Xk_fit, improve = Xk_new, Xk_fit_new, True
 	return Xk, Xk_fit, Xb, Xb_fit, improve, grade, SR
 

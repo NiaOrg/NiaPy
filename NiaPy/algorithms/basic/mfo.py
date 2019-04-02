@@ -1,7 +1,9 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, line-too-long, arguments-differ, bad-continuation
 import logging
-from numpy import apply_along_axis, zeros, copy, argsort, concatenate, sort, array, exp, cos, pi
+
+from numpy import apply_along_axis, zeros, argsort, concatenate, array, exp, cos, pi
+
 from NiaPy.algorithms.algorithm import Algorithm
 
 logging.basicConfig()
@@ -117,7 +119,7 @@ class MothFlameOptimizer(Algorithm):
 		previous_population, previous_fitness = moth_pos, moth_fitness
 		# Create sorted population
 		indexes = argsort(moth_fitness)
-		sorted_fitness, sorted_population = moth_fitness[indexes], moth_pos[indexes]
+		sorted_population = moth_pos[indexes]
 		# Some parameters
 		flame_no, a = round(self.NP - task.Iters * ((self.NP - 1) / task.nGEN)), -1 + task.Iters * ((-1) / task.nGEN)
 		for i in range(self.NP):

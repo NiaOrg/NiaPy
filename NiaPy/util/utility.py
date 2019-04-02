@@ -364,11 +364,9 @@ class Task(Utility):
 
 	def nextIter(self):
 		r"""Increments the number of algorithm iterations."""
-		pass
 
 	def start(self):
 		r"""Start stopwatch."""
-		pass
 
 	def eval(self, A):
 		r"""Evaluate the solution A.
@@ -452,18 +450,6 @@ class CountingTask(Task):
 		"""
 		self.Iters += 1
 
-	def stopCondI(self):
-		r"""Check if stoping condition and increment number of generations/iterations.
-
-		Returns:
-			bool: `True` if stopping criteria is meet else `False`
-
-		See Also:
-			:func:`NiaPy.util.utility.CountingTask.nextIter`
-		"""
-		self.nextIter()
-		return Task.stopCondI(self)
-
 class StoppingTask(CountingTask):
 	r"""Optimization task with implemented checking for stopping criterias.
 
@@ -530,7 +516,7 @@ class StoppingTask(CountingTask):
 			* :func:`NiaPy.util.utility.CountingTask.stopCondI`
 			* :func:`NiaPy.util.utility.StoppingTask.stopCond`
 		"""
-		CountingTask.stopCondI(self)
+		CountingTask.nextIter(self)
 		return self.stopCond()
 
 class ThrowingTask(StoppingTask):
@@ -750,7 +736,7 @@ class TaskConvPrint(StoppingTask):
 			:func:`NiaPy.util.utility.StoppingTask.eval`
 		"""
 		x_f = StoppingTask.eval(self, A)
-		if not self.x_f == self.xb_f:
+		if self.x_f != self.xb_f:
 			self.xb, self.xb_f = A, x_f
 			logger.info('nFES:%d nGEN:%d => %s -> %s' % (self.Evals, self.Iters, self.xb, self.xb_f * self.optType.value))
 		return x_f

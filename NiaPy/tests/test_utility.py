@@ -2,7 +2,7 @@
 # pylint: disable=mixed-indentation, multiple-statements, unused-variable, unused-argument, redefined-builtin, no-init, line-too-long, broad-except
 from unittest import TestCase
 from numpy import full, random as rnd, inf, sum, array_equal, asarray
-from NiaPy.util import Utility, StopingTask, fullArray, ScaledTask, TaskConvPrint, TaskComposition, FesException, GenException
+from NiaPy.util import Utility, StoppingTask, fullArray, ScaledTask, TaskConvPrint, TaskComposition, FesException, GenException
 # TimeException, RefException
 
 class FullArrayTestCase(TestCase):
@@ -131,9 +131,9 @@ class UtilityTestCase(TestCase):
 		self.assertRaises(TypeError, lambda: self.u.get_benchmark(MyBenchmark))
 		self.assertRaises(TypeError, lambda: self.u.get_benchmark(NoLimits))
 
-class StopingTaskBaseTestCase(TestCase):
+class StoppingTaskBaseTestCase(TestCase):
 	def setUp(self):
-		self.task = StopingTask()
+		self.task = StoppingTask()
 
 	def test_dim_ok(self):
 		self.assertEqual(self.task.D, 0)
@@ -181,7 +181,7 @@ class StopingTaskBaseTestCase(TestCase):
 class StoppingTaskTestCase(TestCase):
 	def setUp(self):
 		self.D, self.nFES, self.nGEN = 10, 10, 10
-		self.t = StopingTask(D=self.D, nFES=self.nFES, nGEN=self.nGEN, benchmark=MyBenchmark())
+		self.t = StoppingTask(D=self.D, nFES=self.nFES, nGEN=self.nGEN, benchmark=MyBenchmark())
 
 	def test_isFeasible_fine(self):
 		x = full(self.D, 10)
@@ -252,7 +252,7 @@ class StoppingTaskTestCase(TestCase):
 class ScaledTaskTestCase(TestCase):
 	def setUp(self):
 		self.D, self.nFES, self.nGEN = 10, 10, 10
-		self.t = StopingTask(D=self.D, nFES=self.nFES, nGEN=self.nGEN, benchmark=MyBenchmark())
+		self.t = StoppingTask(D=self.D, nFES=self.nFES, nGEN=self.nGEN, benchmark=MyBenchmark())
 		d1, d2 = self.t.bcLower() + self.t.bcRange() / 2, self.t.bcRange() * 0.2
 		L, U = d1, d1 + d2
 		self.tc = ScaledTask(self.t, L, U)

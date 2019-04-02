@@ -2,7 +2,6 @@
 # pylint: disable=mixed-indentation, multiple-statements, line-too-long
 from unittest import TestCase
 from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
-from NiaPy.benchmarks.griewank import Griewank
 from NiaPy.algorithms.basic import EvolutionStrategy1p1, EvolutionStrategyMp1, EvolutionStrategyMpL, EvolutionStrategyML, CovarianceMatrixAdaptionEvolutionStrategy
 from NiaPy.algorithms.basic.es import IndividualES
 

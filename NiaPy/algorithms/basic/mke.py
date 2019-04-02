@@ -2,7 +2,9 @@
 # pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, len-as-condition, singleton-comparison, arguments-differ, bad-continuation
 import logging
 from math import ceil
-from numpy import apply_along_axis, vectorize, argmin, argmax, inf, full, tril
+
+from numpy import apply_along_axis, vectorize, argmin, argmax, full, tril
+
 from NiaPy.algorithms.algorithm import Algorithm, Individual, defaultIndividualInit, defaultNumPyInit
 
 logging.basicConfig()
@@ -113,7 +115,7 @@ class MonkeyKingEvolutionV1(Algorithm):
 			:func:`NiaPy.algorithms.algorithm.Algorithm.setParameters`
 		"""
 		Algorithm.setParameters(self, NP=NP, itype=ukwargs.pop('itype', MkeSolution), InitPopFunc=ukwargs.pop('InitPopFunc', defaultIndividualInit))
-		self.F, self.R, self.C, self.FC =  F, R, C, FC
+		self.F, self.R, self.C, self.FC = F, R, C, FC
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def moveP(self, x, x_pb, x_b, task):

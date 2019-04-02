@@ -212,7 +212,8 @@ class KrillHerd(Algorithm):
 		KH, KH_f, d = Algorithm.initPopulation(self, task)
 		W_n, W_f = self.initWeights(task)
 		N, F = full(self.NP, .0), full(self.NP, .0)
-		return KH, KH_f, {'W_n':W_n, 'W_f':W_f, 'N':N, 'F':F}
+		d.update({'W_n':W_n, 'W_f':W_f, 'N':N, 'F':F})
+		return KH, KH_f, d
 
 	def runIteration(self, task, KH, KH_f, xb, fxb, W_n, W_f, N, F, **dparams):
 		ikh_b, ikh_w = argmin(KH_f), argmax(KH_f)
