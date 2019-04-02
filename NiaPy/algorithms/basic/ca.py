@@ -29,14 +29,14 @@ class Camel(Individual):
 		MIT
 
 	Attributes:
-		E (float): Camel endurance
-		S (float): Camel supply
-		x_past (array of (float of int): Camel's past position
-		f_past (float): Camel's past funciton/fitness value
-		steps (int): Age of camel
+		E (float): Camel endurance.
+		S (float): Camel supply.
+		x_past (numpy.ndarray): Camel's past position.
+		f_past (float): Camel's past funciton/fitness value.
+		steps (int): Age of camel.
 
 	See Also:
-		:func:`NiaPy.algorithms.algorithm.Individual`
+		:class:`NiaPy.algorithms.algorithm.Individual`
 	"""
 	def __init__(self, E_init=None, S_init=None, **kwargs):
 		r"""Initialize the Camel.
@@ -143,7 +143,7 @@ class CamelAlgorithm(Algorithm):
 		S_init (float): Starting value of supplys.
 
 	See Also:
-		:func:`NiaPy.algorithms.algorithm.Algorithm`
+		:class:`NiaPy.algorithms.algorithm.Algorithm`
 	"""
 	Name = ['CamelAlgorithm', 'CA']
 
@@ -252,7 +252,7 @@ class CamelAlgorithm(Algorithm):
 			task (Task): Optimization taks.
 
 		Returns:
-			Tuple[array of Camel, array of float, dict]:
+			Tuple[numpy.ndarray[Camel], numpy.ndarray[float], dict]:
 				1. New population of Camels.
 				2. New population fitness/function values.
 				3. Additional arguments.
@@ -268,11 +268,11 @@ class CamelAlgorithm(Algorithm):
 
 		Args:
 			task (Task): Optimization task.
-			caravan (array of Camel): Current population of Camels.
-			fcaravan (array of float): Current population fitness/function values
-			cb (array of (Camel): Current best Camel
-			fcb (float): Current best Camel fitness/function value
-			**dparams: Additional arguments
+			caravan (numpy.ndarray[Camel]): Current population of Camels.
+			fcaravan (numpy.ndarray[float]): Current population fitness/function values.
+			cb (Camel): Current best Camel.
+			fcb (float): Current best Camel fitness/function value.
+			**dparams (Dict[str, Any]): Additional arguments.
 
 		Returns:
 			Tuple[array of array of (float or int), array of float, dict]:
