@@ -7,7 +7,7 @@ from scipy.spatial.distance import euclidean
 from NiaPy.algorithms.algorithm import Algorithm, Individual, defaultIndividualInit
 from NiaPy.util.utility import objects2array
 
-__all__ = ['DifferentialEvolution', 'DynNpDifferentialEvolution', 'AgingNpDifferentialEvolution', 'CrowdingDifferentialEvolution', 'MultiStrategyDifferentialEvolution', 'DynNpMultiStrategyDifferentialEvolution', 'AgingNpMultiMutationDifferentialEvolution', 'AgingIndividual', 'CrossRand1', 'CrossBest2', 'CrossBest1', 'CrossBest2', 'CrossCurr2Rand1', 'CrossCurr2Best1']
+__all__ = ['DifferentialEvolution', 'DynNpDifferentialEvolution', 'AgingNpDifferentialEvolution', 'CrowdingDifferentialEvolution', 'MultiStrategyDifferentialEvolution', 'DynNpMultiStrategyDifferentialEvolution', 'AgingNpMultiMutationDifferentialEvolution', 'AgingIndividual', 'CrossRand1', 'CrossBest2', 'CrossBest1', 'CrossBest2', 'CrossCurr2Rand1', 'CrossCurr2Best1', 'multiMutations']
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.basic')
@@ -269,8 +269,7 @@ class DifferentialEvolution(Algorithm):
 		See Also:
 			:func:`NiaPy.algorithms.algorithm.Algorithm.setParameters`
 		"""
-		itype = ukwargs.pop('itype', None)
-		Algorithm.setParameters(self, NP=NP, InitPopFunc=defaultIndividualInit, itype=Individual if itype is None else itype, **ukwargs)
+		Algorithm.setParameters(self, NP=NP, InitPopFunc=defaultIndividualInit, itype=ukwargs.pop('itype', Individual), **ukwargs)
 		self.F, self.CR, self.CrossMutt = F, CR, CrossMutt
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 

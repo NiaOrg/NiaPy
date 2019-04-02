@@ -3,7 +3,7 @@
 
 from NiaPy.algorithms.basic.ba import BatAlgorithm
 from NiaPy.algorithms.basic.fa import FireflyAlgorithm
-from NiaPy.algorithms.basic.de import DifferentialEvolution, MultiStrategyDifferentialEvolution, DynNpDifferentialEvolution, AgingNpDifferentialEvolution, DynNpMultiStrategyDifferentialEvolution, AgingNpMultiMutationDifferentialEvolution, CrowdingDifferentialEvolution
+from NiaPy.algorithms.basic.de import DifferentialEvolution, MultiStrategyDifferentialEvolution, DynNpDifferentialEvolution, AgingNpDifferentialEvolution, DynNpMultiStrategyDifferentialEvolution, AgingNpMultiMutationDifferentialEvolution, CrowdingDifferentialEvolution, multiMutations
 from NiaPy.algorithms.basic.fpa import FlowerPollinationAlgorithm
 from NiaPy.algorithms.basic.gwo import GreyWolfOptimizer
 from NiaPy.algorithms.basic.ga import GeneticAlgorithm
@@ -32,6 +32,7 @@ __all__ = [
     'DynNpDifferentialEvolution',
     'MultiStrategyDifferentialEvolution',
     'DynNpMultiStrategyDifferentialEvolution',
+    'multiMutations',
     'AgingNpMultiMutationDifferentialEvolution',
     'FlowerPollinationAlgorithm',
     'GreyWolfOptimizer',

@@ -34,27 +34,27 @@ class SineCosineAlgorithm(Algorithm):
 		Seyedali Mirjalili, SCA: A Sine Cosine Algorithm for solving optimization problems, Knowledge-Based Systems, Volume 96, 2016, Pages 120-133, ISSN 0950-7051, https://doi.org/10.1016/j.knosys.2015.12.022.
 
 	Attributes:
-		Name (list of str): List of string representing algorithm names
+		Name (List[str]): List of string representing algorithm names.
 	"""
 	Name = ['SineCosineAlgorithm', 'SCA']
 
 	@staticmethod
 	def typeParameters():
-		r"""TODO.
+		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
-			dict:
-				* NP (func): TODO
-				* a (func): TODO
-				* Rmin (func): TODO
-				* Rmax (func): TODO
+			Dict[str, Callable]:
+				* a (Callable[[Union[float, int]], bool]): TODO
+				* Rmin (Callable[[Union[float, int]], bool]): TODO
+				* Rmax (Callable[[Union[float, int]], bool]): TODO
 		"""
-		return {
-			'NP': lambda x: isinstance(x, int) and x > 0,
+		d = Algorithm.typeParameters()
+		d.update({
 			'a': lambda x: isinstance(x, (float, int)) and x > 0,
 			'Rmin': lambda x: isinstance(x, (float, int)),
 			'Rmax': lambda x: isinstance(x, (float, int))
-		}
+		})
+		return d
 
 	def setParameters(self, NP=25, a=3, Rmin=0, Rmax=2, **ukwargs):
 		r"""Set the arguments of an algorithm.
@@ -64,6 +64,9 @@ class SineCosineAlgorithm(Algorithm):
 			a (float): Parameter for control in $r_1$ value
 			Rmin (float): Minimu value for $r_3$ value
 			Rmax (float): Maximum value for $r_3$ value
+
+		See Also:
+			:func:`NiaPy.algorithms.algorithm.Algorithm`
 		"""
 		Algorithm.setParameters(self, NP=NP)
 		self.a, self.Rmin, self.Rmax = a, Rmin, Rmax
@@ -93,7 +96,7 @@ class SineCosineAlgorithm(Algorithm):
 			task (Task): Optimization task
 
 		Returns:
-			Tuple[array of array of (float or int), array of float, dict]:
+			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
 				1. Initialized population of individuals
 				2. Function/fitness values for individuals
 				3. Additional arguments
@@ -104,15 +107,15 @@ class SineCosineAlgorithm(Algorithm):
 		r"""Core function of Sine Cosine Algorithm.
 
 		Args:
-			task (:obj:util.utility.Task): Optimization task
-			P (array of array): Current population individuals
-			P_f (array of float): Current population individulas function/fitness values
-			xb (array of float or int): Current best solution to optimization task
+			task (Task): Optimization task
+			P (numpy.ndarray): Current population individuals
+			P_f (numpy.ndarray[float]): Current population individulas function/fitness values
+			xb (numpy.ndarray): Current best solution to optimization task
 			fxb (float): Current best function/fitness value
-			dparams (dict): Additional parameters
+			dparams (Dict[str, Any]): Additional parameters
 
 		Returns:
-			Tuple[array of array of (float or int), array of float, dict]:
+			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
 				1. New population
 				2. New populations fitness/function values
 				3. Additional arguments
