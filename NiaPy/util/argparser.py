@@ -19,10 +19,10 @@ def optimizationType(x):
 	r"""Mapping function for optimization type.
 
 	Args:
-		x (str): String representing optiization type
+		x (str): String representing optimization type.
 
 	Returns:
-		OptimizationType: Optimization type based on type that is defined as enum
+		OptimizationType: Optimization type based on type that is defined as enum.
 	"""
 	if x not in ['min', 'max']: logger.info('You can use only [min, max], using min')
 	return OptimizationType.MAXIMIZATION if x == 'max' else OptimizationType.MINIMIZATION
@@ -58,11 +58,11 @@ def MakeArgParser():
 			Default value is `min`.
 
 	Returns:
-		ArgumentParser: Parser for parsing arguments from string
+		ArgumentParser: Parser for parsing arguments from string.
 
 	See Also:
-		:class:`ArgumentParser`
-		:func:`ArgumentParser.add_argument`
+		* :class:`ArgumentParser`
+		* :func:`ArgumentParser.add_argument`
 	"""
 	parser, cbechs = ArgumentParser(description='Runer example.'), makeCbechs()
 	parser.add_argument('-a', '--algorithm', dest='algo', default='jDE', type=str)
@@ -83,11 +83,11 @@ def getArgs(av):
 		av (str): String to parse.
 
 	Returns:
-		dict: Where key represents argument name and values it's value
+		Dict[str, Union[float, int, str, OptimizationType]]: Where key represents argument name and values it's value.
 
 	See Also:
-		:func:`MakeArgParser`
-		:func:`ArgumentParser.parse_args`
+		* :func:`NiaPy.util.argparser.MakeArgParser`.
+		* :func:`ArgumentParser.parse_args`
 	"""
 	parser = MakeArgParser()
 	a = parser.parse_args(av)

@@ -23,6 +23,7 @@ __all__ = [
 	'Task',
 	'CountingTask',
 	'StoppingTask',
+	'ThrowingTask',
 	'TaskConvPrint',
 	'TaskConvPlot',
 	'TaskConvSave',
@@ -37,11 +38,11 @@ def fullArray(a, D):
 	r"""Fill or create array of length D, from value or value form a.
 
 	Arguments:
-		a (Union[int, float, numpy.ndarray]): Input values for fill
-		D (int): Length of new array
+		a (Union[int, float, numpy.ndarray], Iterable[Any]): Input values for fill.
+		D (int): Length of new array.
 
 	Returns:
-		numpy.ndarray: TODO
+		numpy.ndarray: Array filled with passed values or value.
 	"""
 	A = []
 	if isinstance(a, (int, float)):	A = full(D, a)
@@ -67,9 +68,10 @@ def objects2array(objs):
 	return a
 
 class Utility:
-	r"""
+	r"""Base class with string mappings to benchmarks.
+
 	Attributes:
-		classes (Dict[str, Benchmark]): TODO
+		classes (Dict[str, Benchmark]): Mapping from stings to benchmark.
 	"""
 	def __init__(self):
 		r"""
@@ -131,10 +133,10 @@ class Utility:
 		r"""Get the optimization problem.
 
 		Arguments:
-			benchmark (Union[str, Benchmark]): String or class that represents the optimization problem
+			benchmark (Union[str, Benchmark]): String or class that represents the optimization problem.
 
 		Returns:
-			class: TODO
+			Benchmark: Optimization function with limits.
 		"""
 		if not isinstance(benchmark, str) and not callable(benchmark): return benchmark
 		elif benchmark in self.classes: return self.classes[benchmark]()
@@ -142,15 +144,15 @@ class Utility:
 
 	@classmethod
 	def __raiseLowerAndUpperNotDefined(cls):
-		r"""
+		r"""Trow exception if lower and upper bounds are not defined in benchmark.
 
 		Raises:
-			TypeError: TODO
+			TypeError: Type error.
 		"""
 		raise TypeError('Upper and Lower value must be defined!')
 
 class OptimizationType(Enum):
-	r"""TODO.
+	r"""Enum representing type of optimization.
 
 	Attributes:
 		MINIMIZATION (int): Represents minimization problems and is default optimization type of all algorithms.
@@ -265,6 +267,9 @@ class Task(Utility):
 		Upper (numpy.ndarray): Upper bounds of the problem.
 		bRange (numpy.ndarray): Search range between upper and lower limits.
 		optType (OptimizationType): Optimization type to use.
+
+	See Also:
+		:class:`NiaPy.util.utility.Utility`
 	"""
 	D = 0
 	benchmark = None
@@ -283,7 +288,7 @@ class Task(Utility):
 			frepair (Optional[Callable[[numpy.ndarray, numpy.ndarray, numpy.ndarray, Dict[str, Any]], numpy.ndarray]]): Function for reparing individuals components to desired limits.
 
 		See Also:
-			`func`:Utility.__init__`
+			`func`:NiaPy.util.utility.Utility.__init__`
 		"""
 		Utility.__init__(self)
 		# dimension of the problem
@@ -347,6 +352,13 @@ class Task(Utility):
 
 		Returns:
 			numpy.ndarray: Fixed solution.
+
+		See Also:
+			* :func:`NiaPy.util.utility.limitRepair`
+			* :func:`NiaPy.util.utility.limitInversRepair`
+			* :func:`NiaPy.util.utility.wangRepair`
+			* :func:`NiaPy.util.utility.randRepair`
+			* :func:`NiaPy.util.utility.reflectRepair`
 		"""
 		return self.frepair(x, self.Lower, self.Upper, rnd=rnd)
 
@@ -362,7 +374,7 @@ class Task(Utility):
 		r"""Evaluate the solution A.
 
 		Arguments:
-			A (numpy.ndarray): Solution to evaluate
+			A (numpy.ndarray): Solution to evaluate.
 
 		Returns:
 			float: Fitness/function values of solution.
@@ -394,10 +406,13 @@ class CountingTask(Task):
 	Attributes:
 		Iters (int): Number of algorithm iterations/generations.
 		Evals (int): Number of function evaluations.
+
+	See Also:
+		:class:`NiaPy.util.utility.Task`
 	"""
-	Iters, Evals = 0, 0
 
 	def __init__(self, **kwargs):
+		self.Iters, self.Evals = 0, 0
 		Task.__init__(self, **kwargs)
 
 	def eval(self, A):
@@ -415,11 +430,19 @@ class CountingTask(Task):
 		return Task.eval(self, A)
 
 	def evals(self):
-		r"""Get the number of evaluations made."""
+		r"""Get the number of evaluations made.
+
+		Returns:
+			int: Number of evaluations made.
+		"""
 		return self.Evals
 
 	def iters(self):
-		r"""Get the number of algorithm iteratins made."""
+		r"""Get the number of algorithm iteratins made.
+
+		Returns:
+			int: Number of generations/iterations made by algorithm.
+		"""
 		return self.Iters
 
 	def nextIter(self):
@@ -436,7 +459,7 @@ class CountingTask(Task):
 			bool: `True` if stopping criteria is meet else `False`
 
 		See Also:
-			:func:`CountingTask.nextIter`
+			:func:`NiaPy.util.utility.CountingTask.nextIter`
 		"""
 		self.nextIter()
 		return Task.stopCondI(self)
@@ -450,23 +473,25 @@ class StoppingTask(CountingTask):
 		refValue (float): Reference function/fitness values to reach in optimization.
 		x (numpy.ndarray): Best found individual.
 		x_f (float): Best found individual function/fitness value.
+
+	See Also:
+		:class:`NiaPy.util.utility.CountingTask`
 	"""
-	nGEN, nFES = inf, inf
-	refValue, x, x_f = inf, None, inf
 
 	def __init__(self, nFES=inf, nGEN=inf, refValue=None, **kwargs):
 		r"""Initialize task class for optimization.
 
 		Arguments:
-			nFES (Optional[int]): Number of function evaluations
-			nGEN (Optional[int]): Number of generations or iterations
+			nFES (Optional[int]): Number of function evaluations.
+			nGEN (Optional[int]): Number of generations or iterations.
+			refValue (Optional[float]): Reference value of function/fitness function.
 
 		See Also:
-			:func:`CountingTask.__init__`
+			:func:`NiaPy.util.utility.CountingTask.__init__`
 		"""
 		CountingTask.__init__(self, **kwargs)
 		self.refValue = (-inf if refValue is None else refValue)
-		self.x_f = inf
+		self.x, self.x_f = None, inf
 		self.nFES, self.nGEN = nFES, nGEN
 
 	def eval(self, A):
@@ -476,11 +501,11 @@ class StoppingTask(CountingTask):
 			A (numpy.ndarray): Solution to evaluate.
 
 		Returns:
-			float: Fitness/function value of solution
+			float: Fitness/function value of solution.
 
 		See Also:
-			:func:`StoppingTask.stopCond`
-			:func:`CountingTask.eval`
+			* :func:`NiaPy.util.utility.StoppingTask.stopCond`
+			* :func:`NiaPy.util.utility.CountingTask.eval`
 		"""
 		if self.stopCond(): return inf * self.optType.value
 		x_f = CountingTask.eval(self, A)
@@ -502,13 +527,18 @@ class StoppingTask(CountingTask):
 			bool: `True` if number of function evaluations or number of algorithm iterations/generations or reference values is reach else `False`.
 
 		See Also:
-			:func:`CountingTask.stopCondI`
-			:func:`StoppingTask.stopCond`
+			* :func:`NiaPy.util.utility.CountingTask.stopCondI`
+			* :func:`NiaPy.util.utility.StoppingTask.stopCond`
 		"""
 		CountingTask.stopCondI(self)
 		return self.stopCond()
 
 class ThrowingTask(StoppingTask):
+	r"""Task that throw exceptions when stopping condition is meet.
+
+	See Also:
+		:class:`NiaPy.util.utility.StoppingTask`
+	"""
 	def __init__(self, **kwargs):
 		r"""Initialize optimization task.
 
@@ -516,7 +546,7 @@ class ThrowingTask(StoppingTask):
 			**kwargs (Dict[str, Any]): Additional arguments.
 
 		See Also:
-			:func:`StoppingTask.__init__`
+			:func:`NiaPy.util.utility.StoppingTask.__init__`
 		"""
 		StoppingTask.__init__(self, **kwargs)
 
@@ -524,10 +554,10 @@ class ThrowingTask(StoppingTask):
 		r"""Throw exception for the given stopping condition.
 
 		Raises:
-			* FesException: TODO
-			* GenException: TODO
-			* RefException: TODO
-			* TimeException: TODO
+			* FesException: Thrown when the number of function/fitness evaluations is reached.
+			* GenException: Thrown when the number of algorithms generations/iterations is reached.
+			* RefException: Thrown when the reference values is reached.
+			* TimeException: Thrown when algorithm exceeds time run limit.
 		"""
 		# dtime = datetime.now() - self.startTime
 		if self.Evals >= self.nFES: raise FesException()
@@ -545,8 +575,8 @@ class ThrowingTask(StoppingTask):
 			float: Function/fitness values of solution.
 
 		See Also:
-			* :func:`ThrowingTask.stopCondE`
-			* :func:`StoppingTask.eval`
+			* :func:`NiaPy.util.utility.ThrowingTask.stopCondE`
+			* :func:`NiaPy.util.utility.StoppingTask.eval`
 		"""
 		self.stopCondE()
 		return StoppingTask.eval(self, A)
@@ -559,7 +589,7 @@ class MoveTask(StoppingTask):
 			o (numpy.ndarray[Union[float, int]]): Array for shifting.
 			of (Callable[numpy.ndarray[Union[float, int]]]): Function applied on shifted input.
 			M (numpy.ndarray[Union[float, int]]): Matrix for rotating.
-			fM (Callable[numpy.ndarray[Union[float, int]]]): Function applied after rotating
+			fM (Callable[numpy.ndarray[Union[float, int]]]): Function applied after rotating.
 
 		See Also:
 			:func:`StoppingTask.__init__`
@@ -579,8 +609,8 @@ class MoveTask(StoppingTask):
 			float: Fitness/function value of solution.
 
 		See Also:
-			* :func:`StoppingTask.stopCond`
-			* :func:`StoppingTask.eval`
+			* :func:`NiaPy.util.utility.StoppingTask.stopCond`
+			* :func:`NiaPy.util.utility.StoppingTask.eval`
 		"""
 		if self.stopCond(): return inf * self.optType.value
 		X = A - self.o if self.o is not None else A
@@ -592,11 +622,18 @@ class MoveTask(StoppingTask):
 		return r
 
 class ScaledTask(Task):
-	r"""
+	r"""Scaled task.
 
+	Attributes:
+		_task (Task): Optimization task with evaluation function.
+		Lower (numpy.ndarray): Scaled lower limit of search space.
+		Upper (numpy.ndarray): Scaled upper limit of search space.
+
+	See Also:
+		:class:`NiaPy.util.utility.Task`
 	"""
 	def __init__(self, task, Lower, Upper, **kwargs):
-		r"""TODO
+		r"""Initialize scaled task.
 
 		Args:
 			task (Task): Optimization task to scale to new bounds.
@@ -605,7 +642,7 @@ class ScaledTask(Task):
 			**kwargs (Dict[str, Any]): Additional arguments.
 
 		See Also:
-			:func:`fullArray`
+			:func:`NiaPy.util.utility.fullArray`
 		"""
 		Task.__init__(self)
 		self._task = task
@@ -614,112 +651,91 @@ class ScaledTask(Task):
 		self.bRange = fabs(Upper - Lower)
 
 	def stopCond(self):
-		r"""
+		r"""Test for stopping condition.
+
+		This function uses `self._task` for checking the stopping criteria.
 
 		Returns:
-			bool: TODO
+			bool: `True` if stopping condition is meet else `False`.
 		"""
 		return self._task.stopCond()
 
 	def stopCondI(self):
-		r"""
+		r"""Test for stopping condition and increments the number of algorithm generations/iterations.
+
+		This function uses `self._task` for checking the stopping criteria.
 
 		Returns:
-			bool: TODO
+			bool: `True` if stopping condition is meet else `False`.
 		"""
 		return self._task.stopCondI()
-
-	def eval(self, A):
-		r"""
-
-		Args:
-			A (numpy.ndarray): TODO
-
-		Returns:
-			float:
-		"""
-		return self._task.eval(A)
-
-	def evals(self):
-		r"""
-
-		Returns:
-			int: TODO
-		"""
-		return self._task.evals()
-
-	def iters(self):
-		r"""
-
-		Returns:
-			int: TODO
-		"""
-		return self._task.iters()
-
-	def nextIter(self):
-		r"""
-
-		"""
-		self._task.nextIter()
-
-	def isFeasible(self, A):
-		r"""
-
-		Args:
-			A (numpy.ndarray): TODO
-
-		Returns:
-			bool: TODO
-		"""
-		return self._task.isFeasible(A)
-
-class ScaledTaskE(ScaledTask):
-	r"""
-
-	"""
-	def __init__(self, **kwargs):
-		r"""
-
-		Args:
-			**kwargs (Dict[str, Any]): Additional arguments.
-
-		See Also:
-			:func:`ScaledTask.__init__`
-		"""
-		ScaledTask.__init__(self, **kwargs)
 
 	def eval(self, A):
 		r"""Evaluate solution.
 
 		Args:
-			A (numpy.ndarray): Solution to evaluate.
+			A (numpy.ndarray): Solution for calculating function/fitness value.
 
 		Returns:
-			float: Function/fitness for solution.
-
-		See Also:
-			* :func:`ScaledTask.stopCond`
-			* :func:`ScaledTask.eval`
+			float: Function values of solution.
 		"""
-		self.stopCond()
-		return ScaledTask.eval(self, A)
+		return self._task.eval(A)
+
+	def evals(self):
+		r"""Get the number of function evaluations.
+
+		Returns:
+			int: Number of function evaluations.
+		"""
+		return self._task.evals()
+
+	def iters(self):
+		r"""Get the number of algorithms generations/iterations.
+
+		Returns:
+			int: Number of algorithms generations/iterations.
+		"""
+		return self._task.iters()
+
+	def nextIter(self):
+		r"""Increment the number of iterations/generations.
+
+		Function uses `self._task` to increment number of generations/iterations.
+		"""
+		self._task.nextIter()
+
+	def isFeasible(self, A):
+		r"""Check if solution is in feasible region.
+
+		Args:
+			A (numpy.ndarray): Solution for testing feasibility.
+
+		Returns:
+			bool: `True` if solution is in feasible space else `False`.
+		"""
+		return not False in (A > self.Lower) and not False in (A < self.Upper)
 
 class TaskConvPrint(StoppingTask):
-	r"""
+	r"""Task class with printing out new global best solutions found.
 
+	Attributes:
+		xb (numpy.ndarray): Global best solution.
+		xb_f (float): Global best function/fitness values.
+
+	See Also:
+		:class:`NiaPy.util.utility.StoppingTask`
 	"""
-	xb, xb_f = inf, None
-
 	def __init__(self, **kwargs):
-		r"""
+		r"""Initialize TaskConvPrint class.
 
 		Args:
 			**kwargs (Dict[str, Any]): Additional arguments.
 
 		See Also:
-			:func:`StoppingTask.__init__`
+			:func:`NiaPy.util.utility.StoppingTask.__init__`
 		"""
 		StoppingTask.__init__(self, **kwargs)
+		self.xb, self.xb_f = None, inf
 
 	def eval(self, A):
 		r"""Evaluate solution.
@@ -731,7 +747,7 @@ class TaskConvPrint(StoppingTask):
 			float: Function/Fitness values of solution.
 
 		See Also:
-			:func:`StoppingTask.eval`
+			:func:`NiaPy.util.utility.StoppingTask.eval`
 		"""
 		x_f = StoppingTask.eval(self, A)
 		if not self.x_f == self.xb_f:
@@ -740,17 +756,23 @@ class TaskConvPrint(StoppingTask):
 		return x_f
 
 class TaskConvSave(StoppingTask):
-	r"""
+	r"""Task class with logging of function evaluations need to reach some function vale.
 
+	Attributes:
+		evals (List[int]): List of ints representing when the new global best was found.
+		x_f_vals (List[float]): List of floats representing function/fitness values found.
+
+	See Also:
+		:class:`NiaPy.util.utility.StoppingTask`
 	"""
 	def __init__(self, **kwargs):
-		r"""
+		r"""Initialize TaskConvSave class.
 
 		Args:
 			**kwargs (Dict[str, Any]): Additional arguments.
 
 		See Also:
-			:func:`StoppingTask.__init__`
+			:func:`NiaPy.util.utility.StoppingTask.__init__`
 		"""
 		StoppingTask.__init__(self, **kwargs)
 		self.evals = []
@@ -766,7 +788,7 @@ class TaskConvSave(StoppingTask):
 			float: Function/fitness values of individual.
 
 		See Also:
-			:func:`StoppingTask.eval`
+			:func:`SNiaPy.util.utility.toppingTask.eval`
 		"""
 		x_f = StoppingTask.eval(self, A)
 		if x_f <= self.x_f:
@@ -775,18 +797,24 @@ class TaskConvSave(StoppingTask):
 		return x_f
 
 	def return_conv(self):
-		r"""
+		r"""Get values of x and y axis for plotting covariance graph.
 
 		Returns:
 			Tuple[List[int], List[float]]:
-				1. TODO
-				2. TODO
+				1. List of ints of function evaluations.
+				2. List of ints of function/fitness values.
 		"""
 		return self.evals, self.x_f_vals
 
 class TaskConvPlot(StoppingTask):
-	r"""
+	r"""Task class with ability of showing convergence graph.
 
+	Attributes:
+		iters (List[int]): List of ints representing when the new global best was found.
+		x_fs (List[float]): List of floats representing function/fitness values found.
+
+	See Also:
+		:class:`NiaPy.util.utility.StoppingTask`
 	"""
 	def __init__(self, **kwargs):
 		r"""
@@ -795,7 +823,7 @@ class TaskConvPlot(StoppingTask):
 			**kwargs (Dict[str, Any]): Additional arguments.
 
 		See Also:
-			:func:`StoppingTask.__init__`
+			:func:`NiaPy.util.utility.StoppingTask.__init__`
 		"""
 		StoppingTask.__init__(self, **kwargs)
 		self.x_fs, self.iters = [], []
@@ -823,9 +851,7 @@ class TaskConvPlot(StoppingTask):
 		return x_f
 
 	def showPlot(self):
-		r"""
-
-		"""
+		r"""Animation updating function."""
 		plt.show(block=False)
 		plt.pause(0.001)
 
@@ -833,12 +859,11 @@ class TaskConvPlot(StoppingTask):
 		r"""Update mathplotlib figure.
 
 		Args:
-			frame:
+			frame (): TODO
 
 		Returns:
 			Tuple[List[float], Any]:
-				1. TODO
-				2. TODo
+				1. Line
 		"""
 		if self.x_fs:
 			max_fs, min_fs = self.x_fs[0], self.x_fs[-1]
