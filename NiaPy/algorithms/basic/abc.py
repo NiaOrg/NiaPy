@@ -63,7 +63,7 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 
 	@staticmethod
 	def typeParameters():
-		r"""Returns functions for checking values of parametes.
+		r"""Returns functions for checking values of parameters.
 
 		Returns:
 			Dict[str, Callable]:
@@ -81,14 +81,13 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 
 		Parameters:
 			Limit (Optional[Union[float, numpy.ndarray[float]]]): Limt
-			**ukwargs:	Additional arguments
+			**ukwargs (Dict[str, Any]): Additional arguments
 
 		See Also:
 			:func:`Algorithm.setParameters`
 		"""
-		Algorithm.setParameters(self, NP, defaultIndividualInit, SolutionABC, **ukwargs)
-		self.FoodNumber = int(self.NP / 2)
-		self.Limit = Limit
+		Algorithm.setParameters(self, NP=NP, InitPopFunc=defaultIndividualInit, itype=SolutionABC, **ukwargs)
+		self.FoodNumber, self.Limit = int(self.NP / 2), Limit
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def CalculateProbs(self, Foods, Probs):
@@ -122,7 +121,7 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
 				1. New population
 				2. New population fitness/function values
-				3. dict:
+				3. Additional arguments:
 					* Probes (numpy.ndarray): TODO
 					* Trial (numpy.ndarray): TODO
 
@@ -150,7 +149,7 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
 				1. New population
 				2. New population fitness/function values
-				3. ditc:
+				3. Additional arguments:
 					* Probes (numpy.ndarray): TODO
 					* Trial (numpy.ndarray): TODO
 		"""
@@ -178,6 +177,6 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 			if s == self.FoodNumber: s = 0
 		mi = argmax(Trial)
 		if Trial[mi] >= self.Limit: Foods[mi], Trial[mi] = SolutionABC(task=task, rnd=self.Rand), 0
-		return Foods, [f.f for f in Foods], {'Probs':Probs, 'Trial':Trial}
+		return Foods, asarray([f.f for f in Foods]), {'Probs':Probs, 'Trial':Trial}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
