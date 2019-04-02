@@ -179,15 +179,27 @@ class AnarchicSocietyOptimization(Algorithm):
 		F (float): Mutation parameter.
 		CR (float): Crossover parameter :math:`\in [0, 1]`.
 		Combination (Callable[numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray, float, float, float, float, float, float, Task, mtrand.RandomState]): Function for combining individuals to get new position/individual.
+
+	See Also:
+		:class:`NiaPy.algorithms.algorithm.Algorithm`
 	"""
 	Name = ['AnarchicSocietyOptimization', 'ASO']
 
 	@staticmethod
 	def typeParameters():
-		r"""
+		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
-			Dict[str, Callable[]]
+			Dict[str, Callable]:
+				* alpha (Callable): TODO
+				* gamma (Callable): TODO
+				* theta (Callable): TODO
+				* nl (Callable): TODO
+				* F (Callable[[Union[float, int]], bool]): TODO
+				* CR (Callable[[Union[float, int]], bool]): TODO
+
+		See Also:
+			:func:`NiaPy.algorithms.algorithm.Algorithm.typeParameters`
 		"""
 		d = Algorithm.typeParameters()
 		d.update({
@@ -204,19 +216,21 @@ class AnarchicSocietyOptimization(Algorithm):
 		r"""Set the parameters for the algorith.
 
 		Arguments:
-			alpha (List[float]): Factor for fickleness index function :math:`\in [0, 1]`.
-			gamma (List[float]): Factor for external irregularity index function :math:`\in [0, \infty)`.
-			theta (List[float]): Factor for internal irregularity index function :math:`\in [0, \infty)`.
-			d (Callable[[float, float], float]): function that takes two arguments that are function values and calcs the distance between them.
-			dn (Callable[[numpy.ndarray, numpy.ndarray], float]): function that takes two arguments that are points in function landscape and calcs the distance between them.
-			nl (float): Normalized range for neighborhood search :math:`\in (0, 1]`.
-			F (float): Mutation parameter.
-			CR (float): Crossover parameter :math:`\in [0, 1]`.
-			Combination (Callable[numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray, float, float, float, float, float, float, Task, mtrand.RandomState]): Function for combining individuals to get new position/individual.
+			alpha (Optional[List[float]]): Factor for fickleness index function :math:`\in [0, 1]`.
+			gamma (Optional[List[float]]): Factor for external irregularity index function :math:`\in [0, \infty)`.
+			theta (Optional[List[float]]): Factor for internal irregularity index function :math:`\in [0, \infty)`.
+			d (Optional[Callable[[float, float], float]]): function that takes two arguments that are function values and calcs the distance between them.
+			dn (Optional[Callable[[numpy.ndarray, numpy.ndarray], float]]): function that takes two arguments that are points in function landscape and calcs the distance between them.
+			nl (Optional[float]): Normalized range for neighborhood search :math:`\in (0, 1]`.
+			F (Optional[float]): Mutation parameter.
+			CR (Optional[float]): Crossover parameter :math:`\in [0, 1]`.
+			Combination (Optional[Callable[numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray, float, float, float, float, float, float, Task, mtrand.RandomState]]): Function for combining individuals to get new position/individual.
 
 		See Also:
-			* :func:`Algorithm.setParameters`
-			* :func:`Elitism'
+			* :func:`NiaPy.algorithms.algorithm.Algorithm.setParameters`
+			* :func:`NiaPy.algorithms.other.aso.Elitism'
+			* :func:`NiaPy.algorithms.other.aso.Crossover`
+			* :func:`NiaPy.algorithms.other.aso.Sequential`
 		"""
 		Algorithm.setParameters(self, NP=NP)
 		self.alpha, self.gamma, self.theta, self.d, self.dn, self.nl, self.F, self.CR, self.Combination = alpha, gamma, theta, d, dn, nl, F, CR, Combination
@@ -330,17 +344,19 @@ class AnarchicSocietyOptimization(Algorithm):
 					* alpha (numpy.ndarray[float]):
 					* gamma (numpy.ndarray[float]):
 					* theta (numpy.ndarray[float]):
+					* rs (float): Distance of search space.
 
 		See Also:
-			* :func:`Algorithm.initPopulation`
-			* :func:`AnarchicSocietyOptimization.init`
+			* :func:`NiaPy.algorithms.algorithm.Algorithm.initPopulation`
+			* :func:`NiaPy.algorithms.other.aso.AnarchicSocietyOptimization.init`
 		"""
-		X, X_f, = Algorithm.initPopulation(self, task)
+		X, X_f, d = Algorithm.initPopulation(self, task)
 		alpha, gamma, theta = self.init(task)
 		Xpb, Xpb_f = self.uBestAndPBest(X, X_f, full([self.NP, task.D], 0.0), full(self.NP, task.optType.value * inf))
-		return X, X_f, {'Xpb':Xpb, 'Xpb_f':Xpb_f, 'alpha':alpha, 'gamma':gamma, 'theta':theta}
+		d.update({'Xpb':Xpb, 'Xpb_f':Xpb_f, 'alpha':alpha, 'gamma':gamma, 'theta':theta, 'rs': self.d(task.Upper, task.Lower)})
+		return X, X_f, d
 
-	def runIteration(self, task, X, X_f, xb, fxb, Xpb, Xpb_f, alpha, gamma, theta, **dparams):
+	def runIteration(self, task, X, X_f, xb, fxb, Xpb, Xpb_f, alpha, gamma, theta, rs, **dparams):
 		r"""Core function of AnarchicSocietyOptimization algorithm.
 
 		Args:
@@ -366,12 +382,13 @@ class AnarchicSocietyOptimization(Algorithm):
 					* alpha (numpy.ndarray[float]):
 					* gamma (numpy.ndarray[float]):
 					* theta (numpy.ndarray[float]):
+					* rs (float): Distance of search space.
 		"""
 		Xin = [self.getBestNeighbors(i, X, X_f, rs) for i in range(len(X))]
-		MP_c, MP_s, MP_p = [self.FI(X_f[i], Xpb_f[i], xb_f, alpha[i]) for i in range(len(X))], [self.EI(X_f[i], Xin[i], gamma[i]) for i in range(len(X))], [self.II(X_f[i], Xpb_f[i], theta[i]) for i in range(len(X))]
+		MP_c, MP_s, MP_p = [self.FI(X_f[i], Xpb_f[i], fxb, alpha[i]) for i in range(len(X))], [self.EI(X_f[i], Xin[i], gamma[i]) for i in range(len(X))], [self.II(X_f[i], Xpb_f[i], theta[i]) for i in range(len(X))]
 		Xtmp = asarray([self.Combination(X[i], Xpb[i], xb, X[self.randint(len(X), skip=[i])], MP_c[i], MP_s[i], MP_p[i], self.F, self.CR, task, self.Rand) for i in range(len(X))])
 		X, X_f = asarray([Xtmp[i][0] for i in range(len(X))]), asarray([Xtmp[i][1] for i in range(len(X))])
 		Xpb, Xpb_f = self.uBestAndPBest(X, X_f, Xpb, Xpb_f)
-		return X, X_f, {'Xpb':Xpb, 'Xpb_f':Xpb_f, 'alpha':alpha, 'gamma':gamma, 'theta':theta}
+		return X, X_f, {'Xpb':Xpb, 'Xpb_f':Xpb_f, 'alpha':alpha, 'gamma':gamma, 'theta':theta, 'rs':rs}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
