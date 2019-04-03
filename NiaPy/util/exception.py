@@ -16,8 +16,8 @@ class FesException(Exception):
 	See Also:
 		:class:`Exception`
 	"""
-	def __init__(self, message='Reached the allowd number of the function evaluations!!!'):
-		r"""Initialization of exception.
+	def __init__(self, message='Reached the allowed number of the function evaluations!!!'):
+		r"""Initialize the exception.
 
 		Args:
 			message (Optional[str]): Message show when this exception is thrown
@@ -40,7 +40,7 @@ class GenException(Exception):
 		:class:`Exception`
 	"""
 	def __init__(self, message='Reached the allowd number of the algorithm evaluations!!!'):
-		r"""Initialization of exception.
+		r"""Initialize the exception.
 
 		Args:
 			message (Optional[str]): Message that is shown when this exceptions is thrown
@@ -63,7 +63,7 @@ class TimeException(Exception):
 		:class:`Exception`
 	"""
 	def __init__(self, message='Reached the allowd run time of the algorithm'):
-		r"""Initialization of exception.
+		r"""Initialize the exception.
 
 		Args:
 			message (Optional[str]): Message that is show when this exception is thrown.
@@ -86,10 +86,10 @@ class RefException(Exception):
 		:class:`Exception`
 	"""
 	def __init__(self, message='Reached the reference point!!!'):
-		r"""Initialization of exception.
+		r"""Initialize the exception.
 
 		Args:
-			message (str): Message that is show when this exception is thrown.
+			message (Optional[str]): Message that is show when this exception is thrown.
 		"""
 		Exception.__init__(self, message)
 

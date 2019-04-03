@@ -16,7 +16,7 @@ __all__ = ['MakeArgParser', 'getArgs', 'getDictArgs']
 def makeCbechs(): return bencs.__all__
 
 def optimizationType(x):
-	r"""Mapping function for optimization type.
+	r"""Map function for optimization type.
 
 	Args:
 		x (str): String representing optimization type.

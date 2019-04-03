@@ -78,7 +78,7 @@ class GreyWolfOptimizer(Algorithm):
 			if f < A_f: A, A_f = pop[i], f
 			elif A_f < f < B_f: B, B_f = pop[i], f
 			elif B_f < f < D_f: D, D_f = pop[i], f
-		d.update({'A':A, 'A_f':A_f, 'B':B, 'B_f':B_f, 'D':D, 'D_f':D_f})
+		d.update({'A': A, 'A_f': A_f, 'B': B, 'B_f': B_f, 'D': D, 'D_f': D_f})
 		return pop, fpop, d
 
 	def runIteration(self, task, pop, fpop, xb, fxb, A, A_f, B, B_f, D, D_f, **dparams):
@@ -119,6 +119,6 @@ class GreyWolfOptimizer(Algorithm):
 			if f < A_f: A, A_f = pop[i], f
 			elif A_f < f < B_f: B, B_f = pop[i], f
 			elif B_f < f < D_f: D, D_f = pop[i], f
-		return pop, fpop, {'A':A, 'A_f':A_f, 'B':B, 'B_f':B_f, 'D':D, 'D_f':D_f}
+		return pop, fpop, {'A': A, 'A_f': A_f, 'B': B, 'B_f': B_f, 'D': D, 'D_f': D_f}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

@@ -216,7 +216,7 @@ class FireworksAlgorithm(Algorithm):
 		return self.Mapping(x + self.rand(task.D) * self.normal(1, 1, task.D), task)
 
 	def Mapping(self, x, task):
-		r"""Fixing function.
+		r"""Fix value to bounds..
 
 		Args:
 			x (numpy.ndarray): Individual to fix.
@@ -297,7 +297,7 @@ class FireworksAlgorithm(Algorithm):
 		"""
 		FW, FW_f, d = Algorithm.initPopulation(self, task)
 		Ah = self.initAmplitude(task)
-		d.update({'Ah':Ah})
+		d.update({'Ah': Ah})
 		return FW, FW_f, d
 
 	def runIteration(self, task, FW, FW_f, xb, fxb, Ah, **dparams):
@@ -365,7 +365,7 @@ class EnhancedFireworksAlgorithm(FireworksAlgorithm):
 
 	@staticmethod
 	def typeParameters():
-		r"""
+		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
 			Dict[str, Callable]:
@@ -531,7 +531,7 @@ class EnhancedFireworksAlgorithm(FireworksAlgorithm):
 		FWn = [self.ExplodeSpark(FW[i], A[i], task) for i in range(self.NP) for _ in range(S[i])]
 		for i in range(self.m): FWn.append(self.GaussianSpark(self.randint(self.NP), FW[ib], task))
 		FW, FW_f = self.NextGeneration(FW, FW_f, FWn, task)
-		return FW, FW_f, {'Ah':Ah, 'Ainit': Ainit, 'Afinal': Afinal, 'A_min': A_min}
+		return FW, FW_f, {'Ah': Ah, 'Ainit': Ainit, 'Afinal': Afinal, 'A_min': A_min}
 
 class DynamicFireworksAlgorithmGauss(EnhancedFireworksAlgorithm):
 	r"""Implementation of dynamic fireworks algorithm.
@@ -565,7 +565,7 @@ class DynamicFireworksAlgorithmGauss(EnhancedFireworksAlgorithm):
 
 	@staticmethod
 	def typeParameters():
-		r"""
+		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
 			Dict[str, Callable]:
@@ -598,13 +598,14 @@ class DynamicFireworksAlgorithmGauss(EnhancedFireworksAlgorithm):
 		self.A_cf, self.C_a, self.C_r, self.epsilon = A_cf, C_a, C_r, epsilon
 
 	def initAmplitude(self, task):
-		r"""
+		r"""Initialize amplitude.
 
 		Args:
 			task (Task): Optimization task.
 
 		Returns:
-
+			Tuple[numpy.ndarray, numpy.ndarray]:
+				1. TODO
 		"""
 		return FireworksAlgorithm.initAmplitude(self, task), task.bRange
 
@@ -640,16 +641,18 @@ class DynamicFireworksAlgorithmGauss(EnhancedFireworksAlgorithm):
 		return x
 
 	def NextGeneration(self, FW, FW_f, FWn, task):
-		r"""
+		r"""TODO.
 
 		Args:
-			FW:
-			FW_f:
-			FWn:
+			FW (numpy.ndarray): Current population.
+			FW_f (numpy.ndarray[float]): Current populations function/fitness values.
+			FWn (numpy.ndarray): New population.
 			task (Task): Optimization task.
 
 		Returns:
-
+			Tuple[numpy.ndarray, numpy.ndarray[float]]:
+				1. New population.
+				2. New populations function/fitness values.
 		"""
 		FWn_f = apply_along_axis(task.eval, 1, FWn)
 		ib = argmin(FWn_f)
@@ -660,7 +663,7 @@ class DynamicFireworksAlgorithmGauss(EnhancedFireworksAlgorithm):
 		return FW, FW_f
 
 	def uCF(self, xnb, xcb, xcb_f, xb, xb_f, Acf, task):
-		r"""
+		r"""TODO.
 
 		Args:
 			xnb:
@@ -702,7 +705,7 @@ class DynamicFireworksAlgorithmGauss(EnhancedFireworksAlgorithm):
 		"""
 		FW, FW_f, _ = Algorithm.initPopulation(self, task)
 		Ah, Ab = self.initAmplitude(task)
-		return FW, FW_f, {'Ah':Ah, 'Ab':Ab}
+		return FW, FW_f, {'Ah': Ah, 'Ab': Ab}
 
 	def runIteration(self, task, FW, FW_f, xb, fxb, Ah, Ab, **dparams):
 		r"""Core function of DynamicFireworksAlgorithmGauss algorithm.
@@ -734,7 +737,7 @@ class DynamicFireworksAlgorithmGauss(EnhancedFireworksAlgorithm):
 		FW, FW_f = self.NextGeneration(FW, FW_f, FWn, task)
 		iw, ib = argmax(FW_f), 0
 		_, _, Ab = self.uCF(xnb, FW[ib], FW_f[ib], xb, fxb, Ab, task)
-		return FW, FW_f, {'Ah':Ah, 'Ab':Ab}
+		return FW, FW_f, {'Ah': Ah, 'Ab': Ab}
 
 class DynamicFireworksAlgorithm(DynamicFireworksAlgorithmGauss):
 	r"""Implementation of dynamic fireworks algorithm.
@@ -794,6 +797,6 @@ class DynamicFireworksAlgorithm(DynamicFireworksAlgorithmGauss):
 		FW, FW_f = self.NextGeneration(FW, FW_f, FWn, task)
 		iw, ib = argmax(FW_f), 0
 		_, _, Ab = self.uCF(xnb, FW[ib], FW_f[ib], xb, fxb, Ab, task)
-		return FW, FW_f, {'Ah':Ah, 'Ab':Ab}
+		return FW, FW_f, {'Ah': Ah, 'Ab': Ab}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

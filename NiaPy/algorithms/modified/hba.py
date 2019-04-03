@@ -38,7 +38,7 @@ class HybridBatAlgorithm(BatAlgorithm):
 
 	@staticmethod
 	def typeParameters():
-		r"""
+		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
 			Dict[str, Callable]:
@@ -79,7 +79,7 @@ class HybridBatAlgorithm(BatAlgorithm):
 		"""
 		Sol, Fitness, _ = BatAlgorithm.initPopulation(self, task)
 		v = full([self.NP, task.D], 0.0)
-		return Sol, Fitness, {'v':v}
+		return Sol, Fitness, {'v': v}
 
 	def runIteration(self, task, Sol, Fitness, best, f_min, v, **dparams):
 		r"""Core funciton of HybridBatAlgorithm algorithm.
@@ -107,6 +107,6 @@ class HybridBatAlgorithm(BatAlgorithm):
 			if self.rand() > self.r: S = task.repair(self.CrossMutt(Sol, i, best, self.F, self.CR, rnd=self.Rand), rnd=self.Rand)
 			f_new = task.eval(S)
 			if f_new <= Fitness[i] and self.rand() < self.A: Sol[i], Fitness[i] = S, f_new
-		return Sol, Fitness, {'v':v}
+		return Sol, Fitness, {'v': v}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

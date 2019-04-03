@@ -213,7 +213,7 @@ class CoralReefsOptimization(Algorithm):
 		return delete(Reef, I), delete(Reef_f, I)
 
 	def setting(self, X, X_f, Xn, Xn_f, task):
-		r"""Settings operator for reefs.
+		r"""Operator for setting reefs.
 
 		New reefs try to seatle to selected position in search space.
 		New reefs are successful if theyr fitness values is better or if they have no reef ocupying same search space.

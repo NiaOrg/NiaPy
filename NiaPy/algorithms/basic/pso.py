@@ -105,7 +105,7 @@ class ParticleSwarmAlgorithm(Algorithm):
 				* vMax (numpy.ndarray): Maximal velocity.
 				* V (numpy.ndarray): Initial velocity of particle.
 		"""
-		return {'w':fullArray(self.w, task.D), 'vMin':fullArray(self.vMin, task.D), 'vMax':fullArray(self.vMax, task.D), 'V':full([self.NP, task.D], 0.0)}
+		return {'w': fullArray(self.w, task.D), 'vMin': fullArray(self.vMin, task.D), 'vMax': fullArray(self.vMax, task.D), 'V': full([self.NP, task.D], 0.0)}
 
 	def initPopulation(self, task):
 		r"""Initialize population and dynamic arguments of the Particle Swarm Optimization algorithm.
@@ -130,7 +130,7 @@ class ParticleSwarmAlgorithm(Algorithm):
 		"""
 		pop, fpop, d = Algorithm.initPopulation(self, task)
 		d.update(self.init(task))
-		d.update({'popb':pop, 'fpopb':fpop})
+		d.update({'popb': pop, 'fpopb': fpop})
 		return pop, fpop, d
 
 	def runIteration(self, task, pop, fpop, xb, fxb, popb, fpopb, w, vMin, vMax, V, **dparams):
@@ -169,6 +169,6 @@ class ParticleSwarmAlgorithm(Algorithm):
 		fpop = apply_along_axis(task.eval, 1, pop)
 		ip_pb = where(fpop > fpopb)
 		popb[ip_pb], fpopb[ip_pb] = pop[ip_pb], fpop[ip_pb]
-		return pop, fpop, {'popb':popb, 'fpopb':fpopb, 'w':w, 'vMin':vMin, 'vMax':vMax, 'V':V}
+		return pop, fpop, {'popb': popb, 'fpopb': fpopb, 'w': w, 'vMin': vMin, 'vMax': vMax, 'V': V}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

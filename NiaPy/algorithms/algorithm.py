@@ -81,7 +81,7 @@ class Algorithm:
 
 	@staticmethod
 	def typeParameters():
-		r"""Returns functions for checking values of parameters.
+		r"""Return functions for checking values of parameters.
 
 		Return:
 			Dict[str, Callable]:

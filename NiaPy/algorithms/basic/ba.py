@@ -42,7 +42,7 @@ class BatAlgorithm(Algorithm):
 
 	@staticmethod
 	def typeParameters():
-		r"""Returns dict with where key of dict represents parameter name and values represent checking functions for selected parameter.
+		r"""Return dict with where key of dict represents parameter name and values represent checking functions for selected parameter.
 
 		Returns:
 			Dict[str, Callable]:
@@ -80,7 +80,7 @@ class BatAlgorithm(Algorithm):
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def initPopulation(self, task):
-		r"""Initialization of populations.
+		r"""Initialize the starting population.
 
 		Parameters:
 			task (Task): Optimization task

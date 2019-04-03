@@ -75,18 +75,18 @@ class GravitationalSearchAlgorithm(Algorithm):
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def G(self, t):
-		r"""TODO
+		r"""TODO.
 
 		Args:
 			t (int): TODO
 
 		Returns:
-			float: TODo
+			float: TODO
 		"""
 		return self.G_0 / t
 
 	def d(self, x, y, ln=2):
-		r"""
+		r"""TODO.
 
 		Args:
 			x:
@@ -94,12 +94,12 @@ class GravitationalSearchAlgorithm(Algorithm):
 			ln:
 
 		Returns:
-
+			TODO
 		"""
 		return sum((x - y) ** ln) ** (1 / ln)
 
 	def initPopulation(self, task):
-		r"""
+		r"""Initialize staring population.
 
 		Args:
 			task (Task): Optimization task.

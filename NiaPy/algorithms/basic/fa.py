@@ -116,7 +116,7 @@ class FireflyAlgorithm(Algorithm):
 		return Fireflies[i], moved
 
 	def initPopulation(self, task):
-		r"""Initialization of initial population.
+		r"""Initialize the starting population.
 
 		Args:
 			task (Task): Optimization task

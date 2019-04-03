@@ -40,7 +40,7 @@ class MothFlameOptimizer(Algorithm):
 
 	@staticmethod
 	def typeParameters():
-		r"""
+		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
 			Dict[str, Callable]: TODO
@@ -87,7 +87,7 @@ class MothFlameOptimizer(Algorithm):
 		best_flames, best_flame_fitness = moth_pos[indexes], moth_fitness[indexes]
 		# Init previous population
 		previous_population, previous_fitness = zeros((self.NP, task.D)), zeros(self.NP)
-		d.update({'best_flames':best_flames, 'best_flame_fitness':best_flame_fitness, 'previous_population': previous_population, 'previous_fitness': previous_fitness})
+		d.update({'best_flames': best_flames, 'best_flame_fitness': best_flame_fitness, 'previous_population': previous_population, 'previous_fitness': previous_fitness})
 		return moth_pos, moth_fitness, d
 
 	def runIteration(self, task, moth_pos, moth_fitness, xb, fxb, best_flames, best_flame_fitness, previous_population, previous_fitness, **dparams):
@@ -134,6 +134,6 @@ class MothFlameOptimizer(Algorithm):
 		double_sorted_fitness, double_sorted_population = double_fitness[indexes], double_population[indexes]
 		for newIdx in range(2 * self.NP): double_sorted_population[newIdx] = array(double_population[indexes[newIdx], :])
 		best_flame_fitness, best_flames = double_sorted_fitness[:self.NP], double_sorted_population[:self.NP]
-		return moth_pos, moth_fitness, {'best_flames':best_flames, 'best_flame_fitness':best_flame_fitness, 'previous_population': previous_population, 'previous_fitness': previous_fitness}
+		return moth_pos, moth_fitness, {'best_flames': best_flames, 'best_flame_fitness': best_flame_fitness, 'previous_population': previous_population, 'previous_fitness': previous_fitness}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

@@ -65,7 +65,7 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 
 	@staticmethod
 	def typeParameters():
-		r"""Returns functions for checking values of parameters.
+		r"""Return functions for checking values of parameters.
 
 		Returns:
 			Dict[str, Callable]:
@@ -93,7 +93,7 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def CalculateProbs(self, Foods, Probs):
-		r"""Calculates the probes.
+		r"""Calculate the probes.
 
 		Parameters:
 			Foods (numpy.ndarray): TODO
@@ -108,7 +108,7 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 		return Probs
 
 	def initPopulation(self, task):
-		r"""Initializes the starting population.
+		r"""Initialize the starting population.
 
 		Parameters:
 			task (Task): Optimization task

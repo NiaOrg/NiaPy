@@ -195,7 +195,7 @@ class Runner:
 		return util.Task(D=self.D, nFES=self.nFES, nGEN=self.nGEN, optType=util.OptimizationType.MINIMIZATION, benchmark=name)
 
 	def algorithmFactory(self, name):
-		r"""
+		r"""TODO.
 
 		Args:
 			name (str): Name of algorithm.
@@ -210,7 +210,7 @@ class Runner:
 		return algorithm(**params)
 
 	def __algorithmFactory(self, aname, bname):
-		r"""
+		r"""TODO.
 
 		Args:
 			aname (str):
@@ -229,7 +229,7 @@ class Runner:
 
 	@classmethod
 	def __generateExportName(cls, extension):
-		r"""
+		r"""TODO.
 
 		Args:
 			extension:
@@ -240,13 +240,11 @@ class Runner:
 		return 'export/' + str(datetime.datetime.now()).replace(':', '.') + '.' + extension
 
 	def __exportToLog(self):
-		r"""
-
-		"""
+		r"""TODO."""
 		print(self.results)
 
 	def __exportToJson(self):
-		r"""
+		r"""TODO.
 
 		See Also:
 			:func:`Runner.__createExportDir`
@@ -257,10 +255,10 @@ class Runner:
 			logger.info('Export to JSON completed!')
 
 	def __exportToXls(self):
-		r"""
+		r"""TODO.
 
-      See Also:
-      	:func:`Runner.__generateExportName`
+		See Also:
+			:func:`Runner.__generateExportName`
 		"""
 		self.__createExportDir()
 		workbook = xlsxwriter.Workbook(self.__generateExportName('xlsx'))
@@ -278,11 +276,11 @@ class Runner:
 		logger.info('Export to XLSX completed!')
 
 	def __exportToLatex(self):
-		r"""
+		r"""TODO.
 
-      See Also:
-      	:func:`Runner.__createExportDir`
-      	:func:`Runner.__generateExportName`
+		See Also:
+			:func:`Runner.__createExportDir`
+			:func:`Runner.__generateExportName`
 		"""
 		self.__createExportDir()
 		metrics = ['Best', 'Median', 'Worst', 'Mean', 'Std.']

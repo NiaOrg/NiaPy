@@ -85,20 +85,21 @@ class MonkeyKingEvolutionV1(Algorithm):
 		r"""TODO.
 
 		Returns:
-			dict:
-				* NP (func): TODO
+			Dict[str, Callable]:
 				* F (func): TODO
 				* R (func): TODO
 				* C (func): TODO
 				* FC (func): TODO
 		"""
-		return {
+		d = Algorithm.typeParameters()
+		d.update({
 			'NP': lambda x: isinstance(x, int) and x > 0,
 			'F': lambda x: isinstance(x, (float, int)) and x > 0,
 			'R': lambda x: isinstance(x, (float, int)) and x > 0,
 			'C': lambda x: isinstance(x, int) and x > 0,
 			'FC': lambda x: isinstance(x, (float, int)) and x > 0
-		}
+		})
+		return d
 
 	def setParameters(self, NP=40, F=0.7, R=0.3, C=3, FC=0.5, **ukwargs):
 		r"""Set Monkey King Evolution v1 algorithms static parameters.
@@ -278,7 +279,7 @@ class MonkeyKingEvolutionV2(MonkeyKingEvolutionV1):
 		return x - self.FC * dx
 
 	def moveMokeyKingPartice(self, p, pop, task):
-		r"""Funciton for moving Monkey King particles
+		r"""Move Monkey King particles.
 
 		Args:
 			p (MkeSolution): Monkey King particle to move.
@@ -381,7 +382,7 @@ class MonkeyKingEvolutionV3(MonkeyKingEvolutionV1):
 		"""
 		X, X_f, d = Algorithm.initPopulation(self, task)
 		k, c = int(ceil(self.NP / task.D)), int(ceil(self.C * task.D))
-		d.update({'k':k, 'c':c})
+		d.update({'k': k, 'c': c})
 		return X, X_f, d
 
 	def runIteration(self, task, X, X_f, xb, fxb, k, c, **dparams):
@@ -414,6 +415,6 @@ class MonkeyKingEvolutionV3(MonkeyKingEvolutionV1):
 		X_f = apply_along_axis(task.eval, 1, X)
 		iw, ib_gb = argmax(X_f), argmin(X_gb_f)
 		if X_gb_f[ib_gb] <= X_f[iw]: X[iw], X_f[iw] = X_gb[ib_gb], X_gb_f[ib_gb]
-		return X, X_f, {'k':k, 'c':c}
+		return X, X_f, {'k': k, 'c': c}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

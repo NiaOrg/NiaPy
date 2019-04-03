@@ -265,22 +265,22 @@ class MultipleTrajectorySearch(Algorithm):
 
 	Algorithm:
 		Multiple trajectory search
-		
+
 	Date:
 		2018
-		
+
 	Authors:
 		Klemen Berkovic
-		
+
 	License:
 		MIT
-		
+
 	Reference URL:
 		https://ieeexplore.ieee.org/document/4631210/
-		
+
 	Reference paper:
 		Lin-Yu Tseng and Chun Chen, "Multiple trajectory search for Large Scale Global Optimization," 2008 IEEE Congress on Evolutionary Computation (IEEE World Congress on Computational Intelligence), Hong Kong, 2008, pp. 3052-3059. doi: 10.1109/CEC.2008.4631210
-		
+
 	Attributes:
 		Name (List[Str]): List of strings representing algorithm name.
 		LSs (Iterable[Callable[[numpy.ndarray, float, numpy.ndarray, float, bool, numpy.ndarray, Task, Dict[str, Any]], Tuple[numpy.ndarray, float, numpy.ndarray, float, bool, int, numpy.ndarray]]]): Local searches to use.
@@ -416,7 +416,7 @@ class MultipleTrajectorySearch(Algorithm):
 		X, X_f, d = Algorithm.initPopulation(self, task)
 		enable, improve, SR, grades = full(self.NP, True), full(self.NP, True), full([self.NP, task.D], task.bRange / 2), full(self.NP, 0.0)
 		d.update({
-			'enable':enable, 'improve':improve, 'SR':SR, 'grades':grades
+			'enable': enable, 'improve': improve, 'SR': SR, 'grades': grades
 		})
 		return X, X_f, d
 
@@ -452,7 +452,7 @@ class MultipleTrajectorySearch(Algorithm):
 			X[i], X_f[i], xb, xb_f, improve[i], SR[i], grades[i] = self.LsRun(k, X[i], X_f[i], xb, xb_f, improve[i], SR[i], grades[i], task)
 		for _ in range(self.NoLsBest): _, _, xb, xb_f, _, _, _ = MTS_LS1(xb, xb_f, xb, xb_f, False, task.bRange, task, rnd=self.Rand)
 		enable[argsort(grades)[:self.NoEnabled]] = True
-		return X, X_f, {'enable':enable, 'improve':improve, 'SR':SR, 'grades':grades}
+		return X, X_f, {'enable': enable, 'improve': improve, 'SR': SR, 'grades': grades}
 
 class MultipleTrajectorySearchV1(MultipleTrajectorySearch):
 	r"""Implementation of Multiple trajectory search.

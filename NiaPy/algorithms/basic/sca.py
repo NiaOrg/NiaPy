@@ -92,7 +92,7 @@ class SineCosineAlgorithm(Algorithm):
 		return task.repair(x + r1 * (sin(r2) if r4 < 0.5 else cos(r2)) * fabs(r3 * x_b - x), self.Rand)
 
 	def initPopulation(self, task):
-		r"""Initialization of individuals.
+		r"""Initialize the individuals.
 
 		Args:
 			task (Task): Optimization task

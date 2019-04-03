@@ -353,7 +353,7 @@ class AnarchicSocietyOptimization(Algorithm):
 		X, X_f, d = Algorithm.initPopulation(self, task)
 		alpha, gamma, theta = self.init(task)
 		Xpb, Xpb_f = self.uBestAndPBest(X, X_f, full([self.NP, task.D], 0.0), full(self.NP, task.optType.value * inf))
-		d.update({'Xpb':Xpb, 'Xpb_f':Xpb_f, 'alpha':alpha, 'gamma':gamma, 'theta':theta, 'rs': self.d(task.Upper, task.Lower)})
+		d.update({'Xpb': Xpb, 'Xpb_f': Xpb_f, 'alpha': alpha, 'gamma': gamma, 'theta': theta, 'rs': self.d(task.Upper, task.Lower)})
 		return X, X_f, d
 
 	def runIteration(self, task, X, X_f, xb, fxb, Xpb, Xpb_f, alpha, gamma, theta, rs, **dparams):
@@ -389,6 +389,6 @@ class AnarchicSocietyOptimization(Algorithm):
 		Xtmp = asarray([self.Combination(X[i], Xpb[i], xb, X[self.randint(len(X), skip=[i])], MP_c[i], MP_s[i], MP_p[i], self.F, self.CR, task, self.Rand) for i in range(len(X))])
 		X, X_f = asarray([Xtmp[i][0] for i in range(len(X))]), asarray([Xtmp[i][1] for i in range(len(X))])
 		Xpb, Xpb_f = self.uBestAndPBest(X, X_f, Xpb, Xpb_f)
-		return X, X_f, {'Xpb':Xpb, 'Xpb_f':Xpb_f, 'alpha':alpha, 'gamma':gamma, 'theta':theta, 'rs':rs}
+		return X, X_f, {'Xpb': Xpb, 'Xpb_f': Xpb_f, 'alpha': alpha, 'gamma': gamma, 'theta': theta, 'rs': rs}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

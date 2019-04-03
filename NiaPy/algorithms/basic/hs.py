@@ -69,7 +69,7 @@ class HarmonySearch(Algorithm):
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def bw(self, task):
-		r"""
+		r"""TODO.
 
 		Args:
 			task (Task): Optimization task.
@@ -80,7 +80,7 @@ class HarmonySearch(Algorithm):
 		return self.uniform(-1, 1) * self.b_range
 
 	def adjustment(self, x, task):
-		r"""
+		r"""TODO.
 
 		Args:
 			x:
@@ -92,14 +92,14 @@ class HarmonySearch(Algorithm):
 		return x + self.bw(task)
 
 	def improvize(self, HM, task):
-		r"""
+		r"""TODO.
 
 		Args:
-			HM:
+			HM (numpy.ndarray):
 			task (Task): Optimization task.
 
 		Returns:
-
+			numpy.ndarray: TODO.
 		"""
 		H = full(task.D, .0)
 		for i in range(task.D):
@@ -108,7 +108,7 @@ class HarmonySearch(Algorithm):
 		return H
 
 	def initPopulation(self, task):
-		r"""
+		r"""TODO.
 
 		Args:
 			task (Task): Optimization task.
@@ -125,6 +125,22 @@ class HarmonySearch(Algorithm):
 		return Algorithm.initPopulation(self, task)
 
 	def runIteration(self, task, HM, HM_f, xb, fxb, **dparams):
+		r"""TODO.
+
+		Args:
+			task (Task): Optimization task.
+			HM (numpy.ndarray): Current population.
+			HM_f (numpy.ndarray[float]): Current populations function/fitness values.
+			xb (numpy.ndarray): Global best individual.
+			fxb (float): Global best fitness/function value.
+			**dparams (Dict[str, Any]): Additional arguments.
+
+		Returns:
+			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+				1. New population.
+				2. New populations function/fitness values.
+				3. Additional arguments.
+		"""
 		H = self.improvize(HM, task)
 		H_f = task.eval(task.repair(H, self.Rand))
 		iw = argmax(HM_f)
@@ -184,13 +200,13 @@ class HarmonySearchV1(HarmonySearch):
 		HarmonySearch.setParameters(self, **kwargs)
 
 	def bw(self, task):
-		r"""
+		r"""TODO.
 
 		Args:
 			task (Task): Optimization task.
 
 		Returns:
-
+			TODO.
 		"""
 		return self.bw_min * exp(log(self.bw_min / self.bw_max) * task.Iters / task.nGEN)
 

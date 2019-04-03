@@ -378,7 +378,7 @@ class EvolutionStrategyML(EvolutionStrategyMpL):
 	Name = ['EvolutionStrategyML', 'EvolutionStrategy(mu,lambda)', 'ES(m,l)']
 
 	def newPop(self, pop):
-		r"""New population.
+		r"""Return new population.
 
 		Args:
 			pop (numpy.ndarray): Current population.
@@ -503,26 +503,23 @@ class CovarianceMatrixAdaptionEvolutionStrategy(Algorithm):
 	}
 
 	def setParameters(self, epsilon=1e-20, **ukwargs):
-		r"""
+		r"""Set core parameters of CovarianceMatrixAdaptionEvolutionStrategy algorithm.
 
 		Args:
-			epsilon:
-			**ukwargs:
-
-		Returns:
-
+			epsilon (float): Small number.
+			**ukwargs (Dict[str, Any]): Additional arguments.
 		"""
 		self.epsilon = epsilon
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def runTask(self, task):
-		r"""
+		r"""TODO.
 
 		Args:
-			task:
+			task (Task): Optimization task.
 
 		Returns:
-
+			TODO.
 		"""
 		return CovarianceMaatrixAdaptionEvolutionStrategyF(task, self.epsilon, rnd=self.Rand)
 

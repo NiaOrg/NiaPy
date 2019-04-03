@@ -255,7 +255,7 @@ class MultiStrategyDifferentialEvolutionMTS(DifferentialEvolutionMTS, MultiStrat
 	Name = ['MultiStrategyDifferentialEvolutionMTS', 'MSDEMTS']
 
 	def setParameters(self, **ukwargs):
-		r"""
+		r"""TODO.
 
 		Args:
 			**ukwargs:

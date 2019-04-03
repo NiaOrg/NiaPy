@@ -191,7 +191,7 @@ class KrillHerd(Algorithm):
 	def Cr(self, xf, yf, xf_best, xf_worst): return self._Cr * self.funK(xf, yf, xf_best, xf_worst)
 
 	def initPopulation(self, task):
-		r"""Initialize stating population.j
+		r"""Initialize stating population.
 
 		Args:
 			task (Task): Optimization task.
@@ -212,7 +212,7 @@ class KrillHerd(Algorithm):
 		KH, KH_f, d = Algorithm.initPopulation(self, task)
 		W_n, W_f = self.initWeights(task)
 		N, F = full(self.NP, .0), full(self.NP, .0)
-		d.update({'W_n':W_n, 'W_f':W_f, 'N':N, 'F':F})
+		d.update({'W_n': W_n, 'W_f': W_f, 'N': N, 'F': F})
 		return KH, KH_f, d
 
 	def runIteration(self, task, KH, KH_f, xb, fxb, W_n, W_f, N, F, **dparams):
@@ -228,7 +228,7 @@ class KrillHerd(Algorithm):
 		KH_n = asarray([self.mutate(KH_n[i], KH[ikh_b], Mu[i]) for i in range(self.NP)])
 		KH = apply_along_axis(task.repair, 1, KH_n, rnd=self.Rand)
 		KH_f = apply_along_axis(task.eval, 1, KH)
-		return KH, KH_f, {'W_n':W_n, 'W_f':W_f, 'N':N, 'F':F}
+		return KH, KH_f, {'W_n': W_n, 'W_f': W_f, 'N': N, 'F': F}
 
 class KrillHerdV4(KrillHerd):
 	r"""Implementation of krill herd algorithm.
@@ -258,7 +258,7 @@ class KrillHerdV4(KrillHerd):
 
 	@staticmethod
 	def typeParameters():
-		r"""
+		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
 			Dict[str, Callable]:
@@ -483,7 +483,7 @@ class KrillHerdV11(KrillHerd):
 		KH, KH_f, d = Algorithm.initPopulation(self, task)
 		KHo, KHo_f = full([self.NP, task.D], task.optType.value * inf), full(self.NP, task.optType.value * inf)
 		N, F, Dt = full(self.NP, .0), full(self.NP, .0), mean(task.bcRange()) / 2
-		d.update({'KHo':KHo, 'KHo_f':KHo_f, 'N': N, 'F':F, 'Dt':Dt})
+		d.update({'KHo': KHo, 'KHo_f': KHo_f, 'N': N, 'F': F, 'Dt': Dt})
 		return KH, KH_f, d
 
 	def runIteration(self, task, KH, KH_f, xb, fxb, KHo, KHo_f, N, F, Dt, **dparams):
@@ -498,6 +498,6 @@ class KrillHerdV11(KrillHerd):
 		KH = apply_along_axis(task.repair, 1, KH_n, self.Rand)
 		KH_f = apply_along_axis(task.eval, 1, KH)
 		KHo, KHo_f = self.ElitistSelection(KH, KH_f, KHo, KHo_f)
-		return KH, KH_f, {'KHo':KHo, 'KHo_f':KHo_f, 'N': N, 'F':F, 'Dt':Dt}
+		return KH, KH_f, {'KHo': KHo, 'KHo_f': KHo_f, 'N': N, 'F': F, 'Dt': Dt}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

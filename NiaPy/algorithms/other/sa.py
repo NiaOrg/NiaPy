@@ -69,7 +69,7 @@ class SimulatedAnnealing(Algorithm):
 
 	@staticmethod
 	def typeParameters():
-		r"""
+		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
 			Dict[str, Callable]:
@@ -98,7 +98,7 @@ class SimulatedAnnealing(Algorithm):
 	def initPopulation(self, task):
 		x = task.Lower + task.bcRange() * self.rand(task.D)
 		curT, xfit = self.T, task.eval(x)
-		return x, xfit, {'curT':curT}
+		return x, xfit, {'curT': curT}
 
 	def runIteration(self, task, x, xfit, xb, fxb, curT, **dparams):
 		c = task.repair(x - self.delta / 2 + self.rand(task.D) * self.delta, rnd=self.Rand)
@@ -106,6 +106,6 @@ class SimulatedAnnealing(Algorithm):
 		deltaFit, r = cfit - xfit, self.rand()
 		if deltaFit < 0 or r < exp(deltaFit / curT): x, xfit = c, cfit
 		curT = self.cool(curT, self.T, self.deltaT, nFES=task.nFES)
-		return x, xfit, {'curT':curT}
+		return x, xfit, {'curT': curT}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

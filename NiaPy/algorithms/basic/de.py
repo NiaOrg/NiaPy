@@ -180,7 +180,7 @@ def CrossCurr2Rand1(pop, ic, x_b, f, cr, rnd=rand, *args):
 	return asarray(x)
 
 def CrossCurr2Best1(pop, ic, x_b, f, cr, rnd=rand, **kwargs):
-	r"""mutation strategy with crossover.
+	r"""Mutation strategy with crossover.
 
 	Mutation:
 		Name: de/curr-to-best/1
@@ -288,7 +288,7 @@ class DifferentialEvolution(Algorithm):
 		return objects2array([self.itype(x=self.CrossMutt(pop, i, xb, self.F, self.CR, self.Rand), task=task, rnd=self.Rand, e=True) for i in range(len(pop))])
 
 	def selection(self, pop, npop, **kwargs):
-		r"""Selection operator.
+		r"""Operator for selection.
 
 		Args:
 			pop (numpy.ndarray[Individual]): Current population.
@@ -544,7 +544,7 @@ class AgingIndividual(Individual):
 	age = 0
 
 	def __init__(self, **kwargs):
-		r"""Initalize Aging Individual.
+		r"""Init Aging Individual.
 
 		Args:
 			**kwargs (Dict[str, Any]): Additional arguments sent to parent.
@@ -643,7 +643,7 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 		return self.delta_np * abs(cos(t + 78))
 
 	def aging(self, task, pop):
-		r"""Function applying aging to individuals.
+		r"""Apply aging to individuals.
 
 		Args:
 			task (Task): Optimization task.
@@ -663,7 +663,7 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 		return npop
 
 	def popIncrement(self, pop, task):
-		r"""Function increments population.
+		r"""Increment population.
 
 		Args:
 			pop (numpy.ndarray[Individual]): Current population.
@@ -677,7 +677,7 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 		return objects2array([self.itype(task=task, rnd=self.Rand, e=True) for i in ni])
 
 	def popDecrement(self, pop, task):
-		r"""Function decrements population.
+		r"""Decrement population.
 
 		Args:
 			pop (numpy.ndarray): Current population.

@@ -8,7 +8,7 @@ from enum import Enum
 from numpy import ndarray, asarray, full, empty, inf, dot, where, random as rand, fabs, ceil, amin, amax
 from matplotlib import pyplot as plt, animation as anim
 from NiaPy.benchmarks import Rastrigin, Rosenbrock, Griewank, Sphere, Ackley, Schwefel, Schwefel221, Schwefel222, Whitley, Alpine1, Alpine2, HappyCat, Ridge, ChungReynolds, Csendes, Pinter, Qing, Quintic, Salomon, SchumerSteiglitz, Step, Step2, Step3, Stepint, SumSquares, StyblinskiTang, BentCigar, Discus, Elliptic, ExpandedGriewankPlusRosenbrock, HGBat, Katsuura, ExpandedSchaffer, ModifiedSchwefel, Weierstrass, Michalewichz, Levy, Sphere2, Sphere3, Trid, Perm, Zakharov, DixonPrice, Powell, CosineMixture, Infinity, SchafferN2, SchafferN4
-from NiaPy.util.exception import FesException, GenException, RefException #TimeException,
+from NiaPy.util.exception import FesException, GenException, RefException  # TimeException,
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.util.utility')
@@ -388,7 +388,7 @@ class Task(Utility):
 		Returns:
 			bool: `True` if solution is in feasible space else `False`.
 		"""
-		return not False in (A > self.Lower) and not False in (A < self.Upper)
+		return False not in (A > self.Lower) and False not in (A < self.Upper)
 
 	def stopCond(self):
 		r"""Check if optimization task should stop.
@@ -792,7 +792,7 @@ class TaskConvPlot(StoppingTask):
 		:class:`NiaPy.util.utility.StoppingTask`
 	"""
 	def __init__(self, **kwargs):
-		r"""
+		r"""TODO.
 
 		Args:
 			**kwargs (Dict[str, Any]): Additional arguments.
@@ -865,7 +865,7 @@ class TaskComposition(MoveTask):
 		MoveTask.__init__(self, **kwargs)
 
 	def eval(self, A):
-		r"""
+		r"""TODO.
 
 		Args:
 			A:

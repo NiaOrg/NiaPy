@@ -41,7 +41,7 @@ class NelderMeadMethod(Algorithm):
 
 	@staticmethod
 	def typeParameters():
-		r"""Dictionary with function for testing correctness of parameters.
+		r"""Get dictionary with function for testing correctness of parameters.
 
 		Returns:
 			Dict[str, Callable]:
