@@ -83,7 +83,7 @@ class Algorithm:
 	def typeParameters():
 		r"""Returns functions for checking values of parameters.
 
-		Returns:
+		Return:
 			Dict[str, Callable]:
 				* NP (Callable[[int], bool]): Check if number of individuals is :math:`\in [0, \infty]`.
 		"""
@@ -206,7 +206,7 @@ class Algorithm:
 		else: return xb, xb_f
 
 	def initPopulation(self, task):
-		r"""Initialization for starting population of optimization algorithm.
+		r"""Initialize starting population of optimization algorithm.
 
 		Args:
 			task (Task): Optimization task.

@@ -224,11 +224,7 @@ class Runner:
 
 	@classmethod
 	def __createExportDir(cls):
-		r"""
-
-		Returns:
-
-		"""
+		r"""TODO."""
 		if not os.path.exists('export'): os.makedirs('export')
 
 	@classmethod

@@ -1,13 +1,12 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, logging-not-lazy, attribute-defined-outside-init, line-too-long, arguments-differ, singleton-comparison, bad-continuation, dangerous-default-value
+# pylint: disable=mixed-indentation, multiple-statements, logging-not-lazy, attribute-defined-outside-init, line-too-long, arguments-differ, singleton-comparison, bad-continuation, dangerous-default-value, too-many-ancestors
 import logging
 
-from numpy import argmin, argsort, argmax, full, asarray
+from numpy import argsort
 
 from NiaPy.algorithms.algorithm import Individual
-from NiaPy.algorithms.basic.de import MultiStrategyDifferentialEvolution, DynNpDifferentialEvolution, DifferentialEvolution, CrossBest1, CrossBest2, CrossRand1, CrossRand2, CrossCurr2Rand1
+from NiaPy.algorithms.basic.de import MultiStrategyDifferentialEvolution, DynNpDifferentialEvolution, DifferentialEvolution
 from NiaPy.algorithms.other.mts import MTS_LS1, MTS_LS1v1, MTS_LS2, MTS_LS3, MTS_LS3v1, MultipleTrajectorySearch
-from NiaPy.util.utility import objects2array
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.modified')
