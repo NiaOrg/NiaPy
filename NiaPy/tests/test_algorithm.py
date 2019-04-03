@@ -44,8 +44,6 @@ class IndividualTestCase(TestCase):
 	def test_repair_fine(self):
 		s = Individual(x=full(self.D, 100))
 		self.assertFalse(self.task.isFeasible(s.x))
-		s.repair(self.task)
-		self.assertTrue(self.task.isFeasible(s.x))
 
 	def test_eq_fine(self):
 		self.assertFalse(self.s1 == self.s2)
@@ -78,12 +76,6 @@ class AlgorithBaseTestCase(TestCase):
 		self.a.setParameters(t=None, a=20)
 		self.assertRaises(AttributeError, lambda: self.assertEqual(self.a.a, None))
 
-
-	def test_setBenchmark(self):
-		task = StoppingTask(D=10, nFES=10, nGEN=10, optType=OptimizationType.MINIMIZATION, benchmark=MyBenchmark())
-		a = self.a.setBenchmark(task)
-		self.assertIsInstance(a, Algorithm)
-
 	def test_randn(self):
 		a = self.a.randn([1, 2])
 		self.assertEqual(a.shape, (1, 2))
@@ -93,14 +85,6 @@ class AlgorithBaseTestCase(TestCase):
 		self.assertEqual(len(a), 2)
 		a = self.a.randn()
 		self.assertIsInstance(a, float)
-
-	def test_runYield(self):
-		a = self.a.runYield(None)
-		self.assertEqual(next(a), (None, None))
-
-	def test_runTask(self):
-		a = self.a.runTask(None)
-		self.assertEqual(a, (None, None))
 
 class TestingTask(StoppingTask, TestCase):
 	def eval(self, A):

@@ -3,7 +3,7 @@
 """Implementation of modified nature-inspired algorithms."""
 
 from NiaPy.algorithms.modified.hba import HybridBatAlgorithm
-from NiaPy.algorithms.modified.hde import DifferentialEvolutionMTS, DifferentialEvolutionMTSv1, DynNpDifferentialEvolutionMTS, DynNpDifferentialEvolutionMTSv1, MultiStratgyDifferentialEvolutionMTS, DynNpMultiStrategyDifferentialEvolutionMTS, DynNpMultiStrategyDifferentialEvolutionMTSv1, MultiStratgyDifferentialEvolutionMTSv1
+from NiaPy.algorithms.modified.hde import DifferentialEvolutionMTS, DifferentialEvolutionMTSv1, DynNpDifferentialEvolutionMTS, DynNpDifferentialEvolutionMTSv1, MultiStrategyDifferentialEvolutionMTS, DynNpMultiStrategyDifferentialEvolutionMTS, DynNpMultiStrategyDifferentialEvolutionMTSv1, MultiStrategyDifferentialEvolutionMTSv1
 from NiaPy.algorithms.modified.jde import SelfAdaptiveDifferentialEvolution, DynNpSelfAdaptiveDifferentialEvolutionAlgorithm, MultiStrategySelfAdaptiveDifferentialEvolution, DynNpMultiStrategySelfAdaptiveDifferentialEvolution
 
 __all__ = [
@@ -12,8 +12,8 @@ __all__ = [
     'DifferentialEvolutionMTSv1',
     'DynNpDifferentialEvolutionMTS',
     'DynNpDifferentialEvolutionMTSv1',
-    'MultiStratgyDifferentialEvolutionMTS',
-    'MultiStratgyDifferentialEvolutionMTSv1',
+    'MultiStrategyDifferentialEvolutionMTS',
+    'MultiStrategyDifferentialEvolutionMTSv1',
     'DynNpMultiStrategyDifferentialEvolutionMTS',
     'DynNpMultiStrategyDifferentialEvolutionMTSv1',
     'SelfAdaptiveDifferentialEvolution',

@@ -24,8 +24,8 @@ class DETestCase(TestCase):
             nFES=1000,
             optType=OptimizationType.MINIMIZATION,
             benchmark=Sphere())
-        algo = DifferentialEvolution(task=task, NP=40, CR=0.9, F=0.5)
-        algo.run()
+        algo = DifferentialEvolution(NP=40, CR=0.9, F=0.5)
+        algo.runTask(task)
         evals = task.evals()
         self.assertEqual(1000, evals)
 
@@ -35,8 +35,8 @@ class DETestCase(TestCase):
             nGEN=1000,
             optType=OptimizationType.MINIMIZATION,
             benchmark=Sphere())
-        algo = DifferentialEvolution(task=task, NP=40, CR=0.9, F=0.5)
-        algo.run()
+        algo = DifferentialEvolution(NP=40, CR=0.9, F=0.5)
+        algo.runTask(task)
         iters = task.iters()
         self.assertEqual(1000, iters)
 
@@ -58,8 +58,8 @@ class BATestCase(TestCase):
             nFES=1000,
             optType=OptimizationType.MINIMIZATION,
             benchmark=Sphere())
-        algo = BatAlgorithm(task=task, NP=25)
-        algo.run()
+        algo = BatAlgorithm(NP=25)
+        algo.runTask(task)
         evals = task.evals()
         self.assertEqual(1000, evals)
 
@@ -69,8 +69,8 @@ class BATestCase(TestCase):
             nGEN=1000,
             optType=OptimizationType.MINIMIZATION,
             benchmark=Sphere())
-        algo = BatAlgorithm(task=task, NP=25)
-        algo.run()
+        algo = BatAlgorithm(NP=25)
+        algo.runTask(task)
         iters = task.iters()
         self.assertEqual(1000, iters)
 
@@ -81,8 +81,8 @@ class BATestCase(TestCase):
             nGEN=1000,
             optType=OptimizationType.MINIMIZATION,
             benchmark=Sphere())
-        algo = BatAlgorithm(task=task, NP=10)
-        algo.run()
+        algo = BatAlgorithm(NP=10)
+        algo.runTask(task)
         evals = task.evals()
         self.assertEqual(10000, evals)
 
@@ -94,8 +94,8 @@ class FATestCase(TestCase):
             nFES=1000,
             optType=OptimizationType.MINIMIZATION,
             benchmark=Sphere())
-        algo = FireflyAlgorithm(task=task, NP=25)
-        algo.run()
+        algo = FireflyAlgorithm(NP=25)
+        algo.runTask(task)
         evals = task.evals()
         self.assertEqual(1000, evals)
 
@@ -105,7 +105,7 @@ class FATestCase(TestCase):
             nGEN=1000,
             optType=OptimizationType.MINIMIZATION,
             benchmark=Sphere())
-        algo = FireflyAlgorithm(task=task, NP=25)
-        algo.run()
+        algo = FireflyAlgorithm(NP=25)
+        algo.runTask(task)
         iters = task.iters()
         self.assertEqual(1000, iters)

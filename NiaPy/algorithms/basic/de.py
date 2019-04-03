@@ -269,7 +269,7 @@ class DifferentialEvolution(Algorithm):
 		See Also:
 			:func:`NiaPy.algorithms.algorithm.Algorithm.setParameters`
 		"""
-		Algorithm.setParameters(self, NP=NP, InitPopFunc=defaultIndividualInit, itype=ukwargs.pop('itype', Individual), **ukwargs)
+		Algorithm.setParameters(self, NP=NP, InitPopFunc=ukwargs.pop('InitPopFunc', defaultIndividualInit), itype=ukwargs.pop('itype', Individual), **ukwargs)
 		self.F, self.CR, self.CrossMutt = F, CR, CrossMutt
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
@@ -300,12 +300,13 @@ class DifferentialEvolution(Algorithm):
 		"""
 		return objects2array([e if e.f < pop[i].f else pop[i] for i, e in enumerate(npop)])
 
-	def postSelection(self, pop, task, **kwargs):
+	def postSelection(self, pop, task, xb=None, **kwargs):
 		r"""Apply additional operation after selection.
 
 		Args:
 			pop (numpy.ndarray[Individual]): Current population.
 			task (Task): Optimization task.
+			xb (Optional[Individual]): Global best solution.
 			**kwargs (Dict[str, Any]): Additional arguments.
 
 		Returns:
@@ -337,7 +338,7 @@ class DifferentialEvolution(Algorithm):
 		"""
 		npop = self.evolve(pop, xb, task)
 		pop = self.selection(pop, npop)
-		pop = self.postSelection(pop, task)
+		pop = self.postSelection(pop, task, xb=xb)
 		return pop, asarray([x.f for x in pop]), {}
 
 class CrowdingDifferentialEvolution(DifferentialEvolution):
@@ -460,7 +461,7 @@ class DynNpDifferentialEvolution(DifferentialEvolution):
 		self.pmax, self.rp = pmax, rp
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def postSelection(self, pop, task):
+	def postSelection(self, pop, task, **kwargs):
 		r"""Post selection operator.
 
 		In this algorithm the post selection operator decrements the population at specific iterations/generations.
@@ -468,6 +469,7 @@ class DynNpDifferentialEvolution(DifferentialEvolution):
 		Args:
 			pop (numpy.ndarray[Individual]): Current population.
 			task (Task): Optimization task.
+			kwargs (Dict[str, Any]): Additional arguments.
 
 		Returns:
 			numpy.ndarray[Individual]: Changed current population.
@@ -857,12 +859,13 @@ class DynNpMultiStrategyDifferentialEvolution(MultiStrategyDifferentialEvolution
 		DynNpDifferentialEvolution.setParameters(self, **ukwargs)
 		MultiStrategyDifferentialEvolution.setParameters(self, **ukwargs)
 
-	def postSelection(self, pop, task):
+	def postSelection(self, pop, task, **kwargs):
 		r"""Post selection operator.
 
 		Args:
 			pop (numpy.ndarray[Individual]): Current population.
 			task (Task): Optimization task.
+			**kwargs (Dict[str, Any]): Additional arguments.
 
 		Returns:
 			numpy.ndarray: New population.
@@ -919,7 +922,7 @@ class AgingNpMultiMutationDifferentialEvolution(AgingNpDifferentialEvolution, Mu
 			* :func:`NiaPy.algorithms.basic.de.MultiStrategyDifferentialEvolution.setParameters`
 		"""
 		AgingNpDifferentialEvolution.setParameters(self, **ukwargs)
-		MultiStrategyDifferentialEvolution.setParameters(self, stratgeys=[CrossRand1, CrossBest1, CrossCurr2Rand1, CrossRand2], itype=AgingIndividual, **ukwargs)
+		MultiStrategyDifferentialEvolution.setParameters(self, stratgeys=(CrossRand1, CrossBest1, CrossCurr2Rand1, CrossRand2), itype=AgingIndividual, **ukwargs)
 
 	def evolve(self, pop, xb, task, **kwargs):
 		r"""Evolve current population.

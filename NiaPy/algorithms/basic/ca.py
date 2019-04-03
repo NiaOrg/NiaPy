@@ -196,6 +196,20 @@ class CamelAlgorithm(Algorithm):
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def initPop(self, task, NP, rnd, itype, **kwargs):
+		r"""Initialize starting population.
+
+		Args:
+			task (Task): Optimization task.
+			NP (int): Number of camels in population.
+			rnd (mtrand.RandomState): Random number generator.
+			itype (Individual): Individual type.
+			**kwargs (Dict[str, Any]): Additional arguments.
+
+		Returns:
+			Tuple[numpy.ndarray[Camel], numpy.ndarray[float]]:
+				1. Initialize population of camels.
+				2. Initialized populations function/fitness values.
+		"""
 		caravan = objects2array([itype(E_init=self.E_init, S_init=self.S_init, task=task, rnd=rnd, e=True) for _ in range(NP)])
 		return caravan, asarray([c.f for c in caravan])
 
