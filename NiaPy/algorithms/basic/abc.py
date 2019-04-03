@@ -2,7 +2,9 @@
 # pylint: disable=mixed-indentation, line-too-long, multiple-statements, attribute-defined-outside-init, logging-not-lazy, arguments-differ, bad-continuation
 import copy
 import logging
-from numpy import asarray, full, empty, argmax
+
+from numpy import asarray, full, argmax
+
 from NiaPy.algorithms.algorithm import Algorithm, Individual, defaultIndividualInit
 
 logging.basicConfig()
@@ -63,7 +65,7 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 
 	@staticmethod
 	def typeParameters():
-		r"""Returns functions for checking values of parameters.
+		r"""Return functions for checking values of parameters.
 
 		Returns:
 			Dict[str, Callable]:
@@ -91,7 +93,7 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def CalculateProbs(self, Foods, Probs):
-		r"""Calculates the probes.
+		r"""Calculate the probes.
 
 		Parameters:
 			Foods (numpy.ndarray): TODO
@@ -105,14 +107,8 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 		Probs = [Probs[i] / s for i in range(self.FoodNumber)]
 		return Probs
 
-	def initPop(self, NP, task, rand):
-		pop = empty(NP, dtype=object)
-		for i in range(NP): pop[i] = SolutionABC(task=task, rand=rand, e=True)
-		fpop = asarray([x.f for x in pop])
-		return pop, fpop
-
 	def initPopulation(self, task):
-		r"""Initializes the starting population.
+		r"""Initialize the starting population.
 
 		Parameters:
 			task (Task): Optimization task
@@ -130,7 +126,7 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 		"""
 		Foods, fpop, _ = Algorithm.initPopulation(self, task)
 		Probs, Trial = full(self.FoodNumber, 0.0), full(self.FoodNumber, 0.0)
-		return Foods, fpop, {'Probs':Probs, 'Trial':Trial}
+		return Foods, fpop, {'Probs': Probs, 'Trial': Trial}
 
 	def runIteration(self, task, Foods, fpop, xb, fxb, Probs, Trial, **dparams):
 		r"""Core funciton of  the algorithm.
@@ -177,6 +173,6 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 			if s == self.FoodNumber: s = 0
 		mi = argmax(Trial)
 		if Trial[mi] >= self.Limit: Foods[mi], Trial[mi] = SolutionABC(task=task, rnd=self.Rand), 0
-		return Foods, asarray([f.f for f in Foods]), {'Probs':Probs, 'Trial':Trial}
+		return Foods, asarray([f.f for f in Foods]), {'Probs': Probs, 'Trial': Trial}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

@@ -1,8 +1,9 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, multiple-statements, line-too-long
 from unittest import TestCase
+
 from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
-from NiaPy.benchmarks.griewank import Griewank
+
 from NiaPy.algorithms.other import AnarchicSocietyOptimization
 from NiaPy.algorithms.other.aso import Elitism, Sequential, Crossover
 

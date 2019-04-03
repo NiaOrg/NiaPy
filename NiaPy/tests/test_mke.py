@@ -1,8 +1,9 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, multiple-statements, too-many-function-args
 from unittest import TestCase
+
 from numpy import array_equal, full, inf, random as rnd
-from NiaPy.benchmarks import Griewank
+
 from NiaPy.util import Task
 from NiaPy.algorithms.basic import MonkeyKingEvolutionV1, MonkeyKingEvolutionV2, MonkeyKingEvolutionV3
 from NiaPy.algorithms.basic.mke import MkeSolution

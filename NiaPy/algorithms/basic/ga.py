@@ -1,8 +1,10 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, unused-argument, line-too-long, len-as-condition, useless-super-delegation, redefined-builtin, arguments-differ, bad-continuation, not-an-iterable
 import logging
-from numpy import argmin, sort, random as rand, asarray, fmin, fmax, sum
-from NiaPy.algorithms.algorithm import Algorithm, Individual
+
+from numpy import argmin, sort, random as rand, asarray, fmin, fmax, sum, empty
+
+from NiaPy.algorithms.algorithm import Algorithm, Individual, defaultIndividualInit
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.basic')
@@ -64,52 +66,86 @@ def CreepMutation(pop, ic, mr, task, rnd=rand):
 class GeneticAlgorithm(Algorithm):
 	r"""Implementation of Genetic algorithm.
 
-	**Algorithm:** Genetic algorithm
+	Algorithm:
+		Genetic algorithm
 
-	**Date:** 2018
+	Date:
+		2018
 
-	**Author:** Klemen Berkovič
+	Author:
+		Klemen Berkovič
 
-	**License:** MIT
+	License:
+		MIT
+
+	Attributes:
+		Name (List[str]): List of strings representing algorithm name.
+		Ts (int): Tournament size.
+		Mr (float): Mutation rate.
+		Cr (float): Crossover rate.
+		Selection (Callable[[numpy.ndarray[Individual], int, int, Individual, mtrand.RandomState], Individual]): Selection operator.
+		Crossover (Callable[[numpy.ndarray[Individual], int, float, mtrand.RandomState], Individual]): Crossover operator.
+		Mutation (Callable[[numpy.ndarray[Individual], int, float, Task, mtrand.RandomState], Individual]): Mutation operator.
+
+	See Also:
+		:class:`NiaPy.algorithms.algorithm.Algorithm`
 	"""
 	Name = ['GeneticAlgorithm', 'GA']
 
 	@staticmethod
-	def typeParameters(): return {
-			'NP': lambda x: isinstance(x, int) and x > 0,
+	def typeParameters():
+		d = Algorithm.typeParameters()
+		d.update({
 			'Ts': lambda x: isinstance(x, int) and x > 1,
 			'Mr': lambda x: isinstance(x, float) and 0 <= x <= 1,
 			'Cr': lambda x: isinstance(x, float) and 0 <= x <= 1
-	}
+		})
+		return d
 
 	def setParameters(self, NP=25, Ts=5, Mr=0.25, Cr=0.25, Selection=TurnamentSelection, Crossover=UniformCrossover, Mutation=UniformMutation, **ukwargs):
 		r"""Set the parameters of the algorithm.
 
-		**Arguments:**
-		NP {integer} -- population size
-		Ts {integer} -- tournament selection
-		Mr {decimal} -- mutation rate
-		Cr {decimal} -- crossover rate
+		Arguments:
+			NP (Optional[int]): Population size.
+			Ts (Optional[int]): Tournament selection.
+			Mr (Optional[int]): Mutation rate.
+			Cr (Optional[float]): Crossover rate.
+			Selection (Optional[Callable[[numpy.ndarray[Individual], int, int, Individual, mtrand.RandomState], Individual]]): Selection operator.
+			Crossover (Optional[Callable[[numpy.ndarray[Individual], int, float, mtrand.RandomState], Individual]]): Crossover operator.
+			Mutation (Optional[Callable[[numpy.ndarray[Individual], int, float, Task, mtrand.RandomState], Individual]]): Mutation operator.
+
+		See Also:
+			:func:`NiaPy.algorithms.algorithm.Algorithm.setParameters`
 		"""
-		self.NP, self.Ts, self.Mr, self.Cr = NP, Ts, Mr, Cr
+		Algorithm.setParameters(self, NP=NP, itype=Individual, InitPopFunc=defaultIndividualInit)
+		self.Ts, self.Mr, self.Cr = Ts, Mr, Cr
 		self.Selection, self.Crossover, self.Mutation = Selection, Crossover, Mutation
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def evolve(self, pop, x_b, task):
-		npop, x_bc = list(), pop[argmin([x.f for x in pop])]
+	def runIteration(self, task, pop, fpop, xb, fxb, **dparams):
+		r"""Core function of GeneticAlgorithm algorithm.
+
+		Args:
+			task (Task): Optimization task.
+			pop (numpy.ndarray[Individual]): Current population.
+			fpop (numpy.ndarray[float]): Current populations fitness/function values.
+			xb (Individual): Global best individual.
+			fxb (float): Global best individuals function/fitness value.
+			**dparams (Dict[str, Any]): Additional arguments.
+
+		Returns:
+			Tuple[numpy.ndarray[Individual], numpy.ndarray[float], Dict[str, Any]]:
+				1. New population.
+				2. New populations function/fitness values.
+				3. Additional arguments.
+		"""
+		npop = empty(self.NP, dtype=object)
 		for i in range(self.NP):
-			ind = Individual(x=self.Selection(pop, i, self.Ts, x_bc, self.Rand), e=False)
+			ind = self.itype(x=self.Selection(pop, i, self.Ts, xb, self.Rand), e=False)
 			ind.x = self.Crossover(pop, i, self.Cr, self.Rand)
 			ind.x = self.Mutation(pop, i, self.Mr, task, self.Rand)
 			ind.evaluate(task, rnd=self.Rand)
-			npop.append(ind)
-			if x_b.f > ind.f: x_b = ind
-		return npop, x_b
-
-	def runTask(self, task):
-		pop = [Individual(task=task, rand=self.Rand) for _i in range(self.NP)]
-		x_b = pop[argmin([c.f for c in pop])]
-		while not task.stopCondI(): pop, x_b = self.evolve(pop, x_b, task)
-		return x_b.x, x_b.f
+			npop[i] = ind
+		return npop, asarray([i.f for i in npop]), {}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

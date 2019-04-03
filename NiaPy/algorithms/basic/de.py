@@ -7,7 +7,7 @@ from scipy.spatial.distance import euclidean
 from NiaPy.algorithms.algorithm import Algorithm, Individual, defaultIndividualInit
 from NiaPy.util.utility import objects2array
 
-__all__ = ['DifferentialEvolution', 'DynNpDifferentialEvolution', 'AgingNpDifferentialEvolution', 'CrowdingDifferentialEvolution', 'MultiStrategyDifferentialEvolution', 'DynNpMultiStrategyDifferentialEvolution', 'AgingNpMultiMutationDifferentialEvolution', 'AgingIndividual', 'CrossRand1', 'CrossBest2', 'CrossBest1', 'CrossBest2', 'CrossCurr2Rand1', 'CrossCurr2Best1']
+__all__ = ['DifferentialEvolution', 'DynNpDifferentialEvolution', 'AgingNpDifferentialEvolution', 'CrowdingDifferentialEvolution', 'MultiStrategyDifferentialEvolution', 'DynNpMultiStrategyDifferentialEvolution', 'AgingNpMultiMutationDifferentialEvolution', 'AgingIndividual', 'CrossRand1', 'CrossBest2', 'CrossBest1', 'CrossBest2', 'CrossCurr2Rand1', 'CrossCurr2Best1', 'multiMutations']
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.basic')
@@ -39,7 +39,7 @@ def CrossRand1(pop, ic, x_b, f, cr, rnd=rand, *args):
 		*args (list): Additional arguments.
 
 	Returns:
-		numpy.ndarray: Mutated and mixed individual
+		numpy.ndarray: Mutated and mixed individual.
 	"""
 	j = rnd.randint(len(pop[ic]))
 	p = [1 / (len(pop) - 1) if i != ic else 0 for i in range(len(pop))] if len(pop) > 3 else None
@@ -107,7 +107,7 @@ def CrossRand2(pop, ic, x_b, f, cr, rnd=rand, *args):
 		*args (list): Additional arguments.
 
 	Returns:
-		numpy.ndarray: mutated and mixed individual
+		numpy.ndarray: mutated and mixed individual.
 	"""
 	j = rnd.randint(len(pop[ic]))
 	p = [1 / (len(pop) - 1) if i != ic else 0 for i in range(len(pop))] if len(pop) > 5 else None
@@ -139,7 +139,7 @@ def CrossBest2(pop, ic, x_b, f, cr, rnd=rand, *args):
 		*args (list): Additional arguments.
 
 	Returns:
-		numpy.ndarray: mutated and mixed individual
+		numpy.ndarray: mutated and mixed individual.
 	"""
 	j = rnd.randint(len(pop[ic]))
 	p = [1 / (len(pop) - 1) if i != ic else 0 for i in range(len(pop))] if len(pop) > 4 else None
@@ -171,7 +171,7 @@ def CrossCurr2Rand1(pop, ic, x_b, f, cr, rnd=rand, *args):
 		*args (list): Additional arguments.
 
 	Returns:
-		numpy.ndarray: mutated and mixed individual
+		numpy.ndarray: mutated and mixed individual.
 	"""
 	j = rnd.randint(len(pop[ic]))
 	p = [1 / (len(pop) - 1) if i != ic else 0 for i in range(len(pop))] if len(pop) > 4 else None
@@ -180,7 +180,7 @@ def CrossCurr2Rand1(pop, ic, x_b, f, cr, rnd=rand, *args):
 	return asarray(x)
 
 def CrossCurr2Best1(pop, ic, x_b, f, cr, rnd=rand, **kwargs):
-	r"""mutation strategy with crossover.
+	r"""Mutation strategy with crossover.
 
 	Mutation:
 		Name: de/curr-to-best/1
@@ -203,7 +203,7 @@ def CrossCurr2Best1(pop, ic, x_b, f, cr, rnd=rand, **kwargs):
 		*args (list): Additional arguments.
 
 	Returns:
-		numpy.ndarray: mutated and mixed individual
+		numpy.ndarray: mutated and mixed individual.
 	"""
 	j = rnd.randint(len(pop[ic]))
 	p = [1 / (len(pop) - 1) if i != ic else 0 for i in range(len(pop))] if len(pop) > 3 else None
@@ -234,10 +234,11 @@ class DifferentialEvolution(Algorithm):
 		F (float): Scale factor.
 		CR (float): Crossover probability.
 		CrossMutt (Callable[numpy.ndarray, int, numpy.ndarray, float, float, mtrand.RandomState, Dict[str, Any]]): crossover and mutation strategy.
+
+	See Also:
+		:class:`NiaPy.algorithms.algorithm.Algorithm`
 	"""
 	Name = ['DifferentialEvolution', 'DE']
-	itype = Individual
-	NP, F, CR = 100, 0.5, 0.9
 
 	@staticmethod
 	def typeParameters():
@@ -252,7 +253,6 @@ class DifferentialEvolution(Algorithm):
 		d.update({
 			'F': lambda x: isinstance(x, (float, int)) and 0 < x <= 2,
 			'CR': lambda x: isinstance(x, float) and 0 <= x <= 1
-			# TODO add constraint testing for mutation strategy method
 		})
 		return d
 
@@ -267,10 +267,9 @@ class DifferentialEvolution(Algorithm):
 			ukwargs (Dict[str, Any]): Additional arguments.
 
 		See Also:
-			:func:`Algorithm.setParameters`
+			:func:`NiaPy.algorithms.algorithm.Algorithm.setParameters`
 		"""
-		itype = ukwargs.pop('itype', None)
-		Algorithm.setParameters(self, NP=NP, InitPopFunc=defaultIndividualInit, itype=Individual if itype is None else itype, **ukwargs)
+		Algorithm.setParameters(self, NP=NP, InitPopFunc=ukwargs.pop('InitPopFunc', defaultIndividualInit), itype=ukwargs.pop('itype', Individual), **ukwargs)
 		self.F, self.CR, self.CrossMutt = F, CR, CrossMutt
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
@@ -289,7 +288,7 @@ class DifferentialEvolution(Algorithm):
 		return objects2array([self.itype(x=self.CrossMutt(pop, i, xb, self.F, self.CR, self.Rand), task=task, rnd=self.Rand, e=True) for i in range(len(pop))])
 
 	def selection(self, pop, npop, **kwargs):
-		r"""Selection operator.
+		r"""Operator for selection.
 
 		Args:
 			pop (numpy.ndarray[Individual]): Current population.
@@ -301,12 +300,13 @@ class DifferentialEvolution(Algorithm):
 		"""
 		return objects2array([e if e.f < pop[i].f else pop[i] for i, e in enumerate(npop)])
 
-	def postSelection(self, pop, task, **kwargs):
+	def postSelection(self, pop, task, xb=None, **kwargs):
 		r"""Apply additional operation after selection.
 
 		Args:
 			pop (numpy.ndarray[Individual]): Current population.
 			task (Task): Optimization task.
+			xb (Optional[Individual]): Global best solution.
 			**kwargs (Dict[str, Any]): Additional arguments.
 
 		Returns:
@@ -332,13 +332,13 @@ class DifferentialEvolution(Algorithm):
 				3. Additional arguments.
 
 		See Also:
-			* :func:`DifferentialEvolution.evolve`
-			* :func:`DifferentialEvolution.selection`
-			* :func:`DifferentialEvolution.postSelection`
+			* :func:`NiaPy.algorithms.basic.de.DifferentialEvolution.evolve`
+			* :func:`NiaPy.algorithms.basic.de.DifferentialEvolution.selection`
+			* :func:`NiaPy.algorithms.basic.de.DifferentialEvolution.postSelection`
 		"""
 		npop = self.evolve(pop, xb, task)
 		pop = self.selection(pop, npop)
-		pop = self.postSelection(pop, task)
+		pop = self.postSelection(pop, task, xb=xb)
 		return pop, asarray([x.f for x in pop]), {}
 
 class CrowdingDifferentialEvolution(DifferentialEvolution):
@@ -359,9 +359,11 @@ class CrowdingDifferentialEvolution(DifferentialEvolution):
 	Attributes:
 		Name (List[str]): List of strings representing algorithm name.
 		CrowPop (float): Proportion of range for cowding.
+
+	See Also:
+		:class:`NiaPy.algorithms.basic.de.DifferentialEvolution`
 	"""
 	Name = ['CrowdingDifferentialEvolution', 'CDE']
-	CrowPop = 0.1
 
 	def __init__(self, **kwargs):
 		r"""Init CrowdingDifferentialEvolution algorithm.
@@ -382,7 +384,7 @@ class CrowdingDifferentialEvolution(DifferentialEvolution):
 			**ukwargs: Additional arguments.
 
 		See Also:
-			:func:`DifferentialEvolution.setParameters`
+			:func:`NiaPy.algorithms.basic.de.DifferentialEvolution.setParameters`
 		"""
 		DifferentialEvolution.setParameters(self, **ukwargs)
 		self.CrowPop = CrowPop
@@ -422,9 +424,11 @@ class DynNpDifferentialEvolution(DifferentialEvolution):
 		Name (List[str]): List of strings representing algorithm names.
 		pmax (int): TODO
 		rp (int): TODO
+
+	See Also:
+		:class:`NiaPy.algorithms.basic.de.DifferentialEvolution`
 	"""
 	Name = ['DynNpDifferentialEvolution', 'dynNpDE']
-	pmax, rp = 50, 3
 
 	@staticmethod
 	def typeParameters():
@@ -436,7 +440,7 @@ class DynNpDifferentialEvolution(DifferentialEvolution):
 				* pmax (Callable[[int], bool]): TODO
 
 		See Also:
-			:func:`DifferentialEvolution.typeParameters`
+			:func:`NiaPy.algorithms.basic.de.DifferentialEvolution.typeParameters`
 		"""
 		r = DifferentialEvolution.typeParameters()
 		r['rp'] = lambda x: isinstance(x, (float, int)) and x > 0
@@ -451,13 +455,13 @@ class DynNpDifferentialEvolution(DifferentialEvolution):
 			rp (Optional[int]): TODO
 
 		See Also:
-			:func:`DifferentialEvoluton.setParameters`
+			:func:`NiaPy.algorithms.basic.de.DifferentialEvoluton.setParameters`
 		"""
 		DifferentialEvolution.setParameters(self, **ukwargs)
 		self.pmax, self.rp = pmax, rp
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def postSelection(self, pop, task):
+	def postSelection(self, pop, task, **kwargs):
 		r"""Post selection operator.
 
 		In this algorithm the post selection operator decrements the population at specific iterations/generations.
@@ -465,6 +469,7 @@ class DynNpDifferentialEvolution(DifferentialEvolution):
 		Args:
 			pop (numpy.ndarray[Individual]): Current population.
 			task (Task): Optimization task.
+			kwargs (Dict[str, Any]): Additional arguments.
 
 		Returns:
 			numpy.ndarray[Individual]: Changed current population.
@@ -534,18 +539,18 @@ class AgingIndividual(Individual):
 		age (int): Age of individual.
 
 	See Also:
-		:class:`Individual`
+		:class:`NiaPy.algorithms.algorithm.Individual`
 	"""
 	age = 0
 
 	def __init__(self, **kwargs):
-		r"""Initalize Aging Individual.
+		r"""Init Aging Individual.
 
 		Args:
 			**kwargs (Dict[str, Any]): Additional arguments sent to parent.
 
 		See Also:
-			:func:`Individual.__init__`
+			:func:`NiaPy.algorithms.algorithm.Individual.__init__`
 		"""
 		Individual.__init__(self, **kwargs)
 		self.age = 0
@@ -566,16 +571,15 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 		MIT
 
 	Attributes:
-		Name (List[str]): list of strings representing algorithm names
-		Lt_min (int): minimal age of individual
-		Lt_max (int): maximal age of individual
+		Name (List[str]): list of strings representing algorithm names.
+		Lt_min (int): minimal age of individual.
+		Lt_max (int): maximal age of individual.
 		delta_np (float): TODO
 		omega (float): TODO
 		mu (int): Mean of individual max and min age.
-		age (Callable[[int, int, float, float, float, float, float], int]): Function for calculation of age for individual
+		age (Callable[[int, int, float, float, float, float, float], int]): Function for calculation of age for individual.
 	"""
 	Name = ['AgingNpDifferentialEvolution', 'ANpDE']
-	Lt_min, Lt_max, delta_np, omega = 1, 12, 0.3, 0.3
 
 	@staticmethod
 	def typeParameters():
@@ -589,13 +593,13 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 				* omega (Callable[[float], bool]): TODO
 
 		See Also:
-			:func:`Differential.typeParameters`
+			:func:`NiaPy.algorithms.basic.de.Differential.typeParameters`
 		"""
 		r = DifferentialEvolution.typeParameters()
 		r.update({
 			'Lt_min': lambda x: isinstance(x, int) and x >= 0,
 			'Lt_max': lambda x: isinstance(x, int) and x >= 0,
-			'delta_np': lambda x: isinstance(x, float) and x >= 0 and x <= 1,
+			'delta_np': lambda x: isinstance(x, float) and 0 <= x <= 1,
 			'omega': lambda x: isinstance(x, float) and x >= 0
 		})
 		return r
@@ -609,7 +613,7 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 			age (Optional[Callable[[int, int, float, float, float, float, float], int]]): Function for calculation of age for individual.
 
 		See Also:
-			:func:`DifferentialEvolution.setParameters`
+			:func:`NiaPy.algorithms.basic.de.DifferentialEvolution.setParameters`
 		"""
 		DifferentialEvolution.setParameters(self, itype=AgingIndividual, **ukwargs)
 		self.Lt_min, self.Lt_max, self.age, self.delta_np, self.omega = Lt_min, Lt_max, age, delta_np, omega
@@ -639,16 +643,14 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 		return self.delta_np * abs(cos(t + 78))
 
 	def aging(self, task, pop):
-		r"""Function applying aging to individuals.
+		r"""Apply aging to individuals.
 
 		Args:
 			task (Task): Optimization task.
 			pop (numpy.ndarray[Individual]): Current population.
 
 		Returns:
-			Tuple[numpy.ndarray[Individual], Individual]:
-				1. New population.
-				2. New best individual.
+			numpy.ndarray[Individual]: New population.
 		"""
 		fpop = asarray([x.f for x in pop])
 		x_b, x_w = pop[argmin(fpop)], pop[argmax(fpop)]
@@ -657,11 +659,11 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 			x.age += 1
 			Lt = round(self.age(self.Lt_min, self.Lt_max, self.mu, x.f, avg, x_w, x_b))
 			if x.age <= Lt: npop.append(x)
-		if len(npop) == 0: npop = objects2array([self.itype(task=task, rnd=self.Rand, e=True) for _i in range(len(pop))])
+		if len(npop) != 0: npop = objects2array([self.itype(task=task, rnd=self.Rand, e=True) for _i in range(len(pop))])
 		return npop
 
 	def popIncrement(self, pop, task):
-		r"""Function increments population.
+		r"""Increment population.
 
 		Args:
 			pop (numpy.ndarray[Individual]): Current population.
@@ -675,7 +677,7 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 		return objects2array([self.itype(task=task, rnd=self.Rand, e=True) for i in ni])
 
 	def popDecrement(self, pop, task):
-		r"""Function decrements population.
+		r"""Decrement population.
 
 		Args:
 			pop (numpy.ndarray): Current population.
@@ -756,6 +758,7 @@ class MultiStrategyDifferentialEvolution(DifferentialEvolution):
 	Attributes:
 		Name (List[str]): List of strings representing algorithm names.
 		strategies (Iterable[Callable[[numpy.ndarray[Individual], int, Individual, float, float, mtrand.RandomState], numpy.ndarray[Individual]]]): List of mutation strategies.
+		CrossMutt (Callable[[numpy.ndarray[Individual], int, Individual, float, float, Task, Individual, Iterable[Callable[[numpy.ndarray, int, numpy.ndarray, float, float, mtrand.RandomState, Dict[str, Any]], Individual]]], Individual]): Multi crossover and mutation combiner function.
 	"""
 	Name = ['MultiStrategyDifferentialEvolution', 'MsDE']
 
@@ -768,7 +771,7 @@ class MultiStrategyDifferentialEvolution(DifferentialEvolution):
 				* CrossMutt (Callable[[Callable, bool]): TODO
 
 		See Also:
-			:func:`DifferentialEvolution.typeParameters`
+			:func:`NiaPy.algorithms.basic.de.DifferentialEvolution.typeParameters`
 		"""
 		r = DifferentialEvolution.typeParameters()
 		r.pop('CrossMutt', None)
@@ -780,12 +783,13 @@ class MultiStrategyDifferentialEvolution(DifferentialEvolution):
 
 		Arguments:
 			strategies (Optional[Iterable[Callable[[numpy.ndarray[Individual], int, Individual, float, float, mtrand.RandomState], numpy.ndarray[Individual]]]]): List of mutation strategyis.
+			CrossMutt (Optional[Callable[[numpy.ndarray[Individual], int, Individual, float, float, Task, Individual, Iterable[Callable[[numpy.ndarray, int, numpy.ndarray, float, float, mtrand.RandomState, Dict[str, Any]], Individual]]], Individual]]): Multi crossover and mutation combiner function.
 
 		See Also:
-			:func:`DifferentialEvolution.setParameters`
+			:func:`NiaPy.algorithms.basic.de.DifferentialEvolution.setParameters`
 		"""
-		DifferentialEvolution.setParameters(self, **ukwargs)
-		self.CrossMutt, self.strategies = multiMutations, strategys
+		DifferentialEvolution.setParameters(self, CrossMutt=multiMutations, **ukwargs)
+		self.strategies = strategys
 
 	def evolve(self, pop, xb, task, **kwargs):
 		r"""Evolve population with the help multiple mutation strategies.
@@ -794,7 +798,7 @@ class MultiStrategyDifferentialEvolution(DifferentialEvolution):
 			pop (numpy.ndarray[Individual]): Current population.
 			xb (Individual): Current best individual.
 			task (Task): Optimization task.
-			**kwargs: Additional arguments.
+			**kwargs (Dict[str, Any]): Additional arguments.
 
 		Returns:
 			numpy.ndarray[Individual]: New population of individuals.
@@ -817,7 +821,11 @@ class DynNpMultiStrategyDifferentialEvolution(MultiStrategyDifferentialEvolution
 		MIT
 
 	Attributes:
-		Name (List[str]): list of strings representing algorithm name
+		Name (List[str]): List of strings representing algorithm name.
+
+	See Also:
+		* :class:`NiaPy.algorithms.basic.de.MultiStrategyDifferentialEvolution`
+		* :class:`NiaPy.algorithms.basic.de.DynNpDifferentialEvolution`
 	"""
 	Name = ['DynNpMultiStrategyDifferentialEvolution', 'dynNpMsDE']
 
@@ -831,7 +839,7 @@ class DynNpMultiStrategyDifferentialEvolution(MultiStrategyDifferentialEvolution
 				* pmax (Callable[[int], bool]): TODO
 
 		See Also:
-			:func:`MultiStrategyDifferentialEvolution.typeParameters`
+			:func:`NiaPy.algorithms.basic.de.MultiStrategyDifferentialEvolution.typeParameters`
 		"""
 		r = MultiStrategyDifferentialEvolution.typeParameters()
 		r['rp'] = lambda x: isinstance(x, (float, int)) and x > 0
@@ -841,25 +849,29 @@ class DynNpMultiStrategyDifferentialEvolution(MultiStrategyDifferentialEvolution
 	def setParameters(self, **ukwargs):
 		r"""Set the arguments of the algorithm.
 
+		Args:
+			ukwargs (Dict[str, Any]): Additional arguments.
+
 		See Also:
-			* :func:`MultiStrategyDifferentialEvolution.setParameters`
-			* :func:`DynNpDifferentialEvolution.setParameters`
+			* :func:`NiaPy.algorithms.basic.de.MultiStrategyDifferentialEvolution.setParameters`
+			* :func:`NiaPy.algorithms.basic.de.DynNpDifferentialEvolution.setParameters`
 		"""
 		DynNpDifferentialEvolution.setParameters(self, **ukwargs)
 		MultiStrategyDifferentialEvolution.setParameters(self, **ukwargs)
 
-	def postSelection(self, pop, task):
+	def postSelection(self, pop, task, **kwargs):
 		r"""Post selection operator.
 
 		Args:
 			pop (numpy.ndarray[Individual]): Current population.
 			task (Task): Optimization task.
+			**kwargs (Dict[str, Any]): Additional arguments.
 
 		Returns:
 			numpy.ndarray: New population.
 
 		See Also:
-			:func:`DynNpDifferentialEvolution.population`
+			:func:`NiaPy.algorithms.basic.de.DynNpDifferentialEvolution.postSelection`
 		"""
 		return DynNpDifferentialEvolution.postSelection(self, pop, task)
 
@@ -906,11 +918,24 @@ class AgingNpMultiMutationDifferentialEvolution(AgingNpDifferentialEvolution, Mu
 			**ukwargs (Dict[str, Any]): Additional arguments.
 
 		See Also:
-			* :func:`AgingNpDifferentialEvolution.setParameters`
-			* :func:`MultiStrategyDifferentialEvolution.setParameters`
+			* :func:`NiaPy.algorithms.basic.de.AgingNpDifferentialEvolution.setParameters`
+			* :func:`NiaPy.algorithms.basic.de.MultiStrategyDifferentialEvolution.setParameters`
 		"""
-		MultiStrategyDifferentialEvolution.setParameters(self, stratgeys=[CrossRand1, CrossBest1, CrossCurr2Rand1, CrossRand2], **ukwargs)
 		AgingNpDifferentialEvolution.setParameters(self, **ukwargs)
-		self.IndividualType = AgingIndividual
+		MultiStrategyDifferentialEvolution.setParameters(self, stratgeys=(CrossRand1, CrossBest1, CrossCurr2Rand1, CrossRand2), itype=AgingIndividual, **ukwargs)
+
+	def evolve(self, pop, xb, task, **kwargs):
+		r"""Evolve current population.
+
+		Args:
+			pop (numpy.ndarray[Individual]): Current population.
+			xb (Individual): Global best individual.
+			task (Task): Optimization task.
+			**kwargs (Dict[str, Any]): Additional arguments.
+
+		Returns:
+			numpy.ndarray[Individual]: New population of individuals.
+		"""
+		return MultiStrategyDifferentialEvolution.evolve(self, pop, xb, task, **kwargs)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

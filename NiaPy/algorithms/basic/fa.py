@@ -1,7 +1,9 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, redefined-builtin, line-too-long, no-self-use, arguments-differ, no-else-return, bad-continuation
 import logging
-from numpy import argsort, argmin, sum, exp, apply_along_axis, asarray, where, inf
+
+from numpy import argsort, sum, exp, apply_along_axis, asarray, where
+
 from NiaPy.algorithms.algorithm import Algorithm
 
 __all__ = ['FireflyAlgorithm']
@@ -29,7 +31,10 @@ class FireflyAlgorithm(Algorithm):
 		Fister, I., Fister Jr, I., Yang, X. S., & Brest, J. (2013). A comprehensive review of firefly algorithms. Swarm and Evolutionary Computation, 13, 34-46.
 
 	Attributes:
-		Name (list of str): List of names for algorithm
+		Name (List[str]): List of string representing algorithm name.
+
+	See Also:
+		:class:`NiaPy.algorithms.algorithm.Algorithm`
 	"""
 	Name = ['FireflyAlgorithm', 'FA']
 
@@ -38,38 +43,45 @@ class FireflyAlgorithm(Algorithm):
 		r"""TODO.
 
 		Returns:
-			ditc:
-				* NP (func): TODO
-				* alpha (func): TODO
-				* betamin (func): TODO
-				* gamma (func): TODO
+			Dict[str, Callable]:
+				* alpha (Callable[[Union[float, int]], bool]): TODO.
+				* betamin (Callable[[Union[float, int]], bool]): TODO.
+				* gamma (Callable[[Union[float, int]], bool]): TODO.
+
+		See Also:
+			:func:`NiaPy.algorithms.algorithm.Algorithm.typeParameters`
 		"""
-		return {
-			'NP': lambda x: isinstance(x, int) and x > 0,
+		d = Algorithm.typeParameters()
+		d.update({
 			'alpha': lambda x: isinstance(x, (float, int)) and x > 0,
 			'betamin': lambda x: isinstance(x, (float, int)) and x > 0,
 			'gamma': lambda x: isinstance(x, (float, int)) and x > 0,
-		}
+		})
+		return d
 
 	def setParameters(self, NP=20, alpha=1, betamin=1, gamma=2, **ukwargs):
 		r"""Set the parameters of the algorithm.
 
 		Args:
-			NP (int): Populatoin size
-			alpha (float): Alpha parameter
-			betamin (float): Betamin parameter
-			gamma (flaot): Gamma parameter
-			**ukwargs: Additional arguments
+			NP (int): Populatoin size.
+			alpha (float): Alpha parameter.
+			betamin (float): Betamin parameter.
+			gamma (flaot): Gamma parameter.
+			ukwargs (Dict[str, Any]): Additional arguments.
+
+		See Also:
+			:func:`NiaPy.algorithms.algorithm.Algorithm.setParameters`
 		"""
-		self.NP, self.alpha, self.betamin, self.gamma = NP, alpha, betamin, gamma
+		Algorithm.setParameters(self, NP=NP)
+		self.alpha, self.betamin, self.gamma = alpha, betamin, gamma
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def alpha_new(self, a, alpha):
 		r"""Optionally recalculate the new alpha value.
 
 		Args:
-			a:
-			alpha:
+			a (float):
+			alpha (float):
 
 		Returns:
 			float: New value of parameter alpha
@@ -81,15 +93,15 @@ class FireflyAlgorithm(Algorithm):
 		r"""Move fireflies.
 
 		Args:
-			i:
-			Fireflies:
-			Intensity:
-			oFireflies:
-			alpha:
-			task:
+			i (int): Index of current individual.
+			Fireflies (numpy.ndarray):
+			Intensity (numpy.ndarray):
+			oFireflies (numpy.ndarray):
+			alpha (float):
+			task (Task): Optimization task.
 
 		Returns:
-			Tuple[array of (float or int), bool]:
+			Tuple[numpy.ndarray, bool]:
 				1. New individual
 				2. ``True`` if individual vas moved, ``False`` if individual was not moved
 		"""
@@ -104,47 +116,51 @@ class FireflyAlgorithm(Algorithm):
 		return Fireflies[i], moved
 
 	def initPopulation(self, task):
-		r"""Initialization of initial population.
+		r"""Initialize the starting population.
 
 		Args:
 			task (Task): Optimization task
 
 		Returns:
-			Tuple[array of array of (float or int), array of float, dict]:
-				1. New population
-				2. New population fitness/function values
-				3. dict:
+			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+				1. New population.
+				2. New population fitness/function values.
+				3. Additional arguments:
 					* alpah (float): TODO
+
+		See Also:
+			:func:`NiaPy.algorithms.algorithm.Algorithm.initPopulation`
 		"""
-		Fireflies = self.uniform(task.Lower, task.Upper, [self.NP, task.D])
-		Intensity = apply_along_axis(task.eval, 1, Fireflies)
-		return Fireflies, Intensity, {'alpha':self.alpha}
+		Fireflies, Intensity, _ = Algorithm.initPopulation(self, task)
+		return Fireflies, Intensity, {'alpha': self.alpha}
 
 	def runIteration(self, task, Fireflies, Intensity, xb, fxb, alpha, **dparams):
 		r"""Core function of Firefly Algorithm.
 
 		Args:
-			task:
-			Fireflies:
-			Intensity:
-			xb:
-			fxb:
-			alpha:
-			**dparams:
+			task (Task): Optimization task.
+			Fireflies (numpy.ndarray): Current population.
+			Intensity (numpy.ndarray[float]): Current population function/fitness values.
+			xb (numpy.ndarray): Global best individual.
+			fxb (float): Global best individual fitness/function value.
+			alpha (float): TODO.
+			**dparams (Dict[str, Any]): Additional arguments.
 
 		Returns:
-			Tuple[array of array of (float or int), array of float, ditc]:
-				1. New population
-				2. New population fitness/function values
-				3. dict:
+			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+				1. New population.
+				2. New population fitness/function values.
+				3. Additional arguments:
 					* alpha (float): TODO
 
+		See Also:
+			* :func:`NiaPy.algorithms.basic.fa.FireflyAlgorithm.move_ffa`
 		"""
 		alpha = self.alpha_new(task.nFES / self.NP, alpha)
 		Index = argsort(Intensity)
-		tmp = [self.move_ffa(i, Fireflies[Index], Intensity[Index], Fireflies, alpha, task) for i in range(self.NP)]
+		tmp = asarray([self.move_ffa(i, Fireflies[Index], Intensity[Index], Fireflies, alpha, task) for i in range(self.NP)])
 		Fireflies, evalF = asarray([tmp[i][0] for i in range(len(tmp))]), asarray([tmp[i][1] for i in range(len(tmp))])
 		Intensity[where(evalF)] = apply_along_axis(task.eval, 1, Fireflies[where(evalF)])
-		return Fireflies, Intensity, {'alpha':alpha}
+		return Fireflies, Intensity, {'alpha': alpha}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

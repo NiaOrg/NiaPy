@@ -1,7 +1,7 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, line-too-long, singleton-comparison, arguments-differ, bad-continuation
 import logging
-from numpy import full, apply_along_axis, argmin
+from numpy import full
 from NiaPy.algorithms.algorithm import Algorithm
 
 logging.basicConfig()
@@ -34,12 +34,15 @@ class BatAlgorithm(Algorithm):
 		r (float): Pulse rate.
 		Qmin (float): Minimum frequency.
 		Qmax (float): Maximum frequency.
+
+	See Also:
+		:class:`NiaPy.algorithms.algorithm.Algorithm`
 	"""
 	Name = ['BatAlgorithm', 'BA']
 
 	@staticmethod
 	def typeParameters():
-		r"""Returns dict with where key of dict represents parameter name and values represent checking functions for selected parameter.
+		r"""Return dict with where key of dict represents parameter name and values represent checking functions for selected parameter.
 
 		Returns:
 			Dict[str, Callable]:
@@ -77,7 +80,7 @@ class BatAlgorithm(Algorithm):
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def initPopulation(self, task):
-		r"""Initialization of populations.
+		r"""Initialize the starting population.
 
 		Parameters:
 			task (Task): Optimization task
@@ -96,7 +99,7 @@ class BatAlgorithm(Algorithm):
 		"""
 		Sol, Fitness, d = Algorithm.initPopulation(self, task)
 		S, Q, v = full([self.NP, task.D], 0.0), full(self.NP, 0.0), full([self.NP, task.D], 0.0)
-		d.update({'S': S, 'Q':Q, 'v':v})
+		d.update({'S': S, 'Q': Q, 'v': v})
 		return Sol, Fitness, d
 
 	def runIteration(self, task, Sol, Fitness, xb, fxb, S, Q, v, **dparams):
@@ -127,6 +130,6 @@ class BatAlgorithm(Algorithm):
 			if self.rand() > self.r: S[i] = task.repair(xb + 0.001 * self.normal(0, 1, task.D), rnd=self.Rand)
 			Fnew = task.eval(S[i])
 			if (Fnew <= Fitness[i]) and (self.rand() < self.A): Sol[i], Fitness[i] = S[i], Fnew
-		return Sol, Fitness, {'S': S, 'Q':Q, 'v':v}
+		return Sol, Fitness, {'S': S, 'Q': Q, 'v': v}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

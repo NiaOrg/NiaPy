@@ -8,7 +8,7 @@ from enum import Enum
 from numpy import ndarray, asarray, full, empty, inf, dot, where, random as rand, fabs, ceil, amin, amax
 from matplotlib import pyplot as plt, animation as anim
 from NiaPy.benchmarks import Rastrigin, Rosenbrock, Griewank, Sphere, Ackley, Schwefel, Schwefel221, Schwefel222, Whitley, Alpine1, Alpine2, HappyCat, Ridge, ChungReynolds, Csendes, Pinter, Qing, Quintic, Salomon, SchumerSteiglitz, Step, Step2, Step3, Stepint, SumSquares, StyblinskiTang, BentCigar, Discus, Elliptic, ExpandedGriewankPlusRosenbrock, HGBat, Katsuura, ExpandedSchaffer, ModifiedSchwefel, Weierstrass, Michalewichz, Levy, Sphere2, Sphere3, Trid, Perm, Zakharov, DixonPrice, Powell, CosineMixture, Infinity, SchafferN2, SchafferN4
-from NiaPy.util.exception import FesException, GenException, RefException #TimeException,
+from NiaPy.util.exception import FesException, GenException, RefException  # TimeException,
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.util.utility')
@@ -364,11 +364,9 @@ class Task(Utility):
 
 	def nextIter(self):
 		r"""Increments the number of algorithm iterations."""
-		pass
 
 	def start(self):
 		r"""Start stopwatch."""
-		pass
 
 	def eval(self, A):
 		r"""Evaluate the solution A.
@@ -390,7 +388,7 @@ class Task(Utility):
 		Returns:
 			bool: `True` if solution is in feasible space else `False`.
 		"""
-		return not False in (A > self.Lower) and not False in (A < self.Upper)
+		return False not in (A > self.Lower) and False not in (A < self.Upper)
 
 	def stopCond(self):
 		r"""Check if optimization task should stop.
@@ -451,18 +449,6 @@ class CountingTask(Task):
 		This function increments number of algorithm iterations/generations counter `self.Iters`.
 		"""
 		self.Iters += 1
-
-	def stopCondI(self):
-		r"""Check if stoping condition and increment number of generations/iterations.
-
-		Returns:
-			bool: `True` if stopping criteria is meet else `False`
-
-		See Also:
-			:func:`NiaPy.util.utility.CountingTask.nextIter`
-		"""
-		self.nextIter()
-		return Task.stopCondI(self)
 
 class StoppingTask(CountingTask):
 	r"""Optimization task with implemented checking for stopping criterias.
@@ -530,7 +516,7 @@ class StoppingTask(CountingTask):
 			* :func:`NiaPy.util.utility.CountingTask.stopCondI`
 			* :func:`NiaPy.util.utility.StoppingTask.stopCond`
 		"""
-		CountingTask.stopCondI(self)
+		CountingTask.nextIter(self)
 		return self.stopCond()
 
 class ThrowingTask(StoppingTask):
@@ -704,17 +690,6 @@ class ScaledTask(Task):
 		"""
 		self._task.nextIter()
 
-	def isFeasible(self, A):
-		r"""Check if solution is in feasible region.
-
-		Args:
-			A (numpy.ndarray): Solution for testing feasibility.
-
-		Returns:
-			bool: `True` if solution is in feasible space else `False`.
-		"""
-		return not False in (A > self.Lower) and not False in (A < self.Upper)
-
 class TaskConvPrint(StoppingTask):
 	r"""Task class with printing out new global best solutions found.
 
@@ -750,7 +725,7 @@ class TaskConvPrint(StoppingTask):
 			:func:`NiaPy.util.utility.StoppingTask.eval`
 		"""
 		x_f = StoppingTask.eval(self, A)
-		if not self.x_f == self.xb_f:
+		if self.x_f != self.xb_f:
 			self.xb, self.xb_f = A, x_f
 			logger.info('nFES:%d nGEN:%d => %s -> %s' % (self.Evals, self.Iters, self.xb, self.xb_f * self.optType.value))
 		return x_f
@@ -817,7 +792,7 @@ class TaskConvPlot(StoppingTask):
 		:class:`NiaPy.util.utility.StoppingTask`
 	"""
 	def __init__(self, **kwargs):
-		r"""
+		r"""TODO.
 
 		Args:
 			**kwargs (Dict[str, Any]): Additional arguments.
@@ -890,7 +865,7 @@ class TaskComposition(MoveTask):
 		MoveTask.__init__(self, **kwargs)
 
 	def eval(self, A):
-		r"""
+		r"""TODO.
 
 		Args:
 			A:

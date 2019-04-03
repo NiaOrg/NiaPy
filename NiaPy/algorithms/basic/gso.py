@@ -1,8 +1,10 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, trailing-whitespace, line-too-long, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, redefined-builtin, singleton-comparison, unused-argument, arguments-differ, no-else-return, bad-continuation
 import logging
+
 from scipy.spatial.distance import euclidean
-from numpy import full, apply_along_axis, argmin, copy, sum, inf, fmax, pi, where
+from numpy import full, apply_along_axis, copy, sum, fmax, pi, where
+
 from NiaPy.algorithms.algorithm import Algorithm
 
 logging.basicConfig()
@@ -34,6 +36,9 @@ class GlowwormSwarmOptimization(Algorithm):
 
 	Attributes:
 		Name (list of str): List of strings represeinting algorithm name.
+
+	See Also:
+		:class:`NiaPy.algorithms.algorithm.Algorithm`
 	"""
 	Name = ['GlowwormSwarmOptimization', 'GSO']
 
@@ -65,7 +70,7 @@ class GlowwormSwarmOptimization(Algorithm):
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def randMove(self, i):
-		r"""
+		r"""TODO.
 
 		Args:
 			i:
@@ -78,7 +83,7 @@ class GlowwormSwarmOptimization(Algorithm):
 		return j
 
 	def getNeighbors(self, i, r, GS, L):
-		r"""
+		r"""TODO.
 
 		Args:
 			i:
@@ -94,7 +99,7 @@ class GlowwormSwarmOptimization(Algorithm):
 		return N
 
 	def probabilityes(self, i, N, L):
-		r"""
+		r"""TODO.
 
 		Args:
 			i:
@@ -109,7 +114,7 @@ class GlowwormSwarmOptimization(Algorithm):
 		return P
 
 	def moveSelect(self, pb, i):
-		r"""
+		r"""TODO.
 
 		Args:
 			pb:
@@ -125,7 +130,7 @@ class GlowwormSwarmOptimization(Algorithm):
 		return self.randint(self.n)
 
 	def calcLuciferin(self, L, GS_f):
-		r"""
+		r"""TODO.
 
 		Args:
 			L:
@@ -137,7 +142,7 @@ class GlowwormSwarmOptimization(Algorithm):
 		return (1 - self.rho) * L + self.gamma * GS_f
 
 	def rangeUpdate(self, R, N, rs):
-		r"""
+		r"""TODO.
 
 		Args:
 			R:
@@ -150,35 +155,47 @@ class GlowwormSwarmOptimization(Algorithm):
 		return R + self.beta * (self.nt - sum(N))
 
 	def initPopulation(self, task):
-		r"""
+		r"""Initialize population.
 
 		Args:
-			task:
+			task (Task): Optimization task.
 
 		Returns:
-
+			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+				1. Initialized population of glowwarms.
+				2. Initialized populations function/fitness values.
+				3. Additional arguments:
+					* L (numpy.ndarray): TODO.
+					* R (numpy.ndarray): TODO.
+					* rs (numpy.ndarray): TODO.
 		"""
 		rs = euclidean(full(task.D, 0), task.bRange)
 		GS, L, R = self.uniform(task.Lower, task.Upper, [self.n, task.D]), full(self.n, self.l0), full(self.n, rs)
 		GS_f = apply_along_axis(task.eval, 1, GS)
-		return GS, GS_f, {'L':L, 'R':R, 'rs':rs}
+		return GS, GS_f, {'L': L, 'R': R, 'rs': rs}
 
 	def runIteration(self, task, GS, GS_f, xb, fxb, L, R, rs, **dparams):
-		r"""
+		r"""Core function of GlowwormSwarmOptimization algorithm.
 
 		Args:
-			task:
-			GS:
-			GS_f:
-			xb:
-			fxb:
-			L:
-			R:
-			rs:
-			**dparams:
+			task (Task): Optimization taks.
+			GS (numpy.ndarray): Current population.
+			GS_f (numpy.ndarray[float]): Current populations fitness/function values.
+			xb (numpy.ndarray): Global best individual.
+			fxb (float): Global best individuals function/fitness value.
+			L (numpy.ndarray):
+			R (numpy.ndarray):
+			rs (numpy.ndarray):
+			**dparams Dict[str, Any]: Additional arguments.
 
 		Returns:
-
+			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+				1. Initialized population of glowwarms.
+				2. Initialized populations function/fitness values.
+				3. Additional arguments:
+					* L (numpy.ndarray): TODO.
+					* R (numpy.ndarray): TODO.
+					* rs (numpy.ndarray): TODO.
 		"""
 		GSo, Ro = copy(GS), copy(R)
 		L = self.calcLuciferin(L, GS_f)
@@ -188,7 +205,7 @@ class GlowwormSwarmOptimization(Algorithm):
 		for i in range(self.n): GS[i] = task.repair(GSo[i] + self.s * ((GSo[j[i]] - GSo[i]) / (self.Distance(GSo[j[i]], GSo[i]) + 1e-31)), rnd=self.Rand)
 		for i in range(self.n): R[i] = max(0, min(rs, self.rangeUpdate(Ro[i], N[i], rs)))
 		GS_f = apply_along_axis(task.eval, 1, GS)
-		return GS, GS_f, {'L':L, 'R':R, 'rs':rs}
+		return GS, GS_f, {'L': L, 'R': R, 'rs': rs}
 
 class GlowwormSwarmOptimizationV1(GlowwormSwarmOptimization):
 	r"""Implementation of glowwarm swarm optimization.
@@ -230,7 +247,7 @@ class GlowwormSwarmOptimizationV1(GlowwormSwarmOptimization):
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def calcLuciferin(self, L, GS_f):
-		r"""
+		r"""TODO.
 
 		Args:
 			L:
@@ -242,7 +259,7 @@ class GlowwormSwarmOptimizationV1(GlowwormSwarmOptimization):
 		return fmax(0, (1 - self.rho) * L + self.gamma * GS_f)
 
 	def rangeUpdate(self, R, N, rs):
-		r"""
+		r"""TODO.
 
 		Args:
 			R:
@@ -297,7 +314,7 @@ class GlowwormSwarmOptimizationV2(GlowwormSwarmOptimization):
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def rangeUpdate(self, P, N, rs):
-		r"""
+		r"""TODO.
 
 		Args:
 			P:
@@ -352,7 +369,7 @@ class GlowwormSwarmOptimizationV3(GlowwormSwarmOptimization):
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def rangeUpdate(self, R, N, rs):
-		r"""
+		r"""TODO.
 
 		Args:
 			R:

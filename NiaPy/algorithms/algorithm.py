@@ -1,8 +1,8 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, line-too-long, expression-not-assigned, len-as-condition, no-self-use, unused-argument, no-else-return, dangerous-default-value, unnecessary-pass
+# pylint: disable=mixed-indentation, multiple-statements, line-too-long, expression-not-assigned, len-as-condition, no-self-use, unused-argument, no-else-return, dangerous-default-value, unnecessary-pass, bad-continuation
 import logging
 
-from numpy import random as rand, inf, ndarray, array, asarray, empty, array_equal, argmin, apply_along_axis
+from numpy import random as rand, inf, ndarray, asarray, array_equal, argmin, apply_along_axis
 
 from NiaPy.util import FesException, GenException, TimeException, RefException
 from NiaPy.util.utility import objects2array
@@ -44,6 +44,7 @@ def defaultIndividualInit(task, NP, rnd=rand, itype=None, **kwargs):
 		NP (int): Number of individuals in population.
 		rnd (Optional[mtrand.RandomState]): Random number generator.
 		itype (Optional[Individual]): Class of individual in population.
+		kwargs (Dict[str, Any]): Additional arguments.
 
 	Returns:
 		Tuple[numpy.ndarray[Individual], numpy.ndarray[float]:
@@ -80,9 +81,9 @@ class Algorithm:
 
 	@staticmethod
 	def typeParameters():
-		r"""Returns functions for checking values of parameters.
+		r"""Return functions for checking values of parameters.
 
-		Returns:
+		Return:
 			Dict[str, Callable]:
 				* NP (Callable[[int], bool]): Check if number of individuals is :math:`\in [0, \infty]`.
 		"""
@@ -205,7 +206,7 @@ class Algorithm:
 		else: return xb, xb_f
 
 	def initPopulation(self, task):
-		r"""Initialization for starting population of optimization algorithm.
+		r"""Initialize starting population of optimization algorithm.
 
 		Args:
 			task (Task): Optimization task.
@@ -219,7 +220,7 @@ class Algorithm:
 		See Also:
 			:func:`NiaPy.algorithms.algorithm.Algorithm.setParameters`
 		"""
-		pop, fpop = self.InitPopFunc(task, self.NP, rnd=self.Rand, itype=self.itype)
+		pop, fpop = self.InitPopFunc(task=task, NP=self.NP, rnd=self.Rand, itype=self.itype)
 		return pop, fpop, {}
 
 	def runIteration(self, task, pop, fpop, xb, fxb, **dparams):

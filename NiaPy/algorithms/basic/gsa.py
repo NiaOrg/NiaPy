@@ -1,7 +1,9 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, multiple-statements, line-too-long, unused-argument, no-self-use, no-self-use, attribute-defined-outside-init, logging-not-lazy, len-as-condition, singleton-comparison, arguments-differ, redefined-builtin, bad-continuation
 import logging
-from numpy import apply_along_axis, asarray, inf, argmin, argmax, sum, full
+
+from numpy import apply_along_axis, asarray, argmin, argmax, sum, full
+
 from NiaPy.algorithms.algorithm import Algorithm
 
 __all__ = ['GravitationalSearchAlgorithm']
@@ -32,43 +34,59 @@ class GravitationalSearchAlgorithm(Algorithm):
 		Esmat Rashedi, Hossein Nezamabadi-pour, Saeid Saryazdi, GSA: A Gravitational Search Algorithm, Information Sciences, Volume 179, Issue 13, 2009, Pages 2232-2248, ISSN 0020-0255
 
 	Attributes:
-		Name (list of str): TODO
+		Name (List[str]): List of strings representing algorithm name.
+
+	See Also:
+		:class:`NiaPy.algorithms.algorithm.Algorithm`
 	"""
 	Name = ['GravitationalSearchAlgorithm', 'GSA']
 
 	@staticmethod
-	def typeParameters(): return {
-			'NP': lambda x: isinstance(x, int) and x > 0,
+	def typeParameters():
+		r"""TODO.
+
+		Returns:
+			Dict[str, Callable]:
+				* G_0 (Callable[[Union[int, float]], bool]): TODO
+				* epsilon (Callable[[float], bool]): TODO
+
+		See Also:
+			:func:`NiaPy.algorithms.algorithm.Algorithm.typeParameters`
+		"""
+		d = Algorithm.typeParameters()
+		d.update({
 			'G_0': lambda x: isinstance(x, (int, float)) and x >= 0,
 			'epsilon': lambda x: isinstance(x, float) and 0 < x < 1
-	}
+		})
+		return d
 
 	def setParameters(self, NP=40, G_0=2.467, epsilon=1e-17, **ukwargs):
 		r"""Set the algorithm parameters.
 
 		Arguments:
 			G_0 (float): Starting gravitational constant.
+			epsilon (float): TODO.
 
 		See Also:
-			:func:`Algorithm.setParameters`
+			:func:`NiaPy.algorithms.algorithm.Algorithm.setParameters`
 		"""
-		Algorithm.setParameters(NP=NP)
+		Algorithm.setParameters(self, NP=NP)
 		self.G_0, self.epsilon = G_0, epsilon
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def G(self, t):
-		r"""
+		r"""TODO.
 
 		Args:
-			t:
+			t (int): TODO
 
 		Returns:
-
+			float: TODO
 		"""
 		return self.G_0 / t
 
 	def d(self, x, y, ln=2):
-		r"""
+		r"""TODO.
 
 		Args:
 			x:
@@ -76,37 +94,48 @@ class GravitationalSearchAlgorithm(Algorithm):
 			ln:
 
 		Returns:
-
+			TODO
 		"""
 		return sum((x - y) ** ln) ** (1 / ln)
 
 	def initPopulation(self, task):
-		r"""
+		r"""Initialize staring population.
 
 		Args:
-			task:
+			task (Task): Optimization task.
 
 		Returns:
+			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+				1. Initialized population.
+				2. Initialized populations fitness/function values.
+				3. Additional arguments:
+					* v (numpy.ndarray[float]): TODO
 
+		See Also:
+			:func:`NiaPy.algorithms.algorithm.Algorithm.initPopulation`
 		"""
-		X, v = self.uniform(task.Lower, task.Upper, [self.NP, task.D]), full([self.NP, task.D], 0.0)
-		X_f = apply_along_axis(task.eval, 1, X)
-		return X, X_f, {'v':v}
+		X, X_f, _ = Algorithm.initPopulation(self, task)
+		v = full([self.NP, task.D], 0.0)
+		return X, X_f, {'v': v}
 
 	def runIteration(self, task, X, X_f, xb, fxb, v, **dparams):
-		r"""
+		r"""Core function of GravitationalSearchAlgorithm algorithm.
 
 		Args:
-			task:
-			X:
-			X_f:
-			xb:
-			fxb:
-			v:
-			**dparams:
+			task (Task): Optimization task.
+			X (numpy.ndarray): Current population.
+			X_f (numpy.ndarray[float]): Current populations fitness/function values.
+			xb (numpy.ndarray): Global best solution.
+			fxb (float): Global best fitness/function value.
+			v (): TODO
+			**dparams (Dict[str, Any]): Additional arguments.
 
 		Returns:
-
+			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+				1. New population.
+				2. New populations fitness/function values.
+				3. Additional arguments:
+					* v (numpy.ndarray[float]): TODO
 		"""
 		ib, iw = argmin(X_f), argmax(X_f)
 		m = (X_f - X_f[iw]) / (X_f[ib] - X_f[iw])
@@ -117,6 +146,6 @@ class GravitationalSearchAlgorithm(Algorithm):
 		v = self.rand([self.NP, task.D]) * v + a.T
 		X = apply_along_axis(task.repair, 1, X + v, self.Rand)
 		X_f = apply_along_axis(task.eval, 1, X)
-		return X, X_f, {'v':v}
+		return X, X_f, {'v': v}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
