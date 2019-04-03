@@ -99,7 +99,7 @@ class BatAlgorithm(Algorithm):
 		"""
 		Sol, Fitness, d = Algorithm.initPopulation(self, task)
 		S, Q, v = full([self.NP, task.D], 0.0), full(self.NP, 0.0), full([self.NP, task.D], 0.0)
-		d.update({'S': S, 'Q':Q, 'v':v})
+		d.update({'S': S, 'Q': Q, 'v': v})
 		return Sol, Fitness, d
 
 	def runIteration(self, task, Sol, Fitness, xb, fxb, S, Q, v, **dparams):
@@ -130,6 +130,6 @@ class BatAlgorithm(Algorithm):
 			if self.rand() > self.r: S[i] = task.repair(xb + 0.001 * self.normal(0, 1, task.D), rnd=self.Rand)
 			Fnew = task.eval(S[i])
 			if (Fnew <= Fitness[i]) and (self.rand() < self.A): Sol[i], Fitness[i] = S[i], Fnew
-		return Sol, Fitness, {'S': S, 'Q':Q, 'v':v}
+		return Sol, Fitness, {'S': S, 'Q': Q, 'v': v}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

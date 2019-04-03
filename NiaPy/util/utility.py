@@ -690,17 +690,6 @@ class ScaledTask(Task):
 		"""
 		self._task.nextIter()
 
-	def isFeasible(self, A):
-		r"""Check if solution is in feasible region.
-
-		Args:
-			A (numpy.ndarray): Solution for testing feasibility.
-
-		Returns:
-			bool: `True` if solution is in feasible space else `False`.
-		"""
-		return not False in (A > self.Lower) and not False in (A < self.Upper)
-
 class TaskConvPrint(StoppingTask):
 	r"""Task class with printing out new global best solutions found.
 

@@ -333,7 +333,7 @@ class FireworksAlgorithm(Algorithm):
 		FWn = [self.ExplodeSpark(FW[i], A[i], task) for i in range(self.NP) for _ in range(S[i])]
 		for i in range(self.m): FWn.append(self.GaussianSpark(self.randint(self.NP), task))
 		FW, FW_f = self.NextGeneration(FW, FW_f, FWn, task)
-		return FW, FW_f, {'Ah':Ah}
+		return FW, FW_f, {'Ah': Ah}
 
 class EnhancedFireworksAlgorithm(FireworksAlgorithm):
 	r"""Implementation of enganced fireworks algorithm.
@@ -496,7 +496,7 @@ class EnhancedFireworksAlgorithm(FireworksAlgorithm):
 		"""
 		FW, FW_f, d = FireworksAlgorithm.initPopulation(self, task)
 		Ainit, Afinal, A_min = self.initRanges(task)
-		d.update({'Ainit':Ainit, 'Afinal':Afinal, 'A_min':A_min})
+		d.update({'Ainit': Ainit, 'Afinal': Afinal, 'A_min': A_min})
 		return FW, FW_f, d
 
 	def runIteration(self, task, FW, FW_f, xb, fxb, Ah, Ainit, Afinal, A_min, **dparams):
@@ -531,7 +531,7 @@ class EnhancedFireworksAlgorithm(FireworksAlgorithm):
 		FWn = [self.ExplodeSpark(FW[i], A[i], task) for i in range(self.NP) for _ in range(S[i])]
 		for i in range(self.m): FWn.append(self.GaussianSpark(self.randint(self.NP), FW[ib], task))
 		FW, FW_f = self.NextGeneration(FW, FW_f, FWn, task)
-		return FW, FW_f, {'Ah':Ah, 'Ainit':Ainit, 'Afinal':Afinal, 'A_min':A_min}
+		return FW, FW_f, {'Ah':Ah, 'Ainit': Ainit, 'Afinal': Afinal, 'A_min': A_min}
 
 class DynamicFireworksAlgorithmGauss(EnhancedFireworksAlgorithm):
 	r"""Implementation of dynamic fireworks algorithm.

@@ -132,7 +132,7 @@ class FireflyAlgorithm(Algorithm):
 			:func:`NiaPy.algorithms.algorithm.Algorithm.initPopulation`
 		"""
 		Fireflies, Intensity, _ = Algorithm.initPopulation(self, task)
-		return Fireflies, Intensity, {'alpha':self.alpha}
+		return Fireflies, Intensity, {'alpha': self.alpha}
 
 	def runIteration(self, task, Fireflies, Intensity, xb, fxb, alpha, **dparams):
 		r"""Core function of Firefly Algorithm.
@@ -161,6 +161,6 @@ class FireflyAlgorithm(Algorithm):
 		tmp = asarray([self.move_ffa(i, Fireflies[Index], Intensity[Index], Fireflies, alpha, task) for i in range(self.NP)])
 		Fireflies, evalF = asarray([tmp[i][0] for i in range(len(tmp))]), asarray([tmp[i][1] for i in range(len(tmp))])
 		Intensity[where(evalF)] = apply_along_axis(task.eval, 1, Fireflies[where(evalF)])
-		return Fireflies, Intensity, {'alpha':alpha}
+		return Fireflies, Intensity, {'alpha': alpha}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

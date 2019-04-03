@@ -170,7 +170,7 @@ class CoralReefsOptimization(Algorithm):
 		Reef, Reef_f, d = Algorithm.initPopulation(self, task)
 		Fa, Fb, Fd = self.NP * self.Fa, self.NP * self.Fb, self.NP * self.Fd
 		if Fa % 2 != 0: Fa += 1
-		d.update({'Fa':int(Fa), 'Fb':int(Fb), 'Fd':int(Fd)})
+		d.update({'Fa': int(Fa), 'Fb': int(Fb), 'Fd': int(Fd)})
 		return Reef, Reef_f, d
 
 	def asexualReprodution(self, Reef, Reef_f, Fa, task):
@@ -272,6 +272,6 @@ class CoralReefsOptimization(Algorithm):
 		Reefn, Reefn_f = self.setting(Reef, Reef_f, append(Reefn_s, Reefn_b, 0), append(Reefn_s_f, Reffn_b_f, 0), task)
 		Reef, Reef_f = self.asexualReprodution(Reefn, Reefn_f, Fa, task)
 		if task.Iters % self.k == 0: Reef, Reef_f = self.depredation(Reef, Reef_f, Fd)
-		return Reef, Reef_f, {'Fa':Fa, 'Fb':Fb, 'Fd':Fd}
+		return Reef, Reef_f, {'Fa': Fa, 'Fb': Fb, 'Fd': Fd}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

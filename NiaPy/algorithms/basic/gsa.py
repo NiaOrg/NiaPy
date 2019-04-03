@@ -116,7 +116,7 @@ class GravitationalSearchAlgorithm(Algorithm):
 		"""
 		X, X_f, _ = Algorithm.initPopulation(self, task)
 		v = full([self.NP, task.D], 0.0)
-		return X, X_f, {'v':v}
+		return X, X_f, {'v': v}
 
 	def runIteration(self, task, X, X_f, xb, fxb, v, **dparams):
 		r"""Core function of GravitationalSearchAlgorithm algorithm.
@@ -146,6 +146,6 @@ class GravitationalSearchAlgorithm(Algorithm):
 		v = self.rand([self.NP, task.D]) * v + a.T
 		X = apply_along_axis(task.repair, 1, X + v, self.Rand)
 		X_f = apply_along_axis(task.eval, 1, X)
-		return X, X_f, {'v':v}
+		return X, X_f, {'v': v}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

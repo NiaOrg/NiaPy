@@ -126,7 +126,7 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 		"""
 		Foods, fpop, _ = Algorithm.initPopulation(self, task)
 		Probs, Trial = full(self.FoodNumber, 0.0), full(self.FoodNumber, 0.0)
-		return Foods, fpop, {'Probs':Probs, 'Trial':Trial}
+		return Foods, fpop, {'Probs': Probs, 'Trial': Trial}
 
 	def runIteration(self, task, Foods, fpop, xb, fxb, Probs, Trial, **dparams):
 		r"""Core funciton of  the algorithm.
@@ -173,6 +173,6 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 			if s == self.FoodNumber: s = 0
 		mi = argmax(Trial)
 		if Trial[mi] >= self.Limit: Foods[mi], Trial[mi] = SolutionABC(task=task, rnd=self.Rand), 0
-		return Foods, asarray([f.f for f in Foods]), {'Probs':Probs, 'Trial':Trial}
+		return Foods, asarray([f.f for f in Foods]), {'Probs': Probs, 'Trial': Trial}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
