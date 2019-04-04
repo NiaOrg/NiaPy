@@ -2,7 +2,9 @@
 # pylint: disable=mixed-indentation, function-redefined, multiple-statements, function-redefined, unsubscriptable-object, no-member, line-too-long, logging-not-lazy
 import logging
 from unittest import TestCase
+
 from numpy import random as rnd, full, inf, array_equal
+
 from NiaPy.util import StoppingTask, OptimizationType
 from NiaPy.algorithms.algorithm import Individual, Algorithm
 
