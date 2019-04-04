@@ -33,7 +33,7 @@ class ArgParserTestCase(TestCase):
 		self.assertEqual(args['algo'], 'SCA')
 		self.assertEqual(args['seed'], [1])
 
-	def test_getDictArgs_seed_fine(self):
+	def test_getDictArgs_seed_fine_two(self):
 		args = getDictArgs(['-D', '10', '-nFES', '100000000', '-a', 'SCA', '-seed', '1', '234', '231523'])
 		self.assertTrue(args)
 		self.assertEqual(args['D'], 10)

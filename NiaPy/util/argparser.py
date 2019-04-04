@@ -103,7 +103,7 @@ def getDictArgs(argv):
 		dict: Parsed input string
 
 	See Also:
-		:func:`getArgs`
+		* :func:`NiaPy.utils.getArgs`
 	"""
 	return vars(getArgs(argv))
 

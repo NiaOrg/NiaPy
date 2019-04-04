@@ -36,6 +36,9 @@ class NelderMeadMethod(Algorithm):
 		gamma (float): Expansion coefficient parameter
 		rho (float): Contraction coefficient parameter
 		sigma (float): Shrink coefficient parameter
+
+	See Also:
+		* :class:`NiaPy.algorithms.Algorithm`
 	"""
 	Name = ['NelderMeadMethod', 'NMM']
 
@@ -68,7 +71,7 @@ class NelderMeadMethod(Algorithm):
 			sigma (Optional[float]): Shrink coefficient parameter
 
 		See Also:
-			:func:`Algorithm.setParameters`
+			* :func:`NiaPy.algorithms.Algorithm.setParameters`
 		"""
 		Algorithm.setParameters(self, NP=NP, InitPopFunc=self.initPop)
 		self.alpha, self.gamma, self.rho, self.sigma = alpha, gamma, rho, sigma

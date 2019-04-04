@@ -36,7 +36,7 @@ class BatAlgorithm(Algorithm):
 		Qmax (float): Maximum frequency.
 
 	See Also:
-		:class:`NiaPy.algorithms.algorithm.Algorithm`
+		* :class:`NiaPy.algorithms.Algorithm`
 	"""
 	Name = ['BatAlgorithm', 'BA']
 
@@ -52,7 +52,7 @@ class BatAlgorithm(Algorithm):
 				* Qmax (Callable[[Union[float, int]], bool]): TODO
 
 		See Also:
-			:func:`NiaPy.algorithm.Algorithm.typeParameters`
+			* :func:`NiaPy.algorithms.Algorithm.typeParameters`
 		"""
 		d = Algorithm.typeParameters()
 		d.update({
@@ -73,7 +73,7 @@ class BatAlgorithm(Algorithm):
 			Qmax (Optional[float]): maximum frequency
 
 		See Also:
-			:func:`NiaPy.algorithm.Algorithm.setParameters`
+			* :func:`NiaPy.algorithms.Algorithm.setParameters`
 		"""
 		Algorithm.setParameters(self, NP=NP, **ukwargs)
 		self.A, self.r, self.Qmin, self.Qmax = A, r, Qmin, Qmax
@@ -95,7 +95,7 @@ class BatAlgorithm(Algorithm):
 					* v (numpy.ndarray[float]): TODO
 
 		See Also:
-			:func:`NiaPy.algorithm.Algorithm.initPopulation`
+			* :func:`NiaPy.algorithms.Algorithm.initPopulation`
 		"""
 		Sol, Fitness, d = Algorithm.initPopulation(self, task)
 		S, Q, v = full([self.NP, task.D], 0.0), full(self.NP, 0.0), full([self.NP, task.D], 0.0)

@@ -36,7 +36,7 @@ class CuckooSearch(Algorithm):
 		alpha (float): TODO
 
 	See Also:
-		:class:`NiaPy.algorithms.algorithm.Algorithm`
+		* :class:`NiaPy.algorithms.Algorithm`
 	"""
 	Name = ['CuckooSearch', 'CS']
 
@@ -66,7 +66,7 @@ class CuckooSearch(Algorithm):
 			**ukwargs (Dict[str, Any]): Additional arguments
 
 		See Also:
-			:func:`NiaPy.algorithms.algorithm.Algorithm.setParameters`
+			* :func:`NiaPy.algorithms.Algorithm.setParameters`
 		"""
 		Algorithm.setParameters(self, NP=N)
 		self.pa, self.alpha = pa, alpha
@@ -105,7 +105,7 @@ class CuckooSearch(Algorithm):
 					* pa_v (float): TODO
 
 		See Also:
-			:func:`NiaPy.algorithms.algorithm.Algorithm.initPopulation`
+			* :func:`NiaPy.algorithms.Algorithm.initPopulation`
 		"""
 		N, N_f, d = Algorithm.initPopulation(self, task)
 		d.update({'pa_v': self.NP * self.pa})

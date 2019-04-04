@@ -40,7 +40,7 @@ class HarmonySearch(Algorithm):
 		b_range (float): TODO
 
 	See Also:
-		:class:`NiaPy.algorithms.algorithm.Algorithm`
+		* :class:`NiaPy.algorithms.algorithm.Algorithm`
 	"""
 	Name = ['HarmonySearch', 'HS']
 
@@ -62,7 +62,7 @@ class HarmonySearch(Algorithm):
 			b_range (float): --
 
 		See Also:
-			:func:`NiaPy.algorithms.algorithm.Algorithm.setParameters`
+			* :func:`NiaPy.algorithms.algorithm.Algorithm.setParameters`
 		"""
 		Algorithm.setParameters(self, NP=HMS, **ukwargs)
 		self.r_accept, self.r_pa, self.b_range = r_accept, r_pa, b_range
@@ -120,7 +120,7 @@ class HarmonySearch(Algorithm):
 				3. Additional parameters
 
 		See Also:
-			:func:`NiaPy.algorithms.algorithm.Algorithm.initPopulation`
+			* :func:`NiaPy.algorithms.algorithm.Algorithm.initPopulation`
 		"""
 		return Algorithm.initPopulation(self, task)
 
@@ -174,7 +174,7 @@ class HarmonySearchV1(HarmonySearch):
 		bw_max (float): TODO
 
 	See Also:
-		:class:`NiaPy.algorithms.basic.hs.HarmonySearch`
+		* :class:`NiaPy.algorithms.basic.hs.HarmonySearch`
 	"""
 	Name = ['HarmonySearchV1', 'HSv1']
 
@@ -194,7 +194,7 @@ class HarmonySearchV1(HarmonySearch):
 			bw_max (float): Maximal bandwidth
 
 		See Also:
-			:func:`NiaPy.algorithms.basic.hs.HarmonySearch.setParameters`
+			* :func:`NiaPy.algorithms.basic.hs.HarmonySearch.setParameters`
 		"""
 		self.bw_min, self.bw_max = bw_min, bw_max
 		HarmonySearch.setParameters(self, **kwargs)

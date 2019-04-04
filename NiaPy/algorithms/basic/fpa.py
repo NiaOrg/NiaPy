@@ -40,7 +40,7 @@ class FlowerPollinationAlgorithm(Algorithm):
 		beta (float): TODO.
 
 	See Also:
-		:class:`NiaPy.algorithms.algorithm.Algorithm`
+		* :class:`NiaPy.algorithms.Algorithm`
 	"""
 	Name = ['FlowerPollinationAlgorithm', 'FPA']
 
@@ -54,7 +54,7 @@ class FlowerPollinationAlgorithm(Algorithm):
 				* beta (function): TODO
 
 		See Also:
-			:func:`NiaPy.algorithms.algorithm.Algorithm.typeParameters`
+			* :func:`NiaPy.algorithms.Algorithm.typeParameters`
 		"""
 		d = Algorithm.typeParameters()
 		d.update({
@@ -72,7 +72,7 @@ class FlowerPollinationAlgorithm(Algorithm):
 			beta (float): TODO.
 
 		See Also:
-			:func:`NiaPy.algorithms.algorithm.Algorithm.setParameters`
+			* :func:`NiaPy.algorithms.Algorithm.setParameters`
 		"""
 		Algorithm.setParameters(self, NP=NP)
 		self.p, self.beta = p, beta

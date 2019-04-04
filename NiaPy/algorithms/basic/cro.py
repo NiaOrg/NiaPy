@@ -98,7 +98,7 @@ class CoralReefsOptimization(Algorithm):
 		Brooding (Callable[[numpy.ndarray, float, Task, mtrand.RandomState, Dict[str, Any]], Tuple[numpy.ndarray, numpy.ndarray[float]]]): Brooding function.
 
 	See Also:
-		:class:`NiaPy.algorithms.algorithm.Algorithm`
+		* :class:`NiaPy.algorithms.Algorithm`
 	"""
 	Name = ['CoralReefsOptimization', 'CRO']
 
@@ -107,7 +107,7 @@ class CoralReefsOptimization(Algorithm):
 		r"""TODO.
 
 		Returns:
-			dict:
+			Dict[str, Callable]:
 				* N (func): TODO
 				* phi (func): TODO
 				* Fa (func): TODO
@@ -142,7 +142,7 @@ class CoralReefsOptimization(Algorithm):
 			Distance (Callable[[numpy.ndarray, numpy.ndarray], float]): Funciton for calculating distance between corals.
 
 		See Also:
-			:func:`NiaPy.algorithms.algorithm.Algorithm.setParameters`
+			* :func:`NiaPy.algorithms.Algorithm.setParameters`
 		"""
 		Algorithm.setParameters(self, NP=N)
 		self.phi, self.Fa, self.Fb, self.Fd, self.k, self.P_Cr, self.P_F = phi, Fa, Fb, Fd, k, P_Cr, P_F
@@ -165,7 +165,7 @@ class CoralReefsOptimization(Algorithm):
 					* Fd (int): TODO
 
 		See Also:
-			:func:`NiaPy.algorithms.algorithm.Algorithm.initPopulation`
+			* :func:`NiaPy.algorithms.Algorithm.initPopulation`
 		"""
 		Reef, Reef_f, d = Algorithm.initPopulation(self, task)
 		Fa, Fb, Fd = self.NP * self.Fa, self.NP * self.Fb, self.NP * self.Fd

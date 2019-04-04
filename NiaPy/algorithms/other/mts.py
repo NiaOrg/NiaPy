@@ -151,7 +151,7 @@ def MTS_LS2(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, BONUS1=10, BONUS2=1, sr_f
 			6. Search range.
 
 	See Also:
-		:func:`NiaPy.algorithms.other.mts.genNewX`
+		* :func:`NiaPy.algorithms.other.genNewX`
 	"""
 	if not improve:
 		SR /= 2
@@ -292,7 +292,7 @@ class MultipleTrajectorySearch(Algorithm):
 		NoEnabled (int): Number of best solution for testing.
 
 	See Also:
-		:class:`NiaPy.algorithms.algorithm.Algorithm`
+		* :class:`NiaPy.algorithms.Algorithm`
 	"""
 	Name = ['MultipleTrajectorySearch', 'MTS']
 
@@ -332,7 +332,7 @@ class MultipleTrajectorySearch(Algorithm):
 			LSs (Iterable[Callable[[numpy.ndarray, float, numpy.ndarray, float, bool, numpy.ndarray, Task, Dict[str, Any]], Tuple[numpy.ndarray, float, numpy.ndarray, float, bool, int, numpy.ndarray]]]): Local searches to use.
 
 		See Also:
-			:func:`NiaPy.algorithms.algorithm.Algorithm.setParameters`
+			* :func:`NiaPy.algorithms.Algorithm.setParameters`
 		"""
 		Algorithm.setParameters(self, NP=M)
 		self.NoLsTests, self.NoLs, self.NoLsBest, self.NoEnabled, self.BONUS1, self.BONUS2 = NoLsTests, NoLs, NoLsBest, NoEnabled, BONUS1, BONUS2
@@ -479,7 +479,7 @@ class MultipleTrajectorySearchV1(MultipleTrajectorySearch):
 		Name (List[str]): List of strings representing algorithm name.
 
 	See Also:
-		:class:`NiaPy.algorithms.other.mts.MultipleTrajectorySearch``
+		* :class:`NiaPy.algorithms.other.MultipleTrajectorySearch``
 	"""
 	Name = ['MultipleTrajectorySearchV1', 'MTSv1']
 
@@ -490,7 +490,7 @@ class MultipleTrajectorySearchV1(MultipleTrajectorySearch):
 			**kwargs (Dict[str, Any]): Additional arguments.
 
 		See Also:
-			:func:`NiaPy.algorithms.other.mts.MultipleTrajectorySearch.setParameters`
+			* :func:`NiaPy.algorithms.other.MultipleTrajectorySearch.setParameters`
 		"""
 		kwargs.pop('NoLsBest', None)
 		MultipleTrajectorySearch.setParameters(self, NoLsBest=0, LSs=(MTS_LS1v1, MTS_LS2, MTS_LS3v1), **kwargs)

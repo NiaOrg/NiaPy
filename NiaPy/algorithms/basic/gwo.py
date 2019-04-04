@@ -35,7 +35,7 @@ class GreyWolfOptimizer(Algorithm):
 		Name (List[str]): List of strings representing algorithm names.
 
 	See Also:
-		:class:`NiaPy.algorithms.algorithm.Algorithm`
+		* :class:`NiaPy.algorithms.Algorithm`
 	"""
 	Name = ['GreyWolfOptimizer', 'GWO']
 
@@ -51,7 +51,7 @@ class GreyWolfOptimizer(Algorithm):
 			NP (int): Number of individuals in population
 
 		See Also:
-			:func:`NiaPy.algorithms.algorithm.Algorithm.setParameters`
+			* :func:`NiaPy.algorithms.Algorithm.setParameters`
 		"""
 		Algorithm.setParameters(self, NP=NP)
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
@@ -70,7 +70,7 @@ class GreyWolfOptimizer(Algorithm):
 					* A (): TODO
 
 		See Also:
-			:func:`NiaPy.algorithms.algorithm.Algorithm.initPopulation`
+			* :func:`NiaPy.algorithms.Algorithm.initPopulation`
 		"""
 		pop, fpop, d = Algorithm.initPopulation(self, task)
 		A, A_f, B, B_f, D, D_f = None, task.optType.value * inf, None, task.optType.value * inf, None, task.optType.value * inf

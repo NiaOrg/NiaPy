@@ -33,6 +33,11 @@ class HybridBatAlgorithm(BatAlgorithm):
 
 	Attributes:
 		Name (List[str]): List of strings representing algorithm name.
+		F (float): Scaling factor.
+		CR (float): Crossover.
+
+	See Also:
+		* :class:`NiaPy.algorithms.basic.BatAlgorithm`
 	"""
 	Name = ['HybridBatAlgorithm', 'HBA']
 
@@ -51,14 +56,14 @@ class HybridBatAlgorithm(BatAlgorithm):
 		return d
 
 	def setParameters(self, F=0.78, CR=0.35, CrossMutt=CrossBest1, **ukwargs):
-		r"""**__init__(self, D, NP, nFES, A, r, Qmin, Qmax, benchmark)**.
+		r"""Set core parameters of HybridBatAlgorithm algorithm.
 
 		Arguments:
-			F (float): Scaling factor
-			CR (float): Crossover
+			F (Optional[float]): Scaling factor.
+			CR (Optional[float]): Crossover.
 
 		See Also:
-			:func:`BatAlgorithm.setParameters`
+			* :func:`NiaPy.algorithms.basic.BatAlgorithm.setParameters`
 		"""
 		BatAlgorithm.setParameters(self, **ukwargs)
 		self.F, self.CR, self.CrossMutt = F, CR, CrossMutt

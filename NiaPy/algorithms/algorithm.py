@@ -96,7 +96,7 @@ class Algorithm:
 			seed (int): Starting seed for random generator.
 
 		See Also:
-			:func:`NiaPy.algorithms.Algorithm.setParameters`
+			* :func:`NiaPy.algorithms.Algorithm.setParameters`
 		"""
 		self.Rand = rand.RandomState(kwargs.pop('seed', None))
 		self.setParameters(**kwargs)
@@ -111,8 +111,8 @@ class Algorithm:
 			**kwargs (Dict[str, Any]): Additional arguments.
 
 		See Also:
-			* :func:`NiaPy.algorithms.algorithm.defaultNumPyInit`
-			* :func:`NiaPy.algorithms.algorithm.defaultIndividualInit`
+			* :func:`NiaPy.algorithms.defaultNumPyInit`
+			* :func:`NiaPy.algorithms.defaultIndividualInit`
 		"""
 		self.NP, self.InitPopFunc, self.itype = NP, InitPopFunc, itype
 
@@ -218,7 +218,7 @@ class Algorithm:
 				3. Additional arguments.
 
 		See Also:
-			:func:`NiaPy.algorithms.algorithm.Algorithm.setParameters`
+			* :func:`NiaPy.algorithms.Algorithm.setParameters`
 		"""
 		pop, fpop = self.InitPopFunc(task=task, NP=self.NP, rnd=self.Rand, itype=self.itype)
 		return pop, fpop, {}
@@ -243,7 +243,7 @@ class Algorithm:
 				3. Additional arguments of the algorithm.
 
 		See Also:
-			:func:`NiaPy.algorithms.algorithm.Algorithm.runYield`
+			* :func:`NiaPy.algorithms.Algorithm.runYield`
 		"""
 		return pop, fpop, {}
 
@@ -262,8 +262,8 @@ class Algorithm:
 				2. Fitness value of the best solution.
 
 		See Also:
-			* :func:`NiaPy.algorithms.algorithm.Algorithm.initPopulation`
-			* :func:`NiaPy.algorithms.algorithm.Algorithm.runIteration`
+			* :func:`NiaPy.algorithms.Algorithm.initPopulation`
+			* :func:`NiaPy.algorithms.Algorithm.runIteration`
 		"""
 		pop, fpop, dparams = self.initPopulation(task)
 		xb, fxb = self.getBest(pop, fpop)
@@ -285,7 +285,7 @@ class Algorithm:
 				2. Best fitness value found in optimization process.
 
 		See Also:
-			:func:`NiaPy.algorithms.algorithm.Algorithm.runYield`
+			* :func:`NiaPy.algorithms.Algorithm.runYield`
 		"""
 		algo, xb, fxb = self.runYield(task), None, inf
 		while not task.stopCond():
@@ -305,10 +305,10 @@ class Algorithm:
 				2. Best fitness value found in optimization process.
 
 		See Also:
-			:func:`NiaPy.algorithms.algorithm.Algorithm.runTask`
+			* :func:`NiaPy.algorithms.Algorithm.runTask`
 		"""
 		try:
-			task.start()
+			# task.start()
 			r = self.runTask(task)
 			return r[0], r[1] * task.optType.value
 		except (FesException, GenException, TimeException, RefException): return task.x, task.x_f * task.optType.value
@@ -371,7 +371,7 @@ class Individual:
 			rnd (Optional[mtrand.RandomState]): Random generator.
 
 		See Also:
-			:func:`NiaPy.util.utillity.Task.repair`
+			* :func:`NiaPy.util.Task.repair`
 		"""
 		self.x = task.repair(self.x, rnd=rnd)
 		self.f = task.eval(self.x)

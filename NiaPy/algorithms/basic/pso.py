@@ -31,6 +31,9 @@ class ParticleSwarmAlgorithm(Algorithm):
 
 	Attributes:
 		Name (List[str]): List of strings representing algorithm names
+
+	See Also:
+		* :class:`NiaPy.algorithms.Algorithm`
 	"""
 	Name = ['ParticleSwarmAlgorithm', 'PSO']
 
@@ -69,7 +72,7 @@ class ParticleSwarmAlgorithm(Algorithm):
 			**ukwargs: Additional arguments
 
 		See Also:
-			:func:`Algorithm.setParameters`
+			* :func:`NiaPy.algorithms.Algorithm.setParameters`
 		"""
 		Algorithm.setParameters(self, NP=NP)
 		self.C1, self.C2, self.w, self.vMin, self.vMax = C1, C2, w, vMin, vMax
@@ -126,7 +129,7 @@ class ParticleSwarmAlgorithm(Algorithm):
 					* V (numpy.ndarray): Initial velocity of particle.
 
 		See Also:
-         :func:`Algorithm.initPopulation`
+			* :func:`NiaPy.algorithms.Algorithm.initPopulation`
 		"""
 		pop, fpop, d = Algorithm.initPopulation(self, task)
 		d.update(self.init(task))
