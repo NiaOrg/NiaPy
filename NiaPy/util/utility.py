@@ -5,8 +5,10 @@
 import logging
 # from datetime import datetime
 from enum import Enum
+
 from numpy import ndarray, asarray, full, empty, inf, dot, where, random as rand, fabs, ceil, amin, amax
 from matplotlib import pyplot as plt, animation as anim
+
 from NiaPy.benchmarks import Rastrigin, Rosenbrock, Griewank, Sphere, Ackley, Schwefel, Schwefel221, Schwefel222, Whitley, Alpine1, Alpine2, HappyCat, Ridge, ChungReynolds, Csendes, Pinter, Qing, Quintic, Salomon, SchumerSteiglitz, Step, Step2, Step3, Stepint, SumSquares, StyblinskiTang, BentCigar, Discus, Elliptic, ExpandedGriewankPlusRosenbrock, HGBat, Katsuura, ExpandedSchaffer, ModifiedSchwefel, Weierstrass, Michalewichz, Levy, Sphere2, Sphere3, Trid, Perm, Zakharov, DixonPrice, Powell, CosineMixture, Infinity, SchafferN2, SchafferN4
 from NiaPy.util.exception import FesException, GenException, RefException  # TimeException,
 
@@ -269,7 +271,7 @@ class Task(Utility):
 		optType (OptimizationType): Optimization type to use.
 
 	See Also:
-		:class:`NiaPy.util.utility.Utility`
+		* :class:`NiaPy.util.Utility`
 	"""
 	D = 0
 	benchmark = None
@@ -288,7 +290,8 @@ class Task(Utility):
 			frepair (Optional[Callable[[numpy.ndarray, numpy.ndarray, numpy.ndarray, Dict[str, Any]], numpy.ndarray]]): Function for reparing individuals components to desired limits.
 
 		See Also:
-			`func`:NiaPy.util.utility.Utility.__init__`
+			* `func`:NiaPy.util.Utility.__init__`
+			* `func`:NiaPy.util.Utility.repair`
 		"""
 		Utility.__init__(self)
 		# dimension of the problem
@@ -388,7 +391,7 @@ class Task(Utility):
 		Returns:
 			bool: `True` if solution is in feasible space else `False`.
 		"""
-		return False not in (A > self.Lower) and False not in (A < self.Upper)
+		return False not in (A >= self.Lower) and False not in (A <= self.Upper)
 
 	def stopCond(self):
 		r"""Check if optimization task should stop.
@@ -406,12 +409,20 @@ class CountingTask(Task):
 		Evals (int): Number of function evaluations.
 
 	See Also:
-		:class:`NiaPy.util.utility.Task`
+		* :class:`NiaPy.util.Task`
 	"""
 
 	def __init__(self, **kwargs):
-		self.Iters, self.Evals = 0, 0
+		r"""Initialize counting task.
+
+		Args:
+			**kwargs (Dict[str, Any]): Additional arguments.
+
+		See Also:
+			* :func:`NiaPy.util.Task.__init__`
+		"""
 		Task.__init__(self, **kwargs)
+		self.Iters, self.Evals = 0, 0
 
 	def eval(self, A):
 		r"""Evaluate the solution A.
@@ -423,9 +434,13 @@ class CountingTask(Task):
 
 		Returns:
 			float: Fitness/function values of solution.
+
+		See Also:
+			* :func:`NiaPy.util.Task.eval`
 		"""
+		r = Task.eval(self, A)
 		self.Evals += 1
-		return Task.eval(self, A)
+		return r
 
 	def evals(self):
 		r"""Get the number of evaluations made.
@@ -461,7 +476,7 @@ class StoppingTask(CountingTask):
 		x_f (float): Best found individual function/fitness value.
 
 	See Also:
-		:class:`NiaPy.util.utility.CountingTask`
+		* :class:`NiaPy.util.CountingTask`
 	"""
 
 	def __init__(self, nFES=inf, nGEN=inf, refValue=None, **kwargs):
@@ -473,7 +488,7 @@ class StoppingTask(CountingTask):
 			refValue (Optional[float]): Reference value of function/fitness function.
 
 		See Also:
-			:func:`NiaPy.util.utility.CountingTask.__init__`
+			* :func:`NiaPy.util.CountingTask.__init__`
 		"""
 		CountingTask.__init__(self, **kwargs)
 		self.refValue = (-inf if refValue is None else refValue)
@@ -490,8 +505,8 @@ class StoppingTask(CountingTask):
 			float: Fitness/function value of solution.
 
 		See Also:
-			* :func:`NiaPy.util.utility.StoppingTask.stopCond`
-			* :func:`NiaPy.util.utility.CountingTask.eval`
+			* :func:`NiaPy.util.StoppingTask.stopCond`
+			* :func:`NiaPy.util.CountingTask.eval`
 		"""
 		if self.stopCond(): return inf * self.optType.value
 		x_f = CountingTask.eval(self, A)
@@ -513,17 +528,18 @@ class StoppingTask(CountingTask):
 			bool: `True` if number of function evaluations or number of algorithm iterations/generations or reference values is reach else `False`.
 
 		See Also:
-			* :func:`NiaPy.util.utility.CountingTask.stopCondI`
-			* :func:`NiaPy.util.utility.StoppingTask.stopCond`
+			* :func:`NiaPy.util.StoppingTask.stopCond`
+			* :func:`NiaPy.util.CountingTask.nextIter`
 		"""
+		r = self.stopCond()
 		CountingTask.nextIter(self)
-		return self.stopCond()
+		return r
 
 class ThrowingTask(StoppingTask):
 	r"""Task that throw exceptions when stopping condition is meet.
 
 	See Also:
-		:class:`NiaPy.util.utility.StoppingTask`
+		* :class:`NiaPy.util.StoppingTask`
 	"""
 	def __init__(self, **kwargs):
 		r"""Initialize optimization task.
@@ -532,7 +548,7 @@ class ThrowingTask(StoppingTask):
 			**kwargs (Dict[str, Any]): Additional arguments.
 
 		See Also:
-			:func:`NiaPy.util.utility.StoppingTask.__init__`
+			* :func:`NiaPy.util.StoppingTask.__init__`
 		"""
 		StoppingTask.__init__(self, **kwargs)
 
@@ -561,8 +577,8 @@ class ThrowingTask(StoppingTask):
 			float: Function/fitness values of solution.
 
 		See Also:
-			* :func:`NiaPy.util.utility.ThrowingTask.stopCondE`
-			* :func:`NiaPy.util.utility.StoppingTask.eval`
+			* :func:`NiaPy.util.ThrowingTask.stopCondE`
+			* :func:`NiaPy.util.StoppingTask.eval`
 		"""
 		self.stopCondE()
 		return StoppingTask.eval(self, A)
@@ -578,7 +594,7 @@ class MoveTask(StoppingTask):
 			fM (Callable[numpy.ndarray[Union[float, int]]]): Function applied after rotating.
 
 		See Also:
-			:func:`StoppingTask.__init__`
+			* :func:`NiaPy.util.StoppingTask.__init__`
 		"""
 		StoppingTask.__init__(self, **kwargs)
 		self.o = o if isinstance(o, ndarray) or o is None else asarray(o)
@@ -595,8 +611,8 @@ class MoveTask(StoppingTask):
 			float: Fitness/function value of solution.
 
 		See Also:
-			* :func:`NiaPy.util.utility.StoppingTask.stopCond`
-			* :func:`NiaPy.util.utility.StoppingTask.eval`
+			* :func:`NiaPy.util.StoppingTask.stopCond`
+			* :func:`NiaPy.util.StoppingTask.eval`
 		"""
 		if self.stopCond(): return inf * self.optType.value
 		X = A - self.o if self.o is not None else A
@@ -616,7 +632,7 @@ class ScaledTask(Task):
 		Upper (numpy.ndarray): Scaled upper limit of search space.
 
 	See Also:
-		:class:`NiaPy.util.utility.Task`
+		* :class:`NiaPy.util.Task`
 	"""
 	def __init__(self, task, Lower, Upper, **kwargs):
 		r"""Initialize scaled task.
@@ -628,7 +644,7 @@ class ScaledTask(Task):
 			**kwargs (Dict[str, Any]): Additional arguments.
 
 		See Also:
-			:func:`NiaPy.util.utility.fullArray`
+			* :func:`NiaPy.util.fullArray`
 		"""
 		Task.__init__(self)
 		self._task = task
@@ -698,7 +714,7 @@ class TaskConvPrint(StoppingTask):
 		xb_f (float): Global best function/fitness values.
 
 	See Also:
-		:class:`NiaPy.util.utility.StoppingTask`
+		* :class:`NiaPy.util.StoppingTask`
 	"""
 	def __init__(self, **kwargs):
 		r"""Initialize TaskConvPrint class.
@@ -707,7 +723,7 @@ class TaskConvPrint(StoppingTask):
 			**kwargs (Dict[str, Any]): Additional arguments.
 
 		See Also:
-			:func:`NiaPy.util.utility.StoppingTask.__init__`
+			* :func:`NiaPy.util.StoppingTask.__init__`
 		"""
 		StoppingTask.__init__(self, **kwargs)
 		self.xb, self.xb_f = None, inf
@@ -722,7 +738,7 @@ class TaskConvPrint(StoppingTask):
 			float: Function/Fitness values of solution.
 
 		See Also:
-			:func:`NiaPy.util.utility.StoppingTask.eval`
+			* :func:`NiaPy.util.StoppingTask.eval`
 		"""
 		x_f = StoppingTask.eval(self, A)
 		if self.x_f != self.xb_f:
@@ -738,7 +754,7 @@ class TaskConvSave(StoppingTask):
 		x_f_vals (List[float]): List of floats representing function/fitness values found.
 
 	See Also:
-		:class:`NiaPy.util.utility.StoppingTask`
+		* :class:`NiaPy.util.StoppingTask`
 	"""
 	def __init__(self, **kwargs):
 		r"""Initialize TaskConvSave class.
@@ -747,7 +763,7 @@ class TaskConvSave(StoppingTask):
 			**kwargs (Dict[str, Any]): Additional arguments.
 
 		See Also:
-			:func:`NiaPy.util.utility.StoppingTask.__init__`
+			* :func:`NiaPy.util.StoppingTask.__init__`
 		"""
 		StoppingTask.__init__(self, **kwargs)
 		self.evals = []
@@ -763,7 +779,7 @@ class TaskConvSave(StoppingTask):
 			float: Function/fitness values of individual.
 
 		See Also:
-			:func:`SNiaPy.util.utility.toppingTask.eval`
+			* :func:`SNiaPy.util.toppingTask.eval`
 		"""
 		x_f = StoppingTask.eval(self, A)
 		if x_f <= self.x_f:
@@ -789,7 +805,7 @@ class TaskConvPlot(StoppingTask):
 		x_fs (List[float]): List of floats representing function/fitness values found.
 
 	See Also:
-		:class:`NiaPy.util.utility.StoppingTask`
+		* :class:`NiaPy.util.StoppingTask`
 	"""
 	def __init__(self, **kwargs):
 		r"""TODO.
@@ -798,7 +814,7 @@ class TaskConvPlot(StoppingTask):
 			**kwargs (Dict[str, Any]): Additional arguments.
 
 		See Also:
-			:func:`NiaPy.util.utility.StoppingTask.__init__`
+			* :func:`NiaPy.util.StoppingTask.__init__`
 		"""
 		StoppingTask.__init__(self, **kwargs)
 		self.x_fs, self.iters = [], []
@@ -857,7 +873,7 @@ class TaskComposition(MoveTask):
 			bias (numpy.ndarray[float]): TODO
 
 		See Also:
-			:func:`MoveTask.__init__`
+			* :func:`NiaPy.util.MoveTask.__init__`
 
 		TODO:
 			Class is a work in progress.

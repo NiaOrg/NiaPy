@@ -37,6 +37,12 @@ class SineCosineAlgorithm(Algorithm):
 
 	Attributes:
 		Name (List[str]): List of string representing algorithm names.
+		a (float): Parameter for control in :math:`r_1` value
+		Rmin (float): Minimu value for :math:`r_3` value
+		Rmax (float): Maximum value for :math:`r_3` value
+
+	See Also:
+		* :class:`NiaPy.algorithms.Algorithm`
 	"""
 	Name = ['SineCosineAlgorithm', 'SCA']
 
@@ -49,6 +55,9 @@ class SineCosineAlgorithm(Algorithm):
 				* a (Callable[[Union[float, int]], bool]): TODO
 				* Rmin (Callable[[Union[float, int]], bool]): TODO
 				* Rmax (Callable[[Union[float, int]], bool]): TODO
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.typeParameters`
 		"""
 		d = Algorithm.typeParameters()
 		d.update({
@@ -62,13 +71,13 @@ class SineCosineAlgorithm(Algorithm):
 		r"""Set the arguments of an algorithm.
 
 		Args:
-			NP (int): Number of individual in population
-			a (float): Parameter for control in $r_1$ value
-			Rmin (float): Minimu value for $r_3$ value
-			Rmax (float): Maximum value for $r_3$ value
+			NP (Optional[int]): Number of individual in population
+			a (Optional[float]): Parameter for control in :math:`r_1` value
+			Rmin (Optional[float]): Minimu value for :math:`r_3` value
+			Rmax (Optional[float]): Maximum value for :math:`r_3` value
 
 		See Also:
-			:func:`NiaPy.algorithms.algorithm.Algorithm`
+			* :func:`NiaPy.algorithms.algorithm.Algorithm`
 		"""
 		Algorithm.setParameters(self, NP=NP)
 		self.a, self.Rmin, self.Rmax = a, Rmin, Rmax
@@ -78,16 +87,16 @@ class SineCosineAlgorithm(Algorithm):
 		r"""Move individual to new position in search space.
 
 		Args:
-			x (numpy.ndarray): Individual represented with components
-			x_b (nmppy.ndarray): Best individual represented with components
-			r1 (float): Number dependent on algorithm iteration/generations
-			r2 (float): Random number in range of 0 and 2 * PI
-			r3 (float): Random number in range [Rmin, Rmax]
-			r4 (float): Random number in range [0, 1]
-			task (Task): Optimization task
+			x (numpy.ndarray): Individual represented with components.
+			x_b (nmppy.ndarray): Best individual represented with components.
+			r1 (float): Number dependent on algorithm iteration/generations.
+			r2 (float): Random number in range of 0 and 2 * PI.
+			r3 (float): Random number in range [Rmin, Rmax].
+			r4 (float): Random number in range [0, 1].
+			task (Task): Optimization task.
 
 		Returns:
-			array: New individual that is moved based on individual ``x``
+			numpy.ndarray: New individual that is moved based on individual ``x``.
 		"""
 		return task.repair(x + r1 * (sin(r2) if r4 < 0.5 else cos(r2)) * fabs(r3 * x_b - x), self.Rand)
 
@@ -109,18 +118,18 @@ class SineCosineAlgorithm(Algorithm):
 		r"""Core function of Sine Cosine Algorithm.
 
 		Args:
-			task (Task): Optimization task
-			P (numpy.ndarray): Current population individuals
-			P_f (numpy.ndarray[float]): Current population individulas function/fitness values
-			xb (numpy.ndarray): Current best solution to optimization task
-			fxb (float): Current best function/fitness value
-			dparams (Dict[str, Any]): Additional parameters
+			task (Task): Optimization task.
+			P (numpy.ndarray): Current population individuals.
+			P_f (numpy.ndarray[float]): Current population individulas function/fitness values.
+			xb (numpy.ndarray): Current best solution to optimization task.
+			fxb (float): Current best function/fitness value.
+			dparams (Dict[str, Any]): Additional parameters.
 
 		Returns:
 			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
-				1. New population
-				2. New populations fitness/function values
-				3. Additional arguments
+				1. New population.
+				2. New populations fitness/function values.
+				3. Additional arguments.
 		"""
 		r1, r2, r3, r4 = self.a - task.Iters * (self.a / task.Iters), self.uniform(0, 2 * pi), self.uniform(self.Rmin, self.Rmax), self.rand()
 		P = apply_along_axis(self.nextPos, 1, P, xb, r1, r2, r3, r4, task)

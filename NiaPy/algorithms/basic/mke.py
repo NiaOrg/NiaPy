@@ -29,6 +29,9 @@ class MkeSolution(Individual):
 		x_pb (array of (float or int)): Persional best position of Monkey patricle
 		f_pb (float): Personal best fitness/function value
 		MonkeyKing (bool): Boolean value indicating if particle is Monkey King paticle
+
+	See Also:
+		* :class:`NiaPy.algorithms.Individual`
 	"""
 	def __init__(self, **kwargs):
 		r"""Initialize Monkey particle.
@@ -37,7 +40,7 @@ class MkeSolution(Individual):
 			**kwargs: Additional arguments
 
 		See Also:
-			Individual.__init__()
+			* :class:`NiaPy.algorithms.Individual.__init__()`
 		"""
 		Individual.__init__(self, **kwargs)
 		self.f_pb, self.x_pb = self.f, self.x
@@ -76,7 +79,7 @@ class MonkeyKingEvolutionV1(Algorithm):
 		FC (float): Scale factor for Monkey King particles.
 
 	See Also:
-		:class:`NiaPy.algorithms.algorithm.Algorithm`
+		* :class:`NiaPy.algorithms.algorithm.Algorithm`
 	"""
 	Name = ['MonkeyKingEvolutionV1', 'MKEv1']
 
@@ -113,7 +116,7 @@ class MonkeyKingEvolutionV1(Algorithm):
 			**ukwargs (Dict[str, Any]): Additional arguments.
 
 		See Also:
-			:func:`NiaPy.algorithms.algorithm.Algorithm.setParameters`
+			* :func:`NiaPy.algorithms.algorithm.Algorithm.setParameters`
 		"""
 		Algorithm.setParameters(self, NP=NP, itype=ukwargs.pop('itype', MkeSolution), InitPopFunc=ukwargs.pop('InitPopFunc', defaultIndividualInit))
 		self.F, self.R, self.C, self.FC = F, R, C, FC
@@ -258,7 +261,7 @@ class MonkeyKingEvolutionV2(MonkeyKingEvolutionV1):
 		Name (List[str]): List of strings representing algorithm names.
 
 	See Also:
-		:class:`NiaPy.algorithms.basic.mke.MonkeyKingEvolutionV1`
+		* :class:`NiaPy.algorithms.basic.mke.MonkeyKingEvolutionV1`
 	"""
 	Name = ['MonkeyKingEvolutionV2', 'MKEv2']
 
@@ -337,7 +340,7 @@ class MonkeyKingEvolutionV3(MonkeyKingEvolutionV1):
 		Name (List[str]): List of strings that represent algorithm names.
 
 	See Also:
-		:class:`NiaPy.algorithms.basic.mke.MonkeyKingEvolutionV1`
+		* :class:`NiaPy.algorithms.basic.mke.MonkeyKingEvolutionV1`
 	"""
 	Name = ['MonkeyKingEvolutionV3', 'MKEv3']
 
@@ -348,7 +351,7 @@ class MonkeyKingEvolutionV3(MonkeyKingEvolutionV1):
 			**ukwargs (Dict[str, Any]): Additional arguments.
 
 		See Also:
-			:func:`NiaPy.algorithms.basic.MonkeyKingEvolutionV1.setParameters`
+			* :func:`NiaPy.algorithms.basic.MonkeyKingEvolutionV1.setParameters`
 		"""
 		MonkeyKingEvolutionV1.setParameters(self, itype=None, InitPopFunc=defaultNumPyInit)
 
@@ -378,7 +381,7 @@ class MonkeyKingEvolutionV3(MonkeyKingEvolutionV1):
 					* c (int): TODO.
 
 		See Also:
-			:func:`NiaPy.algorithms.algorithm.Algorithm.initPopulation`
+			* :func:`NiaPy.algorithms.algorithm.Algorithm.initPopulation`
 		"""
 		X, X_f, d = Algorithm.initPopulation(self, task)
 		k, c = int(ceil(self.NP / task.D)), int(ceil(self.C * task.D))

@@ -63,7 +63,7 @@ class SimulatedAnnealing(Algorithm):
 		Name (List[str]): List of strings representing algorithm name.
 
 	See Also:
-		:class:`NiaPy.algorithms.algorithm.Algorithm`
+		* :class:`NiaPy.algorithms.Algorithm`
 	"""
 	Name = ['SimulatedAnnealing', 'SA']
 

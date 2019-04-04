@@ -35,15 +35,37 @@ class GlowwormSwarmOptimization(Algorithm):
 		Kaipa, Krishnanand N., and Debasish Ghose. Glowworm swarm optimization: theory, algorithms, and applications. Vol. 698. Springer, 2017.
 
 	Attributes:
-		Name (list of str): List of strings represeinting algorithm name.
+		Name (List[str]): List of strings represeinting algorithm name.
+		n (int): Number of glowworms in population.
+		l0 (float): Initial luciferin quantity for each glowworm.
+		nt (float): --
+		rs (float): Maximum sensing range.
+		rho (float): Luciferin decay constant.
+		gamma (float): Luciferin enhancement constant.
+		beta (float): --
+		s (float): --
+		Distance (Callable[[numpy.ndarray, numpy.ndarray], float]]): Measure distance between two individuals.
 
 	See Also:
-		:class:`NiaPy.algorithms.algorithm.Algorithm`
+		* :class:`NiaPy.algorithms.algorithm.Algorithm`
 	"""
 	Name = ['GlowwormSwarmOptimization', 'GSO']
 
 	@staticmethod
-	def typeParameters(): return {
+	def typeParameters():
+		r"""Get dictionary with functions for checking values of parameters.
+
+		Returns:
+			Dict[str, Callable]:
+				* n (Callable[[int], bool]): TODO
+				* l0 (Callable[[Union[float, int]], bool]): TODO
+				* nt (Callable[[Union[float, int]], bool]): TODO
+				* rho (Callable[[Union[float, int]], bool]): TODO
+				* gamma (Callable[[float], bool]): TODO
+				* beta (Callable[[float], bool]): TODO
+				* s (Callable[[float], bool]): TODO
+		"""
+		return {
 			'n': lambda x: isinstance(x, int) and x > 0,
 			'l0': lambda x: isinstance(x, (float, int)) and x > 0,
 			'nt': lambda x: isinstance(x, (float, int)) and x > 0,
@@ -51,48 +73,49 @@ class GlowwormSwarmOptimization(Algorithm):
 			'gamma': lambda x: isinstance(x, float) and 0 < x < 1,
 			'beta': lambda x: isinstance(x, float) and x > 0,
 			's': lambda x: isinstance(x, float) and x > 0
-	}
+		}
 
 	def setParameters(self, n=25, l0=5, nt=5, rho=0.4, gamma=0.6, beta=0.08, s=0.03, Distance=euclidean, **ukwargs):
 		r"""Set the arguments of an algorithm.
 
 		Arguments:
-			n (int): Number of glowworms in population
-			l0 (float): Initial luciferin quantity for each glowworm
-			nt (float): --
-			rs (float): Maximum sensing range
-			rho (float): Luciferin decay constant
-			gamma (float): Luciferin enhancement constant
-			beta (float): --
-			s (float): --
+			n (Optional[int]): Number of glowworms in population.
+			l0 (Optional[float]): Initial luciferin quantity for each glowworm.
+			nt (Optional[float]): --
+			rs (Optional]float]): Maximum sensing range.
+			rho (Optional[float]): Luciferin decay constant.
+			gamma (Optional[float]): Luciferin enhancement constant.
+			beta (Optional[float]): --
+			s (Optional[float]): --
+			Distance (Optional[Callable[[numpy.ndarray, numpy.ndarray], float]]]): Measure distance between two individuals.
 		"""
 		self.n, self.l0, self.nt, self.rho, self.gamma, self.beta, self.s, self.Distance = n, l0, nt, rho, gamma, beta, s, Distance
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def randMove(self, i):
-		r"""TODO.
+		r"""Move a glowworm to another glowworm.
 
 		Args:
-			i:
+			i (int): Index of glowworm that is making a move.
 
 		Returns:
-
+			int: Index of glowworm to move to.
 		"""
 		j = i
 		while i == j: j = self.randint(self.n)
 		return j
 
 	def getNeighbors(self, i, r, GS, L):
-		r"""TODO.
+		r"""Get neighbours of glowworm.
 
 		Args:
-			i:
-			r:
-			GS:
-			L:
+			i (int): Index of glowworm.
+			r (float): Neighborhood distance.
+			GS (numpy.ndarray):
+			L (numpy.ndarray[float]): Luciferin value of glowworm.
 
 		Returns:
-
+			numpy.ndarray[int]: Indexes of neighborhood glowworms.
 		"""
 		N = full(self.n, 0)
 		for j, gw in enumerate(GS): N[j] = 1 if i != j and self.Distance(GS[i], gw) <= r and L[i] >= L[j] else 0

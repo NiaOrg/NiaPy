@@ -293,7 +293,7 @@ class FireworksAlgorithm(Algorithm):
 					* Ah (numpy.ndarray): Initialized amplitudes.
 
 		See Also:
-			:func:`NiaPy.algorithms.algorithm.Algorithm.initPopulation`
+			* :func:`NiaPy.algorithms.algorithm.Algorithm.initPopulation`
 		"""
 		FW, FW_f, d = Algorithm.initPopulation(self, task)
 		Ah = self.initAmplitude(task)
@@ -373,7 +373,7 @@ class EnhancedFireworksAlgorithm(FireworksAlgorithm):
 				* Afinal (Callable[[Union[int, float]], bool]): TODO
 
 		See Also:
-			:func:`FireworksAlgorithm.typeParameters`
+			* :func:`FireworksAlgorithm.typeParameters`
 		"""
 		d = FireworksAlgorithm.typeParameters()
 		d['Ainit'] = lambda x: isinstance(x, (float, int)) and x > 0
@@ -389,7 +389,7 @@ class EnhancedFireworksAlgorithm(FireworksAlgorithm):
 			**ukwargs (Dict[str, Any]): Additional arguments.
 
       See Also:
-      	:func:`FireworksAlgorithm.setParameters`
+      	* :func:`FireworksAlgorithm.setParameters`
 		"""
 		FireworksAlgorithm.setParameters(self, **ukwargs)
 		self.Ainit, self.Afinal = Ainit, Afinal
@@ -492,7 +492,7 @@ class EnhancedFireworksAlgorithm(FireworksAlgorithm):
 					* A_min (numpy.ndarray): Minimal amplitude values.
 
 		See Also:
-			:func:`FireworksAlgorithm.initPopulation`
+			* :func:`FireworksAlgorithm.initPopulation`
 		"""
 		FW, FW_f, d = FireworksAlgorithm.initPopulation(self, task)
 		Ainit, Afinal, A_min = self.initRanges(task)
@@ -572,7 +572,7 @@ class DynamicFireworksAlgorithmGauss(EnhancedFireworksAlgorithm):
 				* A_cr (Callable[[Union[float, int], bool]): TODo
 
 		See Also:
-			:func:`FireworksAlgorithm.typeParameters`
+			* :func:`FireworksAlgorithm.typeParameters`
 		"""
 		d = FireworksAlgorithm.typeParameters()
 		d['A_cf'] = lambda x: isinstance(x, (float, int)) and x > 0
@@ -592,7 +592,7 @@ class DynamicFireworksAlgorithmGauss(EnhancedFireworksAlgorithm):
 			**ukwargs (Dict[str, Any]): Additional arguments.
 
 		See Also:
-			:func:`FireworksAlgorithm.setParameters`
+			* :func:`FireworksAlgorithm.setParameters`
 		"""
 		FireworksAlgorithm.setParameters(self, **ukwargs)
 		self.A_cf, self.C_a, self.C_r, self.epsilon = A_cf, C_a, C_r, epsilon
@@ -764,7 +764,7 @@ class DynamicFireworksAlgorithm(DynamicFireworksAlgorithmGauss):
 		Name (List[str]): List of strings representing algorithm name.
 
 	See Also:
-		DynamicFireworksAlgorithmGauss
+		* :class:`NiaPy.algorithms.basic.DynamicFireworksAlgorithmGauss`
 	"""
 	Name = ['DynamicFireworksAlgorithm', 'dynFWA']
 

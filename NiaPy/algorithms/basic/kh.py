@@ -49,7 +49,7 @@ class KrillHerd(Algorithm):
 		epsilon (float): Small numbers for division.
 
 	See Also:
-		:class:`NiaPy.algorithms.algorithm.Algorithm`
+		* :class:`NiaPy.algorithms.algorithm.Algorithm`
 	"""
 	Name = ['KrillHerd', 'KH']
 
@@ -72,7 +72,7 @@ class KrillHerd(Algorithm):
 				* epsilon (Callable[[float], bool]): TODO
 
 		See Also:
-			:func:`NiaPy.algorithms.algorithm.Algorithm`
+			* :func:`NiaPy.algorithms.algorithm.Algorithm`
 		"""
 		d = Algorithm.typeParameters()
 		d.update({
@@ -108,7 +108,7 @@ class KrillHerd(Algorithm):
 			epsilon (Optional[float]): Small numbers for division.
 
 		See Also:
-			:func:`NiaPy.algorithms.algorithm.Algorithm.setParameters`
+			* :func:`NiaPy.algorithms.algorithm.Algorithm.setParameters`
 		"""
 		Algorithm.setParameters(self, NP=NP, **ukwargs)
 		self.N_max, self.V_f, self.D_max, self.C_t, self.W_n, self.W_f, self.d_s, self.nn, self._Cr, self._Mu, self.epsilon = N_max, V_f, D_max, C_t, W_n, W_f, d_s, nn, Cr, Mu, epsilon
@@ -207,7 +207,7 @@ class KrillHerd(Algorithm):
 					* F (numpy.ndarray): TODO
 
 		See Also:
-			:func:`NiaPy.algorithms.algorithm.Algorithm.initPopulation`
+			* :func:`NiaPy.algorithms.algorithm.Algorithm.initPopulation`
 		"""
 		KH, KH_f, d = Algorithm.initPopulation(self, task)
 		W_n, W_f = self.initWeights(task)
@@ -265,7 +265,7 @@ class KrillHerdV4(KrillHerd):
 				* TODO
 
 		See Also:
-			:func:NiaPy.algorithms.basic.kh.KrillHerd.typeParameters`
+			* :func:NiaPy.algorithms.basic.kh.KrillHerd.typeParameters`
 		"""
 		d = KrillHerd.typeParameters()
 		del d['Cr']
@@ -287,7 +287,7 @@ class KrillHerdV4(KrillHerd):
 			**ukwargs (Dict[str, Any]): Additional arguments.
 
       See Also:
-      	:func:NiaPy.algorithms.basic.kh.KrillHerd.KrillHerd.setParameters`
+      	* :func:NiaPy.algorithms.basic.kh.KrillHerd.KrillHerd.setParameters`
 		"""
 		KrillHerd.setParameters(self, NP, N_max, V_f, D_max, C_t, W_n, W_f, d_s, 4, 0.2, 0.05, 1e-31, **ukwargs)
 
@@ -316,7 +316,7 @@ class KrillHerdV1(KrillHerd):
 		Name (List[str]): List of strings representing algorithm name.
 
 	See Also:
-      	:func:NiaPy.algorithms.basic.kh.KrillHerd.KrillHerd`
+		* :func:NiaPy.algorithms.basic.kh.KrillHerd.KrillHerd`
 	"""
 	Name = ['KrillHerdV1', 'KHv1']
 
@@ -329,7 +329,7 @@ class KrillHerdV1(KrillHerd):
 				* TODO
 
 		See Also:
-			:func:NiaPy.algorithms.basic.kh.KrillHerd.typeParameters`
+			* :func:NiaPy.algorithms.basic.kh.KrillHerd.typeParameters`
 		"""
 		return KrillHerd.typeParameters()
 
@@ -394,7 +394,7 @@ class KrillHerdV2(KrillHerd):
 				* TODO
 
 		See Also:
-			:func:NiaPy.algorithms.basic.kh.KrillHerd.typeParameters`
+			* :func:NiaPy.algorithms.basic.kh.KrillHerd.typeParameters`
 		"""
 		d = KrillHerd.typeParameters()
 		del d['Mu']

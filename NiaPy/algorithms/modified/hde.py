@@ -258,11 +258,11 @@ class MultiStrategyDifferentialEvolutionMTS(DifferentialEvolutionMTS, MultiStrat
 		r"""TODO.
 
 		Args:
-			**ukwargs:
+			**ukwargs (Dict[str, Any]): Additional arguments.
 
       See Also:
-      	* :func:`NiaPy.algorithms.modified.hde.DifferentialEvolutionMTS.setParameters`
-      	* :func:`NiaPy.algorithms.basic.de.MultiStrategyDifferentialEvolution.setParameters`
+      	* :func:`NiaPy.algorithms.modified.DifferentialEvolutionMTS.setParameters`
+      	* :func:`NiaPy.algorithms.basic.MultiStrategyDifferentialEvolution.setParameters`
 		"""
 		DifferentialEvolutionMTS.setParameters(self, **ukwargs)
 		MultiStrategyDifferentialEvolution.setParameters(self, itype=MtsIndividual, **ukwargs)
@@ -286,7 +286,7 @@ class MultiStrategyDifferentialEvolutionMTSv1(MultiStrategyDifferentialEvolution
 		Name (List[str]): List of stings representing algorithm name.
 
 	See Also:
-		:class:`NiaPy.algorithms.modified.hde.MultiStrategyDifferentialEvolutionMTS`
+		* :class:`NiaPy.algorithms.modified.MultiStrategyDifferentialEvolutionMTS`
 	"""
 	Name = ['MultiStrategyDifferentialEvolutionMTSv1', 'MSDEMTSv1']
 
@@ -297,7 +297,7 @@ class MultiStrategyDifferentialEvolutionMTSv1(MultiStrategyDifferentialEvolution
 			**ukwargs (Dict[str, Any]): Additional arguments.
 
 		See Also:
-			:func:`NiaPy.algorithms.modified.hde.MultiStrategyDifferentialEvolutionMTS.setParameters`
+			* :func:`NiaPy.algorithms.modified.MultiStrategyDifferentialEvolutionMTS.setParameters`
 		"""
 		MultiStrategyDifferentialEvolutionMTS.setParameters(self, LSs=(MTS_LS1v1, MTS_LS2, MTS_LS3v1), **ukwargs)
 
@@ -320,8 +320,8 @@ class DynNpMultiStrategyDifferentialEvolutionMTS(MultiStrategyDifferentialEvolut
 		Name (List[str]): List of strings representing algorithm name
 
 	See Also:
-		* :class:`NiaPy.algorithms.modified.hde.MultiStrategyDifferentialEvolutionMTS`
-		* :class:`NiaPy.algorithms.modified.hde.DynNpDifferentialEvolutionMTS`
+		* :class:`NiaPy.algorithms.modified.MultiStrategyDifferentialEvolutionMTS`
+		* :class:`NiaPy.algorithms.modified.DynNpDifferentialEvolutionMTS`
 	"""
 	Name = ['DynNpMultiStrategyDifferentialEvolutionMTS', 'dynNpMSDEMTS']
 
@@ -332,8 +332,8 @@ class DynNpMultiStrategyDifferentialEvolutionMTS(MultiStrategyDifferentialEvolut
 			**ukwargs (Dict[str, Any]): Additional arguments.
 
       See Also:
-			* :func:`NiaPy.algorithms.modified.hde.MultiStrategyDifferentialEvolutionMTS.setParameters`
-			* :func:`NiaPy.algorithms.modified.hde.DynNpDifferentialEvolutionMTS.setParameters`
+			* :func:`NiaPy.algorithms.modified.MultiStrategyDifferentialEvolutionMTS.setParameters`
+			* :func:`NiaPy.algorithms.modified.DynNpDifferentialEvolutionMTS.setParameters`
 		"""
 		DynNpDifferentialEvolutionMTS.setParameters(self, **ukwargs)
 		MultiStrategyDifferentialEvolutionMTS.setParameters(self, **ukwargs)
@@ -357,7 +357,7 @@ class DynNpMultiStrategyDifferentialEvolutionMTSv1(DynNpMultiStrategyDifferentia
 		Name (List[str]): List of strings representing algorithm name.
 
 	See Also:
-		:class:`NiaPy.algorithm.modified.hde.DynNpMultiStrategyDifferentialEvolutionMTS`
+		* :class:`NiaPy.algorithm.modified.DynNpMultiStrategyDifferentialEvolutionMTS`
 	"""
 	Name = ['DynNpMultiStrategyDifferentialEvolutionMTSv1', 'dynNpMSDEMTSv1']
 
@@ -368,7 +368,7 @@ class DynNpMultiStrategyDifferentialEvolutionMTSv1(DynNpMultiStrategyDifferentia
 			**kwargs (Dict[str, Any]): Additional arguments.
 
       See Also:
-			:func:`NiaPy.algorithm.modified.hde.DynNpMultiStrategyDifferentialEvolutionMTS.setParameters`
+			* :func:`NiaPy.algorithm.modified.DynNpMultiStrategyDifferentialEvolutionMTS.setParameters`
 		"""
 		DynNpMultiStrategyDifferentialEvolutionMTS.setParameters(self, LSs=(MTS_LS1v1, MTS_LS2, MTS_LS3v1), **kwargs)
 

@@ -10,8 +10,8 @@ class HCTestCase(AlgorithmTestCase):
 		AlgorithmTestCase.algorithm_run_test(self, ihc_custom, ihc_customc, MyBenchmark())
 
 	def test_griewank_works_fine(self):
-		ihc_griewank = HillClimbAlgorithm(seed=self.seed)
-		ihc_griewankc = HillClimbAlgorithm(seed=self.seed)
+		ihc_griewank = HillClimbAlgorithm(delta=0.1, seed=self.seed)
+		ihc_griewankc = HillClimbAlgorithm(delta=0.1, seed=self.seed)
 		AlgorithmTestCase.algorithm_run_test(self, ihc_griewank, ihc_griewankc)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

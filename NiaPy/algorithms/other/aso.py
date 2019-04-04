@@ -181,7 +181,7 @@ class AnarchicSocietyOptimization(Algorithm):
 		Combination (Callable[numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray, float, float, float, float, float, float, Task, mtrand.RandomState]): Function for combining individuals to get new position/individual.
 
 	See Also:
-		:class:`NiaPy.algorithms.algorithm.Algorithm`
+		* :class:`NiaPy.algorithms.Algorithm`
 	"""
 	Name = ['AnarchicSocietyOptimization', 'ASO']
 
@@ -199,7 +199,7 @@ class AnarchicSocietyOptimization(Algorithm):
 				* CR (Callable[[Union[float, int]], bool]): TODO
 
 		See Also:
-			:func:`NiaPy.algorithms.algorithm.Algorithm.typeParameters`
+			* :func:`NiaPy.algorithms.Algorithm.typeParameters`
 		"""
 		d = Algorithm.typeParameters()
 		d.update({
@@ -212,7 +212,7 @@ class AnarchicSocietyOptimization(Algorithm):
 		})
 		return d
 
-	def setParameters(self, NP=43, alpha=[1, 0.83], gamma=[1.17, 0.56], theta=[0.932, 0.832], d=euclidean, dn=euclidean, nl=1, F=1.2, CR=0.25, Combination=Elitism, **ukwargs):
+	def setParameters(self, NP=43, alpha=(1, 0.83), gamma=(1.17, 0.56), theta=(0.932, 0.832), d=euclidean, dn=euclidean, nl=1, F=1.2, CR=0.25, Combination=Elitism, **ukwargs):
 		r"""Set the parameters for the algorith.
 
 		Arguments:
@@ -227,10 +227,11 @@ class AnarchicSocietyOptimization(Algorithm):
 			Combination (Optional[Callable[numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray, float, float, float, float, float, float, Task, mtrand.RandomState]]): Function for combining individuals to get new position/individual.
 
 		See Also:
-			* :func:`NiaPy.algorithms.algorithm.Algorithm.setParameters`
-			* :func:`NiaPy.algorithms.other.aso.Elitism'
-			* :func:`NiaPy.algorithms.other.aso.Crossover`
-			* :func:`NiaPy.algorithms.other.aso.Sequential`
+			* :func:`NiaPy.algorithms.Algorithm.setParameters`
+			* Combination methods:
+				* :func:`NiaPy.algorithms.other.Elitism'
+				* :func:`NiaPy.algorithms.other.Crossover`
+				* :func:`NiaPy.algorithms.other.Sequential`
 		"""
 		Algorithm.setParameters(self, NP=NP)
 		self.alpha, self.gamma, self.theta, self.d, self.dn, self.nl, self.F, self.CR, self.Combination = alpha, gamma, theta, d, dn, nl, F, CR, Combination

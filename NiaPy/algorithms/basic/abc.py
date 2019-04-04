@@ -23,7 +23,7 @@ class SolutionABC(Individual):
 		Klemen Berkovič
 
 	See Also:
-		:class:`NiaPy.algorithms.algorithm.Individual`
+		* :class:`NiaPy.algorithms.Individual`
 	"""
 	def __init__(self, **kargs):
 		r"""Initialize individual.
@@ -32,7 +32,7 @@ class SolutionABC(Individual):
 			kargs (Dict[str, Any]): Additional arguments.
 
 		See Also:
-			:func:`NiaPy.algorithms.algorithm.Individual.__init__`
+			* :func:`NiaPy.algorithms.Individual.__init__`
 		"""
 		Individual.__init__(self, **kargs)
 
@@ -59,7 +59,7 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 		Limit (Union[float, numpy.ndarray[float]]): Limt
 
 	See Also:
-		:class:`NiaPy.algorithms.algorithm.Algorithm`
+		* :class:`NiaPy.algorithms.Algorithm`
 	"""
 	Name = ['ArtificialBeeColonyAlgorithm', 'ABC']
 
@@ -72,7 +72,7 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 				* Limit (Callable[Union[float, numpy.ndarray[float]]]): TODO
 
 		See Also:
-			:func:`NiaPy.algorithms.algorithm.Algorithm.typeParameters`
+			* :func:`NiaPy.algorithms.Algorithm.typeParameters`
 		"""
 		d = Algorithm.typeParameters()
 		d.update({'Limit': lambda x: isinstance(x, int) and x > 0})
@@ -86,7 +86,7 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 			**ukwargs (Dict[str, Any]): Additional arguments
 
 		See Also:
-			:func:`NiaPy.algorithms.algorithm.Algorithm.setParameters`
+			* :func:`NiaPy.algorithms.Algorithm.setParameters`
 		"""
 		Algorithm.setParameters(self, NP=NP, InitPopFunc=defaultIndividualInit, itype=SolutionABC, **ukwargs)
 		self.FoodNumber, self.Limit = int(self.NP / 2), Limit
@@ -122,7 +122,7 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 					* Trial (numpy.ndarray): TODO
 
 		See Also:
-			:func:`NiaPy.algorithms.algorithm.Algorithm.initPopulation`
+			* :func:`NiaPy.algorithms.Algorithm.initPopulation`
 		"""
 		Foods, fpop, _ = Algorithm.initPopulation(self, task)
 		Probs, Trial = full(self.FoodNumber, 0.0), full(self.FoodNumber, 0.0)

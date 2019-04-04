@@ -32,9 +32,12 @@ class FireflyAlgorithm(Algorithm):
 
 	Attributes:
 		Name (List[str]): List of string representing algorithm name.
+		alpha (float): Alpha parameter.
+		betamin (float): Betamin parameter.
+		gamma (flaot): Gamma parameter.
 
 	See Also:
-		:class:`NiaPy.algorithms.algorithm.Algorithm`
+		* :class:`NiaPy.algorithms.Algorithm`
 	"""
 	Name = ['FireflyAlgorithm', 'FA']
 
@@ -49,7 +52,7 @@ class FireflyAlgorithm(Algorithm):
 				* gamma (Callable[[Union[float, int]], bool]): TODO.
 
 		See Also:
-			:func:`NiaPy.algorithms.algorithm.Algorithm.typeParameters`
+			* :func:`NiaPy.algorithms.Algorithm.typeParameters`
 		"""
 		d = Algorithm.typeParameters()
 		d.update({
@@ -63,14 +66,14 @@ class FireflyAlgorithm(Algorithm):
 		r"""Set the parameters of the algorithm.
 
 		Args:
-			NP (int): Populatoin size.
-			alpha (float): Alpha parameter.
-			betamin (float): Betamin parameter.
-			gamma (flaot): Gamma parameter.
+			NP (Optional[int]): Populatoin size.
+			alpha (Optional[float]): Alpha parameter.
+			betamin (Optional[float]): Betamin parameter.
+			gamma (Optional[flaot]): Gamma parameter.
 			ukwargs (Dict[str, Any]): Additional arguments.
 
 		See Also:
-			:func:`NiaPy.algorithms.algorithm.Algorithm.setParameters`
+			* :func:`NiaPy.algorithms.Algorithm.setParameters`
 		"""
 		Algorithm.setParameters(self, NP=NP)
 		self.alpha, self.betamin, self.gamma = alpha, betamin, gamma
@@ -129,7 +132,7 @@ class FireflyAlgorithm(Algorithm):
 					* alpah (float): TODO
 
 		See Also:
-			:func:`NiaPy.algorithms.algorithm.Algorithm.initPopulation`
+			* :func:`NiaPy.algorithms.Algorithm.initPopulation`
 		"""
 		Fireflies, Intensity, _ = Algorithm.initPopulation(self, task)
 		return Fireflies, Intensity, {'alpha': self.alpha}
@@ -154,7 +157,7 @@ class FireflyAlgorithm(Algorithm):
 					* alpha (float): TODO
 
 		See Also:
-			* :func:`NiaPy.algorithms.basic.fa.FireflyAlgorithm.move_ffa`
+			* :func:`NiaPy.algorithms.basic.FireflyAlgorithm.move_ffa`
 		"""
 		alpha = self.alpha_new(task.nFES / self.NP, alpha)
 		Index = argsort(Intensity)

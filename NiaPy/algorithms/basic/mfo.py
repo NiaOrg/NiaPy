@@ -34,7 +34,7 @@ class MothFlameOptimizer(Algorithm):
 		Name (List[str]): List of strings representing algorithm name.
 
 	See Also:
-		:class:`NiaPy.algorithms.algorithm.Algorithm`
+		* :class:`NiaPy.algorithms.algorithm.Algorithm`
 	"""
 	Name = ['MothFlameOptimizer', 'MFO']
 
@@ -46,7 +46,7 @@ class MothFlameOptimizer(Algorithm):
 			Dict[str, Callable]: TODO
 
 		See Also:
-			:func:`NiaPy.algorithms.algorithm.Algorithm.typeParameters`
+			* :func:`NiaPy.algorithms.algorithm.Algorithm.typeParameters`
 		"""
 		return Algorithm.typeParameters()
 
@@ -57,7 +57,7 @@ class MothFlameOptimizer(Algorithm):
 			NP (int): Number of individuals in population
 
 		See Also:
-			:func:`NiaPy.algorithms.algorithm.Algorithm.setParameters`
+			* :func:`NiaPy.algorithms.algorithm.Algorithm.setParameters`
 		"""
 		Algorithm.setParameters(self, NP=NP, **ukwargs)
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
@@ -79,7 +79,7 @@ class MothFlameOptimizer(Algorithm):
 					* previous_fitness (numpy.ndarray[float]): Previous population fitness/function values
 
 		See Also:
-			:func:`NiaPy.algorithms.algorithm.Algorithm.initPopulation`
+			* :func:`NiaPy.algorithms.algorithm.Algorithm.initPopulation`
 		"""
 		moth_pos, moth_fitness, d = Algorithm.initPopulation(self, task)
 		# Create best population

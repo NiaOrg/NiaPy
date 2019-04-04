@@ -15,7 +15,7 @@ class Fish(Individual):
 		has_improved (bool): If the fish has improved.
 
 	See Also:
-		 :class:`NiaPy.algorithms.algorithm.Individual`
+		* :class:`NiaPy.algorithms.algorithm.Individual`
 	"""
 	def __init__(self, weight, **kwargs):
 		r"""Initialize fish individual.
@@ -25,7 +25,7 @@ class Fish(Individual):
 			**kwargs (Dict[str, Any]): Additional arguments.
 
 		See Also:
-			:func:`NiaPy.algorithms.algorithm.Individual`
+			* :func:`NiaPy.algorithms.algorithm.Individual`
 		"""
 		Individual.__init__(self, **kwargs)
 		self.weight = weight
@@ -64,17 +64,14 @@ class FishSchoolSearch(Algorithm):
 		w_scale (float): Maximum weight of a fish.
 
 	See Also:
-		:class:`NiaPy.algorithms.algorithm.Algorithm`
+		* :class:`NiaPy.algorithms.algorithm.Algorithm`
 	"""
 	Name = ['FSS', 'FishSchoolSearch']
 
 	@staticmethod
 	def typeParameters():
 		# TODO
-		return {
-			'school_size': lambda x: False,
-			'SI_final': lambda x: False
-		}
+		return {'school_size': lambda x: False, 'SI_final': lambda x: False}
 
 	def setParameters(self, NP=25, SI_init=3, SI_final=10, SV_init=3, SV_final=13, min_w=0.3, w_scale=0.7, **ukwargs):
 		r"""Set core arguments of FishSchoolSearch algorithm.

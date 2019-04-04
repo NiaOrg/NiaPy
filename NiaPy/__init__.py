@@ -93,7 +93,7 @@ NiaPyAlgos += [
 	oalgos.HillClimbAlgorithm,
 	oalgos.SimulatedAnnealing,
 	oalgos.AnarchicSocietyOptimization,
-	oalgos.TabuSearch
+	# oalgos.TabuSearch
 ]
 
 class Runner:
@@ -209,19 +209,6 @@ class Runner:
 			if val != None and v(val): params[k] = val
 		return algorithm(**params)
 
-	def __algorithmFactory(self, aname, bname):
-		r"""TODO.
-
-		Args:
-			aname (str):
-			bname (str):
-
-		Returns:
-
-		"""
-		# FIXME
-		return self.algorithmFactory(aname).setTask(self.benchmarkFactory(bname))
-
 	@classmethod
 	def __createExportDir(cls):
 		r"""TODO."""
@@ -247,7 +234,7 @@ class Runner:
 		r"""TODO.
 
 		See Also:
-			:func:`Runner.__createExportDir`
+			* :func:`NiaPy.Runner.__createExportDir`
 		"""
 		self.__createExportDir()
 		with open(self.__generateExportName('json'), 'w') as outFile:
@@ -258,7 +245,7 @@ class Runner:
 		r"""TODO.
 
 		See Also:
-			:func:`Runner.__generateExportName`
+			:func:`NiaPy.Runner.__generateExportName`
 		"""
 		self.__createExportDir()
 		workbook = xlsxwriter.Workbook(self.__generateExportName('xlsx'))
@@ -279,8 +266,8 @@ class Runner:
 		r"""TODO.
 
 		See Also:
-			:func:`Runner.__createExportDir`
-			:func:`Runner.__generateExportName`
+			:func:`NiaPy.Runner.__createExportDir`
+			:func:`NiaPy.Runner.__generateExportName`
 		"""
 		self.__createExportDir()
 		metrics = ['Best', 'Median', 'Worst', 'Mean', 'Std.']
@@ -343,9 +330,9 @@ class Runner:
 			dict: Returns dictionary of results
 
 		See Also:
-			* :func:`Runner.useAlgorithms`
-			* :func:`Runner.useBenchmarks`
-			* :func:`Runner.__algorithmFactory`
+			* :func:`NiaPy.Runner.useAlgorithms`
+			* :func:`NiaPy.Runner.useBenchmarks`
+			* :func:`NiaPy.Runner.__algorithmFactory`
 		"""
 		for alg in self.useAlgorithms:
 			self.results[alg] = {}
@@ -355,10 +342,11 @@ class Runner:
 				if not isinstance(bench, ''.__class__): benchName = str(type(bench).__name__)
 				else: benchName = bench
 				if verbose: logger.info('Running %s algorithm on %s benchmark...', alg, benchName)
+				bm = self.benchmarkFactory(bench)
 				self.results[alg][benchName] = []
 				for _ in range(self.nGEN):
-					algorithm = self.__algorithmFactory(alg, bench)
-					self.results[alg][benchName].append(algorithm.run())
+					algorithm = self.algorithmFactory(alg)
+					self.results[alg][benchName].append(algorithm.run(bm))
 			if verbose: logger.info('---------------------------------------------------')
 		if export == 'log': self.__exportToLog()
 		elif export == 'json': self.__exportToJson()

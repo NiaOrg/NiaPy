@@ -10,18 +10,53 @@ logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.basic')
 logger.setLevel('INFO')
 
-__all__ = ['GeneticAlgorithm', 'TurnamentSelection', 'RouletteSelection', 'TwoPointCrossover', 'MultiPointCrossover', 'UniformCrossover', 'UniformMutation', 'CreepMutation', 'CrossoverUros', 'MutationUros']
+__all__ = ['GeneticAlgorithm', 'TournamentSelection', 'RouletteSelection', 'TwoPointCrossover', 'MultiPointCrossover', 'UniformCrossover', 'UniformMutation', 'CreepMutation', 'CrossoverUros', 'MutationUros']
 
-def TurnamentSelection(pop, ic, ts, x_b, rnd=rand):
+def TournamentSelection(pop, ic, ts, x_b, rnd=rand):
+	r"""Tournament selection method.
+
+	Args:
+		pop (numpy.ndarray[Individual]): Current population.
+		ic (int): Index of current individual in population.
+		ts (int): Tournament size.
+		x_b (Individual): Global best individual.
+		rnd (mtrand.RandomState): Random generator.
+
+	Returns:
+		Individual: Winner of the tournament.
+	"""
 	comps = [pop[i] for i in rand.choice(len(pop), ts, replace=False)]
 	return comps[argmin([c.f for c in comps])]
 
 def RouletteSelection(pop, ic, ts, x_b, rnd=rand):
+	r"""Roulette selection method.
+
+	Args:
+		pop (numpy.ndarray[Individual]): Current population.
+		ic (int): Index of current individual in population.
+		ts (int): Unused argument.
+		x_b (Individual): Global best individual.
+		rnd (mtrand.RandomState): Random generator.
+
+	Returns:
+		Individual: selected individual.
+	"""
 	f = sum([x.f for x in pop])
 	qi = sum([pop[i].f / f for i in range(ic + 1)])
 	return pop[ic].x if rnd.rand() < qi else x_b.x
 
 def TwoPointCrossover(pop, ic, cr, rnd=rand):
+	r"""Two point crossover method.
+
+	Args:
+		pop (numpy.ndarray[Individual]): Current population.
+		ic (int): Index of current individual.
+		cr (float): Crossover probability.
+		rnd (mtrand.RandomState): Random generator.
+
+	Returns:
+		numpy.ndarray: New genotype.
+	"""
 	io = ic
 	while io != ic: io = rnd.randint(len(pop))
 	r = sort(rnd.choice(len(pop[ic]), 2))
@@ -30,6 +65,17 @@ def TwoPointCrossover(pop, ic, cr, rnd=rand):
 	return asarray(x)
 
 def MultiPointCrossover(pop, ic, n, rnd=rand):
+	r"""Multi point crossover method.
+
+	Args:
+		pop (numpy.ndarray[Individual]): Current population.
+		ic (int): Index of current individual.
+		n (flat): TODO.
+		rnd (mtrand.RandomState): Random generator.
+
+	Returns:
+		numpy.ndarray: New genotype.
+	"""
 	io = ic
 	while io != ic: io = rnd.randint(len(pop))
 	r, x = sort(rnd.choice(len(pop[ic]), 2 * n)), pop[ic].x
@@ -37,6 +83,17 @@ def MultiPointCrossover(pop, ic, n, rnd=rand):
 	return asarray(x)
 
 def UniformCrossover(pop, ic, cr, rnd=rand):
+	r"""Uniform crossover method.
+
+	Args:
+		pop (numpy.ndarray[Individual]): Current population.
+		ic (int): Index of current individual.
+		cr (float): Crossover probability.
+		rnd (mtrand.RandomState): Random generator.
+
+	Returns:
+		numpy.ndarray: New genotype.
+	"""
 	io = ic
 	while io != ic: io = rnd.randint(len(pop))
 	j = rnd.randint(len(pop[ic]))
@@ -44,6 +101,17 @@ def UniformCrossover(pop, ic, cr, rnd=rand):
 	return asarray(x)
 
 def CrossoverUros(pop, ic, cr, rnd=rand):
+	r"""Crossover made by Uros Mlakar.
+
+	Args:
+		pop (numpy.ndarray[Individual]): Current population.
+		ic (int): Index of current individual.
+		cr (float): Crossover probability.
+		rnd (mtrand.RandomState): Random generator.
+
+	Returns:
+		numpy.ndarray: New genotype.
+	"""
 	io = ic
 	while io != ic: io = rnd.randint(len(pop))
 	alpha = cr + (1 + 2 * cr) * rnd.rand(len(pop[ic]))
@@ -51,14 +119,50 @@ def CrossoverUros(pop, ic, cr, rnd=rand):
 	return x
 
 def UniformMutation(pop, ic, mr, task, rnd=rand):
+	r"""Uniform mutation method.
+
+	Args:
+		pop (numpy.ndarray[Individual]): Current population.
+		ic (int): Index of current individual.
+		mr (float): Mutation probability.
+		task (Task): Optimization task.
+		rnd (mtrand.RandomState): Random generator.
+
+	Returns:
+		numpy.ndarray: New genotype.
+	"""
 	j = rnd.randint(task.D)
 	nx = [rnd.uniform(task.Lower[i], task.Upper[i]) if rnd.rand() < mr or i == j else pop[ic][i] for i in range(task.D)]
 	return asarray(nx)
 
 def MutationUros(pop, ic, mr, task, rnd=rand):
+	r"""Mutation method made by Uros Mlakar.
+
+	Args:
+		pop (numpy.ndarray[Individual]): Current population.
+		ic (int): Index of individual.
+		mr (float): Mutation rate.
+		task (Task): Optimization task.
+		rnd (mtrand.RandomState): Random generator.
+
+	Returns:
+		numpy.ndarray: New genotype.
+	"""
 	return fmin(fmax(rnd.normal(pop[ic], mr * task.bRange), task.Lower), task.Upper)
 
 def CreepMutation(pop, ic, mr, task, rnd=rand):
+	r"""Creep mutation method.
+
+	Args:
+		pop (numpy.ndarray[Individual]): Current population.
+		ic (int): Index of current individual.
+		mr (float): Mutation probability.
+		task (Task): Optimization task.
+		rnd (mtrand.RandomState): Random generator.
+
+	Returns:
+		numpy.ndarray: New genotype.
+	"""
 	ic, j = rnd.randint(len(pop)), rnd.randint(task.D)
 	nx = [rnd.uniform(task.Lower[i], task.Upper[i]) if rnd.rand() < mr or i == j else pop[ic][i] for i in range(task.D)]
 	return asarray(nx)
@@ -88,12 +192,23 @@ class GeneticAlgorithm(Algorithm):
 		Mutation (Callable[[numpy.ndarray[Individual], int, float, Task, mtrand.RandomState], Individual]): Mutation operator.
 
 	See Also:
-		:class:`NiaPy.algorithms.algorithm.Algorithm`
+		* :class:`NiaPy.algorithms.Algorithm`
 	"""
 	Name = ['GeneticAlgorithm', 'GA']
 
 	@staticmethod
 	def typeParameters():
+		r"""TODO.
+
+		Returns:
+			Dict[str, Callable]:
+				* Ts (Callable[[int], bool]): TODO
+				* Mr (Callable[[float], bool]): Probability of mutation.
+				* Cr (Callable[[float], bool]): Probability of crossover.
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.typeParameters`
+		"""
 		d = Algorithm.typeParameters()
 		d.update({
 			'Ts': lambda x: isinstance(x, int) and x > 1,
@@ -102,7 +217,7 @@ class GeneticAlgorithm(Algorithm):
 		})
 		return d
 
-	def setParameters(self, NP=25, Ts=5, Mr=0.25, Cr=0.25, Selection=TurnamentSelection, Crossover=UniformCrossover, Mutation=UniformMutation, **ukwargs):
+	def setParameters(self, NP=25, Ts=5, Mr=0.25, Cr=0.25, Selection=TournamentSelection, Crossover=UniformCrossover, Mutation=UniformMutation, **ukwargs):
 		r"""Set the parameters of the algorithm.
 
 		Arguments:
@@ -115,7 +230,19 @@ class GeneticAlgorithm(Algorithm):
 			Mutation (Optional[Callable[[numpy.ndarray[Individual], int, float, Task, mtrand.RandomState], Individual]]): Mutation operator.
 
 		See Also:
-			:func:`NiaPy.algorithms.algorithm.Algorithm.setParameters`
+			* :func:`NiaPy.algorithms.Algorithm.setParameters`
+			* Selection:
+				* :func:`NiaPy.algorithms.basic.TournamentSelection`
+				* :func:`NiaPy.algorithms.basic.RouletteSelection`
+			* Crossover:
+				* :func:`NiaPy.algorithms.basic.UniformCrossover`
+				* :func:`NiaPy.algorithms.basic.TwoPointCrossover`
+				* :func:`NiaPy.algorithms.basic.MultiPointCrossover`
+				* :func:`NiaPy.algorithms.basic.CrossoverUros`
+			* Mutations:
+				* :func:`NiaPy.algorithms.basic.UniformMutation`
+				* :func:`NiaPy.algorithms.basic.CreepMutation`
+				* :func:`NiaPy.algorithms.basic.MutationUros`
 		"""
 		Algorithm.setParameters(self, NP=NP, itype=Individual, InitPopFunc=defaultIndividualInit)
 		self.Ts, self.Mr, self.Cr = Ts, Mr, Cr

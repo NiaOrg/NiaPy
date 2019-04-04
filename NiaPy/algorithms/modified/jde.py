@@ -51,7 +51,7 @@ class SelfAdaptiveDifferentialEvolution(DifferentialEvolution):
 		Tao2 (float): Change rate for CR parameter update.
 
 	See Also:
-		:class:`NiaPy.algorithms.basic.de.DifferentialEvolution`
+		* :class:`NiaPy.algorithms.basic.DifferentialEvolution`
 	"""
 	Name = ['SelfAdaptiveDifferentialEvolution', 'jDE']
 
@@ -67,7 +67,7 @@ class SelfAdaptiveDifferentialEvolution(DifferentialEvolution):
 				* Tao2 (Callable[[Union[float, int]], bool]): TODO
 
 		See Also:
-			:func:`NiaPy.algorithms.basic.de.DifferentialEvolution.typeParameters`
+			* :func:`NiaPy.algorithms.basic.DifferentialEvolution.typeParameters`
 		"""
 		d = DifferentialEvolution.typeParameters()
 		d['F_l'] = lambda x: isinstance(x, (float, int)) and x > 0
@@ -86,7 +86,7 @@ class SelfAdaptiveDifferentialEvolution(DifferentialEvolution):
 			Tao2 (Optional[float]): Change rate for CR parameter update.
 
 		See Also:
-			:func:`NiaPy.algorithms.basic.de.DifferentialEvolution.setParameters`
+			* :func:`NiaPy.algorithms.basic.DifferentialEvolution.setParameters`
 		"""
 		DifferentialEvolution.setParameters(self, itype=ukwargs.pop('itype', SolutionjDE), **ukwargs)
 		self.F_l, self.F_u, self.Tao1, self.Tao2 = F_l, F_u, Tao1, Tao2
@@ -127,16 +127,16 @@ class AgingIndividualJDE(SolutionjDE):
 		age (int): Age of individual.
 
 	See Also:
-			:func:`NiaPy.algorithms.modified.jde.SolutionjDE`
+		* :func:`NiaPy.algorithms.modified.SolutionjDE`
 	"""
 	def __init__(self, **kwargs):
-		r"""
+		r"""Initialize aging individual for jDE algorithm.
 
 		Args:
 			**kwargs (Dict[str, Any]): Additional arguments.
 
 		See Also:
-			:func:`NiaPy.algorithms.modified.jde.SolutionjDE.__init__`
+			* :func:`NiaPy.algorithms.modified.SolutionjDE.__init__`
 		"""
 		SolutionjDE.__init__(self, **kwargs)
 		self.age = 0
@@ -174,7 +174,7 @@ class AgingSelfAdaptiveDifferentialEvolution(SelfAdaptiveDifferentialEvolution):
 		return d
 
 	def setParameters(self, LT_min=1, LT_max=7, age=proportional, **ukwargs):
-		r"""
+		r"""Set core parameters of AgingSelfAdaptiveDifferentialEvolution algorithm.
 
 		Args:
 			LT_min (Optional[int]): Minimum age.
@@ -183,7 +183,7 @@ class AgingSelfAdaptiveDifferentialEvolution(SelfAdaptiveDifferentialEvolution):
 			**ukwargs (Dict[str, Any]): Additional arguments.
 
       See Also:
-			:func:`SelfAdaptiveDifferentialEvolution.setParameters`
+      	* :func:`SelfAdaptiveDifferentialEvolution.setParameters`
 		"""
 		SelfAdaptiveDifferentialEvolution.setParameters(self, **ukwargs)
 		self.LT_min, self.LT_max, self.age = LT_min, LT_max, age
@@ -233,7 +233,7 @@ class DynNpSelfAdaptiveDifferentialEvolutionAlgorithm(SelfAdaptiveDifferentialEv
 			pmax (Optional[int]): Number of population reductions.
 
 		See Also:
-			:func:`NiaPy.algorithms.modified.jde.SelfAdaptiveDifferentialEvolution.setParameters`
+			* :func:`NiaPy.algorithms.modified.SelfAdaptiveDifferentialEvolution.setParameters`
 		"""
 		SelfAdaptiveDifferentialEvolution.setParameters(self, **ukwargs)
 		self.rp, self.pmax = rp, pmax
@@ -269,19 +269,19 @@ class MultiStrategySelfAdaptiveDifferentialEvolution(SelfAdaptiveDifferentialEvo
 		MIT
 
 	Attributes:
-		Name (list of str): List of strings representing algorithm name
+		Name (List[str]): List of strings representing algorithm name
 	"""
 	Name = ['MultiStrategySelfAdaptiveDifferentialEvolution', 'MsjDE']
 
-	def setParameters(self, strategies=[CrossCurr2Rand1, CrossCurr2Best1, CrossRand1, CrossBest1, CrossBest2], **kwargs):
-		r"""
+	def setParameters(self, strategies=(CrossCurr2Rand1, CrossCurr2Best1, CrossRand1, CrossBest1, CrossBest2), **kwargs):
+		r"""Set core parameters of MultiStrategySelfAdaptiveDifferentialEvolution algorithm.
 
 		Args:
-			strategys:
+			strategys (Optional[Iterable[Callable]]): Mutations strategies to use in algorithm.
 			**kwargs:
 
       See Also:
-			:func:`SelfAdaptiveDifferentialEvolution.setParameters`
+      	* :func:`NiaPy.algorithms.modified.SelfAdaptiveDifferentialEvolution.setParameters`
 		"""
 		SelfAdaptiveDifferentialEvolution.setParameters(self, CrossMutt=multiMutations, **kwargs)
 		self.strategies = strategies
@@ -330,7 +330,7 @@ class DynNpMultiStrategySelfAdaptiveDifferentialEvolution(MultiStrategySelfAdapt
 			**kwargs (Dict[str, Any]):
 
       See Also:
-			:func:`MultiStrategySelfAdaptiveDifferentialEvolution.setParameters`
+      	* :func:`NiaPy.algorithms.modified.MultiStrategySelfAdaptiveDifferentialEvolution.setParameters`
 		"""
 		MultiStrategySelfAdaptiveDifferentialEvolution.setParameters(self, **kwargs)
 		self.pmax, self.rp = pmax, rp

@@ -14,7 +14,7 @@ class FesException(Exception):
 		MIT
 
 	See Also:
-		:class:`Exception`
+		* :class:`Exception`
 	"""
 	def __init__(self, message='Reached the allowed number of the function evaluations!!!'):
 		r"""Initialize the exception.
@@ -37,7 +37,7 @@ class GenException(Exception):
 		MIT
 
 	See Also:
-		:class:`Exception`
+		* :class:`Exception`
 	"""
 	def __init__(self, message='Reached the allowd number of the algorithm evaluations!!!'):
 		r"""Initialize the exception.
@@ -60,7 +60,7 @@ class TimeException(Exception):
 		MIT
 
 	See Also:
-		:class:`Exception`
+		* :class:`Exception`
 	"""
 	def __init__(self, message='Reached the allowd run time of the algorithm'):
 		r"""Initialize the exception.
@@ -83,7 +83,7 @@ class RefException(Exception):
 		MIT
 
 	See Also:
-		:class:`Exception`
+		* :class:`Exception`
 	"""
 	def __init__(self, message='Reached the reference point!!!'):
 		r"""Initialize the exception.
