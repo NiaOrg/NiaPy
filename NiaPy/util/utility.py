@@ -48,7 +48,7 @@ def fullArray(a, D):
 	"""
 	A = []
 	if isinstance(a, (int, float)):	A = full(D, a)
-	elif isinstance(a, (ndarray, list)):
+	elif isinstance(a, (ndarray, list, tuple)):
 		if len(a) == D: A = a if isinstance(a, ndarray) else asarray(a)
 		elif len(a) > D: A = a[:D] if isinstance(a, ndarray) else asarray(a[:D])
 		else:

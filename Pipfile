@@ -32,7 +32,8 @@ Sphinx = ">=1.8.5"
 
 [dev-packages]
 #pylint = [{version = "==1.9.3", markers = "python_version < '3.4'"}, {version = ">=2.3.0", markers = "python_version >= '3.4'"}]
-pylint = ">=2.3.0"
+pylint = ">=1.9.3"
+#pylint = ">=2.3.0"
 pycodestyle = "*"
 pydocstyle = "*"
 pytest = "~=3.3"
