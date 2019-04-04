@@ -203,7 +203,7 @@ class Algorithm:
 		ib = argmin(X_f)
 		if isinstance(X_f, (float, int)) and xb_f >= X_f: return X, X_f
 		elif isinstance(X_f, (ndarray, list)) and xb_f >= X_f[ib]: return X[ib], X_f[ib]
-		else: return xb, xb_f
+		else: return xb.copy(), xb_f
 
 	def initPopulation(self, task):
 		r"""Initialize starting population of optimization algorithm.
@@ -384,7 +384,7 @@ class Individual:
 		Returns:
 			Individual: Copy of self.
 		"""
-		return Individual(x=self.x, f=self.f, e=False)
+		return Individual(x=self.x.copy(), f=self.f, e=False)
 
 	def __eq__(self, other):
 		r"""Compare the individuals for equalities.
