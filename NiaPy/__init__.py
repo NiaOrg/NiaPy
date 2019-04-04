@@ -66,7 +66,7 @@ NiaPyAlgos = [
 	balgos.FishSchoolSearch,
 	balgos.MothFlameOptimizer,
 	balgos.CuckooSearch,
-	balgos.CovarianceMaatrixAdaptionEvolutionStrategy,
+	balgos.CovarianceMatrixAdaptionEvolutionStrategy,
 	balgos.CoralReefsOptimization,
 	balgos.ForestOptimizationAlgorithm
 ]

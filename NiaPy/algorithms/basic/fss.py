@@ -1,8 +1,10 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, arguments-differ, line-too-long, unused-argument, no-self-use
+# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, arguments-differ, line-too-long, unused-argument, no-self-use, redefined-builtin
 import copy
-import numpy as np
 
+from numpy import nan, asarray, zeros, float, full
+
+from NiaPy.util.utility import objects2array
 from NiaPy.algorithms.algorithm import Algorithm, Individual
 
 class Fish(Individual):
@@ -29,8 +31,8 @@ class Fish(Individual):
 		"""
 		Individual.__init__(self, **kwargs)
 		self.weight = weight
-		self.delta_pos = np.nan
-		self.delta_cost = np.nan
+		self.delta_pos = nan
+		self.delta_cost = nan
 		self.has_improved = False
 
 class FishSchoolSearch(Algorithm):
@@ -55,7 +57,6 @@ class FishSchoolSearch(Algorithm):
 
 	Attributes:
 		Name (List[str]): List of strings representing algorithm name.
-		school_size (int): Number of fishes in school.
 		SI_init (int): Length of initial individual step.
 		SI_final (int): Length of final individual step.
 		SV_init (int): Length of initial volatile step.
@@ -77,7 +78,7 @@ class FishSchoolSearch(Algorithm):
 		r"""Set core arguments of FishSchoolSearch algorithm.
 
 		Arguments:
-			school_size (Optional[int]): Number of fishes in school.
+			NP (Optional[int]): Number of fishes in school.
 			SI_init (Optional[int]): Length of initial individual step.
 			SI_final (Optional[int]): Length of final individual step.
 			SV_init (Optional[int]): Length of initial volatile step.
@@ -85,10 +86,10 @@ class FishSchoolSearch(Algorithm):
 			min_w (Optional[float]): Minimum weight of a fish.
 			w_scale (Optional[float]): Maximum weight of a fish.
 
-		Raises:
-			TypeError: Raised when given benchmark function which does not exists.
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.setParameters`
 		"""
-		self.school_size = NP
+		Algorithm.setParameters(self, NP=NP)
 		self.step_individual_init = SI_init
 		self.step_individual_final = SI_final
 		self.step_volitive_init = SV_init
@@ -105,8 +106,8 @@ class FishSchoolSearch(Algorithm):
 		Returns:
 			numpy.ndarray: Array with uniform distribution.
 		"""
-		x = np.zeros((self.school_size, task.D))
-		for i in range(self.school_size): x[i] = self.uniform(task.Lower[i], task.Upper[i], task.D)
+		x = zeros((self.NP, task.D))
+		for i in range(self.NP): x[i] = self.uniform(task.Lower[i], task.Upper[i], task.D)
 		return x
 
 	def gen_weight(self):
@@ -125,18 +126,16 @@ class FishSchoolSearch(Algorithm):
 		"""Initialize fish school with uniform distribution."""
 		curr_step_individual = self.step_individual_init * (task.Upper - task.Lower)
 		curr_step_volitive = self.step_volitive_init * (task.Upper - task.Lower)
-		best_fish = None
 		curr_weight_school = 0.0
 		prev_weight_school = 0.0
 		school = []
 		positions = self.generate_uniform_coordinates(task)
-		for idx in range(self.school_size):
+		for idx in range(self.NP):
 			fish = self.init_fish(positions[idx], task)
 			school.append(fish)
 			curr_weight_school += fish.weight
 		prev_weight_school = curr_weight_school
-		best_fish = self.update_best_fish(school, best_fish)
-		return curr_step_individual, curr_step_volitive, best_fish, curr_weight_school, prev_weight_school, school
+		return curr_step_individual, curr_step_volitive, curr_weight_school, prev_weight_school, objects2array(school)
 
 	def max_delta_cost(self, school):
 		"""Find maximum delta cost - return 0 if none of the fishes moved."""
@@ -153,7 +152,7 @@ class FishSchoolSearch(Algorithm):
 
 	def calculate_barycenter(self, school, task):
 		"""Calculate barycenter of fish school."""
-		barycenter = np.zeros((task.D,), dtype=np.float)
+		barycenter = zeros((task.D,), dtype=float)
 		density = 0.0
 		for fish in school:
 			density += fish.weight
@@ -163,8 +162,8 @@ class FishSchoolSearch(Algorithm):
 
 	def update_steps(self, task):
 		"""Update step length for individual and volatile steps."""
-		curr_step_individual = np.full(task.D, self.step_individual_init - task.Iters * float(self.step_individual_init - self.step_individual_final) / task.nGEN)
-		curr_step_volitive = np.full(task.D, self.step_volitive_init - task.Iters * float(self.step_volitive_init - self.step_volitive_final) / task.nGEN)
+		curr_step_individual = full(task.D, self.step_individual_init - task.Iters * float(self.step_individual_init - self.step_individual_final) / task.nGEN)
+		curr_step_volitive = full(task.D, self.step_volitive_init - task.Iters * float(self.step_volitive_init - self.step_volitive_final) / task.nGEN)
 		return curr_step_individual, curr_step_volitive
 
 	def update_best_fish(self, school, best_fish):
@@ -175,7 +174,14 @@ class FishSchoolSearch(Algorithm):
 		return best_fish
 
 	def feeding(self, school):
-		"""Feed all fishes."""
+		r"""Feed all fishes.
+
+		Args:
+			school (numpy.ndarray[Fish]): Current school fish population.
+
+		Returns:
+			numpy.ndarray[Fish]: New school fish population.
+		"""
 		for fish in school:
 			if self.max_delta_cost(school): fish.weight = fish.weight + (fish.delta_cost / self.max_delta_cost(school))
 			if fish.weight > self.w_scale: fish.weight = self.w_scale
@@ -183,42 +189,38 @@ class FishSchoolSearch(Algorithm):
 		return school
 
 	def individual_movement(self, school, curr_step_individual, task):
-		"""Perform individual movement for each fish."""
+		r"""Perform individual movement for each fish.
+
+		Args:
+			school (numpy.ndarray): School fish population.
+			curr_step_individual (numpy.ndarray[float]): TODO
+			task (Task): Optimization task.
+
+		Returns:
+			numpy.ndarray[Fish]: New school of fishes.
+		"""
 		for fish in school:
-			new_pos = np.zeros((task.D,), dtype=np.float)
-			for dim in range(task.D):
-				new_pos[dim] = fish.x[dim] + (curr_step_individual[dim] * self.uniform(-1, 1))
-				if new_pos[dim] < task.Lower[dim]: new_pos[dim] = task.Lower[dim]
-				elif new_pos[dim] > task.Upper[dim]: new_pos[dim] = task.Upper[dim]
+			new_pos = task.repair(fish.x + (curr_step_individual * self.uniform(-1, 1, task.D)), rnd=self.Rand)
 			cost = task.eval(new_pos)
 			if cost < fish.f:
 				fish.delta_cost = abs(cost - fish.f)
-				fish.cost = cost
-				delta_pos = np.zeros((task.D,), dtype=np.float)
+				fish.f = cost
+				delta_pos = zeros((task.D,), dtype=float)
 				for idx in range(task.D): delta_pos[idx] = new_pos[idx] - fish.x[idx]
 				fish.delta_pos = delta_pos
 				fish.x = new_pos
 			else:
-				fish.delta_pos = np.zeros((task.D,), dtype=np.float)
+				fish.delta_pos = zeros((task.D,), dtype=float)
 				fish.delta_cost = 0
 		return school
 
 	def collective_instinctive_movement(self, school, task):
 		"""Perform collective instictive movement."""
-		cost_eval_enhanced = np.zeros((task.D,), dtype=np.float)
-		density = 0.0
-		for fish in school:
-			density += fish.delta_cost
-			for dim in range(task.D): cost_eval_enhanced[dim] += (fish.delta_pos[dim] * fish.delta_cost)
-		for dim in range(task.D):
-			if density != 0: cost_eval_enhanced[dim] = cost_eval_enhanced[dim] / density
-		for fish in school:
-			new_pos = np.zeros((task.D,), dtype=np.float)
-			for dim in range(task.D):
-				new_pos[dim] = fish.x[dim] + cost_eval_enhanced[dim]
-				if new_pos[dim] < task.Lower[dim]: new_pos[dim] = task.Lower[dim]
-				elif new_pos[dim] > task.Upper[dim]: new_pos[dim] = task.Upper[dim]
-			fish.x = new_pos
+		cost_eval_enhanced = zeros((task.D,), dtype=float)
+		density = sum([f.delta_cost for f in school])
+		for fish in school: cost_eval_enhanced += (fish.delta_pos * fish.delta_cost)
+		if density != 0: cost_eval_enhanced = cost_eval_enhanced / density
+		for fish in school: fish.x = task.repair(fish.x + cost_eval_enhanced, rnd=self.Rand)
 		return school
 
 	def collective_volitive_movement(self, school, curr_step_volitive, prev_weight_school, curr_weight_school, task):
@@ -226,30 +228,21 @@ class FishSchoolSearch(Algorithm):
 		prev_weight_school, curr_weight_school = self.total_school_weight(school=school, prev_weight_school=prev_weight_school, curr_weight_school=curr_weight_school)
 		barycenter = self.calculate_barycenter(school, task)
 		for fish in school:
-			new_pos = np.zeros((task.D,), dtype=np.float)
-			for dim in range(task.D):
-				if curr_weight_school > prev_weight_school:
-					new_pos[dim] = fish.x[dim] - ((fish.x[dim] - barycenter[dim]) * curr_step_volitive * self.uniform(0, 1))
-				else:
-					new_pos[dim] = fish.x[dim] + ((fish.x[dim] - barycenter[dim]) * curr_step_volitive[dim] * self.uniform(0, 1))
-				if new_pos[dim] < task.Lower[dim]:
-					new_pos[dim] = task.Lower[dim]
-				elif new_pos[dim] > task.Upper[dim]:
-					new_pos[dim] = task.Upper[dim]
-			cost = task.eval(new_pos)
-			fish.cost = cost
-			fish.x = new_pos
+			if curr_weight_school > prev_weight_school: fish.x -= (fish.x - barycenter) * curr_step_volitive * self.uniform(0, 1, task.D)
+			else: fish.x += (fish.x - barycenter) * curr_step_volitive * self.uniform(0, 1, task.D)
+			fish.evaluate(task, rnd=self.Rand)
 		return school
 
-	def runTask(self, task):
-		"""Run the algorithm."""
-		curr_step_individual, curr_step_volitive, best_fish, curr_weight_school, prev_weight_school, school = self.init_school(task)
-		while not task.stopCondI():
-			school = self.individual_movement(school, curr_step_individual, task)
-			best_fish = self.update_best_fish(school, best_fish)
-			school = self.feeding(school)
-			school = self.collective_instinctive_movement(school, task)
-			school = self.collective_volitive_movement(school=school, curr_step_volitive=curr_step_volitive, prev_weight_school=prev_weight_school, curr_weight_school=curr_weight_school, task=task)
-			curr_step_individual, curr_step_volitive = self.update_steps(task)
-			best_fish = self.update_best_fish(school, best_fish)
-		return (best_fish.x, best_fish.f)
+	def initPopulation(self, task):
+		curr_step_individual, curr_step_volitive, curr_weight_school, prev_weight_school, school = self.init_school(task)
+		return school, asarray([f.f for f in school]), {'curr_step_individual': curr_step_individual, 'curr_step_volitive': curr_step_volitive, 'curr_weight_school': curr_weight_school, 'prev_weight_school': prev_weight_school}
+
+	def runIteration(self, task, school, fschool, best_fish, fxb, curr_step_individual, curr_step_volitive, curr_weight_school, prev_weight_school, **dparams):
+		school = self.individual_movement(school, curr_step_individual, task)
+		school = self.feeding(school)
+		school = self.collective_instinctive_movement(school, task)
+		school = self.collective_volitive_movement(school=school, curr_step_volitive=curr_step_volitive, prev_weight_school=prev_weight_school, curr_weight_school=curr_weight_school, task=task)
+		curr_step_individual, curr_step_volitive = self.update_steps(task)
+		return school, asarray([f.f for f in school]), {'curr_step_individual': curr_step_individual, 'curr_step_volitive': curr_step_volitive, 'curr_weight_school': curr_weight_school, 'prev_weight_school': prev_weight_school}
+
+# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

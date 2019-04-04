@@ -1,4 +1,4 @@
-# pylint: disable=old-style-class, line-too-long
+# pylint: disable=line-too-long
 from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
 from NiaPy.algorithms.basic import ForestOptimizationAlgorithm
 
@@ -33,11 +33,11 @@ class FOATestCase(AlgorithmTestCase):
         self.assertFalse(tp['tr'](1.1))
 
     def test_works_fine(self):
-        foa = ForestOptimizationAlgorithm(D=self.D, NP=20, nFES=self.nFES, nGEN=self.nGEN, lt=5, lsc=1, gsc=1, al=20, tr=0.35, benchmark=MyBenchmark(), seed=self.seed)
-        foac = ForestOptimizationAlgorithm(D=self.D, NP=20, nFES=self.nFES, nGEN=self.nGEN, lt=5, lsc=1, gsc=1, al=20, tr=0.35, benchmark=MyBenchmark(), seed=self.seed)
-        AlgorithmTestCase.algorithm_run_test(self, foa, foac)
+        foa = ForestOptimizationAlgorithm(NP=20, lt=5, lsc=1, gsc=1, al=20, tr=0.35, seed=self.seed)
+        foac = ForestOptimizationAlgorithm(NP=20, lt=5, lsc=1, gsc=1, al=20, tr=0.35, seed=self.seed)
+        AlgorithmTestCase.algorithm_run_test(self, foa, foac, MyBenchmark())
 
     def test_griewank_works_fine(self):
-        foa_griewank = ForestOptimizationAlgorithm(D=self.D, NP=20, nFES=self.nFES, nGEN=self.nGEN, lt=5, lsc=1, gsc=1, al=20, tr=0.35, benchmark='griewank', seed=self.seed)
-        foa_griewankc = ForestOptimizationAlgorithm(D=self.D, NP=20, nFES=self.nFES, nGEN=self.nGEN, lt=5, lsc=1, gsc=1, al=20, tr=0.35, benchmark='griewank', seed=self.seed)
+        foa_griewank = ForestOptimizationAlgorithm(NP=20, lt=5, lsc=1, gsc=1, al=20, tr=0.35, seed=self.seed)
+        foa_griewankc = ForestOptimizationAlgorithm(NP=20, lt=5, lsc=1, gsc=1, al=20, tr=0.35, seed=self.seed)
         AlgorithmTestCase.algorithm_run_test(self, foa_griewank, foa_griewankc)
