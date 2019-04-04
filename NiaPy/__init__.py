@@ -63,11 +63,12 @@ NiaPyAlgos = [
 	balgos.DynamicFireworksAlgorithm,
 	balgos.DynamicFireworksAlgorithmGauss,
 	balgos.GravitationalSearchAlgorithm,
-	balgos.CovarianceMatrixAdaptionEvolutionStrategy,
 	balgos.FishSchoolSearch,
 	balgos.MothFlameOptimizer,
 	balgos.CuckooSearch,
-	balgos.CoralReefsOptimization
+	balgos.CovarianceMaatrixAdaptionEvolutionStrategy,
+	balgos.CoralReefsOptimization,
+	balgos.ForestOptimizationAlgorithm
 ]
 
 NiaPyAlgos += [
