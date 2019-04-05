@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, line-too-long, multiple-statements, too-many-function-args, singleton-comparison, bad-continuation
+# pylint: disable=mixed-indentation, line-too-long, multiple-statements, too-many-function-args, singleton-comparison, bad-continuation, old-style-class
 """Python micro framework for building nature-inspired algorithms."""
 
 from __future__ import print_function  # for backward compatibility purpose
@@ -63,11 +63,12 @@ NiaPyAlgos = [
 	balgos.DynamicFireworksAlgorithm,
 	balgos.DynamicFireworksAlgorithmGauss,
 	balgos.GravitationalSearchAlgorithm,
-	balgos.CovarianceMatrixAdaptionEvolutionStrategy,
 	balgos.FishSchoolSearch,
 	balgos.MothFlameOptimizer,
 	balgos.CuckooSearch,
-	balgos.CoralReefsOptimization
+	balgos.CovarianceMatrixAdaptionEvolutionStrategy,
+	balgos.CoralReefsOptimization,
+	balgos.ForestOptimizationAlgorithm
 ]
 
 NiaPyAlgos += [

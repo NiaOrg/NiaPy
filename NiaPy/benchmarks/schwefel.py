@@ -218,7 +218,7 @@ class ModifiedSchwefel(Benchmark):
 			return 418.9829 * D - val
 		return f
 
-class ExpandedScaffer:
+class ExpandedScaffer(Benchmark):
 	r"""Implementations of High Conditioned Elliptic functions.
 
 	Date: 2018
