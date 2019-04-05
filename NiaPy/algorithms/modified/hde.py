@@ -146,10 +146,21 @@ class DifferentialEvolutionMTSv1(DifferentialEvolutionMTS):
 
 	Attributes:
 		Name (List[str]): List of strings representing algorithm name.
+
+	See Also:
+		:class:`NiaPy.algorithms.modified.DifferentialEvolutionMTS`
 	"""
 	Name = ['DifferentialEvolutionMTSv1', 'DEMTSv1']
 
 	def setParameters(self, **ukwargs):
+		r"""Set core parameters of DifferentialEvolutionMTSv1 algorithm.
+
+		Args:
+			**ukwargs (Dict[str, Any]): Additional arguments.
+
+		See Also:
+			:func:`NiaPy.algorithms.modified.DifferentialEvolutionMTS.setParameters`
+		"""
 		DifferentialEvolutionMTS.setParameters(self, LSs=(MTS_LS1v1, MTS_LS2, MTS_LS3v1), **ukwargs)
 
 class DynNpDifferentialEvolutionMTS(DifferentialEvolutionMTS, DynNpDifferentialEvolution):
@@ -184,9 +195,9 @@ class DynNpDifferentialEvolutionMTS(DifferentialEvolutionMTS, DynNpDifferentialE
 			rp (Optional[float]):
 			**ukwargs (Dict[str, Any]): Additional arguments.
 
-      See Also:
-      	* :func:`NiaPy.algorithms.modified.hde.DifferentialEvolutionMTS.setParameters`
-      	* :func`NiaPy.algorithms.basic.de.DynNpDifferentialEvolution.setParameters`
+		See Also:
+			* :func:`NiaPy.algorithms.modified.hde.DifferentialEvolutionMTS.setParameters`
+			* :func`NiaPy.algorithms.basic.de.DynNpDifferentialEvolution.setParameters`
 		"""
 		DynNpDifferentialEvolution.setParameters(self, pmax=pmax, rp=rp, **ukwargs)
 		DifferentialEvolutionMTS.setParameters(self, **ukwargs)
@@ -200,7 +211,7 @@ class DynNpDifferentialEvolutionMTSv1(DynNpDifferentialEvolutionMTS):
 	r"""Implementation of Differential Evolution withm MTSv1 local searches and dynamic population size.
 
 	Algorithm:
-		Differential Evolution withm MTSv1 local searches and dynamic population size
+		Differential Evolution with MTSv1 local searches and dynamic population size
 
 	Date:
 		2018
@@ -215,7 +226,7 @@ class DynNpDifferentialEvolutionMTSv1(DynNpDifferentialEvolutionMTS):
 		Name (List[str]): List of strings representing algorithm name.
 
 	See Also:
-     	:class:`NiaPy.algorithms.modified.hde.DifferentialEvolutionMTS`
+		:class:`NiaPy.algorithms.modified.hde.DifferentialEvolutionMTS`
 	"""
 	Name = ['DynNpDifferentialEvolutionMTSv1', 'dynNpDEMTSv1']
 
@@ -225,8 +236,8 @@ class DynNpDifferentialEvolutionMTSv1(DynNpDifferentialEvolutionMTS):
 		Args:
 			**ukwargs (Dict[str, Any]): Additional arguments.
 
-      See Also:
-      	:func:`NiaPy.algorithms.modified.hde.DifferentialEvolutionMTS.setParameters`
+		See Also:
+			:func:`NiaPy.algorithms.modified.hde.DifferentialEvolutionMTS.setParameters`
 		"""
 		DynNpDifferentialEvolutionMTS.setParameters(self, LSs=(MTS_LS1v1, MTS_LS2, MTS_LS3v1), **ukwargs)
 
@@ -250,7 +261,7 @@ class MultiStrategyDifferentialEvolutionMTS(DifferentialEvolutionMTS, MultiStrat
 
 	See Also:
 		* :class:`NiaPy.algorithms.modified.hde.DifferentialEvolutionMTS`
-     	* :class:`NiaPy.algorithms.basic.de.MultiStrategyDifferentialEvolution`
+		* :class:`NiaPy.algorithms.basic.de.MultiStrategyDifferentialEvolution`
 	"""
 	Name = ['MultiStrategyDifferentialEvolutionMTS', 'MSDEMTS']
 
@@ -260,15 +271,29 @@ class MultiStrategyDifferentialEvolutionMTS(DifferentialEvolutionMTS, MultiStrat
 		Args:
 			**ukwargs (Dict[str, Any]): Additional arguments.
 
-      See Also:
-      	* :func:`NiaPy.algorithms.modified.DifferentialEvolutionMTS.setParameters`
-      	* :func:`NiaPy.algorithms.basic.MultiStrategyDifferentialEvolution.setParameters`
+		See Also:
+			* :func:`NiaPy.algorithms.modified.DifferentialEvolutionMTS.setParameters`
+			* :func:`NiaPy.algorithms.basic.MultiStrategyDifferentialEvolution.setParameters`
 		"""
 		DifferentialEvolutionMTS.setParameters(self, **ukwargs)
 		MultiStrategyDifferentialEvolution.setParameters(self, itype=MtsIndividual, **ukwargs)
 
+	def evolve(self, pop, xb, task, **kwargs):
+		r"""Evolve population.
+
+		Args:
+			pop (numpy.ndarray[Individual]): Current population of individuals.
+			xb (Individual): Global best individual.
+			task (Task): Optimization task.
+			**kwargs (Dict[str, Any]): Additional arguments.
+
+		Returns:
+			numpy.ndarray[Individual]: Evolved population.
+		"""
+		return MultiStrategyDifferentialEvolution.evolve(self, pop, xb, task, **kwargs)
+
 class MultiStrategyDifferentialEvolutionMTSv1(MultiStrategyDifferentialEvolutionMTS):
-	r"""Implementation of Differential Evolution withm MTSv1 local searches and multiple mutation strategys.
+	r"""Implementation of Differential Evolution with MTSv1 local searches and multiple mutation strategys.
 
 	Algorithm:
 		Differential Evolution withm MTSv1 local searches and multiple mutation strategys
@@ -331,7 +356,7 @@ class DynNpMultiStrategyDifferentialEvolutionMTS(MultiStrategyDifferentialEvolut
 		Args:
 			**ukwargs (Dict[str, Any]): Additional arguments.
 
-      See Also:
+		See Also:
 			* :func:`NiaPy.algorithms.modified.MultiStrategyDifferentialEvolutionMTS.setParameters`
 			* :func:`NiaPy.algorithms.modified.DynNpDifferentialEvolutionMTS.setParameters`
 		"""
@@ -367,7 +392,7 @@ class DynNpMultiStrategyDifferentialEvolutionMTSv1(DynNpMultiStrategyDifferentia
 		Args:
 			**kwargs (Dict[str, Any]): Additional arguments.
 
-      See Also:
+		See Also:
 			* :func:`NiaPy.algorithm.modified.DynNpMultiStrategyDifferentialEvolutionMTS.setParameters`
 		"""
 		DynNpMultiStrategyDifferentialEvolutionMTS.setParameters(self, LSs=(MTS_LS1v1, MTS_LS2, MTS_LS3v1), **kwargs)

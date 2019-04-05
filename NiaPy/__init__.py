@@ -122,8 +122,8 @@ class Runner:
 			NP (int): Population size
 			nFES (int): Number of function evaluations
 			nRuns (int): Number of repetitions
-			useAlgorithms (list of Algorithm): List of algorithms to run
-			useBenchmarks (list of Benchmarks): List of benchmarks to run
+			useAlgorithms (Union[List[str], str]): List of algorithms to run
+			useBenchmarks (Union[List[str], str]): List of benchmarks to run
 
 		Keyword Args:
 			A (float): Laudness
