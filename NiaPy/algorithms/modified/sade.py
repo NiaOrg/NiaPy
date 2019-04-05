@@ -1,9 +1,11 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, multiple-statements, logging-not-lazy, attribute-defined-outside-init, line-too-long, arguments-differ, singleton-comparison, bad-continuation, dangerous-default-value, consider-using-enumerate
 import logging
-from numpy import random as rand, argmin, argmax, mean, asarray, cos
-from NiaPy.algorithms.algorithm import Individual
-from NiaPy.algorithms.basic.de import DifferentialEvolution, CrossBest1, CrossRand1, CrossCurr2Best1, CrossBest2, CrossCurr2Rand1, proportional
+
+# from numpy import random as rand, argmin, argmax, mean, asarray, cos
+
+# from NiaPy.algorithms.algorithm import Individual
+from NiaPy.algorithms.basic.de import DifferentialEvolution  # , CrossBest1, CrossRand1, CrossCurr2Best1, CrossBest2, CrossCurr2Rand1, proportional
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.modified')
@@ -36,7 +38,10 @@ class StrategyAdaptationDifferentialEvolution(DifferentialEvolution):
 		Qin, A. Kai, and Ponnuthurai N. Suganthan. "Self-adaptive differential evolution algorithm for numerical optimization." 2005 IEEE congress on evolutionary computation. Vol. 2. IEEE, 2005.
 
 	Attributes:
-		Name (list of str): List of strings representing algorithm name
+		Name (List[str]): List of strings representing algorithm name.
+
+	See Also:
+		:class:`NiaPy.algorithms.basic.DifferentialEvolution`
 	"""
 	Name = ['StrategyAdaptationDifferentialEvolution', 'SADE', 'SaDE']
 
@@ -65,7 +70,10 @@ class StrategyAdaptationDifferentialEvolutionV1(DifferentialEvolution):
 		Qin, A. Kai, Vicky Ling Huang, and Ponnuthurai N. Suganthan. "Differential evolution algorithm with strategy adaptation for global numerical optimization." IEEE transactions on Evolutionary Computation 13.2 (2009): 398-417.
 
 	Attributes:
-		Name (list of str): List of strings representing algorithm name
+		Name (List[str]): List of strings representing algorithm name.
+
+	See Also:
+		:class:`NiaPy.algorithms.basic.DifferentialEvolution`
 	"""
 	Name = ['StrategyAdaptationDifferentialEvolutionV1', 'SADEV1', 'SaDEV1']
 
