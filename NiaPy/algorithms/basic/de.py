@@ -786,7 +786,7 @@ class MultiStrategyDifferentialEvolution(DifferentialEvolution):
 		# TODO add constraint method for selection of stratgy methos
 		return r
 
-	def setParameters(self, strategys=(CrossRand1, CrossBest1, CrossCurr2Best1, CrossRand2), **ukwargs):
+	def setParameters(self, strategies=(CrossRand1, CrossBest1, CrossCurr2Best1, CrossRand2), **ukwargs):
 		r"""Set the arguments of the algorithm.
 
 		Arguments:
@@ -797,7 +797,7 @@ class MultiStrategyDifferentialEvolution(DifferentialEvolution):
 			* :func:`NiaPy.algorithms.basic.DifferentialEvolution.setParameters`
 		"""
 		DifferentialEvolution.setParameters(self, CrossMutt=multiMutations, **ukwargs)
-		self.strategies = strategys
+		self.strategies = strategies
 
 	def evolve(self, pop, xb, task, **kwargs):
 		r"""Evolve population with the help multiple mutation strategies.
