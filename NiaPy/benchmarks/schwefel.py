@@ -253,7 +253,7 @@ class ExpandedScaffer(Benchmark):
 	"""
 	Name = ['ExpandedScaffer']
 
-	def __init__(self, Lower=-100.0, Upper=100.0): self.Lower, self.Upper = Lower, Upper
+	def __init__(self, Lower=-100.0, Upper=100.0): Benchmark.__init__(self, Lower=Lower, Upper=Lower)
 
 	@staticmethod
 	def latex_code():
