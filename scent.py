@@ -1,5 +1,5 @@
 """Configuration file for sniffer."""
-# pylint: disable=superfluous-parens, bad-continuation, unpacking-non-sequence, no-init
+# pylint: disable=superfluous-parens, bad-continuation, unpacking-non-sequence, no-init, old-syle-class
 import time
 import subprocess
 

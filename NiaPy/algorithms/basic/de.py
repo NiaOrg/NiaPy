@@ -679,8 +679,7 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 			numpy.ndarray[Individual]: Increased population.
 		"""
 		deltapop = int(round(max(1, self.NP * self.deltaPopE(task.Iters))))
-		ni = self.Rand.choice(len(pop), deltapop, replace=False)
-		return objects2array([self.itype(task=task, rnd=self.Rand, e=True) for i in ni])
+		return objects2array([self.itype(task=task, rnd=self.Rand, e=True) for _ in range(deltapop)])
 
 	def popDecrement(self, pop, task):
 		r"""Decrement population.

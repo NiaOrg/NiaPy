@@ -66,7 +66,7 @@ class Alpine1(Benchmark):
         return evaluate
 
 
-class Alpine2:
+class Alpine2(Benchmark):
     r"""Implementation of Alpine2 function.
 
     Date: 2018
