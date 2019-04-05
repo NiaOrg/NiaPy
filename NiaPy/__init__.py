@@ -94,7 +94,7 @@ NiaPyAlgos += [
 	oalgos.HillClimbAlgorithm,
 	oalgos.SimulatedAnnealing,
 	oalgos.AnarchicSocietyOptimization,
-	# oalgos.TabuSearch
+	oalgos.TabuSearch
 ]
 
 class Runner:
