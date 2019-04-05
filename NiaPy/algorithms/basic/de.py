@@ -42,7 +42,7 @@ def CrossRand1(pop, ic, x_b, f, cr, rnd=rand, *args):
 		numpy.ndarray: Mutated and mixed individual.
 	"""
 	j = rnd.randint(len(pop[ic]))
-	p = [1 / (len(pop) - 1) if i != ic else 0 for i in range(len(pop))] if len(pop) > 3 else None
+	p = [1 / (len(pop) - 1.0) if i != ic else 0 for i in range(len(pop))] if len(pop) > 3 else None
 	r = rnd.choice(len(pop), 3, replace=not len(pop) >= 3, p=p)
 	x = [pop[r[0]][i] + f * (pop[r[1]][i] - pop[r[2]][i]) if rnd.rand() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
 	return asarray(x)
@@ -76,7 +76,7 @@ def CrossBest1(pop, ic, x_b, f, cr, rnd=rand, *args):
 		numpy.ndarray: Mutated and mixed individual.
 	"""
 	j = rnd.randint(len(pop[ic]))
-	p = [1 / (len(pop) - 1) if i != ic else 0 for i in range(len(pop))] if len(pop) > 2 else None
+	p = [1 / (len(pop) - 1.0) if i != ic else 0 for i in range(len(pop))] if len(pop) > 2 else None
 	r = rnd.choice(len(pop), 2, replace=not len(pop) >= 2, p=p)
 	x = [x_b[i] + f * (pop[r[0]][i] - pop[r[1]][i]) if rnd.rand() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
 	return asarray(x)
@@ -110,7 +110,7 @@ def CrossRand2(pop, ic, x_b, f, cr, rnd=rand, *args):
 		numpy.ndarray: mutated and mixed individual.
 	"""
 	j = rnd.randint(len(pop[ic]))
-	p = [1 / (len(pop) - 1) if i != ic else 0 for i in range(len(pop))] if len(pop) > 5 else None
+	p = [1 / (len(pop) - 1.0) if i != ic else 0 for i in range(len(pop))] if len(pop) > 5 else None
 	r = rnd.choice(len(pop), 5, replace=not len(pop) >= 5, p=p)
 	x = [pop[r[0]][i] + f * (pop[r[1]][i] - pop[r[2]][i]) + f * (pop[r[3]][i] - pop[r[4]][i]) if rnd.rand() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
 	return asarray(x)
@@ -142,7 +142,7 @@ def CrossBest2(pop, ic, x_b, f, cr, rnd=rand, *args):
 		numpy.ndarray: mutated and mixed individual.
 	"""
 	j = rnd.randint(len(pop[ic]))
-	p = [1 / (len(pop) - 1) if i != ic else 0 for i in range(len(pop))] if len(pop) > 4 else None
+	p = [1 / (len(pop) - 1.0) if i != ic else 0 for i in range(len(pop))] if len(pop) > 4 else None
 	r = rnd.choice(len(pop), 4, replace=not len(pop) >= 4, p=p)
 	x = [x_b[i] + f * (pop[r[0]][i] - pop[r[1]][i]) + f * (pop[r[2]][i] - pop[r[3]][i]) if rnd.rand() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
 	return asarray(x)
@@ -174,7 +174,7 @@ def CrossCurr2Rand1(pop, ic, x_b, f, cr, rnd=rand, *args):
 		numpy.ndarray: mutated and mixed individual.
 	"""
 	j = rnd.randint(len(pop[ic]))
-	p = [1 / (len(pop) - 1) if i != ic else 0 for i in range(len(pop))] if len(pop) > 4 else None
+	p = [1 / (len(pop) - 1.0) if i != ic else 0 for i in range(len(pop))] if len(pop) > 4 else None
 	r = rnd.choice(len(pop), 4, replace=not len(pop) >= 4, p=p)
 	x = [pop[ic][i] + f * (pop[r[0]][i] - pop[r[1]][i]) + f * (pop[r[2]][i] - pop[r[3]][i]) if rnd.rand() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
 	return asarray(x)
@@ -206,7 +206,7 @@ def CrossCurr2Best1(pop, ic, x_b, f, cr, rnd=rand, **kwargs):
 		numpy.ndarray: mutated and mixed individual.
 	"""
 	j = rnd.randint(len(pop[ic]))
-	p = [1 / (len(pop) - 1) if i != ic else 0 for i in range(len(pop))] if len(pop) > 3 else None
+	p = [1 / (len(pop) - 1.0) if i != ic else 0 for i in range(len(pop))] if len(pop) > 3 else None
 	r = rnd.choice(len(pop), 3, replace=not len(pop) >= 3, p=p)
 	x = [pop[ic][i] + f * (x_b[i] - pop[r[0]][i]) + f * (pop[r[1]][i] - pop[r[2]][i]) if rnd.rand() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
 	return asarray(x)
