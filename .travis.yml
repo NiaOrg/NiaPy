@@ -12,6 +12,7 @@ env:
   global:
   - RANDOM_SEED=0
 before_install:
+  - pip install pipenv -U
   - pip install pipenv
   - make doctor
 install:
