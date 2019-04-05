@@ -104,9 +104,7 @@ class Alpine2(Benchmark):
     """
     Name = ['Alpine2']
 
-    def __init__(self, Lower=0.0, Upper=10.0):
-        self.Lower = Lower
-        self.Upper = Upper
+    def __init__(self, Lower=0.0, Upper=10.0): Benchmark.__init__(self, Lower=Lower, Upper=Upper)
 
     @staticmethod
     def latex_code():
