@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, logging-not-lazy, attribute-defined-outside-init, line-too-long, arguments-differ, singleton-comparison, bad-continuation, dangerous-default-value, consider-using-enumerate, unused-argument
+# pylint: disable=mixed-indentation, multiple-statements, logging-not-lazy, attribute-defined-outside-init, line-too-long, arguments-differ, singleton-comparison, bad-continuation, dangerous-default-value, consider-using-enumerate, unused-argument, unused-argument
 import logging
 
 from NiaPy.algorithms.algorithm import Individual
@@ -18,10 +18,26 @@ __all__ = [
 	'DynNpMultiStrategySelfAdaptiveDifferentialEvolution'
 ]
 
-def selectBetter(x, y): return x if x.f < y.f else y
-
 class SolutionjDE(Individual):
+	r"""Individual for jDE algorithm.
+
+	Attributes:
+		F (float): Scale factor.
+		CR (float): Crossover probability.
+
+	See Also:
+		:class:`NiaPy.algorithms.Individual`
+	"""
 	def __init__(self, F=2, CR=0.5, **kwargs):
+		r"""Initialize SolutionjDE.
+
+		Attributes:
+			F (float): Scale factor.
+			CR (float): Crossover probability.
+
+		See Also:
+			:func:`NiaPy.algorithm.Individual.__init__`
+		"""
 		Individual.__init__(self, **kwargs)
 		self.F, self.CR = F, CR
 
