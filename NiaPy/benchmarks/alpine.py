@@ -46,6 +46,15 @@ class Alpine1(Benchmark):
     Name = ['Alpine1']
 
     def __init__(self, Lower=-10.0, Upper=10.0):
+        r"""Initialize Alpine1 benchmark.
+
+        Args:
+            Lower (Optional[float]): Lower bound of problem.
+            Upper (Optional[float]): Upper bound of problem.
+
+        See Also:
+            :func:`NiaPy.benchmarks.Benchmark.__init__`
+        """
         Benchmark.__init__(self, Lower, Upper)
 
     @staticmethod
@@ -104,7 +113,17 @@ class Alpine2(Benchmark):
     """
     Name = ['Alpine2']
 
-    def __init__(self, Lower=0.0, Upper=10.0): Benchmark.__init__(self, Lower=Lower, Upper=Upper)
+    def __init__(self, Lower=0.0, Upper=10.0):
+        r"""Initialize Alpine2 benchmark.
+
+        Args:
+            Lower (Optional[float]): Lower bound of problem.
+            Upper (Optional[float]): Upper bound of problem.
+
+        See Also:
+            :func:`NiaPy.benchmarks.Benchmark.__init__`
+        """
+        Benchmark.__init__(self, Lower=Lower, Upper=Upper)
 
     @staticmethod
     def latex_code():
