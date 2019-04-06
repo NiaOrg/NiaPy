@@ -32,7 +32,7 @@ class ForestOptimizationAlgorithm(Algorithm):
         'al': lambda x: isinstance(x, int) and x > 0,
         'lsc': lambda x: isinstance(x, int) and x > 0,
         'gsc': lambda x: isinstance(x, int) and x > 0,
-        'tr': lambda x: isinstance(x, (float, int)) and x >= 0 and x <= 1,
+        'tr': lambda x: isinstance(x, (float, int)) and 0 <= x <= 1,
     }
 
     def setParameters(self, NP=10, lt=3, al=10, lsc=1, gsc=1, tr=0.3, **ukwargs):

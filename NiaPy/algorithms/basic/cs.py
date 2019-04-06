@@ -1,7 +1,7 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, line-too-long, singleton-comparison, multiple-statements, attribute-defined-outside-init, no-self-use, logging-not-lazy, unused-variable, arguments-differ, old-style-class, bad-continuation
+# pylint: disable=mixed-indentation, line-too-long, singleton-comparison, multiple-statements, attribute-defined-outside-init, no-self-use, logging-not-lazy, unused-variable, arguments-differ, bad-continuation
 import logging
-from numpy import apply_along_axis, argsort, inf
+from numpy import apply_along_axis, argsort
 from scipy.stats import levy
 from NiaPy.algorithms.algorithm import Algorithm
 
@@ -14,51 +14,129 @@ __all__ = ['CuckooSearch']
 class CuckooSearch(Algorithm):
 	r"""Implementation of Cuckoo behaviour and levy flights.
 
-	**Algorithm:** Cuckoo Search
-	**Date:** 2018
-	**Authors:** Klemen Berkovič
-	**License:** MIT
-	**Reference:** Yang, Xin-She, and Suash Deb. "Cuckoo search via Lévy flights." Nature & Biologically Inspired Computing, 2009. NaBIC 2009. World Congress on. IEEE, 2009.
+	Algorithm:
+		Cuckoo Search
+
+	Date:
+		2018
+
+	Authors:
+		Klemen Berkovič
+
+	License:
+		MIT
+
+	Reference:
+		Yang, Xin-She, and Suash Deb. "Cuckoo search via Lévy flights." Nature & Biologically Inspired Computing, 2009. NaBIC 2009. World Congress on. IEEE, 2009.
+
+	Attributes:
+		Name (List[str]): lsit of strings representing algorithm names
+		N (int): populatio size
+		pa (float): probability
+		alpha (float): TODO
+
+	See Also:
+		* :class:`NiaPy.algorithms.Algorithm`
 	"""
 	Name = ['CuckooSearch', 'CS']
-	N, pa, alpha = 50, 0.2, 0.5
 
 	@staticmethod
-	def typeParameters(): return {
-		'N': lambda x: isinstance(x, int) and x > 0,
-		'pa': lambda x: isinstance(x, float) and 0 <= x <= 1,
-		'alpha': lambda x: isinstance(x, (float, int)),
-	}
+	def typeParameters():
+		r"""TODO.
+
+		Returns:
+			Dict[str, Callable]:
+				* N (Callable[[int], bool]): TODO
+				* pa (Callable[[float], bool]): TODO
+				* alpha (Callable[[Union[int, float]], bool]): TODO
+		"""
+		return {
+			'N': lambda x: isinstance(x, int) and x > 0,
+			'pa': lambda x: isinstance(x, float) and 0 <= x <= 1,
+			'alpha': lambda x: isinstance(x, (float, int)),
+		}
 
 	def setParameters(self, N=50, pa=0.2, alpha=0.5, **ukwargs):
 		r"""Set the arguments of an algorithm.
 
-		**Arguments:**
-		N {integer} -- population size $\in [1, \infty)$
-		pa {real} -- factor $\in [0, 1]$
+		Arguments:
+			N (int): Population size :math:`\in [1, \infty)`
+			pa (float): factor :math:`\in [0, 1]`
+			alpah (float): TODO
+			**ukwargs (Dict[str, Any]): Additional arguments
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.setParameters`
 		"""
-		self.N, self.pa, self.alpha = N, pa, alpha
+		Algorithm.setParameters(self, NP=N)
+		self.pa, self.alpha = pa, alpha
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def emptyNests(self, N, N_f, pa_v, task):
-		si = argsort(N_f)[::-1]
-		for i, e in enumerate(si):
-			if i <= pa_v: N[e], N_f[e] = self.rand(task.D) * task.bRange, task.eval(N[e])
-			else: break
-		return N, N_f
+	def emptyNests(self, pop, fpop, pa_v, task):
+		r"""Empty ensts.
 
-	def runTask(self, task):
-		pa_v = self.N * self.pa
-		N = task.Lower + self.rand([self.N, task.D]) * task.bRange
-		N_f = apply_along_axis(task.eval, 1, N)
-		while not task.stopCondI():
-			i = self.randint(self.N)
-			Nn = task.repair(N[i] + self.alpha * levy.rvs(size=[task.D], random_state=self.Rand), rnd=self.Rand)
-			Nn_f = task.eval(Nn)
-			j = self.randint(self.N)
-			while i == j: j = self.randint(self.N)
-			if Nn_f <= N_f[j]: N[j], N_f[j] = Nn, Nn_f
-			N, N_f = self.emptyNests(N, N_f, pa_v, task)
-		return self.getBest(N, N_f, None, inf * task.optType.value)
+		Args:
+			pop (numpy.ndarray): Current population
+			fpop (numpy.ndarray[float]): Current population fitness/funcion values
+			pa_v (): TODO.
+			task (Task): Optimization task
+
+		Returns:
+			Tuple[numpy.ndarray, numpy.ndarray[float]]:
+				1. New population
+				2. New population fitness/function values
+		"""
+		si = argsort(fpop)[:int(pa_v):-1]
+		pop[si] = task.Lower + self.rand(task.D) * task.bRange
+		fpop[si] = apply_along_axis(task.eval, 1, pop[si])
+		return pop, fpop
+
+	def initPopulation(self, task):
+		r"""Initialize starting population.
+
+		Args:
+			task (Task): Optimization task.
+
+		Returns:
+			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+				1. Initialized population.
+				2. Initialized populations fitness/function values.
+				3. Additional arguments:
+					* pa_v (float): TODO
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.initPopulation`
+		"""
+		N, N_f, d = Algorithm.initPopulation(self, task)
+		d.update({'pa_v': self.NP * self.pa})
+		return N, N_f, d
+
+	def runIteration(self, task, pop, fpop, xb, fxb, pa_v, **dparams):
+		r"""Core function of CuckooSearch algorithm.
+
+		Args:
+			task (Task): Optimization task.
+			pop (numpy.ndarray): Current population.
+			fpop (numpy.ndarray[float]): Current populations fitness/function values.
+			xb (numpy.ndarray): Global best individual.
+			fxb (float): Global best individual function/fitness values.
+			pa_v (float): TODO
+			**dparams (Dict[str, Any]): Additional arguments.
+
+		Returns:
+			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+				1. Initialized population.
+				2. Initialized populations fitness/function values.
+				3. Additional arguments:
+					* pa_v (float): TODO
+		"""
+		i = self.randint(self.NP)
+		Nn = task.repair(pop[i] + self.alpha * levy.rvs(size=[task.D], random_state=self.Rand), rnd=self.Rand)
+		Nn_f = task.eval(Nn)
+		j = self.randint(self.NP)
+		while i == j: j = self.randint(self.NP)
+		if Nn_f <= fpop[j]: pop[j], fpop[j] = Nn, Nn_f
+		pop, fpop = self.emptyNests(pop, fpop, pa_v, task)
+		return pop, fpop, {'pa_v': pa_v}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

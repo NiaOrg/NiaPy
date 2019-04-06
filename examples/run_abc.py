@@ -40,13 +40,13 @@ def simple_example(alg, runs=2, D=10, nFES=50000, nGEN=10000, seed=[None], optTy
 	for i in range(runs):
 		algo = Runner.getAlgorithm('GA')(D=10, NP=55, nFES=nFES, nGEN=nGEN, A=0.5, r=0.5, Qmin=0.0, Qmax=2.0, benchmark=benchmark, seed=seed[i % len(seed)])
 		best = algo.run()
-		logger.info('%s \n %s %s' % (algo.task.unused_evals(), best[0], best[1]))
+		logger.info('%s \n %s %s' % (algo.task.Evals, best[0], best[1]))
 
 def logging_example(alg, D=10, nFES=50000, nGEN=100000, seed=[None], optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kn):
 	task = TaskConvPrint(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc())
 	algo = alg(seed=seed[0], task=task)
 	best = algo.run()
-	logger.info('%s \n %s \n %s' % (algo.task.unused_evals(), best[0], best[1]))
+	logger.info('%s \n %s \n %s' % (algo.task.Evals, best[0], best[1]))
 
 def plot_example(alg, D=10, nFES=50000, nGEN=100000, seed=[None], optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kn):
 	task = TaskConvPlot(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc())

@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=anomalous-backslash-in-string, mixed-indentation, multiple-statements, line-too-long, no-else-return, old-style-class
+# pylint: disable=anomalous-backslash-in-string, mixed-indentation, multiple-statements, line-too-long, no-else-return
 """Implementations of Schwefels functions."""
 
 from math import sin, fmod, fabs, sqrt
@@ -218,7 +218,7 @@ class ModifiedSchwefel(Benchmark):
 			return 418.9829 * D - val
 		return f
 
-class ExpandedScaffer:
+class ExpandedScaffer(Benchmark):
 	r"""Implementations of High Conditioned Elliptic functions.
 
 	Date: 2018
@@ -253,7 +253,7 @@ class ExpandedScaffer:
 	"""
 	Name = ['ExpandedScaffer']
 
-	def __init__(self, Lower=-100.0, Upper=100.0): self.Lower, self.Upper = Lower, Upper
+	def __init__(self, Lower=-100.0, Upper=100.0): Benchmark.__init__(self, Lower=Lower, Upper=Lower)
 
 	@staticmethod
 	def latex_code():

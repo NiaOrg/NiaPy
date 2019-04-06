@@ -1,4 +1,4 @@
-# pylint: disable=old-style-class, line-too-long
+# pylint: disable=line-too-long
 from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
 from NiaPy.algorithms.basic import FireflyAlgorithm
 
@@ -18,11 +18,11 @@ class FATestCase(AlgorithmTestCase):
         self.assertFalse(d['NP'](-1))
 
     def test_works_fine(self):
-        fa = FireflyAlgorithm(D=self.D, NP=20, nFES=self.nFES, nGEN=self.nGEN, alpha=0.5, betamin=0.2, gamma=1.0, benchmark=MyBenchmark(), seed=self.seed)
-        fac = FireflyAlgorithm(D=self.D, NP=20, nFES=self.nFES, nGEN=self.nGEN, alpha=0.5, betamin=0.2, gamma=1.0, benchmark=MyBenchmark(), seed=self.seed)
-        AlgorithmTestCase.algorithm_run_test(self, fa, fac)
+        fa = FireflyAlgorithm(NP=20, alpha=0.5, betamin=0.2, gamma=1.0, seed=self.seed)
+        fac = FireflyAlgorithm(NP=20, alpha=0.5, betamin=0.2, gamma=1.0, seed=self.seed)
+        AlgorithmTestCase.algorithm_run_test(self, fa, fac, MyBenchmark())
 
     def test_griewank_works_fine(self):
-        fa_griewank = FireflyAlgorithm(D=self.D, NP=20, nFES=self.nFES, nGEN=self.nGEN, alpha=0.5, betamin=0.2, gamma=1.0, benchmark='griewank', seed=self.seed)
-        fa_griewankc = FireflyAlgorithm(D=self.D, NP=20, nFES=self.nFES, nGEN=self.nGEN, alpha=0.5, betamin=0.2, gamma=1.0, benchmark='griewank', seed=self.seed)
+        fa_griewank = FireflyAlgorithm(NP=20, alpha=0.5, betamin=0.2, gamma=1.0, seed=self.seed)
+        fa_griewankc = FireflyAlgorithm(NP=20, alpha=0.5, betamin=0.2, gamma=1.0, seed=self.seed)
         AlgorithmTestCase.algorithm_run_test(self, fa_griewank, fa_griewankc)

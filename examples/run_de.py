@@ -42,21 +42,21 @@ class MaxMB(MinMB):
 def simple_example(alg, runs=10, D=10, nFES=50000, nGEN=10000, seed=[None], optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kn):
 	for i in range(runs):
 		task = Task(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc())
-		algo = alg(seed=seed[i % len(seed)], task=task)
-		best = algo.run()
+		algo = alg(seed=seed[i % len(seed)])
+		best = algo.run(task)
 		logger.info('%s %s' % (best[0], best[1]))
 
 def logging_example(alg, D=10, nFES=50000, nGEN=100000, seed=[None], optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kn):
 	task = TaskConvPrint(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc())
-	algo = alg(seed=seed[0], task=task)
-	best = algo.run()
+	algo = alg(seed=seed[0])
+	best = algo.run(task)
 	logger.info('%s %s' % (best[0], best[1]))
 
 def plot_example(alg, D=10, nFES=50000, nGEN=100000, seed=[None], optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kn):
 	NP = 120
 	task = TaskConvPlot(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc())
-	algo = alg(seed=seed[0], task=task, Np=NP)
-	best = algo.run()
+	algo = alg(seed=seed[0], Np=NP)
+	best = algo.run(task)
 	logger.info('%s %s' % (best[0], best[1]))
 	input('Press [enter] to continue')
 

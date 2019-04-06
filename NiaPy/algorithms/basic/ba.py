@@ -1,7 +1,7 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, line-too-long, singleton-comparison, arguments-differ, bad-continuation
 import logging
-from numpy import full, apply_along_axis, argmin
+from numpy import full
 from NiaPy.algorithms.algorithm import Algorithm
 
 logging.basicConfig()
@@ -13,67 +13,123 @@ __all__ = ['BatAlgorithm']
 class BatAlgorithm(Algorithm):
 	r"""Implementation of Bat algorithm.
 
-	**Algorithm:** Bat algorithm
+	Algorithm:
+		Bat algorithm
 
-	**Date:** 2015
+	Date:
+		2015
 
-	**Authors:** Iztok Fister Jr., Marko Burjek and Klemen Berkovič
+	Authors:
+		Iztok Fister Jr., Marko Burjek and Klemen Berkovič
 
-	**License:** MIT
+	License:
+		MIT
 
-	**Reference paper:** Yang, Xin-She. "A new metaheuristic bat-inspired algorithm." Nature inspired cooperative strategies for optimization (NICSO 2010). Springer, Berlin, Heidelberg, 2010. 65-74.
+	Reference paper:
+		Yang, Xin-She. "A new metaheuristic bat-inspired algorithm." Nature inspired cooperative strategies for optimization (NICSO 2010). Springer, Berlin, Heidelberg, 2010. 65-74.
+
+	Attributes:
+		Name (List[str]): List of strings representing algorithm name.
+		A (float): Loudness.
+		r (float): Pulse rate.
+		Qmin (float): Minimum frequency.
+		Qmax (float): Maximum frequency.
+
+	See Also:
+		* :class:`NiaPy.algorithms.Algorithm`
 	"""
 	Name = ['BatAlgorithm', 'BA']
 
 	@staticmethod
-	def typeParameters(): return {
-			'NP': lambda x: isinstance(x, int) and x > 0,
+	def typeParameters():
+		r"""Return dict with where key of dict represents parameter name and values represent checking functions for selected parameter.
+
+		Returns:
+			Dict[str, Callable]:
+				* A (Callable[[Union[float, int]], bool]): TODO
+				* r (Callable[[Union[float, int]], bool]): TODO
+				* Qmin (Callable[[Union[float, int]], bool]): TODO
+				* Qmax (Callable[[Union[float, int]], bool]): TODO
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.typeParameters`
+		"""
+		d = Algorithm.typeParameters()
+		d.update({
 			'A': lambda x: isinstance(x, (float, int)) and x > 0,
 			'r': lambda x: isinstance(x, (float, int)) and x > 0,
 			'Qmin': lambda x: isinstance(x, (float, int)),
 			'Qmax': lambda x: isinstance(x, (float, int))
-	}
+		})
+		return d
 
 	def setParameters(self, NP=40, A=0.5, r=0.5, Qmin=0.0, Qmax=2.0, **ukwargs):
 		r"""Set the parameters of the algorithm.
 
-		**Arguments:**
+		Args:
+			A (Optional[float]): loudness
+			r (Optional[float]): pulse rate
+			Qmin (Optional[float]): minimum frequency
+			Qmax (Optional[float]): maximum frequency
 
-		NP {integer} -- population size
-
-		A {decimal} -- loudness
-
-		r {decimal} -- pulse rate
-
-		Qmin {decimal} -- minimum frequency
-
-		Qmax {decimal} -- maximum frequency
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.setParameters`
 		"""
-		self.NP, self.A, self.r, self.Qmin, self.Qmax = NP, A, r, Qmin, Qmax
+		Algorithm.setParameters(self, NP=NP, **ukwargs)
+		self.A, self.r, self.Qmin, self.Qmax = A, r, Qmin, Qmax
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def runTask(self, task):
-		r"""Run algorithm with initialized parameters.
+	def initPopulation(self, task):
+		r"""Initialize the starting population.
 
-		**Return:**
+		Parameters:
+			task (Task): Optimization task
 
-		{decimal} -- coordinates of minimal found objective function
+		Returns:
+			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+				1. New population.
+				2. New population fitness/function values.
+				3. Additional arguments:
+					* S (numpy.ndarray): TODO
+					* Q (numpy.ndarray[float]): 	TODO
+					* v (numpy.ndarray[float]): TODO
 
-		{decimal} -- minimal value found of objective function
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.initPopulation`
 		"""
+		Sol, Fitness, d = Algorithm.initPopulation(self, task)
 		S, Q, v = full([self.NP, task.D], 0.0), full(self.NP, 0.0), full([self.NP, task.D], 0.0)
-		Sol = task.Lower + task.bRange * self.uniform(0, 1, [self.NP, task.D])
-		Fitness = apply_along_axis(task.eval, 1, Sol)
-		task.update_init_fes(self.NP)
-		j = argmin(Fitness)
-		best, f_min = Sol[j], Fitness[j]
-		while not task.stopCondI():
-			for i in range(self.NP):
-				Q[i], v[i], S[i] = self.Qmin + (self.Qmax - self.Qmin) * self.uniform(0, 1), v[i] + (Sol[i] - best) * Q[i], task.repair(Sol[i] + v[i], rnd=self.Rand)
-				if self.rand() > self.r: S[i] = task.repair(best + 0.001 * self.normal(0, 1, task.D), rnd=self.Rand)
-				Fnew = task.eval(S[i])
-				if (Fnew <= Fitness[i]) and (self.rand() < self.A): Sol[i], Fitness[i] = S[i], Fnew
-				if Fnew <= f_min: best, f_min = S[i], Fnew
-		return best, f_min
+		d.update({'S': S, 'Q': Q, 'v': v})
+		return Sol, Fitness, d
+
+	def runIteration(self, task, Sol, Fitness, xb, fxb, S, Q, v, **dparams):
+		r"""Core function of Bat Algorithm.
+
+		Parameters:
+			task (Task): Optimization task.
+			Sol (numpy.ndarray): Current population
+			Fitness (numpy.ndarray[float]): Current population fitness/funciton values
+			xb (numpy.ndarray): Current best individual
+			fxb (float): Current best individual function/fitness value
+			S (numpy.ndarray): TODO
+			Q (numpy.ndarray[float]): TODO
+			v (numpy.ndarray[float]): TODO
+			dparams (Dict[str, Any]): Additional algorithm arguments
+
+		Returns:
+			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+				1. New population
+				2. New population fitness/function vlues
+				3. Additional arguments:
+					* S (numpy.ndarray): TODO
+					* Q (numpy.ndarray[float]): TODO
+					* v (numpy.ndarray[float]): TODO
+		"""
+		for i in range(self.NP):
+			Q[i], v[i], S[i] = self.Qmin + (self.Qmax - self.Qmin) * self.uniform(0, 1), v[i] + (Sol[i] - xb) * Q[i], task.repair(Sol[i] + v[i], rnd=self.Rand)
+			if self.rand() > self.r: S[i] = task.repair(xb + 0.001 * self.normal(0, 1, task.D), rnd=self.Rand)
+			Fnew = task.eval(S[i])
+			if (Fnew <= Fitness[i]) and (self.rand() < self.A): Sol[i], Fitness[i] = S[i], Fnew
+		return Sol, Fitness, {'S': S, 'Q': Q, 'v': v}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

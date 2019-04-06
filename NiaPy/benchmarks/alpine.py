@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=anomalous-backslash-in-string, old-style-class
+# pylint: disable=anomalous-backslash-in-string
 """Implementations of Alpine functions."""
 
 import math
@@ -46,6 +46,15 @@ class Alpine1(Benchmark):
     Name = ['Alpine1']
 
     def __init__(self, Lower=-10.0, Upper=10.0):
+        r"""Initialize Alpine1 benchmark.
+
+        Args:
+            Lower (Optional[float]): Lower bound of problem.
+            Upper (Optional[float]): Upper bound of problem.
+
+        See Also:
+            :func:`NiaPy.benchmarks.Benchmark.__init__`
+        """
         Benchmark.__init__(self, Lower, Upper)
 
     @staticmethod
@@ -66,7 +75,7 @@ class Alpine1(Benchmark):
         return evaluate
 
 
-class Alpine2:
+class Alpine2(Benchmark):
     r"""Implementation of Alpine2 function.
 
     Date: 2018
@@ -105,8 +114,16 @@ class Alpine2:
     Name = ['Alpine2']
 
     def __init__(self, Lower=0.0, Upper=10.0):
-        self.Lower = Lower
-        self.Upper = Upper
+        r"""Initialize Alpine2 benchmark.
+
+        Args:
+            Lower (Optional[float]): Lower bound of problem.
+            Upper (Optional[float]): Upper bound of problem.
+
+        See Also:
+            :func:`NiaPy.benchmarks.Benchmark.__init__`
+        """
+        Benchmark.__init__(self, Lower=Lower, Upper=Upper)
 
     @staticmethod
     def latex_code():

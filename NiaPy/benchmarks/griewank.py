@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=anomalous-backslash-in-string, mixed-indentation, multiple-statements, line-too-long, old-style-class
+# pylint: disable=anomalous-backslash-in-string, mixed-indentation, multiple-statements, line-too-long
 from math import sqrt, cos
 from NiaPy.benchmarks.benchmark import Benchmark
 

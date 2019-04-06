@@ -1,9 +1,14 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, function-redefined, multiple-statements, old-style-class, function-redefined
+# pylint: disable=mixed-indentation, function-redefined, multiple-statements, function-redefined, unsubscriptable-object, no-member, line-too-long, logging-not-lazy
+import logging
 from unittest import TestCase
 from numpy import random as rnd, full, inf, array_equal
-from NiaPy.util import Task, OptimizationType
+from NiaPy.util import StoppingTask, OptimizationType
 from NiaPy.algorithms.algorithm import Individual, Algorithm
+
+logging.basicConfig()
+logger = logging.getLogger('NiaPy.test')
+logger.setLevel('INFO')
 
 class MyBenchmark:
 	def __init__(self):
@@ -22,7 +27,7 @@ class MyBenchmark:
 class IndividualTestCase(TestCase):
 	def setUp(self):
 		self.D = 20
-		self.x, self.task = rnd.uniform(-100, 100, self.D), Task(D=self.D, nFES=230, nGEN=inf, benchmark=MyBenchmark())
+		self.x, self.task = rnd.uniform(-100, 100, self.D), StoppingTask(D=self.D, nFES=230, nGEN=inf, benchmark=MyBenchmark())
 		self.s1, self.s2, self.s3 = Individual(x=self.x, e=False), Individual(task=self.task, rand=rnd), Individual(task=self.task)
 
 	def test_x_fine(self):
@@ -39,8 +44,6 @@ class IndividualTestCase(TestCase):
 	def test_repair_fine(self):
 		s = Individual(x=full(self.D, 100))
 		self.assertFalse(self.task.isFeasible(s.x))
-		s.repair(self.task)
-		self.assertTrue(self.task.isFeasible(s.x))
 
 	def test_eq_fine(self):
 		self.assertFalse(self.s1 == self.s2)
@@ -70,13 +73,8 @@ class AlgorithBaseTestCase(TestCase):
 		self.assertEqual(o.shape, (10,))
 
 	def test_setParameters(self):
-		a = self.a.setParameters(t=None, a=20)
-		self.assertEqual(a, None)
-
-	def test_setBenchmark(self):
-		task = Task(D=10, nFES=10, nGEN=10, optType=OptimizationType.MINIMIZATION, benchmark=MyBenchmark())
-		a = self.a.setBenchmark(task)
-		self.assertIsInstance(a, Algorithm)
+		self.a.setParameters(t=None, a=20)
+		self.assertRaises(AttributeError, lambda: self.assertEqual(self.a.a, None))
 
 	def test_randn(self):
 		a = self.a.randn([1, 2])
@@ -88,26 +86,33 @@ class AlgorithBaseTestCase(TestCase):
 		a = self.a.randn()
 		self.assertIsInstance(a, float)
 
-	def test_runYield(self):
-		a = self.a.runYield(None)
-		self.assertEqual(next(a), (None, None))
-
-	def test_runTask(self):
-		a = self.a.runTask(None)
-		self.assertEqual(a, (None, None))
+class TestingTask(StoppingTask, TestCase):
+	def eval(self, A):
+		r"""Check if is algorithm trying to evaluate solution out of bounds."""
+		self.assertTrue(self.isFeasible(A), 'Solution %s is not in feasible space!!!' % A)
+		return StoppingTask.eval(self, A)
 
 class AlgorithmTestCase(TestCase):
 	def setUp(self):
 		self.D, self.nGEN, self.nFES, self.seed = 40, 1000, 1000, 1
 
-	def algorithm_run_test(self, a, b):
-		x = a.run()
+	def setUpTasks(self, bech='griewank'):
+		taskOne, taskTwo = TestingTask(D=self.D, nFES=self.nFES, nGEN=self.nGEN, benchmark=bech), TestingTask(D=self.D, nFES=self.nFES, nGEN=self.nGEN, benchmark=bech)
+		return taskOne, taskTwo
+
+	def algorithm_run_test(self, a, b, benc='griewank'):
+		tOne, tTwo = self.setUpTasks(benc)
+		x = a.run(tOne)
 		self.assertTrue(x)
-		y = b.run()
+		logger.info('%s -> %s' % (x[0], x[1]))
+		y = b.run(tTwo)
 		self.assertTrue(y)
+		logger.info('%s -> %s' % (y[0], y[1]))
 		self.assertTrue(array_equal(x[0], y[0]), 'Results can not be reproduced, check usages of random number generator')
 		self.assertEqual(x[1], y[1], 'Results can not be reproduced or bad function value')
-		self.assertEqual(a.task.Iters, b.task.Iters)
-		self.assertEqual(a.task.Evals, b.task.Evals)
+		self.assertTrue(self.nFES >= tOne.Evals)
+		self.assertEqual(tOne.Evals, tTwo.Evals)
+		self.assertTrue(self.nGEN >= tOne.Iters)
+		self.assertEqual(tOne.Iters, tTwo.Iters)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
