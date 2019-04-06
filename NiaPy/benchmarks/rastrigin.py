@@ -1,11 +1,12 @@
 # encoding=utf8
 # pylint: disable=anomalous-backslash-in-string
 import math
+from NiaPy.benchmarks.benchmark import Benchmark
 
 __all__ = ['Rastrigin']
 
 
-class Rastrigin(object):
+class Rastrigin(Benchmark):
     r"""Implementation of Rastrigin benchmark function.
 
     Date: 2018
@@ -38,10 +39,14 @@ class Rastrigin(object):
 
     Reference: https://www.sfu.ca/~ssurjano/rastr.html
     """
+    Name = ['Rastrigin']
 
     def __init__(self, Lower=-5.12, Upper=5.12):
-        self.Lower = Lower
-        self.Upper = Upper
+        Benchmark.__init__(self, Lower, Upper)
+
+    @staticmethod
+    def latex_code():
+        return r'''$f(\mathbf{x}) = 10D + \sum_{i=1}^D \left(x_i^2 -10\cos(2\pi x_i)\right)$'''
 
     @classmethod
     def function(cls):

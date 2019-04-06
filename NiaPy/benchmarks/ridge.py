@@ -1,11 +1,12 @@
 # encoding=utf8
 # pylint: disable=anomalous-backslash-in-string
 import math
+from NiaPy.benchmarks.benchmark import Benchmark
 
 __all__ = ['Ridge']
 
 
-class Ridge(object):
+class Ridge(Benchmark):
     r"""Implementation of Ridge function.
 
     Date: 2018
@@ -37,10 +38,14 @@ class Ridge(object):
 
     Reference: http://www.cs.unm.edu/~neal.holts/dga/benchmarkFunction/ridge.html
     """
+    Name = ['Ridge']
 
     def __init__(self, Lower=-64.0, Upper=64.0):
-        self.Lower = Lower
-        self.Upper = Upper
+        Benchmark.__init__(self, Lower, Upper)
+
+    @staticmethod
+    def latex_code():
+        return r'''$f(\mathbf{x}) = \sum_{i=1}^D (\sum_{j=1}^i x_j)^2 $'''
 
     @classmethod
     def function(cls):

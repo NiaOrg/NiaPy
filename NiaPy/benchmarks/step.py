@@ -3,11 +3,11 @@
 """Implementations of Step functions."""
 
 import math
+from NiaPy.benchmarks.benchmark import Benchmark
 
 __all__ = ['Step', 'Step2', 'Step3']
 
-
-class Step(object):
+class Step(Benchmark):
     r"""Implementation of Step function.
 
     Date: 2018
@@ -45,10 +45,15 @@ class Step(object):
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
     """
+    Name = ['Step']
 
     def __init__(self, Lower=-100.0, Upper=100.0):
-        self.Lower = Lower
-        self.Upper = Upper
+        Benchmark.__init__(self, Lower, Upper)
+
+    @staticmethod
+    def latex_code():
+        return r'''$f(\mathbf{x}) = \sum_{i=1}^D \left( \lfloor \left |
+                x_i \right | \rfloor \right)$'''
 
     @classmethod
     def function(cls):
@@ -64,7 +69,7 @@ class Step(object):
         return evaluate
 
 
-class Step2(object):
+class Step2(Benchmark):
     r"""Step2 function implementation.
 
     Date: 2018
@@ -100,10 +105,14 @@ class Step2(object):
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
     """
+    Name = ['Step2']
 
     def __init__(self, Lower=-100.0, Upper=100.0):
-        self.Lower = Lower
-        self.Upper = Upper
+        Benchmark.__init__(self, Lower, Upper)
+
+    @staticmethod
+    def latex_code():
+        return r'''$f(\mathbf{x}) = \sum_{i=1}^D \left( \lfloor x_i + 0.5 \rfloor \right)^2$'''
 
     @classmethod
     def function(cls):
@@ -119,7 +128,7 @@ class Step2(object):
         return evaluate
 
 
-class Step3(object):
+class Step3(Benchmark):
     r"""Step3 function implementation.
 
     Date: 2018
@@ -155,10 +164,14 @@ class Step3(object):
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
     """
+    Name = ['Step3']
 
     def __init__(self, Lower=-100.0, Upper=100.0):
-        self.Lower = Lower
-        self.Upper = Upper
+        Benchmark.__init__(self, Lower, Upper)
+
+    @staticmethod
+    def latex_code():
+        return r'''$f(\mathbf{x}) = \sum_{i=1}^D \left( \lfloor x_i^2 \rfloor \right)$'''
 
     @classmethod
     def function(cls):

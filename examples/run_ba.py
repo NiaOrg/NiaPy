@@ -6,7 +6,7 @@ sys.path.append('../')
 
 import random
 import logging
-from NiaPy.algorithms.basic import BatAlgorithm
+from NiaPy import Runner
 from NiaPy.benchmarks import Griewank
 
 logging.basicConfig()
@@ -15,7 +15,6 @@ logger.setLevel('INFO')
 
 # For reproducive results
 random.seed(1234)
-
 
 class MyBenchmark(object):
     def __init__(self):
@@ -30,13 +29,11 @@ class MyBenchmark(object):
             return val
         return evaluate
 
-
 # example using custom benchmark "MyBenchmark"
 logger.info('Running with custom MyBenchmark...')
 for i in range(10):
-    Algorithm = BatAlgorithm(10, 40, 10000, 0.5, 0.5, 0.0, 2.0, MyBenchmark())
+    Algorithm = Runner.getAlgorithm('BA')(D=10, NP=40, nFES=50000, A=0.5, r=0.5, Qmin=0.0, Qmax=2.0, benchmark=MyBenchmark())
     Best = Algorithm.run()
-
     logger.info(Best)
 
 # example using predifined benchmark function
@@ -50,16 +47,16 @@ logger.info('Running with default Griewank benchmark...')
 griewank = Griewank()
 
 for i in range(10):
-    Algorithm = BatAlgorithm(10, 40, 10000, 0.5, 0.5, 0.0, 2.0, griewank)
+    Algorithm = Runner.getAlgorithm('BA')(D=10, NP=40, nFES=10000, A=0.5, r=0.5, Qmin=0.0, Qmax=2.0, benchmark=griewank)
     Best = Algorithm.run()
-
+    Best = Algorithm.run()
     logger.info(Best)
 
 logger.info(
     'Running with default Griewank benchmark - should be the same as previous implementataion...')
 
 for i in range(10):
-    Algorithm = BatAlgorithm(10, 40, 10000, 0.5, 0.5, 0.0, 2.0, 'griewank')
+    Algorithm = Runner.getAlgorithm('BA')(D=10, NP=40, nFES=10000, A=0.5, r=0.5, Qmin=0.0, Qmax=2.0, benchmark='griewank')
     Best = Algorithm.run()
 
     logger.info(Best)
@@ -70,7 +67,6 @@ logger.info('Running with Griewank with changed Upper and Lower bounds...')
 griewank = Griewank(-50, 50)
 
 for i in range(10):
-    Algorithm = BatAlgorithm(10, 40, 10000, 0.5, 0.5, 0.0, 2.0, griewank)
+    Algorithm = Runner.getAlgorithm('BA')(D=10, NP=40, nFES=10000, A=0.5, r=0.5, Qmin=0.0, Qmax=2.0, benchmark=griewank)
     Best = Algorithm.run()
-
     logger.info(Best)

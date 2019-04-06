@@ -1,21 +1,18 @@
 [[source]]
-
 url = "https://pypi.python.org/simple"
 verify_ssl = true
 name = "pypi"
 
-
 [packages]
-
 click = "*"
-numpy = "==1.14.0"
-scipy = "==1.0.0"
-xlsxwriter = "==1.0.2"
-
+numpy = ">=1.16.2"
+scipy = ">=1.2.1"
+matplotlib = ">=2.2.4"
 
 [dev-packages]
-
-pylint = "*"
+#pylint = [{version = "==1.9.3", markers = "python_version < '3.4'"}, {version = ">=2.3.0", markers = "python_version >= '3.4'"}]
+#pylint = ">=2.3.0"
+pylint = ">=1.9.3"
 pycodestyle = "*"
 pydocstyle = "*"
 pytest = "~=3.3"
@@ -24,18 +21,22 @@ pytest-expecter = "*"
 pytest-random = "*"
 pytest-cov = "*"
 freezegun = "*"
-"coverage.space" = "*"
+coverage-space = "*"
 docutils = "*"
-pygments = "*"
+"pathlib2" = "*"
 wheel = "*"
-pyinstaller = "*"
 twine = "*"
 sniffer = "*"
-macfsevents = {version = "*", sys_platform = "== 'darwin'"}
 "enum34" = "*"
 singledispatch = "*"
-"backports.functools-lru-cache" = "*"
 configparser = "*"
-sphinx = "*"
 sphinx-rtd-theme = "*"
 funcsigs = "*"
+futures = "==3.1.1"
+"autopep8" = "*"
+sphinx-autobuild = "*"
+scandir = "*"
+Pygments = "*"
+"backports.functools_lru_cache" = "*"
+Sphinx = "*"
+MacFSEvents = {sys_platform = "== 'darwin'",version = "*"}

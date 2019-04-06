@@ -1,179 +1,169 @@
-import random
-import math
-from NiaPy.benchmarks.utility import Utility
+# encoding=utf8
+# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, redefined-builtin, line-too-long, no-self-use, arguments-differ, no-else-return, bad-continuation
+import logging
+
+from numpy import argsort, sum, exp, apply_along_axis, asarray, where
+
+from NiaPy.algorithms.algorithm import Algorithm
 
 __all__ = ['FireflyAlgorithm']
 
+logging.basicConfig()
+logger = logging.getLogger('NiaPy.algorithms.basic')
+logger.setLevel('INFO')
 
-class FireflyAlgorithm(object):
-    r"""Implementation of Firefly algorithm.
+class FireflyAlgorithm(Algorithm):
+	r"""Implementation of Firefly algorithm.
 
-    **Algorithm:** Firefly algorithm
+	Algorithm:
+		Firefly algorithm
 
-    **Date:** 2016
+	Date:
+		2016
 
-    **Authors:** Iztok Fister Jr. and Iztok Fister
+	Authors:
+		Iztok Fister Jr, Iztok Fister and Klemen Berkovič
 
-    **License:** MIT
+	License:
+		MIT
 
-    **Reference paper:**
-        Fister, I., Fister Jr, I., Yang, X. S., & Brest, J. (2013).
-        A comprehensive review of firefly algorithms.
-        Swarm and Evolutionary Computation, 13, 34-46.
-    """
+	Reference paper:
+		Fister, I., Fister Jr, I., Yang, X. S., & Brest, J. (2013). A comprehensive review of firefly algorithms. Swarm and Evolutionary Computation, 13, 34-46.
 
-    def __init__(self, D, NP, nFES, alpha, betamin, gamma, benchmark):
-        r"""**__init__(self, D, NP, nFES, alpha, betamin, gamma, benchmark)**.
+	Attributes:
+		Name (List[str]): List of string representing algorithm name.
+		alpha (float): Alpha parameter.
+		betamin (float): Betamin parameter.
+		gamma (flaot): Gamma parameter.
 
-        Arguments:
-            D {integer} -- dimension of problem
+	See Also:
+		* :class:`NiaPy.algorithms.Algorithm`
+	"""
+	Name = ['FireflyAlgorithm', 'FA']
 
-            NP {integer} -- population size
+	@staticmethod
+	def typeParameters():
+		r"""TODO.
 
-            nFES {integer} -- number of function evaluations
+		Returns:
+			Dict[str, Callable]:
+				* alpha (Callable[[Union[float, int]], bool]): TODO.
+				* betamin (Callable[[Union[float, int]], bool]): TODO.
+				* gamma (Callable[[Union[float, int]], bool]): TODO.
 
-            alpha {decimal} -- alpha parameter
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.typeParameters`
+		"""
+		d = Algorithm.typeParameters()
+		d.update({
+			'alpha': lambda x: isinstance(x, (float, int)) and x > 0,
+			'betamin': lambda x: isinstance(x, (float, int)) and x > 0,
+			'gamma': lambda x: isinstance(x, (float, int)) and x > 0,
+		})
+		return d
 
-            betamin {decimal} -- betamin parameter
+	def setParameters(self, NP=20, alpha=1, betamin=1, gamma=2, **ukwargs):
+		r"""Set the parameters of the algorithm.
 
-            gamma {decimal} -- gamma parameter
+		Args:
+			NP (Optional[int]): Populatoin size.
+			alpha (Optional[float]): Alpha parameter.
+			betamin (Optional[float]): Betamin parameter.
+			gamma (Optional[flaot]): Gamma parameter.
+			ukwargs (Dict[str, Any]): Additional arguments.
 
-            benchmark {object} -- benchmark implementation object
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.setParameters`
+		"""
+		Algorithm.setParameters(self, NP=NP)
+		self.alpha, self.betamin, self.gamma = alpha, betamin, gamma
+		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-        Raises:
-            TypeError -- Raised when given benchmark function which does not exists.
+	def alpha_new(self, a, alpha):
+		r"""Optionally recalculate the new alpha value.
 
-        """
+		Args:
+			a (float):
+			alpha (float):
 
-        self.benchmark = Utility().get_benchmark(benchmark)
-        self.D = D  # dimension of the problem
-        self.NP = NP  # population size
-        self.nFES = nFES  # number of function evaluations
-        self.alpha = alpha  # alpha parameter
-        self.betamin = betamin  # beta parameter
-        self.gamma = gamma  # gamma parameter
+		Returns:
+			float: New value of parameter alpha
+		"""
+		delta = 1.0 - pow(pow(10.0, -4.0) / 0.9, 1.0 / float(a))
+		return (1 - delta) * alpha
 
-        # sort of fireflies according to fitness values
-        self.Index = [0] * self.NP
-        self.Fireflies = [[0 for _i in range(self.D)]
-                          for _j in range(self.NP)]  # firefly agents
-        self.Fireflies_tmp = [[0 for _i in range(self.D)] for _j in range(
-            self.NP)]  # intermediate population
-        self.Fitness = [0.0] * self.NP  # fitness values
-        self.Intensity = [0.0] * self.NP  # light intensity
-        self.nbest = [0.0] * self.NP  # the best solution found so far
-        self.Lower = self.benchmark.Lower  # lower bound
-        self.Upper = self.benchmark.Upper  # upper bound
-        self.fbest = None  # the best
-        self.evaluations = 0
-        self.eval_flag = True  # evaluations flag
-        self.Fun = self.benchmark.function()
+	def move_ffa(self, i, Fireflies, Intensity, oFireflies, alpha, task):
+		r"""Move fireflies.
 
-    def init_ffa(self):
-        """Initialize firefly population."""
-        for i in range(self.NP):
-            for j in range(self.D):
-                self.Fireflies[i][j] = random.uniform(
-                    0, 1) * (self.Upper - self.Lower) + self.Lower
-            self.Fitness[i] = 1.0  # initialize attractiveness
-            self.Intensity[i] = self.Fitness[i]
+		Args:
+			i (int): Index of current individual.
+			Fireflies (numpy.ndarray):
+			Intensity (numpy.ndarray):
+			oFireflies (numpy.ndarray):
+			alpha (float):
+			task (Task): Optimization task.
 
-    def alpha_new(self, a):
-        """Optionally recalculate the new alpha value."""
-        delta = 1.0 - math.pow((math.pow(10.0, -4.0) / 0.9), 1.0 / float(a))
-        return (1 - delta) * self.alpha
+		Returns:
+			Tuple[numpy.ndarray, bool]:
+				1. New individual
+				2. ``True`` if individual vas moved, ``False`` if individual was not moved
+		"""
+		moved = False
+		for j in range(self.NP):
+			r = sum((Fireflies[i] - Fireflies[j]) ** 2) ** (1 / 2)
+			if Intensity[i] <= Intensity[j]: continue
+			beta = (1.0 - self.betamin) * exp(-self.gamma * r ** 2.0) + self.betamin
+			tmpf = alpha * (self.uniform(0, 1, task.D) - 0.5) * task.bRange
+			Fireflies[i] = task.repair(Fireflies[i] * (1.0 - beta) + oFireflies[j] * beta + tmpf, rnd=self.Rand)
+			moved = True
+		return Fireflies[i], moved
 
-    def eval_true(self):
-        """Check evaluations."""
+	def initPopulation(self, task):
+		r"""Initialize the starting population.
 
-        if self.evaluations == self.nFES:
-            self.eval_flag = False
+		Args:
+			task (Task): Optimization task
 
-    def sort_ffa(self):  #
-        """Implement bubble sort."""
-        for i in range(self.NP):
-            self.Index[i] = i
+		Returns:
+			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+				1. New population.
+				2. New population fitness/function values.
+				3. Additional arguments:
+					* alpah (float): TODO
 
-        for i in range(0, (self.NP - 1)):
-            j = i + 1
-            for j in range(j, self.NP):
-                if self.Intensity[i] > self.Intensity[j]:
-                    z = self.Intensity[i]  # exchange attractiveness
-                    self.Intensity[i] = self.Intensity[j]
-                    self.Intensity[j] = z
-                    z = self.Fitness[i]  # exchange fitness
-                    self.Fitness[i] = self.Fitness[j]
-                    self.Fitness[j] = z
-                    z = self.Index[i]  # exchange indexes
-                    self.Index[i] = self.Index[j]
-                    self.Index[j] = z
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.initPopulation`
+		"""
+		Fireflies, Intensity, _ = Algorithm.initPopulation(self, task)
+		return Fireflies, Intensity, {'alpha': self.alpha}
 
-    def replace_ffa(self):
-        """Replace the old population according to the new Index values."""
-        for i in range(self.NP):
-            for j in range(self.D):
-                self.Fireflies_tmp[i][j] = self.Fireflies[i][j]
+	def runIteration(self, task, Fireflies, Intensity, xb, fxb, alpha, **dparams):
+		r"""Core function of Firefly Algorithm.
 
-        # generational selection in the sense of an EA
-        for i in range(self.NP):
-            for j in range(self.D):
-                self.Fireflies[i][j] = self.Fireflies_tmp[self.Index[i]][j]
+		Args:
+			task (Task): Optimization task.
+			Fireflies (numpy.ndarray): Current population.
+			Intensity (numpy.ndarray[float]): Current population function/fitness values.
+			xb (numpy.ndarray): Global best individual.
+			fxb (float): Global best individual fitness/function value.
+			alpha (float): TODO.
+			**dparams (Dict[str, Any]): Additional arguments.
 
-    def FindLimits(self, k):
-        for i in range(self.D):
-            if self.Fireflies[k][i] < self.Lower:
-                self.Fireflies[k][i] = self.Lower
-            if self.Fireflies[k][i] > self.Upper:
-                self.Fireflies[k][i] = self.Upper
+		Returns:
+			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+				1. New population.
+				2. New population fitness/function values.
+				3. Additional arguments:
+					* alpha (float): TODO
 
-    def move_ffa(self):
-        """Move fireflies."""
-        for i in range(self.NP):
-            scale = abs(self.Upper - self.Lower)
-            for j in range(self.NP):
-                r = 0.0
-                for k in range(self.D):
-                    r += (self.Fireflies[i][k] - self.Fireflies[j][k]) * \
-                        (self.Fireflies[i][k] - self.Fireflies[j][k])
-                r = math.sqrt(r)
-                if self.Intensity[i] > self.Intensity[
-                        j]:  # brighter and more attractive
-                    beta0 = 1.0
-                    beta = (beta0 - self.betamin) * \
-                        math.exp(-self.gamma * math.pow(r, 2.0)) + self.betamin
-                    for k in range(self.D):
-                        r = random.uniform(0, 1)
-                        tmpf = self.alpha * (r - 0.5) * scale
-                        self.Fireflies[i][k] = self.Fireflies[i][
-                            k] * (1.0 - beta) + self.Fireflies_tmp[j][k] * beta + tmpf
-            self.FindLimits(i)
+		See Also:
+			* :func:`NiaPy.algorithms.basic.FireflyAlgorithm.move_ffa`
+		"""
+		alpha = self.alpha_new(task.nFES / self.NP, alpha)
+		Index = argsort(Intensity)
+		tmp = asarray([self.move_ffa(i, Fireflies[Index], Intensity[Index], Fireflies, alpha, task) for i in range(self.NP)])
+		Fireflies, evalF = asarray([tmp[i][0] for i in range(len(tmp))]), asarray([tmp[i][1] for i in range(len(tmp))])
+		Intensity[where(evalF)] = apply_along_axis(task.eval, 1, Fireflies[where(evalF)])
+		return Fireflies, Intensity, {'alpha': alpha}
 
-    def run(self):
-        self.init_ffa()
-
-        while self.eval_flag is not False:
-
-            # optional reducing of alpha
-            self.alpha = self.alpha_new(self.nFES / self.NP)
-
-            # evaluate new solutions
-            for i in range(self.NP):
-
-                self.eval_true()
-                if self.eval_flag is not True:
-                    break
-
-                self.Fitness[i] = self.Fun(self.D, self.Fireflies[i])
-                self.evaluations = self.evaluations + 1
-                self.Intensity[i] = self.Fitness[i]
-
-            # ranking fireflies by their light intensity
-            self.sort_ffa()
-            # replace old population
-            self.replace_ffa()
-            # find the current best
-            self.fbest = self.Intensity[0]
-            # move all fireflies to the better locations
-            self.move_ffa()
-
-        return self.fbest
+# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

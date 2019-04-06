@@ -1,11 +1,12 @@
 # encoding=utf8
 # pylint: disable=anomalous-backslash-in-string
 import math
+from NiaPy.benchmarks.benchmark import Benchmark
 
 __all__ = ['SchumerSteiglitz']
 
 
-class SchumerSteiglitz(object):
+class SchumerSteiglitz(Benchmark):
     r"""Implementation of Schumer Steiglitz function.
 
     Date: 2018
@@ -40,10 +41,14 @@ class SchumerSteiglitz(object):
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
     """
+    Name = ['SchumerSteiglitz']
 
     def __init__(self, Lower=-100.0, Upper=100.0):
-        self.Lower = Lower
-        self.Upper = Upper
+        Benchmark.__init__(self, Lower, Upper)
+
+    @staticmethod
+    def latex_code():
+        return r'''$f(\mathbf{x}) = \sum_{i=1}^D x_i^4$'''
 
     @classmethod
     def function(cls):

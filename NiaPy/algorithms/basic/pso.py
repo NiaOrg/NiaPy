@@ -1,136 +1,177 @@
 # encoding=utf8
-import random
-import numpy
-from NiaPy.benchmarks.utility import Utility
+# pylint: disable=mixed-indentation, line-too-long, singleton-comparison, multiple-statements, attribute-defined-outside-init, no-self-use, logging-not-lazy, unused-variable, arguments-differ, bad-continuation
+import logging
+from numpy import apply_along_axis, full, where
+from NiaPy.algorithms.algorithm import Algorithm
+from NiaPy.util import fullArray
+
+logging.basicConfig()
+logger = logging.getLogger('NiaPy.algorithms.basic')
+logger.setLevel('INFO')
 
 __all__ = ['ParticleSwarmAlgorithm']
 
+class ParticleSwarmAlgorithm(Algorithm):
+	r"""Implementation of Particle Swarm Optimization algorithm.
 
-class ParticleSwarmAlgorithm(object):
-    r"""Implementation of Particle Swarm Optimization algorithm.
+	Algorithm:
+		Particle Swarm Optimization algorithm
 
-    **Algorithm:** Particle Swarm Optimization algorithm
+	Date:
+		2018
 
-    **Date:** 2018
+	Authors:
+		Lucija Brezočnik, Grega Vrbančič, Iztok Fister Jr. and Klemen Berkovič
 
-    **Authors:** Lucija Brezočnik, Grega Vrbančič, and Iztok Fister Jr.
+	License:
+		MIT
 
-    **License:** MIT
+	Reference paper:
+		Kennedy, J. and Eberhart, R. "Particle Swarm Optimization". Proceedings of IEEE International Conference on Neural Networks. IV. pp. 1942--1948, 1995.
 
-    **Reference paper:**
-        Kennedy, J. and Eberhart, R. "Particle Swarm Optimization".
-        Proceedings of IEEE International Conference on Neural Networks.
-        IV. pp. 1942--1948, 1995.
-    """
+	Attributes:
+		Name (List[str]): List of strings representing algorithm names
 
-    def __init__(self, D, NP, nFES, C1, C2, w, vMin, vMax, benchmark):
-        r"""**__init__(self, NP, D, nFES, C1, C2, w, vMin, vMax, benchmark)**.
+	See Also:
+		* :class:`NiaPy.algorithms.Algorithm`
+	"""
+	Name = ['ParticleSwarmAlgorithm', 'PSO']
 
-        Arguments:
-            NP {integer} -- population size
+	@staticmethod
+	def typeParameters():
+		r"""TODO.
 
-            D {integer} -- dimension of problem
+		Returns:
+			Dict[str, Callable]:
+				* NP (Callable[[int], bool]): TODO
+				* C1 (Callable[[Union[int, float]], bool]): TODO
+				* C2 (Callable[[Union[int, float]], bool]): TODO
+				* w (Callable[[float], bool]): TODO
+				* vMin (Callable[[Union[int, float]], bool]): TODO
+				* vMax (Callable[[Union[int, float], bool]): TODO
+		"""
+		return {
+			'NP': lambda x: isinstance(x, int) and x > 0,
+			'C1': lambda x: isinstance(x, (int, float)) and x >= 0,
+			'C2': lambda x: isinstance(x, (int, float)) and x >= 0,
+			'w': lambda x: isinstance(x, float) and x >= 0,
+			'vMin': lambda x: isinstance(x, (int, float)),
+			'vMax': lambda x: isinstance(x, (int, float))
+		}
 
-            nFES {integer} -- number of function evaluations
+	def setParameters(self, NP=25, C1=2.0, C2=2.0, w=0.7, vMin=-4, vMax=4, **ukwargs):
+		r"""Set Particle Swarm Algorithm main parameters.
 
-            C1 {decimal} -- cognitive component
+		Args:
+			NP (Optional[int]): Population size
+			C1 (Optional[float]): Cognitive component
+			C2 (Optional[float]): Social component
+			w (Optional[float]): Inertial weight
+			vMin (Optional[float]): Mininal velocity
+			vMax (Optional[float]): Maximal velocity
+			**ukwargs: Additional arguments
 
-            C2 {decimal} -- social component
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.setParameters`
+		"""
+		Algorithm.setParameters(self, NP=NP)
+		self.C1, self.C2, self.w, self.vMin, self.vMax = C1, C2, w, vMin, vMax
+		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-            w {decimal} -- inertia weight
+	def repair(self, x, l, u):
+		r"""Repair array to range.
 
-            vMin {decimal} -- minimal velocity
+		Args:
+			x (numpy.ndarray): Array to repair.
+			l (numpy.ndarray): Lower limit of allowed range.
+			u (numpy.ndarray): Upper limit of allowed range.
 
-            vMax {decimal} -- maximal velocity
+		Returns:
+			numpy.ndarray: Repaired array.
+		"""
+		ir = where(x < l)
+		x[ir] = l[ir]
+		ir = where(x > u)
+		x[ir] = u[ir]
+		return x
 
-            benchmark {object} -- benchmark implementation object
+	def init(self, task):
+		r"""Initialize dynamic arguments of Particle Swarm Optimization algorithm.
 
-        """
+		Args:
+			task (Task): Optimization task.
 
-        self.benchmark = Utility().get_benchmark(benchmark)
-        self.NP = NP  # population size; number of search agents
-        self.D = D  # dimension of the problem
-        self.C1 = C1  # cognitive component
-        self.C2 = C2  # social component
-        self.w = w  # inertia weight
-        self.vMin = vMin  # minimal velocity
-        self.vMax = vMax  # maximal velocity
-        self.Lower = self.benchmark.Lower  # lower bound
-        self.Upper = self.benchmark.Upper  # upper bound
-        self.nFES = nFES  # number of function evaluations
-        self.eval_flag = True  # evaluations flag
-        self.evaluations = 0  # evaluations counter
-        self.Fun = self.benchmark.function()
+		Returns:
+			Dict[str, Any]:
+				* w (numpy.ndarray): Inertial weight.
+				* vMin (numpy.ndarray): Mininal velocity.
+				* vMax (numpy.ndarray): Maximal velocity.
+				* V (numpy.ndarray): Initial velocity of particle.
+		"""
+		return {'w': fullArray(self.w, task.D), 'vMin': fullArray(self.vMin, task.D), 'vMax': fullArray(self.vMax, task.D), 'V': full([self.NP, task.D], 0.0)}
 
-        self.Solution = numpy.zeros((self.NP, self.D))  # positions of search agents
-        self.Velocity = numpy.zeros((self.NP, self.D))  # velocities of search agents
+	def initPopulation(self, task):
+		r"""Initialize population and dynamic arguments of the Particle Swarm Optimization algorithm.
 
-        self.pBestFitness = numpy.zeros(self.NP)  # personal best fitness
-        self.pBestFitness.fill(float("inf"))
-        self.pBestSolution = numpy.zeros((self.NP, self.D))  # personal best solution
+		Args:
+			task (Task): Optimization task.
 
-        self.gBestFitness = float("inf")  # global best fitness
-        self.gBestSolution = numpy.zeros(self.D)  # global best solution
+		Returns:
+			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+				1. Initial population.
+				2. Initial population fitness/function values.
+				3. Additional arguments:
+					* popb (numpy.ndarray): particles best population.
+					* fpopb (numpy.ndarray[float]): particles best positions function/fitness value.
+					* w (numpy.ndarray): Inertial weight.
+					* vMin (numpy.ndarray): Minimal velocity.
+					* vMax (numpy.ndarray): Maximal velocity.
+					* V (numpy.ndarray): Initial velocity of particle.
 
-    def init(self):
-        """Initialize positions."""
-        for i in range(self.NP):
-            for j in range(self.D):
-                self.Solution[i][j] = random.random() * \
-                    (self.Upper - self.Lower) + self.Lower
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.initPopulation`
+		"""
+		pop, fpop, d = Algorithm.initPopulation(self, task)
+		d.update(self.init(task))
+		d.update({'popb': pop, 'fpopb': fpop})
+		return pop, fpop, d
 
-    def eval_true(self):
-        """Check evaluations."""
+	def runIteration(self, task, pop, fpop, xb, fxb, popb, fpopb, w, vMin, vMax, V, **dparams):
+		r"""Core function of Particle Swarm Optimization algorithm.
 
-        if self.evaluations == self.nFES:
-            self.eval_flag = False
+		Args:
+			task (Task): Optimization task.
+			pop (numpy.ndarray): Current populations.
+			fpop (numpy.ndarray[float]): Current population fitness/function values.
+			xb (numpy.ndarray): Current best particle.
+			fxb (float): Current best particle fitness/function value.
+			popb (numpy.ndarray): Particles best position.
+			fpopb (numpy.ndarray[float]): Particles best positions fitness/function values.
+			w (numpy.ndarray): Inertial weights.
+			vMin (numpy.ndarray): Minimal velocity.
+			vMax (numpy.ndarray): Maximal velocity.
+			V (numpy.ndarray): Velocity of particles.
+			**dparams (Dict[str, Any]): Additional function arguments.
 
-    def bounds(self, position):
-        for i in range(self.D):
-            if position[i] < self.Lower:
-                position[i] = self.Lower
-            if position[i] > self.Upper:
-                position[i] = self.Upper
-        return position
+		Returns:
+			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+				1. New population.
+				2. New population fitness/function values.
+				3. Additional arguments:
+					* popb (numpy.ndarray): Particles best population.
+					* fpopb (numpy.ndarray[float]): Particles best positions function/fitness value.
+					* w (numpy.ndarray): Inertial weight.
+					* vMin (numpy.ndarray): Minimal velocity.
+					* vMax (numpy.ndarray): Maximal velocity.
+					* V (numpy.ndarray): Initial velocity of particle.
+		"""
+		V = w * V + self.C1 * self.rand([self.NP, task.D]) * (popb - pop) + self.C2 * self.rand([self.NP, task.D]) * (xb - pop)
+		V = apply_along_axis(self.repair, 1, V, vMin, vMax)
+		pop += V
+		pop = apply_along_axis(task.repair, 1, pop, rnd=self.Rand)
+		fpop = apply_along_axis(task.eval, 1, pop)
+		ip_pb = where(fpop > fpopb)
+		popb[ip_pb], fpopb[ip_pb] = pop[ip_pb], fpop[ip_pb]
+		return pop, fpop, {'popb': popb, 'fpopb': fpopb, 'w': w, 'vMin': vMin, 'vMax': vMax, 'V': V}
 
-    def move_particles(self):
-
-        self.init()
-
-        while self.eval_flag is not False:
-            for i in range(self.NP):
-                self.Solution[i] = self.bounds(self.Solution[i])
-
-                self.eval_true()
-                if self.eval_flag is not True:
-                    break
-
-                Fit = self.Fun(self.D, self.Solution[i])
-                self.evaluations = self.evaluations + 1
-
-                if Fit < self.pBestFitness[i]:
-                    self.pBestFitness[i] = Fit
-                    self.pBestSolution[i] = self.Solution[i]
-
-                if Fit < self.gBestFitness:
-                    self.gBestFitness = Fit
-                    self.gBestSolution = self.Solution[i]
-
-            for i in range(self.NP):
-                for j in range(self.D):
-                    self.Velocity[i][j] = (self.w * self.Velocity[i][j]) + \
-                        (self.C1 * random.random() * (self.pBestSolution[i][j] - self.Solution[i][j])) + \
-                        (self.C2 * random.random() * (self.gBestSolution[j] - self.Solution[i][j]))
-
-                    if self.Velocity[i][j] < self.vMin:
-                        self.Velocity[i][j] = self.vMin
-                    if self.Velocity[i][j] > self.vMax:
-                        self.Velocity[i][j] = self.vMax
-
-                    self.Solution[i][j] = self.Solution[i][j] + \
-                        self.Velocity[i][j]
-
-        return self.gBestFitness
-
-    def run(self):
-        return self.move_particles()
+# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

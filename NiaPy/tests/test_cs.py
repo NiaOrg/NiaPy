@@ -1,35 +1,17 @@
-from unittest import TestCase
+# encoding=utf8
+# pylint: disable=mixed-indentation, too-many-function-args
+from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
+from NiaPy.algorithms.basic import CuckooSearch
 
-from NiaPy.algorithms.basic import CuckooSearchAlgorithm
+class CSTestCase(AlgorithmTestCase):
+	def test_custom_works_fine(self):
+		cs_custom = CuckooSearch(NP=20, seed=self.seed)
+		cs_customc = CuckooSearch(NP=20, seed=self.seed)
+		AlgorithmTestCase.algorithm_run_test(self, cs_custom, cs_customc, MyBenchmark())
 
+	def test_griewank_works_fine(self):
+		cs_griewank = CuckooSearch(NP=10, seed=self.seed)
+		cs_griewankc = CuckooSearch(NP=10, seed=self.seed)
+		AlgorithmTestCase.algorithm_run_test(self, cs_griewank, cs_griewankc)
 
-class MyBenchmark(object):
-
-    def __init__(self):
-        self.Lower = -5.12
-        self.Upper = 5.12
-
-    @classmethod
-    def function(cls):
-        def evaluate(D, sol):
-            val = 0.0
-            for i in range(D):
-                val = val + sol[i] * sol[i]
-            return val
-        return evaluate
-
-
-class CSTestCase(TestCase):
-
-    def setUp(self):
-        self.cs_custom = CuckooSearchAlgorithm(
-            40, 40, 10000, 0.25, 0.01, MyBenchmark())
-
-        self.cs_sphere = CuckooSearchAlgorithm(
-            40, 40, 10000, 0.25, 0.01, 'sphere')
-
-    def test_custom_works_fine(self):
-        self.assertTrue(self.cs_custom.run() == 0.0)
-
-    def test_sphere_works_fine(self):
-        self.assertTrue(self.cs_sphere.run() == 0.0)
+# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

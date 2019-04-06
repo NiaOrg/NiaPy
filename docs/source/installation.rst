@@ -36,6 +36,7 @@ click       Any      All
 numpy       1.14.0   All 
 scipy       1.0.0    All 
 xlsxwriter  1.0.2    All 
+matplotlib  *        All
 ==========  =======  ========
 
 List of development dependencies:
@@ -52,7 +53,7 @@ pytest-expecter                Any      Any
 pytest-random                  Any      Any
 pytest-cov                     Any      Any
 freezegun                      Any      Any
-coverage.space                 Any      Any
+coverage-space                 Any      Any
 docutils                       Any      Any
 pygments                       Any      Any
 wheel                          Any      Any
@@ -66,8 +67,10 @@ backports.functools-lru-cache  Any      Any
 configparser                   Any      Any
 sphinx                         Any      Any
 sphinx-rtd-theme               Any      Any
-sphinxcontrib-email            Any      Any  
-funcsigs                       Any      Any         
+funcsigs                       Any      Any
+futures                        Any      Any
+autopep8                       Any      Any
+sphinx-autobuild               Any      Any     
 =============================  =======  ========
 
 Install project dependencies into a virtual environment:

@@ -14,8 +14,8 @@ export PIPENV_VENV_IN_PROJECT=true
 export PIPENV_IGNORE_VIRTUALENVS=true
 ENV := .venv
 
-# Set python version
-PYTHON = python
+# set python interpreter
+PYTHON := python
 
 # MAIN TASKS ##################################################################
 
@@ -49,7 +49,8 @@ METADATA := *.egg-info
 .PHONY: install
 install: $(DEPENDENCIES) $(METADATA)
 
-$(DEPENDENCIES):
+$(DEPENDENCIES): 
+	@ if [ $(TPV) = T ]; then pipenv --python $(shell $(PYTHON) -c "import sys; print('%d.%d.%d' % (sys.version_info.major, sys.version_info.minor, sys.version_info.micro))"); fi
 	pipenv install --dev
 	@ touch $@
 
@@ -80,7 +81,7 @@ pydocstyle: install
 
 # TESTS #######################################################################
 
-PYTEST := pipenv run py.test
+PYTEST := pipenv run pytest
 COVERAGE := pipenv run coverage
 COVERAGE_SPACE := pipenv run coverage.space
 

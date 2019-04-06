@@ -3,11 +3,12 @@
 """Implementations of Alpine functions."""
 
 import math
+from NiaPy.benchmarks.benchmark import Benchmark
 
 __all__ = ['Alpine1', 'Alpine2']
 
 
-class Alpine1(object):
+class Alpine1(Benchmark):
     r"""Implementation of Alpine1 function.
 
     Date: 2018
@@ -42,10 +43,23 @@ class Alpine1(object):
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
     """
+    Name = ['Alpine1']
 
     def __init__(self, Lower=-10.0, Upper=10.0):
-        self.Lower = Lower
-        self.Upper = Upper
+        r"""Initialize Alpine1 benchmark.
+
+        Args:
+            Lower (Optional[float]): Lower bound of problem.
+            Upper (Optional[float]): Upper bound of problem.
+
+        See Also:
+            :func:`NiaPy.benchmarks.Benchmark.__init__`
+        """
+        Benchmark.__init__(self, Lower, Upper)
+
+    @staticmethod
+    def latex_code():
+        return r'''$f(\mathbf{x}) = \sum_{i=1}^{D} \left |x_i \sin(x_i)+0.1x_i \right|$'''
 
     @classmethod
     def function(cls):
@@ -61,7 +75,7 @@ class Alpine1(object):
         return evaluate
 
 
-class Alpine2(object):
+class Alpine2(Benchmark):
     r"""Implementation of Alpine2 function.
 
     Date: 2018
@@ -97,10 +111,23 @@ class Alpine2(object):
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
     """
+    Name = ['Alpine2']
 
     def __init__(self, Lower=0.0, Upper=10.0):
-        self.Lower = Lower
-        self.Upper = Upper
+        r"""Initialize Alpine2 benchmark.
+
+        Args:
+            Lower (Optional[float]): Lower bound of problem.
+            Upper (Optional[float]): Upper bound of problem.
+
+        See Also:
+            :func:`NiaPy.benchmarks.Benchmark.__init__`
+        """
+        Benchmark.__init__(self, Lower=Lower, Upper=Upper)
+
+    @staticmethod
+    def latex_code():
+        return r'''$f(\mathbf{x}) = \prod_{i=1}^{D} \sqrt{x_i} \sin(x_i)$'''
 
     @classmethod
     def function(cls):

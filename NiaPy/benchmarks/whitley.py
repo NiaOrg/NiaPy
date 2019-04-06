@@ -1,11 +1,11 @@
 # encoding=utf8
 # pylint: disable=anomalous-backslash-in-string
 import math
+from NiaPy.benchmarks.benchmark import Benchmark
 
 __all__ = ['Whitley']
 
-
-class Whitley(object):
+class Whitley(Benchmark):
     r"""Implementation of Whitley function.
 
     Date: 2018
@@ -47,10 +47,16 @@ class Whitley(object):
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
     """
+    Name = ['Whitley']
 
     def __init__(self, Lower=-10.24, Upper=10.24):
-        self.Lower = Lower
-        self.Upper = Upper
+        Benchmark.__init__(self, Lower, Upper)
+
+    @staticmethod
+    def latex_code():
+        return r'''$f(\mathbf{x}) =
+                \sum_{i=1}^D \sum_{j=1}^D \left(\frac{(100(x_i^2-x_j)^2 +
+                (1-x_j)^2)^2}{4000} - \cos(100(x_i^2-x_j)^2 + (1-x_j)^2)+1\right)$'''
 
     @classmethod
     def function(cls):

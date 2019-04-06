@@ -1,11 +1,11 @@
 # encoding=utf8
 # pylint: disable=anomalous-backslash-in-string
 import math
+from NiaPy.benchmarks.benchmark import Benchmark
 
 __all__ = ['StyblinskiTang']
 
-
-class StyblinskiTang(object):
+class StyblinskiTang(Benchmark):
     r"""Implementation of Styblinski-Tang functions.
 
     Date: 2018
@@ -43,10 +43,15 @@ class StyblinskiTang(object):
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
     """
+    Name = ['StyblinskiTang']
 
     def __init__(self, Lower=-5.0, Upper=5.0):
-        self.Lower = Lower
-        self.Upper = Upper
+        Benchmark.__init__(self, Lower, Upper)
+
+    @staticmethod
+    def latex_code():
+        return r'''$f(\mathbf{x}) = \frac{1}{2} \sum_{i=1}^D \left(
+                x_i^4 - 16x_i^2 + 5x_i \right) $'''
 
     @classmethod
     def function(cls):

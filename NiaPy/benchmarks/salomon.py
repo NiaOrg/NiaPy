@@ -1,11 +1,12 @@
 # encoding=utf8
 # pylint: disable=anomalous-backslash-in-string
 import math
+from NiaPy.benchmarks.benchmark import Benchmark
 
 __all__ = ['Salomon']
 
 
-class Salomon(object):
+class Salomon(Benchmark):
     r"""Implementation of Salomon function.
 
     Date: 2018
@@ -44,10 +45,15 @@ class Salomon(object):
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
     """
+    Name = ['Salomon']
 
     def __init__(self, Lower=-100.0, Upper=100.0):
-        self.Lower = Lower
-        self.Upper = Upper
+        Benchmark.__init__(self, Lower, Upper)
+
+    @staticmethod
+    def latex_code():
+        return r'''$f(\mathbf{x}) = 1 - \cos\left(2\pi\sqrt{\sum_{i=1}^D x_i^2}
+                \right)+ 0.1 \sqrt{\sum_{i=1}^D x_i^2}$'''
 
     @classmethod
     def function(cls):

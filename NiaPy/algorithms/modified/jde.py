@@ -1,158 +1,357 @@
-import random as rnd
-import copy
-from NiaPy.benchmarks.utility import Utility
+# encoding=utf8
+# pylint: disable=mixed-indentation, multiple-statements, logging-not-lazy, attribute-defined-outside-init, line-too-long, arguments-differ, singleton-comparison, bad-continuation, dangerous-default-value, consider-using-enumerate, unused-argument, unused-argument
+import logging
 
-__all__ = ['SelfAdaptiveDifferentialEvolutionAlgorithm']
+from NiaPy.algorithms.algorithm import Individual
+from NiaPy.algorithms.basic.de import DifferentialEvolution, CrossBest1, CrossRand1, CrossCurr2Best1, CrossBest2, CrossCurr2Rand1, proportional, multiMutations
+from NiaPy.util.utility import objects2array
+
+logging.basicConfig()
+logger = logging.getLogger('NiaPy.algorithms.modified')
+logger.setLevel('INFO')
+
+__all__ = [
+	'SelfAdaptiveDifferentialEvolution',
+	'DynNpSelfAdaptiveDifferentialEvolutionAlgorithm',
+	'AgingSelfAdaptiveDifferentialEvolution',
+	'MultiStrategySelfAdaptiveDifferentialEvolution',
+	'DynNpMultiStrategySelfAdaptiveDifferentialEvolution'
+]
+
+class SolutionjDE(Individual):
+	r"""Individual for jDE algorithm.
+
+	Attributes:
+		F (float): Scale factor.
+		CR (float): Crossover probability.
+
+	See Also:
+		:class:`NiaPy.algorithms.Individual`
+	"""
+	def __init__(self, F=2, CR=0.5, **kwargs):
+		r"""Initialize SolutionjDE.
+
+		Attributes:
+			F (float): Scale factor.
+			CR (float): Crossover probability.
+
+		See Also:
+			:func:`NiaPy.algorithm.Individual.__init__`
+		"""
+		Individual.__init__(self, **kwargs)
+		self.F, self.CR = F, CR
+
+class SelfAdaptiveDifferentialEvolution(DifferentialEvolution):
+	r"""Implementation of Self-adaptive differential evolution algorithm.
+
+	Algorithm:
+		Self-adaptive differential evolution algorithm
+
+	Date:
+		2018
+
+	Author:
+		Uros Mlakar and Klemen Berkovič
+
+	License:
+		MIT
+
+	Reference paper:
+		Brest, J., Greiner, S., Boskovic, B., Mernik, M., Zumer, V. Self-adapting control parameters in differential evolution: A comparative study on numerical benchmark problems. IEEE transactions on evolutionary computation, 10(6), 646-657, 2006.
+
+	Attributes:
+		Name (List[str]): List of strings representing algorithm name
+		F_l (float): Scaling factor lower limit.
+		F_u (float): Scaling factor upper limit.
+		Tao1 (float): Change rate for F parameter update.
+		Tao2 (float): Change rate for CR parameter update.
+
+	See Also:
+		* :class:`NiaPy.algorithms.basic.DifferentialEvolution`
+	"""
+	Name = ['SelfAdaptiveDifferentialEvolution', 'jDE']
+
+	@staticmethod
+	def typeParameters():
+		r"""Get dictionary with functions for checking values of parameters.
+
+		Returns:
+			Dict[str, Callable]:
+				* F_l (Callable[[Union[float, int]], bool]): TODO
+				* F_u (Callable[[Union[float, int]], bool]): TODO
+				* Tao1 (Callable[[Union[float, int]], bool]): TODo
+				* Tao2 (Callable[[Union[float, int]], bool]): TODO
+
+		See Also:
+			* :func:`NiaPy.algorithms.basic.DifferentialEvolution.typeParameters`
+		"""
+		d = DifferentialEvolution.typeParameters()
+		d['F_l'] = lambda x: isinstance(x, (float, int)) and x > 0
+		d['F_u'] = lambda x: isinstance(x, (float, int)) and x > 0
+		d['Tao1'] = lambda x: isinstance(x, (float, int)) and 0 <= x <= 1
+		d['Tao2'] = lambda x: isinstance(x, (float, int)) and 0 <= x <= 1
+		return d
+
+	def setParameters(self, F_l=0.0, F_u=1.0, Tao1=0.4, Tao2=0.2, **ukwargs):
+		r"""Set the parameters of an algorithm.
+
+		Arguments:
+			F_l (Optional[float]): Scaling factor lower limit.
+			F_u (Optional[float]): Scaling factor upper limit.
+			Tao1 (Optional[float]): Change rate for F parameter update.
+			Tao2 (Optional[float]): Change rate for CR parameter update.
+
+		See Also:
+			* :func:`NiaPy.algorithms.basic.DifferentialEvolution.setParameters`
+		"""
+		DifferentialEvolution.setParameters(self, itype=ukwargs.pop('itype', SolutionjDE), **ukwargs)
+		self.F_l, self.F_u, self.Tao1, self.Tao2 = F_l, F_u, Tao1, Tao2
+		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
+
+	def AdaptiveGen(self, x):
+		r"""Adaptive update scale factor in crossover probability.
+
+		Args:
+			x (Individual): Individual to apply function on.
+
+		Returns:
+			Individual: New individual with new parameters
+		"""
+		f = self.F_l + self.rand() * (self.F_u - self.F_l) if self.rand() < self.Tao1 else x.F
+		cr = self.rand() if self.rand() < self.Tao2 else x.CR
+		return self.itype(x=x.x, F=f, CR=cr, e=False)
+
+	def evolve(self, pop, xb, task):
+		r"""Evolve current population.
+
+		Args:
+			pop (numpy.ndarray[Individual]): Current population.
+			xb (Individual): Global best individual.
+			task (Task): Optimization task.
+
+		Returns:
+			numpy.ndarray: New population.
+		"""
+		npop = objects2array([self.AdaptiveGen(e) for e in pop])
+		for i, e in enumerate(npop): npop[i].x = self.CrossMutt(npop, i, xb, e.F, e.CR, rnd=self.Rand)
+		return npop
+
+class AgingIndividualJDE(SolutionjDE):
+	r"""Individual with age.
+
+	Attributes:
+		age (int): Age of individual.
+
+	See Also:
+		* :func:`NiaPy.algorithms.modified.SolutionjDE`
+	"""
+	def __init__(self, **kwargs):
+		r"""Initialize aging individual for jDE algorithm.
+
+		Args:
+			**kwargs (Dict[str, Any]): Additional arguments.
+
+		See Also:
+			* :func:`NiaPy.algorithms.modified.SolutionjDE.__init__`
+		"""
+		SolutionjDE.__init__(self, **kwargs)
+		self.age = 0
+
+class AgingSelfAdaptiveDifferentialEvolution(SelfAdaptiveDifferentialEvolution):
+	r"""Implementation of Dynamic population size with aging self-adaptive differential evolution algorithm.
+
+	Algorithm:
+		Dynamic population size with aging self-adaptive self adaptive differential evolution algorithm
+
+	Date:
+		2018
+
+	Author:
+		Jan Popič and Klemen Berkovič
+
+	License:
+		MIT
+
+	Reference URL:
+		https://link.springer.com/article/10.1007/s10489-007-0091-x
+
+	Reference paper:
+		Brest, Janez, and Mirjam Sepesy Maučec. Population size reduction for the differential evolution algorithm. Applied Intelligence 29.3 (2008): 228-247.
+
+	Attributes:
+		Name (List[str]): List of strings representing algorithm name.
+	"""
+	Name = ['AgingSelfAdaptiveDifferentialEvolution', 'ANpjDE']
+
+	@staticmethod
+	def typeParameters():
+		d = SelfAdaptiveDifferentialEvolution.typeParameters()
+		# TODO
+		return d
+
+	def setParameters(self, LT_min=1, LT_max=7, age=proportional, **ukwargs):
+		r"""Set core parameters of AgingSelfAdaptiveDifferentialEvolution algorithm.
+
+		Args:
+			LT_min (Optional[int]): Minimum age.
+			LT_max (Optional[int]): Maximum age.
+			age (Optional[Callable[[], int]]): Function for calculating age of individual.
+			**ukwargs (Dict[str, Any]): Additional arguments.
+
+      See Also:
+      	* :func:`SelfAdaptiveDifferentialEvolution.setParameters`
+		"""
+		SelfAdaptiveDifferentialEvolution.setParameters(self, **ukwargs)
+		self.LT_min, self.LT_max, self.age = LT_min, LT_max, age
+		self.mu = abs(self.LT_max - self.LT_min) / 2
+		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
+
+class DynNpSelfAdaptiveDifferentialEvolutionAlgorithm(SelfAdaptiveDifferentialEvolution):
+	r"""Implementation of Dynamic population size self-adaptive differential evolution algorithm.
+
+	Algorithm:
+		Dynamic population size self-adaptive differential evolution algorithm
+
+	Date:
+		2018
+
+	Author:
+		Jan Popič and Klemen Berkovič
+
+	License:
+		MIT
+
+	Reference URL:
+		https://link.springer.com/article/10.1007/s10489-007-0091-x
+
+	Reference paper:
+		Brest, Janez, and Mirjam Sepesy Maučec. Population size reduction for the differential evolution algorithm. Applied Intelligence 29.3 (2008): 228-247.
+
+	Attributes:
+		Name (List[str]): List of strings representing algorithm name.
+		rp (int): Small non-negative number which is added to value of genp.
+		pmax (int): Number of population reductions.
+	"""
+	Name = ['DynNpSelfAdaptiveDifferentialEvolutionAlgorithm', 'dynNPjDE']
+
+	@staticmethod
+	def typeParameters():
+		d = SelfAdaptiveDifferentialEvolution.typeParameters()
+		d['rp'] = lambda x: isinstance(x, (float, int)) and x > 0
+		d['pmax'] = lambda x: isinstance(x, int) and x > 0
+		return d
+
+	def setParameters(self, rp=0, pmax=10, **ukwargs):
+		r"""Set the parameters of an algorithm.
+
+		Arguments:
+			rp (Optional[int]): Small non-negative number which is added to value of genp (if it's not divisible).
+			pmax (Optional[int]): Number of population reductions.
+
+		See Also:
+			* :func:`NiaPy.algorithms.modified.SelfAdaptiveDifferentialEvolution.setParameters`
+		"""
+		SelfAdaptiveDifferentialEvolution.setParameters(self, **ukwargs)
+		self.rp, self.pmax = rp, pmax
+		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
+
+	def postSelection(self, pop, task):
+		r"""Post selection operator.
+
+		Args:
+			pop (numpy.ndarray[Individual]): Current population.
+			task (Task): Optimization task.
+
+		Returns:
+			numpy.ndarray[Individual]: New population.
+		"""
+		Gr, nNP = task.nFES // (self.pmax * len(pop)) + self.rp, len(pop) // 2
+		if task.Iters == Gr and len(pop) > 3: return objects2array([pop[i] if pop[i].f < pop[i + nNP].f else pop[i + nNP] for i in range(nNP)])
+		return pop
+
+class MultiStrategySelfAdaptiveDifferentialEvolution(SelfAdaptiveDifferentialEvolution):
+	r"""Implementation of self-adaptive differential evolution algorithm with multiple mutation strategys.
+
+	Algorithm:
+		Self-adaptive differential evolution algorithm with multiple mutation strategys
+
+	Date:
+		2018
+
+	Author:
+		Klemen Berkovič
+
+	License:
+		MIT
+
+	Attributes:
+		Name (List[str]): List of strings representing algorithm name
+	"""
+	Name = ['MultiStrategySelfAdaptiveDifferentialEvolution', 'MsjDE']
+
+	def setParameters(self, strategies=(CrossCurr2Rand1, CrossCurr2Best1, CrossRand1, CrossBest1, CrossBest2), **kwargs):
+		r"""Set core parameters of MultiStrategySelfAdaptiveDifferentialEvolution algorithm.
+
+		Args:
+			strategys (Optional[Iterable[Callable]]): Mutations strategies to use in algorithm.
+			**kwargs:
+
+      See Also:
+      	* :func:`NiaPy.algorithms.modified.SelfAdaptiveDifferentialEvolution.setParameters`
+		"""
+		SelfAdaptiveDifferentialEvolution.setParameters(self, CrossMutt=multiMutations, **kwargs)
+		self.strategies = strategies
+
+	def evolve(self, pop, xb, task, **kwargs):
+		r"""Evolve population with the help multiple mutation strategies.
+
+		Args:
+			pop (numpy.ndarray[Individual]): Current population.
+			xb (Individual): Current best individual.
+			task (Task): Optimization task.
+			**kwargs (Dict[str, Any]): Additional arguments.
+
+		Returns:
+			numpy.ndarray[Individual]: New population of individuals.
+		"""
+		return objects2array([self.CrossMutt(pop, i, xb, self.F, self.CR, self.Rand, task, self.itype, self.strategies) for i in range(len(pop))])
 
 
-class SolutionjDE(object):
+class DynNpMultiStrategySelfAdaptiveDifferentialEvolution(MultiStrategySelfAdaptiveDifferentialEvolution, DynNpSelfAdaptiveDifferentialEvolutionAlgorithm):
+	r"""Implementation of Dynamic population size self-adaptive differential evolution algorithm with multiple mutation strategies.
 
-    def __init__(self, D, LB, UB, F, CR):
-        self.D = D
-        self.LB = LB
-        self.UB = UB
-        self.F = F
-        self.CR = CR
-        self.Solution = []
-        self.Fitness = float('inf')
-        self.generateSolution()
+	Algorithm:
+		Dynamic population size self-adaptive differential evolution algorithm with multiple mutation strategies
 
-    def generateSolution(self):
-        """Generate solution."""
+	Date:
+		2018
 
-        self.Solution = [self.LB + (self.UB - self.LB) * rnd.random()
-                         for _i in range(self.D)]
+	Author:
+		Klemen Berkovič
 
-    def evaluate(self):
-        """Evaluate solution."""
+	License:
+		MIT
 
-        self.Fitness = SolutionjDE.FuncEval(self.D, self.Solution)
+	Attributes:
+		Name (List[str]): List of strings representing algorithm name.
+	"""
+	Name = ['DynNpMultiStrategySelfAdaptiveDifferentialEvolution', 'dynNpMsjDE']
 
-    def repair(self):
-        for i in range(self.D):
-            if self.Solution[i] > self.UB:
-                self.Solution[i] = self.UB
-            if self.Solution[i] < self.LB:
-                self.Solution[i] = self.LB
+	def setParameters(self, pmax=10, rp=5, **kwargs):
+		r"""Set core parameters for algorithm instance.
 
-    def __eq__(self, other):
-        return self.Solution == other.Solution and self.Fitness == other.Fitness
+		Args:
+			pmax (Optional[int]):
+			rp (Optional[int]):
+			**kwargs (Dict[str, Any]):
 
+      See Also:
+      	* :func:`NiaPy.algorithms.modified.MultiStrategySelfAdaptiveDifferentialEvolution.setParameters`
+		"""
+		MultiStrategySelfAdaptiveDifferentialEvolution.setParameters(self, **kwargs)
+		self.pmax, self.rp = pmax, rp
 
-class SelfAdaptiveDifferentialEvolutionAlgorithm(object):
-    r"""Implementation of Self-adaptive differential evolution algorithm.
+	def postSelection(self, pop, task):
+		return DynNpSelfAdaptiveDifferentialEvolutionAlgorithm.postSelection(self, pop, task)
 
-    **Algorithm:** Self-adaptive differential evolution algorithm
-
-    **Date:** 2018
-
-    **Author:** Uros Mlakar
-
-    **License:** MIT
-
-    **Reference paper:**
-        Brest, J., Greiner, S., Boskovic, B., Mernik, M., Zumer, V.
-        Self-adapting control parameters in differential evolution:
-        A comparative study on numerical benchmark problems.
-        IEEE transactions on evolutionary computation, 10(6), 646-657, 2006.
-    """
-
-    def __init__(self, D, NP, nFES, F, CR, Tao, benchmark):
-        self.benchmark = Utility().get_benchmark(benchmark)
-        self.D = D  # dimension of problem
-        self.Np = NP  # population size
-        self.nFES = nFES  # number of function evaluations
-        self.F = F  # scaling factor
-        self.CR = CR  # crossover rate
-        self.Tao = Tao
-        self.Lower = self.benchmark.Lower  # lower bound
-        self.Upper = self.benchmark.Upper  # upper bound
-
-        SolutionjDE.FuncEval = staticmethod(self.benchmark.function())
-        self.Population = []
-        self.FEs = 0
-        self.Done = False
-        self.bestSolution = SolutionjDE(
-            self.D,
-            self.Lower,
-            self.Upper,
-            self.F,
-            self.CR)
-
-    def evalPopulation(self):
-        """Evaluate population."""
-
-        for p in self.Population:
-            p.evaluate()
-            if p.Fitness < self.bestSolution.Fitness:
-                self.bestSolution = copy.deepcopy(p)
-
-    def initPopulation(self):
-        """Initialize population."""
-
-        for _i in range(self.Np):
-            self.Population.append(
-                SolutionjDE(self.D,
-                            self.Lower,
-                            self.Upper,
-                            self.F,
-                            self.CR))
-
-    def tryEval(self, v):
-        if self.FEs <= self.nFES:
-            v.evaluate()
-            self.FEs += 1
-        else:
-            self.Done = True
-
-    def generationStep(self, Population):
-        """Implement main DE/jDE step."""
-
-        newPopulation = []
-        for i in range(self.Np):
-            newSolution = SolutionjDE(
-                self.D,
-                self.Lower,
-                self.Upper,
-                self.F,
-                self.CR)
-
-            if rnd.random() < self.Tao:
-                newSolution.F = rnd.random()
-            else:
-                newSolution.F = Population[i].F
-
-            if rnd.random() < self.Tao:
-                newSolution.CR = rnd.random()
-            else:
-                newSolution.CR = Population[i].CR
-
-            r = rnd.sample(range(0, self.Np), 3)
-            while i in r:
-                r = rnd.sample(range(0, self.Np), 3)
-            jrand = int(rnd.random() * self.Np)
-
-            for j in range(self.D):
-                if rnd.random() < newSolution.CR or j == jrand:
-                    newSolution.Solution[j] = Population[r[0]].Solution[j] + newSolution.F * (
-                        Population[r[1]].Solution[j] - Population[r[2]].Solution[j])
-                else:
-                    newSolution.Solution[j] = Population[i].Solution[j]
-            newSolution.repair()
-            self.tryEval(newSolution)
-
-            if newSolution.Fitness < self.bestSolution.Fitness:
-                self.bestSolution = copy.deepcopy(newSolution)
-            if newSolution.Fitness < self.Population[i].Fitness:
-                newPopulation.append(newSolution)
-            else:
-                newPopulation.append(Population[i])
-        return newPopulation
-
-    def run(self):
-        self.initPopulation()
-        self.evalPopulation()
-        self.FEs = self.Np
-        while not self.Done:
-            self.Population = self.generationStep(self.Population)
-        return self.bestSolution.Fitness
+# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

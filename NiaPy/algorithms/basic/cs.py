@@ -1,175 +1,142 @@
 # encoding=utf8
-import random as rnd
-import copy
-import numpy as npx
-from scipy.special import gamma as Gamma
+# pylint: disable=mixed-indentation, line-too-long, singleton-comparison, multiple-statements, attribute-defined-outside-init, no-self-use, logging-not-lazy, unused-variable, arguments-differ, bad-continuation
+import logging
+from numpy import apply_along_axis, argsort
+from scipy.stats import levy
+from NiaPy.algorithms.algorithm import Algorithm
 
-from NiaPy.benchmarks.utility import Utility
+logging.basicConfig()
+logger = logging.getLogger('NiaPy.algorithms.basic')
+logger.setLevel('INFO')
 
-__all__ = ['CuckooSearchAlgorithm']
+__all__ = ['CuckooSearch']
 
+class CuckooSearch(Algorithm):
+	r"""Implementation of Cuckoo behaviour and levy flights.
 
-class Cuckoo(object):
-    """Defines cuckoo for population."""
+	Algorithm:
+		Cuckoo Search
 
-    def __init__(self, D, LB, UB):
-        self.D = D  # dimension of the problem
-        self.LB = LB  # lower bound
-        self.UB = UB  # upper bound
-        self.Solution = []
+	Date:
+		2018
 
-        self.Fitness = float('inf')
-        self.generateCuckoo()
+	Authors:
+		Klemen Berkovič
 
-    def generateCuckoo(self):
-        self.Solution = [self.LB + (self.UB - self.LB) * rnd.random()
-                         for _i in range(self.D)]
+	License:
+		MIT
 
-    def evaluate(self):
-        self.Fitness = Cuckoo.FuncEval(self.D, self.Solution)
+	Reference:
+		Yang, Xin-She, and Suash Deb. "Cuckoo search via Lévy flights." Nature & Biologically Inspired Computing, 2009. NaBIC 2009. World Congress on. IEEE, 2009.
 
-    def simpleBound(self):
-        for i in range(self.D):
-            if self.Solution[i] < self.LB:
-                self.Solution[i] = self.LB
-            if self.Solution[i] > self.UB:
-                self.Solution[i] = self.UB
+	Attributes:
+		Name (List[str]): lsit of strings representing algorithm names
+		N (int): populatio size
+		pa (float): probability
+		alpha (float): TODO
 
-    def toString(self):
-        return (self.Solution, self.Fitness)
+	See Also:
+		* :class:`NiaPy.algorithms.Algorithm`
+	"""
+	Name = ['CuckooSearch', 'CS']
 
-    def __eq__(self, other):
-        return self.Solution == other.Solution and self.Fitness == other.Fitness
+	@staticmethod
+	def typeParameters():
+		r"""TODO.
 
+		Returns:
+			Dict[str, Callable]:
+				* N (Callable[[int], bool]): TODO
+				* pa (Callable[[float], bool]): TODO
+				* alpha (Callable[[Union[int, float]], bool]): TODO
+		"""
+		return {
+			'N': lambda x: isinstance(x, int) and x > 0,
+			'pa': lambda x: isinstance(x, float) and 0 <= x <= 1,
+			'alpha': lambda x: isinstance(x, (float, int)),
+		}
 
-class CuckooSearchAlgorithm(object):
-    r"""Implementation of Cuckoo Search algorithm.
+	def setParameters(self, N=50, pa=0.2, alpha=0.5, **ukwargs):
+		r"""Set the arguments of an algorithm.
 
-    **Algorithm:** Cuckoo Search algorithm
+		Arguments:
+			N (int): Population size :math:`\in [1, \infty)`
+			pa (float): factor :math:`\in [0, 1]`
+			alpah (float): TODO
+			**ukwargs (Dict[str, Any]): Additional arguments
 
-    **Date:** 2018
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.setParameters`
+		"""
+		Algorithm.setParameters(self, NP=N)
+		self.pa, self.alpha = pa, alpha
+		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-    **Author:** Uros Mlakar
+	def emptyNests(self, pop, fpop, pa_v, task):
+		r"""Empty ensts.
 
-    **License:** MIT
+		Args:
+			pop (numpy.ndarray): Current population
+			fpop (numpy.ndarray[float]): Current population fitness/funcion values
+			pa_v (): TODO.
+			task (Task): Optimization task
 
-    **Reference paper:**
-        Yang, Xin-She, and Suash Deb. "Cuckoo search via Lévy flights."
-        Nature & Biologically Inspired Computing, 2009. NaBIC 2009.
+		Returns:
+			Tuple[numpy.ndarray, numpy.ndarray[float]]:
+				1. New population
+				2. New population fitness/function values
+		"""
+		si = argsort(fpop)[:int(pa_v):-1]
+		pop[si] = task.Lower + self.rand(task.D) * task.bRange
+		fpop[si] = apply_along_axis(task.eval, 1, pop[si])
+		return pop, fpop
 
-    """
+	def initPopulation(self, task):
+		r"""Initialize starting population.
 
-    def __init__(self, D, Np, nFES, Pa, Alpha, benchmark):
-        r"""**__init__(self, D, NP, nFES, Pa, Alpha, benchmark)**.
+		Args:
+			task (Task): Optimization task.
 
-        Arguments:
-            D {integer} -- dimension of problem
+		Returns:
+			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+				1. Initialized population.
+				2. Initialized populations fitness/function values.
+				3. Additional arguments:
+					* pa_v (float): TODO
 
-            NP {integer} -- population size
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.initPopulation`
+		"""
+		N, N_f, d = Algorithm.initPopulation(self, task)
+		d.update({'pa_v': self.NP * self.pa})
+		return N, N_f, d
 
-            nFES {integer} -- number of function evaluations
+	def runIteration(self, task, pop, fpop, xb, fxb, pa_v, **dparams):
+		r"""Core function of CuckooSearch algorithm.
 
-            Pa {decimal} -- probability
+		Args:
+			task (Task): Optimization task.
+			pop (numpy.ndarray): Current population.
+			fpop (numpy.ndarray[float]): Current populations fitness/function values.
+			xb (numpy.ndarray): Global best individual.
+			fxb (float): Global best individual function/fitness values.
+			pa_v (float): TODO
+			**dparams (Dict[str, Any]): Additional arguments.
 
-            Alpha {decimal} -- alpha
+		Returns:
+			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+				1. Initialized population.
+				2. Initialized populations fitness/function values.
+				3. Additional arguments:
+					* pa_v (float): TODO
+		"""
+		i = self.randint(self.NP)
+		Nn = task.repair(pop[i] + self.alpha * levy.rvs(size=[task.D], random_state=self.Rand), rnd=self.Rand)
+		Nn_f = task.eval(Nn)
+		j = self.randint(self.NP)
+		while i == j: j = self.randint(self.NP)
+		if Nn_f <= fpop[j]: pop[j], fpop[j] = Nn, Nn_f
+		pop, fpop = self.emptyNests(pop, fpop, pa_v, task)
+		return pop, fpop, {'pa_v': pa_v}
 
-            benchmark {object} -- benchmark implementation object
-
-        """
-
-        self.benchmark = Utility().get_benchmark(benchmark)
-        self.Np = Np  # population size
-        self.D = D  # dimension
-        self.nFES = nFES  # number of function evaluations
-        self.Pa = Pa
-        self.Alpha = Alpha
-        self.Lower = self.benchmark.Lower
-        self.Upper = self.benchmark.Upper
-        self.Nests = []
-        self.FEs = 0
-        self.Done = False
-        self.Beta = 1.5
-        Cuckoo.FuncEval = staticmethod(self.benchmark.function())
-
-        self.gBest = Cuckoo(self.D, self.Lower, self.Upper)
-
-    def evalNests(self):
-        """Evaluate nests."""
-
-        for c in self.Nests:
-            self.tryEval(c)
-            if c.Fitness <= self.gBest.Fitness:
-                self.gBest = copy.deepcopy(c)
-
-    def initNests(self):
-        """Initialize nests."""
-
-        for _i in range(self.Np):
-            self.Nests.append(Cuckoo(self.D, self.Lower, self.Upper))
-
-    def tryEval(self, c):
-        """Check evaluations."""
-
-        if self.FEs < self.nFES:
-            c.evaluate()
-            self.FEs += 1
-        else:
-            self.Done = True
-
-    def findBest(self, NewNests):
-        TempNests = copy.deepcopy(self.Nests)
-        for i, n in enumerate(NewNests):
-            self.tryEval(n)
-            if n.Fitness <= self.Nests[i].Fitness:
-                TempNests[i] = copy.deepcopy(n)
-                if n.Fitness <= self.gBest.Fitness:
-                    self.gBest = copy.deepcopy(n)
-        return TempNests
-
-    def performLevyFlights(self, Nests):
-        """Move nests."""
-
-        MovedNests = []
-        sigma = (Gamma(1 + self.Beta) * npx.sin(npx.pi * self.Beta / 2) /
-                 (Gamma((1 + self.Beta) / 2) * self.Beta * 2**((self.Beta - 1) / 2)))**(1 / self.Beta)
-
-        for i in range(self.Np):
-            c = Nests[i]
-            u = npx.random.randn(self.D) * sigma
-            v = npx.random.randn(self.D)
-            step = u / (abs(v)**(1 / self.Beta))
-            stepsize = self.Alpha * step * (npx.array(c.Solution) - npx.array(self.gBest.Solution)).flatten().tolist()
-            c.Solution = (npx.array(c.Solution) + npx.array(stepsize) * npx.random.randn(self.D)).tolist()
-            c.simpleBound()
-            MovedNests.append(copy.deepcopy(c))
-        return MovedNests
-
-    def emptyNests(self, NewNests):
-        tNest = npx.zeros((self.Np, self.D))
-        Nest = npx.zeros((self.Np, self.D))
-        # K = npx.random.uniform(0, 1, (self.Np, self.D)) > self.Pa
-        Nests = []
-
-        for i, c in enumerate(NewNests):
-            Nests.append(Cuckoo(self.D, self.Lower, self.Upper))
-            for j in range(self.D):
-                Nest[i, j] = c.Solution[j]
-
-        # stepsize = rnd.random() * (Nest[npx.random.permutation(self.Np), :] - Nest[npx.random.permutation(self.Np), :])
-        # tempnest = Nest + stepsize * K
-
-        for i in range(self.Np):
-            Nests[i].Solution = tNest[i].tolist()
-            Nests[i].simpleBound()
-        return Nests
-
-    def run(self):
-        self.initNests()
-        self.evalNests()
-        while not self.Done:
-            MovedNests = self.performLevyFlights(self.Nests)
-            self.Nests = self.findBest(MovedNests)
-            ResetNests = self.emptyNests(MovedNests)
-            self.Nests = self.findBest(ResetNests)
-
-        return self.gBest.Fitness
+# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
