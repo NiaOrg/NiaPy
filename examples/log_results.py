@@ -13,12 +13,12 @@ from NiaPy.algorithms.modified import SelfAdaptiveDifferentialEvolution
 from NiaPy.algorithms.basic import DifferentialEvolution, MonkeyKingEvolutionV3
 from NiaPy.benchmarks import Griewank, Sphere
 
-#1 Number of function evaluations (nFES) as a stopping criteria
+# Number of function evaluations (nFES) as a stopping criteria
 for i in range(1):
 	task = TaskConvSave(D=10, nFES=10000, optType=OptimizationType.MINIMIZATION, benchmark=Sphere())
-	algo = DifferentialEvolution(task=task, NP=40, CR=0.9, F=0.5)
-	best = algo.run()
-	evals, x_f = algo.task.return_conv()
+	algo = DifferentialEvolution(NP=40, CR=0.9, F=0.5)
+	best = algo.run(task)
+	evals, x_f = algo.return_conv()
 	
 	print evals # print evals
 	
