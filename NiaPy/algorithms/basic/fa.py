@@ -31,7 +31,7 @@ class FireflyAlgorithm(Algorithm):
 		Fister, I., Fister Jr, I., Yang, X. S., & Brest, J. (2013). A comprehensive review of firefly algorithms. Swarm and Evolutionary Computation, 13, 34-46.
 
 	Attributes:
-		Name (List[str]): List of string representing algorithm name.
+		Name (List[str]): List of strings representing algorithm name.
 		alpha (float): Alpha parameter.
 		betamin (float): Betamin parameter.
 		gamma (flaot): Gamma parameter.
@@ -40,6 +40,15 @@ class FireflyAlgorithm(Algorithm):
 		* :class:`NiaPy.algorithms.Algorithm`
 	"""
 	Name = ['FireflyAlgorithm', 'FA']
+
+	@staticmethod
+	def algorithmInfo():
+		return r"""
+        	Description: Firefly algorithm is inspired by the flashing behavior of fireflies.
+        	Author: Xin-She Yang
+        	Year: 2008
+       	Main reference: Yang, Xin-She. Nature-Inspired Metaheuristic Algorithms,  Luniver Press, 2008.
+        """
 
 	@staticmethod
 	def typeParameters():
@@ -66,7 +75,7 @@ class FireflyAlgorithm(Algorithm):
 		r"""Set the parameters of the algorithm.
 
 		Args:
-			NP (Optional[int]): Populatoin size.
+			NP (Optional[int]): Population size.
 			alpha (Optional[float]): Alpha parameter.
 			betamin (Optional[float]): Betamin parameter.
 			gamma (Optional[flaot]): Gamma parameter.
@@ -106,7 +115,7 @@ class FireflyAlgorithm(Algorithm):
 		Returns:
 			Tuple[numpy.ndarray, bool]:
 				1. New individual
-				2. ``True`` if individual vas moved, ``False`` if individual was not moved
+				2. ``True`` if individual was moved, ``False`` if individual was not moved
 		"""
 		moved = False
 		for j in range(self.NP):
@@ -129,7 +138,7 @@ class FireflyAlgorithm(Algorithm):
 				1. New population.
 				2. New population fitness/function values.
 				3. Additional arguments:
-					* alpah (float): TODO
+					* alpha (float): TODO
 
 		See Also:
 			* :func:`NiaPy.algorithms.Algorithm.initPopulation`
