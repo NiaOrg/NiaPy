@@ -40,15 +40,15 @@ class FireflyAlgorithm(Algorithm):
 		* :class:`NiaPy.algorithms.Algorithm`
 	"""
 	Name = ['FireflyAlgorithm', 'FA']
-        
-        @staticmethod
-        def algorithmInfo():
-            return r"""
-            Description: Firefly algorithm is inspired by the flashing behavior of fireflies.  
-            Author: Xin-She Yang
-            Year: 2008
-            Main reference: Yang, Xin-She. Nature-Inspired Metaheuristic Algorithms,  Luniver Press, 2008.
-            """
+
+	@staticmethod
+	def algorithmInfo():
+		return r"""
+        	Description: Firefly algorithm is inspired by the flashing behavior of fireflies.
+        	Author: Xin-She Yang
+        	Year: 2008
+       	Main reference: Yang, Xin-She. Nature-Inspired Metaheuristic Algorithms,  Luniver Press, 2008.
+        """
 
 	@staticmethod
 	def typeParameters():
@@ -102,7 +102,7 @@ class FireflyAlgorithm(Algorithm):
 		return (1 - delta) * alpha
 
 	def move_ffa(self, i, Fireflies, Intensity, oFireflies, alpha, task):
-		r"""Move fireflies.https://github.com/firefly-cpp/NiaPy.git
+		r"""Move fireflies.
 
 		Args:
 			i (int): Index of current individual.
