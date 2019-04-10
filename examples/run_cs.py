@@ -5,13 +5,14 @@ import sys
 sys.path.append('../')
 # End of fix
 
-from NiaPy.algorithms.basic import GravitationalSearchAlgorithm
+from NiaPy.algorithms.basic import CuckooSearch
 from NiaPy.util import StoppingTask, OptimizationType
 from NiaPy.benchmarks import Sphere
 
-# we will run Gravitational Search Algorithm for 5 independent runs
+# we will run Cuckoo Search for 5 independent runs
 for i in range(5):
     task = StoppingTask(D=10, nFES=10000, optType=OptimizationType.MINIMIZATION, benchmark=Sphere())
-    algo = GravitationalSearchAlgorithm(NP=40)
+    algo = CuckooSearch(N=40)
     best = algo.run(task=task)
-    print(best)
+    print (best)
+ 
