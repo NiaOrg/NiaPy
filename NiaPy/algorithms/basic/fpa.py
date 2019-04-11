@@ -76,9 +76,9 @@ class FlowerPollinationAlgorithm(Algorithm):
 		"""
 		Algorithm.setParameters(self, NP=NP)
 		self.p, self.beta = p, beta
-		self.S = zeros((NP, 50)) # for temporary use only; copy that to init function
+		self.S = zeros((NP, 10)) # for temporary use only; copy that to init function
 		# first argument is 'NP', second 'D'
-		# dimension fixed to 50 for testing cases; TODO
+		# dimension fixed to 10 for testing cases; TODO
 		
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
