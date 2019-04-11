@@ -278,7 +278,7 @@ class Task(Utility):
 	Lower, Upper, bRange = inf, inf, inf
 	optType = OptimizationType.MINIMIZATION
 
-	def __init__(self, D=0, optType=OptimizationType.MINIMIZATION, benchmark=None, Lower=None, Upper=None, frepair=randRepair, **kwargs):
+	def __init__(self, D=0, optType=OptimizationType.MINIMIZATION, benchmark=None, Lower=None, Upper=None, frepair=limitRepair, **kwargs):
 		r"""Initialize task class for optimization.
 
 		Arguments:
