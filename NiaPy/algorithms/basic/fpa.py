@@ -100,7 +100,7 @@ class FlowerPollinationAlgorithm(Algorithm):
 		Returns:
 			float: Next Levy number.
 		"""
-		sigma = (Gamma(1 + self.beta) * sin(pi * self.beta / 2) / (Gamma(1 + self.beta) * self.beta * 2 ** ((self.beta - 1) / 2))) ** (1 / self.beta)
+		sigma = (Gamma(1 + self.beta) * sin(pi * self.beta / 2) / (Gamma((1 + self.beta) / 2) * self.beta * 2 ** ((self.beta - 1) / 2))) ** (1 / self.beta)
 		return 0.01 * (self.normal(0, 1) * sigma / fabs(self.normal(0, 1)) ** (1 / self.beta))
 
 	def runIteration(self, task, Sol, Sol_f, xb, fxb, **dparams):
