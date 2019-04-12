@@ -76,6 +76,10 @@ class FlowerPollinationAlgorithm(Algorithm):
 		"""
 		Algorithm.setParameters(self, NP=NP)
 		self.p, self.beta = p, beta
+		self.S = zeros((NP, 10)) # for temporary use only; copy that to init function
+		# first argument is 'NP', second 'D'
+		# dimension fixed to 10 for testing cases; TODO
+		
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def repair(self, x, task):
@@ -126,7 +130,6 @@ class FlowerPollinationAlgorithm(Algorithm):
 				3. Additional arguments.
 		"""
 		for i in range(self.NP):
-			# S = full(task.D, 0.0) # constant reset of the 'S'; use init instead
 			if self.uniform(0, 1) > self.p: S[i] += self.levy(task.D) * (Sol[i] - xb)
 			else:
 				JK = self.Rand.permutation(self.NP)
