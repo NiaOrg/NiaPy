@@ -1,5 +1,4 @@
 # encoding=utf8
-
 """The module implementing Ackley benchmark."""
 
 from numpy import exp, pi, cos, sqrt
@@ -8,8 +7,9 @@ from NiaPy.benchmarks.benchmark import Benchmark
 __all__ = ["Ackley"]
 
 
+
 class Ackley(Benchmark):
-    r"""Implementation of Ackley function.
+    ur"""Implementation of Ackley function.
 
     Date: 2018
 
