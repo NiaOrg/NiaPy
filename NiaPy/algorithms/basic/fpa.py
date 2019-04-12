@@ -3,7 +3,7 @@
 import logging
 
 from scipy.special import gamma as Gamma
-from numpy import where, sin, fabs, pi, full, zeros
+from numpy import where, sin, fabs, pi, zeros
 
 from NiaPy.algorithms.algorithm import Algorithm
 
@@ -76,10 +76,8 @@ class FlowerPollinationAlgorithm(Algorithm):
 		"""
 		Algorithm.setParameters(self, NP=NP)
 		self.p, self.beta = p, beta
-		self.S = zeros((NP, 10)) # for temporary use only; copy that to init function
-		# first argument is 'NP', second 'D'
-		# dimension fixed to 10 for testing cases; TODO
-		
+		self.S = zeros((NP, 10))
+
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def repair(self, x, task):
