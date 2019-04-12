@@ -107,7 +107,12 @@ class FlowerPollinationAlgorithm(Algorithm):
 		sigma = (Gamma(1 + self.beta) * sin(pi * self.beta / 2) / (Gamma((1 + self.beta) / 2) * self.beta * 2 ** ((self.beta - 1) / 2))) ** (1 / self.beta)
 		return 0.01 * (self.normal(0, 1, D) * sigma / fabs(self.normal(0, 1, D)) ** (1 / self.beta))
 
-	def runIteration(self, task, Sol, Sol_f, xb, fxb, **dparams):
+	def initPopulation(self, task):
+		pop, fpop, d = Algorithm.initPopulation(self, task)
+		d.update({'S': zeros((self.NP, task.D))})
+		return pop, fpop, d
+
+	def runIteration(self, task, Sol, Sol_f, xb, fxb, S, **dparams):
 		r"""Core function of FlowerPollinationAlgorithm algorithm.
 
 		Args:
@@ -125,22 +130,14 @@ class FlowerPollinationAlgorithm(Algorithm):
 				3. Additional arguments.
 		"""
 		for i in range(self.NP):
-			# S = full(task.D, 0.0) # constant reset of the 'S'; use init instead
-			S = self.S[i]
-			if self.uniform(0, 1) > self.p: S += self.levy(task.D) * (Sol[i] - xb)
+			if self.uniform(0, 1) > self.p: S[i] += self.levy(task.D) * (Sol[i] - xb)
 			else:
 				JK = self.Rand.permutation(self.NP)
-				S += self.uniform(0, 1) * (Sol[JK[0]] - Sol[JK[1]])
-			S = self.repair(S, task)
-			f_i = task.eval(S)
-			if f_i <= Sol_f[i]: Sol[i], Sol_f[i] = S, f_i
-				
-			# do we need another 'if' loop for best?
-			if f_i <= fxb:
-				xb = S
-				fxb = f_i
-			
-			self.S[i] = S
-		return Sol, Sol_f, {}
+				S[i] += self.uniform(0, 1) * (Sol[JK[0]] - Sol[JK[1]])
+			S[i] = self.repair(S[i], task)
+			f_i = task.eval(S[i])
+			if f_i <= Sol_f[i]: Sol[i], Sol_f[i] = S[i], f_i
+			if f_i <= fxb: xb, fxb = S[i], f_i
+		return Sol, Sol_f, {'S': S}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
