@@ -1,5 +1,4 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, line-too-long, bad-continuation, multiple-statements, singleton-comparison, unused-argument, no-self-use, trailing-comma-tuple, logging-not-lazy, no-else-return, unused-variable, no-member
 """Implementation of benchmarks utility function."""
 import logging
 from numpy import inf, arange, meshgrid, vectorize
@@ -12,33 +11,65 @@ logger.setLevel('INFO')
 
 __all__ = ['Benchmark']
 
+
 class Benchmark:
-	Name = ['Benchmark', 'BBB']
+    r"""Base Benchmark interface class."""
 
-	def __init__(self, Lower, Upper, **kwargs):
-		self.Lower, self.Upper = Lower, Upper
+    Name = ['Benchmark', 'BBB']
 
-	def function(self):
-		r"""Get the optimization function."""
-		def fun(D, X): return inf
-		return fun
+    def __init__(self, Lower, Upper, **kwargs):
+        r"""Initialization of Benchmark object.
 
-	def plot2d(self): pass
+        Arguments:
+            Lower {[type]} -- Lower bound.
+            Upper {[type]} -- Upper bound.
+        """
 
-	def __2dfun(self, x, y, f): return f(2, x, y)
+        self.Lower = Lower
+        self.Upper = Upper
 
-	def plot3d(self, scale=0.32):
-		fig = plt.figure()
-		ax = fig.gca(projection='3d')
-		func = self.function()
-		Xr, Yr = arange(self.Lower, self.Upper, scale), arange(self.Lower, self.Upper, scale)
-		X, Y = meshgrid(Xr, Yr)
-		Z = vectorize(self.__2dfun)(X, Y, func)
-		ax.plot_surface(X, Y, Z, rstride=8, cstride=8, alpha=0.3)
-		cset = ax.contourf(X, Y, Z, zdir='z', offset=-10, cmap=cm.coolwarm)
-		ax.set_xlabel('X')
-		ax.set_ylabel('Y')
-		ax.set_zlabel('Z')
-		plt.show()
+    def function(self):
+        r"""Returns the optimization function."""
 
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
+        def fun(D, X):
+            return inf
+
+        return fun
+
+    def plot2d(self):
+        """Plot."""
+
+        pass
+
+    def __2dfun(self, x, y, f):
+        r"""Plot function.
+
+        Arguments:
+            x {[type]} -- x value
+            y {[type]} -- y value
+            f {[type]} -- function
+
+        """
+
+        return f(2, x, y)
+
+    def plot3d(self, scale=0.32):
+        """Plot 3d.
+
+        Keyword Arguments:
+            scale {float} -- scale (default: {0.32})
+        """
+
+        fig = plt.figure()
+        ax = fig.gca(projection='3d')
+        func = self.function()
+        Xr, Yr = arange(self.Lower, self.Upper, scale), arange(
+            self.Lower, self.Upper, scale)
+        X, Y = meshgrid(Xr, Yr)
+        Z = vectorize(self.__2dfun)(X, Y, func)
+        ax.plot_surface(X, Y, Z, rstride=8, cstride=8, alpha=0.3)
+        ax.contourf(X, Y, Z, zdir='z', offset=-10, cmap=cm.coolwarm)
+        ax.set_xlabel('X')
+        ax.set_ylabel('Y')
+        ax.set_zlabel('Z')
+        plt.show()
