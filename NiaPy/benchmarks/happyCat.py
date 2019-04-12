@@ -1,5 +1,6 @@
 # encoding=utf8
-# pylint: disable=anomalous-backslash-in-string
+"""The module implementing Happy Cat benchmark."""
+
 import math
 from NiaPy.benchmarks.benchmark import Benchmark
 
@@ -7,7 +8,7 @@ __all__ = ['HappyCat']
 
 
 class HappyCat(Benchmark):
-    r"""Implementation of Happy cat function.
+    ur"""Implementation of Happy cat function.
 
     Date: 2018
 
@@ -43,19 +44,35 @@ class HappyCat(Benchmark):
     Beyer, H. G., & Finck, S. (2012). HappyCat - A Simple Function Class Where Well-Known Direct Search Algorithms Do Fail.
     In International Conference on Parallel Problem Solving from Nature (pp. 367-376). Springer, Berlin, Heidelberg.
     """
+
     Name = ['HappyCat']
 
     def __init__(self, Lower=-100.0, Upper=100.0):
+        """The initialization of Happy Cat benchmark.
+
+        Keyword Arguments:
+            Lower {float} -- Lower bound. (default: {-100.0})
+            Upper {float} -- Upper bound. (default: {100.0})
+        """
+
         Benchmark.__init__(self, Lower, Upper)
 
     @staticmethod
     def latex_code():
+        """Return the latex code of the problem.
+
+        Returns:
+            [str] -- latex code
+
+        """
+
         return r'''$f(\mathbf{x}) = {\left|\sum_{i = 1}^D {x_i}^2 -
                 D \right|}^{1/4} + (0.5 \sum_{i = 1}^D {x_i}^2 +
                 \sum_{i = 1}^D x_i) / D + 0.5$'''
 
     @classmethod
     def function(cls):
+        """Return benchmark evaluation function."""
         def evaluate(D, sol):
 
             val1 = 0.0

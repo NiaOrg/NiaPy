@@ -6,9 +6,10 @@ name = "pypi"
 [packages]
 numpy = ">=1.16.2"
 scipy = ">=1.2.1"
-"enum34" = {version = ">=1.1.6", markers="python_version < '3.4'"}
+enum34 = {version = ">=1.1.6",markers = "python_version < '3.4'"}
 XlsxWriter = ">=1.1.5"
 matplotlib = ">=2.2.4"
+flake8 = "*"
 
 [dev-packages]
 pylint = ">=1.9.3"
@@ -37,4 +38,6 @@ scandir = "*"
 Pygments = "*"
 "backports.functools_lru_cache" = "*"
 Sphinx = "*"
-MacFSEvents = {sys_platform = "== 'darwin'",version = "*"}
+MacFSEvents = {version = "*",sys_platform = "== 'darwin'"}
+pep8 = "*"
+flake8-docstrings = "*"
