@@ -57,7 +57,6 @@ setuptools.setup(
     long_description=build_description(),
     license='MIT',
     classifiers=[
-        # TODO: update this list to match your application: https://pypi.python.org/pypi?%3Aaction=list_classifiers
         'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
         'Intended Audience :: Science/Research',
@@ -82,12 +81,10 @@ setuptools.setup(
     ],
 
     install_requires=[
-        # TODO: Add your library's requirements here
-        'numpy >= 1.15.0',
-        'enum34 >= 1.1.6',
-        'click >= 6.0',
+        'numpy >= 1.16.2',
         'scipy >= 1.1.0',
-        'xlsxwriter >= 1.0.2',
-        'matplotlib >= 2.2.3',
+        'enum34 >= 1.1.6',
+        'xlsxwriter >= 1.1.5',
+        'matplotlib >= 2.2.4',
     ]
 )
