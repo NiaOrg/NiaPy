@@ -1,14 +1,15 @@
 # encoding=utf8
-"""The module implementing Happy Cat benchmark."""
+
+"""Implementation of Happy Cat benchmark."""
 
 import math
 from NiaPy.benchmarks.benchmark import Benchmark
 
-__all__ = ['HappyCat']
+__all__ = ["HappyCat"]
 
 
 class HappyCat(Benchmark):
-    ur"""Implementation of Happy cat function.
+    r"""Implementation of Happy cat function.
 
     Date: 2018
 
@@ -41,18 +42,23 @@ class HappyCat(Benchmark):
                 $-100 \leq x_i \leq 100$
 
     Reference: http://bee22.com/manual/tf_images/Liang%20CEC2014.pdf &
-    Beyer, H. G., & Finck, S. (2012). HappyCat - A Simple Function Class Where Well-Known Direct Search Algorithms Do Fail.
-    In International Conference on Parallel Problem Solving from Nature (pp. 367-376). Springer, Berlin, Heidelberg.
+        Beyer, H. G., & Finck, S. (2012). HappyCat - A Simple Function Class Where Well-Known Direct Search Algorithms Do Fail.
+        In International Conference on Parallel Problem Solving from Nature (pp. 367-376). Springer, Berlin, Heidelberg.
+
     """
 
-    Name = ['HappyCat']
+    Name = ["HappyCat"]
 
     def __init__(self, Lower=-100.0, Upper=100.0):
         """The initialization of Happy Cat benchmark.
 
-        Keyword Arguments:
-            Lower {float} -- Lower bound. (default: {-100.0})
-            Upper {float} -- Upper bound. (default: {100.0})
+        Args:
+            Lower (Optional[float]): Lower bound of problem.
+            Upper (Optional[float]): Upper bound of problem.
+
+        See Also:
+            :func:`NiaPy.benchmarks.Benchmark.__init__`
+
         """
 
         Benchmark.__init__(self, Lower, Upper)
@@ -72,7 +78,13 @@ class HappyCat(Benchmark):
 
     @classmethod
     def function(cls):
-        """Return benchmark evaluation function."""
+        """Return benchmark evaluation function.
+
+        Returns:
+            [fun] -- Evaluation function.
+
+        """
+
         def evaluate(D, sol):
 
             val1 = 0.0
