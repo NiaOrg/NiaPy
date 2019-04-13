@@ -14,6 +14,7 @@ logger.setLevel("INFO")
 __all__ = ["Benchmark"]
 
 
+
 class Benchmark:
     """Base Benchmark interface class."""
 
@@ -25,7 +26,6 @@ class Benchmark:
         Arguments:
             Lower {[type]} -- Lower bound.
             Upper {[type]} -- Upper bound.
-
         """
 
         self.Lower = Lower
