@@ -15,4 +15,4 @@ for i in range(5):
     task = StoppingTask(D=10, nFES=10000, optType=OptimizationType.MINIMIZATION, benchmark=Sphere())
     algo = FireflyAlgorithm(NP=20, alpha=0.5, betamin=0.2, gamma=1.0)
     best = algo.run(task=task)
-    print best
+    print(best)

@@ -8,7 +8,7 @@ sys.path.append('../')
 import random
 import logging
 from NiaPy.algorithms.basic import EvolutionStrategy1p1
-from NiaPy.util import CountingTask, TaskConvPrint, TaskConvPlot, OptimizationType, getDictArgs
+from NiaPy.util import StoppingTask, TaskConvPrint, TaskConvPlot, OptimizationType, getDictArgs
 
 logging.basicConfig()
 logger = logging.getLogger('examples')
@@ -37,7 +37,7 @@ class MaxMB(MinMB):
 
 def simple_example(alg, runs=10, D=10, nFES=50000, nGEN=10000, seed=[None], optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kn):
 	for i in range(runs):
-		task = CountingTask(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc())
+		task = StoppingTask(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc())
 		algo = alg(seed=seed[i % len(seed)])
 		best = algo.run(task)
 		logger.info('%s %s' % (best[0], best[1]))

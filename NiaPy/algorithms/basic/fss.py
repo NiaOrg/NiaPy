@@ -106,9 +106,7 @@ class FishSchoolSearch(Algorithm):
 		Returns:
 			numpy.ndarray: Array with uniform distribution.
 		"""
-		x = zeros((self.NP, task.D))
-		for i in range(self.NP): x[i] = self.uniform(task.Lower[i], task.Upper[i], task.D)
-		return x
+		return asarray([self.uniform(task.Lower, task.Upper, task.D) for _ in range(self.NP)])
 
 	def gen_weight(self):
 		r"""Get initial weight for fish.
