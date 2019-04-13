@@ -87,7 +87,7 @@ class HybridBatAlgorithm(BatAlgorithm):
 		return Sol, Fitness, {'v': v}
 
 	def runIteration(self, task, Sol, Fitness, best, f_min, v, **dparams):
-		r"""Core funciton of HybridBatAlgorithm algorithm.
+		r"""Core function of HybridBatAlgorithm algorithm.
 
 		Args:
 			task (Task): Optimization task.
@@ -111,7 +111,8 @@ class HybridBatAlgorithm(BatAlgorithm):
 			S = task.repair(Sol[i] + v[i], rnd=self.Rand)
 			if self.rand() > self.r: S = task.repair(self.CrossMutt(Sol, i, best, self.F, self.CR, rnd=self.Rand), rnd=self.Rand)
 			f_new = task.eval(S)
-			if f_new <= Fitness[i] and self.rand() < self.A: Sol[i], Fitness[i] = S, f_new #TODO
+			if f_new <= Fitness[i] and self.rand() < self.A: Sol[i], Fitness[i] = S, f_new
+			if f_new <= f_min: best, f_min = S, f_new
 		return Sol, Fitness, {'S': S, 'Q': Q, 'v': v}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
