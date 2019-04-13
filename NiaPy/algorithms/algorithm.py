@@ -120,12 +120,12 @@ class Algorithm:
 		r"""Get random distribution of shape D in range from 0 to 1.
 
 		Args:
-			D (numpy.ndarray[int]): Shape of returned random distribution.
+			D (Union[numpy.ndarray[int], int, List[int], Tuple[int]]): Shape of returned random distribution.
 
 		Returns:
 			Union[numpy.ndarray[float], float]: Random number or numbers :math:`\in [0, 1]`.
 		"""
-		if isinstance(D, (ndarray, list)): return self.Rand.rand(*D)
+		if isinstance(D, (ndarray, list, tuple)): return self.Rand.rand(*D)
 		elif D > 1: return self.Rand.rand(D)
 		else: return self.Rand.rand()
 
