@@ -102,15 +102,15 @@ class BatAlgorithm(Algorithm):
 		d.update({'S': S, 'Q': Q, 'v': v})
 		return Sol, Fitness, d
 
-	def runIteration(self, task, Sol, Fitness, xb, fxb, S, Q, v, **dparams):
+	def runIteration(self, task, Sol, Fitness, best, f_min, S, Q, v, **dparams):
 		r"""Core function of Bat Algorithm.
 
 		Parameters:
 			task (Task): Optimization task.
 			Sol (numpy.ndarray): Current population
 			Fitness (numpy.ndarray[float]): Current population fitness/funciton values
-			xb (numpy.ndarray): Current best individual
-			fxb (float): Current best individual function/fitness value
+			best (numpy.ndarray): Current best individual
+			f_min (float): Current best individual function/fitness value
 			S (numpy.ndarray): TODO
 			Q (numpy.ndarray[float]): TODO
 			v (numpy.ndarray[float]): TODO
@@ -126,10 +126,11 @@ class BatAlgorithm(Algorithm):
 					* v (numpy.ndarray[float]): TODO
 		"""
 		for i in range(self.NP):
-			Q[i], v[i], S[i] = self.Qmin + (self.Qmax - self.Qmin) * self.uniform(0, 1), v[i] + (Sol[i] - xb) * Q[i], task.repair(Sol[i] + v[i], rnd=self.Rand)
-			if self.rand() > self.r: S[i] = task.repair(xb + 0.001 * self.normal(0, 1, task.D), rnd=self.Rand)
+			Q[i], v[i], S[i] = self.Qmin + (self.Qmax - self.Qmin) * self.uniform(0, 1), v[i] + (Sol[i] - best) * Q[i], task.repair(Sol[i] + v[i])
+			if self.rand() > self.r: S[i] = task.repair(best + 0.001 * self.normal(0, 1, task.D))
 			Fnew = task.eval(S[i])
 			if (Fnew <= Fitness[i]) and (self.rand() < self.A): Sol[i], Fitness[i] = S[i], Fnew
+			if Fnew <= f_min: best, f_min = S[i], Fnew
 		return Sol, Fitness, {'S': S, 'Q': Q, 'v': v}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
