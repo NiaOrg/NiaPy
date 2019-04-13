@@ -55,7 +55,7 @@ class HybridBatAlgorithm(BatAlgorithm):
 		d['CR'] = lambda x: isinstance(x, float) and 0 <= x <= 1
 		return d
 
-	def setParameters(self, F=0.78, CR=0.35, CrossMutt=CrossBest1, **ukwargs):
+	def setParameters(self, NP=40, A=0.5, r=0.5, Qmin=0.0, Qmax=2.0, F=0.78, CR=0.35, CrossMutt=CrossBest1, **ukwargs):
 		r"""Set core parameters of HybridBatAlgorithm algorithm.
 
 		Arguments:
@@ -66,7 +66,7 @@ class HybridBatAlgorithm(BatAlgorithm):
 			* :func:`NiaPy.algorithms.basic.BatAlgorithm.setParameters`
 		"""
 		BatAlgorithm.setParameters(self, **ukwargs)
-		self.F, self.CR, self.CrossMutt = F, CR, CrossMutt
+		self.A, self.r, self.Qmin, self.Qmax, self.F, self.CR, self.CrossMutt = A, r, Qmin, Qmax, F, CR, CrossMutt
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def initPopulation(self, task):
@@ -111,7 +111,7 @@ class HybridBatAlgorithm(BatAlgorithm):
 			S = task.repair(Sol[i] + v[i], rnd=self.Rand)
 			if self.rand() > self.r: S = task.repair(self.CrossMutt(Sol, i, best, self.F, self.CR, rnd=self.Rand), rnd=self.Rand)
 			f_new = task.eval(S)
-			if f_new <= Fitness[i] and self.rand() < self.A: Sol[i], Fitness[i] = S, f_new
-		return Sol, Fitness, {'v': v}
+			if f_new <= Fitness[i] and self.rand() < self.A: Sol[i], Fitness[i] = S, f_new #TODO
+		return Sol, Fitness, {'S': S, 'Q': Q, 'v': v}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
