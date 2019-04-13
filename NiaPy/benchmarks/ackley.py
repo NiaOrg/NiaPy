@@ -9,7 +9,7 @@ __all__ = ["Ackley"]
 
 
 class Ackley(Benchmark):
-    ur"""Implementation of Ackley function.
+    r"""Implementation of Ackley function.
 
     Date: 2018
 
