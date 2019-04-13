@@ -5,6 +5,20 @@ from NiaPy.algorithms.basic import DifferentialEvolution, DynNpDifferentialEvolu
 from NiaPy.algorithms.basic.de import CrossRand1, CrossRand2, CrossBest1, CrossBest2, CrossCurr2Rand1, CrossCurr2Best1
 
 class DETestCase(AlgorithmTestCase):
+	r"""Test case for DifferentialEvolution algorithm.
+
+	Date:
+		April 2019
+
+	Author:
+		Klemen Berkovič
+
+	See Also:
+		:class:`NiaPy.algorithms.DifferentialEvolution`
+	"""
+	def test_manual_population_initialization(self):
+		pass
+
 	def test_Custom_works_fine(self):
 		de_custom = DifferentialEvolution(F=0.5, CR=0.9, seed=self.seed)
 		de_customc = DifferentialEvolution(F=0.5, CR=0.9, seed=self.seed)
