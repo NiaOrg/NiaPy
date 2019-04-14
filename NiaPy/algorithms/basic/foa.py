@@ -27,7 +27,7 @@ class ForestOptimizationAlgorithm(Algorithm):
 
     Reference paper:
         Manizheh Ghaemi, Mohammad-Reza Feizi-Derakhshi, Forest Optimization Algorithm, Expert Systems with Applications, Volume 41, Issue 15, 2014, Pages 6676-6687, ISSN 0957-4174, https://doi.org/10.1016/j.eswa.2014.05.009.
-    
+
     Attributes:
         Name (List[str]): List of strings representing algorithm name.
         lt (int): Life time of trees parameter.
@@ -35,7 +35,7 @@ class ForestOptimizationAlgorithm(Algorithm):
         lsc (int): Local seeding changes parameter.
         gsc (int): Global seeding changes parameter.
         tr (float): Transfer rate parameter.
-    
+
     See Also:
         * :class:`NiaPy.algorithms.Algorithm`
     """
@@ -53,7 +53,7 @@ class ForestOptimizationAlgorithm(Algorithm):
     @staticmethod
     def typeParameters():
         r"""Get dictionary with functions for checking values of parameters.
-        
+
         Returns:
             Dict[str, Callable]:
                 * lt (Callable[[int], bool]): TODO.
@@ -214,7 +214,7 @@ class ForestOptimizationAlgorithm(Algorithm):
         Evaluations = apply_along_axis(task.eval, 1, Trees[:, :-1])
         dx = absolute(task.benchmark.Upper) / 5
         return Trees, Evaluations, {'dx': dx}
-    
+
     def runIteration(self, task, Trees, Evaluations, xb, fxb, dx, **dparams):
         r"""Core function of Forest Optimization Algorithm.
 
