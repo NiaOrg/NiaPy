@@ -77,9 +77,9 @@ class SineCosineAlgorithm(Algorithm):
 			Rmax (Optional[float]): Maximum value for :math:`r_3` value
 
 		See Also:
-			* :func:`NiaPy.algorithms.algorithm.Algorithm`
+			* :func:`NiaPy.algorithms.algorithm.Algorithm.setParameters`
 		"""
-		Algorithm.setParameters(self, NP=NP)
+		Algorithm.setParameters(self, NP=NP, **ukwargs)
 		self.a, self.Rmin, self.Rmax = a, Rmin, Rmax
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 

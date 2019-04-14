@@ -98,7 +98,7 @@ class EvolutionStrategy1p1(Algorithm):
 		See Also:
 			* :func:`NiaPy.algorithms.Algorithm.setParameters`
 		"""
-		Algorithm.setParameters(self, NP=mu, itype=IndividualES, **ukwargs)
+		Algorithm.setParameters(self, NP=mu, itype=ukwargs.pop('itype', IndividualES), **ukwargs)
 		self.mu, self.k, self.c_a, self.c_r, self.epsilon = mu, k, c_a, c_r, epsilon
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 

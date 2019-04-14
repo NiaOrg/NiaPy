@@ -74,7 +74,7 @@ class ParticleSwarmAlgorithm(Algorithm):
 		See Also:
 			* :func:`NiaPy.algorithms.Algorithm.setParameters`
 		"""
-		Algorithm.setParameters(self, NP=NP)
+		Algorithm.setParameters(self, NP=NP, **ukwargs)
 		self.C1, self.C2, self.w, self.vMin, self.vMax = C1, C2, w, vMin, vMax
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 

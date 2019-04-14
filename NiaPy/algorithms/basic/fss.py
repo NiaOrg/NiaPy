@@ -89,7 +89,7 @@ class FishSchoolSearch(Algorithm):
 		See Also:
 			* :func:`NiaPy.algorithms.Algorithm.setParameters`
 		"""
-		Algorithm.setParameters(self, NP=NP)
+		Algorithm.setParameters(self, NP=NP, **ukwargs)
 		self.step_individual_init = SI_init
 		self.step_individual_final = SI_final
 		self.step_volitive_init = SV_init

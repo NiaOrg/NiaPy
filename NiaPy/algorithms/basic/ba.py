@@ -102,6 +102,18 @@ class BatAlgorithm(Algorithm):
 		d.update({'S': S, 'Q': Q, 'v': v})
 		return Sol, Fitness, d
 
+	def generateRand(self, best, task):
+		r"""Generate new solution based on global best known solution.
+
+		Args:
+			best (numpy.ndarray): Global best individual.
+			task (Task): Optimization task.
+
+		Returns:
+			numpy.ndarray: New solution based on global best individual.
+		"""
+		return
+
 	def runIteration(self, task, Sol, Fitness, best, f_min, S, Q, v, **dparams):
 		r"""Core function of Bat Algorithm.
 
@@ -126,7 +138,9 @@ class BatAlgorithm(Algorithm):
 					* v (numpy.ndarray[float]): TODO
 		"""
 		for i in range(self.NP):
-			Q[i], v[i], S[i] = self.Qmin + (self.Qmax - self.Qmin) * self.uniform(0, 1), v[i] + (Sol[i] - best) * Q[i], task.repair(Sol[i] + v[i])
+			Q[i] = self.Qmin + (self.Qmax - self.Qmin) * self.uniform(0, 1)
+			v[i] += (Sol[i] - best) * Q[i]
+			S[i] = task.repair(Sol[i] + v[i])
 			if self.rand() > self.r: S[i] = task.repair(best + 0.001 * self.normal(0, 1, task.D))
 			Fnew = task.eval(S[i])
 			if (Fnew <= Fitness[i]) and (self.rand() < self.A): Sol[i], Fitness[i] = S[i], Fnew

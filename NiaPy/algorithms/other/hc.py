@@ -52,6 +52,10 @@ class HillClimbAlgorithm(Algorithm):
 
 	See Also:
 		* :class:`NiaPy.algorithms.Algorithm`
+
+	Attributes:
+		delta (float): Change for searching in neighborhood.
+		Neighborhood (Callable[numpy.ndarray, float, Task], Tuple[numpy.ndarray, float]]): Function for getting neighbours.
 	"""
 	Name = ['HillClimbAlgorithm', 'BBFA']
 
@@ -69,9 +73,10 @@ class HillClimbAlgorithm(Algorithm):
 		r"""Set the algorithm parameters/arguments.
 
 		Args:
-			* delta (float): TODO
-			* Neighborhood (Callable[numpy.ndarray, float, Task], Tuple[numpy.ndarray, float]]): Function for getting neighbours.
+			* delta (Optional[float]): Change for searching in neighborhood.
+			* Neighborhood (Optional[Callable[numpy.ndarray, float, Task], Tuple[numpy.ndarray, float]]]): Function for getting neighbours.
 		"""
+		Algorithm.setParameters(self, NP=1, **ukwargs)
 		self.delta, self.Neighborhood = delta, Neighborhood
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 

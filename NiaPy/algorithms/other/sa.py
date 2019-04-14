@@ -61,6 +61,11 @@ class SimulatedAnnealing(Algorithm):
 
 	Attributes:
 		Name (List[str]): List of strings representing algorithm name.
+		delta (float): Movemnt for neighbour search.
+		T (float); Starting temperature.
+		deltaT (float): Change in temperature.
+		coolingMethod (Callable): Neigborhud function.
+		epsilon (float): Error value.
 
 	See Also:
 		* :class:`NiaPy.algorithms.Algorithm`
@@ -86,12 +91,17 @@ class SimulatedAnnealing(Algorithm):
 		r"""Set the algorithm parameters/arguments.
 
 		Arguments:
-			delta (float): Movemnt for neighbour search
-			T (float); Starting temperature
-			deltaT (float): Change in temperature
-			coolingMethod (function): Neigborhud function
-			epsilon (float): Error value
+			delta (Optional[float]): Movemnt for neighbour search.
+			T (Optional[float]); Starting temperature.
+			deltaT (Optional[float]): Change in temperature.
+			coolingMethod (Optional[Callable]): Neigborhud function.
+			epsilon (Optional[float]): Error value.
+
+		See Also
+			* :func:`NiaPy.algorithms.Algorithm.setParameters`
 		"""
+		ukwargs.pop('NP', None)
+		Algorithm.setParameters(self, NP=1, **ukwargs)
 		self.delta, self.T, self.deltaT, self.cool, self.epsilon = delta, T, deltaT, coolingMethod, epsilon
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 

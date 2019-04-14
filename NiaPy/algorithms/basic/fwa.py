@@ -55,6 +55,8 @@ class BareBonesFireworksAlgorithm(Algorithm):
 			C_a (float): Amplification coefficient :math:`\in [1, \infty)`.
 			C_r (float): Reduction coefficient :math:`\in (0, 1)`.
 		"""
+		ukwargs.pop('NP', None)
+		Algorithm.setParameters(self, NP=1, **ukwargs)
 		self.n, self.C_a, self.C_r = n, C_a, C_r
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
@@ -71,9 +73,9 @@ class BareBonesFireworksAlgorithm(Algorithm):
 				3. Additional arguments:
 					* A (numpy.ndarray): Starting aplitude or search range.
 		"""
-		x, A = self.uniform(task.Lower, task.Upper, task.D), task.bRange
-		x_fit = task.eval(x)
-		return x, x_fit, {'A': A}
+		x, x_fit, d = Algorithm.initPopulation(self, task)
+		d.update({'A': task.bRange})
+		return x, x_fit, d
 
 	def runIteration(self, task, x, x_fit, xb, fxb, A, **dparams):
 		r"""Core function of Bare Bones Fireworks Algorithm.
@@ -358,8 +360,8 @@ class EnhancedFireworksAlgorithm(FireworksAlgorithm):
 
 	Attributes:
 		Name (List[str]): List of strings representing algorithm names.
-		Ainit (float): TODO
-		Afinal (float): TODO
+		Ainit (float): Initial amplitude of sparks.
+		Afinal (float): Maximal amplitude of sparks.
 	"""
 	Name = ['EnhancedFireworksAlgorithm', 'EFWA']
 
@@ -388,8 +390,8 @@ class EnhancedFireworksAlgorithm(FireworksAlgorithm):
 			Afinal (float): TODO
 			**ukwargs (Dict[str, Any]): Additional arguments.
 
-      See Also:
-      	* :func:`FireworksAlgorithm.setParameters`
+		See Also:
+			* :func:`FireworksAlgorithm.setParameters`
 		"""
 		FireworksAlgorithm.setParameters(self, **ukwargs)
 		self.Ainit, self.Afinal = Ainit, Afinal
@@ -557,9 +559,9 @@ class DynamicFireworksAlgorithmGauss(EnhancedFireworksAlgorithm):
 	Attributes:
 		Name (List[str]): List of strings representing algorithm names.
 		A_cf (Union[float, int]): TODO
-		C_a (Union[float, int]): TODO
-		C_r (Union[float, int]): TODO
-		epsilon (Union[float, int]): TODO
+		C_a (Union[float, int]): Amplification factor.
+		C_r (Union[float, int]): Reduction factor.
+		epsilon (Union[float, int]): Small value.
 	"""
 	Name = ['DynamicFireworksAlgorithmGauss', 'dynFWAG']
 
@@ -605,7 +607,8 @@ class DynamicFireworksAlgorithmGauss(EnhancedFireworksAlgorithm):
 
 		Returns:
 			Tuple[numpy.ndarray, numpy.ndarray]:
-				1. TODO
+				1. Initial amplitudes.
+				2. Amplitude for best spark.
 		"""
 		return FireworksAlgorithm.initAmplitude(self, task), task.bRange
 

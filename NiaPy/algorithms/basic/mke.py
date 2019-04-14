@@ -118,7 +118,7 @@ class MonkeyKingEvolutionV1(Algorithm):
 		See Also:
 			* :func:`NiaPy.algorithms.algorithm.Algorithm.setParameters`
 		"""
-		Algorithm.setParameters(self, NP=NP, itype=ukwargs.pop('itype', MkeSolution), InitPopFunc=ukwargs.pop('InitPopFunc', defaultIndividualInit))
+		Algorithm.setParameters(self, NP=NP, itype=ukwargs.pop('itype', MkeSolution), InitPopFunc=ukwargs.pop('InitPopFunc', defaultIndividualInit), **ukwargs)
 		self.F, self.R, self.C, self.FC = F, R, C, FC
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
@@ -353,7 +353,7 @@ class MonkeyKingEvolutionV3(MonkeyKingEvolutionV1):
 		See Also:
 			* :func:`NiaPy.algorithms.basic.MonkeyKingEvolutionV1.setParameters`
 		"""
-		MonkeyKingEvolutionV1.setParameters(self, itype=None, InitPopFunc=defaultNumPyInit)
+		MonkeyKingEvolutionV1.setParameters(self, itype=ukwargs.pop('itype', None), InitPopFunc=ukwargs.pop('InitPopFunc', defaultNumPyInit), **ukwargs)
 
 	def neg(self, x):
 		r"""Transform function.

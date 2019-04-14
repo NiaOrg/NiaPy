@@ -73,11 +73,11 @@ class NelderMeadMethod(Algorithm):
 		See Also:
 			* :func:`NiaPy.algorithms.Algorithm.setParameters`
 		"""
-		Algorithm.setParameters(self, NP=NP, InitPopFunc=self.initPop)
+		Algorithm.setParameters(self, NP=NP, InitPopFunc=ukwargs.pop('InitPopFunc', self.initPop), **ukwargs)
 		self.alpha, self.gamma, self.rho, self.sigma = alpha, gamma, rho, sigma
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def initPop(self, task, NP, rnd, **kwargs):
+	def initPop(self, task, NP, **kwargs):
 		r"""Init starting population.
 
 		Args:

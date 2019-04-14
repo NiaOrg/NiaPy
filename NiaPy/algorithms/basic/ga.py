@@ -244,7 +244,7 @@ class GeneticAlgorithm(Algorithm):
 				* :func:`NiaPy.algorithms.basic.CreepMutation`
 				* :func:`NiaPy.algorithms.basic.MutationUros`
 		"""
-		Algorithm.setParameters(self, NP=NP, itype=Individual, InitPopFunc=defaultIndividualInit)
+		Algorithm.setParameters(self, NP=NP, itype=ukwargs.pop('itype', Individual), InitPopFunc=ukwargs.pop('InitPopFunc', defaultIndividualInit), **ukwargs)
 		self.Ts, self.Mr, self.Cr = Ts, Mr, Cr
 		self.Selection, self.Crossover, self.Mutation = Selection, Crossover, Mutation
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))

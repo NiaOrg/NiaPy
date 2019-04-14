@@ -47,15 +47,15 @@ class HybridBatAlgorithm(BatAlgorithm):
 
 		Returns:
 			Dict[str, Callable]:
-				* F (Callable[[Union[int, float]], bool]): TODO
-				* CR (Callable[[float], bool]): TODO
+				* F (Callable[[Union[int, float]], bool]): Scaling factor.
+				* CR (Callable[[float], bool]): Crossover probability.
 		"""
 		d = BatAlgorithm.typeParameters()
 		d['F'] = lambda x: isinstance(x, (int, float)) and x > 0
 		d['CR'] = lambda x: isinstance(x, float) and 0 <= x <= 1
 		return d
 
-	def setParameters(self, NP=40, A=0.5, r=0.5, Qmin=0.0, Qmax=2.0, F=0.78, CR=0.35, CrossMutt=CrossBest1, **ukwargs):
+	def setParameters(self, F=0.78, CR=0.35, CrossMutt=CrossBest1, **ukwargs):
 		r"""Set core parameters of HybridBatAlgorithm algorithm.
 
 		Arguments:
@@ -66,7 +66,7 @@ class HybridBatAlgorithm(BatAlgorithm):
 			* :func:`NiaPy.algorithms.basic.BatAlgorithm.setParameters`
 		"""
 		BatAlgorithm.setParameters(self, **ukwargs)
-		self.A, self.r, self.Qmin, self.Qmax, self.F, self.CR, self.CrossMutt = A, r, Qmin, Qmax, F, CR, CrossMutt
+		self.F, self.CR, self.CrossMutt = F, CR, CrossMutt
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def initPopulation(self, task):
@@ -93,8 +93,8 @@ class HybridBatAlgorithm(BatAlgorithm):
 			task (Task): Optimization task.
 			Sol (numpy.ndarray): Current population.
 			Fitness (numpy.ndarray[float]: Current populations function/fitness values.
-			best:
-			f_min (float):
+			best (numpy.ndarray): Global best individual.
+			f_min (float): Global best individuals fitness/function value.
 			v:
 			**dparams (Dict[str, Any]): Additional arguments.
 
@@ -107,7 +107,7 @@ class HybridBatAlgorithm(BatAlgorithm):
 		"""
 		Q = self.Qmin + (self.Qmax - self.Qmin) * self.uniform(0, 1, self.NP)
 		for i in range(self.NP):
-			v[i] = v[i] + (Sol[i] - best) * Q[i]
+			v[i] += (Sol[i] - best) * Q[i]
 			S = task.repair(Sol[i] + v[i], rnd=self.Rand)
 			if self.rand() > self.r: S = task.repair(self.CrossMutt(Sol, i, best, self.F, self.CR, rnd=self.Rand), rnd=self.Rand)
 			f_new = task.eval(S)

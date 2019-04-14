@@ -83,7 +83,7 @@ class IndividualTestCase(TestCase):
 	def test_len_fine(self):
 		self.assertEqual(len(self.s1), len(self.x))
 
-def test_init_pop_numpy(task, NP, **kwargs):
+def init_pop_numpy(task, NP, **kwargs):
 	r"""Custom population initialization function for numpy individual type.
 
 	Args:
@@ -100,7 +100,7 @@ def test_init_pop_numpy(task, NP, **kwargs):
 	fpop = apply_along_axis(task.eval, 1, pop)
 	return pop, fpop
 
-def test_init_pop_individual(task, NP, itype, **kwargs):
+def init_pop_individual(task, NP, itype, **kwargs):
 	r"""Custom population initialization function for numpy individual type.
 
 	Args:
@@ -141,13 +141,13 @@ class AlgorithBaseTestCase(TestCase):
 
 	def test_init_population_numpy_fine(self):
 		r"""Test if custome generation initialization works ok."""
-		a = Algorithm(NP=10, InitPopFunc=test_init_pop_numpy)
+		a = Algorithm(NP=10, InitPopFunc=init_pop_numpy)
 		t = Task(D=20, benchmark=MyBenchmark())
 		self.assertTrue(array_equal(full((10, t.D), 0.0), a.initPopulation(t)[0]))
 
 	def test_init_population_individual_fine(self):
 		r"""Test if custome generation initialization works ok."""
-		a = Algorithm(NP=10, InitPopFunc=test_init_pop_individual, itype=Individual)
+		a = Algorithm(NP=10, InitPopFunc=init_pop_individual, itype=Individual)
 		t = Task(D=20, benchmark=MyBenchmark())
 		i = Individual(x=full(t.D, 0.0), task=t)
 		pop, fpop, d = a.initPopulation(t)

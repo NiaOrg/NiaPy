@@ -191,7 +191,7 @@ class CamelAlgorithm(Algorithm):
 		See Also:
 			* :func:`NiaPy.algorithms.Algorithm.setParameters`
 		"""
-		Algorithm.setParameters(self, NP=NP, itype=Camel, InitPopFunc=self.initPop)
+		Algorithm.setParameters(self, NP=NP, itype=Camel, InitPopFunc=ukwargs.pop('InitPopFunc', self.initPop), **ukwargs)
 		self.omega, self.mu, self.alpha, self.S_init, self.E_init, self.T_min, self.T_max = omega, mu, alpha, S_init, E_init, T_min, T_max
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
