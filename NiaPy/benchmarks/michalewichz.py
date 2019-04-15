@@ -61,7 +61,7 @@ class Michalewichz(Benchmark):
         """
 
         Benchmark.__init__(self, Lower, Upper)
-        self.m = m
+        Michalewichz.m = m
 
     @staticmethod
     def latex_code():

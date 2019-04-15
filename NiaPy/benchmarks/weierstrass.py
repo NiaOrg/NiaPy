@@ -56,9 +56,9 @@ class Weierstrass(Benchmark):
         """
 
         Benchmark.__init__(self, Lower, Upper)
-        self.a = a
-        self.b = b
-        self.k_max = k_max
+        Weierstrass.a = a
+        Weierstrass.b = b
+        Weierstrass.k_max = k_max
 
     @staticmethod
     def latex_code():

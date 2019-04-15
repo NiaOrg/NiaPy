@@ -52,7 +52,7 @@ class Perm(Benchmark):
 
         Args:
             D [float] -- Dimension on problem. (default: {10.0})
-            beta [float] -- beat parameter. (default: {0.5})
+            beta [float] -- beta parameter. (default: {0.5})
 
         See Also:
             :func:`NiaPy.benchmarks.Benchmark.__init__`
@@ -60,7 +60,7 @@ class Perm(Benchmark):
         """
 
         Benchmark.__init__(self, -D, D)
-        self.beta = beta
+        Perm.beta = beta
 
     @staticmethod
     def latex_code():
