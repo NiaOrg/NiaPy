@@ -11,7 +11,7 @@ from NiaPy.benchmarks import Sphere
 
 # we will run Glowworm Swarm Optimization for 5 independent runs
 for i in range(5):
-    task = StoppingTask(D=10, nFES=10000, optType=OptimizationType.MINIMIZATION, benchmark=Sphere())
+    task = StoppingTask(D=10, nFES=1000, optType=OptimizationType.MINIMIZATION, benchmark=Sphere())
     algo = GlowwormSwarmOptimization()
     best = algo.run(task=task)
     print(best)

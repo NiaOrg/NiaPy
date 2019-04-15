@@ -12,7 +12,7 @@ from NiaPy.benchmarks import Sphere
 
 #we will run Differential Evolution for 5 independent runs
 for i in range(5):
-    task = StoppingTask(D=10, nFES=10000, optType=OptimizationType.MINIMIZATION, benchmark=Sphere())
-    algo = DifferentialEvolution(NP=40, F=0.5, CR=0.9,)
-    best = algo.run(task=task)
-    print(best)
+	task = StoppingTask(D=10, nFES=10000, optType=OptimizationType.MINIMIZATION, benchmark=Sphere())
+	algo = DifferentialEvolution(NP=40, F=0.5, CR=0.9)
+	best = algo.run(task=task)
+	print('%s -> %f' % (best[0].x, best[1]))

@@ -208,10 +208,9 @@ class ForestOptimizationAlgorithm(Algorithm):
         See Also:
             * :func:`NiaPy.algorithms.Algorithm.initPopulation`
         """
-        Trees = self.uniform(task.Lower, task.Upper, [self.NP, task.D])
+        Trees, Evaluations, _ = Algorithm.initPopulation(self, task)
         z = zeros((self.NP, 1))
         Trees = append(Trees, z, axis=1)
-        Evaluations = apply_along_axis(task.eval, 1, Trees[:, :-1])
         dx = absolute(task.benchmark.Upper) / 5
         return Trees, Evaluations, {'dx': dx}
 

@@ -13,7 +13,7 @@ from NiaPy.benchmarks import Sphere
 #we will run Coral Reefs Optimization algorithm for 5 independent runs
 for i in range(5):
     task = StoppingTask(D=10, nFES=1000, optType=OptimizationType.MINIMIZATION, benchmark=Sphere())
-    algo = CoralReefsOptimization(NP=40)
+    algo = CoralReefsOptimization(N=60, Fb=0.9, Fa=0.4, Fd=0.3, phi=25)
     best = algo.run(task=task)
-    print best
+    print(best)
  
