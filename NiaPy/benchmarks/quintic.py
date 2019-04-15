@@ -1,9 +1,11 @@
 # encoding=utf8
-# pylint: disable=anomalous-backslash-in-string
+
+"""Implementation of Quintic benchmark."""
+
 import math
 from NiaPy.benchmarks.benchmark import Benchmark
 
-__all__ = ['Quintic']
+__all__ = ["Quintic"]
 
 
 class Quintic(Benchmark):
@@ -44,26 +46,53 @@ class Quintic(Benchmark):
         A literature survey of benchmark functions for global optimisation problems.
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
+
     """
-    Name = ['Quintic']
+
+    Name = ["Quintic"]
 
     def __init__(self, Lower=-10.0, Upper=10.0):
+        """Initialize Quintic benchmark.
+
+        Args:
+            Lower (Optional[float]): Lower bound of problem.
+            Upper (Optional[float]): Upper bound of problem.
+
+        See Also:
+            :func:`NiaPy.benchmarks.Benchmark.__init__`
+
+        """
+
         Benchmark.__init__(self, Lower, Upper)
 
     @staticmethod
     def latex_code():
+        """Return the latex code of the problem.
+
+        Returns:
+            [str] -- latex code.
+
+        """
+
         return r'''$f(\mathbf{x}) = \sum_{i=1}^D \left| x_i^5 - 3x_i^4 +
                 4x_i^3 + 2x_i^2 - 10x_i - 4\right|$'''
 
     @classmethod
     def function(cls):
+        """Return benchmark evaluation function.
+
+        Returns:
+            [fun] -- Evaluation function.
+
+        """
+
         def evaluate(D, sol):
 
             val = 0.0
 
             for i in range(D):
-                val += abs(math.pow(sol[i], 5) - 3.0 * math.pow(sol[i], 4) + 4.0 *
-                           math.pow(sol[i], 3) + 2.0 * math.pow(sol[i], 2) - 10.0 * sol[i] - 4)
+                val += abs(
+                    math.pow(sol[i], 5) - 3.0 * math.pow(sol[i], 4) + 4.0 * math.pow(sol[i], 3) + 2.0 * math.pow(sol[i], 2) - 10.0 * sol[i] - 4)
 
             return val
 

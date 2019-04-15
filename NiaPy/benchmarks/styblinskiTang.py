@@ -1,9 +1,12 @@
 # encoding=utf8
-# pylint: disable=anomalous-backslash-in-string
+
+"""Implementation of Styblinski Tang benchmark."""
+
 import math
 from NiaPy.benchmarks.benchmark import Benchmark
 
-__all__ = ['StyblinskiTang']
+__all__ = ["StyblinskiTang"]
+
 
 class StyblinskiTang(Benchmark):
     r"""Implementation of Styblinski-Tang functions.
@@ -42,19 +45,46 @@ class StyblinskiTang(Benchmark):
         A literature survey of benchmark functions for global optimisation problems.
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
+
     """
-    Name = ['StyblinskiTang']
+
+    Name = ["StyblinskiTang"]
 
     def __init__(self, Lower=-5.0, Upper=5.0):
+        r"""Initialize Styblinski Tang benchmark.
+
+        Args:
+            Lower (Optional[float]): Lower bound of problem.
+            Upper (Optional[float]): Upper bound of problem.
+
+        See Also:
+            :func:`NiaPy.benchmarks.Benchmark.__init__`
+
+        """
+
         Benchmark.__init__(self, Lower, Upper)
 
     @staticmethod
     def latex_code():
-        return r'''$f(\mathbf{x}) = \frac{1}{2} \sum_{i=1}^D \left(
-                x_i^4 - 16x_i^2 + 5x_i \right) $'''
+        """Return the latex code of the problem.
+
+        Returns:
+            [str] -- latex code.
+
+        """
+
+        return r"""$f(\mathbf{x}) = \frac{1}{2} \sum_{i=1}^D \left(
+                x_i^4 - 16x_i^2 + 5x_i \right) $"""
 
     @classmethod
     def function(cls):
+        """Return benchmark evaluation function.
+
+        Returns:
+            [fun] -- Evaluation function.
+
+        """
+
         def evaluate(D, sol):
 
             val = 0.0

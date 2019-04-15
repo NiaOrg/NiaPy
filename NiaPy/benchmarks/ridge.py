@@ -1,9 +1,11 @@
 # encoding=utf8
-# pylint: disable=anomalous-backslash-in-string
+
+"""Implementation of Ridge benchmark."""
+
 import math
 from NiaPy.benchmarks.benchmark import Benchmark
 
-__all__ = ['Ridge']
+__all__ = ["Ridge"]
 
 
 class Ridge(Benchmark):
@@ -37,18 +39,45 @@ class Ridge(Benchmark):
                 $-64 \leq x_i \leq 64$
 
     Reference: http://www.cs.unm.edu/~neal.holts/dga/benchmarkFunction/ridge.html
+
     """
-    Name = ['Ridge']
+
+    Name = ["Ridge"]
 
     def __init__(self, Lower=-64.0, Upper=64.0):
+        """Initialize Ridge benchmark.
+
+        Args:
+            Lower (Optional[float]): Lower bound of problem.
+            Upper (Optional[float]): Upper bound of problem.
+
+        See Also:
+            :func:`NiaPy.benchmarks.Benchmark.__init__`
+
+        """
+
         Benchmark.__init__(self, Lower, Upper)
 
     @staticmethod
     def latex_code():
+        """Return the latex code of the problem.
+
+        Returns:
+            [str] -- latex code.
+
+        """
+
         return r'''$f(\mathbf{x}) = \sum_{i=1}^D (\sum_{j=1}^i x_j)^2 $'''
 
     @classmethod
     def function(cls):
+        """Return benchmark evaluation function.
+
+        Returns:
+            [fun] -- Evaluation function.
+
+        """
+
         def evaluate(D, sol):
 
             val = 0.0

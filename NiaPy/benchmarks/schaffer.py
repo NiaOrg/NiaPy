@@ -1,149 +1,242 @@
 # encoding=utf8
-# pylint: disable=anomalous-backslash-in-string, mixed-indentation, multiple-statements, line-too-long, no-else-return, unused-argument
-"""Implementations of Schwefels functions."""
+
+"""Implementations of Schaffer benchmarks."""
 
 from math import sin, cos, sqrt
 from NiaPy.benchmarks.benchmark import Benchmark
 
-__all__ = ['SchafferN2', 'SchafferN4', 'ExpandedSchaffer']
+__all__ = ["SchafferN2", "SchafferN4", "ExpandedSchaffer"]
+
 
 class SchafferN2(Benchmark):
-	r"""Implementations of Schaffer N. 2 functions.
+    r"""Implementations of Schaffer N. 2 functions.
 
-	Date: 2018
+    Date: 2018
 
-	Author: Klemen Berkovič
+    Author: Klemen Berkovič
 
-	License: MIT
+    License: MIT
 
-	Function:
-	**Schaffer N. 2 Function**
-	:math:`f(\textbf{x}) = 0.5 + \frac{ \sin^2 \left( x_1^2 - x_2^2 \right) - 0.5 }{ \left( 1 + 0.001 \left(  x_1^2 + x_2^2 \right) \right)^2 }`
+    Function: **Schaffer N. 2 Function**
 
-	**Input domain:**
-	The function can be defined on any input domain but it is usually
-	evaluated on the hypercube :math:`x_i ∈ [-100, 100]`, for all :math:`i = 1, 2,..., D`.
+        :math:`f(\textbf{x}) = 0.5 + \frac{ \sin^2 \left( x_1^2 - x_2^2 \right) - 0.5 }{ \left( 1 + 0.001 \left(  x_1^2 + x_2^2 \right) \right)^2 }`
 
-	**Global minimum:** :math:`f(x^*) = 0`, at :math:`x^* = (420.968746,...,420.968746)`
+        **Input domain:**
+        The function can be defined on any input domain but it is usually
+        evaluated on the hypercube :math:`x_i ∈ [-100, 100]`, for all :math:`i = 1, 2,..., D`.
 
-	LaTeX formats:
-	Inline:
-	$f(\textbf{x}) = 0.5 + \frac{ \sin^2 \left( x_1^2 - x_2^2 \right) - 0.5 }{ \left( 1 + 0.001 \left(  x_1^2 + x_2^2 \right) \right)^2 }$
+        **Global minimum:** :math:`f(x^*) = 0`, at :math:`x^* = (420.968746,...,420.968746)`
 
-	Equation:
-	\begin{equation} f(\textbf{x}) = 0.5 + \frac{ \sin^2 \left( x_1^2 - x_2^2 \right) - 0.5 }{ \left( 1 + 0.001 \left(  x_1^2 + x_2^2 \right) \right)^2 } \end{equation}
+    LaTeX formats:
+        Inline:
+                $f(\textbf{x}) = 0.5 + \frac{ \sin^2 \left( x_1^2 - x_2^2 \right) - 0.5 }{ \left( 1 + 0.001 \left(  x_1^2 + x_2^2 \right) \right)^2 }$
 
-	Domain:
-	$-100 \leq x_i \leq 100$
+        Equation:
+                \begin{equation} f(\textbf{x}) = 0.5 + \frac{ \sin^2 \left( x_1^2 - x_2^2 \right) - 0.5 }{ \left( 1 + 0.001 \left(  x_1^2 + x_2^2 \right) \right)^2 } \end{equation}
 
-	Reference:
-	http://www5.zzu.edu.cn/__local/A/69/BC/D3B5DFE94CD2574B38AD7CD1D12_C802DAFE_BC0C0.pdf
-	"""
-	Name = ['SchafferN2']
+        Domain:
+                $-100 \leq x_i \leq 100$
 
-	def __init__(self, Lower=-100.0, Upper=100.0): Benchmark.__init__(self, Lower, Upper)
+    Reference:
+        http://www5.zzu.edu.cn/__local/A/69/BC/D3B5DFE94CD2574B38AD7CD1D12_C802DAFE_BC0C0.pdf
+    """
 
-	@staticmethod
-	def latex_code():
-		return r'''$f(\textbf{x}) = 0.5 + \frac{ \sin^2 \left( x_1^2 - x_2^2 \right) - 0.5 }{ \left( 1 + 0.001 \left(  x_1^2 + x_2^2 \right) \right)^2 }$'''
+    Name = ["SchafferN2"]
 
-	@classmethod
-	def function(cls):
-		def f(D, x): return 0.5 + (sin(x[0] ** 2 - x[1] ** 2) ** 2 - 0.5) / (1 + 0.001 * (x[0] ** 2 + x[1] ** 2)) ** 2
-		return f
+    def __init__(self, Lower=-100.0, Upper=100.0):
+        r"""Initialize Schaffer N. 2  benchmark.
+
+        Args:
+            Lower (Optional[float]): Lower bound of problem.
+            Upper (Optional[float]): Upper bound of problem.
+
+        See Also:
+            :func:`NiaPy.benchmarks.Benchmark.__init__`
+
+        """
+
+        Benchmark.__init__(self, Lower, Upper)
+
+    @staticmethod
+    def latex_code():
+        """Return the latex code of the problem.
+
+        Returns:
+            [str] -- latex code.
+
+        """
+
+        return r"""$f(\textbf{x}) = 0.5 + \frac{ \sin^2 \left( x_1^2 - x_2^2 \right) - 0.5 }{ \left( 1 + 0.001 \left(  x_1^2 + x_2^2 \right) \right)^2 }$"""
+
+    @classmethod
+    def function(cls):
+        """Return benchmark evaluation function.
+
+        Returns:
+            [fun] -- Evaluation function.
+
+        """
+
+        def evaluate(D, sol):
+            return 0.5 + (sin(sol[0] ** 2 - sol[1] ** 2) ** 2 - 0.5) / (1 + 0.001 * (sol[0] ** 2 + sol[1] ** 2)) ** 2
+
+        return evaluate
+
 
 class SchafferN4(Benchmark):
-	r"""Implementations of Schaffer N. 2 functions.
+    r"""Implementations of Schaffer N. 4 functions.
 
-	Date: 2018
+    Date: 2018
 
-	Author: Klemen Berkovič
+    Author: Klemen Berkovič
 
-	License: MIT
+    License: MIT
 
-	Function:
-	**Schaffer N. 2 Function**
-	:math:`f(\textbf{x}) = 0.5 + \frac{ \cos^2 \left( \sin \left( x_1^2 - x_2^2 \right) \right)- 0.5 }{ \left( 1 + 0.001 \left(  x_1^2 + x_2^2 \right) \right)^2 }`
+    Function: **Schaffer N. 4 Function**
 
-	**Input domain:**
-	The function can be defined on any input domain but it is usually
-	evaluated on the hypercube :math:`x_i ∈ [-100, 100]`, for all :math:`i = 1, 2,..., D`.
+        :math:`f(\textbf{x}) = 0.5 + \frac{ \cos^2 \left( \sin \left( x_1^2 - x_2^2 \right) \right)- 0.5 }{ \left( 1 + 0.001 \left(  x_1^2 + x_2^2 \right) \right)^2 }`
 
-	**Global minimum:** :math:`f(x^*) = 0`, at :math:`x^* = (420.968746,...,420.968746)`
+        **Input domain:**
+        The function can be defined on any input domain but it is usually
+        evaluated on the hypercube :math:`x_i ∈ [-100, 100]`, for all :math:`i = 1, 2,..., D`.
 
-	LaTeX formats:
-	Inline:
-	$f(\textbf{x}) = 0.5 + \frac{ \cos^2 \left( \sin \left( x_1^2 - x_2^2 \right) \right)- 0.5 }{ \left( 1 + 0.001 \left(  x_1^2 + x_2^2 \right) \right)^2 }$
+        **Global minimum:** :math:`f(x^*) = 0`, at :math:`x^* = (420.968746,...,420.968746)`
 
-	Equation:
-	\begin{equation} f(\textbf{x}) = 0.5 + \frac{ \cos^2 \left( \sin \left( x_1^2 - x_2^2 \right) \right)- 0.5 }{ \left( 1 + 0.001 \left(  x_1^2 + x_2^2 \right) \right)^2 } \end{equation}
+    LaTeX formats:
+        Inline:
+                $f(\textbf{x}) = 0.5 + \frac{ \cos^2 \left( \sin \left( x_1^2 - x_2^2 \right) \right)- 0.5 }{ \left( 1 + 0.001 \left(  x_1^2 + x_2^2 \right) \right)^2 }$
 
-	Domain:
-	$-100 \leq x_i \leq 100$
+        Equation:
+                \begin{equation} f(\textbf{x}) = 0.5 + \frac{ \cos^2 \left( \sin \left( x_1^2 - x_2^2 \right) \right)- 0.5 }{ \left( 1 + 0.001 \left(  x_1^2 + x_2^2 \right) \right)^2 } \end{equation}
 
-	Reference:
-	http://www5.zzu.edu.cn/__local/A/69/BC/D3B5DFE94CD2574B38AD7CD1D12_C802DAFE_BC0C0.pdf
-	"""
-	Name = ['SchafferN4']
+        Domain:
+                $-100 \leq x_i \leq 100$
 
-	def __init__(self, Lower=-100.0, Upper=100.0): Benchmark.__init__(self, Lower, Upper)
+    Reference:
+        http://www5.zzu.edu.cn/__local/A/69/BC/D3B5DFE94CD2574B38AD7CD1D12_C802DAFE_BC0C0.pdf
 
-	@staticmethod
-	def latex_code():
-		return r'''$f(\textbf{x}) = 0.5 + \frac{ \cos^2 \left( \sin \left( x_1^2 - x_2^2 \right) \right)- 0.5 }{ \left( 1 + 0.001 \left(  x_1^2 + x_2^2 \right) \right)^2 }$'''
+    """
 
-	@classmethod
-	def function(cls):
-		def f(D, x): return 0.5 + (cos(sin(x[0] ** 2 - x[1] ** 2)) ** 2 - 0.5) / (1 + 0.001 * (x[0] ** 2 + x[1] ** 2)) ** 2
-		return f
+    Name = ["SchafferN4"]
+
+    def __init__(self, Lower=-100.0, Upper=100.0):
+        r"""Initialize Schaffer N. 4 benchmark.
+
+        Args:
+            Lower (Optional[float]): Lower bound of problem.
+            Upper (Optional[float]): Upper bound of problem.
+
+        See Also:
+            :func:`NiaPy.benchmarks.Benchmark.__init__`
+
+        """
+
+        Benchmark.__init__(self, Lower, Upper)
+
+    @staticmethod
+    def latex_code():
+        """Return the latex code of the problem.
+
+        Returns:
+            [str] -- latex code.
+
+        """
+
+        return r"""$f(\textbf{x}) = 0.5 + \frac{ \cos^2 \left( \sin \left( x_1^2 - x_2^2 \right) \right)- 0.5 }{ \left( 1 + 0.001 \left(  x_1^2 + x_2^2 \right) \right)^2 }$"""
+
+    @classmethod
+    def function(cls):
+        """Return benchmark evaluation function.
+
+        Returns:
+            [fun] -- Evaluation function.
+
+        """
+
+        def evaluate(D, sol):
+            return 0.5 + (cos(sin(sol[0] ** 2 - sol[1] ** 2)) ** 2 - 0.5) / (1 + 0.001 * (sol[0] ** 2 + sol[1] ** 2)) ** 2
+
+        return evaluate
+
 
 class ExpandedSchaffer(Benchmark):
-	r"""Implementations of Expanded Schaffer functions.
+    r"""Implementations of Expanded Schaffer functions.
 
-	Date: 2018
+    Date: 2018
 
-	Author: Klemen Berkovič
+    Author: Klemen Berkovič
 
-	License: MIT
+    License: MIT
 
-	Function:
-	**Expanded Schaffer Function**
-	:math:`f(\textbf{x}) = g(x_D, x_1) + \sum_{i=2}^D g(x_{i - 1}, x_i) \\ g(x, y) = 0.5 + \frac{\sin \left(\sqrt{x^2 + y^2} \right)^2 - 0.5}{\left( 1 + 0.001 (x^2 + y^2) \right)}^2`
+    Function: **Expanded Schaffer Function**
 
-	**Input domain:**
-	The function can be defined on any input domain but it is usually
-	evaluated on the hypercube :math:`x_i ∈ [-100, 100]`, for all :math:`i = 1, 2,..., D`.
+        :math:`f(\textbf{x}) = g(x_D, x_1) + \sum_{i=2}^D g(x_{i - 1}, x_i) \\ g(x, y) = 0.5 + \frac{\sin \left(\sqrt{x^2 + y^2} \right)^2 - 0.5}{\left( 1 + 0.001 (x^2 + y^2) \right)}^2`
 
-	**Global minimum:** :math:`f(x^*) = 0`, at :math:`x^* = (420.968746,...,420.968746)`
+        **Input domain:**
+        The function can be defined on any input domain but it is usually
+        evaluated on the hypercube :math:`x_i ∈ [-100, 100]`, for all :math:`i = 1, 2,..., D`.
 
-	LaTeX formats:
-	Inline:
-	$f(\textbf{x}) = g(x_D, x_1) + \sum_{i=2}^D g(x_{i - 1}, x_i) \\ g(x, y) = 0.5 + \frac{\sin \left(\sqrt{x^2 + y^2} \right)^2 - 0.5}{\left( 1 + 0.001 (x^2 + y^2) \right)}^2$
+        **Global minimum:** :math:`f(x^*) = 0`, at :math:`x^* = (420.968746,...,420.968746)`
 
-	Equation:
-	\begin{equation} f(\textbf{x}) = g(x_D, x_1) + \sum_{i=2}^D g(x_{i - 1}, x_i) \\ g(x, y) = 0.5 + \frac{\sin \left(\sqrt{x^2 + y^2} \right)^2 - 0.5}{\left( 1 + 0.001 (x^2 + y^2) \right)}^2 \end{equation}
+    LaTeX formats:
+        Inline:
+                $f(\textbf{x}) = g(x_D, x_1) + \sum_{i=2}^D g(x_{i - 1}, x_i) \\ g(x, y) = 0.5 + \frac{\sin \left(\sqrt{x^2 + y^2} \right)^2 - 0.5}{\left( 1 + 0.001 (x^2 + y^2) \right)}^2$
 
-	Domain:
-	$-100 \leq x_i \leq 100$
+        Equation:
+                \begin{equation} f(\textbf{x}) = g(x_D, x_1) + \sum_{i=2}^D g(x_{i - 1}, x_i) \\ g(x, y) = 0.5 + \frac{\sin \left(\sqrt{x^2 + y^2} \right)^2 - 0.5}{\left( 1 + 0.001 (x^2 + y^2) \right)}^2 \end{equation}
 
-	Reference:
-	http://www5.zzu.edu.cn/__local/A/69/BC/D3B5DFE94CD2574B38AD7CD1D12_C802DAFE_BC0C0.pdf
-	"""
-	Name = ['ExpandedSchaffer']
+        Domain:
+                $-100 \leq x_i \leq 100$
 
-	def __init__(self, Lower=-100.0, Upper=100.0): Benchmark.__init__(self, Lower, Upper)
+    Reference:
+        http://www5.zzu.edu.cn/__local/A/69/BC/D3B5DFE94CD2574B38AD7CD1D12_C802DAFE_BC0C0.pdf
+    """
 
-	@staticmethod
-	def latex_code():
-		return r'''$f(\textbf{x}) = g(x_D, x_1) + \sum_{i=2}^D g(x_{i - 1}, x_i) \\ g(x, y) = 0.5 + \frac{\sin \left(\sqrt{x^2 + y^2} \right)^2 - 0.5}{\left( 1 + 0.001 (x^2 + y^2) \right)}^2$'''
+    Name = ["ExpandedSchaffer"]
 
-	@classmethod
-	def function(cls):
-		def g(x, y): return 0.5 + (sin(sqrt(x ** 2 + y ** 2)) ** 2 - 0.5) / (1 + 0.001 * (x ** 2 + y ** 2)) ** 2
-		def f(D, x):
-			val = 0.0
-			for i in range(1, D): val += g(x[i - 1], x[i])
-			return g(x[D - 1], x[0]) + val
-		return f
+    def __init__(self, Lower=-100.0, Upper=100.0):
+        r"""Initialize Expanded Schaffer benchmark.
 
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
+        Args:
+            Lower (Optional[float]): Lower bound of problem.
+            Upper (Optional[float]): Upper bound of problem.
+
+        See Also:
+            :func:`NiaPy.benchmarks.Benchmark.__init__`
+
+        """
+
+        Benchmark.__init__(self, Lower, Upper)
+
+    @staticmethod
+    def latex_code():
+        """Return the latex code of the problem.
+
+        Returns:
+            [str] -- latex code.
+
+        """
+
+        return r"""$f(\textbf{x}) = g(x_D, x_1) + \sum_{i=2}^D g(x_{i - 1}, x_i) \\ g(x, y) = 0.5 + \frac{\sin \left(\sqrt{x^2 + y^2} \right)^2 - 0.5}{\left( 1 + 0.001 (x^2 + y^2) \right)}^2$"""
+
+    @classmethod
+    def function(cls):
+        """Return benchmark evaluation function.
+
+        Returns:
+            [fun] -- Evaluation function.
+
+        """
+
+        def g(x, y):
+            return 0.5 + (sin(sqrt(x ** 2 + y ** 2)) ** 2 - 0.5) / (1 + 0.001 * (x ** 2 + y ** 2)) ** 2
+
+        def evaluate(D, sol):
+
+            val = 0.0
+
+            for i in range(1, D):
+                val += g(sol[i - 1], sol[i])
+
+            return g(sol[D - 1], sol[0]) + val
+        return evaluate

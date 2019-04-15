@@ -1,9 +1,11 @@
 # encoding=utf8
-# pylint: disable=anomalous-backslash-in-string
+
+"""Implementation of Schumer Steiglitz benchmark."""
+
 import math
 from NiaPy.benchmarks.benchmark import Benchmark
 
-__all__ = ['SchumerSteiglitz']
+__all__ = ["SchumerSteiglitz"]
 
 
 class SchumerSteiglitz(Benchmark):
@@ -40,18 +42,45 @@ class SchumerSteiglitz(Benchmark):
         A literature survey of benchmark functions for global optimisation problems.
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
+
     """
-    Name = ['SchumerSteiglitz']
+
+    Name = ["SchumerSteiglitz"]
 
     def __init__(self, Lower=-100.0, Upper=100.0):
+        r"""Initialize Schumer Steiglitz benchmark.
+
+        Args:
+            Lower (Optional[float]): Lower bound of problem.
+            Upper (Optional[float]): Upper bound of problem.
+
+        See Also:
+            :func:`NiaPy.benchmarks.Benchmark.__init__`
+
+        """
+
         Benchmark.__init__(self, Lower, Upper)
 
     @staticmethod
     def latex_code():
-        return r'''$f(\mathbf{x}) = \sum_{i=1}^D x_i^4$'''
+        """Return the latex code of the problem.
+
+        Returns:
+            [str] -- latex code.
+
+        """
+
+        return r"""$f(\mathbf{x}) = \sum_{i=1}^D x_i^4$"""
 
     @classmethod
     def function(cls):
+        """Return benchmark evaluation function.
+
+        Returns:
+            [fun] -- Evaluation function.
+
+        """
+
         def evaluate(D, sol):
 
             val = 0.0

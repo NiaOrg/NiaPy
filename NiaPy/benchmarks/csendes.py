@@ -1,9 +1,11 @@
 # encoding=utf8
-# pylint: disable=anomalous-backslash-in-string
+
+"""Implementation of Csendes benchmark."""
+
 import math
 from NiaPy.benchmarks.benchmark import Benchmark
 
-__all__ = ['Csendes']
+__all__ = ["Csendes"]
 
 
 class Csendes(Benchmark):
@@ -41,18 +43,44 @@ class Csendes(Benchmark):
         A literature survey of benchmark functions for global optimisation problems.
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
+
     """
-    Name = ['Csendes']
+
+    Name = ["Csendes"]
 
     def __init__(self, Lower=-1.0, Upper=1.0):
+        r"""Initialize Csendes benchmark.
+
+        Args:
+            Lower (Optional[float]): Lower bound of problem.
+            Upper (Optional[float]): Upper bound of problem.
+
+        See Also:
+            :func:`NiaPy.benchmarks.Benchmark.__init__`
+
+        """
         Benchmark.__init__(self, Lower, Upper)
 
     @staticmethod
     def latex_code():
-        return r'''$f(\mathbf{x}) = \sum_{i=1}^D x_i^6\left( 2 + \sin \frac{1}{x_i}\right)$'''
+        """Return the latex code of the problem.
+
+        Returns:
+            [str] -- latex code.
+
+        """
+
+        return r"""$f(\mathbf{x}) = \sum_{i=1}^D x_i^6\left( 2 + \sin \frac{1}{x_i}\right)$"""
 
     @classmethod
     def function(cls):
+        """Return benchmark evaluation function.
+
+        Returns:
+            [fun] -- Evaluation function.
+
+        """
+
         def evaluate(D, sol):
 
             val = 0.0

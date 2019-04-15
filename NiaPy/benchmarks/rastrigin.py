@@ -1,9 +1,11 @@
 # encoding=utf8
-# pylint: disable=anomalous-backslash-in-string
+
+"""Implemenatation of Rastrigin benchmark."""
+
 import math
 from NiaPy.benchmarks.benchmark import Benchmark
 
-__all__ = ['Rastrigin']
+__all__ = ["Rastrigin"]
 
 
 class Rastrigin(Benchmark):
@@ -38,18 +40,44 @@ class Rastrigin(Benchmark):
                 $-5.12 \leq x_i \leq 5.12$
 
     Reference: https://www.sfu.ca/~ssurjano/rastr.html
+
     """
+
     Name = ['Rastrigin']
 
     def __init__(self, Lower=-5.12, Upper=5.12):
+        """Initialize Rastrigin benchmark.
+
+        Args:
+            Lower (Optional[float]): Lower bound of problem.
+            Upper (Optional[float]): Upper bound of problem.
+
+        See Also:
+            :func:`NiaPy.benchmarks.Benchmark.__init__`
+
+        """
+
         Benchmark.__init__(self, Lower, Upper)
 
     @staticmethod
     def latex_code():
+        """Return the latex code of the problem.
+
+        Returns:
+            [str] -- latex code.
+
+        """
         return r'''$f(\mathbf{x}) = 10D + \sum_{i=1}^D \left(x_i^2 -10\cos(2\pi x_i)\right)$'''
 
     @classmethod
     def function(cls):
+        """Return benchmark evaluation function.
+
+        Returns:
+            [fun] -- Evaluation function.
+
+        """
+
         def evaluate(D, sol):
 
             val = 0.0

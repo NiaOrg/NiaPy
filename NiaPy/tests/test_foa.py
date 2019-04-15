@@ -26,9 +26,9 @@ class FOATestCase(AlgorithmTestCase):
         self.assertFalse(tp['gsc'](0))
         self.assertFalse(tp['gsc'](-1))
         self.assertFalse(tp['gsc'](1.0))
-        self.assertTrue(tp['tr'](1))
+        self.assertTrue(tp['tr'](1.0))
         self.assertTrue(tp['tr'](0.5))
-        self.assertTrue(tp['tr'](0))
+        self.assertTrue(tp['tr'](0.0))
         self.assertFalse(tp['tr'](-1))
         self.assertFalse(tp['tr'](1.1))
 

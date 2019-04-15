@@ -1,11 +1,12 @@
 # encoding=utf8
-# pylint: disable=anomalous-backslash-in-string
-"""Implementations of Step functions."""
+
+"""Implementations of Step benchmarks."""
 
 import math
 from NiaPy.benchmarks.benchmark import Benchmark
 
-__all__ = ['Step', 'Step2', 'Step3']
+__all__ = ["Step", "Step2", "Step3"]
+
 
 class Step(Benchmark):
     r"""Implementation of Step function.
@@ -44,19 +45,46 @@ class Step(Benchmark):
         A literature survey of benchmark functions for global optimisation problems.
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
+
     """
-    Name = ['Step']
+
+    Name = ["Step"]
 
     def __init__(self, Lower=-100.0, Upper=100.0):
+        r"""Initialize Step benchmark.
+
+        Args:
+            Lower (Optional[float]): Lower bound of problem.
+            Upper (Optional[float]): Upper bound of problem.
+
+        See Also:
+            :func:`NiaPy.benchmarks.Benchmark.__init__`
+
+        """
+
         Benchmark.__init__(self, Lower, Upper)
 
     @staticmethod
     def latex_code():
-        return r'''$f(\mathbf{x}) = \sum_{i=1}^D \left( \lfloor \left |
-                x_i \right | \rfloor \right)$'''
+        """Return the latex code of the problem.
+
+        Returns:
+            [str] -- latex code.
+
+        """
+
+        return r"""$f(\mathbf{x}) = \sum_{i=1}^D \left( \lfloor \left |
+                x_i \right | \rfloor \right)$"""
 
     @classmethod
     def function(cls):
+        """Return benchmark evaluation function.
+
+        Returns:
+            [fun] -- Evaluation function.
+
+        """
+
         def evaluate(D, sol):
 
             val = 0.0
@@ -104,18 +132,45 @@ class Step2(Benchmark):
         A literature survey of benchmark functions for global optimisation problems.
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
+
     """
-    Name = ['Step2']
+
+    Name = ["Step2"]
 
     def __init__(self, Lower=-100.0, Upper=100.0):
+        r"""Initialize Step2 benchmark.
+
+        Args:
+            Lower (Optional[float]): Lower bound of problem.
+            Upper (Optional[float]): Upper bound of problem.
+
+        See Also:
+            :func:`NiaPy.benchmarks.Benchmark.__init__`
+
+        """
+
         Benchmark.__init__(self, Lower, Upper)
 
     @staticmethod
     def latex_code():
-        return r'''$f(\mathbf{x}) = \sum_{i=1}^D \left( \lfloor x_i + 0.5 \rfloor \right)^2$'''
+        """Return the latex code of the problem.
+
+        Returns:
+            [str] -- latex code.
+
+        """
+
+        return r"""$f(\mathbf{x}) = \sum_{i=1}^D \left( \lfloor x_i + 0.5 \rfloor \right)^2$"""
 
     @classmethod
     def function(cls):
+        """Return benchmark evaluation function.
+
+        Returns:
+            [fun] -- Evaluation function.
+
+        """
+
         def evaluate(D, sol):
 
             val = 0.0
@@ -163,18 +218,45 @@ class Step3(Benchmark):
         A literature survey of benchmark functions for global optimisation problems.
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
+
     """
-    Name = ['Step3']
+
+    Name = ["Step3"]
 
     def __init__(self, Lower=-100.0, Upper=100.0):
+        r"""Initialize Step3 benchmark.
+
+        Args:
+            Lower (Optional[float]): Lower bound of problem.
+            Upper (Optional[float]): Upper bound of problem.
+
+        See Also:
+            :func:`NiaPy.benchmarks.Benchmark.__init__`
+
+        """
+
         Benchmark.__init__(self, Lower, Upper)
 
     @staticmethod
     def latex_code():
-        return r'''$f(\mathbf{x}) = \sum_{i=1}^D \left( \lfloor x_i^2 \rfloor \right)$'''
+        """Return the latex code of the problem.
+
+        Returns:
+            [str] -- latex code.
+
+        """
+
+        return r"""$f(\mathbf{x}) = \sum_{i=1}^D \left( \lfloor x_i^2 \rfloor \right)$"""
 
     @classmethod
     def function(cls):
+        """Return benchmark evaluation function.
+
+        Returns:
+            [fun] -- Evaluation function.
+
+        """
+
         def evaluate(D, sol):
 
             val = 0.0

@@ -95,7 +95,7 @@ class HybridBatAlgorithm(BatAlgorithm):
 			Fitness (numpy.ndarray[float]: Current populations function/fitness values.
 			best (numpy.ndarray): Global best individual.
 			f_min (float): Global best individuals fitness/function value.
-			v:
+			v (numpy.ndarray):
 			**dparams (Dict[str, Any]): Additional arguments.
 
 		Returns:
@@ -113,6 +113,6 @@ class HybridBatAlgorithm(BatAlgorithm):
 			f_new = task.eval(S)
 			if f_new <= Fitness[i] and self.rand() < self.A: Sol[i], Fitness[i] = S, f_new
 			if f_new <= f_min: best, f_min = S, f_new
-		return Sol, Fitness, {'S': S, 'Q': Q, 'v': v}
+		return Sol, Fitness, {'v': v}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

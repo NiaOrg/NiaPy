@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, function-redefined, multiple-statements, function-redefined, unsubscriptable-object, no-member, line-too-long, logging-not-lazy
+
 import logging
 from unittest import TestCase
 
@@ -53,9 +53,6 @@ class IndividualTestCase(TestCase):
 		self.x, self.task = rnd.uniform(-100, 100, self.D), StoppingTask(D=self.D, nFES=230, nGEN=inf, benchmark=MyBenchmark())
 		self.s1, self.s2, self.s3 = Individual(x=self.x, e=False), Individual(task=self.task, rand=rnd), Individual(task=self.task)
 
-	def test_x_fine(self):
-		self.assertTrue(array_equal(self.x, self.s1.x))
-
 	def test_generateSolutin_fine(self):
 		self.assertTrue(self.task.isFeasible(self.s2))
 		self.assertTrue(self.task.isFeasible(self.s3))
@@ -82,6 +79,7 @@ class IndividualTestCase(TestCase):
 
 	def test_len_fine(self):
 		self.assertEqual(len(self.s1), len(self.x))
+
 
 def init_pop_numpy(task, NP, **kwargs):
 	r"""Custom population initialization function for numpy individual type.
