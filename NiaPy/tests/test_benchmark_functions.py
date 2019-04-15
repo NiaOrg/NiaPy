@@ -26,12 +26,12 @@ class TestBenchmarkFunctions(TestCase):
 
     def assertBounds(self, bench, lower, upper):
         """Checking the bounds.
-        
+
         Arguments:
             bench [Benchmark]: Benchmark to test.
             lower [float]: Lower bound.
             upper [type]: Upper bound.
-        
+
         Returns:
             [fun]: Returns benchmarks evaluation function.
         """

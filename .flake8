@@ -8,3 +8,6 @@ exclude =
     build,
     dist,
     scent.py
+per-file-ignores = 
+    NiaPy/tests/*:B007,D100,D101,D102,D107,D208,D211,D413,E117,E302,E701,E704,F841,S110,W191,W293
+    
