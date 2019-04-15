@@ -1,8 +1,12 @@
 language: python
-python:
-- 2.7.14
-- 2.7.15
-- 3.6 # latest 3.6.x version
+
+matrix:
+  include:
+    - python: 2.7 # latest 2.7.x version
+    - python: 3.6 # latest 3.6.x version
+    - python: 3.7 # latest 3.7.x version
+      dist: xenial
+      sudo: true
 
 cache:
   pip: true

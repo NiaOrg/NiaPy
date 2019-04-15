@@ -1,11 +1,11 @@
 # encoding=utf8
-# pylint: disable=anomalous-backslash-in-string
-"""Implementations of Alpine functions."""
+
+"""Implementations of Alpine benchmarks."""
 
 import math
 from NiaPy.benchmarks.benchmark import Benchmark
 
-__all__ = ['Alpine1', 'Alpine2']
+__all__ = ["Alpine1", "Alpine2"]
 
 
 class Alpine1(Benchmark):
@@ -42,11 +42,13 @@ class Alpine1(Benchmark):
         A literature survey of benchmark functions for global optimisation problems.
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
+
     """
-    Name = ['Alpine1']
+
+    Name = ["Alpine1"]
 
     def __init__(self, Lower=-10.0, Upper=10.0):
-        r"""Initialize Alpine1 benchmark.
+        r"""Initialize of Alpine1 benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.
@@ -54,15 +56,31 @@ class Alpine1(Benchmark):
 
         See Also:
             :func:`NiaPy.benchmarks.Benchmark.__init__`
+
         """
+
         Benchmark.__init__(self, Lower, Upper)
 
     @staticmethod
     def latex_code():
-        return r'''$f(\mathbf{x}) = \sum_{i=1}^{D} \left |x_i \sin(x_i)+0.1x_i \right|$'''
+        """Return the latex code of the problem.
+
+        Returns:
+            [str] -- latex code.
+
+        """
+
+        return r"""$f(\mathbf{x}) = \sum_{i=1}^{D} \left |x_i \sin(x_i)+0.1x_i \right|$"""
 
     @classmethod
     def function(cls):
+        """Return benchmark evaluation function.
+
+        Returns:
+            [fun] -- Evaluation function.
+
+        """
+
         def evaluate(D, sol):
 
             val = 0.0
@@ -110,8 +128,10 @@ class Alpine2(Benchmark):
         A literature survey of benchmark functions for global optimisation problems.
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
+
     """
-    Name = ['Alpine2']
+
+    Name = ["Alpine2"]
 
     def __init__(self, Lower=0.0, Upper=10.0):
         r"""Initialize Alpine2 benchmark.
@@ -122,15 +142,31 @@ class Alpine2(Benchmark):
 
         See Also:
             :func:`NiaPy.benchmarks.Benchmark.__init__`
+
         """
+
         Benchmark.__init__(self, Lower=Lower, Upper=Upper)
 
     @staticmethod
     def latex_code():
-        return r'''$f(\mathbf{x}) = \prod_{i=1}^{D} \sqrt{x_i} \sin(x_i)$'''
+        """Return the latex code of the problem.
+
+        Returns:
+            [str] -- latex code.
+
+        """
+
+        return r"""$f(\mathbf{x}) = \prod_{i=1}^{D} \sqrt{x_i} \sin(x_i)$"""
 
     @classmethod
     def function(cls):
+        """Return benchmark evaluation function.
+
+        Returns:
+            [fun] -- Evaluation function.
+
+        """
+
         def evaluate(D, sol):
 
             val = 1.0

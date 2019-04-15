@@ -2,6 +2,16 @@
 
 """Setup script for the package."""
 
+from __future__ import (
+    division,
+    absolute_import,
+    with_statement,
+    print_function,
+    unicode_literals,
+    nested_scopes,
+    generators
+)
+
 import os
 import sys
 import logging
@@ -34,7 +44,8 @@ def read_package_variable(key, filename='__init__.py'):
 def build_description():
     """Build a description for the project from documentation files."""
     try:
-        readme = open("README.rst").read()  # changelog = open("CHANGELOG.rst").read()
+        # changelog = open("CHANGELOG.rst").read()
+        readme = open("README.rst").read()
     except IOError:
         return "<placeholder>"
     else:
@@ -47,7 +58,9 @@ setuptools.setup(
     name=read_package_variable('__project__'),
     version=read_package_variable('__version__'),
 
-    description="Python micro framework for building nature-inspired algorithms.",
+    description="""
+        Python micro framework for building nature-inspired algorithms.
+        """,
     url='https://github.com/NiaOrg/NiaPy',
     author='NiaOrg',
     author_email='niapy.organization@gmail.com',
@@ -57,7 +70,6 @@ setuptools.setup(
     long_description=build_description(),
     license='MIT',
     classifiers=[
-        # TODO: update this list to match your application: https://pypi.python.org/pypi?%3Aaction=list_classifiers
         'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
         'Intended Audience :: Science/Research',
@@ -74,7 +86,7 @@ setuptools.setup(
     ],
 
     tests_requires=[
-        'pylint >= 2.1.1',
+        'flake8 ~= 3.7.7',
         'astroid >= 2.0.4',
         'pytest ~= 3.7.1',
         'coverage ~= 4.4.2',
@@ -82,12 +94,10 @@ setuptools.setup(
     ],
 
     install_requires=[
-        # TODO: Add your library's requirements here
-        'numpy >= 1.15.0',
-        'enum34 >= 1.1.6',
-        'click >= 6.0',
+        'numpy >= 1.16.2',
         'scipy >= 1.1.0',
-        'xlsxwriter >= 1.0.2',
-        'matplotlib >= 2.2.3',
+        'enum34 >= 1.1.6',
+        'xlsxwriter >= 1.1.5',
+        'matplotlib >= 2.2.4',
     ]
 )
