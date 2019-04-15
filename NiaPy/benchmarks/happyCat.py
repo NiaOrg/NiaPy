@@ -9,7 +9,7 @@ __all__ = ["HappyCat"]
 
 
 class HappyCat(Benchmark):
-    r"""Implementation of Happy cat function.
+    ur"""Implementation of Happy cat function.
 
     Date: 2018
 
