@@ -7,7 +7,6 @@ from NiaPy.benchmarks.benchmark import Benchmark
 __all__ = ["Ackley"]
 
 
-
 class Ackley(Benchmark):
     r"""Implementation of Ackley function.
 

@@ -14,7 +14,6 @@ logger.setLevel("INFO")
 __all__ = ["Benchmark"]
 
 
-
 class Benchmark:
     """Base Benchmark interface class."""
 
