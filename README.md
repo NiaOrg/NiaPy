@@ -45,6 +45,7 @@ The micro framework features following algorithms:
   - Artificial bee colony algorithm ([see example](examples/run_abc.py))
   - Bat algorithm ([see example](examples/run_ba.py))
   - Camel algorithm ([see example](example/run_ca.py))
+  - Cuckoo search ([see example](example/run_cs.py))
   - Differential evolution algorithm ([see example](examples/run_de.py))
   - Evolution Strategy ([see example](example/run_es1p1.py), [see example](example/run_esMp1.py), [see example](example/run_esMpL.py), [see example](example/run_esML.py))
   - Firefly algorithm ([see example](examples/run_fa.py))
