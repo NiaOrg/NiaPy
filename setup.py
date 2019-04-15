@@ -8,7 +8,6 @@ from __future__ import (
     with_statement,
     print_function,
     unicode_literals,
-    generator_stop,
     nested_scopes,
     generators
 )
@@ -87,7 +86,7 @@ setuptools.setup(
     ],
 
     tests_requires=[
-        'pylint >= 2.1.1',
+        'flake8 ~= 3.7.7',
         'astroid >= 2.0.4',
         'pytest ~= 3.7.1',
         'coverage ~= 4.4.2',
