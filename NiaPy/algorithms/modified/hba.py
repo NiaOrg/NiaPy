@@ -69,50 +69,19 @@ class HybridBatAlgorithm(BatAlgorithm):
 		self.F, self.CR, self.CrossMutt = F, CR, CrossMutt
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def initPopulation(self, task):
-		r"""Initialize starting population.
+	def generateBest(self, best, task, i, Sol, **kwargs):
+		r"""Generate new solution based on global best known solution.
 
 		Args:
-			task (Task): Optimization task.
-
-		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
-				1. Initialized population.
-				2. Initialized populations fitness/function values.
-				3. Additional arguments:
-					* v (numpy.ndarray[float]): TODO
-		"""
-		Sol, Fitness, _ = BatAlgorithm.initPopulation(self, task)
-		v = full([self.NP, task.D], 0.0)
-		return Sol, Fitness, {'v': v}
-
-	def runIteration(self, task, Sol, Fitness, best, f_min, v, **dparams):
-		r"""Core function of HybridBatAlgorithm algorithm.
-
-		Args:
-			task (Task): Optimization task.
-			Sol (numpy.ndarray): Current population.
-			Fitness (numpy.ndarray[float]: Current populations function/fitness values.
 			best (numpy.ndarray): Global best individual.
-			f_min (float): Global best individuals fitness/function value.
-			v (numpy.ndarray):
-			**dparams (Dict[str, Any]): Additional arguments.
+			task (Task): Optimization task.
+			i (int): Index of current individual.
+			Sol (numpy.ndarray): Current best population.
+			**kwargs (Dict[str, Any]):
 
 		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
-				1. New population.
-				2. New populations function/fitness values.
-				3. Additional arguments:
-					* v (numpy.ndarray[float]): TODO
+			numpy.ndarray: New solution based on global best individual.
 		"""
-		Q = self.Qmin + (self.Qmax - self.Qmin) * self.uniform(0, 1, self.NP)
-		for i in range(self.NP):
-			v[i] += (Sol[i] - best) * Q[i]
-			S = task.repair(Sol[i] + v[i], rnd=self.Rand)
-			if self.rand() > self.r: S = task.repair(self.CrossMutt(Sol, i, best, self.F, self.CR, rnd=self.Rand), rnd=self.Rand)
-			f_new = task.eval(S)
-			if f_new <= Fitness[i] and self.rand() < self.A: Sol[i], Fitness[i] = S, f_new
-			if f_new <= f_min: best, f_min = S, f_new
-		return Sol, Fitness, {'v': v}
+		return task.repair(self.CrossMutt(Sol, i, best, self.F, self.CR, rnd=self.Rand), rnd=self.Rand)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
