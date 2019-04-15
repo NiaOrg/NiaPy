@@ -11,7 +11,7 @@
 
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/NiaOrg/NiaPy/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/NiaOrg/NiaPy/?branch=master) 
 [![Coverage Status](https://img.shields.io/coveralls/NiaOrg/NiaPy/master.svg)](https://coveralls.io/r/NiaOrg/NiaPy) 
-![GitHub commit activity](https://img.shields.io/github/commit-activity/w/NiaOrg/NiaPy.svg) 
+![GitHub commit activity](https://img.shields.io/github/commit-activity/w/NiaOrg/NiaPy.svg)
 [![Updates](https://pyup.io/repos/github/NiaOrg/NiaPy/shield.svg)](https://pyup.io/repos/github/NiaOrg/NiaPy/) 
 [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/NiaOrg/NiaPy.svg)](http://isitmaintained.com/project/NiaOrg/NiaPy "Average time to resolve an issue") 
 [![Percentage of issues still open](http://isitmaintained.com/badge/open/NiaOrg/NiaPy.svg)](http://isitmaintained.com/project/NiaOrg/NiaPy "Percentage of issues still open") 
