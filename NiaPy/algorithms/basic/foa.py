@@ -56,11 +56,11 @@ class ForestOptimizationAlgorithm(Algorithm):
 
         Returns:
             Dict[str, Callable]:
-                * lt (Callable[[int], bool]): TODO.
-                * al (Callable[[int], bool]): TODO.
-                * lsc (Callable[[int], bool]): TODO.
-                * gsc (Callable[[int], bool]): TODO.
-                * tr (Callable[[float], bool]): TODO.
+                * lt (Callable[[int], bool]): Checks if life time parameter has a proper value.
+                * al (Callable[[int], bool]): Checks if area limit parameter has a proper value.
+                * lsc (Callable[[int], bool]): Checks if local seeding changes parameter has a proper value.
+                * gsc (Callable[[int], bool]): Checks if global seeding changes parameter has a proper value.
+                * tr (Callable[[float], bool]): Checks if transfer rate parameter has a proper value.
 
         See Also:
             * :func:`NiaPy.algorithms.algorithm.Algorithm.typeParameters`
