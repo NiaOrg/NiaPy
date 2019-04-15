@@ -70,7 +70,7 @@ def objects2array(objs):
 	return a
 
 class Utility:
-	r"""Base class with string mappings to benchmarks.
+	r"""Base class with string mappings to benchmarks and algorithms.
 
 	Attributes:
 		classes (Dict[str, Benchmark]): Mapping from stings to benchmark.
