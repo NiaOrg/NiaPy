@@ -1,8 +1,8 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, line-too-long, multiple-statements, too-many-function-args, singleton-comparison, bad-continuation
+
 """Python micro framework for building nature-inspired algorithms."""
 
-from __future__ import print_function  # for backward compatibility purpose
+from __future__ import print_function
 
 import os
 import logging
@@ -11,17 +11,18 @@ import datetime
 import xlsxwriter
 from numpy import amin, amax, median, mean, std
 from NiaPy import benchmarks, util, algorithms
+from NiaPy.algorithms import Algorithm
 from NiaPy.algorithms import basic as balgos, modified as malgos, other as oalgos
 
-__all__ = ['algorithms', 'benchmarks', 'util']
-__project__ = 'NiaPy'
-__version__ = '2.0.0rc4'
+__all__ = ["algorithms", "benchmarks", "util"]
+__project__ = "NiaPy"
+__version__ = "2.0.0rc4"
 
 VERSION = "{0} v{1}".format(__project__, __version__)
 
 logging.basicConfig()
-logger = logging.getLogger('NiaPy')
-logger.setLevel('INFO')
+logger = logging.getLogger("NiaPy")
+logger.setLevel("INFO")
 
 NiaPyAlgos = [
     balgos.BatAlgorithm,
