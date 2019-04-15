@@ -3,6 +3,7 @@
 [![PyPI Version](https://img.shields.io/pypi/v/NiaPy.svg)](https://pypi.python.org/pypi/NiaPy) 
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/NiaPy.svg) 
 ![PyPI - Status](https://img.shields.io/pypi/status/NiaPy.svg) 
+![PyPI - Downloads](https://img.shields.io/pypi/dm/NiaPy.svg)
 ![GitHub Release Date](https://img.shields.io/github/release-date/NiaOrg/NiaPy.svg) 
 [![Anaconda-Server Badge](https://anaconda.org/niaorg/niapy/badges/installer/conda.svg)](https://conda.anaconda.org/niaorg)  [![Documentation Status](https://readthedocs.org/projects/niapy/badge/?version=latest)](http://niapy.readthedocs.io/en/latest/?badge=latest) 
 [![GitHub license](https://img.shields.io/github/license/NiaOrg/NiaPy.svg)](https://github.com/NiaOrg/NiaPy/blob/master/LICENSE) 
