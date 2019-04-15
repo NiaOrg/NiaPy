@@ -51,7 +51,7 @@ class StyblinskiTang(Benchmark):
     Name = ["StyblinskiTang"]
 
     def __init__(self, Lower=-5.0, Upper=5.0):
-        r"""The initialization of Styblinski Tang benchmark.
+        r"""Initialize Styblinski Tang benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.

@@ -48,7 +48,7 @@ class ChungReynolds(Benchmark):
     Name = ["ChungReynolds"]
 
     def __init__(self, Lower=-100.0, Upper=100.0):
-        """The initialization of Chung Reynolds benchmark.
+        """Initialize Chung Reynolds benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.

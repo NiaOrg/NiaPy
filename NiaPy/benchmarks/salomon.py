@@ -52,7 +52,7 @@ class Salomon(Benchmark):
     Name = ["Salomon"]
 
     def __init__(self, Lower=-100.0, Upper=100.0):
-        """The initialization of Salomon benchmark.
+        """Initialize Salomon benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.

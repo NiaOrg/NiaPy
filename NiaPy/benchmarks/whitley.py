@@ -55,7 +55,7 @@ class Whitley(Benchmark):
     Name = ["Whitley"]
 
     def __init__(self, Lower=-10.24, Upper=10.24):
-        """The initialization of Whitley benchmark.
+        """Initialize Whitley benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.

@@ -48,7 +48,7 @@ class Alpine1(Benchmark):
     Name = ["Alpine1"]
 
     def __init__(self, Lower=-10.0, Upper=10.0):
-        r"""The initialization of Alpine1 benchmark.
+        r"""Initialize of Alpine1 benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.
@@ -134,7 +134,7 @@ class Alpine2(Benchmark):
     Name = ["Alpine2"]
 
     def __init__(self, Lower=0.0, Upper=10.0):
-        r"""The initialization of Alpine2 benchmark.
+        r"""Initialize Alpine2 benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.

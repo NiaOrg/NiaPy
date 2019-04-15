@@ -51,7 +51,7 @@ class Step(Benchmark):
     Name = ["Step"]
 
     def __init__(self, Lower=-100.0, Upper=100.0):
-        r"""The initialization of Step benchmark.
+        r"""Initialize Step benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.
@@ -138,7 +138,7 @@ class Step2(Benchmark):
     Name = ["Step2"]
 
     def __init__(self, Lower=-100.0, Upper=100.0):
-        r"""The initialization of Step2 benchmark.
+        r"""Initialize Step2 benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.
@@ -224,7 +224,7 @@ class Step3(Benchmark):
     Name = ["Step3"]
 
     def __init__(self, Lower=-100.0, Upper=100.0):
-        r"""The initialization of Alpine1 benchmark.
+        r"""Initialize Step3 benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.

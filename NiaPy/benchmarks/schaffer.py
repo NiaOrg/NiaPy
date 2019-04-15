@@ -44,7 +44,7 @@ class SchafferN2(Benchmark):
     Name = ["SchafferN2"]
 
     def __init__(self, Lower=-100.0, Upper=100.0):
-        r"""The initialization of Schaffer N. 2  benchmark.
+        r"""Initialize Schaffer N. 2  benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.
@@ -120,7 +120,7 @@ class SchafferN4(Benchmark):
     Name = ["SchafferN4"]
 
     def __init__(self, Lower=-100.0, Upper=100.0):
-        r"""The initialization of Schaffer N. 4 benchmark.
+        r"""Initialize Schaffer N. 4 benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.
@@ -195,7 +195,7 @@ class ExpandedSchaffer(Benchmark):
     Name = ["ExpandedSchaffer"]
 
     def __init__(self, Lower=-100.0, Upper=100.0):
-        r"""The initialization of Expanded Schaffer benchmark.
+        r"""Initialize Expanded Schaffer benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.

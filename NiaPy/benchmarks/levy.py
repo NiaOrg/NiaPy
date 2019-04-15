@@ -46,7 +46,7 @@ class Levy(Benchmark):
     Name = ["Levy"]
 
     def __init__(self, Lower=0.0, Upper=pi):
-        r"""The initialization of Levy benchmark.
+        r"""Initialize Levy benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.

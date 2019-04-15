@@ -48,7 +48,7 @@ class Sphere(Benchmark):
     Name = ["Sphere"]
 
     def __init__(self, Lower=-5.12, Upper=5.12):
-        r"""The initialization of Sphere benchmark.
+        r"""Initialize Sphere benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.
@@ -128,7 +128,7 @@ class Sphere2(Benchmark):
     Name = ["Sphere2"]
 
     def __init__(self, Lower=-1.0, Upper=1.0):
-        r"""The initialization of Sphere benchmark.
+        r"""Initialize Sphere benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.
@@ -208,7 +208,7 @@ class Sphere3(Benchmark):
     Name = ["Sphere3"]
 
     def __init__(self, Lower=-65.536, Upper=65.536):
-        r"""The initialization of Sphere3 benchmark.
+        r"""Initialize Sphere3 benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.

@@ -48,7 +48,7 @@ class SchumerSteiglitz(Benchmark):
     Name = ["SchumerSteiglitz"]
 
     def __init__(self, Lower=-100.0, Upper=100.0):
-        r"""The initialization of Schumer Steiglitz benchmark.
+        r"""Initialize Schumer Steiglitz benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.

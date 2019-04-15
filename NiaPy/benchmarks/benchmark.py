@@ -20,7 +20,7 @@ class Benchmark:
     Name = ["Benchmark", "BBB"]
 
     def __init__(self, Lower, Upper, **kwargs):
-        r"""Initialization of Benchmark object.
+        r"""Initialize base Benchmark.
 
         Arguments:
             Lower {[type]} -- Lower bound.
@@ -39,7 +39,7 @@ class Benchmark:
         """
 
         def evaluate(D, sol):
-            """The implementation on evaluation function.
+            """Implement the evaluation function.
 
             Arguments:
                 D [int]} -- Dimension of the problem.

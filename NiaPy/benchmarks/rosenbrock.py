@@ -50,7 +50,7 @@ class Rosenbrock(Benchmark):
     Name = ["Rosenbrock"]
 
     def __init__(self, Lower=-30.0, Upper=30.0):
-        """The initialization of Rosenbrock benchmark.
+        """Initialize Rosenbrock benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.

@@ -45,7 +45,7 @@ class Schwefel(Benchmark):
     Name = ["Schwefel"]
 
     def __init__(self, Lower=-500.0, Upper=500.0):
-        """The initialization of Schewefel benchmark.
+        """Initialize Schewefel benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.
@@ -126,7 +126,7 @@ class Schwefel221(Benchmark):
     Name = ["Schwefel221"]
 
     def __init__(self, Lower=-100.0, Upper=100.0):
-        """The initialization of Schwefel221 benchmark.
+        """Initialize Schwefel221 benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.
@@ -208,7 +208,7 @@ class Schwefel222(Benchmark):
     Name = ["Schwefel222"]
 
     def __init__(self, Lower=-100.0, Upper=100.0):
-        """The initialization of Schwefel222 benchmark.
+        """Initialize Schwefel222 benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.
@@ -289,7 +289,7 @@ class ModifiedSchwefel(Benchmark):
     Name = ["ModifiedSchwefel"]
 
     def __init__(self, Lower=-100.0, Upper=100.0):
-        """The initialization of Modified Schwefel benchmark.
+        """Initialize Modified Schwefel benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.
@@ -378,7 +378,7 @@ class ExpandedScaffer(Benchmark):
     Name = ["ExpandedScaffer"]
 
     def __init__(self, Lower=-100.0, Upper=100.0):
-        """The initialization of Expanded Scaffer benchmark.
+        """Initialize Expanded Scaffer benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.

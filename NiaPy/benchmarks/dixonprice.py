@@ -45,7 +45,7 @@ class DixonPrice(Benchmark):
     Name = ["DixonPrice"]
 
     def __init__(self, Lower=-10.0, Upper=10):
-        r"""The initialization of Dixon Price benchmark.
+        r"""Initialize of Dixon Price benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.

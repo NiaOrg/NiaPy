@@ -45,7 +45,7 @@ class Zakharov(Benchmark):
     Name = ["Zakharov"]
 
     def __init__(self, Lower=-5.0, Upper=10.0):
-        r"""The initialization of Zakharov benchmark.
+        r"""Initialize Zakharov benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.

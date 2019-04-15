@@ -49,7 +49,7 @@ class Qing(Benchmark):
     Name = ["Qing"]
 
     def __init__(self, Lower=-500.0, Upper=500.0):
-        """The initialization of Quing benchmark.
+        """Initialize Quing benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.

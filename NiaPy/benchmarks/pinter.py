@@ -59,7 +59,7 @@ class Pinter(Benchmark):
     Name = ["Pinter"]
 
     def __init__(self, Lower=-10.0, Upper=10.0):
-        r"""The initialization of Pinter benchmark.
+        r"""Initialize Pinter benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.

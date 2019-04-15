@@ -45,7 +45,7 @@ class Powell(Benchmark):
     Name = ["Powell"]
 
     def __init__(self, Lower=-4.0, Upper=5.0):
-        r"""The initialization of Powell benchmark.
+        r"""Initialize Powell benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.

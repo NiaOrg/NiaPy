@@ -46,7 +46,7 @@ class Infinity(Benchmark):
     Name = ["Infinity"]
 
     def __init__(self, Lower=-1.0, Upper=1.0):
-        r"""The initialization of Infinity benchmark.
+        r"""Initialize Infinity benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.

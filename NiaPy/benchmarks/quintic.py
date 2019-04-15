@@ -52,7 +52,7 @@ class Quintic(Benchmark):
     Name = ["Quintic"]
 
     def __init__(self, Lower=-10.0, Upper=10.0):
-        """The initialization of Quintic benchmark.
+        """Initialize Quintic benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.

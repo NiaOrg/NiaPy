@@ -46,7 +46,7 @@ class Discus(Benchmark):
     Name = ["Discus"]
 
     def __init__(self, Lower=-100.0, Upper=100.0):
-        r"""The initialization of Alpine1 benchmark.
+        r"""Initialize Alpine1 benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.

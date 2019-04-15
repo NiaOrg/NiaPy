@@ -45,7 +45,7 @@ class HGBat(Benchmark):
     Name = ["HGBat"]
 
     def __init__(self, Lower=-100.0, Upper=100.0):
-        r"""The initialization of HGBat benchmark.
+        r"""Initialize HGBat benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.

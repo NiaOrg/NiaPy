@@ -46,7 +46,7 @@ class Rastrigin(Benchmark):
     Name = ['Rastrigin']
 
     def __init__(self, Lower=-5.12, Upper=5.12):
-        """The initialization of Rastrigin benchmark.
+        """Initialize Rastrigin benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.

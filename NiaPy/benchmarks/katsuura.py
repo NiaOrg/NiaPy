@@ -45,7 +45,7 @@ class Katsuura(Benchmark):
     Name = ["Katsuura"]
 
     def __init__(self, Lower=-100.0, Upper=100.0, **kwargs):
-        r"""The initialization of Katsuura benchmark.
+        r"""Initialize Katsuura benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.

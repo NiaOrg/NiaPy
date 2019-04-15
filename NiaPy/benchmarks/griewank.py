@@ -50,7 +50,7 @@ class Griewank(Benchmark):
     Name = ["Griewank"]
 
     def __init__(self, Lower=-100.0, Upper=100.0):
-        """The initialization of Griewank benchmark.
+        """Initialize Griewank benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.
@@ -134,7 +134,7 @@ class ExpandedGriewankPlusRosenbrock(Benchmark):
     Name = ["ExpandedGriewankPlusRosenbrock"]
 
     def __init__(self, Lower=-100.0, Upper=100.0):
-        """The initialization of Expanded Griewank Plus Rosenbrock benchmark.
+        """Initialize Expanded Griewank Plus Rosenbrock benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.

@@ -45,7 +45,7 @@ class Weierstrass(Benchmark):
     Name = ["Weierstrass"]
 
     def __init__(self, Lower=-100.0, Upper=100.0, a=0.5, b=3, k_max=20):
-        """The initialization of Weierstrass benchmark.
+        """Initialize Weierstrass benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.

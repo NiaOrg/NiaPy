@@ -42,10 +42,10 @@ class Ridge(Benchmark):
 
     """
 
-    Name = ['Ridge']
+    Name = ["Ridge"]
 
     def __init__(self, Lower=-64.0, Upper=64.0):
-        """The initialization of Ridge benchmark.
+        """Initialize Ridge benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.

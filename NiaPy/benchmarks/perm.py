@@ -48,7 +48,7 @@ class Perm(Benchmark):
     Name = ["Perm"]
 
     def __init__(self, D=10.0, beta=0.5):
-        """The initialization of Perm benchmark.
+        """Initialize Perm benchmark.
 
         Args:
             D [float] -- Dimension on problem. (default: {10.0})

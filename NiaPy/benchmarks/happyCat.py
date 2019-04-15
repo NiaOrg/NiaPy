@@ -50,7 +50,7 @@ class HappyCat(Benchmark):
     Name = ["HappyCat"]
 
     def __init__(self, Lower=-100.0, Upper=100.0):
-        """The initialization of Happy Cat benchmark.
+        """Initialize Happy Cat benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.

@@ -49,7 +49,7 @@ class Csendes(Benchmark):
     Name = ["Csendes"]
 
     def __init__(self, Lower=-1.0, Upper=1.0):
-        r"""The initialization of Csendes benchmark.
+        r"""Initialize Csendes benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.

@@ -47,7 +47,7 @@ class CosineMixture(Benchmark):
     Name = ["CosineMixture"]
 
     def __init__(self, Lower=-1.0, Upper=1.0):
-        r"""The initialization of Cosine mixture benchmark.
+        r"""Initialize Cosine mixture benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.

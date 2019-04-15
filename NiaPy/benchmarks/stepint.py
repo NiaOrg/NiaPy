@@ -48,7 +48,7 @@ class Stepint(Benchmark):
     Name = ["Stepint"]
 
     def __init__(self, Lower=-5.12, Upper=5.12):
-        """The initialization of Stepint benchmark.
+        """Initialize Stepint benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.

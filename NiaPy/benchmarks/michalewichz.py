@@ -48,7 +48,7 @@ class Michalewichz(Benchmark):
     Name = ["Michalewichz"]
 
     def __init__(self, Lower=0.0, Upper=pi, m=10):
-        r"""The initialization of Alpine1 benchmark.
+        r"""Initialize Michalewichz benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.

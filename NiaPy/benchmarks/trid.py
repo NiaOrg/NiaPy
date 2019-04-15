@@ -44,7 +44,7 @@ class Trid(Benchmark):
     Name = ["Trid"]
 
     def __init__(self, D=2):
-        r"""The initialization of Trid benchmark.
+        r"""Initialize Trid benchmark.
 
         Args:
             D (Optional[int]): Dimension of problem.

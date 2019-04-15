@@ -45,7 +45,7 @@ class Elliptic(Benchmark):
     Name = ["Elliptic"]
 
     def __init__(self, Lower=-100.0, Upper=100.0):
-        r"""The initialization of Elliptic benchmark.
+        r"""Initialize Elliptic benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.
