@@ -242,6 +242,18 @@ class DifferentialEvolution(Algorithm):
 	Name = ['DifferentialEvolution', 'DE']
 
 	@staticmethod
+	def algorithmInfo():
+		r"""Basic information of algorithm.
+
+		Returns:
+			str: Basic information of algorithm.
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+		"""
+		return r"""Storn, Rainer, and Kenneth Price. "Differential evolution - a simple and efficient heuristic for global optimization over continuous spaces." Journal of global optimization 11.4 (1997): 341-359."""
+
+	@staticmethod
 	def typeParameters():
 		r"""Get dictionary with functions for checking values of parameters.
 
@@ -369,16 +381,17 @@ class CrowdingDifferentialEvolution(DifferentialEvolution):
 	"""
 	Name = ['CrowdingDifferentialEvolution', 'CDE']
 
-	def __init__(self, **kwargs):
-		r"""Init CrowdingDifferentialEvolution algorithm.
+	@staticmethod
+	def algorithmInfo():
+		r"""Basic information of algorithm.
 
-		Args:
-			**kwargs (Dict[str, Any]): Additional arguments.
+		Returns:
+			str: Basic information of algorithm.
 
 		See Also:
-			* :func:`NiaPy.algorithms.basic.DifferentialEvolution.__init__`
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
 		"""
-		DifferentialEvolution.__init__(self, **kwargs)
+		return r"""No New"""
 
 	def setParameters(self, CrowPop=0.1, **ukwargs):
 		r"""Set core parameters of algorithm.
@@ -434,6 +447,18 @@ class DynNpDifferentialEvolution(DifferentialEvolution):
 		* :class:`NiaPy.algorithms.basic.DifferentialEvolution`
 	"""
 	Name = ['DynNpDifferentialEvolution', 'dynNpDE']
+
+	@staticmethod
+	def algorithmInfo():
+		r"""Basic information of algorithm.
+
+		Returns:
+			str: Basic information of algorithm.
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+		"""
+		return r"""No info"""
 
 	@staticmethod
 	def typeParameters():
@@ -588,6 +613,18 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 		* :class:`NiaPy.algorithms.basic.DifferentialEvolution`
 	"""
 	Name = ['AgingNpDifferentialEvolution', 'ANpDE']
+
+	@staticmethod
+	def algorithmInfo():
+		r"""Basic information of algorithm.
+
+		Returns:
+			str: Basic information of algorithm.
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+		"""
+		return r"""No info"""
 
 	@staticmethod
 	def typeParameters():
@@ -780,6 +817,18 @@ class MultiStrategyDifferentialEvolution(DifferentialEvolution):
 	Name = ['MultiStrategyDifferentialEvolution', 'MsDE']
 
 	@staticmethod
+	def algorithmInfo():
+		r"""Basic information of algorithm.
+
+		Returns:
+			str: Basic information of algorithm.
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+		"""
+		return r"""No info"""
+
+	@staticmethod
 	def typeParameters():
 		r"""Get dictionary with functions for checking values of parameters.
 
@@ -845,6 +894,18 @@ class DynNpMultiStrategyDifferentialEvolution(MultiStrategyDifferentialEvolution
 		* :class:`NiaPy.algorithms.basic.DynNpDifferentialEvolution`
 	"""
 	Name = ['DynNpMultiStrategyDifferentialEvolution', 'dynNpMsDE']
+
+	@staticmethod
+	def algorithmInfo():
+		r"""Basic information of algorithm.
+
+		Returns:
+			str: Basic information of algorithm.
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+		"""
+		return r"""No info"""
 
 	@staticmethod
 	def typeParameters():
@@ -918,6 +979,18 @@ class AgingNpMultiMutationDifferentialEvolution(AgingNpDifferentialEvolution, Mu
 		* :class:`NiaPy.algorithms.basic.MultiStrategyDifferentialEvolution`
 	"""
 	Name = ['AgingNpMultiMutationDifferentialEvolution', 'ANpMSDE']
+
+	@staticmethod
+	def algorithmInfo():
+		r"""Basic information of algorithm.
+
+		Returns:
+			str: Basic information of algorithm.
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+		"""
+		return r"""No info"""
 
 	@staticmethod
 	def typeParameters():

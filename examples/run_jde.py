@@ -5,7 +5,6 @@ import sys
 sys.path.append('../')
 # End of fix
 
-import random
 from NiaPy.algorithms.modified import SelfAdaptiveDifferentialEvolution
 from NiaPy.util import StoppingTask, OptimizationType
 from NiaPy.benchmarks import Sphere

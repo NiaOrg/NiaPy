@@ -14,10 +14,11 @@ def customInit(task, NP, rnd=rand):
 	pop = task.Lower + rnd.rand(NP, task.D) * 2
 	fpop = apply_along_axis(task.eval, 1, pop)
 	return pop, fpop
-    
-#we will run Particle Swarm Algorithm with custom Init function for 5 independent runs
+
+
+# we will run Particle Swarm Algorithm with custom Init function for 5 independent runs
 for i in range(5):
-    task = StoppingTask(D=10, nFES=10000, optType=OptimizationType.MINIMIZATION, InitPopFunc=customInit, benchmark=Sphere())
-    algo = ParticleSwarmAlgorithm(NP=10, C1=2.0, C2=2.0, w=0.7, vMin=-4, vMax=4)
-    best = algo.run(task=task)
-    print(best)
+	task = StoppingTask(D=10, nFES=1000, optType=OptimizationType.MINIMIZATION, InitPopFunc=customInit, benchmark=Sphere())
+	algo = ParticleSwarmAlgorithm(NP=10, C1=2.0, C2=2.0, w=0.7, vMin=-4, vMax=4)
+	best = algo.run(task=task)
+	print(best)

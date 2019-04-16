@@ -5,14 +5,15 @@ import sys
 sys.path.append('../')
 # End of fix
 
-from NiaPy.algorithms.basic import BareBonesFireworksAlgorithm
+import random
+from NiaPy.algorithms.basic import MonkeyKingEvolutionV2
 from NiaPy.util import StoppingTask, OptimizationType
 from NiaPy.benchmarks import Sphere
 
-# we will run Fireworks Algorithm for 5 independent runs
+# we will run Nelder Mead algorithm for 5 independent runs
 for i in range(5):
-	task = StoppingTask(D=10, nFES=1000, optType=OptimizationType.MINIMIZATION, benchmark=Sphere())
-	algo = BareBonesFireworksAlgorithm()
+	task = StoppingTask(D=10, nGEN=50, optType=OptimizationType.MINIMIZATION, benchmark=Sphere())
+	algo = MonkeyKingEvolutionV2()
 	best = algo.run(task=task)
 	print('%s -> %s' % (best[0], best[1]))
 

@@ -80,6 +80,15 @@ class Algorithm:
 	itype = None
 
 	@staticmethod
+	def algorithmInfo():
+		r"""Get information of algorithm.
+
+		Returns:
+			str: Basic information of the algorithm.
+		"""
+		return r"""Base class for implementing algorithms."""
+
+	@staticmethod
 	def typeParameters():
 		r"""Return functions for checking values of parameters.
 

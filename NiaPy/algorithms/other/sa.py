@@ -12,28 +12,28 @@ logger.setLevel('INFO')
 
 __all__ = ['SimulatedAnnealing', 'coolDelta', 'coolLinear']
 
-def coolDelta(currentT, T, deltaT, nFES):
+def coolDelta(currentT, deltaT, T, nFES, **kwargs):
 	r"""Calculate new temperature by differences.
 
 	Args:
-		currentT:
-		T:
-		deltaT:
-		nFES:
+		currentT (float):
+		T (float):
+		kwargs (Dict[str, Any]): Additional arguments.
 
 	Returns:
 		float: New temperature.
 	"""
 	return currentT - deltaT
 
-def coolLinear(currentT, T, deltaT, nFES):
+def coolLinear(currentT, T, deltaT, nFES, **kwargs):
 	r"""Calculate temperature with linear function.
 
 	Args:
-		currentT:
-		T:
-		deltaT:
-		nFES:
+		currentT (float): Current temperature.
+		T (float):
+		deltaT (float):
+		nFES (int): Number of evaluations done.
+		kwargs (Dict[str, Any]): Additional arguments.
 
 	Returns:
 		float: New temperature.
@@ -61,16 +61,28 @@ class SimulatedAnnealing(Algorithm):
 
 	Attributes:
 		Name (List[str]): List of strings representing algorithm name.
-		delta (float): Movemnt for neighbour search.
+		delta (float): Movement for neighbour search.
 		T (float); Starting temperature.
 		deltaT (float): Change in temperature.
-		coolingMethod (Callable): Neigborhud function.
+		coolingMethod (Callable): Neighbourhood function.
 		epsilon (float): Error value.
 
 	See Also:
 		* :class:`NiaPy.algorithms.Algorithm`
 	"""
 	Name = ['SimulatedAnnealing', 'SA']
+
+	@staticmethod
+	def algorithmInfo():
+		r"""Basic information of algorithm.
+
+		Returns:
+			str: Basic information of algorithm.
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+		"""
+		return r"""None"""
 
 	@staticmethod
 	def typeParameters():
@@ -91,10 +103,10 @@ class SimulatedAnnealing(Algorithm):
 		r"""Set the algorithm parameters/arguments.
 
 		Arguments:
-			delta (Optional[float]): Movemnt for neighbour search.
+			delta (Optional[float]): Movement for neighbour search.
 			T (Optional[float]); Starting temperature.
 			deltaT (Optional[float]): Change in temperature.
-			coolingMethod (Optional[Callable]): Neigborhud function.
+			coolingMethod (Optional[Callable]): Neighbourhood function.
 			epsilon (Optional[float]): Error value.
 
 		See Also
@@ -115,7 +127,7 @@ class SimulatedAnnealing(Algorithm):
 		cfit = task.eval(c)
 		deltaFit, r = cfit - xfit, self.rand()
 		if deltaFit < 0 or r < exp(deltaFit / curT): x, xfit = c, cfit
-		curT = self.cool(curT, self.T, self.deltaT, nFES=task.nFES)
+		curT = self.cool(curT, self.T, deltaT=self.deltaT, nFES=task.nFES)
 		return x, xfit, {'curT': curT}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

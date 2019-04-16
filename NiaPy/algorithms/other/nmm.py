@@ -43,15 +43,27 @@ class NelderMeadMethod(Algorithm):
 	Name = ['NelderMeadMethod', 'NMM']
 
 	@staticmethod
+	def algorithmInfo():
+		r"""Basic information of algorithm.
+
+		Returns:
+			str: Basic information of algorithm.
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+		"""
+		return r"""No info"""
+
+	@staticmethod
 	def typeParameters():
 		r"""Get dictionary with function for testing correctness of parameters.
 
 		Returns:
 			Dict[str, Callable]:
-				* alpha (Callable[[Union[int, float]], bool]): TODO
-				* gamma (Callable[[Union[int, float]], bool]): TODO
-				* rho (Callable[[Union[int, float]], bool]): TODO
-				* sigma (Callable[[Union[int, float]], bool]): TODO
+				* alpha (Callable[[Union[int, float]], bool])
+				* gamma (Callable[[Union[int, float]], bool])
+				* rho (Callable[[Union[int, float]], bool])
+				* sigma (Callable[[Union[int, float]], bool])
 		"""
 		return {
 			'alpha': lambda x: isinstance(x, (int, float)) and x >= 0,
