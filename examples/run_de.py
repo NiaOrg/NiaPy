@@ -16,3 +16,4 @@ for i in range(5):
     algo = DifferentialEvolution(NP=50, F=0.5, CR=0.9)
     best = algo.run(task=task)
     print('%s -> %s' % (best[0].x, best[1]))
+

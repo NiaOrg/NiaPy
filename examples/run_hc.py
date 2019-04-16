@@ -12,7 +12,7 @@ from NiaPy.benchmarks import Sphere
 
 #we will run Hill Climb algorithm for 5 independent runs
 for i in range(5):
-    task = StoppingTask(D=10, nGEN=1000, optType=OptimizationType.MINIMIZATION, benchmark=Sphere())
-    algo = HillClimbAlgorithm(NP=30)
+    task = StoppingTask(D=10, nGEN=4000, optType=OptimizationType.MINIMIZATION, benchmark=Sphere())
+    algo = HillClimbAlgorithm(delta=0.3)
     best = algo.run(task)
     print(best)
