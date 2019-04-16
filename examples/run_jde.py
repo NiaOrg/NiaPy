@@ -10,10 +10,10 @@ from NiaPy.algorithms.modified import SelfAdaptiveDifferentialEvolution
 from NiaPy.util import StoppingTask, OptimizationType
 from NiaPy.benchmarks import Sphere
 
-#we will run jDE algorithm for 5 independent runs
+# we will run jDE algorithm for 5 independent runs
 for i in range(5):
-    task = StoppingTask(D=10, nFES=100, optType=OptimizationType.MINIMIZATION, benchmark=Sphere())
+    task = StoppingTask(D=10, nFES=10000, optType=OptimizationType.MINIMIZATION, benchmark=Sphere())
     algo = SelfAdaptiveDifferentialEvolution(NP=40, F=0.5, F_l=0.0, F_u=2.0, Tao1=0.9, CR=0.1, Tao2=0.45)
     best = algo.run(task=task)
-    print(best)
+    print('%s -> %s' % (best[0].x, best[1]))
 

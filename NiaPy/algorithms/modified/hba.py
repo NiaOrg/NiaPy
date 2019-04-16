@@ -2,8 +2,6 @@
 # pylint: disable=mixed-indentation, multiple-statements, logging-not-lazy, attribute-defined-outside-init, arguments-differ, bad-continuation, unused-argument
 import logging
 
-from numpy import full
-
 from NiaPy.algorithms.basic import BatAlgorithm
 from NiaPy.algorithms.basic.de import CrossBest1
 

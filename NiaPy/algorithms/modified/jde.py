@@ -77,10 +77,10 @@ class SelfAdaptiveDifferentialEvolution(DifferentialEvolution):
 
 		Returns:
 			Dict[str, Callable]:
-				* F_l (Callable[[Union[float, int]], bool]): TODO
-				* F_u (Callable[[Union[float, int]], bool]): TODO
-				* Tao1 (Callable[[Union[float, int]], bool]): TODo
-				* Tao2 (Callable[[Union[float, int]], bool]): TODO
+				* F_l (Callable[[Union[float, int]], bool])
+				* F_u (Callable[[Union[float, int]], bool])
+				* Tao1 (Callable[[Union[float, int]], bool])
+				* Tao2 (Callable[[Union[float, int]], bool])
 
 		See Also:
 			* :func:`NiaPy.algorithms.basic.DifferentialEvolution.typeParameters`
@@ -135,6 +135,7 @@ class SelfAdaptiveDifferentialEvolution(DifferentialEvolution):
 		"""
 		npop = objects2array([self.AdaptiveGen(e) for e in pop])
 		for i, e in enumerate(npop): npop[i].x = self.CrossMutt(npop, i, xb, e.F, e.CR, rnd=self.Rand)
+		for e in npop: e.evaluate(task, rnd=self.rand)
 		return npop
 
 class AgingIndividualJDE(SolutionjDE):
