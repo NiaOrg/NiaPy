@@ -197,12 +197,21 @@ class GeneticAlgorithm(Algorithm):
 	Name = ['GeneticAlgorithm', 'GA']
 
 	@staticmethod
+	def algorithmInfo():
+		r"""Get basic information of algorithm.
+
+		Returns:
+			str: Basic information of algorithm.
+		"""
+		return r"""On info"""
+
+	@staticmethod
 	def typeParameters():
-		r"""TODO.
+		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
 			Dict[str, Callable]:
-				* Ts (Callable[[int], bool]): TODO
+				* Ts (Callable[[int], bool]): Tournament size.
 				* Mr (Callable[[float], bool]): Probability of mutation.
 				* Cr (Callable[[float], bool]): Probability of crossover.
 

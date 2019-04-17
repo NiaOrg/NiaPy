@@ -12,7 +12,7 @@ logger.setLevel('INFO')
 
 __all__ = ['SimulatedAnnealing', 'coolDelta', 'coolLinear']
 
-def coolDelta(currentT, deltaT, T, nFES, **kwargs):
+def coolDelta(currentT, T, deltaT, nFES, **kwargs):
 	r"""Calculate new temperature by differences.
 
 	Args:
@@ -74,7 +74,7 @@ class SimulatedAnnealing(Algorithm):
 
 	@staticmethod
 	def algorithmInfo():
-		r"""Basic information of algorithm.
+		r"""Get basic information of algorithm.
 
 		Returns:
 			str: Basic information of algorithm.

@@ -88,7 +88,7 @@ def Crossover(x, xpb, xb, xr, MP_c, MP_s, MP_p, F, CR, task, rnd=rand):
 	return x, task.eval(x)
 
 def MP_C(x, F, CR, MP, rnd=rand):
-	r"""New position based on fickleness.
+	r"""Get bew position based on fickleness.
 
 	Args:
 		x (numpy.ndarray): Current individuals position.
@@ -107,7 +107,7 @@ def MP_C(x, F, CR, MP, rnd=rand):
 	return asarray([x[i] + F * rnd.normal(0, 1) if rnd.rand() < CR else x[i] for i in range(len(x))])
 
 def MP_S(x, xr, xb, CR, MP, rnd=rand):
-	r"""New position based on external irregularity.
+	r"""Get new position based on external irregularity.
 
 	Args:
 		x (numpy.ndarray): Current individuals position.
@@ -132,7 +132,7 @@ def MP_S(x, xr, xb, CR, MP, rnd=rand):
 	return asarray([xr[i] if rnd.rand() < CR else x[i] for i in range(len(x))])
 
 def MP_P(x, xpb, CR, MP, rnd=rand):
-	r"""New position based on internal irregularity.
+	r"""Get new position based on internal irregularity.
 
 	Args:
 		x (numpy.ndarray): Current individuals position.

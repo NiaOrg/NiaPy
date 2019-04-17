@@ -85,7 +85,7 @@ def init_pop_numpy(task, NP, **kwargs):
 	r"""Custom population initialization function for numpy individual type.
 
 	Args:
-		task (Task):  Optimization task.
+		task (Task): Optimization task.
 		np (int): Population size.
 		**kwargs (Dict[str, Any]): Additional arguments.
 
@@ -102,7 +102,7 @@ def init_pop_individual(task, NP, itype, **kwargs):
 	r"""Custom population initialization function for numpy individual type.
 
 	Args:
-		task (Task):  Optimization task.
+		task (Task): Optimization task.
 		np (int): Population size.
 		itype (Individual): Type of individual in population.
 		**kwargs (Dict[str, Any]): Additional arguments.

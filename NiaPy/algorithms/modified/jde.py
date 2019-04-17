@@ -3,7 +3,7 @@
 import logging
 
 from NiaPy.algorithms.algorithm import Individual
-from NiaPy.algorithms.basic.de import DifferentialEvolution, CrossBest1, CrossRand1, CrossCurr2Best1, CrossBest2, CrossCurr2Rand1, proportional, multiMutations
+from NiaPy.algorithms.basic.de import DifferentialEvolution, CrossBest1, CrossRand1, CrossCurr2Best1, CrossBest2, CrossCurr2Rand1, proportional, multiMutations, DynNpDifferentialEvolution
 from NiaPy.util.utility import objects2array
 
 logging.basicConfig()
@@ -208,7 +208,7 @@ class AgingSelfAdaptiveDifferentialEvolution(SelfAdaptiveDifferentialEvolution):
 		self.mu = abs(self.LT_max - self.LT_min) / 2
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-class DynNpSelfAdaptiveDifferentialEvolutionAlgorithm(SelfAdaptiveDifferentialEvolution):
+class DynNpSelfAdaptiveDifferentialEvolutionAlgorithm(SelfAdaptiveDifferentialEvolution, DynNpDifferentialEvolution):
 	r"""Implementation of Dynamic population size self-adaptive differential evolution algorithm.
 
 	Algorithm:
@@ -231,7 +231,7 @@ class DynNpSelfAdaptiveDifferentialEvolutionAlgorithm(SelfAdaptiveDifferentialEv
 
 	Attributes:
 		Name (List[str]): List of strings representing algorithm name.
-		rp (int): Small non-negative number which is added to value of genp.
+		rp (int): Small non-negative number which is added to value of generations.
 		pmax (int): Number of population reductions.
 
 	See Also:
@@ -240,7 +240,19 @@ class DynNpSelfAdaptiveDifferentialEvolutionAlgorithm(SelfAdaptiveDifferentialEv
 	Name = ['DynNpSelfAdaptiveDifferentialEvolutionAlgorithm', 'dynNPjDE']
 
 	@staticmethod
+	def algorithmInfo():
+		return r"""Brest, Janez, and Mirjam Sepesy Maučec. Population size reduction for the differential evolution algorithm. Applied Intelligence 29.3 (2008): 228-247."""
+
+	@staticmethod
 	def typeParameters():
+		r"""Get basic information of algorithm.
+
+		Returns:
+			str: Basic information of algorithm.
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+		"""
 		d = SelfAdaptiveDifferentialEvolution.typeParameters()
 		d['rp'] = lambda x: isinstance(x, (float, int)) and x > 0
 		d['pmax'] = lambda x: isinstance(x, int) and x > 0
@@ -256,8 +268,8 @@ class DynNpSelfAdaptiveDifferentialEvolutionAlgorithm(SelfAdaptiveDifferentialEv
 		See Also:
 			* :func:`NiaPy.algorithms.modified.SelfAdaptiveDifferentialEvolution.setParameters`
 		"""
+		DynNpDifferentialEvolution.setParameters(self, rp=rp, pmax=pmax, **ukwargs)
 		SelfAdaptiveDifferentialEvolution.setParameters(self, **ukwargs)
-		self.rp, self.pmax = rp, pmax
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def postSelection(self, pop, task, **kwargs):
@@ -270,9 +282,7 @@ class DynNpSelfAdaptiveDifferentialEvolutionAlgorithm(SelfAdaptiveDifferentialEv
 		Returns:
 			numpy.ndarray[Individual]: New population.
 		"""
-		Gr, nNP = task.nFES // (self.pmax * len(pop)) + self.rp, len(pop) // 2
-		if task.Iters == Gr and len(pop) > 3: return objects2array([pop[i] if pop[i].f < pop[i + nNP].f else pop[i + nNP] for i in range(nNP)])
-		return pop
+		return DynNpDifferentialEvolution.postSelection(self, pop, task, **kwargs)
 
 class MultiStrategySelfAdaptiveDifferentialEvolution(SelfAdaptiveDifferentialEvolution):
 	r"""Implementation of self-adaptive differential evolution algorithm with multiple mutation strategys.

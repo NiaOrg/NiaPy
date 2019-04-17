@@ -243,7 +243,7 @@ class DifferentialEvolution(Algorithm):
 
 	@staticmethod
 	def algorithmInfo():
-		r"""Basic information of algorithm.
+		r"""Get basic information of algorithm.
 
 		Returns:
 			str: Basic information of algorithm.
@@ -383,7 +383,7 @@ class CrowdingDifferentialEvolution(DifferentialEvolution):
 
 	@staticmethod
 	def algorithmInfo():
-		r"""Basic information of algorithm.
+		r"""Get basic information of algorithm.
 
 		Returns:
 			str: Basic information of algorithm.
@@ -440,8 +440,8 @@ class DynNpDifferentialEvolution(DifferentialEvolution):
 
 	Attributes:
 		Name (List[str]): List of strings representing algorithm names.
-		pmax (int): TODO
-		rp (int): TODO
+		pmax (int): Number of population reductions.
+		rp (int): Small non-negative number which is added to value of generations.
 
 	See Also:
 		* :class:`NiaPy.algorithms.basic.DifferentialEvolution`
@@ -450,7 +450,7 @@ class DynNpDifferentialEvolution(DifferentialEvolution):
 
 	@staticmethod
 	def algorithmInfo():
-		r"""Basic information of algorithm.
+		r"""Get basic information of algorithm.
 
 		Returns:
 			str: Basic information of algorithm.
@@ -466,8 +466,8 @@ class DynNpDifferentialEvolution(DifferentialEvolution):
 
 		Returns:
 			Dict[str, Callable]:
-				* rp (Callable[[Union[float, int]], bool]): TODO
-				* pmax (Callable[[int], bool]): TODO
+				* rp (Callable[[Union[float, int]], bool])
+				* pmax (Callable[[int], bool])
 
 		See Also:
 			* :func:`NiaPy.algorithms.basic.DifferentialEvolution.typeParameters`
@@ -481,8 +481,8 @@ class DynNpDifferentialEvolution(DifferentialEvolution):
 		r"""Set the algorithm parameters.
 
 		Arguments:
-			pmax (Optional[int]): TODO
-			rp (Optional[int]): TODO
+			pmax (Optional[int]): umber of population reductions.
+			rp (Optional[int]): Small non-negative number which is added to value of generations.
 
 		See Also:
 			* :func:`NiaPy.algorithms.basic.DifferentialEvolution.setParameters`
@@ -616,7 +616,7 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 
 	@staticmethod
 	def algorithmInfo():
-		r"""Basic information of algorithm.
+		r"""Get basic information of algorithm.
 
 		Returns:
 			str: Basic information of algorithm.
@@ -740,7 +740,7 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 		return objects2array(npop)
 
 	def selection(self, pop, npop, task, **kwargs):
-		r"""Modified selection operator with aging.
+		r"""Select operator for individuals with aging.
 
 		Args:
 			pop (numpy.ndarray[Individual]): Current population.
@@ -818,7 +818,7 @@ class MultiStrategyDifferentialEvolution(DifferentialEvolution):
 
 	@staticmethod
 	def algorithmInfo():
-		r"""Basic information of algorithm.
+		r"""Get basic information of algorithm.
 
 		Returns:
 			str: Basic information of algorithm.
@@ -897,7 +897,7 @@ class DynNpMultiStrategyDifferentialEvolution(MultiStrategyDifferentialEvolution
 
 	@staticmethod
 	def algorithmInfo():
-		r"""Basic information of algorithm.
+		r"""Get basic information of algorithm.
 
 		Returns:
 			str: Basic information of algorithm.
@@ -982,7 +982,7 @@ class AgingNpMultiMutationDifferentialEvolution(AgingNpDifferentialEvolution, Mu
 
 	@staticmethod
 	def algorithmInfo():
-		r"""Basic information of algorithm.
+		r"""Get basic information of algorithm.
 
 		Returns:
 			str: Basic information of algorithm.

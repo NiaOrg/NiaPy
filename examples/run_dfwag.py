@@ -11,7 +11,7 @@ from NiaPy.benchmarks import Sphere
 
 # we will run Fireworks Algorithm for 5 independent runs
 for i in range(5):
-	task = StoppingTask(D=10, nGEN=80, optType=OptimizationType.MINIMIZATION, benchmark=Sphere())
+	task = StoppingTask(D=10, nGEN=50, optType=OptimizationType.MINIMIZATION, benchmark=Sphere())
 	algo = DynamicFireworksAlgorithmGauss(N=70, Ainit=0.1, Afinal=0.9)
 	best = algo.run(task=task)
 	print('%s -> %s' % (best[0], best[1]))

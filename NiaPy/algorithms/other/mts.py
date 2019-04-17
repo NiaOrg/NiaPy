@@ -298,7 +298,7 @@ class MultipleTrajectorySearch(Algorithm):
 
 	@staticmethod
 	def algorithmInfo():
-		r"""Basic information of algorithm.
+		r"""Get basic information of algorithm.
 
 		Returns:
 			str: Basic information of algorithm.
@@ -494,7 +494,7 @@ class MultipleTrajectorySearchV1(MultipleTrajectorySearch):
 
 	@staticmethod
 	def algorithmInfo():
-		r"""Basic information of algorithm.
+		r"""Get basic information of algorithm.
 
 		Returns:
 			str: Basic information of algorithm.
