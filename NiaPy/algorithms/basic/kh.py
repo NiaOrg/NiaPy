@@ -421,9 +421,9 @@ class KrillHerdV4(KrillHerd):
 			* :func:NiaPy.algorithms.basic.kh.KrillHerd.typeParameters`
 		"""
 		d = KrillHerd.typeParameters()
-		del d['Cr']
-		del d['Mu']
-		del d['epsilon']
+		d.pop('Cr', None)
+		d.pop('Mu', None)
+		d.pop('epsilon', None)
 		return d
 
 	def setParameters(self, NP=50, N_max=0.01, V_f=0.02, D_max=0.002, C_t=0.93, W_n=0.42, W_f=0.38, d_s=2.63, **ukwargs):
@@ -549,7 +549,7 @@ class KrillHerdV2(KrillHerd):
 			* :func:NiaPy.algorithms.basic.kh.KrillHerd.typeParameters`
 		"""
 		d = KrillHerd.typeParameters()
-		del d['Mu']
+		d.pop('Mu', None)
 		return d
 
 	def mutate(self, x, x_b, Mu):
@@ -599,7 +599,7 @@ class KrillHerdV3(KrillHerd):
 			* :func:NiaPy.algorithms.basic.kh.KrillHerd.typeParameters`
 		"""
 		d = KrillHerd.typeParameters()
-		del d['Cr']
+		d.pop('Cr', None)
 		return d
 
 	def crossover(self, x, xo, Cr):

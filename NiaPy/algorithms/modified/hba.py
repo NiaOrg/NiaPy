@@ -40,6 +40,15 @@ class HybridBatAlgorithm(BatAlgorithm):
 	Name = ['HybridBatAlgorithm', 'HBA']
 
 	@staticmethod
+	def algorithmInfo():
+		r"""Get basic information about the algorithm.
+
+		Returns:
+			str: Basic information.
+		"""
+		return r"""Fister Jr., Iztok and Fister, Dusan and Yang, Xin-She. "A Hybrid Bat Algorithm". Elektrotehniski vestnik, 2013. 1-7."""
+
+	@staticmethod
 	def typeParameters():
 		r"""Get dictionary with functions for checking values of parameters.
 
@@ -47,10 +56,15 @@ class HybridBatAlgorithm(BatAlgorithm):
 			Dict[str, Callable]:
 				* F (Callable[[Union[int, float]], bool]): Scaling factor.
 				* CR (Callable[[float], bool]): Crossover probability.
+
+		See Also:
+			* :func:`NiaPy.algorithms.basic.BatAlgorithm.typeParameters`
 		"""
 		d = BatAlgorithm.typeParameters()
-		d['F'] = lambda x: isinstance(x, (int, float)) and x > 0
-		d['CR'] = lambda x: isinstance(x, float) and 0 <= x <= 1
+		d.update({
+			'F': lambda x: isinstance(x, (int, float)) and x > 0,
+			'CR': lambda x: isinstance(x, float) and 0 <= x <= 1
+		})
 		return d
 
 	def setParameters(self, F=0.78, CR=0.35, CrossMutt=CrossBest1, **ukwargs):

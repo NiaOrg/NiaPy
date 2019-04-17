@@ -64,13 +64,18 @@ class NelderMeadMethod(Algorithm):
 				* gamma (Callable[[Union[int, float]], bool])
 				* rho (Callable[[Union[int, float]], bool])
 				* sigma (Callable[[Union[int, float]], bool])
+
+		See Also
+			* :func:`NiaPy.algorithms.Algorithm.typeParameters`
 		"""
-		return {
+		d = Algorithm.typeParameters()
+		d.update({
 			'alpha': lambda x: isinstance(x, (int, float)) and x >= 0,
 			'gamma': lambda x: isinstance(x, (int, float)) and x >= 0,
 			'rho': lambda x: isinstance(x, (int, float)),
 			'sigma': lambda x: isinstance(x, (int, float))
-		}
+		})
+		return d
 
 	def setParameters(self, NP=None, alpha=0.1, gamma=0.3, rho=-0.2, sigma=-0.2, **ukwargs):
 		r"""Set the arguments of an algorithm.
