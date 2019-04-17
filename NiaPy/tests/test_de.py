@@ -2,7 +2,7 @@
 # pylint: disable=mixed-indentation, multiple-statements, line-too-long
 from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
 from NiaPy.algorithms.basic import DifferentialEvolution, DynNpDifferentialEvolution, AgingNpDifferentialEvolution, MultiStrategyDifferentialEvolution, DynNpMultiStrategyDifferentialEvolution, AgingNpMultiMutationDifferentialEvolution
-from NiaPy.algorithms.basic.de import CrossRand1, CrossRand2, CrossBest1, CrossBest2, CrossCurr2Rand1, CrossCurr2Best1
+from NiaPy.algorithms.basic.de import CrossRand1, CrossRand2, CrossBest1, CrossBest2, CrossCurr2Rand1, CrossCurr2Best1, proportional, linear, bilinear
 
 class DETestCase(AlgorithmTestCase):
 	r"""Test case for DifferentialEvolution algorithm.
@@ -82,14 +82,24 @@ class dynNpDETestCase(AlgorithmTestCase):
 		AlgorithmTestCase.algorithm_run_test(self, de_griewank, de_griewankc, 'griewank')
 
 class ANpDETestCase(AlgorithmTestCase):
-	def test_Custom_works_fine(self):
-		de_custom = AgingNpDifferentialEvolution(NP=40, F=0.5, CR=0.9, seed=self.seed)
-		de_customc = AgingNpDifferentialEvolution(NP=40, F=0.5, CR=0.9, seed=self.seed)
+	def test_custom_works_linear_fine(self):
+		de_custom = AgingNpDifferentialEvolution(NP=40, F=0.5, CR=0.9, age=linear, seed=self.seed)
+		de_customc = AgingNpDifferentialEvolution(NP=40, F=0.5, CR=0.9, age=linear, seed=self.seed)
 		AlgorithmTestCase.algorithm_run_test(self, de_custom, de_customc, MyBenchmark())
 
-	def test_griewank_works_fine(self):
-		de_griewank = AgingNpDifferentialEvolution(NP=10, CR=0.5, F=0.9, seed=self.seed)
-		de_griewankc = AgingNpDifferentialEvolution(NP=10, CR=0.5, F=0.9, seed=self.seed)
+	def test_griewank_works_linear_fine(self):
+		de_griewank = AgingNpDifferentialEvolution(NP=10, CR=0.5, F=0.9, age=linear, seed=self.seed)
+		de_griewankc = AgingNpDifferentialEvolution(NP=10, CR=0.5, F=0.9, age=linear, seed=self.seed)
+		AlgorithmTestCase.algorithm_run_test(self, de_griewank, de_griewankc, 'griewank')
+
+	def test_custom_works_proportional_fine(self):
+		de_custom = AgingNpDifferentialEvolution(NP=40, F=0.5, CR=0.9, age=proportional, seed=self.seed)
+		de_customc = AgingNpDifferentialEvolution(NP=40, F=0.5, CR=0.9, age=proportional, seed=self.seed)
+		AlgorithmTestCase.algorithm_run_test(self, de_custom, de_customc, MyBenchmark())
+
+	def test_griewank_works_proportional_fine(self):
+		de_griewank = AgingNpDifferentialEvolution(NP=10, CR=0.5, F=0.9, age=proportional, seed=self.seed)
+		de_griewankc = AgingNpDifferentialEvolution(NP=10, CR=0.5, F=0.9, age=proportional, seed=self.seed)
 		AlgorithmTestCase.algorithm_run_test(self, de_griewank, de_griewankc, 'griewank')
 
 class MsDETestCase(AlgorithmTestCase):
