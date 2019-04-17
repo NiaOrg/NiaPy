@@ -51,18 +51,27 @@ class GlowwormSwarmOptimization(Algorithm):
 	Name = ['GlowwormSwarmOptimization', 'GSO']
 
 	@staticmethod
+	def algorithmInfo():
+		r"""Get basic information of algorithm.
+
+		Returns:
+			str: Basic information.
+		"""
+		return r"""Kaipa, Krishnanand N., and Debasish Ghose. Glowworm swarm optimization: theory, algorithms, and applications. Vol. 698. Springer, 2017."""
+
+	@staticmethod
 	def typeParameters():
 		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
 			Dict[str, Callable]:
-				* n (Callable[[int], bool]): TODO
-				* l0 (Callable[[Union[float, int]], bool]): TODO
-				* nt (Callable[[Union[float, int]], bool]): TODO
-				* rho (Callable[[Union[float, int]], bool]): TODO
-				* gamma (Callable[[float], bool]): TODO
-				* beta (Callable[[float], bool]): TODO
-				* s (Callable[[float], bool]): TODO
+				* n (Callable[[int], bool])
+				* l0 (Callable[[Union[float, int]], bool])
+				* nt (Callable[[Union[float, int]], bool])
+				* rho (Callable[[Union[float, int]], bool])
+				* gamma (Callable[[float], bool])
+				* beta (Callable[[float], bool])
+				* s (Callable[[float], bool])
 		"""
 		return {
 			'n': lambda x: isinstance(x, int) and x > 0,
@@ -123,15 +132,15 @@ class GlowwormSwarmOptimization(Algorithm):
 		return N
 
 	def probabilityes(self, i, N, L):
-		r"""TODO.
+		r"""Calculate probabilities for glowworm to movement.
 
 		Args:
-			i:
-			N:
-			L:
+			i (int): Index of glowworm to search for probable movement.
+			N (numpy.ndarray[float]):
+			L (numpy.ndarray[float]):
 
 		Returns:
-
+			numpy.ndarray[float]: Probabilities for each glowworm in swarm.
 		"""
 		d, P = sum(L[where(N == 1)] - L[i]), full(self.NP, .0)
 		for j in range(self.NP): P[i] = ((L[j] - L[i]) / d) if N[j] == 1 else 0

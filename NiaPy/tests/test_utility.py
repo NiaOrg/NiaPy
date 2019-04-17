@@ -4,7 +4,7 @@ from unittest import TestCase
 
 from numpy import full, random as rnd, inf, sum, array_equal, asarray
 
-from NiaPy.util import Utility, StoppingTask, ThrowingTask, fullArray, limitRepair, limitInversRepair, wangRepair, randRepair, reflectRepair, ScaledTask, TaskConvPrint, TaskComposition, FesException, GenException  # TimeException, RefException
+from NiaPy.util import Utility, StoppingTask, ThrowingTask, fullArray, limitRepair, limitInversRepair, wangRepair, randRepair, reflectRepair, ScaledTask, TaskConvPrint, TaskComposition, FesException, GenException, RefException  # TimeException
 
 class FullArrayTestCase(TestCase):
 	r"""Test case for testing method `fullarray`.
@@ -291,7 +291,7 @@ class StoppingTaskTestCase(TestCase):
 	"""
 	def setUp(self):
 		self.D, self.nFES, self.nGEN = 10, 10, 10
-		self.t = StoppingTask(D=self.D, nFES=self.nFES, nGEN=self.nGEN, benchmark=MyBenchmark())
+		self.t = StoppingTask(D=self.D, nFES=self.nFES, nGEN=self.nGEN, refValue=1, benchmark=MyBenchmark())
 
 	def test_isFeasible_fine(self):
 		x = full(self.D, 10)
@@ -316,36 +316,36 @@ class StoppingTaskTestCase(TestCase):
 		self.assertTrue(self.t.stopCondI())
 
 	def test_eval_fine(self):
-		x = full(self.D, 0.0)
-		for i in range(self.nFES): self.assertAlmostEqual(self.t.eval(x), 0.0, msg='Error at %s iteration!!!' % (i))
+		x = full(self.D, 1.0)
+		for i in range(self.nFES): self.assertAlmostEqual(self.t.eval(x), self.D, msg='Error at %s iteration!!!' % (i))
 		self.assertTrue(self.t.stopCond())
 
 	def test_eval_over_nFES_fine(self):
-		x = full(self.D, 0.0)
+		x = full(self.D, 1.0)
 		for i in range(self.nFES): self.t.eval(x)
 		self.assertEqual(inf, self.t.eval(x))
 		self.assertTrue(self.t.stopCond())
 
 	def test_eval_over_nGEN_fine(self):
-		x = full(self.D, 0.0)
+		x = full(self.D, 1.0)
 		for i in range(self.nGEN): self.t.nextIter()
 		self.assertEqual(inf, self.t.eval(x))
 		self.assertTrue(self.t.stopCond())
 
 	def test_nFES_count_fine(self):
-		x = full(self.D, 0.0)
+		x = full(self.D, 1.0)
 		for i in range(self.nFES):
 			self.t.eval(x)
 			self.assertEqual(self.t.Evals, i + 1, 'Error at %s. evaluation' % (i + 1))
 
 	def test_nGEN_count_fine(self):
-		x = full(self.D, 0.0)
+		x = full(self.D, 1.0)
 		for i in range(self.nGEN):
 			self.t.nextIter()
 			self.assertEqual(self.t.Iters, i + 1, 'Error at %s. iteration' % (i + 1))
 
 	def test_stopCond_evals_fine(self):
-		x = full(self.D, 0.0)
+		x = full(self.D, 1.0)
 		for i in range(self.nFES - 1):
 			self.t.eval(x)
 			self.assertFalse(self.t.stopCond())
@@ -353,12 +353,23 @@ class StoppingTaskTestCase(TestCase):
 		self.assertTrue(self.t.stopCond())
 
 	def test_stopCond_iters_fine(self):
-		x = full(self.D, 0.0)
+		x = full(self.D, 1.0)
 		for i in range(self.nGEN - 1):
 			self.t.nextIter()
 			self.assertFalse(self.t.stopCond())
 		self.t.nextIter()
 		self.assertTrue(self.t.stopCond())
+
+	def test_stopCond_refValue_fine(self):
+		x = full(self.D, 1.0)
+		for i in range(self.nGEN - 5):
+			self.assertFalse(self.t.stopCond())
+			self.assertEqual(self.D, self.t.eval(x))
+			self.t.nextIter()
+		x = full(self.D, 0.0)
+		self.assertEqual(0, self.t.eval(x))
+		self.assertTrue(self.t.stopCond())
+		self.assertEqual(self.nGEN - 5, self.t.Iters)
 
 class ThrowingTaskTestCase(TestCase):
 	r"""Test case for testing `ThrowingTask` class.
@@ -374,7 +385,7 @@ class ThrowingTaskTestCase(TestCase):
 	"""
 	def setUp(self):
 		self.D, self.nFES, self.nGEN = 10, 10, 10
-		self.t = ThrowingTask(D=self.D, nFES=self.nFES, nGEN=self.nGEN, benchmark=MyBenchmark())
+		self.t = ThrowingTask(D=self.D, nFES=self.nFES, nGEN=self.nGEN, refValue=0, benchmark=MyBenchmark())
 
 	def test_isFeasible_fine(self):
 		x = full(self.D, 10)
@@ -399,35 +410,35 @@ class ThrowingTaskTestCase(TestCase):
 		self.assertTrue(self.t.stopCondI())
 
 	def test_eval_fine(self):
-		x = full(self.D, 0.0)
-		for i in range(self.nFES): self.assertAlmostEqual(self.t.eval(x), 0.0, msg='Error at %s iteration!!!' % (i))
+		x = full(self.D, 1.0)
+		for i in range(self.nFES): self.assertAlmostEqual(self.t.eval(x), self.D, msg='Error at %s iteration!!!' % (i))
 		self.assertRaises(FesException, lambda: self.t.eval(x))
 
 	def test_eval_over_nFES_fine(self):
-		x = full(self.D, 0.0)
+		x = full(self.D, 1.0)
 		for i in range(self.nFES):
 			self.t.eval(x)
 		self.assertRaises(FesException, lambda: self.t.eval(x))
 
 	def test_eval_over_nGEN_fine(self):
-		x = full(self.D, 0.0)
+		x = full(self.D, 1.0)
 		for i in range(self.nGEN): self.t.nextIter()
 		self.assertRaises(GenException, lambda: self.t.eval(x))
 
 	def test_nFES_count_fine(self):
-		x = full(self.D, 0.0)
+		x = full(self.D, 1.0)
 		for i in range(self.nFES):
 			self.t.eval(x)
 			self.assertEqual(self.t.Evals, i + 1, 'Error at %s. evaluation' % (i + 1))
 
 	def test_nGEN_count_fine(self):
-		x = full(self.D, 0.0)
+		x = full(self.D, 1.0)
 		for i in range(self.nGEN):
 			self.t.nextIter()
 			self.assertEqual(self.t.Iters, i + 1, 'Error at %s. iteration' % (i + 1))
 
 	def test_stopCond_evals_fine(self):
-		x = full(self.D, 0.0)
+		x = full(self.D, 1.0)
 		for i in range(self.nFES - 1):
 			self.t.eval(x)
 			self.assertFalse(self.t.stopCond())
@@ -435,12 +446,22 @@ class ThrowingTaskTestCase(TestCase):
 		self.assertTrue(self.t.stopCond())
 
 	def test_stopCond_iters_fine(self):
-		x = full(self.D, 0.0)
+		x = full(self.D, 1.0)
 		for i in range(self.nGEN - 1):
 			self.t.nextIter()
 			self.assertFalse(self.t.stopCond())
 		self.t.nextIter()
 		self.assertTrue(self.t.stopCond())
+
+	def test_stopCond_refValue_fine(self):
+		x = full(self.D, 1.0)
+		for i in range(self.nGEN - 5):
+			self.assertFalse(self.t.stopCond())
+			self.assertEqual(self.D, self.t.eval(x))
+			self.t.nextIter()
+		x = full(self.D, 0.0)
+		self.assertEqual(0, self.t.eval(x))
+		self.assertRaises(RefException, lambda: self.t.eval(x))
 
 class ScaledTaskTestCase(TestCase):
 	def setUp(self):

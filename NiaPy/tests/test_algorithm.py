@@ -80,7 +80,6 @@ class IndividualTestCase(TestCase):
 	def test_len_fine(self):
 		self.assertEqual(len(self.s1), len(self.x))
 
-
 def init_pop_numpy(task, NP, **kwargs):
 	r"""Custom population initialization function for numpy individual type.
 
@@ -248,19 +247,21 @@ class AlgorithmTestCase(TestCase):
 	def setUp(self):
 		self.D, self.nGEN, self.nFES, self.seed = 40, 1000, 1000, 1
 
-	def setUpTasks(self, bech='griewank'):
-		taskOne, taskTwo = TestingTask(D=self.D, nFES=self.nFES, nGEN=self.nGEN, benchmark=bech), TestingTask(D=self.D, nFES=self.nFES, nGEN=self.nGEN, benchmark=bech)
+	def setUpTasks(self, bech='griewank', nFES=None, nGEN=None):
+		taskOne, taskTwo = TestingTask(D=self.D, nFES=self.nFES if nFES is None else nFES, nGEN=self.nGEN if nGEN is None else nGEN, benchmark=bech), TestingTask(D=self.D, nFES=self.nFES, nGEN=self.nGEN, benchmark=bech)
 		return taskOne, taskTwo
 
-	def algorithm_run_test(self, a, b, benc='griewank'):
+	def algorithm_run_test(self, a, b, benc='griewank', nFES=None, nGEN=None):
 		r"""Run main testing of algorithm.
 
 		Args:
 			a (Algorithm): First instance of algorithm.
 			b (Algorithm): Second instance of algorithm.
 			benc (Union[Benchmark, str]): Benchmark to use for testing.
+			nFES (int): Number of function evaluations.
+			nGEN (int): Number of algorithm generations/iterations.
 		"""
-		tOne, tTwo = self.setUpTasks(benc)
+		tOne, tTwo = self.setUpTasks(benc, nFES=nFES)
 		x = a.run(tOne)
 		self.assertTrue(x)
 		logger.info('%s -> %s' % (x[0], x[1]))

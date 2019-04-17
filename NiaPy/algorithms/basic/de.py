@@ -509,7 +509,7 @@ class DynNpDifferentialEvolution(DifferentialEvolution):
 		if task.Iters == Gr and len(pop) > 3: pop = objects2array([pop[i] if pop[i].f < pop[i + nNP].f else pop[i + nNP] for i in range(nNP)])
 		return pop
 
-def proportional(Lt_min, Lt_max, mu, x_f, avg, *args):
+def proportional(Lt_min, Lt_max, mu, x_f, avg, **args):
 	r"""Proportional calculation of age of individual.
 
 	Args:
@@ -525,7 +525,7 @@ def proportional(Lt_min, Lt_max, mu, x_f, avg, *args):
 	"""
 	return min(Lt_min + mu * avg / x_f, Lt_max)
 
-def linear(Lt_min, Lt_max, mu, x_f, avg, x_gw, x_gb, *args):
+def linear(Lt_min, mu, x_f, x_gw, x_gb, **args):
 	r"""Linear calculation of age of individual.
 
 	Args:
@@ -543,7 +543,7 @@ def linear(Lt_min, Lt_max, mu, x_f, avg, x_gw, x_gb, *args):
 	"""
 	return Lt_min + 2 * mu * (x_f - x_gw) / (x_gb - x_gw)
 
-def bilinear(Lt_min, Lt_max, mu, x_f, avg, x_gw, x_gb, *args):
+def bilinear(Lt_min, Lt_max, mu, x_f, avg, x_gw, x_gb, **args):
 	r"""Bilinear calculation of age of individual.
 
 	Args:
@@ -702,9 +702,9 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 		avg, npop = mean(fpop), []
 		for x in pop:
 			x.age += 1
-			Lt = round(self.age(self.Lt_min, self.Lt_max, self.mu, x.f, avg, x_w, x_b))
+			Lt = round(self.age(Lt_min=self.Lt_min, Lt_max=self.Lt_max, mu=self.mu, x_f=x.f, avg=avg, x_gw=x_w.f, x_gb=x_b.f))
 			if x.age <= Lt: npop.append(x)
-		if len(npop) != 0: npop = objects2array([self.itype(task=task, rnd=self.Rand, e=True) for _i in range(len(pop))])
+		if len(npop) == 0: npop = objects2array([self.itype(task=task, rnd=self.Rand, e=True) for _ in range(self.NP)])
 		return npop
 
 	def popIncrement(self, pop, task):
@@ -833,15 +833,14 @@ class MultiStrategyDifferentialEvolution(DifferentialEvolution):
 		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
-			Dict[str, Callable]:
-				* CrossMutt (Callable[[Callable, bool])
+			Dict[str, Callable]: Testing functions for parameters.
 
 		See Also:
 			* :func:`NiaPy.algorithms.basic.DifferentialEvolution.typeParameters`
 		"""
 		r = DifferentialEvolution.typeParameters()
 		r.pop('CrossMutt', None)
-		# TODO add constraint method for selection of stratgy methos
+		r.update({'strategies': lambda x: callable(x)})
 		return r
 
 	def setParameters(self, strategies=(CrossRand1, CrossBest1, CrossCurr2Best1, CrossRand2), **ukwargs):
@@ -997,16 +996,15 @@ class AgingNpMultiMutationDifferentialEvolution(AgingNpDifferentialEvolution, Mu
 		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
-			Dict[str, Callable]:
-				* rp (Callable[[Union[float, int]], bool]): TODO
-				* pmax (Callable[[int], bool]): TODO
+			Dict[str, Callable]: Mappings form parameter names to test functions.
 
 		See Also:
 			* :func:`NiaPy.algorithms.basic.MultiStrategyDifferentialEvolution.typeParameters`
+			* :func:`NiaPy.algorithms.basic.AgingNpDifferentialEvolution.typeParameters`
 		"""
-		r = AgingNpDifferentialEvolution.typeParameters()
-		# TODO add other parameters to data check list
-		return r
+		d = AgingNpDifferentialEvolution.typeParameters()
+		d.update(MultiStrategyDifferentialEvolution.typeParameters())
+		return d
 
 	def setParameters(self, **ukwargs):
 		r"""Set core parameter arguments.

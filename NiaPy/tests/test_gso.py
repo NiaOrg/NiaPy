@@ -4,6 +4,19 @@ from NiaPy.algorithms.basic import GlowwormSwarmOptimization, GlowwormSwarmOptim
 from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
 
 class GSOTestCase(AlgorithmTestCase):
+	def test_algorithm_info_fine(self):
+		self.assertIsNotNone(GlowwormSwarmOptimization.algorithmInfo())
+
+	def test_type_parameters_fine(self):
+		d = GlowwormSwarmOptimization.typeParameters()
+		self.assertIsNotNone(d.get('n', None))
+		self.assertIsNotNone(d.get('l0', None))
+		self.assertIsNotNone(d.get('nt', None))
+		self.assertIsNotNone(d.get('rho', None))
+		self.assertIsNotNone(d.get('gamma', None))
+		self.assertIsNotNone(d.get('beta', None))
+		self.assertIsNotNone(d.get('s', None))
+
 	def test_custom_works_fine(self):
 		gso_custom = GlowwormSwarmOptimization(n=35, a=7, Rmin=0.1, Rmax=3, seed=self.seed)
 		gso_customc = GlowwormSwarmOptimization(n=35, a=7, Rmin=0.1, Rmax=3, seed=self.seed)

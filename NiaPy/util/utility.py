@@ -221,7 +221,7 @@ def randRepair(x, Lower, Upper, rnd=rand, **kwargs):
 	r"""Repair solution and put the solution in the random position inside of the bounds of problem.
 
 	Arguments:
-		x (array): Solution to check and repair if needed.
+		x (numpy.ndarray): Solution to check and repair if needed.
 		Lower (numpy.ndarray): Lower bounds of search space.
 		Upper (numpy.ndarray): Upper bounds of search space.
 		rnd (mtrand.RandomState): Random generator.

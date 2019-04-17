@@ -4,6 +4,9 @@ from NiaPy.algorithms.basic import SineCosineAlgorithm
 from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
 
 class SCATestCase(AlgorithmTestCase):
+	def test_algorithm_info_fine(self):
+		self.assertIsNotNone(SineCosineAlgorithm.algorithmInfo())
+
 	def test_type_parameters(self):
 		d = SineCosineAlgorithm.typeParameters()
 		self.assertIsNotNone(d.get('NP', None))

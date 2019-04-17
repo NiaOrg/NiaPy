@@ -193,7 +193,7 @@ class Runner:
 		Returns:
 			Task: Optimization task to use.
 		"""
-		return util.Task(D=self.D, nFES=self.nFES, nGEN=self.nGEN, optType=util.OptimizationType.MINIMIZATION, benchmark=name)
+		return util.StoppingTask(D=self.D, nFES=self.nFES, nGEN=self.nGEN, optType=util.OptimizationType.MINIMIZATION, benchmark=name)
 
 	def algorithmFactory(self, name):
 		r"""TODO.

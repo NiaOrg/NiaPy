@@ -15,79 +15,81 @@ __all__ = ["Benchmark"]
 
 
 class Benchmark:
-    """Base Benchmark interface class."""
+	r"""Class representing benchmarks.
 
-    Name = ["Benchmark", "BBB"]
+	Attributes:
+		Name (List[str]): List of names representiong benchmark names.
+		Lower (Union[int, float, list, numpy.ndarray]): Lower bounds.
+		Upper (Union[int, float, list, numpy.ndarray]): Upper bounds.
+	"""
+	Name = ["Benchmark", "BBB"]
 
-    def __init__(self, Lower, Upper, **kwargs):
-        r"""Initialize base Benchmark.
+	def __init__(self, Lower, Upper, **kwargs):
+		r"""Initialize benchmark.
 
-        Arguments:
-            Lower {[type]} -- Lower bound.
-            Upper {[type]} -- Upper bound.
-        """
+		Args:
+			Lower (Union[int, float, list, numpy.ndarray]): Lower bounds.
+			Upper (Union[int, float, list, numpy.ndarray]): Upper bounds.
+			**kwargs (Dict[str, Any]): Additional arguments.
+		"""
+		self.Lower = Lower
+		self.Upper = Upper
 
-        self.Lower = Lower
-        self.Upper = Upper
+	def function(self):
+		r"""Get evaluation function.
 
-    def function(self):
-        """Return benchmark evaluation function.
+		Returns:
+			Callable[[int, Union[list, numpy.ndarray]], float]): Evaluation function.
+		"""
+		def evaluate(D, sol):
+			r"""Utility/Evaluation function.
 
-        Returns:
-            [fun] -- Evaluation function.
+			Args:
+				D (int): Number of coordinates.
+				sol (Union[list, numpy.ndarray]): Solution to evaluate.
 
-        """
+			Returns:
+				float: Function value.
+			"""
+			return inf
 
-        def evaluate(D, sol):
-            """Implement the evaluation function.
+		return evaluate
 
-            Arguments:
-                D [int]} -- Dimension of the problem.
-                sol [array[float]] -- Solution array.
+	def plot2d(self):
+		"""Plot."""
+		pass
 
-            Returns:
-                [float] -- Return fitness value.
+	def __2dfun(self, x, y, f):
+		r"""Calculate function value.
 
-            """
+		Args:
+			x (float): First coordinate.
+			y (float): Second coordinate.
+			f (Callable[[int, List[float]], float]): Evaluation function.
 
-            return inf
+		Returns:
+			float: Calculate functional value for given input
+		"""
+		return f(2, x, y)
 
-        return evaluate
+	def plot3d(self, scale=0.32):
+		r"""Plot 3d scatter plot of benchmark function.
 
-    def plot2d(self):
-        """Plot."""
+		Args:
+			scale (float): Scale factor for points.
+		"""
+		fig = plt.figure()
+		ax = fig.gca(projection="3d")
+		func = self.function()
+		Xr, Yr = arange(self.Lower, self.Upper, scale), arange(
+			self.Lower, self.Upper, scale)
+		X, Y = meshgrid(Xr, Yr)
+		Z = vectorize(self.__2dfun)(X, Y, func)
+		ax.plot_surface(X, Y, Z, rstride=8, cstride=8, alpha=0.3)
+		ax.contourf(X, Y, Z, zdir="z", offset=-10, cmap=cm.coolwarm)
+		ax.set_xlabel("X")
+		ax.set_ylabel("Y")
+		ax.set_zlabel("Z")
+		plt.show()
 
-        pass
-
-    def __2dfun(self, x, y, f):
-        r"""Plot function.
-
-        Arguments:
-            x {[type]} -- x value
-            y {[type]} -- y value
-            f {[type]} -- function
-
-        """
-
-        return f(2, x, y)
-
-    def plot3d(self, scale=0.32):
-        """Plot 3d.
-
-        Keyword Arguments:
-            scale {float} -- scale (default: {0.32})
-        """
-
-        fig = plt.figure()
-        ax = fig.gca(projection="3d")
-        func = self.function()
-        Xr, Yr = arange(self.Lower, self.Upper, scale), arange(
-            self.Lower, self.Upper, scale)
-        X, Y = meshgrid(Xr, Yr)
-        Z = vectorize(self.__2dfun)(X, Y, func)
-        ax.plot_surface(X, Y, Z, rstride=8, cstride=8, alpha=0.3)
-        ax.contourf(X, Y, Z, zdir="z", offset=-10, cmap=cm.coolwarm)
-        ax.set_xlabel("X")
-        ax.set_ylabel("Y")
-        ax.set_zlabel("Z")
-        plt.show()
+# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

@@ -60,6 +60,15 @@ class HillClimbAlgorithm(Algorithm):
 	Name = ['HillClimbAlgorithm', 'BBFA']
 
 	@staticmethod
+	def algorithmInfo():
+		r"""Get basic information of algorithm.
+
+		Returns:
+			str: Basic information.
+		"""
+		return r"""TODO"""
+
+	@staticmethod
 	def typeParameters():
 		r"""TODO.
 
