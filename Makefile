@@ -51,7 +51,7 @@ install: $(DEPENDENCIES) $(METADATA)
 
 $(DEPENDENCIES): 
 	@ if [ $(TPV) = T ]; then pipenv --python $(shell $(PYTHON) -c "import sys; print('%d.%d.%d' % (sys.version_info.major, sys.version_info.minor, sys.version_info.micro))"); fi
-	pipenv install --dev
+	pipenv install --skip-lock --dev
 	@ touch $@
 
 $(METADATA): setup.py
@@ -60,16 +60,17 @@ $(METADATA): setup.py
 
 # CHECKS ######################################################################
 
-PYLINT := pipenv run pylint
+FLAKE8 := pipenv run flake8
 PYCODESTYLE := pipenv run pycodestyle
 PYDOCSTYLE := pipenv run pydocstyle
 
 .PHONY: check
-check: pylint pycodestyle pydocstyle ## Run linters and static analysis
+check: flake8 pycodestyle pydocstyle ## Run linters and static analysis
 
-.PHONY: pylint
-pylint: install
-	$(PYLINT) $(PACKAGES) $(CONFIG) --rcfile=.pylint.ini
+
+.PHONY: flake8
+flake8: install
+	$(FLAKE8) $(PACKAGES) $(CONFIG)
 
 .PHONY: pycodestyle
 pycodestyle: install
