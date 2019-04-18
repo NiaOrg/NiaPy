@@ -459,7 +459,7 @@ class MultipleTrajectorySearch(Algorithm):
 			enable[i], grades[i] = False, 0
 			X[i], X_f[i], xb, xb_f, k = self.GradingRun(X[i], X_f[i], xb, xb_f, improve[i], SR[i], task)
 			X[i], X_f[i], xb, xb_f, improve[i], SR[i], grades[i] = self.LsRun(k, X[i], X_f[i], xb, xb_f, improve[i], SR[i], grades[i], task)
-		for _ in range(self.NoLsBest): _, _, xb, xb_f, _, _, _ = MTS_LS1(xb, xb_f, xb, xb_f, False, task.bRange, task, rnd=self.Rand)
+		for _ in range(self.NoLsBest): _, _, xb, xb_f, _, _, _ = MTS_LS1(xb, xb_f, xb, xb_f, False, task.bRange.copy() / 10, task, rnd=self.Rand)
 		enable[argsort(grades)[:self.NoEnabled]] = True
 		return X, X_f, {'enable': enable, 'improve': improve, 'SR': SR, 'grades': grades}
 
