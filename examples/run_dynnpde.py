@@ -5,15 +5,16 @@ import sys
 sys.path.append('../')
 # End of fix
 
-from NiaPy.algorithms.basic import BareBonesFireworksAlgorithm
+import random
+from NiaPy.algorithms.basic import DynNpDifferentialEvolution
 from NiaPy.util import StoppingTask, OptimizationType
 from NiaPy.benchmarks import Sphere
 
-# we will run Fireworks Algorithm for 5 independent runs
+#we will run Differential Evolution for 5 independent runs
 for i in range(5):
-	task = StoppingTask(D=10, nFES=1000, optType=OptimizationType.MINIMIZATION, benchmark=Sphere())
-	algo = BareBonesFireworksAlgorithm()
+	task = StoppingTask(D=10, nFES=10000, optType=OptimizationType.MINIMIZATION, benchmark=Sphere())
+	algo = DynNpDifferentialEvolution(NP=120, F=0.5, CR=0.9, pmax=25)
 	best = algo.run(task=task)
-	print('%s -> %s' % (best[0], best[1]))
+	print('%s -> %s' % (best[0].x, best[1]))
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
