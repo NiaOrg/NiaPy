@@ -15,81 +15,91 @@ __all__ = ["Benchmark"]
 
 
 class Benchmark:
-	r"""Class representing benchmarks.
+    r"""Class representing benchmarks.
 
-	Attributes:
-		Name (List[str]): List of names representiong benchmark names.
-		Lower (Union[int, float, list, numpy.ndarray]): Lower bounds.
-		Upper (Union[int, float, list, numpy.ndarray]): Upper bounds.
-	"""
-	Name = ["Benchmark", "BBB"]
+    Attributes:
+            Name (List[str]): List of names representiong benchmark names.
+            Lower (Union[int, float, list, numpy.ndarray]): Lower bounds.
+            Upper (Union[int, float, list, numpy.ndarray]): Upper bounds.
 
-	def __init__(self, Lower, Upper, **kwargs):
-		r"""Initialize benchmark.
+    """
 
-		Args:
-			Lower (Union[int, float, list, numpy.ndarray]): Lower bounds.
-			Upper (Union[int, float, list, numpy.ndarray]): Upper bounds.
-			**kwargs (Dict[str, Any]): Additional arguments.
-		"""
-		self.Lower = Lower
-		self.Upper = Upper
+    Name = ["Benchmark", "BBB"]
 
-	def function(self):
-		r"""Get evaluation function.
+    def __init__(self, Lower, Upper, **kwargs):
+        r"""Initialize benchmark.
 
-		Returns:
-			Callable[[int, Union[list, numpy.ndarray]], float]): Evaluation function.
-		"""
-		def evaluate(D, sol):
-			r"""Utility/Evaluation function.
+        Args:
+                Lower (Union[int, float, list, numpy.ndarray]): Lower bounds.
+                Upper (Union[int, float, list, numpy.ndarray]): Upper bounds.
+                **kwargs (Dict[str, Any]): Additional arguments.
 
-			Args:
-				D (int): Number of coordinates.
-				sol (Union[list, numpy.ndarray]): Solution to evaluate.
+        """
 
-			Returns:
-				float: Function value.
-			"""
-			return inf
+        self.Lower = Lower
+        self.Upper = Upper
 
-		return evaluate
+    def function(self):
+        r"""Get evaluation function.
 
-	def plot2d(self):
-		"""Plot."""
-		pass
+        Returns:
+                Callable[[int, Union[list, numpy.ndarray]], float]): Evaluation function.
 
-	def __2dfun(self, x, y, f):
-		r"""Calculate function value.
+        """
 
-		Args:
-			x (float): First coordinate.
-			y (float): Second coordinate.
-			f (Callable[[int, List[float]], float]): Evaluation function.
+        def evaluate(D, sol):
+            r"""Utility/Evaluation function.
 
-		Returns:
-			float: Calculate functional value for given input
-		"""
-		return f(2, x, y)
+            Args:
+                    D (int): Number of coordinates.
+                    sol (Union[list, numpy.ndarray]): Solution to evaluate.
 
-	def plot3d(self, scale=0.32):
-		r"""Plot 3d scatter plot of benchmark function.
+            Returns:
+                    float: Function value.
 
-		Args:
-			scale (float): Scale factor for points.
-		"""
-		fig = plt.figure()
-		ax = fig.gca(projection="3d")
-		func = self.function()
-		Xr, Yr = arange(self.Lower, self.Upper, scale), arange(
-			self.Lower, self.Upper, scale)
-		X, Y = meshgrid(Xr, Yr)
-		Z = vectorize(self.__2dfun)(X, Y, func)
-		ax.plot_surface(X, Y, Z, rstride=8, cstride=8, alpha=0.3)
-		ax.contourf(X, Y, Z, zdir="z", offset=-10, cmap=cm.coolwarm)
-		ax.set_xlabel("X")
-		ax.set_ylabel("Y")
-		ax.set_zlabel("Z")
-		plt.show()
+            """
 
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
+            return inf
+
+        return evaluate
+
+    def plot2d(self):
+        """Plot."""
+        pass
+
+    def __2dfun(self, x, y, f):
+        r"""Calculate function value.
+
+        Args:
+                x (float): First coordinate.
+                y (float): Second coordinate.
+                f (Callable[[int, List[float]], float]): Evaluation function.
+
+        Returns:
+                float: Calculate functional value for given input
+
+        """
+
+        return f(2, x, y)
+
+    def plot3d(self, scale=0.32):
+        r"""Plot 3d scatter plot of benchmark function.
+
+        Args:
+                scale (float): Scale factor for points.
+
+        """
+
+        fig = plt.figure()
+        ax = fig.gca(projection="3d")
+        func = self.function()
+        Xr, Yr = arange(self.Lower, self.Upper, scale), arange(
+            self.Lower, self.Upper, scale)
+        X, Y = meshgrid(Xr, Yr)
+        Z = vectorize(self.__2dfun)(X, Y, func)
+        ax.plot_surface(X, Y, Z, rstride=8, cstride=8, alpha=0.3)
+        ax.contourf(X, Y, Z, zdir="z", offset=-10, cmap=cm.coolwarm)
+        ax.set_xlabel("X")
+        ax.set_ylabel("Y")
+        ax.set_zlabel("Z")
+        plt.show()

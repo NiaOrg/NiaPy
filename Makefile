@@ -51,7 +51,7 @@ install: $(DEPENDENCIES) $(METADATA)
 
 $(DEPENDENCIES): 
 	@ if [ $(TPV) = T ]; then pipenv --python $(shell $(PYTHON) -c "import sys; print('%d.%d.%d' % (sys.version_info.major, sys.version_info.minor, sys.version_info.micro))"); fi
-	pipenv install --dev
+	pipenv install --skip-lock --dev
 	@ touch $@
 
 $(METADATA): setup.py
