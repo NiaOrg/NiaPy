@@ -23,6 +23,7 @@ from NiaPy.algorithms.basic.fss import FishSchoolSearch
 from NiaPy.algorithms.basic.cs import CuckooSearch
 from NiaPy.algorithms.basic.cro import CoralReefsOptimization
 from NiaPy.algorithms.basic.foa import ForestOptimizationAlgorithm
+from NiaPy.algorithms.basic.mbo import MonarchButterflyOptimization
 
 __all__ = [
     'BatAlgorithm',
@@ -71,5 +72,6 @@ __all__ = [
     'FishSchoolSearch',
     'CuckooSearch',
     'CoralReefsOptimization',
-    'ForestOptimizationAlgorithm'
+    'ForestOptimizationAlgorithm',
+    'MonarchButterflyOptimization'
 ]
