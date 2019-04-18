@@ -10,9 +10,9 @@ from NiaPy.algorithms.other import NelderMeadMethod
 from NiaPy.util import StoppingTask, OptimizationType
 from NiaPy.benchmarks import Sphere
 
-#we will run Nelder Mead algorithm for 5 independent runs
+# we will run Nelder Mead algorithm for 5 independent runs
 for i in range(5):
-    task = StoppingTask(D=10, nGEN=1000, optType=OptimizationType.MINIMIZATION, benchmark=Sphere())
-    algo = NelderMeadMethod()
+    task = StoppingTask(D=10, nGEN=10000, optType=OptimizationType.MINIMIZATION, benchmark=Sphere())
+    algo = NelderMeadMethod(NP=70, alpha=0.2, gamma=0.1, rho=-0.24, sigma=-0.1)
     best = algo.run(task=task)
-    print(best)
+    print('%s -> %s' % (best[0], best[1]))

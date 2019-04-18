@@ -43,22 +43,39 @@ class NelderMeadMethod(Algorithm):
 	Name = ['NelderMeadMethod', 'NMM']
 
 	@staticmethod
+	def algorithmInfo():
+		r"""Get basic information of algorithm.
+
+		Returns:
+			str: Basic information of algorithm.
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+		"""
+		return r"""No info"""
+
+	@staticmethod
 	def typeParameters():
 		r"""Get dictionary with function for testing correctness of parameters.
 
 		Returns:
 			Dict[str, Callable]:
-				* alpha (Callable[[Union[int, float]], bool]): TODO
-				* gamma (Callable[[Union[int, float]], bool]): TODO
-				* rho (Callable[[Union[int, float]], bool]): TODO
-				* sigma (Callable[[Union[int, float]], bool]): TODO
+				* alpha (Callable[[Union[int, float]], bool])
+				* gamma (Callable[[Union[int, float]], bool])
+				* rho (Callable[[Union[int, float]], bool])
+				* sigma (Callable[[Union[int, float]], bool])
+
+		See Also
+			* :func:`NiaPy.algorithms.Algorithm.typeParameters`
 		"""
-		return {
+		d = Algorithm.typeParameters()
+		d.update({
 			'alpha': lambda x: isinstance(x, (int, float)) and x >= 0,
 			'gamma': lambda x: isinstance(x, (int, float)) and x >= 0,
 			'rho': lambda x: isinstance(x, (int, float)),
 			'sigma': lambda x: isinstance(x, (int, float))
-		}
+		})
+		return d
 
 	def setParameters(self, NP=None, alpha=0.1, gamma=0.3, rho=-0.2, sigma=-0.2, **ukwargs):
 		r"""Set the arguments of an algorithm.
@@ -73,11 +90,11 @@ class NelderMeadMethod(Algorithm):
 		See Also:
 			* :func:`NiaPy.algorithms.Algorithm.setParameters`
 		"""
-		Algorithm.setParameters(self, NP=NP, InitPopFunc=self.initPop)
+		Algorithm.setParameters(self, NP=NP, InitPopFunc=ukwargs.pop('InitPopFunc', self.initPop), **ukwargs)
 		self.alpha, self.gamma, self.rho, self.sigma = alpha, gamma, rho, sigma
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def initPop(self, task, NP, rnd, **kwargs):
+	def initPop(self, task, NP, **kwargs):
 		r"""Init starting population.
 
 		Args:

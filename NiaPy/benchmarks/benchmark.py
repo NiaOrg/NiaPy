@@ -15,38 +15,47 @@ __all__ = ["Benchmark"]
 
 
 class Benchmark:
-    """Base Benchmark interface class."""
+    r"""Class representing benchmarks.
+
+    Attributes:
+            Name (List[str]): List of names representiong benchmark names.
+            Lower (Union[int, float, list, numpy.ndarray]): Lower bounds.
+            Upper (Union[int, float, list, numpy.ndarray]): Upper bounds.
+
+    """
 
     Name = ["Benchmark", "BBB"]
 
     def __init__(self, Lower, Upper, **kwargs):
-        r"""Initialize base Benchmark.
+        r"""Initialize benchmark.
 
-        Arguments:
-            Lower {[type]} -- Lower bound.
-            Upper {[type]} -- Upper bound.
+        Args:
+                Lower (Union[int, float, list, numpy.ndarray]): Lower bounds.
+                Upper (Union[int, float, list, numpy.ndarray]): Upper bounds.
+                **kwargs (Dict[str, Any]): Additional arguments.
+
         """
 
         self.Lower = Lower
         self.Upper = Upper
 
     def function(self):
-        """Return benchmark evaluation function.
+        r"""Get evaluation function.
 
         Returns:
-            [fun] -- Evaluation function.
+                Callable[[int, Union[list, numpy.ndarray]], float]): Evaluation function.
 
         """
 
         def evaluate(D, sol):
-            """Implement the evaluation function.
+            r"""Utility/Evaluation function.
 
-            Arguments:
-                D [int]} -- Dimension of the problem.
-                sol [array[float]] -- Solution array.
+            Args:
+                    D (int): Number of coordinates.
+                    sol (Union[list, numpy.ndarray]): Solution to evaluate.
 
             Returns:
-                [float] -- Return fitness value.
+                    float: Function value.
 
             """
 
@@ -56,26 +65,29 @@ class Benchmark:
 
     def plot2d(self):
         """Plot."""
-
         pass
 
     def __2dfun(self, x, y, f):
-        r"""Plot function.
+        r"""Calculate function value.
 
-        Arguments:
-            x {[type]} -- x value
-            y {[type]} -- y value
-            f {[type]} -- function
+        Args:
+                x (float): First coordinate.
+                y (float): Second coordinate.
+                f (Callable[[int, List[float]], float]): Evaluation function.
+
+        Returns:
+                float: Calculate functional value for given input
 
         """
 
         return f(2, x, y)
 
     def plot3d(self, scale=0.32):
-        """Plot 3d.
+        r"""Plot 3d scatter plot of benchmark function.
 
-        Keyword Arguments:
-            scale {float} -- scale (default: {0.32})
+        Args:
+                scale (float): Scale factor for points.
+
         """
 
         fig = plt.figure()

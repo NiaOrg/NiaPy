@@ -5,8 +5,8 @@ from unittest import TestCase, skip
 from numpy import random as rnd
 
 from NiaPy.util import Task
-from NiaPy.algorithms.modified import SelfAdaptiveDifferentialEvolution, DynNpSelfAdaptiveDifferentialEvolutionAlgorithm, MultiStrategySelfAdaptiveDifferentialEvolution, DynNpMultiStrategySelfAdaptiveDifferentialEvolution
-from NiaPy.algorithms.modified.jde import SolutionjDE
+from NiaPy.algorithms.modified import SelfAdaptiveDifferentialEvolution, DynNpSelfAdaptiveDifferentialEvolutionAlgorithm, MultiStrategySelfAdaptiveDifferentialEvolution, DynNpMultiStrategySelfAdaptiveDifferentialEvolution, AgingSelfAdaptiveDifferentialEvolution
+from NiaPy.algorithms.modified.jde import SolutionjDE, AgingIndividualJDE
 from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
 
 class SolutionjDETestCase(TestCase):
@@ -22,6 +22,15 @@ class SolutionjDETestCase(TestCase):
 	def test_cr_fine(self):
 		self.assertAlmostEqual(self.s1.CR, 0.5)
 		self.assertAlmostEqual(self.s2.CR, self.CR)
+
+class AgingSolutionjDETestCase(SolutionjDETestCase):
+	def setUp(self):
+		self.D, self.F, self.CR = 10, 0.9, 0.3
+		self.x, self.task = rnd.uniform(10, 50, self.D), Task(self.D, nFES=230, nGEN=None, benchmark=MyBenchmark())
+		self.s1, self.s2 = AgingIndividualJDE(task=self.task, e=False), AgingIndividualJDE(x=self.x, CR=self.CR, F=self.F)
+
+	def test_age_fine(self):
+		self.assertEqual(0, self.s1.age)
 
 class jDETestCase(AlgorithmTestCase):
 	def test_typeParameters(self):
@@ -95,6 +104,17 @@ class dynNpMsjDETestCase(AlgorithmTestCase):
 	def test_griewank_works_fine(self):
 		jde_griewank = DynNpMultiStrategySelfAdaptiveDifferentialEvolution(NP=40, F=0.5, F_l=0.0, F_u=2.0, Tao1=0.9, CR=0.1, Tao2=0.45, seed=self.seed)
 		jde_griewankc = MultiStrategySelfAdaptiveDifferentialEvolution(NP=40, F=0.5, F_l=0.0, F_u=2.0, Tao1=0.9, CR=0.1, Tao2=0.45, seed=self.seed)
+		AlgorithmTestCase.algorithm_run_test(self, jde_griewank, jde_griewankc)
+
+class AgingjDETestCase(AlgorithmTestCase):
+	def test_custom_works_fine(self):
+		jde_custom = AgingSelfAdaptiveDifferentialEvolution(NP=40, F=0.5, F_l=0.0, F_u=2.0, Tao1=0.9, CR=0.1, Tao2=0.45, seed=self.seed)
+		jde_customc = AgingSelfAdaptiveDifferentialEvolution(NP=40, F=0.5, F_l=0.0, F_u=2.0, Tao1=0.9, CR=0.1, Tao2=0.45, seed=self.seed)
+		AlgorithmTestCase.algorithm_run_test(self, jde_custom, jde_customc, MyBenchmark())
+
+	def test_griewank_works_fine(self):
+		jde_griewank = AgingSelfAdaptiveDifferentialEvolution(NP=40, F=0.5, F_l=0.0, F_u=2.0, Tao1=0.9, CR=0.1, Tao2=0.45, seed=self.seed)
+		jde_griewankc = AgingSelfAdaptiveDifferentialEvolution(NP=40, F=0.5, F_l=0.0, F_u=2.0, Tao1=0.9, CR=0.1, Tao2=0.45, seed=self.seed)
 		AlgorithmTestCase.algorithm_run_test(self, jde_griewank, jde_griewankc)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

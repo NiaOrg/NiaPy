@@ -74,7 +74,7 @@ class FlowerPollinationAlgorithm(Algorithm):
 		See Also:
 			* :func:`NiaPy.algorithms.Algorithm.setParameters`
 		"""
-		Algorithm.setParameters(self, NP=NP)
+		Algorithm.setParameters(self, NP=NP, **ukwargs)
 		self.p, self.beta = p, beta
 		self.S = zeros((NP, 10))
 

@@ -11,9 +11,9 @@ from NiaPy.util import StoppingTask, OptimizationType
 from NiaPy.benchmarks import Sphere
 from NiaPy.algorithms.other.sa import coolLinear
 
-#we will run Simulated Annealing for 5 independent runs
+# we will run Simulated Annealing for 5 independent runs
 for i in range(5):
-    task = StoppingTask(D=10, nGEN=1000, optType=OptimizationType.MINIMIZATION, benchmark=Sphere())
+    task = StoppingTask(D=10, nGEN=10000, optType=OptimizationType.MINIMIZATION, benchmark=Sphere())
     algo = SimulatedAnnealing(coolingMethod=coolLinear)
     best = algo.run(task=task)
     print(best)

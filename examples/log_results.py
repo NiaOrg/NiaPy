@@ -15,7 +15,5 @@ for i in range(1):
 	algo = DifferentialEvolution(NP=40, CR=0.9, F=0.5)
 	best = algo.run(task)
 	evals, x_f = task.return_conv()
-	
-	print(evals) # print function evaluations
-	
-	print(x_f) # print values
+	print(evals)  # print function evaluations
+	print(x_f)  # print values

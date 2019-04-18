@@ -14,4 +14,4 @@ for i in range(5):
     task = StoppingTask(D=10, nGEN=1000, optType=OptimizationType.MINIMIZATION, benchmark=Sphere())
     algo = BatAlgorithm(NP=40, A=0.5, r=0.5, Qmin=0.0, Qmax=2.0)
     best = algo.run(task=task)
-    print (best)
+    print('%s -> %s' % (best[0], best[1]))
