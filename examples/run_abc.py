@@ -10,10 +10,9 @@ from NiaPy.algorithms.basic import ArtificialBeeColonyAlgorithm
 from NiaPy.util import StoppingTask, OptimizationType
 from NiaPy.benchmarks import Sphere
 
-#we will run Artificial Bee Colony Algorithm for 5 independent runs
+# we will run Artificial Bee Colony Algorithm for 5 independent runs
 for i in range(5):
-    task = StoppingTask(D=10, nFES=10000, optType=OptimizationType.MINIMIZATION, benchmark=Sphere())
+    task = StoppingTask(D=10, nFES=1000, optType=OptimizationType.MINIMIZATION, benchmark=Sphere())
     algo = ArtificialBeeColonyAlgorithm(NP=40, Limit=2)
     best = algo.run(task=task)
-    print best
-    
+    print('%s -> %s' % (best[0].x, best[1]))

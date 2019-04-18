@@ -221,7 +221,7 @@ def randRepair(x, Lower, Upper, rnd=rand, **kwargs):
 	r"""Repair solution and put the solution in the random position inside of the bounds of problem.
 
 	Arguments:
-		x (array): Solution to check and repair if needed.
+		x (numpy.ndarray): Solution to check and repair if needed.
 		Lower (numpy.ndarray): Lower bounds of search space.
 		Upper (numpy.ndarray): Upper bounds of search space.
 		rnd (mtrand.RandomState): Random generator.
@@ -357,11 +357,11 @@ class Task(Utility):
 			numpy.ndarray: Fixed solution.
 
 		See Also:
-			* :func:`NiaPy.util.utility.limitRepair`
-			* :func:`NiaPy.util.utility.limitInversRepair`
-			* :func:`NiaPy.util.utility.wangRepair`
-			* :func:`NiaPy.util.utility.randRepair`
-			* :func:`NiaPy.util.utility.reflectRepair`
+			* :func:`NiaPy.util.limitRepair`
+			* :func:`NiaPy.util.limitInversRepair`
+			* :func:`NiaPy.util.wangRepair`
+			* :func:`NiaPy.util.randRepair`
+			* :func:`NiaPy.util.reflectRepair`
 		"""
 		return self.frepair(x, self.Lower, self.Upper, rnd=rnd)
 
@@ -386,7 +386,7 @@ class Task(Utility):
 		r"""Check if the solution is feasible.
 
 		Arguments:
-			A (numpy.ndarray): Solution to check for feasibility.
+			A (Union[numpy.ndarray, Individual]): Solution to check for feasibility.
 
 		Returns:
 			bool: `True` if solution is in feasible space else `False`.
@@ -797,7 +797,7 @@ class TaskConvSave(StoppingTask):
 		"""
 		return self.evals, self.x_f_vals
 
-class TaskConvPlot(StoppingTask):
+class TaskConvPlot(TaskConvSave):
 	r"""Task class with ability of showing convergence graph.
 
 	Attributes:
@@ -817,7 +817,6 @@ class TaskConvPlot(StoppingTask):
 			* :func:`NiaPy.util.StoppingTask.__init__`
 		"""
 		StoppingTask.__init__(self, **kwargs)
-		self.x_fs, self.iters = [], []
 		self.fig = plt.figure()
 		self.ax = self.fig.subplots(nrows=1, ncols=1)
 		self.ax.set_xlim(0, self.nFES)
@@ -835,10 +834,10 @@ class TaskConvPlot(StoppingTask):
 			float: Fitness/function values of solution.
 		"""
 		x_f = StoppingTask.eval(self, A)
-		if not self.x_fs: self.x_fs.append(x_f)
-		elif x_f < self.x_fs[-1]: self.x_fs.append(x_f)
-		else: self.x_fs.append(self.x_fs[-1])
-		self.iters.append(self.Evals)
+		if not self.x_f_vals: self.x_f_vals.append(x_f)
+		elif x_f < self.x_f_vals[-1]: self.x_f_vals.append(x_f)
+		else: self.x_f_vals.append(self.x_f_vals[-1])
+		self.evals.append(self.Evals)
 		return x_f
 
 	def showPlot(self):
@@ -856,10 +855,10 @@ class TaskConvPlot(StoppingTask):
 			Tuple[List[float], Any]:
 				1. Line
 		"""
-		if self.x_fs:
-			max_fs, min_fs = self.x_fs[0], self.x_fs[-1]
+		if self.x_f_vals:
+			max_fs, min_fs = self.x_f_vals[0], self.x_f_vals[-1]
 			self.ax.set_ylim(min_fs + 1, max_fs + 1)
-			self.line.set_data(self.iters, self.x_fs)
+			self.line.set_data(self.evals, self.x_f_vals)
 		return self.line,
 
 class TaskComposition(MoveTask):

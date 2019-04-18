@@ -72,11 +72,11 @@ class EvolutionStrategy1p1(Algorithm):
 
 		Returns:
 			Dict[str, Callable]:
-				* mu (Callable[[int], bool]): TODO.
-				* k (Callable[[int], bool]): TODO.
-				* c_a (Callable[[Union[float, int]], bool]): TODO.
-				* c_r (Callable[[Union[float, int]], bool]): TODO.
-				* epsilon (Callable[[float], bool]): TODO.
+				* mu (Callable[[int], bool])
+				* k (Callable[[int], bool])
+				* c_a (Callable[[Union[float, int]], bool])
+				* c_r (Callable[[Union[float, int]], bool])
+				* epsilon (Callable[[float], bool])
 		"""
 		return {
 			'mu': lambda x: isinstance(x, int) and x > 0,
@@ -98,7 +98,7 @@ class EvolutionStrategy1p1(Algorithm):
 		See Also:
 			* :func:`NiaPy.algorithms.Algorithm.setParameters`
 		"""
-		Algorithm.setParameters(self, NP=mu, itype=IndividualES, **ukwargs)
+		Algorithm.setParameters(self, NP=mu, itype=ukwargs.pop('itype', IndividualES), **ukwargs)
 		self.mu, self.k, self.c_a, self.c_r, self.epsilon = mu, k, c_a, c_r, epsilon
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
@@ -165,8 +165,8 @@ class EvolutionStrategy1p1(Algorithm):
 					* ki (int): Number of successful rho update.
 		"""
 		if task.Iters % self.k == 0: c.rho, ki = self.updateRho(c.rho, ki), 0
-		cn = [task.repair(self.mutate(c.x, c.rho), self.Rand) for _i in range(self.mu)]
-		cn_f = [task.eval(cn[i]) for i in range(len(cn))]
+		cn = objects2array([task.repair(self.mutate(c.x, c.rho), self.Rand) for _i in range(self.mu)])
+		cn_f = asarray([task.eval(cn[i]) for i in range(len(cn))])
 		ib = argmin(cn_f)
 		if cn_f[ib] < c.f: c.x, c.f, ki = cn[ib], cn_f[ib], ki + 1
 		return c, c.f, {'ki': ki}
@@ -204,8 +204,8 @@ class EvolutionStrategyMp1(EvolutionStrategy1p1):
 		Args:
 			**kwargs (Dict[str, Any]):
 
-      See Also:
-      	* :func:`NiaPy.algorithms.basic.EvolutionStrategy1p1.setParameters`
+		See Also:
+			* :func:`NiaPy.algorithms.basic.EvolutionStrategy1p1.setParameters`
 		"""
 		mu = kwargs.pop('mu', 40)
 		EvolutionStrategy1p1.setParameters(self, mu=mu, **kwargs)

@@ -4,6 +4,24 @@ from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
 from NiaPy.algorithms.other import HillClimbAlgorithm
 
 class HCTestCase(AlgorithmTestCase):
+	r"""Test case for HillClimbAlgorithm algorithm.
+
+	Date:
+		April 2019
+
+	Author:
+		Klemen Berkovič and Jan Popič
+
+	See Also:
+		* :class:`NiaPy.algorithms.other.HillClimbAlgorithm`
+	"""
+	def test_algorithm_info_fine(self):
+		self.assertIsNotNone(HillClimbAlgorithm.algorithmInfo())
+
+	def test_type_parameters_fine(self):
+		d = HillClimbAlgorithm.typeParameters()
+		self.assertIsNotNone(d.get('delta', None))
+
 	def test_custom_works_fine(self):
 		ihc_custom = HillClimbAlgorithm(delta=0.4, seed=self.seed)
 		ihc_customc = HillClimbAlgorithm(delta=0.4, seed=self.seed)

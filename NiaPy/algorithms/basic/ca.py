@@ -149,17 +149,17 @@ class CamelAlgorithm(Algorithm):
 
 	@staticmethod
 	def typeParameters():
-		r"""TODO.
+		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
 			Dict[str, Callable]:
-				* omega (Callable[[Union[int, float]], bool]): TODO
-				* mu (Callable[[float], bool]): TODO
-				* alpha (Callable[[float], bool]): TODO
-				* S_init (Callable[[Union[float, int]], bool]): TODO
-				* E_init (Callable[[Union[float, int]], bool]): TODO
-				* T_min (Callable[[Union[float, int], bool]): TODO
-				* T_max (Callable[[Union[float, int], bool]): TODO
+				* omega (Callable[[Union[int, float]], bool])
+				* mu (Callable[[float], bool])
+				* alpha (Callable[[float], bool])
+				* S_init (Callable[[Union[float, int]], bool])
+				* E_init (Callable[[Union[float, int]], bool])
+				* T_min (Callable[[Union[float, int], bool])
+				* T_max (Callable[[Union[float, int], bool])
 
 		See Also:
 			* :func:`NiaPy.algorithms.Algorithm.typeParameters`
@@ -191,7 +191,7 @@ class CamelAlgorithm(Algorithm):
 		See Also:
 			* :func:`NiaPy.algorithms.Algorithm.setParameters`
 		"""
-		Algorithm.setParameters(self, NP=NP, itype=Camel, InitPopFunc=self.initPop)
+		Algorithm.setParameters(self, NP=NP, itype=Camel, InitPopFunc=ukwargs.pop('InitPopFunc', self.initPop), **ukwargs)
 		self.omega, self.mu, self.alpha, self.S_init, self.E_init, self.T_min, self.T_max = omega, mu, alpha, S_init, E_init, T_min, T_max
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 

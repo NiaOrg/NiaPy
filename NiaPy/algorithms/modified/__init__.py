@@ -4,7 +4,7 @@
 
 from NiaPy.algorithms.modified.hba import HybridBatAlgorithm
 from NiaPy.algorithms.modified.hde import DifferentialEvolutionMTS, DifferentialEvolutionMTSv1, DynNpDifferentialEvolutionMTS, DynNpDifferentialEvolutionMTSv1, MultiStrategyDifferentialEvolutionMTS, DynNpMultiStrategyDifferentialEvolutionMTS, DynNpMultiStrategyDifferentialEvolutionMTSv1, MultiStrategyDifferentialEvolutionMTSv1
-from NiaPy.algorithms.modified.jde import SelfAdaptiveDifferentialEvolution, DynNpSelfAdaptiveDifferentialEvolutionAlgorithm, MultiStrategySelfAdaptiveDifferentialEvolution, DynNpMultiStrategySelfAdaptiveDifferentialEvolution
+from NiaPy.algorithms.modified.jde import SelfAdaptiveDifferentialEvolution, DynNpSelfAdaptiveDifferentialEvolutionAlgorithm, MultiStrategySelfAdaptiveDifferentialEvolution, DynNpMultiStrategySelfAdaptiveDifferentialEvolution, AgingSelfAdaptiveDifferentialEvolution
 
 __all__ = [
     'HybridBatAlgorithm',
@@ -19,5 +19,6 @@ __all__ = [
     'SelfAdaptiveDifferentialEvolution',
     'DynNpSelfAdaptiveDifferentialEvolutionAlgorithm',
     'MultiStrategySelfAdaptiveDifferentialEvolution',
-    'DynNpMultiStrategySelfAdaptiveDifferentialEvolution'
+    'DynNpMultiStrategySelfAdaptiveDifferentialEvolution',
+    'AgingSelfAdaptiveDifferentialEvolution'
 ]

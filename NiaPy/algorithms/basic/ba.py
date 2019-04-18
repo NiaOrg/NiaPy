@@ -46,10 +46,10 @@ class BatAlgorithm(Algorithm):
 
 		Returns:
 			Dict[str, Callable]:
-				* A (Callable[[Union[float, int]], bool]): TODO
-				* r (Callable[[Union[float, int]], bool]): TODO
-				* Qmin (Callable[[Union[float, int]], bool]): TODO
-				* Qmax (Callable[[Union[float, int]], bool]): TODO
+				* A (Callable[[Union[float, int]], bool]): Loudness.
+				* r (Callable[[Union[float, int]], bool]): Pulse rate.
+				* Qmin (Callable[[Union[float, int]], bool]): Minimum frequency.
+				* Qmax (Callable[[Union[float, int]], bool]): Maximum frequency.
 
 		See Also:
 			* :func:`NiaPy.algorithms.Algorithm.typeParameters`
@@ -67,10 +67,10 @@ class BatAlgorithm(Algorithm):
 		r"""Set the parameters of the algorithm.
 
 		Args:
-			A (Optional[float]): loudness
-			r (Optional[float]): pulse rate
-			Qmin (Optional[float]): minimum frequency
-			Qmax (Optional[float]): maximum frequency
+			A (Optional[float]): Loudness.
+			r (Optional[float]): Pulse rate.
+			Qmin (Optional[float]): Minimum frequency.
+			Qmax (Optional[float]): Maximum frequency.
 
 		See Also:
 			* :func:`NiaPy.algorithms.Algorithm.setParameters`
@@ -102,6 +102,19 @@ class BatAlgorithm(Algorithm):
 		d.update({'S': S, 'Q': Q, 'v': v})
 		return Sol, Fitness, d
 
+	def generateBest(self, best, task, **kwargs):
+		r"""Generate new solution based on global best known solution.
+
+		Args:
+			best (numpy.ndarray): Global best individual.
+			task (Task): Optimization task.
+			**kwargs (Dict[str, Any]): Additional arguments.
+
+		Returns:
+			numpy.ndarray: New solution based on global best individual.
+		"""
+		return task.repair(best + 0.001 * self.normal(0, 1, task.D))
+
 	def runIteration(self, task, Sol, Fitness, best, f_min, S, Q, v, **dparams):
 		r"""Core function of Bat Algorithm.
 
@@ -126,8 +139,10 @@ class BatAlgorithm(Algorithm):
 					* v (numpy.ndarray[float]): TODO
 		"""
 		for i in range(self.NP):
-			Q[i], v[i], S[i] = self.Qmin + (self.Qmax - self.Qmin) * self.uniform(0, 1), v[i] + (Sol[i] - best) * Q[i], task.repair(Sol[i] + v[i])
-			if self.rand() > self.r: S[i] = task.repair(best + 0.001 * self.normal(0, 1, task.D))
+			Q[i] = self.Qmin + (self.Qmax - self.Qmin) * self.uniform(0, 1)
+			v[i] += (Sol[i] - best) * Q[i]
+			S[i] = task.repair(Sol[i] + v[i])
+			if self.rand() > self.r: S[i] = self.generateBest(best=best, task=task, i=i, Sol=Sol)
 			Fnew = task.eval(S[i])
 			if (Fnew <= Fitness[i]) and (self.rand() < self.A): Sol[i], Fitness[i] = S[i], Fnew
 			if Fnew <= f_min: best, f_min = S[i], Fnew

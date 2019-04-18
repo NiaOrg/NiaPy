@@ -47,6 +47,18 @@ class SineCosineAlgorithm(Algorithm):
 	Name = ['SineCosineAlgorithm', 'SCA']
 
 	@staticmethod
+	def algorithmInfo():
+		r"""Get basic information of algorithm.
+
+		Returns:
+			str: Basic information of algorithm.
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+		"""
+		return r"""Seyedali Mirjalili, SCA: A Sine Cosine Algorithm for solving optimization problems, Knowledge-Based Systems, Volume 96, 2016, Pages 120-133, ISSN 0950-7051, https://doi.org/10.1016/j.knosys.2015.12.022."""
+
+	@staticmethod
 	def typeParameters():
 		r"""Get dictionary with functions for checking values of parameters.
 
@@ -77,9 +89,9 @@ class SineCosineAlgorithm(Algorithm):
 			Rmax (Optional[float]): Maximum value for :math:`r_3` value
 
 		See Also:
-			* :func:`NiaPy.algorithms.algorithm.Algorithm`
+			* :func:`NiaPy.algorithms.algorithm.Algorithm.setParameters`
 		"""
-		Algorithm.setParameters(self, NP=NP)
+		Algorithm.setParameters(self, NP=NP, **ukwargs)
 		self.a, self.Rmin, self.Rmax = a, Rmin, Rmax
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 

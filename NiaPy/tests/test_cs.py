@@ -5,13 +5,13 @@ from NiaPy.algorithms.basic import CuckooSearch
 
 class CSTestCase(AlgorithmTestCase):
 	def test_custom_works_fine(self):
-		cs_custom = CuckooSearch(NP=20, seed=self.seed)
-		cs_customc = CuckooSearch(NP=20, seed=self.seed)
+		cs_custom = CuckooSearch(N=20, seed=self.seed)
+		cs_customc = CuckooSearch(N=20, seed=self.seed)
 		AlgorithmTestCase.algorithm_run_test(self, cs_custom, cs_customc, MyBenchmark())
 
 	def test_griewank_works_fine(self):
-		cs_griewank = CuckooSearch(NP=10, seed=self.seed)
-		cs_griewankc = CuckooSearch(NP=10, seed=self.seed)
+		cs_griewank = CuckooSearch(N=10, seed=self.seed)
+		cs_griewankc = CuckooSearch(N=10, seed=self.seed)
 		AlgorithmTestCase.algorithm_run_test(self, cs_griewank, cs_griewankc)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

@@ -5,67 +5,15 @@ import sys
 sys.path.append('../')
 # End of fix
 
-import random
-import logging
-from NiaPy import Runner
-from NiaPy.util import Task, TaskConvPrint, TaskConvPlot, OptimizationType, getDictArgs
+from NiaPy.algorithms.basic import BareBonesFireworksAlgorithm
+from NiaPy.util import StoppingTask, OptimizationType
+from NiaPy.benchmarks import Sphere
 
-logging.basicConfig()
-logger = logging.getLogger('examples')
-logger.setLevel('INFO')
-
-# For reproducive results
-random.seed(1234)
-
-class MinMB(object):
-	def __init__(self):
-		self.Lower = -11
-		self.Upper = 11
-
-	def function(self):
-		def evaluate(D, sol):
-			val = 0.0
-			for i in range(D): val = val + sol[i] * sol[i]
-			return val
-		return evaluate
-
-class MaxMB(MinMB):
-	def function(self):
-		f = MinMB.function(self)
-		def e(D, sol): return -f(D, sol)
-		return e
-
-def simple_example(alg, runs=10, D=10, nFES=50000, nGEN=10000, seed=[None], optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kn):
-	for i in range(runs):
-		task = Task(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc())
-		algo = alg(seed=seed[i % len(seed)], task=task)
-		best = algo.run()
-		logger.info('%s %s' % (best[0], best[1]))
-
-def logging_example(alg, D=10, nFES=50000, nGEN=100000, seed=[None], optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kn):
-	task = TaskConvPrint(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc())
-	algo = alg(seed=seed[0], task=task)
-	best = algo.run()
-	logger.info('%s %s' % (best[0], best[1]))
-
-def plot_example(alg, D=10, nFES=50000, nGEN=100000, seed=[None], optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kn):
-	task = TaskConvPlot(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc())
-	algo = alg(seed=seed[0], task=task)
-	best = algo.run()
-	logger.info('%s %s' % (best[0], best[1]))
-	input('Press [enter] to continue')
-
-def getOptType(otype):
-	if otype == OptimizationType.MINIMIZATION: return MinMB
-	elif otype == OptimizationType.MAXIMIZATION: return MaxMB
-	else: return None
-
-if __name__ == '__main__':
-	pargs, algo = getDictArgs(sys.argv[1:]), Runner.getAlgorithm('BBFWA')
-	print (pargs['seed'])
-	optFunc = getOptType(pargs['optType'])
-	if not pargs['runType']: simple_example(algo, optFunc=optFunc, **pargs)
-	elif pargs['runType'] == 'log': logging_example(algo, optFunc=optFunc, **pargs)
-	elif pargs['runType'] == 'plot': plot_example(algo, optFunc=optFunc, **pargs)
+# we will run Fireworks Algorithm for 5 independent runs
+for i in range(5):
+	task = StoppingTask(D=10, nFES=1000, optType=OptimizationType.MINIMIZATION, benchmark=Sphere())
+	algo = BareBonesFireworksAlgorithm()
+	best = algo.run(task=task)
+	print('%s -> %s' % (best[0], best[1]))
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

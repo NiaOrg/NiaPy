@@ -197,12 +197,21 @@ class GeneticAlgorithm(Algorithm):
 	Name = ['GeneticAlgorithm', 'GA']
 
 	@staticmethod
+	def algorithmInfo():
+		r"""Get basic information of algorithm.
+
+		Returns:
+			str: Basic information of algorithm.
+		"""
+		return r"""On info"""
+
+	@staticmethod
 	def typeParameters():
-		r"""TODO.
+		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
 			Dict[str, Callable]:
-				* Ts (Callable[[int], bool]): TODO
+				* Ts (Callable[[int], bool]): Tournament size.
 				* Mr (Callable[[float], bool]): Probability of mutation.
 				* Cr (Callable[[float], bool]): Probability of crossover.
 
@@ -244,7 +253,7 @@ class GeneticAlgorithm(Algorithm):
 				* :func:`NiaPy.algorithms.basic.CreepMutation`
 				* :func:`NiaPy.algorithms.basic.MutationUros`
 		"""
-		Algorithm.setParameters(self, NP=NP, itype=Individual, InitPopFunc=defaultIndividualInit)
+		Algorithm.setParameters(self, NP=NP, itype=ukwargs.pop('itype', Individual), InitPopFunc=ukwargs.pop('InitPopFunc', defaultIndividualInit), **ukwargs)
 		self.Ts, self.Mr, self.Cr = Ts, Mr, Cr
 		self.Selection, self.Crossover, self.Mutation = Selection, Crossover, Mutation
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))

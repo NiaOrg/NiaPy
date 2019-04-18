@@ -30,7 +30,7 @@ def SexualCrossoverSimple(pop, p, task, rnd=rand, **kwargs):
 	return pop, apply_along_axis(task.eval, 1, pop)
 
 def BroodingSimple(pop, p, task, rnd=rand, **kwargs):
-	r"""Brooading of corals.
+	r"""Brooding or internal sexual reproduction of corals.
 
 	Args:
 		pop (numpy.ndarray): Current population.
@@ -53,7 +53,7 @@ def MoveCorals(pop, p, F, task, rnd=rand, **kwargs):
 	Args:
 		pop (numpy.ndarray): Current population.
 		p (float): Probability in range [0, 1].
-		F (float): Factor TODO.
+		F (float): Factor.
 		task (Task): Optimization task.
 		rnd (mtrand.RandomState): Random generator.
 		**kwargs (Dict[str, Any]): Additional arguments.
@@ -81,15 +81,18 @@ class CoralReefsOptimization(Algorithm):
 	License:
 		MIT
 
-	Reference:
-		S. Salcedo-Sanz, J. Del Ser, I. Landa-Torres, S. Gil-López, and J. A. Portilla-Figueras, “The Coral Reefs Optimization Algorithm: A Novel Metaheuristic for Efficiently Solving Optimization Problems,” The Scientific World Journal, vol. 2014, Article ID 739768, 15 pages, 2014. https://doi.org/10.1155/2014/739768.
+	Reference Paper:
+		S. Salcedo-Sanz, J. Del Ser, I. Landa-Torres, S. Gil-López, and J. A. Portilla-Figueras, “The Coral Reefs Optimization Algorithm: A Novel Metaheuristic for Efficiently Solving Optimization Problems,” The Scientific World Journal, vol. 2014, Article ID 739768, 15 pages, 2014.
+
+	Reference URL:
+		https://doi.org/10.1155/2014/739768.
 
 	Attributes:
 		Name (List[str]): List of strings representing algorithm name.
-		phi (int): TODO.
-		Fa (int): TODO.
-		Fb (int): Value in [0, 1] for Brooding size.
-		Fd (int): Value in [0, 1] for Depredation.
+		phi (float): Range of neighborhood.
+		Fa (int): Number of corals used in asexsual reproduction.
+		Fb (int): Number of corals used in brooding.
+		Fd (int): Number of corals used in depredation.
 		k (int): Nomber of trys for larva setting.
 		P_F (float): Mutation variable :math:`\in [0, \infty]`.
 		P_Cr(float): Crossover rate in [0, 1].
@@ -104,7 +107,7 @@ class CoralReefsOptimization(Algorithm):
 
 	@staticmethod
 	def typeParameters():
-		r"""TODO.
+		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
 			Dict[str, Callable]:
@@ -125,15 +128,15 @@ class CoralReefsOptimization(Algorithm):
 			'k': False
 		}
 
-	def setParameters(self, N=25, phi=10, Fa=0.5, Fb=0.5, Fd=0.3, k=25, P_Cr=0.5, P_F=0.36, SexualCrossover=SexualCrossoverSimple, Brooding=BroodingSimple, Distance=euclidean, **ukwargs):
+	def setParameters(self, N=25, phi=0.4, Fa=0.5, Fb=0.5, Fd=0.3, k=25, P_Cr=0.5, P_F=0.36, SexualCrossover=SexualCrossoverSimple, Brooding=BroodingSimple, Distance=euclidean, **ukwargs):
 		r"""Set the parameters of the algorithm.
 
 		Arguments:
 			N (int): population size for population initialization.
 			phi (int): TODO.
-			Fa (float): TODO.
+			Fa (float): Value $\in [0, 1]$ for Asexual reproduction size.
 			Fb (float): Value $\in [0, 1]$ for Brooding size.
-			Fd (float): Value $\in [0, 1]$ for Depredation.
+			Fd (float): Value $\in [0, 1]$ for Depredation size.
 			k (int): Trys for larvae setting.
 			SexualCrossover (Callable[[numpy.ndarray, float, Task, mtrand.RandomState, Dict[str, Any]], Tuple[numpy.ndarray, numpy.ndarray[float]]]): Crossover function.
 			P_Cr (float): Crossover rate $\in [0, 1]$.
@@ -145,41 +148,17 @@ class CoralReefsOptimization(Algorithm):
 			* :func:`NiaPy.algorithms.Algorithm.setParameters`
 		"""
 		Algorithm.setParameters(self, NP=N)
-		self.phi, self.Fa, self.Fb, self.Fd, self.k, self.P_Cr, self.P_F = phi, Fa, Fb, Fd, k, P_Cr, P_F
+		self.phi, self.k, self.P_Cr, self.P_F = phi, k, P_Cr, P_F
+		self.Fa, self.Fb, self.Fd = int(self.NP * Fa), int(self.NP * Fb), int(self.NP * Fd)
 		self.SexualCrossover, self.Brooding, self.Distance = SexualCrossover, Brooding, Distance
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def initPopulation(self, task):
-		r"""Initialize starting population.
-
-		Args:
-			task (Task): Optimization task.
-
-		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
-				1. Initialized population.
-				2. Initialized population fitness/function values.
-				3. Additional arguments:
-					* Fa (int): TODO
-					* Fb (int): TODO
-					* Fd (int): TODO
-
-		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.initPopulation`
-		"""
-		Reef, Reef_f, d = Algorithm.initPopulation(self, task)
-		Fa, Fb, Fd = self.NP * self.Fa, self.NP * self.Fb, self.NP * self.Fd
-		if Fa % 2 != 0: Fa += 1
-		d.update({'Fa': int(Fa), 'Fb': int(Fb), 'Fd': int(Fd)})
-		return Reef, Reef_f, d
-
-	def asexualReprodution(self, Reef, Reef_f, Fa, task):
+	def asexualReprodution(self, Reef, Reef_f, task):
 		r"""Asexual reproduction of corals.
 
 		Args:
 			Reef (numpy.ndarray): Current population of reefs.
 			Reef_f (numpy.ndarray[float]): Current populations function/fitness values.
-			Fa (int): Number of corals that are used in reproduction.
 			task (Task): Optimization task.
 
 		Returns:
@@ -191,25 +170,24 @@ class CoralReefsOptimization(Algorithm):
 			* :func:`NiaPy.algorithms.basic.CoralReefsOptimization.setting`
 			* :func:`NiaPy.algorithms.basic.BroodingSimple`
 		"""
-		I = argsort(Reef_f)[:Fa]
+		I = argsort(Reef_f)[:self.Fa]
 		Reefn, Reefn_f = self.Brooding(Reef[I], self.P_F, task, rnd=self.Rand)
 		Reef, Reef_f = self.setting(Reef, Reef_f, Reefn, Reefn_f, task)
 		return Reef, Reef_f
 
-	def depredation(self, Reef, Reef_f, Fd):
+	def depredation(self, Reef, Reef_f):
 		r"""Depredation operator for reefs.
 
 		Args:
 			Reef (numpy.ndarray): Current reefs.
 			Reef_f (numpy.ndarray[float]): Current reefs function/fitness values.
-			Fd (int): TODO
 
 		Returns:
 			Tuple[numpy.ndarray, numpy.ndarray[float]]:
 				1. Best individual
 				2. Best individual fitness/function value
 		"""
-		I = argsort(Reef_f)[::-1][:Fd]
+		I = argsort(Reef_f)[::-1][:self.Fd]
 		return delete(Reef, I), delete(Reef_f, I)
 
 	def setting(self, X, X_f, Xn, Xn_f, task):
@@ -230,16 +208,16 @@ class CoralReefsOptimization(Algorithm):
 				1. New seatled population.
 				2. New seatled population fitness/function values.
 		"""
-		def update(A):
+		def update(A, phi):
 			D = asarray([sqrt(sum((A - e) ** 2, axis=1)) for e in Xn])
-			I = unique(where(D < self.phi)[0])
+			I = unique(where(D < phi)[0])
 			if I.any(): Xn[I], Xn_f[I] = MoveCorals(Xn[I], self.P_F, self.P_F, task, rnd=self.Rand)
-		for i in range(self.k): update(X), update(Xn)
+		for i in range(self.k): update(X, self.phi), update(Xn, self.phi)
 		D = asarray([sqrt(sum((X - e) ** 2, axis=1)) for e in Xn])
 		I = unique(where(D >= self.phi)[0])
 		return append(X, Xn[I], 0), append(X_f, Xn_f[I], 0)
 
-	def runIteration(self, task, Reef, Reef_f, xb, fxb, Fa, Fb, Fd, **dparams):
+	def runIteration(self, task, Reef, Reef_f, xb, fxb, **dparams):
 		r"""Core function of Coral Reefs Optimization algorithm.
 
 		Args:
@@ -248,9 +226,6 @@ class CoralReefsOptimization(Algorithm):
 			Reef_f (numpy.ndarray[float]): Current population fitness/function value.
 			xb (numpy.ndarray): Global best solution.
 			fxb (float): Global best solution fitness/function value.
-			Fa (int): TODO
-			Fb (int): TODO
-			Fd (int): TODO
 			**dparams: Additional arguments
 
 		Returns:
@@ -258,20 +233,17 @@ class CoralReefsOptimization(Algorithm):
 				1. New population.
 				2. New population fitness/function values.
 				3. Additional arguments:
-					* Fa (int): TODO
-					* Fb (int): TODO
-					* Fd (int): TODO
 
 		See Also:
 			* :func:`NiaPy.algorithms.basic.CoralReefsOptimization.SexualCrossover`
 			* :func:`NiaPy.algorithms.basic.CoralReefsOptimization.Brooding`
 		"""
-		I = self.Rand.choice(len(Reef), size=Fb, replace=False)
+		I = self.Rand.choice(len(Reef), size=self.Fb, replace=False)
 		Reefn_s, Reefn_s_f = self.SexualCrossover(Reef[I], self.P_Cr, task, rnd=self.Rand)
 		Reefn_b, Reffn_b_f = self.Brooding(delete(Reef, I, 0), self.P_F, task, rnd=self.Rand)
 		Reefn, Reefn_f = self.setting(Reef, Reef_f, append(Reefn_s, Reefn_b, 0), append(Reefn_s_f, Reffn_b_f, 0), task)
-		Reef, Reef_f = self.asexualReprodution(Reefn, Reefn_f, Fa, task)
-		if task.Iters % self.k == 0: Reef, Reef_f = self.depredation(Reef, Reef_f, Fd)
-		return Reef, Reef_f, {'Fa': Fa, 'Fb': Fb, 'Fd': Fd}
+		Reef, Reef_f = self.asexualReprodution(Reefn, Reefn_f, task)
+		if task.Iters % self.k == 0: Reef, Reef_f = self.depredation(Reef, Reef_f)
+		return Reef, Reef_f, {}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

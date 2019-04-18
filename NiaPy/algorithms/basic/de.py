@@ -1,7 +1,8 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, multiple-statements, line-too-long, unused-argument, no-self-use, no-self-use, attribute-defined-outside-init, logging-not-lazy, len-as-condition, singleton-comparison, arguments-differ, bad-continuation, dangerous-default-value, keyword-arg-before-vararg
 import logging
-from numpy import random as rand, argmin, argmax, mean, cos, asarray, append
+
+from numpy import random as rand, argmin, argmax, mean, cos, asarray, append, sin
 from scipy.spatial.distance import euclidean
 
 from NiaPy.algorithms.algorithm import Algorithm, Individual, defaultIndividualInit
@@ -241,6 +242,18 @@ class DifferentialEvolution(Algorithm):
 	Name = ['DifferentialEvolution', 'DE']
 
 	@staticmethod
+	def algorithmInfo():
+		r"""Get basic information of algorithm.
+
+		Returns:
+			str: Basic information of algorithm.
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+		"""
+		return r"""Storn, Rainer, and Kenneth Price. "Differential evolution - a simple and efficient heuristic for global optimization over continuous spaces." Journal of global optimization 11.4 (1997): 341-359."""
+
+	@staticmethod
 	def typeParameters():
 		r"""Get dictionary with functions for checking values of parameters.
 
@@ -340,7 +353,7 @@ class DifferentialEvolution(Algorithm):
 			* :func:`NiaPy.algorithms.basic.DifferentialEvolution.postSelection`
 		"""
 		npop = self.evolve(pop, xb, task)
-		pop = self.selection(pop, npop)
+		pop = self.selection(pop, npop, task=task)
 		pop = self.postSelection(pop, task, xb=xb)
 		return pop, asarray([x.f for x in pop]), {}
 
@@ -368,16 +381,17 @@ class CrowdingDifferentialEvolution(DifferentialEvolution):
 	"""
 	Name = ['CrowdingDifferentialEvolution', 'CDE']
 
-	def __init__(self, **kwargs):
-		r"""Init CrowdingDifferentialEvolution algorithm.
+	@staticmethod
+	def algorithmInfo():
+		r"""Get basic information of algorithm.
 
-		Args:
-			**kwargs (Dict[str, Any]): Additional arguments.
+		Returns:
+			str: Basic information of algorithm.
 
 		See Also:
-			* :func:`NiaPy.algorithms.basic.DifferentialEvolution.__init__`
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
 		"""
-		DifferentialEvolution.__init__(self, **kwargs)
+		return r"""No New"""
 
 	def setParameters(self, CrowPop=0.1, **ukwargs):
 		r"""Set core parameters of algorithm.
@@ -392,12 +406,13 @@ class CrowdingDifferentialEvolution(DifferentialEvolution):
 		DifferentialEvolution.setParameters(self, **ukwargs)
 		self.CrowPop = CrowPop
 
-	def selection(self, pop, npop):
+	def selection(self, pop, npop, **kwargs):
 		r"""Operator for selection of individuals.
 
 		Args:
 			pop (numpy.ndarray[Individual]): Current population.
 			npop (numpy.ndarray[Individual]): New population.
+			kwargs (Dict[str, Any]): Additional arguments.
 
 		Returns:
 			numpy.ndarray[Individual]: New population.
@@ -425,8 +440,8 @@ class DynNpDifferentialEvolution(DifferentialEvolution):
 
 	Attributes:
 		Name (List[str]): List of strings representing algorithm names.
-		pmax (int): TODO
-		rp (int): TODO
+		pmax (int): Number of population reductions.
+		rp (int): Small non-negative number which is added to value of generations.
 
 	See Also:
 		* :class:`NiaPy.algorithms.basic.DifferentialEvolution`
@@ -434,13 +449,25 @@ class DynNpDifferentialEvolution(DifferentialEvolution):
 	Name = ['DynNpDifferentialEvolution', 'dynNpDE']
 
 	@staticmethod
+	def algorithmInfo():
+		r"""Get basic information of algorithm.
+
+		Returns:
+			str: Basic information of algorithm.
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+		"""
+		return r"""No info"""
+
+	@staticmethod
 	def typeParameters():
 		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
 			Dict[str, Callable]:
-				* rp (Callable[[Union[float, int]], bool]): TODO
-				* pmax (Callable[[int], bool]): TODO
+				* rp (Callable[[Union[float, int]], bool])
+				* pmax (Callable[[int], bool])
 
 		See Also:
 			* :func:`NiaPy.algorithms.basic.DifferentialEvolution.typeParameters`
@@ -454,8 +481,8 @@ class DynNpDifferentialEvolution(DifferentialEvolution):
 		r"""Set the algorithm parameters.
 
 		Arguments:
-			pmax (Optional[int]): TODO
-			rp (Optional[int]): TODO
+			pmax (Optional[int]): umber of population reductions.
+			rp (Optional[int]): Small non-negative number which is added to value of generations.
 
 		See Also:
 			* :func:`NiaPy.algorithms.basic.DifferentialEvolution.setParameters`
@@ -482,13 +509,13 @@ class DynNpDifferentialEvolution(DifferentialEvolution):
 		if task.Iters == Gr and len(pop) > 3: pop = objects2array([pop[i] if pop[i].f < pop[i + nNP].f else pop[i + nNP] for i in range(nNP)])
 		return pop
 
-def proportional(Lt_min, Lt_max, mu, x_f, avg, *args):
+def proportional(Lt_min, Lt_max, mu, x_f, avg, **args):
 	r"""Proportional calculation of age of individual.
 
 	Args:
 		Lt_min (int): Minimal life time.
 		Lt_max (int): Maximal life time.
-		mu (float): TODO
+		mu (float): Median of life time.
 		x_f (float): Individuals function/fitness value.
 		avg (float): Average fitness/function value of current population.
 		*args (list): Additional arguments.
@@ -498,13 +525,13 @@ def proportional(Lt_min, Lt_max, mu, x_f, avg, *args):
 	"""
 	return min(Lt_min + mu * avg / x_f, Lt_max)
 
-def linear(Lt_min, Lt_max, mu, x_f, avg, x_gw, x_gb, *args):
+def linear(Lt_min, mu, x_f, x_gw, x_gb, **args):
 	r"""Linear calculation of age of individual.
 
 	Args:
 		Lt_min (int): Minimal life time.
 		Lt_max (int): Maximal life time.
-		mu (float): TODO
+		mu (float): Median of life time.
 		x_f (float): Individual function/fitness value.
 		avg (float): Average fitness/function value.
 		x_gw (float): Global worst fitness/function value.
@@ -516,13 +543,13 @@ def linear(Lt_min, Lt_max, mu, x_f, avg, x_gw, x_gb, *args):
 	"""
 	return Lt_min + 2 * mu * (x_f - x_gw) / (x_gb - x_gw)
 
-def bilinear(Lt_min, Lt_max, mu, x_f, avg, x_gw, x_gb, *args):
+def bilinear(Lt_min, Lt_max, mu, x_f, avg, x_gw, x_gb, **args):
 	r"""Bilinear calculation of age of individual.
 
 	Args:
 		Lt_min (int): Minimal life time.
 		Lt_max (int): Maximal life time.
-		mu (float): TODO
+		mu (float): Median of life time.
 		x_f (float): Individual function/fitness value.
 		avg (float): Average fitness/function value.
 		x_gw (float): Global worst fitness/function value.
@@ -575,10 +602,10 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 
 	Attributes:
 		Name (List[str]): list of strings representing algorithm names.
-		Lt_min (int): minimal age of individual.
-		Lt_max (int): maximal age of individual.
-		delta_np (float): TODO
-		omega (float): TODO
+		Lt_min (int): Minimal age of individual.
+		Lt_max (int): Maximal age of individual.
+		delta_np (float): Proportion of how many individuals shall die.
+		omega (float): Acceptance rate for individuals to die.
 		mu (int): Mean of individual max and min age.
 		age (Callable[[int, int, float, float, float, float, float], int]): Function for calculation of age for individual.
 
@@ -588,15 +615,27 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 	Name = ['AgingNpDifferentialEvolution', 'ANpDE']
 
 	@staticmethod
+	def algorithmInfo():
+		r"""Get basic information of algorithm.
+
+		Returns:
+			str: Basic information of algorithm.
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+		"""
+		return r"""No info"""
+
+	@staticmethod
 	def typeParameters():
 		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
 			Dict[str, Callable]:
-				* Lt_min (Callable[[int], bool]): TODO
-				* Lt_max (Callable[[int], bool]): TODO
-				* delta_np (Callable[[float], bool]): TODO
-				* omega (Callable[[float], bool]): TODO
+				* Lt_min (Callable[[int], bool])
+				* Lt_max (Callable[[int], bool])
+				* delta_np (Callable[[float], bool])
+				* omega (Callable[[float], bool])
 
 		See Also:
 			* :func:`NiaPy.algorithms.basic.DifferentialEvolution.typeParameters`
@@ -606,7 +645,7 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 			'Lt_min': lambda x: isinstance(x, int) and x >= 0,
 			'Lt_max': lambda x: isinstance(x, int) and x >= 0,
 			'delta_np': lambda x: isinstance(x, float) and 0 <= x <= 1,
-			'omega': lambda x: isinstance(x, float) and x >= 0
+			'omega': lambda x: isinstance(x, float) and 1 >= x >= 0
 		})
 		return r
 
@@ -614,7 +653,7 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 		r"""Set the algorithm parameters.
 
 		Arguments:
-			Lt_min (Optional[int]): Minimu life time.
+			Lt_min (Optional[int]): Minimum life time.
 			Lt_max (Optional[int]): Maximum life time.
 			age (Optional[Callable[[int, int, float, float, float, float, float], int]]): Function for calculation of age for individual.
 
@@ -630,23 +669,23 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 		r"""Calculate how many individuals are going to dye.
 
 		Args:
-			t (float): TODO
+			t (int): Number of generations made by the algorithm.
 
 		Returns:
-			float: Number of individuals to dye.
+			int: Number of individuals to dye.
 		"""
-		return self.delta_np * abs(cos(t))
+		return int(self.delta_np * abs(sin(t)))
 
 	def deltaPopC(self, t):
 		r"""Calculate how many individuals are going to be created.
 
 		Args:
-			t (float): TODO
+			t (int): Number of generations made by the algorithm.
 
 		Returns:
-			float: TODO
+			int: Number of individuals to be born.
 		"""
-		return self.delta_np * abs(cos(t + 78))
+		return int(self.delta_np * abs(cos(t)))
 
 	def aging(self, task, pop):
 		r"""Apply aging to individuals.
@@ -663,9 +702,9 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 		avg, npop = mean(fpop), []
 		for x in pop:
 			x.age += 1
-			Lt = round(self.age(self.Lt_min, self.Lt_max, self.mu, x.f, avg, x_w, x_b))
+			Lt = round(self.age(Lt_min=self.Lt_min, Lt_max=self.Lt_max, mu=self.mu, x_f=x.f, avg=avg, x_gw=x_w.f, x_gb=x_b.f))
 			if x.age <= Lt: npop.append(x)
-		if len(npop) != 0: npop = objects2array([self.itype(task=task, rnd=self.Rand, e=True) for _i in range(len(pop))])
+		if len(npop) == 0: npop = objects2array([self.itype(task=task, rnd=self.Rand, e=True) for _ in range(self.NP)])
 		return npop
 
 	def popIncrement(self, pop, task):
@@ -700,29 +739,36 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 			elif self.rand() >= self.omega: npop.append(e)
 		return objects2array(npop)
 
-	def runIteration(self, task, pop, fpop, xb, fxb, **dparams):
-		r"""Core function of AgingNpDifferentialEvolution algorithm.
+	def selection(self, pop, npop, task, **kwargs):
+		r"""Select operator for individuals with aging.
 
 		Args:
-			task (Task): Optimization task
-			pop (numpy.ndarray[Individual]): Current population
-			fpop (numpy.ndarray[float]): Current populations function/fitness values
-			xb (Individual): Current best individual
-			fxb (float): Current best individual function/fitness value
-			**dparams (Dict[str, Any]): Additional parameters
+			pop (numpy.ndarray[Individual]): Current population.
+			npop (numpy.ndarray[Individual]): New population.
+			task (Task): Optimization task.
+			**kwargs (Dict[str, Any]): Additional arguments.
 
 		Returns:
-			Tuple[numpy.ndarray[Individual], numpy.ndarray[float], Dict[str, Any]]:
-				1. New population
-				2. New population fitness/function values
-				3. Additional parameters
+			numpy.ndarray[Individual]: New population of individuals.
 		"""
-		npop = self.evolve(pop, xb, task)
-		npop = self.selection(pop, npop)
+		npop = DifferentialEvolution.selection(self, pop, npop)
 		npop = append(npop, self.popIncrement(pop, task))
 		pop = self.aging(task, npop)
-		if len(pop) > self.NP: pop = self.popDecrement(pop, task)
-		return pop, [x.f for x in pop], {}
+		return pop
+
+	def postSelection(self, pop, task, xb=None, **kwargs):
+		r"""Post selection operator.
+
+		Args:
+			pop (numpy.ndarray): Current population.
+			task (Task): Optimization task.
+			xb (Individual): Global best individual.
+			**kwargs (Dict[str, Any]): Additional arguments.
+
+		Returns:
+			numpy.ndarray[Individual]: New population.
+		"""
+		return self.popDecrement(pop, task) if len(pop) > self.NP else pop
 
 def multiMutations(pop, i, xb, F, CR, rnd, task, itype, strategies, **kwargs):
 	r"""Mutation strategy that takes more than one strategy and applys them to individual.
@@ -771,19 +817,30 @@ class MultiStrategyDifferentialEvolution(DifferentialEvolution):
 	Name = ['MultiStrategyDifferentialEvolution', 'MsDE']
 
 	@staticmethod
+	def algorithmInfo():
+		r"""Get basic information of algorithm.
+
+		Returns:
+			str: Basic information of algorithm.
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+		"""
+		return r"""No info"""
+
+	@staticmethod
 	def typeParameters():
 		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
-			Dict[str, Callable]:
-				* CrossMutt (Callable[[Callable, bool]): TODO
+			Dict[str, Callable]: Testing functions for parameters.
 
 		See Also:
 			* :func:`NiaPy.algorithms.basic.DifferentialEvolution.typeParameters`
 		"""
 		r = DifferentialEvolution.typeParameters()
 		r.pop('CrossMutt', None)
-		# TODO add constraint method for selection of stratgy methos
+		r.update({'strategies': lambda x: callable(x)})
 		return r
 
 	def setParameters(self, strategies=(CrossRand1, CrossBest1, CrossCurr2Best1, CrossRand2), **ukwargs):
@@ -838,6 +895,18 @@ class DynNpMultiStrategyDifferentialEvolution(MultiStrategyDifferentialEvolution
 	Name = ['DynNpMultiStrategyDifferentialEvolution', 'dynNpMsDE']
 
 	@staticmethod
+	def algorithmInfo():
+		r"""Get basic information of algorithm.
+
+		Returns:
+			str: Basic information of algorithm.
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+		"""
+		return r"""No info"""
+
+	@staticmethod
 	def typeParameters():
 		r"""Get dictionary with functions for checking values of parameters.
 
@@ -866,6 +935,9 @@ class DynNpMultiStrategyDifferentialEvolution(MultiStrategyDifferentialEvolution
 		"""
 		DynNpDifferentialEvolution.setParameters(self, **ukwargs)
 		MultiStrategyDifferentialEvolution.setParameters(self, **ukwargs)
+
+	def evolve(self, pop, xb, task, **kwargs):
+		return MultiStrategyDifferentialEvolution.evolve(self, pop, xb, task, **kwargs)
 
 	def postSelection(self, pop, task, **kwargs):
 		r"""Post selection operator.
@@ -908,20 +980,31 @@ class AgingNpMultiMutationDifferentialEvolution(AgingNpDifferentialEvolution, Mu
 	Name = ['AgingNpMultiMutationDifferentialEvolution', 'ANpMSDE']
 
 	@staticmethod
+	def algorithmInfo():
+		r"""Get basic information of algorithm.
+
+		Returns:
+			str: Basic information of algorithm.
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+		"""
+		return r"""No info"""
+
+	@staticmethod
 	def typeParameters():
 		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
-			Dict[str, Callable]:
-				* rp (Callable[[Union[float, int]], bool]): TODO
-				* pmax (Callable[[int], bool]): TODO
+			Dict[str, Callable]: Mappings form parameter names to test functions.
 
 		See Also:
 			* :func:`NiaPy.algorithms.basic.MultiStrategyDifferentialEvolution.typeParameters`
+			* :func:`NiaPy.algorithms.basic.AgingNpDifferentialEvolution.typeParameters`
 		"""
-		r = AgingNpDifferentialEvolution.typeParameters()
-		# TODO add other parameters to data check list
-		return r
+		d = AgingNpDifferentialEvolution.typeParameters()
+		d.update(MultiStrategyDifferentialEvolution.typeParameters())
+		return d
 
 	def setParameters(self, **ukwargs):
 		r"""Set core parameter arguments.
