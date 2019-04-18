@@ -1,9 +1,34 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, line-too-long
-from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
+
+from numpy import random as rnd, array_equal
+
 from NiaPy.algorithms.modified import DifferentialEvolutionMTS, DifferentialEvolutionMTSv1, MultiStrategyDifferentialEvolutionMTS, MultiStrategyDifferentialEvolutionMTSv1, DynNpMultiStrategyDifferentialEvolutionMTS, DynNpMultiStrategyDifferentialEvolutionMTSv1, DynNpDifferentialEvolutionMTS, DynNpDifferentialEvolutionMTSv1
+from NiaPy.algorithms.modified.hde import MtsIndividual
+
+from NiaPy.util import StoppingTask
+
+from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark, IndividualTestCase
+
+class MtsIndividualTestCase(IndividualTestCase):
+	def setUp(self):
+		IndividualTestCase.setUp(self)
+		self.s1, self.s2, self.s3, self.s4 = MtsIndividual(x=self.x, task=self.task, e=False), MtsIndividual(task=self.task, SR=self.task.bRange / 10, rand=rnd), MtsIndividual(task=self.task), MtsIndividual()
+
+	def test_default_values_init_ok(self):
+		self.assertIsNone(self.s4.SR)
+		self.assertTrue(array_equal(self.task.bRange / 10, self.s2.SR))
+		self.assertTrue(array_equal(self.task.bRange / 4, self.s1.SR))
+		self.assertEqual(0, self.s1.grade)
+		self.assertTrue(self.s1.enable)
+		self.assertFalse(self.s1.improved)
 
 class DEMTSTestCase(AlgorithmTestCase):
+	def test_type_parameters_fine(self):
+		d = DifferentialEvolutionMTS.typeParameters()
+		self.assertIsNotNone(d.get('NoEnabled', None))
+		self.assertIsNotNone(d.get('NoLs', None))
+		self.assertIsNotNone(d.get('NoLsTests', None))
+
 	def test_custom_works_fine(self):
 		ca_custom = DifferentialEvolutionMTS(NP=40, seed=self.seed)
 		ca_customc = DifferentialEvolutionMTS(NP=40, seed=self.seed)
