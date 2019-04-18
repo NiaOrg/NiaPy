@@ -121,7 +121,7 @@ class MonarchButterflyOptimization(Algorithm):
         return delataX
 
     def migrationOperator(self, D, NP1, NP2, Butterflies):
-        r"""The migration operator.
+        r"""Apply the migration operator.
 
         Args:
             D (int): Number of dimensions.
@@ -146,7 +146,7 @@ class MonarchButterflyOptimization(Algorithm):
         return Butterflies
 
     def adjustingOperator(self, t, max_t, D, NP1, NP2, Butterflies, best):
-        r"""The adjusting operator.
+        r"""Apply the adjusting operator.
 
         Args:
             t (int): Current generation.
@@ -236,7 +236,7 @@ class MonarchButterflyOptimization(Algorithm):
                     * dx (float): A small value used in local seeding stage.
         """
         tmpElite = np.copy(Butterflies[:self.keep])
-        max_t = task.nGEN if isinf(task.nGEN) == False else task.nFES / self.NP
+        max_t = task.nGEN if isinf(task.nGEN) is False else task.nFES / self.NP
 
         Butterflies = apply_along_axis(self.repair, 1, self.migrationOperator(
             task.D, self.NP1, self.NP2, Butterflies), task.Lower, task.Upper)
