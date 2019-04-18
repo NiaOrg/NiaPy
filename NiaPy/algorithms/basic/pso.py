@@ -38,17 +38,29 @@ class ParticleSwarmAlgorithm(Algorithm):
 	Name = ['ParticleSwarmAlgorithm', 'PSO']
 
 	@staticmethod
+	def algorithmInfo():
+		r"""Get basic information of algorithm.
+
+		Returns:
+			str: Basic information of algorithm.
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+		"""
+		return r"""Kennedy, J. and Eberhart, R. "Particle Swarm Optimization". Proceedings of IEEE International Conference on Neural Networks. IV. pp. 1942--1948, 1995."""
+
+	@staticmethod
 	def typeParameters():
-		r"""TODO.
+		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
 			Dict[str, Callable]:
-				* NP (Callable[[int], bool]): TODO
-				* C1 (Callable[[Union[int, float]], bool]): TODO
-				* C2 (Callable[[Union[int, float]], bool]): TODO
-				* w (Callable[[float], bool]): TODO
-				* vMin (Callable[[Union[int, float]], bool]): TODO
-				* vMax (Callable[[Union[int, float], bool]): TODO
+				* NP (Callable[[int], bool])
+				* C1 (Callable[[Union[int, float]], bool])
+				* C2 (Callable[[Union[int, float]], bool])
+				* w (Callable[[float], bool])
+				* vMin (Callable[[Union[int, float]], bool])
+				* vMax (Callable[[Union[int, float], bool])
 		"""
 		return {
 			'NP': lambda x: isinstance(x, int) and x > 0,
@@ -74,7 +86,7 @@ class ParticleSwarmAlgorithm(Algorithm):
 		See Also:
 			* :func:`NiaPy.algorithms.Algorithm.setParameters`
 		"""
-		Algorithm.setParameters(self, NP=NP)
+		Algorithm.setParameters(self, NP=NP, **ukwargs)
 		self.C1, self.C2, self.w, self.vMin, self.vMax = C1, C2, w, vMin, vMax
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
@@ -167,10 +179,9 @@ class ParticleSwarmAlgorithm(Algorithm):
 		"""
 		V = w * V + self.C1 * self.rand([self.NP, task.D]) * (popb - pop) + self.C2 * self.rand([self.NP, task.D]) * (xb - pop)
 		V = apply_along_axis(self.repair, 1, V, vMin, vMax)
-		pop += V
-		pop = apply_along_axis(task.repair, 1, pop, rnd=self.Rand)
+		pop = apply_along_axis(task.repair, 1, pop + V, rnd=self.Rand)
 		fpop = apply_along_axis(task.eval, 1, pop)
-		ip_pb = where(fpop > fpopb)
+		ip_pb = where(fpop < fpopb)
 		popb[ip_pb], fpopb[ip_pb] = pop[ip_pb], fpop[ip_pb]
 		return pop, fpop, {'popb': popb, 'fpopb': fpopb, 'w': w, 'vMin': vMin, 'vMax': vMax, 'V': V}
 

@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, logging-not-lazy, attribute-defined-outside-init, line-too-long, arguments-differ, singleton-comparison, bad-continuation, dangerous-default-value, too-many-ancestors
+
 import logging
 
 from numpy import argsort
@@ -42,7 +42,7 @@ class MtsIndividual(Individual):
 		Individual.__init__(self, task=task, **kwargs)
 		self.grade, self.enable, self.improved = grade, enable, improved
 		if SR is None and task is not None: self.SR = task.bRange / 4
-		elif SR is not None: self.SR = SR
+		else: self.SR = SR
 
 class DifferentialEvolutionMTS(DifferentialEvolution, MultipleTrajectorySearch):
 	r"""Implementation of Differential Evolution with MTS local searches.
@@ -104,7 +104,7 @@ class DifferentialEvolutionMTS(DifferentialEvolution, MultipleTrajectorySearch):
 		See Also:
 			:func:`NiaPy.algorithms.basic.de.DifferentialEvolution.setParameters`
 		"""
-		DifferentialEvolution.setParameters(self, itype=MtsIndividual, **ukwargs)
+		DifferentialEvolution.setParameters(self, itype=ukwargs.pop('itype', MtsIndividual), **ukwargs)
 		self.LSs, self.NoLsTests, self.NoLs, self.NoEnabled = LSs, NoLsTests, NoLs, NoEnabled
 		self.BONUS1, self.BONUS2 = BONUS1, BONUS2
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
@@ -276,7 +276,7 @@ class MultiStrategyDifferentialEvolutionMTS(DifferentialEvolutionMTS, MultiStrat
 			* :func:`NiaPy.algorithms.basic.MultiStrategyDifferentialEvolution.setParameters`
 		"""
 		DifferentialEvolutionMTS.setParameters(self, **ukwargs)
-		MultiStrategyDifferentialEvolution.setParameters(self, itype=MtsIndividual, **ukwargs)
+		MultiStrategyDifferentialEvolution.setParameters(self, itype=ukwargs.pop('itype', MtsIndividual), **ukwargs)
 
 	def evolve(self, pop, xb, task, **kwargs):
 		r"""Evolve population.

@@ -80,6 +80,15 @@ class Algorithm:
 	itype = None
 
 	@staticmethod
+	def algorithmInfo():
+		r"""Get information of algorithm.
+
+		Returns:
+			str: Basic information of the algorithm.
+		"""
+		return r"""Base class for implementing algorithms."""
+
+	@staticmethod
 	def typeParameters():
 		r"""Return functions for checking values of parameters.
 
@@ -120,12 +129,12 @@ class Algorithm:
 		r"""Get random distribution of shape D in range from 0 to 1.
 
 		Args:
-			D (numpy.ndarray[int]): Shape of returned random distribution.
+			D (Union[numpy.ndarray[int], int, List[int], Tuple[int]]): Shape of returned random distribution.
 
 		Returns:
 			Union[numpy.ndarray[float], float]: Random number or numbers :math:`\in [0, 1]`.
 		"""
-		if isinstance(D, (ndarray, list)): return self.Rand.rand(*D)
+		if isinstance(D, (ndarray, list, tuple)): return self.Rand.rand(*D)
 		elif D > 1: return self.Rand.rand(D)
 		else: return self.Rand.rand()
 
@@ -203,7 +212,7 @@ class Algorithm:
 		ib = argmin(X_f)
 		if isinstance(X_f, (float, int)) and xb_f >= X_f: return X, X_f
 		elif isinstance(X_f, (ndarray, list)) and xb_f >= X_f[ib]: return X[ib], X_f[ib]
-		else: return xb.copy(), xb_f
+		else: return xb, xb_f
 
 	def initPopulation(self, task):
 		r"""Initialize starting population of optimization algorithm.

@@ -15,7 +15,7 @@ from NiaPy.algorithms import basic as balgos, modified as malgos, other as oalgo
 
 __all__ = ['algorithms', 'benchmarks', 'util']
 __project__ = 'NiaPy'
-__version__ = '2.0.0rc2'
+__version__ = '2.0.0rc4'
 
 VERSION = "{0} v{1}".format(__project__, __version__)
 
@@ -94,7 +94,7 @@ NiaPyAlgos += [
 	oalgos.HillClimbAlgorithm,
 	oalgos.SimulatedAnnealing,
 	oalgos.AnarchicSocietyOptimization,
-	oalgos.TabuSearch
+	# oalgos.TabuSearch
 ]
 
 class Runner:
@@ -104,15 +104,15 @@ class Runner:
 	It also support exporting results in various formats (e.g. LaTeX, Excel, JSON)
 
 	Attributes:
-      D (int): Dimension of problem
+		D (int): Dimension of problem
 		NP (int): Population size
 		nFES (int): Number of function evaluations
 		nRuns (int): Number of repetitions
 		useAlgorithms (list of Algorithm): List of algorithms to run
 		useBenchmarks (list of Benchmarks): List of benchmarks to run
-		results (): TODO
+		results (List[str]): Results of runs.
 	"""
-	def __init__(self, D=10, nFES=1000000, nGEN=100000, useAlgorithms='ArtificialBeeColonyAlgorithm', useBenchmarks='Ackley', **kwargs):
+	def __init__(self, D=10, nFES=1000000, nGEN=100000, nRuns=1, useAlgorithms='ArtificialBeeColonyAlgorithm', useBenchmarks='Ackley', **kwargs):
 		r"""Initialize Runner.
 
 		**__init__(self, D, NP, nFES, nRuns, useAlgorithms, useBenchmarks, ...)**
@@ -122,8 +122,8 @@ class Runner:
 			NP (int): Population size
 			nFES (int): Number of function evaluations
 			nRuns (int): Number of repetitions
-			useAlgorithms (Union[List[str], str]): List of algorithms to run
-			useBenchmarks (Union[List[str], str]): List of benchmarks to run
+			useAlgorithms (Union[str, Algorithm, List[Union[Algorithm, str]]): List of algorithms to run
+			useBenchmarks (Union[str, Benchmarks, List[Union[str, Benchmarks]]): List of benchmarks to run
 
 		Keyword Args:
 			A (float): Laudness
@@ -193,7 +193,7 @@ class Runner:
 		Returns:
 			Task: Optimization task to use.
 		"""
-		return util.Task(D=self.D, nFES=self.nFES, nGEN=self.nGEN, optType=util.OptimizationType.MINIMIZATION, benchmark=name)
+		return util.StoppingTask(D=self.D, nFES=self.nFES, nGEN=self.nGEN, optType=util.OptimizationType.MINIMIZATION, benchmark=name)
 
 	def algorithmFactory(self, name):
 		r"""TODO.

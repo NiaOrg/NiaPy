@@ -30,10 +30,10 @@ class CuckooSearch(Algorithm):
 		Yang, Xin-She, and Suash Deb. "Cuckoo search via Lévy flights." Nature & Biologically Inspired Computing, 2009. NaBIC 2009. World Congress on. IEEE, 2009.
 
 	Attributes:
-		Name (List[str]): lsit of strings representing algorithm names
-		N (int): populatio size
-		pa (float): probability
-		alpha (float): TODO
+		Name (List[str]): list of strings representing algorithm names.
+		N (int): Population size.
+		pa (float): Proportion of worst nests.
+		alpha (float): Scale factor for levy flight.
 
 	See Also:
 		* :class:`NiaPy.algorithms.Algorithm`
@@ -68,7 +68,8 @@ class CuckooSearch(Algorithm):
 		See Also:
 			* :func:`NiaPy.algorithms.Algorithm.setParameters`
 		"""
-		Algorithm.setParameters(self, NP=N)
+		ukwargs.pop('NP', None)
+		Algorithm.setParameters(self, NP=N, **ukwargs)
 		self.pa, self.alpha = pa, alpha
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 

@@ -2,8 +2,6 @@
 # pylint: disable=mixed-indentation, multiple-statements, logging-not-lazy, attribute-defined-outside-init, arguments-differ, bad-continuation, unused-argument
 import logging
 
-from numpy import full
-
 from NiaPy.algorithms.basic import BatAlgorithm
 from NiaPy.algorithms.basic.de import CrossBest1
 
@@ -42,17 +40,31 @@ class HybridBatAlgorithm(BatAlgorithm):
 	Name = ['HybridBatAlgorithm', 'HBA']
 
 	@staticmethod
+	def algorithmInfo():
+		r"""Get basic information about the algorithm.
+
+		Returns:
+			str: Basic information.
+		"""
+		return r"""Fister Jr., Iztok and Fister, Dusan and Yang, Xin-She. "A Hybrid Bat Algorithm". Elektrotehniski vestnik, 2013. 1-7."""
+
+	@staticmethod
 	def typeParameters():
 		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
 			Dict[str, Callable]:
-				* F (Callable[[Union[int, float]], bool]): TODO
-				* CR (Callable[[float], bool]): TODO
+				* F (Callable[[Union[int, float]], bool]): Scaling factor.
+				* CR (Callable[[float], bool]): Crossover probability.
+
+		See Also:
+			* :func:`NiaPy.algorithms.basic.BatAlgorithm.typeParameters`
 		"""
 		d = BatAlgorithm.typeParameters()
-		d['F'] = lambda x: isinstance(x, (int, float)) and x > 0
-		d['CR'] = lambda x: isinstance(x, float) and 0 <= x <= 1
+		d.update({
+			'F': lambda x: isinstance(x, (int, float)) and x > 0,
+			'CR': lambda x: isinstance(x, float) and 0 <= x <= 1
+		})
 		return d
 
 	def setParameters(self, F=0.78, CR=0.35, CrossMutt=CrossBest1, **ukwargs):
@@ -69,49 +81,19 @@ class HybridBatAlgorithm(BatAlgorithm):
 		self.F, self.CR, self.CrossMutt = F, CR, CrossMutt
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def initPopulation(self, task):
-		r"""Initialize starting population.
+	def generateBest(self, best, task, i, Sol, **kwargs):
+		r"""Generate new solution based on global best known solution.
 
 		Args:
+			best (numpy.ndarray): Global best individual.
 			task (Task): Optimization task.
+			i (int): Index of current individual.
+			Sol (numpy.ndarray): Current best population.
+			**kwargs (Dict[str, Any]):
 
 		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
-				1. Initialized population.
-				2. Initialized populations fitness/function values.
-				3. Additional arguments:
-					* v (numpy.ndarray[float]): TODO
+			numpy.ndarray: New solution based on global best individual.
 		"""
-		Sol, Fitness, _ = BatAlgorithm.initPopulation(self, task)
-		v = full([self.NP, task.D], 0.0)
-		return Sol, Fitness, {'v': v}
-
-	def runIteration(self, task, Sol, Fitness, best, f_min, v, **dparams):
-		r"""Core funciton of HybridBatAlgorithm algorithm.
-
-		Args:
-			task (Task): Optimization task.
-			Sol (numpy.ndarray): Current population.
-			Fitness (numpy.ndarray[float]: Current populations function/fitness values.
-			best:
-			f_min (float):
-			v:
-			**dparams (Dict[str, Any]): Additional arguments.
-
-		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
-				1. New population.
-				2. New populations function/fitness values.
-				3. Additional arguments:
-					* v (numpy.ndarray[float]): TODO
-		"""
-		Q = self.Qmin + (self.Qmax - self.Qmin) * self.uniform(0, 1, self.NP)
-		for i in range(self.NP):
-			v[i] = v[i] + (Sol[i] - best) * Q[i]
-			S = task.repair(Sol[i] + v[i], rnd=self.Rand)
-			if self.rand() > self.r: S = task.repair(self.CrossMutt(Sol, i, best, self.F, self.CR, rnd=self.Rand), rnd=self.Rand)
-			f_new = task.eval(S)
-			if f_new <= Fitness[i] and self.rand() < self.A: Sol[i], Fitness[i] = S, f_new
-		return Sol, Fitness, {'v': v}
+		return task.repair(self.CrossMutt(Sol, i, best, self.F, self.CR, rnd=self.Rand), rnd=self.Rand)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

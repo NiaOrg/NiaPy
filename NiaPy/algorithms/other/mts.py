@@ -296,9 +296,17 @@ class MultipleTrajectorySearch(Algorithm):
 	"""
 	Name = ['MultipleTrajectorySearch', 'MTS']
 
-	def __init__(self, **kwargs):
-		Algorithm.__init__(self, **kwargs)
-		self.LSs = [MTS_LS1, MTS_LS2, MTS_LS3]
+	@staticmethod
+	def algorithmInfo():
+		r"""Get basic information of algorithm.
+
+		Returns:
+			str: Basic information of algorithm.
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+		"""
+		return r"""Lin-Yu Tseng and Chun Chen, "Multiple trajectory search for Large Scale Global Optimization," 2008 IEEE Congress on Evolutionary Computation (IEEE World Congress on Computational Intelligence), Hong Kong, 2008, pp. 3052-3059. doi: 10.1109/CEC.2008.4631210"""
 
 	@staticmethod
 	def typeParameters():
@@ -306,10 +314,10 @@ class MultipleTrajectorySearch(Algorithm):
 
 		Returns:
 			Dict[str, Callable]:
-				* NoLsTests (Callable[[int], bool]): TODO
-				* NoLs (Callable[[int], bool]): TODO
-				* NoLsBest (Callable[[int], bool]): TODO
-				* NoEnabled (Callable[[int], bool]): TODO
+				* NoLsTests (Callable[[int], bool])
+				* NoLs (Callable[[int], bool])
+				* NoLsBest (Callable[[int], bool])
+				* NoEnabled (Callable[[int], bool])
 		"""
 		return {
 			'NoLsTests': lambda x: isinstance(x, int) and x >= 0,
@@ -336,6 +344,7 @@ class MultipleTrajectorySearch(Algorithm):
 		"""
 		Algorithm.setParameters(self, NP=M)
 		self.NoLsTests, self.NoLs, self.NoLsBest, self.NoEnabled, self.BONUS1, self.BONUS2 = NoLsTests, NoLs, NoLsBest, NoEnabled, BONUS1, BONUS2
+		self.LSs = LSs
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def GradingRun(self, x, x_f, xb, xb_f, improve, SR, task):
@@ -450,7 +459,7 @@ class MultipleTrajectorySearch(Algorithm):
 			enable[i], grades[i] = False, 0
 			X[i], X_f[i], xb, xb_f, k = self.GradingRun(X[i], X_f[i], xb, xb_f, improve[i], SR[i], task)
 			X[i], X_f[i], xb, xb_f, improve[i], SR[i], grades[i] = self.LsRun(k, X[i], X_f[i], xb, xb_f, improve[i], SR[i], grades[i], task)
-		for _ in range(self.NoLsBest): _, _, xb, xb_f, _, _, _ = MTS_LS1(xb, xb_f, xb, xb_f, False, task.bRange, task, rnd=self.Rand)
+		for _ in range(self.NoLsBest): _, _, xb, xb_f, _, _, _ = MTS_LS1(xb, xb_f, xb, xb_f, False, task.bRange.copy() / 10, task, rnd=self.Rand)
 		enable[argsort(grades)[:self.NoEnabled]] = True
 		return X, X_f, {'enable': enable, 'improve': improve, 'SR': SR, 'grades': grades}
 
@@ -482,6 +491,18 @@ class MultipleTrajectorySearchV1(MultipleTrajectorySearch):
 		* :class:`NiaPy.algorithms.other.MultipleTrajectorySearch``
 	"""
 	Name = ['MultipleTrajectorySearchV1', 'MTSv1']
+
+	@staticmethod
+	def algorithmInfo():
+		r"""Get basic information of algorithm.
+
+		Returns:
+			str: Basic information of algorithm.
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+		"""
+		return r"""Tseng, Lin-Yu, and Chun Chen. "Multiple trajectory search for unconstrained/constrained multi-objective optimization." Evolutionary Computation, 2009. CEC'09. IEEE Congress on. IEEE, 2009."""
 
 	def setParameters(self, **kwargs):
 		r"""Set core parameters of MultipleTrajectorySearchV1 algorithm.

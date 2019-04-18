@@ -26,9 +26,9 @@ class MkeSolution(Individual):
 		MIT
 
 	Attributes:
-		x_pb (array of (float or int)): Persional best position of Monkey patricle
-		f_pb (float): Personal best fitness/function value
-		MonkeyKing (bool): Boolean value indicating if particle is Monkey King paticle
+		x_pb (array of (float or int)): Personal best position of Monkey particle.
+		f_pb (float): Personal best fitness/function value.
+		MonkeyKing (bool): Boolean value indicating if particle is Monkey King particle.
 
 	See Also:
 		* :class:`NiaPy.algorithms.Individual`
@@ -84,15 +84,27 @@ class MonkeyKingEvolutionV1(Algorithm):
 	Name = ['MonkeyKingEvolutionV1', 'MKEv1']
 
 	@staticmethod
+	def algorithmInfo():
+		r"""Get basic information of algorithm.
+
+		Returns:
+			str: Basic information.
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+		"""
+		return r"""Zhenyu Meng, Jeng-Shyang Pan, Monkey King Evolution: A new memetic evolutionary algorithm and its application in vehicle fuel consumption optimization, Knowledge-Based Systems, Volume 97, 2016, Pages 144-157, ISSN 0950-7051, https://doi.org/10.1016/j.knosys.2016.01.009."""
+
+	@staticmethod
 	def typeParameters():
-		r"""TODO.
+		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
 			Dict[str, Callable]:
-				* F (func): TODO
-				* R (func): TODO
-				* C (func): TODO
-				* FC (func): TODO
+				* F (Callable[[int], bool])
+				* R (Callable[[Union[int, float]], bool])
+				* C (Callable[[Union[int, float]], bool])
+				* FC (Callable[[Union[int, float]], bool])
 		"""
 		d = Algorithm.typeParameters()
 		d.update({
@@ -118,7 +130,7 @@ class MonkeyKingEvolutionV1(Algorithm):
 		See Also:
 			* :func:`NiaPy.algorithms.algorithm.Algorithm.setParameters`
 		"""
-		Algorithm.setParameters(self, NP=NP, itype=ukwargs.pop('itype', MkeSolution), InitPopFunc=ukwargs.pop('InitPopFunc', defaultIndividualInit))
+		Algorithm.setParameters(self, NP=NP, itype=ukwargs.pop('itype', MkeSolution), InitPopFunc=ukwargs.pop('InitPopFunc', defaultIndividualInit), **ukwargs)
 		self.F, self.R, self.C, self.FC = F, R, C, FC
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
@@ -265,6 +277,18 @@ class MonkeyKingEvolutionV2(MonkeyKingEvolutionV1):
 	"""
 	Name = ['MonkeyKingEvolutionV2', 'MKEv2']
 
+	@staticmethod
+	def algorithmInfo():
+		r"""Get basic information of algorithm.
+
+		Returns:
+			str: Basic information.
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+		"""
+		return r"""Zhenyu Meng, Jeng-Shyang Pan, Monkey King Evolution: A new memetic evolutionary algorithm and its application in vehicle fuel consumption optimization, Knowledge-Based Systems, Volume 97, 2016, Pages 144-157, ISSN 0950-7051, https://doi.org/10.1016/j.knosys.2016.01.009."""
+
 	def moveMK(self, x, dx, task):
 		r"""Move Monkey King particle.
 
@@ -344,6 +368,18 @@ class MonkeyKingEvolutionV3(MonkeyKingEvolutionV1):
 	"""
 	Name = ['MonkeyKingEvolutionV3', 'MKEv3']
 
+	@staticmethod
+	def algorithmInfo():
+		r"""Get basic information of algorithm.
+
+		Returns:
+			str: Basic information.
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+		"""
+		return r"""Zhenyu Meng, Jeng-Shyang Pan, Monkey King Evolution: A new memetic evolutionary algorithm and its application in vehicle fuel consumption optimization, Knowledge-Based Systems, Volume 97, 2016, Pages 144-157, ISSN 0950-7051, https://doi.org/10.1016/j.knosys.2016.01.009."""
+
 	def setParameters(self, **ukwargs):
 		r"""Set core parameters of MonkeyKingEvolutionV3 algorithm.
 
@@ -353,7 +389,7 @@ class MonkeyKingEvolutionV3(MonkeyKingEvolutionV1):
 		See Also:
 			* :func:`NiaPy.algorithms.basic.MonkeyKingEvolutionV1.setParameters`
 		"""
-		MonkeyKingEvolutionV1.setParameters(self, itype=None, InitPopFunc=defaultNumPyInit)
+		MonkeyKingEvolutionV1.setParameters(self, itype=ukwargs.pop('itype', None), InitPopFunc=ukwargs.pop('InitPopFunc', defaultNumPyInit), **ukwargs)
 
 	def neg(self, x):
 		r"""Transform function.

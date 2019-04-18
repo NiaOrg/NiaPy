@@ -11,7 +11,7 @@ class BasicStatistics:
     Name = ['BasicStatistics']
 
     def __init__(self, array):
-        self.array = array
+        self.array = array if isinstance(array, np.ndarray) else np.asarray(array)
 
     def min_value(self):
         return self.array.min()

@@ -3,7 +3,7 @@
 import logging
 
 from NiaPy.algorithms.algorithm import Individual
-from NiaPy.algorithms.basic.de import DifferentialEvolution, CrossBest1, CrossRand1, CrossCurr2Best1, CrossBest2, CrossCurr2Rand1, proportional, multiMutations
+from NiaPy.algorithms.basic.de import DifferentialEvolution, CrossBest1, CrossRand1, CrossCurr2Best1, CrossBest2, CrossCurr2Rand1, proportional, multiMutations, DynNpDifferentialEvolution
 from NiaPy.util.utility import objects2array
 
 logging.basicConfig()
@@ -77,10 +77,10 @@ class SelfAdaptiveDifferentialEvolution(DifferentialEvolution):
 
 		Returns:
 			Dict[str, Callable]:
-				* F_l (Callable[[Union[float, int]], bool]): TODO
-				* F_u (Callable[[Union[float, int]], bool]): TODO
-				* Tao1 (Callable[[Union[float, int]], bool]): TODo
-				* Tao2 (Callable[[Union[float, int]], bool]): TODO
+				* F_l (Callable[[Union[float, int]], bool])
+				* F_u (Callable[[Union[float, int]], bool])
+				* Tao1 (Callable[[Union[float, int]], bool])
+				* Tao2 (Callable[[Union[float, int]], bool])
 
 		See Also:
 			* :func:`NiaPy.algorithms.basic.DifferentialEvolution.typeParameters`
@@ -121,19 +121,21 @@ class SelfAdaptiveDifferentialEvolution(DifferentialEvolution):
 		cr = self.rand() if self.rand() < self.Tao2 else x.CR
 		return self.itype(x=x.x, F=f, CR=cr, e=False)
 
-	def evolve(self, pop, xb, task):
+	def evolve(self, pop, xb, task, **ukwargs):
 		r"""Evolve current population.
 
 		Args:
 			pop (numpy.ndarray[Individual]): Current population.
 			xb (Individual): Global best individual.
 			task (Task): Optimization task.
+			ukwargs (Dict[str, Any]): Additional arguments.
 
 		Returns:
 			numpy.ndarray: New population.
 		"""
 		npop = objects2array([self.AdaptiveGen(e) for e in pop])
 		for i, e in enumerate(npop): npop[i].x = self.CrossMutt(npop, i, xb, e.F, e.CR, rnd=self.Rand)
+		for e in npop: e.evaluate(task, rnd=self.rand)
 		return npop
 
 class AgingIndividualJDE(SolutionjDE):
@@ -198,15 +200,15 @@ class AgingSelfAdaptiveDifferentialEvolution(SelfAdaptiveDifferentialEvolution):
 			age (Optional[Callable[[], int]]): Function for calculating age of individual.
 			**ukwargs (Dict[str, Any]): Additional arguments.
 
-      See Also:
-      	* :func:`SelfAdaptiveDifferentialEvolution.setParameters`
+		See Also:
+			* :func:`SelfAdaptiveDifferentialEvolution.setParameters`
 		"""
 		SelfAdaptiveDifferentialEvolution.setParameters(self, **ukwargs)
 		self.LT_min, self.LT_max, self.age = LT_min, LT_max, age
 		self.mu = abs(self.LT_max - self.LT_min) / 2
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-class DynNpSelfAdaptiveDifferentialEvolutionAlgorithm(SelfAdaptiveDifferentialEvolution):
+class DynNpSelfAdaptiveDifferentialEvolutionAlgorithm(SelfAdaptiveDifferentialEvolution, DynNpDifferentialEvolution):
 	r"""Implementation of Dynamic population size self-adaptive differential evolution algorithm.
 
 	Algorithm:
@@ -229,13 +231,28 @@ class DynNpSelfAdaptiveDifferentialEvolutionAlgorithm(SelfAdaptiveDifferentialEv
 
 	Attributes:
 		Name (List[str]): List of strings representing algorithm name.
-		rp (int): Small non-negative number which is added to value of genp.
+		rp (int): Small non-negative number which is added to value of generations.
 		pmax (int): Number of population reductions.
+
+	See Also:
+		* :class:`NiaPy.algorithms.modified.SelfAdaptiveDifferentialEvolution`
 	"""
 	Name = ['DynNpSelfAdaptiveDifferentialEvolutionAlgorithm', 'dynNPjDE']
 
 	@staticmethod
+	def algorithmInfo():
+		return r"""Brest, Janez, and Mirjam Sepesy Maučec. Population size reduction for the differential evolution algorithm. Applied Intelligence 29.3 (2008): 228-247."""
+
+	@staticmethod
 	def typeParameters():
+		r"""Get basic information of algorithm.
+
+		Returns:
+			str: Basic information of algorithm.
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+		"""
 		d = SelfAdaptiveDifferentialEvolution.typeParameters()
 		d['rp'] = lambda x: isinstance(x, (float, int)) and x > 0
 		d['pmax'] = lambda x: isinstance(x, int) and x > 0
@@ -251,11 +268,11 @@ class DynNpSelfAdaptiveDifferentialEvolutionAlgorithm(SelfAdaptiveDifferentialEv
 		See Also:
 			* :func:`NiaPy.algorithms.modified.SelfAdaptiveDifferentialEvolution.setParameters`
 		"""
+		DynNpDifferentialEvolution.setParameters(self, rp=rp, pmax=pmax, **ukwargs)
 		SelfAdaptiveDifferentialEvolution.setParameters(self, **ukwargs)
-		self.rp, self.pmax = rp, pmax
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def postSelection(self, pop, task):
+	def postSelection(self, pop, task, **kwargs):
 		r"""Post selection operator.
 
 		Args:
@@ -265,9 +282,7 @@ class DynNpSelfAdaptiveDifferentialEvolutionAlgorithm(SelfAdaptiveDifferentialEv
 		Returns:
 			numpy.ndarray[Individual]: New population.
 		"""
-		Gr, nNP = task.nFES // (self.pmax * len(pop)) + self.rp, len(pop) // 2
-		if task.Iters == Gr and len(pop) > 3: return objects2array([pop[i] if pop[i].f < pop[i + nNP].f else pop[i + nNP] for i in range(nNP)])
-		return pop
+		return DynNpDifferentialEvolution.postSelection(self, pop, task, **kwargs)
 
 class MultiStrategySelfAdaptiveDifferentialEvolution(SelfAdaptiveDifferentialEvolution):
 	r"""Implementation of self-adaptive differential evolution algorithm with multiple mutation strategys.
@@ -286,6 +301,9 @@ class MultiStrategySelfAdaptiveDifferentialEvolution(SelfAdaptiveDifferentialEvo
 
 	Attributes:
 		Name (List[str]): List of strings representing algorithm name
+
+	See Also:
+		* :class:`NiaPy.algorithms.modified.SelfAdaptiveDifferentialEvolution`
 	"""
 	Name = ['MultiStrategySelfAdaptiveDifferentialEvolution', 'MsjDE']
 
@@ -296,10 +314,10 @@ class MultiStrategySelfAdaptiveDifferentialEvolution(SelfAdaptiveDifferentialEvo
 			strategys (Optional[Iterable[Callable]]): Mutations strategies to use in algorithm.
 			**kwargs:
 
-      See Also:
-      	* :func:`NiaPy.algorithms.modified.SelfAdaptiveDifferentialEvolution.setParameters`
+		See Also:
+			* :func:`NiaPy.algorithms.modified.SelfAdaptiveDifferentialEvolution.setParameters`
 		"""
-		SelfAdaptiveDifferentialEvolution.setParameters(self, CrossMutt=multiMutations, **kwargs)
+		SelfAdaptiveDifferentialEvolution.setParameters(self, CrossMutt=kwargs.pop('CrossMutt', multiMutations), **kwargs)
 		self.strategies = strategies
 
 	def evolve(self, pop, xb, task, **kwargs):
@@ -315,7 +333,6 @@ class MultiStrategySelfAdaptiveDifferentialEvolution(SelfAdaptiveDifferentialEvo
 			numpy.ndarray[Individual]: New population of individuals.
 		"""
 		return objects2array([self.CrossMutt(pop, i, xb, self.F, self.CR, self.Rand, task, self.itype, self.strategies) for i in range(len(pop))])
-
 
 class DynNpMultiStrategySelfAdaptiveDifferentialEvolution(MultiStrategySelfAdaptiveDifferentialEvolution, DynNpSelfAdaptiveDifferentialEvolutionAlgorithm):
 	r"""Implementation of Dynamic population size self-adaptive differential evolution algorithm with multiple mutation strategies.
@@ -334,6 +351,10 @@ class DynNpMultiStrategySelfAdaptiveDifferentialEvolution(MultiStrategySelfAdapt
 
 	Attributes:
 		Name (List[str]): List of strings representing algorithm name.
+
+	See Also:
+		* :class:`NiaPy.algorithms.modified.MultiStrategySelfAdaptiveDifferentialEvolution`
+		* :class:`NiaPy.algorithms.modified.DynNpSelfAdaptiveDifferentialEvolutionAlgorithm`
 	"""
 	Name = ['DynNpMultiStrategySelfAdaptiveDifferentialEvolution', 'dynNpMsjDE']
 
@@ -345,13 +366,13 @@ class DynNpMultiStrategySelfAdaptiveDifferentialEvolution(MultiStrategySelfAdapt
 			rp (Optional[int]):
 			**kwargs (Dict[str, Any]):
 
-      See Also:
-      	* :func:`NiaPy.algorithms.modified.MultiStrategySelfAdaptiveDifferentialEvolution.setParameters`
+		See Also:
+			* :func:`NiaPy.algorithms.modified.MultiStrategySelfAdaptiveDifferentialEvolution.setParameters`
 		"""
 		MultiStrategySelfAdaptiveDifferentialEvolution.setParameters(self, **kwargs)
 		self.pmax, self.rp = pmax, rp
 
-	def postSelection(self, pop, task):
+	def postSelection(self, pop, task, **kwargs):
 		return DynNpSelfAdaptiveDifferentialEvolutionAlgorithm.postSelection(self, pop, task)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

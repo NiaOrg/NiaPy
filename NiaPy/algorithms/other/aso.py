@@ -20,11 +20,11 @@ def Elitism(x, xpb, xb, xr, MP_c, MP_s, MP_p, F, CR, task, rnd=rand):
 		xpb (numpy.ndarray): individuals best position.
 		xb (numpy.ndarray): current best position.
 		xr (numpy.ndarray): random individual.
-		mp_c (float): Fickleness index value.
-		mp_s (float): External irregularity index value.
-		mp_p (float): Internal irregularity index value.
-		f (float): scale factor.
-		cr (float): crossover factor.
+		MP_c (float): Fickleness index value.
+		MP_s (float): External irregularity index value.
+		MP_p (float): Internal irregularity index value.
+		F (float): scale factor.
+		CR (float): crossover factor.
 		task (Task): optimization task.
 		rnd (mtrand.randomstate): random number generator.
 
@@ -46,11 +46,11 @@ def Sequential(x, xpb, xb, xr, MP_c, MP_s, MP_p, F, CR, task, rnd=rand):
 		xpb (numpy.ndarray): individuals best position.
 		xb (numpy.ndarray): current best position.
 		xr (numpy.ndarray): random individual.
-		mp_c (float): Fickleness index value.
-		mp_s (float): External irregularity index value.
-		mp_p (float): Internal irregularity index value.
-		f (float): scale factor.
-		cr (float): crossover factor.
+		MP_c (float): Fickleness index value.
+		MP_s (float): External irregularity index value.
+		MP_p (float): Internal irregularity index value.
+		F (float): scale factor.
+		CR (float): crossover factor.
 		task (Task): optimization task.
 		rnd (mtrand.randomstate): random number generator.
 
@@ -70,11 +70,11 @@ def Crossover(x, xpb, xb, xr, MP_c, MP_s, MP_p, F, CR, task, rnd=rand):
 		xpb (numpy.ndarray): individuals best position.
 		xb (numpy.ndarray): current best position.
 		xr (numpy.ndarray): random individual.
-		mp_c (float): Fickleness index value.
-		mp_s (float): External irregularity index value.
-		mp_p (float): Internal irregularity index value.
-		f (float): scale factor.
-		cr (float): crossover factor.
+		MP_c (float): Fickleness index value.
+		MP_s (float): External irregularity index value.
+		MP_p (float): Internal irregularity index value.
+		F (float): scale factor.
+		CR (float): crossover factor.
 		task (Task): optimization task.
 		rnd (mtrand.randomstate): random number generator.
 
@@ -88,11 +88,11 @@ def Crossover(x, xpb, xb, xr, MP_c, MP_s, MP_p, F, CR, task, rnd=rand):
 	return x, task.eval(x)
 
 def MP_C(x, F, CR, MP, rnd=rand):
-	r"""TODO.
+	r"""Get bew position based on fickleness.
 
 	Args:
 		x (numpy.ndarray): Current individuals position.
-		F (float):
+		F (float): Scale factor.
 		CR (float): Crossover probability.
 		MP (float): Fickleness index value
 		rnd (mtrand.RandomState): Random number generator
@@ -107,7 +107,7 @@ def MP_C(x, F, CR, MP, rnd=rand):
 	return asarray([x[i] + F * rnd.normal(0, 1) if rnd.rand() < CR else x[i] for i in range(len(x))])
 
 def MP_S(x, xr, xb, CR, MP, rnd=rand):
-	r"""TODO.
+	r"""Get new position based on external irregularity.
 
 	Args:
 		x (numpy.ndarray): Current individuals position.
@@ -132,7 +132,7 @@ def MP_S(x, xr, xb, CR, MP, rnd=rand):
 	return asarray([xr[i] if rnd.rand() < CR else x[i] for i in range(len(x))])
 
 def MP_P(x, xpb, CR, MP, rnd=rand):
-	r"""TODO.
+	r"""Get new position based on internal irregularity.
 
 	Args:
 		x (numpy.ndarray): Current individuals position.
@@ -386,7 +386,7 @@ class AnarchicSocietyOptimization(Algorithm):
 					* rs (float): Distance of search space.
 		"""
 		Xin = [self.getBestNeighbors(i, X, X_f, rs) for i in range(len(X))]
-		MP_c, MP_s, MP_p = asarray([self.FI(X_f[i], Xpb_f[i], fxb, alpha[i]) for i in range(len(X))]), asarray([self.EI(X_f[i], Xin[i], gamma[i]) for i in range(len(X))]), asarray([self.II(X_f[i], Xpb_f[i], theta[i]) for i in range(len(X))])
+		MP_c, MP_s, MP_p = asarray([self.FI(X_f[i], Xpb_f[i], fxb, alpha[i]) for i in range(len(X))]), asarray([self.EI(X_f[i], X_f[Xin[i]], gamma[i]) for i in range(len(X))]), asarray([self.II(X_f[i], Xpb_f[i], theta[i]) for i in range(len(X))])
 		Xtmp = asarray([self.Combination(X[i], Xpb[i], xb, X[self.randint(len(X), skip=[i])], MP_c[i], MP_s[i], MP_p[i], self.F, self.CR, task, self.Rand) for i in range(len(X))])
 		X, X_f = asarray([Xtmp[i][0] for i in range(len(X))]), asarray([Xtmp[i][1] for i in range(len(X))])
 		Xpb, Xpb_f = self.uBestAndPBest(X, X_f, Xpb, Xpb_f)

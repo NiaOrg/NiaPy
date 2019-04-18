@@ -1,9 +1,11 @@
 # encoding=utf8
-# pylint: disable=anomalous-backslash-in-string
+
+"""Implementation of Happy Cat benchmark."""
+
 import math
 from NiaPy.benchmarks.benchmark import Benchmark
 
-__all__ = ['HappyCat']
+__all__ = ["HappyCat"]
 
 
 class HappyCat(Benchmark):
@@ -40,22 +42,49 @@ class HappyCat(Benchmark):
                 $-100 \leq x_i \leq 100$
 
     Reference: http://bee22.com/manual/tf_images/Liang%20CEC2014.pdf &
-    Beyer, H. G., & Finck, S. (2012). HappyCat - A Simple Function Class Where Well-Known Direct Search Algorithms Do Fail.
-    In International Conference on Parallel Problem Solving from Nature (pp. 367-376). Springer, Berlin, Heidelberg.
+        Beyer, H. G., & Finck, S. (2012). HappyCat - A Simple Function Class Where Well-Known Direct Search Algorithms Do Fail.
+        In International Conference on Parallel Problem Solving from Nature (pp. 367-376). Springer, Berlin, Heidelberg.
+
     """
-    Name = ['HappyCat']
+
+    Name = ["HappyCat"]
 
     def __init__(self, Lower=-100.0, Upper=100.0):
+        """Initialize Happy Cat benchmark.
+
+        Args:
+            Lower (Optional[float]): Lower bound of problem.
+            Upper (Optional[float]): Upper bound of problem.
+
+        See Also:
+            :func:`NiaPy.benchmarks.Benchmark.__init__`
+
+        """
+
         Benchmark.__init__(self, Lower, Upper)
 
     @staticmethod
     def latex_code():
+        """Return the latex code of the problem.
+
+        Returns:
+            [str] -- latex code
+
+        """
+
         return r'''$f(\mathbf{x}) = {\left|\sum_{i = 1}^D {x_i}^2 -
                 D \right|}^{1/4} + (0.5 \sum_{i = 1}^D {x_i}^2 +
                 \sum_{i = 1}^D x_i) / D + 0.5$'''
 
     @classmethod
     def function(cls):
+        """Return benchmark evaluation function.
+
+        Returns:
+            [fun] -- Evaluation function.
+
+        """
+
         def evaluate(D, sol):
 
             val1 = 0.0

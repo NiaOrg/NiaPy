@@ -70,7 +70,7 @@ class GravitationalSearchAlgorithm(Algorithm):
 		See Also:
 			* :func:`NiaPy.algorithms.algorithm.Algorithm.setParameters`
 		"""
-		Algorithm.setParameters(self, NP=NP)
+		Algorithm.setParameters(self, NP=NP, **ukwargs)
 		self.G_0, self.epsilon = G_0, epsilon
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
