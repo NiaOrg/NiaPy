@@ -94,13 +94,11 @@ class MsjDETestCase(AlgorithmTestCase):
 		AlgorithmTestCase.algorithm_run_test(self, jde_griewank, jde_griewankc)
 
 class dynNpMsjDETestCase(AlgorithmTestCase):
-	@skip("Not working")
 	def test_custom_works_fine(self):
 		jde_custom = DynNpMultiStrategySelfAdaptiveDifferentialEvolution(NP=40, F=0.5, F_l=0.0, F_u=2.0, Tao1=0.9, CR=0.1, Tao2=0.45, seed=self.seed)
 		jde_customc = DynNpMultiStrategySelfAdaptiveDifferentialEvolution(NP=40, F=0.5, F_l=0.0, F_u=2.0, Tao1=0.9, CR=0.1, Tao2=0.45, seed=self.seed)
 		AlgorithmTestCase.algorithm_run_test(self, jde_custom, jde_customc, MyBenchmark())
 
-	@skip("Not working")
 	def test_griewank_works_fine(self):
 		jde_griewank = DynNpMultiStrategySelfAdaptiveDifferentialEvolution(NP=40, F=0.5, F_l=0.0, F_u=2.0, Tao1=0.9, CR=0.1, Tao2=0.45, seed=self.seed)
 		jde_griewankc = MultiStrategySelfAdaptiveDifferentialEvolution(NP=40, F=0.5, F_l=0.0, F_u=2.0, Tao1=0.9, CR=0.1, Tao2=0.45, seed=self.seed)
