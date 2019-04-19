@@ -67,7 +67,7 @@ class HybridBatAlgorithm(BatAlgorithm):
 		})
 		return d
 
-	def setParameters(self, F=0.78, CR=0.35, CrossMutt=CrossBest1, **ukwargs):
+	def setParameters(self, F=0.50, CR=0.90, CrossMutt=CrossBest1, **ukwargs):
 		r"""Set core parameters of HybridBatAlgorithm algorithm.
 
 		Arguments:
@@ -81,8 +81,8 @@ class HybridBatAlgorithm(BatAlgorithm):
 		self.F, self.CR, self.CrossMutt = F, CR, CrossMutt
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def generateBest(self, best, task, i, Sol, **kwargs):
-		r"""Generate new solution based on global best known solution.
+	def localSearch(self, best, task, i, Sol, **kwargs):
+		r"""Improve the best solution.
 
 		Args:
 			best (numpy.ndarray): Global best individual.

@@ -102,8 +102,8 @@ class BatAlgorithm(Algorithm):
 		d.update({'S': S, 'Q': Q, 'v': v})
 		return Sol, Fitness, d
 
-	def generateBest(self, best, task, **kwargs):
-		r"""Generate new solution based on global best known solution.
+	def localSearch(self, best, task, **kwargs):
+		r"""Improve the best solution according to the Yang (2010).
 
 		Args:
 			best (numpy.ndarray): Global best individual.
@@ -142,7 +142,9 @@ class BatAlgorithm(Algorithm):
 			Q[i] = self.Qmin + (self.Qmax - self.Qmin) * self.uniform(0, 1)
 			v[i] += (Sol[i] - best) * Q[i]
 			S[i] = task.repair(Sol[i] + v[i])
-			if self.rand() > self.r: S[i] = self.generateBest(best=best, task=task, i=i, Sol=Sol)
+
+			if self.rand() > self.r: S[i] = self.localSearch(best=best, task=task, i=i, Sol=Sol)
+
 			Fnew = task.eval(S[i])
 			if (Fnew <= Fitness[i]) and (self.rand() < self.A): Sol[i], Fitness[i] = S[i], Fnew
 			if Fnew <= f_min: best, f_min = S[i], Fnew
