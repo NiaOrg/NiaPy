@@ -4,10 +4,10 @@ from NiaPy.algorithms.modified import HybridBatAlgorithm
 
 class HBATestCase(AlgorithmTestCase):
 	def test_algorithm_info(self):
-		self.assertIsNotNone(HybridBatAlgorithm.algorithm_info())
+		self.assertIsNotNone(HybridBatAlgorithm.algorithmInfo())
 
 	def test_type_parameters(self):
-		d = HybridBatAlgorithm.parameter_types()
+		d = HybridBatAlgorithm.typeParameters()
 		self.assertIsNotNone(d.pop('NP', None))
 		self.assertIsNotNone(d.pop('F', None))
 		self.assertIsNotNone(d.pop('CR', None))

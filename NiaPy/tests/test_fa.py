@@ -6,7 +6,7 @@ from NiaPy.algorithms.basic import FireflyAlgorithm
 class FATestCase(AlgorithmTestCase):
 
     def test_type_parameters(self):
-        d = FireflyAlgorithm.parameter_types()
+        d = FireflyAlgorithm.typeParameters()
         self.assertTrue(d['alpha'](10))
         self.assertFalse(d['alpha'](-10))
         self.assertTrue(d['betamin'](10))

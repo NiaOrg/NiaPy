@@ -6,7 +6,7 @@ from NiaPy.algorithms.other.sa import coolLinear
 
 class SATestCase(AlgorithmTestCase):
 	def test_type_parameters(self):
-		d = SimulatedAnnealing.parameter_types()
+		d = SimulatedAnnealing.typeParameters()
 		self.assertTrue(d['delta'](1))
 		self.assertFalse(d['delta'](0))
 		self.assertFalse(d['delta'](-1))

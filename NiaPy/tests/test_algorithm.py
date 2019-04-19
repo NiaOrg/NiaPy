@@ -54,8 +54,8 @@ class IndividualTestCase(TestCase):
 		self.s1, self.s2, self.s3 = Individual(x=self.x, e=False), Individual(task=self.task, rand=rnd), Individual(task=self.task)
 
 	def test_generateSolutin_fine(self):
-		self.assertTrue(self.task.is_feasible(self.s2))
-		self.assertTrue(self.task.is_feasible(self.s3))
+		self.assertTrue(self.task.isFeasible(self.s2))
+		self.assertTrue(self.task.isFeasible(self.s3))
 
 	def test_evaluate_fine(self):
 		self.s1.evaluate(self.task)
@@ -63,7 +63,7 @@ class IndividualTestCase(TestCase):
 
 	def test_repair_fine(self):
 		s = Individual(x=full(self.D, 100))
-		self.assertFalse(self.task.is_feasible(s.x))
+		self.assertFalse(self.task.isFeasible(s.x))
 
 	def test_eq_fine(self):
 		self.assertFalse(self.s1 == self.s2)
@@ -140,18 +140,18 @@ class AlgorithBaseTestCase(TestCase):
 		r"""Test if custome generation initialization works ok."""
 		a = Algorithm(NP=10, InitPopFunc=init_pop_numpy)
 		t = Task(D=20, benchmark=MyBenchmark())
-		self.assertTrue(array_equal(full((10, t.D), 0.0), a.init_population(t)[0]))
+		self.assertTrue(array_equal(full((10, t.D), 0.0), a.initPopulation(t)[0]))
 
 	def test_init_population_individual_fine(self):
 		r"""Test if custome generation initialization works ok."""
 		a = Algorithm(NP=10, InitPopFunc=init_pop_individual, itype=Individual)
 		t = Task(D=20, benchmark=MyBenchmark())
 		i = Individual(x=full(t.D, 0.0), task=t)
-		pop, fpop, d = a.init_population(t)
+		pop, fpop, d = a.initPopulation(t)
 		for e in pop: self.assertEqual(i, e)
 
 	def test_setParameters(self):
-		self.a.set_parameters(t=None, a=20)
+		self.a.setParameters(t=None, a=20)
 		self.assertRaises(AttributeError, lambda: self.assertEqual(self.a.a, None))
 
 	def test_randint_fine(self):
@@ -223,7 +223,7 @@ class TestingTask(StoppingTask, TestCase):
 	"""
 	def eval(self, A):
 		r"""Check if is algorithm trying to evaluate solution out of bounds."""
-		self.assertTrue(self.isFeasible(A), 'Solution %s is not in feasible space!!!' % A)
+		self.assertTrue(self.is_feasible(A), 'Solution %s is not in feasible space!!!' % A)
 		return StoppingTask.eval(self, A)
 
 class AlgorithmTestCase(TestCase):
@@ -248,7 +248,7 @@ class AlgorithmTestCase(TestCase):
 		self.D, self.nGEN, self.nFES, self.seed = 40, 1000, 1000, 1
 
 	def setUpTasks(self, bech='griewank', nFES=None, nGEN=None):
-		taskOne, taskTwo = TestingTask(D=self.D, nFES=self.nFES if nFES is None else nFES, nGEN=self.nGEN if nGEN is None else nGEN, benchmark=bech), TestingTask(D=self.D, nFES=self.nFES, nGEN=self.nGEN, benchmark=bech)
+		taskOne, taskTwo = TestingTask(dim=self.D, nFES=self.nFES if nFES is None else nFES, nGEN=self.nGEN if nGEN is None else nGEN, benchmark=bech), TestingTask(dim=self.D, nFES=self.nFES, nGEN=self.nGEN, benchmark=bech)
 		return taskOne, taskTwo
 
 	def algorithm_run_test(self, a, b, benc='griewank', nFES=None, nGEN=None):
@@ -270,9 +270,9 @@ class AlgorithmTestCase(TestCase):
 		logger.info('%s -> %s' % (y[0], y[1]))
 		self.assertTrue(array_equal(x[0], y[0]), 'Results can not be reproduced, check usages of random number generator')
 		self.assertEqual(x[1], y[1], 'Results can not be reproduced or bad function value')
-		self.assertTrue(self.nFES >= tOne.Evals)
-		self.assertEqual(tOne.Evals, tTwo.Evals)
-		self.assertTrue(self.nGEN >= tOne.Iters)
-		self.assertEqual(tOne.Iters, tTwo.Iters)
+		self.assertTrue(self.nFES >= tOne.no_eval)
+		self.assertEqual(tOne.no_eval, tTwo.no_eval)
+		self.assertTrue(self.nGEN >= tOne.no_iter)
+		self.assertEqual(tOne.no_iter, tTwo.no_iter)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

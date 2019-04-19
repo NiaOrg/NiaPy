@@ -25,7 +25,7 @@ class DETestCase(TestCase):
             optType=OptimizationType.MINIMIZATION,
             benchmark=Sphere())
         algo = DifferentialEvolution(NP=40, CR=0.9, F=0.5)
-        algo.run_task(task)
+        algo.runTask(task)
         evals = task.evals()
         self.assertEqual(1000, evals)
 
@@ -36,7 +36,7 @@ class DETestCase(TestCase):
             optType=OptimizationType.MINIMIZATION,
             benchmark=Sphere())
         algo = DifferentialEvolution(NP=40, CR=0.9, F=0.5)
-        algo.run_task(task)
+        algo.runTask(task)
         iters = task.iters()
         self.assertEqual(1000, iters)
 
@@ -59,7 +59,7 @@ class BATestCase(TestCase):
             optType=OptimizationType.MINIMIZATION,
             benchmark=Sphere())
         algo = BatAlgorithm(NP=25)
-        algo.run_task(task)
+        algo.runTask(task)
         evals = task.evals()
         self.assertEqual(1000, evals)
 
@@ -70,7 +70,7 @@ class BATestCase(TestCase):
             optType=OptimizationType.MINIMIZATION,
             benchmark=Sphere())
         algo = BatAlgorithm(NP=25)
-        algo.run_task(task)
+        algo.runTask(task)
         iters = task.iters()
         self.assertEqual(1000, iters)
 
@@ -82,7 +82,7 @@ class BATestCase(TestCase):
             optType=OptimizationType.MINIMIZATION,
             benchmark=Sphere())
         algo = BatAlgorithm(NP=10)
-        algo.run_task(task)
+        algo.runTask(task)
         evals = task.evals()
         self.assertEqual(10000, evals)
 
@@ -95,7 +95,7 @@ class FATestCase(TestCase):
             optType=OptimizationType.MINIMIZATION,
             benchmark=Sphere())
         algo = FireflyAlgorithm(NP=25)
-        algo.run_task(task)
+        algo.runTask(task)
         evals = task.evals()
         self.assertEqual(1000, evals)
 
@@ -106,6 +106,6 @@ class FATestCase(TestCase):
             optType=OptimizationType.MINIMIZATION,
             benchmark=Sphere())
         algo = FireflyAlgorithm(NP=25)
-        algo.run_task(task)
+        algo.runTask(task)
         iters = task.iters()
         self.assertEqual(1000, iters)

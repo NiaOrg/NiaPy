@@ -16,10 +16,10 @@ class HCTestCase(AlgorithmTestCase):
 		* :class:`NiaPy.algorithms.other.HillClimbAlgorithm`
 	"""
 	def test_algorithm_info_fine(self):
-		self.assertIsNotNone(HillClimbAlgorithm.algorithm_info())
+		self.assertIsNotNone(HillClimbAlgorithm.algorithmInfo())
 
 	def test_type_parameters_fine(self):
-		d = HillClimbAlgorithm.parameter_types()
+		d = HillClimbAlgorithm.typeParameters()
 		self.assertIsNotNone(d.get('delta', None))
 
 	def test_custom_works_fine(self):

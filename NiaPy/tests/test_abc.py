@@ -5,7 +5,7 @@ from NiaPy.algorithms.basic import ArtificialBeeColonyAlgorithm
 
 class ABCTestCase(AlgorithmTestCase):
 	def test_type_parameters(self):
-		d = ArtificialBeeColonyAlgorithm.parameter_types()
+		d = ArtificialBeeColonyAlgorithm.typeParameters()
 		self.assertEqual(len(d), 2)
 		self.assertTrue(d['NP'](10))
 		self.assertFalse(d['NP'](0))

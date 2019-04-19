@@ -71,14 +71,15 @@ class Task(Utility):
 		if self.benchmark is not None: self.Fun = self.benchmark.function() if self.benchmark is not None else None
 		# set lower limits
 		if lower is not None: self._lower = fullArray(lower, self._dim)
-		elif lower is None and benchmark is not None: self._lower = fullArray(self.benchmark.Lower, self._dim)
+		elif lower is None and benchmark is not None: self._lower = fullArray(self.benchmark.lower, self._dim)
 		else: self._lower = fullArray(0, self._dim)
 		# set upper limits
 		if upper is not None: self._upper = fullArray(upper, self._dim)
-		elif upper is None and benchmark is not None: self._upper = fullArray(self.benchmark.Upper, self._dim)
+		elif upper is None and benchmark is not None: self._upper = fullArray(self.benchmark.upper, self._dim)
 		else: self._upper = fullArray(0, self._dim)
 		# set repair function
 		self.frepair = frepair
+		print (self.Fun)
 
 	@property
 	def dim(self):

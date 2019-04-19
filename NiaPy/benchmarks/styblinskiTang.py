@@ -9,89 +9,89 @@ __all__ = ["StyblinskiTang"]
 
 
 class StyblinskiTang(Benchmark):
-    r"""Implementation of Styblinski-Tang functions.
+	r"""Implementation of Styblinski-Tang functions.
 
-    Date: 2018
+	Date: 2018
 
-    Authors: Lucija Brezočnik
+	Authors: Lucija Brezočnik
 
-    License: MIT
+	License: MIT
 
-    Function: **Styblinski-Tang function**
+	Function: **Styblinski-Tang function**
 
-        :math:`f(\mathbf{x}) = \frac{1}{2} \sum_{i=1}^D \left(
-        x_i^4 - 16x_i^2 + 5x_i \right)`
+		 :math:`f(\mathbf{x}) = \frac{1}{2} \sum_{i=1}^D \left(
+		 x_i^4 - 16x_i^2 + 5x_i \right)`
 
-        **Input domain:**
-        The function can be defined on any input domain but it is usually
-        evaluated on the hypercube :math:`x_i ∈ [-5, 5]`, for all :math:`i = 1, 2,..., D`.
+		 **Input domain:**
+		 The function can be defined on any input domain but it is usually
+		 evaluated on the hypercube :math:`x_i ∈ [-5, 5]`, for all :math:`i = 1, 2,..., D`.
 
-        **Global minimum:** :math:`f(x^*) = -78.332`, at :math:`x^* = (-2.903534,...,-2.903534)`
+		 **Global minimum:** :math:`f(x^*) = -78.332`, at :math:`x^* = (-2.903534,...,-2.903534)`
 
-    LaTeX formats:
-        Inline:
-                $f(\mathbf{x}) = \frac{1}{2} \sum_{i=1}^D \left(
-                x_i^4 - 16x_i^2 + 5x_i \right) $
+	LaTeX formats:
+		 Inline:
+					$f(\mathbf{x}) = \frac{1}{2} \sum_{i=1}^D \left(
+					x_i^4 - 16x_i^2 + 5x_i \right) $
 
-        Equation:
-                \begin{equation}f(\mathbf{x}) =
-                \frac{1}{2} \sum_{i=1}^D \left( x_i^4 - 16x_i^2 + 5x_i \right) \end{equation}
+		 Equation:
+					\begin{equation}f(\mathbf{x}) =
+					\frac{1}{2} \sum_{i=1}^D \left( x_i^4 - 16x_i^2 + 5x_i \right) \end{equation}
 
-        Domain:
-                $-5 \leq x_i \leq 5$
+		 Domain:
+					$-5 \leq x_i \leq 5$
 
-    Reference paper:
-        Jamil, M., and Yang, X. S. (2013).
-        A literature survey of benchmark functions for global optimisation problems.
-        International Journal of Mathematical Modelling and Numerical Optimisation,
-        4(2), 150-194.
+	Reference paper:
+		 Jamil, M., and Yang, X. S. (2013).
+		 A literature survey of benchmark functions for global optimisation problems.
+		 International Journal of Mathematical Modelling and Numerical Optimisation,
+		 4(2), 150-194.
 
-    """
+	"""
 
-    name = ["StyblinskiTang"]
+	name = ["StyblinskiTang"]
 
-    def __init__(self, lower=-5.0, upper=5.0):
-		 r"""Initialize Styblinski Tang benchmark.
+	def __init__(self, lower=-5.0, upper=5.0):
+		r"""Initialize Styblinski Tang benchmark.
 
-		 Args:
-			  lower (Optional[float]): lower bound of problem.
-			  upper (Optional[float]): upper bound of problem.
+		Args:
+			 lower (Optional[float]): lower bound of problem.
+			 upper (Optional[float]): upper bound of problem.
 
-		 See Also:
-			  :func:`NiaPy.benchmarks.Benchmark.__init__`
+		See Also:
+			 :func:`NiaPy.benchmarks.Benchmark.__init__`
 
-		 """
+		"""
 
-        Benchmark.__init__(self, lower, Upper)
+		Benchmark.__init__(self, lower, upper)
 
-    @staticmethod
-    def latex_code():
-        """Return the latex code of the problem.
+	@staticmethod
+	def latex_code():
+		"""Return the latex code of the problem.
 
-        Returns:
-            [str] -- latex code.
+		Returns:
+			 [str] -- latex code.
 
-        """
+		"""
 
-        return r"""$f(\mathbf{x}) = \frac{1}{2} \sum_{i=1}^D \left(
+		return r"""$f(\mathbf{x}) = \frac{1}{2} \sum_{i=1}^D \left(
                 x_i^4 - 16x_i^2 + 5x_i \right) $"""
 
-    @classmethod
-    def function(cls):
-        """Return benchmark evaluation function.
+	@classmethod
+	def function(cls):
+		"""Return benchmark evaluation function.
 
-        Returns:
-            [fun] -- Evaluation function.
+		Returns:
+			 [fun] -- Evaluation function.
 
-        """
+		"""
 
-        def evaluate(D, sol):
+		def evaluate(D, sol):
 
-            val = 0.0
+			val = 0.0
 
-            for i in range(D):
-                val += (math.pow(sol[i], 4) - 16.0 * math.pow(sol[i], 2) + 5.0 * sol[i])
+			for i in range(D):
+				val += (math.pow(sol[i], 4) - 16.0 * math.pow(sol[i], 2) + 5.0 * sol[i])
 
-            return 0.5 * val
+			return 0.5 * val
 
-        return evaluate
+		return evaluate

@@ -5,7 +5,7 @@ from NiaPy.algorithms.basic import HarmonySearch, HarmonySearchV1
 
 class HSTestCase(AlgorithmTestCase):
 	def test_type_parameters(self):
-		d = HarmonySearch.parameter_types()
+		d = HarmonySearch.typeParameters()
 		self.assertIsNotNone(d.get('HMS', None))
 		self.assertTrue(d['HMS'](10))
 		self.assertFalse(d['HMS'](-10))
@@ -37,7 +37,7 @@ class HSTestCase(AlgorithmTestCase):
 
 class HSv1TestCase(AlgorithmTestCase):
 	def test_type_parameters(self):
-		d = HarmonySearchV1.parameter_types()
+		d = HarmonySearchV1.typeParameters()
 		self.assertIsNone(d.get('b_range', None))
 		self.assertIsNotNone(d.get('dw_min', None))
 		self.assertIsNotNone(d.get('dw_max', None))

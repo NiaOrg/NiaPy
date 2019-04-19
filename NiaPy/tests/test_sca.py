@@ -5,10 +5,10 @@ from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
 
 class SCATestCase(AlgorithmTestCase):
 	def test_algorithm_info_fine(self):
-		self.assertIsNotNone(SineCosineAlgorithm.algorithm_info())
+		self.assertIsNotNone(SineCosineAlgorithm.algorithmInfo())
 
 	def test_type_parameters(self):
-		d = SineCosineAlgorithm.parameter_types()
+		d = SineCosineAlgorithm.typeParameters()
 		self.assertIsNotNone(d.get('NP', None))
 		self.assertIsNotNone(d.get('a', None))
 		self.assertIsNotNone(d.get('Rmin', None))

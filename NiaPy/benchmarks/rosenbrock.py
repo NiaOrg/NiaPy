@@ -9,88 +9,88 @@ __all__ = ["Rosenbrock"]
 
 
 class Rosenbrock(Benchmark):
-    r"""Implementation of Rosenbrock benchmark function.
+	r"""Implementation of Rosenbrock benchmark function.
 
-    Date: 2018
+	Date: 2018
 
-    Authors: Iztok Fister Jr. and Lucija Brezočnik
+	Authors: Iztok Fister Jr. and Lucija Brezočnik
 
-    License: MIT
+	License: MIT
 
-    Function: **Rosenbrock function**
+	Function: **Rosenbrock function**
 
-        :math:`f(\mathbf{x}) = \sum_{i=1}^{D-1} \left (100 (x_{i+1} - x_i^2)^2 + (x_i - 1)^2 \right)`
+		 :math:`f(\mathbf{x}) = \sum_{i=1}^{D-1} \left (100 (x_{i+1} - x_i^2)^2 + (x_i - 1)^2 \right)`
 
-        **Input domain:**
-        The function can be defined on any input domain but it is usually
-        evaluated on the hypercube :math:`x_i ∈ [-30, 30]`, for all :math:`i = 1, 2,..., D`.
+		 **Input domain:**
+		 The function can be defined on any input domain but it is usually
+		 evaluated on the hypercube :math:`x_i ∈ [-30, 30]`, for all :math:`i = 1, 2,..., D`.
 
-        **Global minimum:** :math:`f(x^*) = 0`, at :math:`x^* = (1,...,1)`
+		 **Global minimum:** :math:`f(x^*) = 0`, at :math:`x^* = (1,...,1)`
 
-    LaTeX formats:
-        Inline:
-                $f(\mathbf{x}) = \sum_{i=1}^{D-1} (100 (x_{i+1} - x_i^2)^2 + (x_i - 1)^2)$
+	LaTeX formats:
+		 Inline:
+					$f(\mathbf{x}) = \sum_{i=1}^{D-1} (100 (x_{i+1} - x_i^2)^2 + (x_i - 1)^2)$
 
-        Equation:
-                \begin{equation}
-                f(\mathbf{x}) = \sum_{i=1}^{D-1} (100 (x_{i+1} - x_i^2)^2 + (x_i - 1)^2)
-                \end{equation}
+		 Equation:
+					\begin{equation}
+					f(\mathbf{x}) = \sum_{i=1}^{D-1} (100 (x_{i+1} - x_i^2)^2 + (x_i - 1)^2)
+					\end{equation}
 
-        Domain:
-                $-30 \leq x_i \leq 30$
+		 Domain:
+					$-30 \leq x_i \leq 30$
 
-    Reference paper:
-        Jamil, M., and Yang, X. S. (2013).
-        A literature survey of benchmark functions for global optimisation problems.
-        International Journal of Mathematical Modelling and Numerical Optimisation,
-        4(2), 150-194.
+	Reference paper:
+		 Jamil, M., and Yang, X. S. (2013).
+		 A literature survey of benchmark functions for global optimisation problems.
+		 International Journal of Mathematical Modelling and Numerical Optimisation,
+		 4(2), 150-194.
 
-    """
+	"""
 
-    name = ["Rosenbrock"]
+	name = ["Rosenbrock"]
 
-    def __init__(self, lower=-30.0, upper=30.0):
-		 """Initialize Rosenbrock benchmark.
+	def __init__(self, lower=-30.0, upper=30.0):
+		"""Initialize Rosenbrock benchmark.
 
-		 Args:
-			  lower (Optional[float]): lower bound of problem.
-			  upper (Optional[float]): upper bound of problem.
+		Args:
+			 lower (Optional[float]): lower bound of problem.
+			 upper (Optional[float]): upper bound of problem.
 
-		 See Also:
-			  :func:`NiaPy.benchmarks.Benchmark.__init__`
+		See Also:
+			 :func:`NiaPy.benchmarks.Benchmark.__init__`
 
-		 """
+		"""
 
-        Benchmark.__init__(self, lower, Upper)
+		Benchmark.__init__(self, lower, upper)
 
-    @staticmethod
-    def latex_code():
-        """Return the latex code of the problem.
+	@staticmethod
+	def latex_code():
+		"""Return the latex code of the problem.
 
-        Returns:
-            [str] -- latex code.
+		Returns:
+			 [str] -- latex code.
 
-        """
+		"""
 
-        return r'''$f(\mathbf{x}) = \sum_{i=1}^{D-1} (100 (x_{i+1} - x_i^2)^2 + (x_i - 1)^2)$'''
+		return r'''$f(\mathbf{x}) = \sum_{i=1}^{D-1} (100 (x_{i+1} - x_i^2)^2 + (x_i - 1)^2)$'''
 
-    @classmethod
-    def function(cls):
-        """Return benchmark evaluation function.
+	@classmethod
+	def function(cls):
+		"""Return benchmark evaluation function.
 
-        Returns:
-            [fun] -- Evaluation function.
+		Returns:
+			 [fun] -- Evaluation function.
 
-        """
+		"""
 
-        def evaluate(D, sol):
+		def evaluate(D, sol):
 
-            val = 0.0
+			val = 0.0
 
-            for i in range(D - 1):
-                val += 100.0 * math.pow(sol[i + 1] - math.pow((sol[i]), 2),
-                                        2) + math.pow((sol[i] - 1), 2)
+			for i in range(D - 1):
+				val += 100.0 * math.pow(sol[i + 1] - math.pow((sol[i]), 2),
+												2) + math.pow((sol[i] - 1), 2)
 
-            return val
+			return val
 
-        return evaluate
+		return evaluate

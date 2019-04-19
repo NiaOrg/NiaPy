@@ -8,100 +8,97 @@ __all__ = ["Ackley"]
 
 
 class Ackley(Benchmark):
-    r"""Implementation of Ackley function.
+	r"""Implementation of Ackley function.
 
-    Date: 2018
+	Date: 2018
 
-    Author: Lucija Brezočnik
+	Author: Lucija Brezočnik
 
-    License: MIT
+	License: MIT
 
-    Function: **Ackley function**
+	Function: **Ackley function**
 
-        :math:`f(\mathbf{x}) = -a\;\exp\left(-b \sqrt{\frac{1}{D}\sum_{i=1}^D x_i^2}\right)
-        - \exp\left(\frac{1}{D}\sum_{i=1}^D \cos(c\;x_i)\right) + a + \exp(1)`
+		 :math:`f(\mathbf{x}) = -a\;\exp\left(-b \sqrt{\frac{1}{D}\sum_{i=1}^D x_i^2}\right)
+		 - \exp\left(\frac{1}{D}\sum_{i=1}^D \cos(c\;x_i)\right) + a + \exp(1)`
 
-        **Input domain:**
-        The function can be defined on any input domain but it is usually
-        evaluated on the hypercube :math:`x_i ∈ [-32.768, 32.768]`, for all :math:`i = 1, 2,..., D`.
+		 **Input domain:**
+		 The function can be defined on any input domain but it is usually
+		 evaluated on the hypercube :math:`x_i ∈ [-32.768, 32.768]`, for all :math:`i = 1, 2,..., D`.
 
-        **Global minimum:** :math:`f(\textbf{x}^*) = 0`, at  :math:`x^* = (0,...,0)`
+		 **Global minimum:** :math:`f(\textbf{x}^*) = 0`, at  :math:`x^* = (0,...,0)`
 
-    LaTeX formats:
-        Inline:
-                $f(\mathbf{x}) = -a\;\exp\left(-b \sqrt{\frac{1}{D}
-                \sum_{i=1}^D x_i^2}\right) - \exp\left(\frac{1}{D}
-                \sum_{i=1}^D cos(c\;x_i)\right) + a + \exp(1)$
+	LaTeX formats:
+		 Inline:
+					$f(\mathbf{x}) = -a\;\exp\left(-b \sqrt{\frac{1}{D}
+					\sum_{i=1}^D x_i^2}\right) - \exp\left(\frac{1}{D}
+					\sum_{i=1}^D cos(c\;x_i)\right) + a + \exp(1)$
 
-        Equation:
-                \begin{equation}f(\mathbf{x}) =
-                -a\;\exp\left(-b \sqrt{\frac{1}{D} \sum_{i=1}^D x_i^2}\right) -
-                \exp\left(\frac{1}{D} \sum_{i=1}^D \cos(c\;x_i)\right) +
-                a + \exp(1) \end{equation}
+		 Equation:
+					\begin{equation}f(\mathbf{x}) =
+					-a\;\exp\left(-b \sqrt{\frac{1}{D} \sum_{i=1}^D x_i^2}\right) -
+					\exp\left(\frac{1}{D} \sum_{i=1}^D \cos(c\;x_i)\right) +
+					a + \exp(1) \end{equation}
 
-        Domain:
-                $-32.768 \leq x_i \leq 32.768$
+		 Domain:
+					$-32.768 \leq x_i \leq 32.768$
 
-    Reference: https://www.sfu.ca/~ssurjano/ackley.html
-    """
+	Reference: https://www.sfu.ca/~ssurjano/ackley.html
+	"""
 
-    name = ["Ackley"]
+	name = ["Ackley"]
 
-    def __init__(self, lower=-32.768, upper=32.768):
-        """Initialize Ackley benchmark.
+	def __init__(self, lower=-32.768, upper=32.768):
+		"""Initialize Ackley benchmark.
 
-		  Args:
-				lower (Optional[float]): lower bound of problem.
-				upper (Optional[float]): upper bound of problem.
+		Args:
+			lower (Optional[float]): lower bound of problem.
+			upper (Optional[float]): upper bound of problem.
 
-		  See Also:
-				:func:`NiaPy.benchmarks.Benchmark.__init__`
+		See Also:
+			:func:`NiaPy.benchmarks.Benchmark.__init__`
 
-		  """
+		"""
+		Benchmark.__init__(self, lower, upper)
 
-        Benchmark.__init__(self, lower, Upper)
+	@staticmethod
+	def latex_code():
+		"""Return the latex code of the problem.
 
-    @staticmethod
-    def latex_code():
-        """Return the latex code of the problem.
+		Returns:
+			str: latex code.
 
-        Returns:
-            [str] -- latex code.
+		"""
 
-        """
+		return r"""$f(\mathbf{x}) = -a\;\exp\left(-b \sqrt{\frac{1}{D} \sum_{i=1}^D x_i^2}\right) - \exp\left(\frac{1}{D} \sum_{i=1}^D cos(c\;x_i)\right) + a + \exp(1)$"""
 
-        return r"""$f(\mathbf{x}) = -a\;\exp\left(-b \sqrt{\frac{1}{D}
-                \sum_{i=1}^D x_i^2}\right) - \exp\left(\frac{1}{D}
-                \sum_{i=1}^D cos(c\;x_i)\right) + a + \exp(1)$"""
+	@classmethod
+	def function(cls):
+		"""Return benchmark evaluation function.
 
-    @classmethod
-    def function(cls):
-        """Return benchmark evaluation function.
+		Returns:
+			 [fun] -- Evaluation function.
 
-        Returns:
-            [fun] -- Evaluation function.
+		"""
 
-        """
+		def evaluate(D, sol):
 
-        def evaluate(D, sol):
+			a = 20  # Recommended variable value
+			b = 0.2  # Recommended variable value
+			c = 2 * pi  # Recommended variable value
 
-            a = 20  # Recommended variable value
-            b = 0.2  # Recommended variable value
-            c = 2 * pi  # Recommended variable value
+			val = 0.0
+			val1 = 0.0
+			val2 = 0.0
 
-            val = 0.0
-            val1 = 0.0
-            val2 = 0.0
+			for i in range(D):
+				val1 += sol[i] ** 2
+				val2 += cos(c * sol[i])
 
-            for i in range(D):
-                val1 += sol[i] ** 2
-                val2 += cos(c * sol[i])
+			temp1 = -b * sqrt(val1 / D)
+			temp2 = val2 / D
 
-            temp1 = -b * sqrt(val1 / D)
-            temp2 = val2 / D
+			val = -a * exp(temp1) - exp(temp2) + a + exp(1)
 
-            val = -a * exp(temp1) - exp(temp2) + a + exp(1)
+			return val
 
-            return val
-
-        return evaluate
+		return evaluate

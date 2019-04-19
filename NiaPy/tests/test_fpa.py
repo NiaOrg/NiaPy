@@ -6,7 +6,7 @@ from NiaPy.algorithms.basic import FlowerPollinationAlgorithm
 class FPATestCase(AlgorithmTestCase):
 
     def test_type_parameters(self):
-        d = FlowerPollinationAlgorithm.parameter_types()
+        d = FlowerPollinationAlgorithm.typeParameters()
         self.assertTrue(d['NP'](10))
         self.assertFalse(d['NP'](-10))
         self.assertFalse(d['NP'](0))

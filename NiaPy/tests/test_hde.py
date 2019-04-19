@@ -22,7 +22,7 @@ class MtsIndividualTestCase(IndividualTestCase):
 
 class DEMTSTestCase(AlgorithmTestCase):
 	def test_type_parameters_fine(self):
-		d = DifferentialEvolutionMTS.parameter_types()
+		d = DifferentialEvolutionMTS.typeParameters()
 		self.assertIsNotNone(d.get('NoEnabled', None))
 		self.assertIsNotNone(d.get('NoLs', None))
 		self.assertIsNotNone(d.get('NoLsTests', None))

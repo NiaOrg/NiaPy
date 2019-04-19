@@ -5,7 +5,7 @@ from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
 
 class MTSTestCase(AlgorithmTestCase):
 	def test_type_parameters(self):
-		d = MultipleTrajectorySearch.parameter_types()
+		d = MultipleTrajectorySearch.typeParameters()
 		self.assertTrue(d['NoLsTests'](10))
 		self.assertTrue(d['NoLsTests'](0))
 		self.assertFalse(d['NoLsTests'](-10))

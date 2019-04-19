@@ -17,10 +17,10 @@ class BenchmarkTestCase(TestCase):
 		self.b = Benchmark(self.Lower, self.Upper)
 
 	def test_lower_fine(self):
-		self.assertEqual(self.Lower, self.b.lower)
+		self.assertEqual(self.Lower, self.b.Lower)
 
 	def test_upper_fine(self):
-		self.assertEqual(self.Upper, self.b.upper)
+		self.assertEqual(self.Upper, self.b.Upper)
 
 	def test_function_eval_fine(self):
 		f = self.b.function()

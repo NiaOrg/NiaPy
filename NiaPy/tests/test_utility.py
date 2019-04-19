@@ -1,19 +1,10 @@
 # encoding=utf8
+# pylint: disable=mixed-indentation, multiple-statements, unused-variable, unused-argument, redefined-builtin, no-init, line-too-long, broad-except
 from unittest import TestCase
 
-from numpy import full, random as rnd, sum, array_equal, asarray
+from numpy import full, random as rnd, inf, sum, array_equal, asarray
 
-from NiaPy.util import Utility, fullArray, limit_repair, limit_inverse_repair, wang_repair, rand_repair, reflect_repair
-
-class MyBenchmark:
-	def __init__(self):
-		self.Lower = -10.0
-		self.Upper = 10
-
-	@classmethod
-	def function(cls):
-		def evaluate(D, x): return sum(x ** 2)
-		return evaluate
+from NiaPy.util import Utility, StoppingTask, ThrowingTask, fullArray, limit_repair, limit_inverse_repair, wang_repair, rand_repair, reflect_repair
 
 class FullArrayTestCase(TestCase):
 	r"""Test case for testing method `fullarray`.
@@ -133,6 +124,16 @@ class NoLimits:
 		def evaluate(D, x): return 0
 		return evaluate
 
+class MyBenchmark:
+	def __init__(self):
+		self.Lower = -10.0
+		self.Upper = 10
+
+	@classmethod
+	def function(cls):
+		def evaluate(D, x): return sum(x ** 2)
+		return evaluate
+
 class UtilityTestCase(TestCase):
 	r"""Test case for testing Utility class.
 
@@ -163,11 +164,11 @@ class RepairMethodsTest(TestCase):
 		Klemen Berkovič
 
 	See Also:
-		* :func:`NiaPy.util.limit_repair`
-		* :func:`NiaPy.util.limit_inverse_repair`
-		* :func:`NiaPy.util.wang_repair`
-		* :func:`NiaPy.util.rand_repair`
-		* :func:`NiaPy.util.reflect_repair`
+		* :func:`NiaPy.util.limitRepair`
+		* :func:`NiaPy.util.limitInversRepair`
+		* :func:`NiaPy.util.wangRepair`
+		* :func:`NiaPy.util.randRepair`
+		* :func:`NiaPy.util.reflectRepair`
 	"""
 	def setUp(self):
 		self.D = 10

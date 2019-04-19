@@ -34,7 +34,7 @@ class AgingSolutionjDETestCase(SolutionjDETestCase):
 
 class jDETestCase(AlgorithmTestCase):
 	def test_typeParameters(self):
-		d = SelfAdaptiveDifferentialEvolution.parameter_types()
+		d = SelfAdaptiveDifferentialEvolution.typeParameters()
 		self.assertTrue(d['F_l'](10))
 		self.assertFalse(d['F_l'](-10))
 		self.assertFalse(d['F_l'](-0))
@@ -60,7 +60,7 @@ class jDETestCase(AlgorithmTestCase):
 
 class dyNPjDETestCase(AlgorithmTestCase):
 	def test_typeParameters(self):
-		d = DynNpSelfAdaptiveDifferentialEvolutionAlgorithm.parameter_types()
+		d = DynNpSelfAdaptiveDifferentialEvolutionAlgorithm.typeParameters()
 		self.assertTrue(d['rp'](10))
 		self.assertTrue(d['rp'](10.10))
 		self.assertFalse(d['rp'](0))

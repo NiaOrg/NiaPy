@@ -38,7 +38,7 @@ class ESMp1TestCase(AlgorithmTestCase):
 
 class ESMpLTestCase(AlgorithmTestCase):
 	def test_typeParametes(self):
-		d = EvolutionStrategyML.parameter_types()
+		d = EvolutionStrategyML.typeParameters()
 		self.assertTrue(d['lam'](10))
 		self.assertFalse(d['lam'](10.10))
 		self.assertFalse(d['lam'](0))
@@ -87,7 +87,7 @@ class ESMLTestCase(AlgorithmTestCase):
 
 class CMAESTestCase(AlgorithmTestCase):
 	def test_typeParametes(self):
-		d = CovarianceMatrixAdaptionEvolutionStrategy.parameter_types()
+		d = CovarianceMatrixAdaptionEvolutionStrategy.typeParameters()
 		self.assertTrue(d['epsilon'](0.234))
 		self.assertFalse(d['epsilon'](-0.234))
 		self.assertFalse(d['epsilon'](10000.234))
