@@ -18,26 +18,44 @@ class Benchmark:
     r"""Class representing benchmarks.
 
     Attributes:
-            Name (List[str]): List of names representiong benchmark names.
-            Lower (Union[int, float, list, numpy.ndarray]): Lower bounds.
-            Upper (Union[int, float, list, numpy.ndarray]): Upper bounds.
+            Name (List[str]): List of names representing benchmark names.
+            lower (Union[int, float, List[Union[int, float]], numpy.ndarray[Union[int, float]]]): lower bounds.
+            upper (Union[int, float, List[Union[int, float]], numpy.ndarray[Union[int, float]]]): upper bounds.
 
     """
 
-    Name = ["Benchmark", "BBB"]
+    name = ["Benchmark", "BBB"]
 
-    def __init__(self, Lower, Upper, **kwargs):
+    def __init__(self, lower, upper, **kwargs):
         r"""Initialize benchmark.
 
         Args:
-                Lower (Union[int, float, list, numpy.ndarray]): Lower bounds.
-                Upper (Union[int, float, list, numpy.ndarray]): Upper bounds.
+                lower (Union[int, float, list, numpy.ndarray]): lower bounds.
+                upper (Union[int, float, list, numpy.ndarray]): upper bounds.
                 **kwargs (Dict[str, Any]): Additional arguments.
 
         """
 
-        self.Lower = Lower
-        self.Upper = Upper
+        self._lower = lower
+        self._upper = upper
+
+    @property
+    def lower(self):
+        r"""Get lower bounds of optimization problem.
+
+        Returns:
+            Union[int, float, List[Union[int, float]], numpy.ndarray[Union[int, float]]]: Lower bounds.
+        """
+        return self._lower
+
+    @property
+    def upper(self):
+        r"""Get upper bounds of optimization problem.
+
+        Returns:
+            Union[int, float, List[Union[int, float]], numpy.ndarray[Union[int, float]]]: Upper bounds.
+        """
+        return self._upper
 
     def function(self):
         r"""Get evaluation function.
@@ -93,8 +111,8 @@ class Benchmark:
         fig = plt.figure()
         ax = fig.gca(projection="3d")
         func = self.function()
-        Xr, Yr = arange(self.Lower, self.Upper, scale), arange(
-            self.Lower, self.Upper, scale)
+        Xr, Yr = arange(self.lower, self.upper, scale), arange(
+            self.lower, self.upper, scale)
         X, Y = meshgrid(Xr, Yr)
         Z = vectorize(self.__2dfun)(X, Y, func)
         ax.plot_surface(X, Y, Z, rstride=8, cstride=8, alpha=0.3)

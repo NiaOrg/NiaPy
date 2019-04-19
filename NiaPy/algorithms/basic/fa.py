@@ -31,7 +31,7 @@ class FireflyAlgorithm(Algorithm):
 		Fister, I., Fister Jr, I., Yang, X. S., & Brest, J. (2013). A comprehensive review of firefly algorithms. Swarm and Evolutionary Computation, 13, 34-46.
 
 	Attributes:
-		Name (List[str]): List of strings representing algorithm name.
+		name (List[str]): List of strings representing algorithm name.
 		alpha (float): Alpha parameter.
 		betamin (float): Betamin parameter.
 		gamma (flaot): Gamma parameter.
@@ -39,10 +39,10 @@ class FireflyAlgorithm(Algorithm):
 	See Also:
 		* :class:`NiaPy.algorithms.Algorithm`
 	"""
-	Name = ['FireflyAlgorithm', 'FA']
+	name = ['FireflyAlgorithm', 'FA']
 
 	@staticmethod
-	def algorithmInfo():
+	def algorithm_info():
 		return r"""
         	Description: Firefly algorithm is inspired by the flashing behavior of fireflies.
         	Author: Xin-She Yang
@@ -51,7 +51,7 @@ class FireflyAlgorithm(Algorithm):
         """
 
 	@staticmethod
-	def typeParameters():
+	def parameter_types():
 		r"""TODO.
 
 		Returns:
@@ -61,9 +61,9 @@ class FireflyAlgorithm(Algorithm):
 				* gamma (Callable[[Union[float, int]], bool]): TODO.
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.typeParameters`
+			* :func:`NiaPy.algorithms.Algorithm.parameter_types`
 		"""
-		d = Algorithm.typeParameters()
+		d = Algorithm.parameter_types()
 		d.update({
 			'alpha': lambda x: isinstance(x, (float, int)) and x > 0,
 			'betamin': lambda x: isinstance(x, (float, int)) and x > 0,
@@ -71,7 +71,7 @@ class FireflyAlgorithm(Algorithm):
 		})
 		return d
 
-	def setParameters(self, NP=20, alpha=1, betamin=1, gamma=2, **ukwargs):
+	def set_parameters(self, NP=20, alpha=1, betamin=1, gamma=2, **ukwargs):
 		r"""Set the parameters of the algorithm.
 
 		Args:
@@ -82,9 +82,9 @@ class FireflyAlgorithm(Algorithm):
 			ukwargs (Dict[str, Any]): Additional arguments.
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.setParameters`
+			* :func:`NiaPy.algorithms.Algorithm.set_parameters`
 		"""
-		Algorithm.setParameters(self, NP=NP, **ukwargs)
+		Algorithm.set_parameters(self, NP=NP, **ukwargs)
 		self.alpha, self.betamin, self.gamma = alpha, betamin, gamma
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
@@ -127,7 +127,7 @@ class FireflyAlgorithm(Algorithm):
 			moved = True
 		return Fireflies[i], moved
 
-	def initPopulation(self, task):
+	def init_population(self, task):
 		r"""Initialize the starting population.
 
 		Args:
@@ -141,12 +141,12 @@ class FireflyAlgorithm(Algorithm):
 					* alpha (float): TODO
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.initPopulation`
+			* :func:`NiaPy.algorithms.Algorithm.init_population`
 		"""
-		Fireflies, Intensity, _ = Algorithm.initPopulation(self, task)
+		Fireflies, Intensity, _ = Algorithm.init_population(self, task)
 		return Fireflies, Intensity, {'alpha': self.alpha}
 
-	def runIteration(self, task, Fireflies, Intensity, xb, fxb, alpha, **dparams):
+	def run_iteration(self, task, Fireflies, Intensity, xb, fxb, alpha, **dparams):
 		r"""Core function of Firefly Algorithm.
 
 		Args:

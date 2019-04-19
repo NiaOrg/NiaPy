@@ -60,7 +60,7 @@ class SimulatedAnnealing(Algorithm):
 	Reference paper:
 
 	Attributes:
-		Name (List[str]): List of strings representing algorithm name.
+		name (List[str]): List of strings representing algorithm name.
 		delta (float): Movement for neighbour search.
 		T (float); Starting temperature.
 		deltaT (float): Change in temperature.
@@ -70,22 +70,22 @@ class SimulatedAnnealing(Algorithm):
 	See Also:
 		* :class:`NiaPy.algorithms.Algorithm`
 	"""
-	Name = ['SimulatedAnnealing', 'SA']
+	name = ['SimulatedAnnealing', 'SA']
 
 	@staticmethod
-	def algorithmInfo():
+	def algorithm_info():
 		r"""Get basic information of algorithm.
 
 		Returns:
 			str: Basic information of algorithm.
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+			* :func:`NiaPy.algorithms.Algorithm.algorithm_info`
 		"""
 		return r"""None"""
 
 	@staticmethod
-	def typeParameters():
+	def parameter_types():
 		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
@@ -99,7 +99,7 @@ class SimulatedAnnealing(Algorithm):
 			'epsilon': lambda x: isinstance(x, float) and 0 < x < 1
 		}
 
-	def setParameters(self, delta=0.5, T=2000, deltaT=0.8, coolingMethod=coolDelta, epsilon=1e-23, **ukwargs):
+	def set_parameters(self, delta=0.5, T=2000, deltaT=0.8, coolingMethod=coolDelta, epsilon=1e-23, **ukwargs):
 		r"""Set the algorithm parameters/arguments.
 
 		Arguments:
@@ -110,19 +110,19 @@ class SimulatedAnnealing(Algorithm):
 			epsilon (Optional[float]): Error value.
 
 		See Also
-			* :func:`NiaPy.algorithms.Algorithm.setParameters`
+			* :func:`NiaPy.algorithms.Algorithm.set_parameters`
 		"""
 		ukwargs.pop('NP', None)
-		Algorithm.setParameters(self, NP=1, **ukwargs)
+		Algorithm.set_parameters(self, NP=1, **ukwargs)
 		self.delta, self.T, self.deltaT, self.cool, self.epsilon = delta, T, deltaT, coolingMethod, epsilon
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def initPopulation(self, task):
-		x = task.Lower + task.bcRange() * self.rand(task.D)
+	def init_population(self, task):
+		x = task.Lower + task.range() * self.rand(task.D)
 		curT, xfit = self.T, task.eval(x)
 		return x, xfit, {'curT': curT}
 
-	def runIteration(self, task, x, xfit, xb, fxb, curT, **dparams):
+	def run_iteration(self, task, x, xfit, xb, fxb, curT, **dparams):
 		c = task.repair(x - self.delta / 2 + self.rand(task.D) * self.delta, rnd=self.Rand)
 		cfit = task.eval(c)
 		deltaFit, r = cfit - xfit, self.rand()

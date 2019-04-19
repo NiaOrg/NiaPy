@@ -22,7 +22,7 @@ def CrossRandCurr2Pbest(pop, ic, x_b, f, cr, p=0.2, arc=None, rnd=rand, *args):
 	Mutation strategy uses two different random individuals from population to perform mutation.
 
 	Mutation:
-		Name: DE/curr2pbest/1
+		name: DE/curr2pbest/1
 
 	Args:
 		pop (numpy.ndarray[Individual]): Current population.
@@ -77,14 +77,14 @@ class AdaptiveArchiveDifferentialEvolution(DifferentialEvolution):
 		Zhang, Jingqiao, and Arthur C. Sanderson. "JADE: adaptive differential evolution with optional external archive." IEEE Transactions on evolutionary computation 13.5 (2009): 945-958.
 
 	Attributes:
-		Name (List[str]): List of strings representing algorithm name.
+		name (List[str]): List of strings representing algorithm name.
 
 	See Also:
 		:class:`NiaPy.algorithms.basic.DifferentialEvolution`
 	"""
-	Name = ['AdaptiveArchiveDifferentialEvolution', 'JADE']
+	name = ['AdaptiveArchiveDifferentialEvolution', 'JADE']
 
-	def setParameters(self, **kwargs):
+	def set_parameters(self, **kwargs):
 		pass
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

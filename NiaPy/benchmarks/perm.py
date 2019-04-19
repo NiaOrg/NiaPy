@@ -45,7 +45,7 @@ class Perm(Benchmark):
 
     """
 
-    Name = ["Perm"]
+    name = ["Perm"]
 
     def __init__(self, D=10.0, beta=0.5):
         """Initialize Perm benchmark.

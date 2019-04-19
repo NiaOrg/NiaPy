@@ -47,21 +47,21 @@ class Griewank(Benchmark):
 
     """
 
-    Name = ["Griewank"]
+    name = ["Griewank"]
 
-    def __init__(self, Lower=-100.0, Upper=100.0):
+    def __init__(self, lower=-100.0, upper=100.0):
         """Initialize Griewank benchmark.
 
-        Args:
-            Lower (Optional[float]): Lower bound of problem.
-            Upper (Optional[float]): Upper bound of problem.
+		  Args:
+				lower (Optional[float]): lower bound of problem.
+				upper (Optional[float]): upper bound of problem.
 
-        See Also:
-            :func:`NiaPy.benchmarks.Benchmark.__init__`
+		  See Also:
+				:func:`NiaPy.benchmarks.Benchmark.__init__`
 
-        """
+		  """
 
-        Benchmark.__init__(self, Lower, Upper)
+        Benchmark.__init__(self, lower, Upper)
 
     @staticmethod
     def latex_code():
@@ -131,21 +131,21 @@ class ExpandedGriewankPlusRosenbrock(Benchmark):
 
     """
 
-    Name = ["ExpandedGriewankPlusRosenbrock"]
+    name = ["ExpandedGriewankPlusRosenbrock"]
 
-    def __init__(self, Lower=-100.0, Upper=100.0):
+    def __init__(self, lower=-100.0, upper=100.0):
         """Initialize Expanded Griewank Plus Rosenbrock benchmark.
 
-        Args:
-            Lower (Optional[float]): Lower bound of problem.
-            Upper (Optional[float]): Upper bound of problem.
+		  Args:
+				lower (Optional[float]): lower bound of problem.
+				upper (Optional[float]): upper bound of problem.
 
-        See Also:
-            :func:`NiaPy.benchmarks.Benchmark.__init__`
+		  See Also:
+				:func:`NiaPy.benchmarks.Benchmark.__init__`
 
-        """
+		  """
 
-        Benchmark.__init__(self, Lower, Upper)
+        Benchmark.__init__(self, lower, Upper)
 
     @staticmethod
     def latex_code():

@@ -34,7 +34,7 @@ class KrillHerd(Algorithm):
 		Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010.
 
 	Attributes:
-		Name (List[str]): List of strings representing algorithm names..
+		name (List[str]): List of strings representing algorithm names..
 		NP (int): Number of krill herds in population.
 		N_max (float): Maximum induced speed.
 		V_f (float): Foraging speed.
@@ -51,10 +51,10 @@ class KrillHerd(Algorithm):
 	See Also:
 		* :class:`NiaPy.algorithms.algorithm.Algorithm`
 	"""
-	Name = ['KrillHerd', 'KH']
+	name = ['KrillHerd', 'KH']
 
 	@staticmethod
-	def typeParameters():
+	def parameter_types():
 		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
@@ -74,7 +74,7 @@ class KrillHerd(Algorithm):
 		See Also:
 			* :func:`NiaPy.algorithms.algorithm.Algorithm`
 		"""
-		d = Algorithm.typeParameters()
+		d = Algorithm.parameter_types()
 		d.update({
 			'N_max': lambda x: isinstance(x, (int, float)) and x > 0,
 			'V_f': lambda x: isinstance(x, (int, float)) and x > 0,
@@ -90,7 +90,7 @@ class KrillHerd(Algorithm):
 		})
 		return d
 
-	def setParameters(self, NP=50, N_max=0.01, V_f=0.02, D_max=0.002, C_t=0.93, W_n=0.42, W_f=0.38, d_s=2.63, nn=5, Cr=0.2, Mu=0.05, epsilon=1e-31, **ukwargs):
+	def set_parameters(self, NP=50, N_max=0.01, V_f=0.02, D_max=0.002, C_t=0.93, W_n=0.42, W_f=0.38, d_s=2.63, nn=5, Cr=0.2, Mu=0.05, epsilon=1e-31, **ukwargs):
 		r"""Set the arguments of an algorithm.
 
 		Arguments:
@@ -108,9 +108,9 @@ class KrillHerd(Algorithm):
 			epsilon (Optional[float]): Small numbers for division.
 
 		See Also:
-			* :func:`NiaPy.algorithms.algorithm.Algorithm.setParameters`
+			* :func:`NiaPy.algorithms.algorithm.Algorithm.set_parameters`
 		"""
-		Algorithm.setParameters(self, NP=NP, **ukwargs)
+		Algorithm.set_parameters(self, NP=NP, **ukwargs)
 		self.N_max, self.V_f, self.D_max, self.C_t, self.W_n, self.W_f, self.d_s, self.nn, self._Cr, self._Mu, self.epsilon = N_max, V_f, D_max, C_t, W_n, W_f, d_s, nn, Cr, Mu, epsilon
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
@@ -319,7 +319,7 @@ class KrillHerd(Algorithm):
 		"""
 		return self._Cr * self.funK(xf, yf, xf_best, xf_worst)
 
-	def initPopulation(self, task):
+	def init_population(self, task):
 		r"""Initialize stating population.
 
 		Args:
@@ -336,15 +336,15 @@ class KrillHerd(Algorithm):
 					* F (numpy.ndarray): TODO
 
 		See Also:
-			* :func:`NiaPy.algorithms.algorithm.Algorithm.initPopulation`
+			* :func:`NiaPy.algorithms.algorithm.Algorithm.init_population`
 		"""
-		KH, KH_f, d = Algorithm.initPopulation(self, task)
+		KH, KH_f, d = Algorithm.init_population(self, task)
 		W_n, W_f = self.initWeights(task)
 		N, F = full(self.NP, .0), full(self.NP, .0)
 		d.update({'W_n': W_n, 'W_f': W_f, 'N': N, 'F': F})
 		return KH, KH_f, d
 
-	def runIteration(self, task, KH, KH_f, xb, fxb, W_n, W_f, N, F, **dparams):
+	def run_iteration(self, task, KH, KH_f, xb, fxb, W_n, W_f, N, F, **dparams):
 		r"""Core function of KrillHerd algorithm.
 
 		Args:
@@ -406,27 +406,27 @@ class KrillHerdV4(KrillHerd):
 		Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010.
 
 	Attributes:
-		Name (List[str]): List of strings representing algorithm name.
+		name (List[str]): List of strings representing algorithm name.
 	"""
-	Name = ['KrillHerdV4', 'KHv4']
+	name = ['KrillHerdV4', 'KHv4']
 
 	@staticmethod
-	def typeParameters():
+	def parameter_types():
 		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
 			Dict[str, Callable]: Dictionary with testing functions for parameters.
 
 		See Also:
-			* :func:NiaPy.algorithms.basic.kh.KrillHerd.typeParameters`
+			* :func:NiaPy.algorithms.basic.kh.KrillHerd.parameter_types`
 		"""
-		d = KrillHerd.typeParameters()
+		d = KrillHerd.parameter_types()
 		d.pop('Cr', None)
 		d.pop('Mu', None)
 		d.pop('epsilon', None)
 		return d
 
-	def setParameters(self, NP=50, N_max=0.01, V_f=0.02, D_max=0.002, C_t=0.93, W_n=0.42, W_f=0.38, d_s=2.63, **ukwargs):
+	def set_parameters(self, NP=50, N_max=0.01, V_f=0.02, D_max=0.002, C_t=0.93, W_n=0.42, W_f=0.38, d_s=2.63, **ukwargs):
 		r"""Set algorithm core parameters.
 
 		Args:
@@ -441,9 +441,9 @@ class KrillHerdV4(KrillHerd):
 			**ukwargs (Dict[str, Any]): Additional arguments.
 
 		See Also:
-			* :func:NiaPy.algorithms.basic.kh.KrillHerd.KrillHerd.setParameters`
+			* :func:NiaPy.algorithms.basic.kh.KrillHerd.KrillHerd.set_parameters`
 		"""
-		KrillHerd.setParameters(self, NP, N_max, V_f, D_max, C_t, W_n, W_f, d_s, 4, 0.2, 0.05, 1e-31, **ukwargs)
+		KrillHerd.set_parameters(self, NP, N_max, V_f, D_max, C_t, W_n, W_f, d_s, 4, 0.2, 0.05, 1e-31, **ukwargs)
 
 class KrillHerdV1(KrillHerd):
 	r"""Implementation of krill herd algorithm.
@@ -467,24 +467,24 @@ class KrillHerdV1(KrillHerd):
 		Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010.
 
 	Attributes:
-		Name (List[str]): List of strings representing algorithm name.
+		name (List[str]): List of strings representing algorithm name.
 
 	See Also:
 		* :func:NiaPy.algorithms.basic.kh.KrillHerd.KrillHerd`
 	"""
-	Name = ['KrillHerdV1', 'KHv1']
+	name = ['KrillHerdV1', 'KHv1']
 
 	@staticmethod
-	def typeParameters():
+	def parameter_types():
 		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
 			Dict[str, Callable]: Dictionary with testing functions for parameters.
 
 		See Also:
-			* :func:NiaPy.algorithms.basic.kh.KrillHerd.typeParameters`
+			* :func:NiaPy.algorithms.basic.kh.KrillHerd.parameter_types`
 		"""
-		return KrillHerd.typeParameters()
+		return KrillHerd.parameter_types()
 
 	def crossover(self, x, xo, Cr):
 		r"""Preform a crossover operation on individual.
@@ -534,21 +534,21 @@ class KrillHerdV2(KrillHerd):
 		Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010.
 
 	Attributes:
-		Name (List[str]): List of strings representing algorithm name.
+		name (List[str]): List of strings representing algorithm name.
 	"""
-	Name = ['KrillHerdV2', 'KHv2']
+	name = ['KrillHerdV2', 'KHv2']
 
 	@staticmethod
-	def typeParameters():
+	def parameter_types():
 		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
 			Dict[str, Callable]: Dictionary with testing functions for algorithms parameters.
 
 		See Also:
-			* :func:NiaPy.algorithms.basic.kh.KrillHerd.typeParameters`
+			* :func:NiaPy.algorithms.basic.kh.KrillHerd.parameter_types`
 		"""
-		d = KrillHerd.typeParameters()
+		d = KrillHerd.parameter_types()
 		d.pop('Mu', None)
 		return d
 
@@ -586,19 +586,19 @@ class KrillHerdV3(KrillHerd):
 	Reference paper:
 		Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010.
 	"""
-	Name = ['KrillHerdV3', 'KHv3']
+	name = ['KrillHerdV3', 'KHv3']
 
 	@staticmethod
-	def typeParameters():
+	def parameter_types():
 		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
 			Dict[str, Callable]: Dictionary with testing functions for algorithms parameters.
 
 		See Also:
-			* :func:NiaPy.algorithms.basic.kh.KrillHerd.typeParameters`
+			* :func:NiaPy.algorithms.basic.kh.KrillHerd.parameter_types`
 		"""
-		d = KrillHerd.typeParameters()
+		d = KrillHerd.parameter_types()
 		d.pop('Cr', None)
 		return d
 
@@ -634,7 +634,7 @@ class KrillHerdV11(KrillHerd):
 
 	Reference paper:
 	"""
-	Name = ['KrillHerdV11', 'KHv11']
+	name = ['KrillHerdV11', 'KHv11']
 
 	def ElitistSelection(self, KH, KH_f, KHo, KHo_f):
 		r"""Select krills/individuals that are better than odl krills.
@@ -718,7 +718,7 @@ class KrillHerdV11(KrillHerd):
 		"""
 		return 0.8 + 0.2 * (KH_f - KHb_f) / (KHw_f - KHb_f)
 
-	def initPopulation(self, task):
+	def init_population(self, task):
 		r"""Initialize firt herd/population.
 
 		Args:
@@ -736,15 +736,15 @@ class KrillHerdV11(KrillHerd):
 					* Dt (): --
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.initPopulation`
+			* :func:`NiaPy.algorithms.Algorithm.init_population`
 		"""
-		KH, KH_f, d = Algorithm.initPopulation(self, task)
+		KH, KH_f, d = Algorithm.init_population(self, task)
 		KHo, KHo_f = full([self.NP, task.D], task.optType.value * inf), full(self.NP, task.optType.value * inf)
-		N, F, Dt = full(self.NP, .0), full(self.NP, .0), mean(task.bcRange()) / 2
+		N, F, Dt = full(self.NP, .0), full(self.NP, .0), mean(task.range()) / 2
 		d.update({'KHo': KHo, 'KHo_f': KHo_f, 'N': N, 'F': F, 'Dt': Dt})
 		return KH, KH_f, d
 
-	def runIteration(self, task, KH, KH_f, xb, fxb, KHo, KHo_f, N, F, Dt, **dparams):
+	def run_iteration(self, task, KH, KH_f, xb, fxb, KHo, KHo_f, N, F, Dt, **dparams):
 		r"""Core function of KrillHerdV11 algorithm.
 
 		Args:

@@ -32,31 +32,31 @@ class GreyWolfOptimizer(Algorithm):
 		* Grey Wold Optimizer (GWO) source code version 1.0 (MATLAB) from MathWorks
 
 	Attributes:
-		Name (List[str]): List of strings representing algorithm names.
+		name (List[str]): List of strings representing algorithm names.
 
 	See Also:
 		* :class:`NiaPy.algorithms.Algorithm`
 	"""
-	Name = ['GreyWolfOptimizer', 'GWO']
+	name = ['GreyWolfOptimizer', 'GWO']
 
 	@staticmethod
-	def typeParameters(): return {
+	def parameter_types(): return {
 			'NP': lambda x: isinstance(x, int) and x > 0
 	}
 
-	def setParameters(self, NP=25, **ukwargs):
+	def set_parameters(self, NP=25, **ukwargs):
 		r"""Set the algorithm parameters.
 
 		Arguments:
 			NP (int): Number of individuals in population
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.setParameters`
+			* :func:`NiaPy.algorithms.Algorithm.set_parameters`
 		"""
-		Algorithm.setParameters(self, NP=NP, **ukwargs)
+		Algorithm.set_parameters(self, NP=NP, **ukwargs)
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def initPopulation(self, task):
+	def init_population(self, task):
 		r"""Initialize population.
 
 		Args:
@@ -70,9 +70,9 @@ class GreyWolfOptimizer(Algorithm):
 					* A (): TODO
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.initPopulation`
+			* :func:`NiaPy.algorithms.Algorithm.init_population`
 		"""
-		pop, fpop, d = Algorithm.initPopulation(self, task)
+		pop, fpop, d = Algorithm.init_population(self, task)
 		A, A_f, B, B_f, D, D_f = None, task.optType.value * inf, None, task.optType.value * inf, None, task.optType.value * inf
 		for i, f in enumerate(fpop):
 			if f < A_f: A, A_f = pop[i], f
@@ -81,7 +81,7 @@ class GreyWolfOptimizer(Algorithm):
 		d.update({'A': A, 'A_f': A_f, 'B': B, 'B_f': B_f, 'D': D, 'D_f': D_f})
 		return pop, fpop, d
 
-	def runIteration(self, task, pop, fpop, xb, fxb, A, A_f, B, B_f, D, D_f, **dparams):
+	def run_iteration(self, task, pop, fpop, xb, fxb, A, A_f, B, B_f, D, D_f, **dparams):
 		r"""Core funciton of GreyWolfOptimizer algorithm.
 
 		Args:

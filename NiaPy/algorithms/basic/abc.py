@@ -5,7 +5,7 @@ import logging
 
 from numpy import asarray, full, argmax
 
-from NiaPy.algorithms.algorithm import Algorithm, Individual, defaultIndividualInit
+from NiaPy.algorithms.algorithm import Algorithm, Individual, default_individual_init
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.basic')
@@ -55,16 +55,16 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 		Karaboga, D., and Bahriye B. "A powerful and efficient algorithm for numerical function optimization: artificial bee colony (ABC) algorithm." Journal of global optimization 39.3 (2007): 459-471.
 
 	Arguments
-		Name (List[str]): List containing strings that represent algorithm names
+		name (List[str]): List containing strings that represent algorithm names
 		Limit (Union[float, numpy.ndarray[float]]): Limt
 
 	See Also:
 		* :class:`NiaPy.algorithms.Algorithm`
 	"""
-	Name = ['ArtificialBeeColonyAlgorithm', 'ABC']
+	name = ['ArtificialBeeColonyAlgorithm', 'ABC']
 
 	@staticmethod
-	def typeParameters():
+	def parameter_types():
 		r"""Return functions for checking values of parameters.
 
 		Returns:
@@ -72,13 +72,13 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 				* Limit (Callable[Union[float, numpy.ndarray[float]]]): TODO
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.typeParameters`
+			* :func:`NiaPy.algorithms.Algorithm.parameter_types`
 		"""
-		d = Algorithm.typeParameters()
+		d = Algorithm.parameter_types()
 		d.update({'Limit': lambda x: isinstance(x, int) and x > 0})
 		return d
 
-	def setParameters(self, NP=10, Limit=100, **ukwargs):
+	def set_parameters(self, NP=10, Limit=100, **ukwargs):
 		r"""Set the parameters of Artificial Bee Colony Algorithm.
 
 		Parameters:
@@ -86,9 +86,9 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 			**ukwargs (Dict[str, Any]): Additional arguments
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.setParameters`
+			* :func:`NiaPy.algorithms.Algorithm.set_parameters`
 		"""
-		Algorithm.setParameters(self, NP=NP, InitPopFunc=defaultIndividualInit, itype=SolutionABC, **ukwargs)
+		Algorithm.set_parameters(self, NP=NP, InitPopFunc=default_individual_init, itype=SolutionABC, **ukwargs)
 		self.FoodNumber, self.Limit = int(self.NP / 2), Limit
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
@@ -107,7 +107,7 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 		Probs = [Probs[i] / s for i in range(self.FoodNumber)]
 		return Probs
 
-	def initPopulation(self, task):
+	def init_population(self, task):
 		r"""Initialize the starting population.
 
 		Parameters:
@@ -122,13 +122,13 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 					* Trial (numpy.ndarray): TODO
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.initPopulation`
+			* :func:`NiaPy.algorithms.Algorithm.init_population`
 		"""
-		Foods, fpop, _ = Algorithm.initPopulation(self, task)
+		Foods, fpop, _ = Algorithm.init_population(self, task)
 		Probs, Trial = full(self.FoodNumber, 0.0), full(self.FoodNumber, 0.0)
 		return Foods, fpop, {'Probs': Probs, 'Trial': Trial}
 
-	def runIteration(self, task, Foods, fpop, xb, fxb, Probs, Trial, **dparams):
+	def run_iteration(self, task, Foods, fpop, xb, fxb, Probs, Trial, **dparams):
 		r"""Core funciton of  the algorithm.
 
 		Parameters:

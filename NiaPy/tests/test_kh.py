@@ -16,7 +16,7 @@ class KHV1TestCase(AlgorithmTestCase):
 		* :class:`NiaPy.tests.test_algorithm.AlgorithmTestCase`
 	"""
 	def test_type_parametes(self):
-		d = KrillHerdV1.typeParameters()
+		d = KrillHerdV1.parameter_types()
 		self.assertIsNotNone(d.get('N_max', None))
 		self.assertIsNotNone(d.get('V_f', None))
 		self.assertIsNotNone(d.get('D_max', None))
@@ -52,7 +52,7 @@ class KHV2TestCase(AlgorithmTestCase):
 		* :class:`NiaPy.tests.test_algorithm.AlgorithmTestCase`
 	"""
 	def test_type_parametes(self):
-		d = KrillHerdV2.typeParameters()
+		d = KrillHerdV2.parameter_types()
 		self.assertIsNotNone(d.get('N_max', None))
 		self.assertIsNotNone(d.get('V_f', None))
 		self.assertIsNotNone(d.get('D_max', None))
@@ -88,7 +88,7 @@ class KHV3TestCase(AlgorithmTestCase):
 		* :class:`NiaPy.tests.test_algorithm.AlgorithmTestCase`
 	"""
 	def test_type_parametes(self):
-		d = KrillHerdV3.typeParameters()
+		d = KrillHerdV3.parameter_types()
 		self.assertIsNotNone(d.get('N_max', None))
 		self.assertIsNotNone(d.get('V_f', None))
 		self.assertIsNotNone(d.get('D_max', None))
@@ -124,7 +124,7 @@ class KHV4TestCase(AlgorithmTestCase):
 		* :class:`NiaPy.tests.test_algorithm.AlgorithmTestCase`
 	"""
 	def test_type_parametes(self):
-		d = KrillHerdV4.typeParameters()
+		d = KrillHerdV4.parameter_types()
 		self.assertIsNotNone(d.get('N_max', None))
 		self.assertIsNotNone(d.get('V_f', None))
 		self.assertIsNotNone(d.get('D_max', None))
@@ -160,7 +160,7 @@ class KHV11TestCase(AlgorithmTestCase):
 		* :class:`NiaPy.tests.test_algorithm.AlgorithmTestCase`
 	"""
 	def test_type_parametes(self):
-		d = KrillHerdV11.typeParameters()
+		d = KrillHerdV11.parameter_types()
 		self.assertIsNotNone(d.get('N_max', None))
 		self.assertIsNotNone(d.get('V_f', None))
 		self.assertIsNotNone(d.get('D_max', None))

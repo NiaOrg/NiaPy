@@ -47,21 +47,21 @@ class Rosenbrock(Benchmark):
 
     """
 
-    Name = ["Rosenbrock"]
+    name = ["Rosenbrock"]
 
-    def __init__(self, Lower=-30.0, Upper=30.0):
-        """Initialize Rosenbrock benchmark.
+    def __init__(self, lower=-30.0, upper=30.0):
+		 """Initialize Rosenbrock benchmark.
 
-        Args:
-            Lower (Optional[float]): Lower bound of problem.
-            Upper (Optional[float]): Upper bound of problem.
+		 Args:
+			  lower (Optional[float]): lower bound of problem.
+			  upper (Optional[float]): upper bound of problem.
 
-        See Also:
-            :func:`NiaPy.benchmarks.Benchmark.__init__`
+		 See Also:
+			  :func:`NiaPy.benchmarks.Benchmark.__init__`
 
-        """
+		 """
 
-        Benchmark.__init__(self, Lower, Upper)
+        Benchmark.__init__(self, lower, Upper)
 
     @staticmethod
     def latex_code():

@@ -35,7 +35,7 @@ class HarmonySearch(Algorithm):
             Yang, Xin-She. "Harmony search as a metaheuristic algorithm." Music-inspired harmony search algorithm. Springer, Berlin, Heidelberg, 2009. 1-14.
 
     Attributes:
-            Name (List[str]): List of strings representing algorithm names
+            name (List[str]): List of strings representing algorithm names
             r_accept (float): Probability of accepting new bandwidth into harmony.
             r_pa (float): Probability of accepting random bandwidth into harmony.
             b_range (float): Range of bandwidth.
@@ -45,10 +45,10 @@ class HarmonySearch(Algorithm):
 
     """
 
-    Name = ["HarmonySearch", "HS"]
+    name = ["HarmonySearch", "HS"]
 
     @staticmethod
-    def algorithmInfo():
+    def algorithm_info():
         r"""Get basic information about the algorithm.
 
         Returns:
@@ -57,7 +57,7 @@ class HarmonySearch(Algorithm):
         return r"""Yang, Xin-She. "Harmony search as a metaheuristic algorithm." Music-inspired harmony search algorithm. Springer, Berlin, Heidelberg, 2009. 1-14."""
 
     @staticmethod
-    def typeParameters():
+    def parameter_types():
         r"""Get dictionary with functions for checking values of parameters.
 
         Returns:
@@ -74,7 +74,7 @@ class HarmonySearch(Algorithm):
             "b_range": lambda x: isinstance(x, (int, float)) and x > 0
         }
 
-    def setParameters(self, HMS=30, r_accept=0.7, r_pa=0.35, b_range=1.42, **ukwargs):
+    def set_parameters(self, HMS=30, r_accept=0.7, r_pa=0.35, b_range=1.42, **ukwargs):
         r"""Set the arguments of the algorithm.
 
         Arguments:
@@ -84,9 +84,9 @@ class HarmonySearch(Algorithm):
                 b_range (Optional[float]): Bandwidth range.
 
         See Also:
-                * :func:`NiaPy.algorithms.algorithm.Algorithm.setParameters`
+                * :func:`NiaPy.algorithms.algorithm.Algorithm.set_parameters`
         """
-        Algorithm.setParameters(self, NP=HMS, **ukwargs)
+        Algorithm.set_parameters(self, NP=HMS, **ukwargs)
         self.r_accept, self.r_pa, self.b_range = r_accept, r_pa, b_range
         if ukwargs:
             logger.info("Unused arguments: %s" % (ukwargs))
@@ -130,7 +130,7 @@ class HarmonySearch(Algorithm):
             H[i] = HM[j, i] if r > self.r_accept else self.adjustment(HM[j, i], task) if r > self.r_pa else self.uniform(task.Lower[i], task.Upper[i])
         return H
 
-    def initPopulation(self, task):
+    def init_population(self, task):
         r"""Initialize first population.
 
         Args:
@@ -143,11 +143,11 @@ class HarmonySearch(Algorithm):
                         3. Additional parameters.
 
         See Also:
-                * :func:`NiaPy.algorithms.algorithm.Algorithm.initPopulation`
+                * :func:`NiaPy.algorithms.algorithm.Algorithm.init_population`
         """
-        return Algorithm.initPopulation(self, task)
+        return Algorithm.init_population(self, task)
 
-    def runIteration(self, task, HM, HM_f, xb, fxb, **dparams):
+    def run_iteration(self, task, HM, HM_f, xb, fxb, **dparams):
         r"""Core function of HarmonySearch algorithm.
 
         Args:
@@ -194,17 +194,17 @@ class HarmonySearchV1(HarmonySearch):
             Yang, Xin-She. "Harmony search as a metaheuristic algorithm." Music-inspired harmony search algorithm. Springer, Berlin, Heidelberg, 2009. 1-14.
 
     Attributes:
-            Name (List[str]): List of strings representing algorithm name.
+            name (List[str]): List of strings representing algorithm name.
             bw_min (float): Minimal bandwidth.
             bw_max (float): Maximal bandwidth.
 
     See Also:
             * :class:`NiaPy.algorithms.basic.hs.HarmonySearch`
     """
-    Name = ["HarmonySearchV1", "HSv1"]
+    name = ["HarmonySearchV1", "HSv1"]
 
     @staticmethod
-    def algorithmInfo():
+    def algorithm_info():
         r"""Get basic information about algorihtm.
 
         Returns:
@@ -213,16 +213,16 @@ class HarmonySearchV1(HarmonySearch):
         return r"""Yang, Xin-She. "Harmony search as a metaheuristic algorithm." Music-inspired harmony search algorithm. Springer, Berlin, Heidelberg, 2009. 1-14."""
 
     @staticmethod
-    def typeParameters():
+    def parameter_types():
         r"""Get dictionary with functions for checking values of parameters.
 
         Returns:
                 Dict[str, Callable]: Function for testing correctness of parameters.
 
         See Also:
-                * :func:`NiaPy.algorithms.basic.HarmonySearch.typeParameters`
+                * :func:`NiaPy.algorithms.basic.HarmonySearch.parameter_types`
         """
-        d = HarmonySearch.typeParameters()
+        d = HarmonySearch.parameter_types()
         del d["b_range"]
         d.update({
             "dw_min": lambda x: isinstance(x, (float, int)) and x >= 1,
@@ -230,7 +230,7 @@ class HarmonySearchV1(HarmonySearch):
         })
         return d
 
-    def setParameters(self, bw_min=1, bw_max=2, **kwargs):
+    def set_parameters(self, bw_min=1, bw_max=2, **kwargs):
         r"""Set the parameters of the algorithm.
 
         Arguments:
@@ -239,10 +239,10 @@ class HarmonySearchV1(HarmonySearch):
                 kwargs (Dict[str, Any]): Additional arguments.
 
         See Also:
-                * :func:`NiaPy.algorithms.basic.hs.HarmonySearch.setParameters`
+                * :func:`NiaPy.algorithms.basic.hs.HarmonySearch.set_parameters`
         """
         self.bw_min, self.bw_max = bw_min, bw_max
-        HarmonySearch.setParameters(self, **kwargs)
+        HarmonySearch.set_parameters(self, **kwargs)
 
     def bw(self, task):
         r"""Get new bandwidth.

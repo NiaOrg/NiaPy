@@ -52,21 +52,21 @@ class Whitley(Benchmark):
 
     """
 
-    Name = ["Whitley"]
+    name = ["Whitley"]
 
-    def __init__(self, Lower=-10.24, Upper=10.24):
-        """Initialize Whitley benchmark.
+    def __init__(self, lower=-10.24, upper=10.24):
+		 """Initialize Whitley benchmark.
 
-        Args:
-            Lower (Optional[float]): Lower bound of problem.
-            Upper (Optional[float]): Upper bound of problem.
+		 Args:
+			  lower (Optional[float]): lower bound of problem.
+			  upper (Optional[float]): upper bound of problem.
 
-        See Also:
-            :func:`NiaPy.benchmarks.Benchmark.__init__`
+		 See Also:
+			  :func:`NiaPy.benchmarks.Benchmark.__init__`
 
-        """
+		 """
 
-        Benchmark.__init__(self, Lower, Upper)
+        Benchmark.__init__(self, lower, Upper)
 
     @staticmethod
     def latex_code():

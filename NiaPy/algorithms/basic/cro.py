@@ -88,7 +88,7 @@ class CoralReefsOptimization(Algorithm):
 		https://doi.org/10.1155/2014/739768.
 
 	Attributes:
-		Name (List[str]): List of strings representing algorithm name.
+		name (List[str]): List of strings representing algorithm name.
 		phi (float): Range of neighborhood.
 		Fa (int): Number of corals used in asexsual reproduction.
 		Fb (int): Number of corals used in brooding.
@@ -103,10 +103,10 @@ class CoralReefsOptimization(Algorithm):
 	See Also:
 		* :class:`NiaPy.algorithms.Algorithm`
 	"""
-	Name = ['CoralReefsOptimization', 'CRO']
+	name = ['CoralReefsOptimization', 'CRO']
 
 	@staticmethod
-	def typeParameters():
+	def parameter_types():
 		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
@@ -128,7 +128,7 @@ class CoralReefsOptimization(Algorithm):
 			'k': False
 		}
 
-	def setParameters(self, N=25, phi=0.4, Fa=0.5, Fb=0.5, Fd=0.3, k=25, P_Cr=0.5, P_F=0.36, SexualCrossover=SexualCrossoverSimple, Brooding=BroodingSimple, Distance=euclidean, **ukwargs):
+	def set_parameters(self, N=25, phi=0.4, Fa=0.5, Fb=0.5, Fd=0.3, k=25, P_Cr=0.5, P_F=0.36, SexualCrossover=SexualCrossoverSimple, Brooding=BroodingSimple, Distance=euclidean, **ukwargs):
 		r"""Set the parameters of the algorithm.
 
 		Arguments:
@@ -145,9 +145,9 @@ class CoralReefsOptimization(Algorithm):
 			Distance (Callable[[numpy.ndarray, numpy.ndarray], float]): Funciton for calculating distance between corals.
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.setParameters`
+			* :func:`NiaPy.algorithms.Algorithm.set_parameters`
 		"""
-		Algorithm.setParameters(self, NP=N)
+		Algorithm.set_parameters(self, NP=N)
 		self.phi, self.k, self.P_Cr, self.P_F = phi, k, P_Cr, P_F
 		self.Fa, self.Fb, self.Fd = int(self.NP * Fa), int(self.NP * Fb), int(self.NP * Fd)
 		self.SexualCrossover, self.Brooding, self.Distance = SexualCrossover, Brooding, Distance
@@ -217,7 +217,7 @@ class CoralReefsOptimization(Algorithm):
 		I = unique(where(D >= self.phi)[0])
 		return append(X, Xn[I], 0), append(X_f, Xn_f[I], 0)
 
-	def runIteration(self, task, Reef, Reef_f, xb, fxb, **dparams):
+	def run_iteration(self, task, Reef, Reef_f, xb, fxb, **dparams):
 		r"""Core function of Coral Reefs Optimization algorithm.
 
 		Args:

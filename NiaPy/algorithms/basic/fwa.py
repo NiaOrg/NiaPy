@@ -33,33 +33,33 @@ class BareBonesFireworksAlgorithm(Algorithm):
 		Junzhi Li, Ying Tan, The bare bones fireworks algorithm: A minimalist global optimizer, Applied Soft Computing, Volume 62, 2018, Pages 454-462, ISSN 1568-4946, https://doi.org/10.1016/j.asoc.2017.10.046.
 
 	Attributes:
-		Name (lsit of str): List of strings representing algorithm names
+		name (lsit of str): List of strings representing algorithm names
 		n (int): Number of spraks
 		C_a (float): amplification coefficient
 		C_r (float): reduction coefficient
 	"""
-	Name = ['BareBonesFireworksAlgorithm', 'BBFWA']
+	name = ['BareBonesFireworksAlgorithm', 'BBFWA']
 
 	@staticmethod
-	def algorithmInfo():
+	def algorithm_info():
 		r"""Get default information of algorithm.
 
 		Returns:
 			str: Basic information.
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+			* :func:`NiaPy.algorithms.Algorithm.algorithm_info`
 		"""
 		return r"""Junzhi Li, Ying Tan, The bare bones fireworks algorithm: A minimalist global optimizer, Applied Soft Computing, Volume 62, 2018, Pages 454-462, ISSN 1568-4946, https://doi.org/10.1016/j.asoc.2017.10.046."""
 
 	@staticmethod
-	def typeParameters(): return {
+	def parameter_types(): return {
 			'n': lambda x: isinstance(x, int) and x > 0,
 			'C_a': lambda x: isinstance(x, (float, int)) and x > 1,
 			'C_r': lambda x: isinstance(x, (float, int)) and 0 < x < 1
 	}
 
-	def setParameters(self, n=10, C_a=1.5, C_r=0.5, **ukwargs):
+	def set_parameters(self, n=10, C_a=1.5, C_r=0.5, **ukwargs):
 		r"""Set the arguments of an algorithm.
 
 		Arguments:
@@ -68,11 +68,11 @@ class BareBonesFireworksAlgorithm(Algorithm):
 			C_r (float): Reduction coefficient :math:`\in (0, 1)`.
 		"""
 		ukwargs.pop('NP', None)
-		Algorithm.setParameters(self, NP=1, **ukwargs)
+		Algorithm.set_parameters(self, NP=1, **ukwargs)
 		self.n, self.C_a, self.C_r = n, C_a, C_r
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def initPopulation(self, task):
+	def init_population(self, task):
 		r"""Initialize starting population.
 
 		Args:
@@ -85,11 +85,11 @@ class BareBonesFireworksAlgorithm(Algorithm):
 				3. Additional arguments:
 					* A (numpy.ndarray): Starting aplitude or search range.
 		"""
-		x, x_fit, d = Algorithm.initPopulation(self, task)
+		x, x_fit, d = Algorithm.init_population(self, task)
 		d.update({'A': task.bRange})
 		return x, x_fit, d
 
-	def runIteration(self, task, x, x_fit, xb, fxb, A, **dparams):
+	def run_iteration(self, task, x, x_fit, xb, fxb, A, **dparams):
 		r"""Core function of Bare Bones Fireworks Algorithm.
 
 		Args:
@@ -137,24 +137,24 @@ class FireworksAlgorithm(Algorithm):
 		Tan, Ying. "Firework Algorithm: A Novel Swarm Intelligence Optimization Method." (2015).
 
 	Attributes:
-		Name (List[str]): List of stirngs representing algorithm names.
+		name (List[str]): List of stirngs representing algorithm names.
 	"""
-	Name = ['FireworksAlgorithm', 'FWA']
+	name = ['FireworksAlgorithm', 'FWA']
 
 	@staticmethod
-	def algorithmInfo():
+	def algorithm_info():
 		r"""Get default information of algorithm.
 
 		Returns:
 			str: Basic information.
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+			* :func:`NiaPy.algorithms.Algorithm.algorithm_info`
 		"""
 		return r"""Tan, Ying. "Firework Algorithm: A Novel Swarm Intelligence Optimization Method." (2015)."""
 
 	@staticmethod
-	def typeParameters(): return {
+	def parameter_types(): return {
 			'N': lambda x: isinstance(x, int) and x > 0,
 			'm': lambda x: isinstance(x, int) and x > 0,
 			'a': lambda x: isinstance(x, (int, float)) and x > 0,
@@ -162,7 +162,7 @@ class FireworksAlgorithm(Algorithm):
 			'epsilon': lambda x: isinstance(x, float) and 0 < x < 1
 	}
 
-	def setParameters(self, N=40, m=40, a=1, b=2, A=40, epsilon=1e-31, **ukwargs):
+	def set_parameters(self, N=40, m=40, a=1, b=2, A=40, epsilon=1e-31, **ukwargs):
 		r"""Set the arguments of an algorithm.
 
 		Arguments:
@@ -173,7 +173,7 @@ class FireworksAlgorithm(Algorithm):
 			A (float): --
 			epsilon (float): Small number for non 0 devision
 		"""
-		Algorithm.setParameters(self, NP=N, **ukwargs)
+		Algorithm.set_parameters(self, NP=N, **ukwargs)
 		self.m, self.a, self.b, self.A, self.epsilon = m, a, b, A, epsilon
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
@@ -305,7 +305,7 @@ class FireworksAlgorithm(Algorithm):
 		FW[1:], FW_f[1:] = asarray(FWn)[isort], FWn_f[isort]
 		return FW, FW_f
 
-	def initPopulation(self, task):
+	def init_population(self, task):
 		r"""Initialize starting population.
 
 		Args:
@@ -319,14 +319,14 @@ class FireworksAlgorithm(Algorithm):
 					* Ah (numpy.ndarray): Initialized amplitudes.
 
 		See Also:
-			* :func:`NiaPy.algorithms.algorithm.Algorithm.initPopulation`
+			* :func:`NiaPy.algorithms.algorithm.Algorithm.init_population`
 		"""
-		FW, FW_f, d = Algorithm.initPopulation(self, task)
+		FW, FW_f, d = Algorithm.init_population(self, task)
 		Ah = self.initAmplitude(task)
 		d.update({'Ah': Ah})
 		return FW, FW_f, d
 
-	def runIteration(self, task, FW, FW_f, xb, fxb, Ah, **dparams):
+	def run_iteration(self, task, FW, FW_f, xb, fxb, Ah, **dparams):
 		r"""Core function of Fireworks algorithm.
 
 		Args:
@@ -383,26 +383,26 @@ class EnhancedFireworksAlgorithm(FireworksAlgorithm):
 		S. Zheng, A. Janecek and Y. Tan, "Enhanced Fireworks Algorithm," 2013 IEEE Congress on Evolutionary Computation, Cancun, 2013, pp. 2069-2077. doi: 10.1109/CEC.2013.6557813
 
 	Attributes:
-		Name (List[str]): List of strings representing algorithm names.
+		name (List[str]): List of strings representing algorithm names.
 		Ainit (float): Initial amplitude of sparks.
 		Afinal (float): Maximal amplitude of sparks.
 	"""
-	Name = ['EnhancedFireworksAlgorithm', 'EFWA']
+	name = ['EnhancedFireworksAlgorithm', 'EFWA']
 
 	@staticmethod
-	def algorithmInfo():
+	def algorithm_info():
 		r"""Get default information of algorithm.
 
 		Returns:
 			str: Basic information.
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+			* :func:`NiaPy.algorithms.Algorithm.algorithm_info`
 		"""
 		return r"""S. Zheng, A. Janecek and Y. Tan, "Enhanced Fireworks Algorithm," 2013 IEEE Congress on Evolutionary Computation, Cancun, 2013, pp. 2069-2077. doi: 10.1109/CEC.2013.6557813"""
 
 	@staticmethod
-	def typeParameters():
+	def parameter_types():
 		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
@@ -411,14 +411,14 @@ class EnhancedFireworksAlgorithm(FireworksAlgorithm):
 				* Afinal (Callable[[Union[int, float]], bool]): TODO
 
 		See Also:
-			* :func:`FireworksAlgorithm.typeParameters`
+			* :func:`FireworksAlgorithm.parameter_types`
 		"""
-		d = FireworksAlgorithm.typeParameters()
+		d = FireworksAlgorithm.parameter_types()
 		d['Ainit'] = lambda x: isinstance(x, (float, int)) and x > 0
 		d['Afinal'] = lambda x: isinstance(x, (float, int)) and x > 0
 		return d
 
-	def setParameters(self, Ainit=20, Afinal=5, **ukwargs):
+	def set_parameters(self, Ainit=20, Afinal=5, **ukwargs):
 		r"""Set EnhancedFireworksAlgorithm algorithms core parameters.
 
 		Args:
@@ -427,9 +427,9 @@ class EnhancedFireworksAlgorithm(FireworksAlgorithm):
 			**ukwargs (Dict[str, Any]): Additional arguments.
 
 		See Also:
-			* :func:`FireworksAlgorithm.setParameters`
+			* :func:`FireworksAlgorithm.set_parameters`
 		"""
-		FireworksAlgorithm.setParameters(self, **ukwargs)
+		FireworksAlgorithm.set_parameters(self, **ukwargs)
 		self.Ainit, self.Afinal = Ainit, Afinal
 
 	def initRanges(self, task):
@@ -514,7 +514,7 @@ class EnhancedFireworksAlgorithm(FireworksAlgorithm):
 			if FWn_f[r] < FW_f[i]: FW[i], FW_f[i] = FWn[r], FWn_f[r]
 		return FW, FW_f
 
-	def initPopulation(self, task):
+	def init_population(self, task):
 		r"""Initialize population.
 
 		Args:
@@ -530,14 +530,14 @@ class EnhancedFireworksAlgorithm(FireworksAlgorithm):
 					* A_min (numpy.ndarray): Minimal amplitude values.
 
 		See Also:
-			* :func:`FireworksAlgorithm.initPopulation`
+			* :func:`FireworksAlgorithm.init_population`
 		"""
-		FW, FW_f, d = FireworksAlgorithm.initPopulation(self, task)
+		FW, FW_f, d = FireworksAlgorithm.init_population(self, task)
 		Ainit, Afinal, A_min = self.initRanges(task)
 		d.update({'Ainit': Ainit, 'Afinal': Afinal, 'A_min': A_min})
 		return FW, FW_f, d
 
-	def runIteration(self, task, FW, FW_f, xb, fxb, Ah, Ainit, Afinal, A_min, **dparams):
+	def run_iteration(self, task, FW, FW_f, xb, fxb, Ah, Ainit, Afinal, A_min, **dparams):
 		r"""Core function of EnhancedFireworksAlgorithm algorithm.
 
 		Args:
@@ -593,28 +593,28 @@ class DynamicFireworksAlgorithmGauss(EnhancedFireworksAlgorithm):
 		S. Zheng, A. Janecek, J. Li and Y. Tan, "Dynamic search in fireworks algorithm," 2014 IEEE Congress on Evolutionary Computation (CEC), Beijing, 2014, pp. 3222-3229. doi: 10.1109/CEC.2014.6900485
 
 	Attributes:
-		Name (List[str]): List of strings representing algorithm names.
+		name (List[str]): List of strings representing algorithm names.
 		A_cf (Union[float, int]): TODO
 		C_a (Union[float, int]): Amplification factor.
 		C_r (Union[float, int]): Reduction factor.
 		epsilon (Union[float, int]): Small value.
 	"""
-	Name = ['DynamicFireworksAlgorithmGauss', 'dynFWAG']
+	name = ['DynamicFireworksAlgorithmGauss', 'dynFWAG']
 
 	@staticmethod
-	def algorithmInfo():
+	def algorithm_info():
 		r"""Get default information of algorithm.
 
 		Returns:
 			str: Basic information.
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+			* :func:`NiaPy.algorithms.Algorithm.algorithm_info`
 		"""
 		return r"""S. Zheng, A. Janecek, J. Li and Y. Tan, "Dynamic search in fireworks algorithm," 2014 IEEE Congress on Evolutionary Computation (CEC), Beijing, 2014, pp. 3222-3229. doi: 10.1109/CEC.2014.6900485"""
 
 	@staticmethod
-	def typeParameters():
+	def parameter_types():
 		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
@@ -622,16 +622,16 @@ class DynamicFireworksAlgorithmGauss(EnhancedFireworksAlgorithm):
 				* A_cr (Callable[[Union[float, int], bool]): TODo
 
 		See Also:
-			* :func:`FireworksAlgorithm.typeParameters`
+			* :func:`FireworksAlgorithm.parameter_types`
 		"""
-		d = FireworksAlgorithm.typeParameters()
+		d = FireworksAlgorithm.parameter_types()
 		d['A_cf'] = lambda x: isinstance(x, (float, int)) and x > 0
 		d['C_a'] = lambda x: isinstance(x, (float, int)) and x > 1
 		d['C_r'] = lambda x: isinstance(x, (float, int)) and 0 < x < 1
 		d['epsilon'] = lambda x: isinstance(x, (float, int)) and 0 < x < 1
 		return d
 
-	def setParameters(self, A_cf=20, C_a=1.2, C_r=0.9, epsilon=1e-8, **ukwargs):
+	def set_parameters(self, A_cf=20, C_a=1.2, C_r=0.9, epsilon=1e-8, **ukwargs):
 		r"""Set core arguments of DynamicFireworksAlgorithmGauss.
 
 		Args:
@@ -642,9 +642,9 @@ class DynamicFireworksAlgorithmGauss(EnhancedFireworksAlgorithm):
 			**ukwargs (Dict[str, Any]): Additional arguments.
 
 		See Also:
-			* :func:`FireworksAlgorithm.setParameters`
+			* :func:`FireworksAlgorithm.set_parameters`
 		"""
-		FireworksAlgorithm.setParameters(self, **ukwargs)
+		FireworksAlgorithm.set_parameters(self, **ukwargs)
 		self.A_cf, self.C_a, self.C_r, self.epsilon = A_cf, C_a, C_r, epsilon
 
 	def initAmplitude(self, task):
@@ -740,7 +740,7 @@ class DynamicFireworksAlgorithmGauss(EnhancedFireworksAlgorithm):
 	def ExplosionAmplitude(self, x_f, xb_f, Ah, As, A_min=None):
 		return FireworksAlgorithm.ExplosionAmplitude(self, x_f, xb_f, Ah, As)
 
-	def initPopulation(self, task):
+	def init_population(self, task):
 		r"""Initialize population.
 
 		Args:
@@ -754,11 +754,11 @@ class DynamicFireworksAlgorithmGauss(EnhancedFireworksAlgorithm):
 					* Ah (): TODO
 					* Ab (): TODO
 		"""
-		FW, FW_f, _ = Algorithm.initPopulation(self, task)
+		FW, FW_f, _ = Algorithm.init_population(self, task)
 		Ah, Ab = self.initAmplitude(task)
 		return FW, FW_f, {'Ah': Ah, 'Ab': Ab}
 
-	def runIteration(self, task, FW, FW_f, xb, fxb, Ah, Ab, **dparams):
+	def run_iteration(self, task, FW, FW_f, xb, fxb, Ah, Ab, **dparams):
 		r"""Core function of DynamicFireworksAlgorithmGauss algorithm.
 
 		Args:
@@ -812,26 +812,26 @@ class DynamicFireworksAlgorithm(DynamicFireworksAlgorithmGauss):
 		S. Zheng, A. Janecek, J. Li and Y. Tan, "Dynamic search in fireworks algorithm," 2014 IEEE Congress on Evolutionary Computation (CEC), Beijing, 2014, pp. 3222-3229. doi: 10.1109/CEC.2014.6900485
 
 	Attributes:
-		Name (List[str]): List of strings representing algorithm name.
+		name (List[str]): List of strings representing algorithm name.
 
 	See Also:
 		* :class:`NiaPy.algorithms.basic.DynamicFireworksAlgorithmGauss`
 	"""
-	Name = ['DynamicFireworksAlgorithm', 'dynFWA']
+	name = ['DynamicFireworksAlgorithm', 'dynFWA']
 
 	@staticmethod
-	def algorithmInfo():
+	def algorithm_info():
 		r"""Get default information of algorithm.
 
 		Returns:
 			str: Basic information.
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+			* :func:`NiaPy.algorithms.Algorithm.algorithm_info`
 		"""
 		return r"""S. Zheng, A. Janecek, J. Li and Y. Tan, "Dynamic search in fireworks algorithm," 2014 IEEE Congress on Evolutionary Computation (CEC), Beijing, 2014, pp. 3222-3229. doi: 10.1109/CEC.2014.6900485"""
 
-	def runIteration(self, task, FW, FW_f, xb, fxb, Ah, Ab, **dparams):
+	def run_iteration(self, task, FW, FW_f, xb, fxb, Ah, Ab, **dparams):
 		r"""Core function of Dynamic Fireworks Algorithm.
 
 		Args:

@@ -5,10 +5,10 @@ from NiaPy.algorithms.other import NelderMeadMethod
 
 class NMMTestCase(AlgorithmTestCase):
 	def test_algorithm_info(self):
-		self.assertIsNotNone(NelderMeadMethod.algorithmInfo())
+		self.assertIsNotNone(NelderMeadMethod.algorithm_info())
 
 	def test_type_parameters(self):
-		d = NelderMeadMethod.typeParameters()
+		d = NelderMeadMethod.parameter_types()
 		self.assertIsNotNone(d.get('NP', None))
 		self.assertIsNotNone(d.get('alpha', None))
 		self.assertIsNotNone(d.get('gamma', None))

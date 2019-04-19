@@ -35,7 +35,7 @@ class GlowwormSwarmOptimization(Algorithm):
 		Kaipa, Krishnanand N., and Debasish Ghose. Glowworm swarm optimization: theory, algorithms, and applications. Vol. 698. Springer, 2017.
 
 	Attributes:
-		Name (List[str]): List of strings represeinting algorithm name.
+		name (List[str]): List of strings represeinting algorithm name.
 		l0 (float): Initial luciferin quantity for each glowworm.
 		nt (float): --
 		rs (float): Maximum sensing range.
@@ -48,10 +48,10 @@ class GlowwormSwarmOptimization(Algorithm):
 	See Also:
 		* :class:`NiaPy.algorithms.algorithm.Algorithm`
 	"""
-	Name = ['GlowwormSwarmOptimization', 'GSO']
+	name = ['GlowwormSwarmOptimization', 'GSO']
 
 	@staticmethod
-	def algorithmInfo():
+	def algorithm_info():
 		r"""Get basic information of algorithm.
 
 		Returns:
@@ -60,7 +60,7 @@ class GlowwormSwarmOptimization(Algorithm):
 		return r"""Kaipa, Krishnanand N., and Debasish Ghose. Glowworm swarm optimization: theory, algorithms, and applications. Vol. 698. Springer, 2017."""
 
 	@staticmethod
-	def typeParameters():
+	def parameter_types():
 		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
@@ -83,7 +83,7 @@ class GlowwormSwarmOptimization(Algorithm):
 			's': lambda x: isinstance(x, float) and x > 0
 		}
 
-	def setParameters(self, n=25, l0=5, nt=5, rho=0.4, gamma=0.6, beta=0.08, s=0.03, Distance=euclidean, **ukwargs):
+	def set_parameters(self, n=25, l0=5, nt=5, rho=0.4, gamma=0.6, beta=0.08, s=0.03, Distance=euclidean, **ukwargs):
 		r"""Set the arguments of an algorithm.
 
 		Arguments:
@@ -98,7 +98,7 @@ class GlowwormSwarmOptimization(Algorithm):
 			Distance (Optional[Callable[[numpy.ndarray, numpy.ndarray], float]]]): Measure distance between two individuals.
 		"""
 		ukwargs.pop('NP', None)
-		Algorithm.setParameters(self, NP=n, **ukwargs)
+		Algorithm.set_parameters(self, NP=n, **ukwargs)
 		self.l0, self.nt, self.rho, self.gamma, self.beta, self.s, self.Distance = l0, nt, rho, gamma, beta, s, Distance
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
@@ -187,7 +187,7 @@ class GlowwormSwarmOptimization(Algorithm):
 		"""
 		return R + self.beta * (self.nt - sum(N))
 
-	def initPopulation(self, task):
+	def init_population(self, task):
 		r"""Initialize population.
 
 		Args:
@@ -202,13 +202,13 @@ class GlowwormSwarmOptimization(Algorithm):
 					* R (numpy.ndarray): TODO.
 					* rs (numpy.ndarray): TODO.
 		"""
-		GS, GS_f, d = Algorithm.initPopulation(self, task)
+		GS, GS_f, d = Algorithm.init_population(self, task)
 		rs = euclidean(full(task.D, 0), task.bRange)
 		L, R = full(self.NP, self.l0), full(self.NP, rs)
 		d.update({'L': L, 'R': R, 'rs': rs})
 		return GS, GS_f, d
 
-	def runIteration(self, task, GS, GS_f, xb, fxb, L, R, rs, **dparams):
+	def run_iteration(self, task, GS, GS_f, xb, fxb, L, R, rs, **dparams):
 		r"""Core function of GlowwormSwarmOptimization algorithm.
 
 		Args:
@@ -263,17 +263,17 @@ class GlowwormSwarmOptimizationV1(GlowwormSwarmOptimization):
 		Kaipa, Krishnanand N., and Debasish Ghose. Glowworm swarm optimization: theory, algorithms, and applications. Vol. 698. Springer, 2017.
 
 	Attributes:
-		Name (List[str]): List of strings representing algorithm names.
+		name (List[str]): List of strings representing algorithm names.
 		alpha (float): --
 
 	See Also:
 		* :class:`NiaPy.algorithms.basic.GlowwormSwarmOptimization`
 	"""
-	Name = ['GlowwormSwarmOptimizationV1', 'GSOv1']
+	name = ['GlowwormSwarmOptimizationV1', 'GSOv1']
 
-	def setParameters(self, **kwargs):
+	def set_parameters(self, **kwargs):
 		self.__setParams(**kwargs)
-		GlowwormSwarmOptimization.setParameters(self, **kwargs)
+		GlowwormSwarmOptimization.set_parameters(self, **kwargs)
 
 	def __setParams(self, alpha=0.2, **ukwargs):
 		r"""Set the arguments of an algorithm.
@@ -331,15 +331,15 @@ class GlowwormSwarmOptimizationV2(GlowwormSwarmOptimization):
 		Kaipa, Krishnanand N., and Debasish Ghose. Glowworm swarm optimization: theory, algorithms, and applications. Vol. 698. Springer, 2017.
 
 	Attributes:
-		Name (List[str]): List of strings representing algorithm names.
+		name (List[str]): List of strings representing algorithm names.
 		alpha (float): --
 
 	See Also:
 		* :class:`NiaPy.algorithms.basic.GlowwormSwarmOptimization`
 	"""
-	Name = ['GlowwormSwarmOptimizationV2', 'GSOv2']
+	name = ['GlowwormSwarmOptimizationV2', 'GSOv2']
 
-	def setParameters(self, alpha=0.2, **kwargs):
+	def set_parameters(self, alpha=0.2, **kwargs):
 		r"""Set core parameters for GlowwormSwarmOptimizationV2 algorithm.
 
 		Args:
@@ -347,9 +347,9 @@ class GlowwormSwarmOptimizationV2(GlowwormSwarmOptimization):
 			**kwargs (Dict[str, Any]): Additional arguments.
 
 		See Also:
-			* :func:`NiaPy.algorithms.basic.GlowwormSwarmOptimization.setParameters`
+			* :func:`NiaPy.algorithms.basic.GlowwormSwarmOptimization.set_parameters`
 		"""
-		GlowwormSwarmOptimization.setParameters(self, **kwargs)
+		GlowwormSwarmOptimization.set_parameters(self, **kwargs)
 		self.alpha = alpha
 		if kwargs: logger.info('Unused arguments: %s' % (kwargs))
 
@@ -388,15 +388,15 @@ class GlowwormSwarmOptimizationV3(GlowwormSwarmOptimization):
 		Kaipa, Krishnanand N., and Debasish Ghose. Glowworm swarm optimization: theory, algorithms, and applications. Vol. 698. Springer, 2017.
 
 	Attributes:
-		Name (List[str]): List of strings representing algorithm names.
+		name (List[str]): List of strings representing algorithm names.
 		beta1 (float): --
 
 	See Also:
 		* :class:`NiaPy.algorithms.basic.GlowwormSwarmOptimization`
 	"""
-	Name = ['GlowwormSwarmOptimizationV3', 'GSOv3']
+	name = ['GlowwormSwarmOptimizationV3', 'GSOv3']
 
-	def setParameters(self, beta1=0.2, **kwargs):
+	def set_parameters(self, beta1=0.2, **kwargs):
 		r"""Set core parameters for GlowwormSwarmOptimizationV3 algorithm.
 
 		Args:
@@ -404,9 +404,9 @@ class GlowwormSwarmOptimizationV3(GlowwormSwarmOptimization):
 			**kwargs (Dict[str, Any]): Additional arguments.
 
 		See Also:
-			* :func:`NiaPy.algorithms.basic.GlowwormSwarmOptimization.setParameters`
+			* :func:`NiaPy.algorithms.basic.GlowwormSwarmOptimization.set_parameters`
 		"""
-		GlowwormSwarmOptimization.setParameters(self, **kwargs)
+		GlowwormSwarmOptimization.set_parameters(self, **kwargs)
 		self.beta1 = beta1
 		if kwargs: logger.info('Unused arguments: %s' % (kwargs))
 

@@ -35,17 +35,17 @@ class FlowerPollinationAlgorithm(Algorithm):
 		Implementation is based on the following MATLAB code: https://www.mathworks.com/matlabcentral/fileexchange/45112-flower-pollination-algorithm?requestedDomain=true
 
 	Attributes:
-		Name (List[str]): List of strings representing algorithm names.
+		name (List[str]): List of strings representing algorithm names.
 		p (float): probability switch.
 		beta (float): Shape of the gamma distribution (should be greater than zero).
 
 	See Also:
 		* :class:`NiaPy.algorithms.Algorithm`
 	"""
-	Name = ['FlowerPollinationAlgorithm', 'FPA']
+	name = ['FlowerPollinationAlgorithm', 'FPA']
 
 	@staticmethod
-	def typeParameters():
+	def parameter_types():
 		r"""TODO.
 
 		Returns:
@@ -54,16 +54,16 @@ class FlowerPollinationAlgorithm(Algorithm):
 				* beta (function): TODO
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.typeParameters`
+			* :func:`NiaPy.algorithms.Algorithm.parameter_types`
 		"""
-		d = Algorithm.typeParameters()
+		d = Algorithm.parameter_types()
 		d.update({
 			'p': lambda x: isinstance(x, float) and 0 <= x <= 1,
 			'beta': lambda x: isinstance(x, (float, int)) and x > 0,
 		})
 		return d
 
-	def setParameters(self, NP=25, p=0.35, beta=1.5, **ukwargs):
+	def set_parameters(self, NP=25, p=0.35, beta=1.5, **ukwargs):
 		r"""Set core parameters of FlowerPollinationAlgorithm algorithm.
 
 		Arguments:
@@ -72,9 +72,9 @@ class FlowerPollinationAlgorithm(Algorithm):
 			beta (float): Shape of the gamma distribution (should be greater than zero).
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.setParameters`
+			* :func:`NiaPy.algorithms.Algorithm.set_parameters`
 		"""
-		Algorithm.setParameters(self, NP=NP, **ukwargs)
+		Algorithm.set_parameters(self, NP=NP, **ukwargs)
 		self.p, self.beta = p, beta
 		self.S = zeros((NP, 10))
 
@@ -105,12 +105,12 @@ class FlowerPollinationAlgorithm(Algorithm):
 		sigma = (Gamma(1 + self.beta) * sin(pi * self.beta / 2) / (Gamma((1 + self.beta) / 2) * self.beta * 2 ** ((self.beta - 1) / 2))) ** (1 / self.beta)
 		return 0.01 * (self.normal(0, 1, D) * sigma / fabs(self.normal(0, 1, D)) ** (1 / self.beta))
 
-	def initPopulation(self, task):
-		pop, fpop, d = Algorithm.initPopulation(self, task)
+	def init_population(self, task):
+		pop, fpop, d = Algorithm.init_population(self, task)
 		d.update({'S': zeros((self.NP, task.D))})
 		return pop, fpop, d
 
-	def runIteration(self, task, Sol, Sol_f, xb, fxb, S, **dparams):
+	def run_iteration(self, task, Sol, Sol_f, xb, fxb, S, **dparams):
 		r"""Core function of FlowerPollinationAlgorithm algorithm.
 
 		Args:

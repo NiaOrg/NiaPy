@@ -30,17 +30,17 @@ class HybridBatAlgorithm(BatAlgorithm):
 		Fister Jr., Iztok and Fister, Dusan and Yang, Xin-She. "A Hybrid Bat Algorithm". Elektrotehniski vestnik, 2013. 1-7.
 
 	Attributes:
-		Name (List[str]): List of strings representing algorithm name.
+		name (List[str]): List of strings representing algorithm name.
 		F (float): Scaling factor.
 		CR (float): Crossover.
 
 	See Also:
 		* :class:`NiaPy.algorithms.basic.BatAlgorithm`
 	"""
-	Name = ['HybridBatAlgorithm', 'HBA']
+	name = ['HybridBatAlgorithm', 'HBA']
 
 	@staticmethod
-	def algorithmInfo():
+	def algorithm_info():
 		r"""Get basic information about the algorithm.
 
 		Returns:
@@ -49,7 +49,7 @@ class HybridBatAlgorithm(BatAlgorithm):
 		return r"""Fister Jr., Iztok and Fister, Dusan and Yang, Xin-She. "A Hybrid Bat Algorithm". Elektrotehniski vestnik, 2013. 1-7."""
 
 	@staticmethod
-	def typeParameters():
+	def parameter_types():
 		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
@@ -58,16 +58,16 @@ class HybridBatAlgorithm(BatAlgorithm):
 				* CR (Callable[[float], bool]): Crossover probability.
 
 		See Also:
-			* :func:`NiaPy.algorithms.basic.BatAlgorithm.typeParameters`
+			* :func:`NiaPy.algorithms.basic.BatAlgorithm.parameter_types`
 		"""
-		d = BatAlgorithm.typeParameters()
+		d = BatAlgorithm.parameter_types()
 		d.update({
 			'F': lambda x: isinstance(x, (int, float)) and x > 0,
 			'CR': lambda x: isinstance(x, float) and 0 <= x <= 1
 		})
 		return d
 
-	def setParameters(self, F=0.78, CR=0.35, CrossMutt=CrossBest1, **ukwargs):
+	def set_parameters(self, F=0.78, CR=0.35, CrossMutt=CrossBest1, **ukwargs):
 		r"""Set core parameters of HybridBatAlgorithm algorithm.
 
 		Arguments:
@@ -75,9 +75,9 @@ class HybridBatAlgorithm(BatAlgorithm):
 			CR (Optional[float]): Crossover.
 
 		See Also:
-			* :func:`NiaPy.algorithms.basic.BatAlgorithm.setParameters`
+			* :func:`NiaPy.algorithms.basic.BatAlgorithm.set_parameters`
 		"""
-		BatAlgorithm.setParameters(self, **ukwargs)
+		BatAlgorithm.set_parameters(self, **ukwargs)
 		self.F, self.CR, self.CrossMutt = F, CR, CrossMutt
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 

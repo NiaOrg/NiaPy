@@ -14,11 +14,11 @@ logger.setLevel('INFO')
 __all__ = [
 	'Algorithm',
 	'Individual',
-	'defaultIndividualInit',
-	'defaultNumPyInit'
+	'default_individual_init',
+	'default_numpy_init'
 ]
 
-def defaultNumPyInit(task, NP, rnd=rand, **kwargs):
+def default_numpy_init(task, NP, rnd=rand, **kwargs):
 	r"""Initialize starting population that is represented with `numpy.ndarray` with shape `{NP, task.D}`.
 
 	Args:
@@ -36,7 +36,7 @@ def defaultNumPyInit(task, NP, rnd=rand, **kwargs):
 	fpop = apply_along_axis(task.eval, 1, pop)
 	return pop, fpop
 
-def defaultIndividualInit(task, NP, rnd=rand, itype=None, **kwargs):
+def default_individual_init(task, NP, rnd=rand, itype=None, **kwargs):
 	r"""Initialize `NP` individuals of type `itype`.
 
 	Args:
@@ -73,14 +73,14 @@ class Algorithm:
 		InitPopFunc (Callable[[int, Task, mtrand.RandomState, Dict[str, Any]], Tuple[numpy.ndarray, numpy.ndarray[float]]]): Idividual initialization function.
 		itype (Individual): Type of individuals used in population, default value is None for Numpy arrays.
 	"""
-	Name = ['Algorithm', 'AAA']
+	name = ['Algorithm', 'AAA']
 	Rand = rand.RandomState(None)
 	NP = 50
-	InitPopFunc = defaultNumPyInit
+	InitPopFunc = default_numpy_init
 	itype = None
 
 	@staticmethod
-	def algorithmInfo():
+	def algorithm_info():
 		r"""Get information of algorithm.
 
 		Returns:
@@ -89,7 +89,7 @@ class Algorithm:
 		return r"""Base class for implementing algorithms."""
 
 	@staticmethod
-	def typeParameters():
+	def parameter_types():
 		r"""Return functions for checking values of parameters.
 
 		Return:
@@ -105,12 +105,12 @@ class Algorithm:
 			seed (int): Starting seed for random generator.
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.setParameters`
+			* :func:`NiaPy.algorithms.Algorithm.set_parameters`
 		"""
 		self.Rand = rand.RandomState(kwargs.pop('seed', None))
-		self.setParameters(**kwargs)
+		self.set_parameters(**kwargs)
 
-	def setParameters(self, NP=50, InitPopFunc=defaultNumPyInit, itype=None, **kwargs):
+	def set_parameters(self, NP=50, InitPopFunc=default_numpy_init, itype=None, **kwargs):
 		r"""Set the parameters/arguments of the algorithm.
 
 		Args:
@@ -120,8 +120,8 @@ class Algorithm:
 			**kwargs (Dict[str, Any]): Additional arguments.
 
 		See Also:
-			* :func:`NiaPy.algorithms.defaultNumPyInit`
-			* :func:`NiaPy.algorithms.defaultIndividualInit`
+			* :func:`NiaPy.algorithms.default_numpy_init`
+			* :func:`NiaPy.algorithms.default_individual_init`
 		"""
 		self.NP, self.InitPopFunc, self.itype = NP, InitPopFunc, itype
 
@@ -139,15 +139,15 @@ class Algorithm:
 		else: return self.Rand.rand()
 
 	def uniform(self, Lower, Upper, D=None):
-		r"""Get uniform random distribution of shape D in range from "Lower" to "Upper".
+		r"""Get uniform random distribution of shape D in range from "lower" to "upper".
 
 		Args:
-			Lower (Iterable[float]): Lower bound.
-			Upper (Iterable[float]): Upper bound.
+			Lower (Iterable[float]): lower bound.
+			Upper (Iterable[float]): upper bound.
 			D (Union[int, Iterable[int]]): Shape of returned uniform random distribution.
 
 		Returns:
-			Union[numpy.ndarray[float], float]: Array of numbers :math:`\in [\mathit{Lower}, \mathit{Upper}]`.
+			Union[numpy.ndarray[float], float]: Array of numbers :math:`\in [\mathit{lower}, \mathit{upper}]`.
 		"""
 		return self.Rand.uniform(Lower, Upper, D) if D is not None else self.Rand.uniform(Lower, Upper)
 
@@ -181,7 +181,7 @@ class Algorithm:
 		r"""Get discrete uniform (integer) random distribution of D shape in range from "Nmin" to "Nmax".
 
 		Args:
-			Nmin (int): Lower integer bound.
+			Nmin (int): lower integer bound.
 			Nmax (int): One above upper integer bound.
 			D (Union[int, Iterable[int]]): shape of returned discrete uniform random distribution.
 			skip (Union[int, Iterable[int], numpy.ndarray[int]]): numbers to skip.
@@ -195,7 +195,7 @@ class Algorithm:
 		else: r = self.Rand.randint(Nmin, Nmax)
 		return r if skip is None or r not in skip else self.randint(Nmax, D, Nmin, skip)
 
-	def getBest(self, X, X_f, xb=None, xb_f=inf):
+	def get_best(self, X, X_f, xb=None, xb_f=inf):
 		r"""Get the best individual for population.
 
 		Args:
@@ -214,7 +214,7 @@ class Algorithm:
 		elif isinstance(X_f, (ndarray, list)) and xb_f >= X_f[ib]: return X[ib], X_f[ib]
 		else: return xb, xb_f
 
-	def initPopulation(self, task):
+	def init_population(self, task):
 		r"""Initialize starting population of optimization algorithm.
 
 		Args:
@@ -227,12 +227,12 @@ class Algorithm:
 				3. Additional arguments.
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.setParameters`
+			* :func:`NiaPy.algorithms.Algorithm.set_parameters`
 		"""
 		pop, fpop = self.InitPopFunc(task=task, NP=self.NP, rnd=self.Rand, itype=self.itype)
 		return pop, fpop, {}
 
-	def runIteration(self, task, pop, fpop, xb, fxb, **dparams):
+	def run_iteration(self, task, pop, fpop, xb, fxb, **dparams):
 		r"""Core functionality of algorithm.
 
 		This function is called on every algorithm iteration.
@@ -252,11 +252,11 @@ class Algorithm:
 				3. Additional arguments of the algorithm.
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.runYield`
+			* :func:`NiaPy.algorithms.Algorithm.yield_run`
 		"""
 		return pop, fpop, {}
 
-	def runYield(self, task):
+	def yield_run(self, task):
 		r"""Run the algorithm for a single iteration and return the best solution.
 
 		Args:
@@ -271,18 +271,18 @@ class Algorithm:
 				2. Fitness value of the best solution.
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.initPopulation`
-			* :func:`NiaPy.algorithms.Algorithm.runIteration`
+			* :func:`NiaPy.algorithms.Algorithm.init_population`
+			* :func:`NiaPy.algorithms.Algorithm.run_iteration`
 		"""
-		pop, fpop, dparams = self.initPopulation(task)
-		xb, fxb = self.getBest(pop, fpop)
+		pop, fpop, dparams = self.init_population(task)
+		xb, fxb = self.get_best(pop, fpop)
 		yield xb, fxb
 		while True:
-			pop, fpop, dparams = self.runIteration(task, pop, fpop, xb, fxb, **dparams)
-			xb, fxb = self.getBest(pop, fpop, xb, fxb)
+			pop, fpop, dparams = self.run_iteration(task, pop, fpop, xb, fxb, **dparams)
+			xb, fxb = self.get_best(pop, fpop, xb, fxb)
 			yield xb, fxb
 
-	def runTask(self, task):
+	def run_task(self, task):
 		r"""Start the optimization.
 
 		Args:
@@ -294,12 +294,12 @@ class Algorithm:
 				2. Best fitness value found in optimization process.
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.runYield`
+			* :func:`NiaPy.algorithms.Algorithm.yield_run`
 		"""
-		algo, xb, fxb = self.runYield(task), None, inf
-		while not task.stopCond():
+		algo, xb, fxb = self.yield_run(task), None, inf
+		while not task.is_stopping_cond():
 			xb, fxb = next(algo)
-			task.nextIter()
+			task.next_iter()
 		return xb, fxb
 
 	def run(self, task):
@@ -314,11 +314,11 @@ class Algorithm:
 				2. Best fitness value found in optimization process.
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.runTask`
+			* :func:`NiaPy.algorithms.Algorithm.run_task`
 		"""
 		try:
 			# task.start()
-			r = self.runTask(task)
+			r = self.run_task(task)
 			return r[0], r[1] * task.optType.value
 		except (FesException, GenException, TimeException, RefException): return task.x, task.x_f * task.optType.value
 
@@ -338,8 +338,6 @@ class Individual:
 		x (numpy.ndarray): Coordinates of individual.
 		f (float): Function/fitness value of individual.
 	"""
-	x = None
-	f = inf
 
 	def __init__(self, x=None, task=None, e=True, rnd=rand, **kwargs):
 		r"""Initialize new individual.
@@ -351,12 +349,24 @@ class Individual:
 			e (Optional[bool]): True to evaluate the individual on initialization. Default value is True.
 			**kwargs (Dict[str, Any]): Additional arguments.
 		"""
-		self.f = task.optType.value * inf if task is not None else inf
-		if x is not None: self.x = x if isinstance(x, ndarray) else asarray(x)
-		else: self.generateSolution(task, rnd)
+		self._f = task.optType.value * inf if task is not None else inf
+		if x is not None: self._x = x if isinstance(x, ndarray) else asarray(x)
+		else: self.generate_solution(task, rnd)
 		if e and task is not None: self.evaluate(task, rnd)
 
-	def generateSolution(self, task, rnd=rand):
+	@property
+	def x(self):
+		return self._x
+
+	@x.setter
+	def x(self, x):
+		self._x = x
+
+	@property
+	def f(self):
+		return self._f
+
+	def generate_solution(self, task, rnd=rand):
 		r"""Generate new solution.
 
 		Generate new solution for this individual and set it to ``self.x``.
@@ -383,7 +393,7 @@ class Individual:
 			* :func:`NiaPy.util.Task.repair`
 		"""
 		self.x = task.repair(self.x, rnd=rnd)
-		self.f = task.eval(self.x)
+		self._f = task.eval(self.x)
 
 	def copy(self):
 		r"""Return a copy of self.
@@ -416,7 +426,7 @@ class Individual:
 		Returns:
 			str: String representation of self.
 		"""
-		return '%s -> %s' % (self.x, self.f)
+		return '%s -> %s' % (self._x, self.f)
 
 	def __getitem__(self, i):
 		r"""Get the value of i-th component of the solution.
@@ -427,7 +437,7 @@ class Individual:
 		Returns:
 			Any: Value of ith component.
 		"""
-		return self.x[i]
+		return self._x[i]
 
 	def __setitem__(self, i, v):
 		r"""Set the value of i-th component of the solution to v value.
@@ -436,7 +446,7 @@ class Individual:
 			i (int): Position of the solution component.
 			v (Any): Value to set to i-th component.
 		"""
-		self.x[i] = v
+		self._x[i] = v
 
 	def __len__(self):
 		r"""Get the length of the solution or the number of components.
@@ -444,6 +454,6 @@ class Individual:
 		Returns:
 			int: Number of components.
 		"""
-		return len(self.x)
+		return len(self._x)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

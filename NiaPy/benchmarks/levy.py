@@ -43,21 +43,21 @@ class Levy(Benchmark):
 
     """
 
-    Name = ["Levy"]
+    name = ["Levy"]
 
-    def __init__(self, Lower=0.0, Upper=pi):
+    def __init__(self, lower=0.0, upper=pi):
         r"""Initialize Levy benchmark.
 
-        Args:
-            Lower (Optional[float]): Lower bound of problem.
-            Upper (Optional[float]): Upper bound of problem.
+		  Args:
+				lower (Optional[float]): lower bound of problem.
+				upper (Optional[float]): upper bound of problem.
 
-        See Also:
-            :func:`NiaPy.benchmarks.Benchmark.__init__`
+		  See Also:
+				:func:`NiaPy.benchmarks.Benchmark.__init__`
 
-        """
+		  """
 
-        Benchmark.__init__(self, Lower, Upper)
+        Benchmark.__init__(self, lower, Upper)
 
     @staticmethod
     def latex_code():

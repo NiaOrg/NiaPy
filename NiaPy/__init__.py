@@ -132,8 +132,8 @@ class Runner:
 			Qmax (float): Maximum frequency
 			Pa (float): Probability
 			F (float): Scalling factor
-			F_l (float): Lower limit of scalling factor
-			F_u (float): Upper limit of scalling factor
+			F_l (float): lower limit of scalling factor
+			F_u (float): upper limit of scalling factor
 			CR (float): Crossover rate
 			alpha (float): Alpha parameter
 			betamin (float): Betamin parameter
@@ -173,7 +173,7 @@ class Runner:
 		r"""Get algorithm for optimization.
 
 		Args:
-			name (str): Name of the algorithm
+			name (str): name of the algorithm
 
 		Returns:
 			Algorithm: TODO
@@ -199,13 +199,13 @@ class Runner:
 		r"""TODO.
 
 		Args:
-			name (str): Name of algorithm.
+			name (str): name of algorithm.
 
 		Returns:
 			Algorithm: Initialized algorithm with parameters.
 		"""
 		algorithm, params = Runner.getAlgorithm(name), dict()
-		for k, v in algorithm.typeParameters().items():
+		for k, v in algorithm.parameter_types().items():
 			val = self.args.get(k, None)
 			if val != None and v(val): params[k] = val
 		return algorithm(**params)

@@ -36,7 +36,7 @@ class SineCosineAlgorithm(Algorithm):
 		Seyedali Mirjalili, SCA: A Sine Cosine Algorithm for solving optimization problems, Knowledge-Based Systems, Volume 96, 2016, Pages 120-133, ISSN 0950-7051, https://doi.org/10.1016/j.knosys.2015.12.022.
 
 	Attributes:
-		Name (List[str]): List of string representing algorithm names.
+		name (List[str]): List of string representing algorithm names.
 		a (float): Parameter for control in :math:`r_1` value
 		Rmin (float): Minimu value for :math:`r_3` value
 		Rmax (float): Maximum value for :math:`r_3` value
@@ -44,22 +44,22 @@ class SineCosineAlgorithm(Algorithm):
 	See Also:
 		* :class:`NiaPy.algorithms.Algorithm`
 	"""
-	Name = ['SineCosineAlgorithm', 'SCA']
+	name = ['SineCosineAlgorithm', 'SCA']
 
 	@staticmethod
-	def algorithmInfo():
+	def algorithm_info():
 		r"""Get basic information of algorithm.
 
 		Returns:
 			str: Basic information of algorithm.
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+			* :func:`NiaPy.algorithms.Algorithm.algorithm_info`
 		"""
 		return r"""Seyedali Mirjalili, SCA: A Sine Cosine Algorithm for solving optimization problems, Knowledge-Based Systems, Volume 96, 2016, Pages 120-133, ISSN 0950-7051, https://doi.org/10.1016/j.knosys.2015.12.022."""
 
 	@staticmethod
-	def typeParameters():
+	def parameter_types():
 		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
@@ -69,9 +69,9 @@ class SineCosineAlgorithm(Algorithm):
 				* Rmax (Callable[[Union[float, int]], bool]): TODO
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.typeParameters`
+			* :func:`NiaPy.algorithms.Algorithm.parameter_types`
 		"""
-		d = Algorithm.typeParameters()
+		d = Algorithm.parameter_types()
 		d.update({
 			'a': lambda x: isinstance(x, (float, int)) and x > 0,
 			'Rmin': lambda x: isinstance(x, (float, int)),
@@ -79,7 +79,7 @@ class SineCosineAlgorithm(Algorithm):
 		})
 		return d
 
-	def setParameters(self, NP=25, a=3, Rmin=0, Rmax=2, **ukwargs):
+	def set_parameters(self, NP=25, a=3, Rmin=0, Rmax=2, **ukwargs):
 		r"""Set the arguments of an algorithm.
 
 		Args:
@@ -89,9 +89,9 @@ class SineCosineAlgorithm(Algorithm):
 			Rmax (Optional[float]): Maximum value for :math:`r_3` value
 
 		See Also:
-			* :func:`NiaPy.algorithms.algorithm.Algorithm.setParameters`
+			* :func:`NiaPy.algorithms.algorithm.Algorithm.set_parameters`
 		"""
-		Algorithm.setParameters(self, NP=NP, **ukwargs)
+		Algorithm.set_parameters(self, NP=NP, **ukwargs)
 		self.a, self.Rmin, self.Rmax = a, Rmin, Rmax
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
@@ -112,7 +112,7 @@ class SineCosineAlgorithm(Algorithm):
 		"""
 		return task.repair(x + r1 * (sin(r2) if r4 < 0.5 else cos(r2)) * fabs(r3 * x_b - x), self.Rand)
 
-	def initPopulation(self, task):
+	def init_population(self, task):
 		r"""Initialize the individuals.
 
 		Args:
@@ -124,9 +124,9 @@ class SineCosineAlgorithm(Algorithm):
 				2. Function/fitness values for individuals
 				3. Additional arguments
 		"""
-		return Algorithm.initPopulation(self, task)
+		return Algorithm.init_population(self, task)
 
-	def runIteration(self, task, P, P_f, xb, fxb, **dparams):
+	def run_iteration(self, task, P, P_f, xb, fxb, **dparams):
 		r"""Core function of Sine Cosine Algorithm.
 
 		Args:

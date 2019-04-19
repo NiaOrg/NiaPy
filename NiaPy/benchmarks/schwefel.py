@@ -42,21 +42,21 @@ class Schwefel(Benchmark):
 
     """
 
-    Name = ["Schwefel"]
+    name = ["Schwefel"]
 
-    def __init__(self, Lower=-500.0, Upper=500.0):
+    def __init__(self, lower=-500.0, upper=500.0):
         """Initialize Schewefel benchmark.
 
-        Args:
-            Lower (Optional[float]): Lower bound of problem.
-            Upper (Optional[float]): Upper bound of problem.
+		  Args:
+				lower (Optional[float]): lower bound of problem.
+				upper (Optional[float]): upper bound of problem.
 
-        See Also:
-            :func:`NiaPy.benchmarks.Benchmark.__init__`
+		  See Also:
+				:func:`NiaPy.benchmarks.Benchmark.__init__`
 
-        """
+		  """
 
-        Benchmark.__init__(self, Lower, Upper)
+        Benchmark.__init__(self, lower, Upper)
 
     @staticmethod
     def latex_code():
@@ -123,21 +123,21 @@ class Schwefel221(Benchmark):
 
     """
 
-    Name = ["Schwefel221"]
+    name = ["Schwefel221"]
 
-    def __init__(self, Lower=-100.0, Upper=100.0):
+    def __init__(self, lower=-100.0, upper=100.0):
         """Initialize Schwefel221 benchmark.
 
-        Args:
-            Lower (Optional[float]): Lower bound of problem.
-            Upper (Optional[float]): Upper bound of problem.
+		  Args:
+				lower (Optional[float]): lower bound of problem.
+				upper (Optional[float]): upper bound of problem.
 
-        See Also:
-            :func:`NiaPy.benchmarks.Benchmark.__init__`
+		  See Also:
+				:func:`NiaPy.benchmarks.Benchmark.__init__`
 
-        """
+		  """
 
-        Benchmark.__init__(self, Lower, Upper)
+        Benchmark.__init__(self, lower, Upper)
 
     @staticmethod
     def latex_code():
@@ -205,21 +205,21 @@ class Schwefel222(Benchmark):
 
     """
 
-    Name = ["Schwefel222"]
+    name = ["Schwefel222"]
 
-    def __init__(self, Lower=-100.0, Upper=100.0):
+    def __init__(self, lower=-100.0, upper=100.0):
         """Initialize Schwefel222 benchmark.
 
-        Args:
-            Lower (Optional[float]): Lower bound of problem.
-            Upper (Optional[float]): Upper bound of problem.
+		  Args:
+				lower (Optional[float]): lower bound of problem.
+				upper (Optional[float]): upper bound of problem.
 
-        See Also:
-            :func:`NiaPy.benchmarks.Benchmark.__init__`
+		  See Also:
+				:func:`NiaPy.benchmarks.Benchmark.__init__`
 
-        """
+		  """
 
-        Benchmark.__init__(self, Lower, Upper)
+        Benchmark.__init__(self, lower, Upper)
 
     @staticmethod
     def latex_code():
@@ -286,21 +286,21 @@ class ModifiedSchwefel(Benchmark):
 
     """
 
-    Name = ["ModifiedSchwefel"]
+    name = ["ModifiedSchwefel"]
 
-    def __init__(self, Lower=-100.0, Upper=100.0):
+    def __init__(self, lower=-100.0, upper=100.0):
         """Initialize Modified Schwefel benchmark.
 
-        Args:
-            Lower (Optional[float]): Lower bound of problem.
-            Upper (Optional[float]): Upper bound of problem.
+		  Args:
+				lower (Optional[float]): lower bound of problem.
+				upper (Optional[float]): upper bound of problem.
 
-        See Also:
-            :func:`NiaPy.benchmarks.Benchmark.__init__`
+		  See Also:
+				:func:`NiaPy.benchmarks.Benchmark.__init__`
 
-        """
+		  """
 
-        Benchmark.__init__(self, Lower, Upper)
+        Benchmark.__init__(self, lower, Upper)
 
     @staticmethod
     def latex_code():
@@ -375,21 +375,21 @@ class ExpandedScaffer(Benchmark):
 
     """
 
-    Name = ["ExpandedScaffer"]
+    name = ["ExpandedScaffer"]
 
-    def __init__(self, Lower=-100.0, Upper=100.0):
+    def __init__(self, lower=-100.0, upper=100.0):
         """Initialize Expanded Scaffer benchmark.
 
-        Args:
-            Lower (Optional[float]): Lower bound of problem.
-            Upper (Optional[float]): Upper bound of problem.
+		  Args:
+				lower (Optional[float]): lower bound of problem.
+				upper (Optional[float]): upper bound of problem.
 
-        See Also:
-            :func:`NiaPy.benchmarks.Benchmark.__init__`
+		  See Also:
+				:func:`NiaPy.benchmarks.Benchmark.__init__`
 
-        """
+		  """
 
-        Benchmark.__init__(self, Lower=Lower, Upper=Lower)
+        Benchmark.__init__(self, lower=lower, upper=lower)
 
     @staticmethod
     def latex_code():

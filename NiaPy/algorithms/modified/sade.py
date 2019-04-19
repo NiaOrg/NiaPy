@@ -38,14 +38,14 @@ class StrategyAdaptationDifferentialEvolution(DifferentialEvolution):
 		Qin, A. Kai, and Ponnuthurai N. Suganthan. "Self-adaptive differential evolution algorithm for numerical optimization." 2005 IEEE congress on evolutionary computation. Vol. 2. IEEE, 2005.
 
 	Attributes:
-		Name (List[str]): List of strings representing algorithm name.
+		name (List[str]): List of strings representing algorithm name.
 
 	See Also:
 		:class:`NiaPy.algorithms.basic.DifferentialEvolution`
 	"""
-	Name = ['StrategyAdaptationDifferentialEvolution', 'SADE', 'SaDE']
+	name = ['StrategyAdaptationDifferentialEvolution', 'SADE', 'SaDE']
 
-	def setParameters(self, **kwargs):
+	def set_parameters(self, **kwargs):
 		pass
 
 class StrategyAdaptationDifferentialEvolutionV1(DifferentialEvolution):
@@ -70,14 +70,14 @@ class StrategyAdaptationDifferentialEvolutionV1(DifferentialEvolution):
 		Qin, A. Kai, Vicky Ling Huang, and Ponnuthurai N. Suganthan. "Differential evolution algorithm with strategy adaptation for global numerical optimization." IEEE transactions on Evolutionary Computation 13.2 (2009): 398-417.
 
 	Attributes:
-		Name (List[str]): List of strings representing algorithm name.
+		name (List[str]): List of strings representing algorithm name.
 
 	See Also:
 		:class:`NiaPy.algorithms.basic.DifferentialEvolution`
 	"""
-	Name = ['StrategyAdaptationDifferentialEvolutionV1', 'SADEV1', 'SaDEV1']
+	name = ['StrategyAdaptationDifferentialEvolutionV1', 'SADEV1', 'SaDEV1']
 
-	def setParameters(self, **kwargs):
+	def set_parameters(self, **kwargs):
 		pass
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

@@ -14,7 +14,7 @@ def TabuSearchF(task, SR=None, TL_size=25, rnd=rand):
 	if SR == None: SR = task.bRange
 	x, TL = rnd.uniform(task.Lower, task.Upper), list()
 	x_f = task.eval(x)
-	# while not task.stopCondI():
+	# while not task.is_stopping_cond_next_iter():
 	# Generate neigours
 	# evaluate x not in ts
 	# get best of of evaluated
@@ -42,22 +42,22 @@ class TabuSearch(Algorithm):
 	Reference paper:
 
 	Attributes:
-		Name (List[str]): List of strings representing algorithm name.
+		name (List[str]): List of strings representing algorithm name.
 	"""
-	Name = ['TabuSearch', 'TS']
+	name = ['TabuSearch', 'TS']
 
 	@staticmethod
-	def typeParameters(): return {
+	def parameter_types(): return {
 			'NP': lambda x: isinstance(x, int) and x > 0
 	}
 
-	def setParameters(self, **ukwargs):
+	def set_parameters(self, **ukwargs):
 		r"""Set the algorithm parameters/arguments."""
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def move(self): return list()
 
-	def runTask(self, task):
+	def run_task(self, task):
 		# FIXME
 		return TabuSearchF(task, rnd=self.Rand)
 

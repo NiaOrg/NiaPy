@@ -29,7 +29,7 @@ class ForestOptimizationAlgorithm(Algorithm):
         Manizheh Ghaemi, Mohammad-Reza Feizi-Derakhshi, Forest Optimization Algorithm, Expert Systems with Applications, Volume 41, Issue 15, 2014, Pages 6676-6687, ISSN 0957-4174, https://doi.org/10.1016/j.eswa.2014.05.009.
 
     Attributes:
-        Name (List[str]): List of strings representing algorithm name.
+        name (List[str]): List of strings representing algorithm name.
         lt (int): Life time of trees parameter.
         al (int): Area limit parameter.
         lsc (int): Local seeding changes parameter.
@@ -39,10 +39,10 @@ class ForestOptimizationAlgorithm(Algorithm):
     See Also:
         * :class:`NiaPy.algorithms.Algorithm`
     """
-    Name = ['ForestOptimizationAlgorithm', 'FOA']
+    name = ['ForestOptimizationAlgorithm', 'FOA']
 
     @staticmethod
-    def algorithmInfo():
+    def algorithm_info():
         return r"""
         Description: Forest Optimization Algorithm is inspired by few trees in the forests which can survive for several decades, while other trees could live for a limited period.
         Authors: Manizheh Ghaemi, Mohammad-Reza Feizi-Derakhshi
@@ -51,7 +51,7 @@ class ForestOptimizationAlgorithm(Algorithm):
     """
 
     @staticmethod
-    def typeParameters():
+    def parameter_types():
         r"""Get dictionary with functions for checking values of parameters.
 
         Returns:
@@ -63,9 +63,9 @@ class ForestOptimizationAlgorithm(Algorithm):
                 * tr (Callable[[float], bool]): Checks if transfer rate parameter has a proper value.
 
         See Also:
-            * :func:`NiaPy.algorithms.algorithm.Algorithm.typeParameters`
+            * :func:`NiaPy.algorithms.algorithm.Algorithm.parameter_types`
         """
-        d = Algorithm.typeParameters()
+        d = Algorithm.parameter_types()
         d.update({
             'lt': lambda x: isinstance(x, int) and x > 0,
             'al': lambda x: isinstance(x, int) and x > 0,
@@ -75,7 +75,7 @@ class ForestOptimizationAlgorithm(Algorithm):
         })
         return d
 
-    def setParameters(self, NP=10, lt=3, al=10, lsc=1, gsc=1, tr=0.3, **ukwargs):
+    def set_parameters(self, NP=10, lt=3, al=10, lsc=1, gsc=1, tr=0.3, **ukwargs):
         r"""Set the parameters of the algorithm.
 
         Args:
@@ -88,9 +88,9 @@ class ForestOptimizationAlgorithm(Algorithm):
             ukwargs (Dict[str, Any]): Additional arguments.
 
         See Also:
-            * :func:`NiaPy.algorithms.Algorithm.setParameters`
+            * :func:`NiaPy.algorithms.Algorithm.set_parameters`
         """
-        Algorithm.setParameters(self, NP=NP)
+        Algorithm.set_parameters(self, NP=NP)
         self.lt, self.al, self.lsc, self.gsc, self.tr = lt, al, lsc, gsc, tr
         if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
@@ -99,8 +99,8 @@ class ForestOptimizationAlgorithm(Algorithm):
 
         Args:
             x (numpy.ndarray): Individual to repair.
-            lower (numpy.ndarray): Lower limits for dimensions.
-            upper (numpy.ndarray): Upper limits for dimensions.
+            lower (numpy.ndarray): lower limits for dimensions.
+            upper (numpy.ndarray): upper limits for dimensions.
 
         Returns:
             numpy.ndarray: Repaired individual.
@@ -192,7 +192,7 @@ class ForestOptimizationAlgorithm(Algorithm):
         evaluations = evaluations[ei[:self.al]]
         return trees, candidates, evaluations
 
-    def initPopulation(self, task):
+    def init_population(self, task):
         r"""Initialize the starting population.
 
         Args:
@@ -206,15 +206,15 @@ class ForestOptimizationAlgorithm(Algorithm):
                     * dx (float): A small value used in local seeding stage.
 
         See Also:
-            * :func:`NiaPy.algorithms.Algorithm.initPopulation`
+            * :func:`NiaPy.algorithms.Algorithm.init_population`
         """
-        Trees, Evaluations, _ = Algorithm.initPopulation(self, task)
+        Trees, Evaluations, _ = Algorithm.init_population(self, task)
         z = zeros((self.NP, 1))
         Trees = append(Trees, z, axis=1)
         dx = absolute(task.benchmark.Upper) / 5
         return Trees, Evaluations, {'dx': dx}
 
-    def runIteration(self, task, Trees, Evaluations, xb, fxb, dx, **dparams):
+    def run_iteration(self, task, Trees, Evaluations, xb, fxb, dx, **dparams):
         r"""Core function of Forest Optimization Algorithm.
 
         Args:

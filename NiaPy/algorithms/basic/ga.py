@@ -4,7 +4,7 @@ import logging
 
 from numpy import argmin, sort, random as rand, asarray, fmin, fmax, sum, empty
 
-from NiaPy.algorithms.algorithm import Algorithm, Individual, defaultIndividualInit
+from NiaPy.algorithms.algorithm import Algorithm, Individual, default_individual_init
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.basic')
@@ -183,7 +183,7 @@ class GeneticAlgorithm(Algorithm):
 		MIT
 
 	Attributes:
-		Name (List[str]): List of strings representing algorithm name.
+		name (List[str]): List of strings representing algorithm name.
 		Ts (int): Tournament size.
 		Mr (float): Mutation rate.
 		Cr (float): Crossover rate.
@@ -194,10 +194,10 @@ class GeneticAlgorithm(Algorithm):
 	See Also:
 		* :class:`NiaPy.algorithms.Algorithm`
 	"""
-	Name = ['GeneticAlgorithm', 'GA']
+	name = ['GeneticAlgorithm', 'GA']
 
 	@staticmethod
-	def algorithmInfo():
+	def algorithm_info():
 		r"""Get basic information of algorithm.
 
 		Returns:
@@ -206,7 +206,7 @@ class GeneticAlgorithm(Algorithm):
 		return r"""On info"""
 
 	@staticmethod
-	def typeParameters():
+	def parameter_types():
 		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
@@ -216,9 +216,9 @@ class GeneticAlgorithm(Algorithm):
 				* Cr (Callable[[float], bool]): Probability of crossover.
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.typeParameters`
+			* :func:`NiaPy.algorithms.Algorithm.parameter_types`
 		"""
-		d = Algorithm.typeParameters()
+		d = Algorithm.parameter_types()
 		d.update({
 			'Ts': lambda x: isinstance(x, int) and x > 1,
 			'Mr': lambda x: isinstance(x, float) and 0 <= x <= 1,
@@ -226,7 +226,7 @@ class GeneticAlgorithm(Algorithm):
 		})
 		return d
 
-	def setParameters(self, NP=25, Ts=5, Mr=0.25, Cr=0.25, Selection=TournamentSelection, Crossover=UniformCrossover, Mutation=UniformMutation, **ukwargs):
+	def set_parameters(self, NP=25, Ts=5, Mr=0.25, Cr=0.25, Selection=TournamentSelection, Crossover=UniformCrossover, Mutation=UniformMutation, **ukwargs):
 		r"""Set the parameters of the algorithm.
 
 		Arguments:
@@ -239,7 +239,7 @@ class GeneticAlgorithm(Algorithm):
 			Mutation (Optional[Callable[[numpy.ndarray[Individual], int, float, Task, mtrand.RandomState], Individual]]): Mutation operator.
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.setParameters`
+			* :func:`NiaPy.algorithms.Algorithm.set_parameters`
 			* Selection:
 				* :func:`NiaPy.algorithms.basic.TournamentSelection`
 				* :func:`NiaPy.algorithms.basic.RouletteSelection`
@@ -253,12 +253,12 @@ class GeneticAlgorithm(Algorithm):
 				* :func:`NiaPy.algorithms.basic.CreepMutation`
 				* :func:`NiaPy.algorithms.basic.MutationUros`
 		"""
-		Algorithm.setParameters(self, NP=NP, itype=ukwargs.pop('itype', Individual), InitPopFunc=ukwargs.pop('InitPopFunc', defaultIndividualInit), **ukwargs)
+		Algorithm.set_parameters(self, NP=NP, itype=ukwargs.pop('itype', Individual), InitPopFunc=ukwargs.pop('InitPopFunc', default_individual_init), **ukwargs)
 		self.Ts, self.Mr, self.Cr = Ts, Mr, Cr
 		self.Selection, self.Crossover, self.Mutation = Selection, Crossover, Mutation
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def runIteration(self, task, pop, fpop, xb, fxb, **dparams):
+	def run_iteration(self, task, pop, fpop, xb, fxb, **dparams):
 		r"""Core function of GeneticAlgorithm algorithm.
 
 		Args:

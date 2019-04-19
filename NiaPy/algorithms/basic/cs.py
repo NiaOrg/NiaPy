@@ -30,7 +30,7 @@ class CuckooSearch(Algorithm):
 		Yang, Xin-She, and Suash Deb. "Cuckoo search via Lévy flights." Nature & Biologically Inspired Computing, 2009. NaBIC 2009. World Congress on. IEEE, 2009.
 
 	Attributes:
-		Name (List[str]): list of strings representing algorithm names.
+		name (List[str]): list of strings representing algorithm names.
 		N (int): Population size.
 		pa (float): Proportion of worst nests.
 		alpha (float): Scale factor for levy flight.
@@ -38,10 +38,10 @@ class CuckooSearch(Algorithm):
 	See Also:
 		* :class:`NiaPy.algorithms.Algorithm`
 	"""
-	Name = ['CuckooSearch', 'CS']
+	name = ['CuckooSearch', 'CS']
 
 	@staticmethod
-	def typeParameters():
+	def parameter_types():
 		r"""TODO.
 
 		Returns:
@@ -56,7 +56,7 @@ class CuckooSearch(Algorithm):
 			'alpha': lambda x: isinstance(x, (float, int)),
 		}
 
-	def setParameters(self, N=50, pa=0.2, alpha=0.5, **ukwargs):
+	def set_parameters(self, N=50, pa=0.2, alpha=0.5, **ukwargs):
 		r"""Set the arguments of an algorithm.
 
 		Arguments:
@@ -66,10 +66,10 @@ class CuckooSearch(Algorithm):
 			**ukwargs (Dict[str, Any]): Additional arguments
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.setParameters`
+			* :func:`NiaPy.algorithms.Algorithm.set_parameters`
 		"""
 		ukwargs.pop('NP', None)
-		Algorithm.setParameters(self, NP=N, **ukwargs)
+		Algorithm.set_parameters(self, NP=N, **ukwargs)
 		self.pa, self.alpha = pa, alpha
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
@@ -92,7 +92,7 @@ class CuckooSearch(Algorithm):
 		fpop[si] = apply_along_axis(task.eval, 1, pop[si])
 		return pop, fpop
 
-	def initPopulation(self, task):
+	def init_population(self, task):
 		r"""Initialize starting population.
 
 		Args:
@@ -106,13 +106,13 @@ class CuckooSearch(Algorithm):
 					* pa_v (float): TODO
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.initPopulation`
+			* :func:`NiaPy.algorithms.Algorithm.init_population`
 		"""
-		N, N_f, d = Algorithm.initPopulation(self, task)
+		N, N_f, d = Algorithm.init_population(self, task)
 		d.update({'pa_v': self.NP * self.pa})
 		return N, N_f, d
 
-	def runIteration(self, task, pop, fpop, xb, fxb, pa_v, **dparams):
+	def run_iteration(self, task, pop, fpop, xb, fxb, pa_v, **dparams):
 		r"""Core function of CuckooSearch algorithm.
 
 		Args:

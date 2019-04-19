@@ -8,4 +8,4 @@ sys.path.append('../')
 from NiaPy.algorithms.basic import FireflyAlgorithm
 
 algo = FireflyAlgorithm()
-print(algo.algorithmInfo())
+print(algo.algorithm_info())

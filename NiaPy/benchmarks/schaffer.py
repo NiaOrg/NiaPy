@@ -41,21 +41,21 @@ class SchafferN2(Benchmark):
         http://www5.zzu.edu.cn/__local/A/69/BC/D3B5DFE94CD2574B38AD7CD1D12_C802DAFE_BC0C0.pdf
     """
 
-    Name = ["SchafferN2"]
+    name = ["SchafferN2"]
 
-    def __init__(self, Lower=-100.0, Upper=100.0):
-        r"""Initialize Schaffer N. 2  benchmark.
+    def __init__(self, lower=-100.0, upper=100.0):
+		 r"""Initialize Schaffer N. 2  benchmark.
 
-        Args:
-            Lower (Optional[float]): Lower bound of problem.
-            Upper (Optional[float]): Upper bound of problem.
+		 Args:
+			  lower (Optional[float]): lower bound of problem.
+			  upper (Optional[float]): upper bound of problem.
 
-        See Also:
-            :func:`NiaPy.benchmarks.Benchmark.__init__`
+		 See Also:
+			  :func:`NiaPy.benchmarks.Benchmark.__init__`
 
-        """
+		 """
 
-        Benchmark.__init__(self, Lower, Upper)
+        Benchmark.__init__(self, lower, Upper)
 
     @staticmethod
     def latex_code():
@@ -117,21 +117,21 @@ class SchafferN4(Benchmark):
 
     """
 
-    Name = ["SchafferN4"]
+    name = ["SchafferN4"]
 
-    def __init__(self, Lower=-100.0, Upper=100.0):
-        r"""Initialize Schaffer N. 4 benchmark.
+    def __init__(self, lower=-100.0, upper=100.0):
+		 r"""Initialize Schaffer N. 4 benchmark.
 
-        Args:
-            Lower (Optional[float]): Lower bound of problem.
-            Upper (Optional[float]): Upper bound of problem.
+		 Args:
+			  lower (Optional[float]): lower bound of problem.
+			  upper (Optional[float]): upper bound of problem.
 
-        See Also:
-            :func:`NiaPy.benchmarks.Benchmark.__init__`
+		 See Also:
+			  :func:`NiaPy.benchmarks.Benchmark.__init__`
 
-        """
+		 """
 
-        Benchmark.__init__(self, Lower, Upper)
+        Benchmark.__init__(self, lower, Upper)
 
     @staticmethod
     def latex_code():
@@ -192,21 +192,21 @@ class ExpandedSchaffer(Benchmark):
         http://www5.zzu.edu.cn/__local/A/69/BC/D3B5DFE94CD2574B38AD7CD1D12_C802DAFE_BC0C0.pdf
     """
 
-    Name = ["ExpandedSchaffer"]
+    name = ["ExpandedSchaffer"]
 
-    def __init__(self, Lower=-100.0, Upper=100.0):
-        r"""Initialize Expanded Schaffer benchmark.
+    def __init__(self, lower=-100.0, upper=100.0):
+		 r"""Initialize Expanded Schaffer benchmark.
 
-        Args:
-            Lower (Optional[float]): Lower bound of problem.
-            Upper (Optional[float]): Upper bound of problem.
+		 Args:
+			  lower (Optional[float]): lower bound of problem.
+			  upper (Optional[float]): upper bound of problem.
 
-        See Also:
-            :func:`NiaPy.benchmarks.Benchmark.__init__`
+		 See Also:
+			  :func:`NiaPy.benchmarks.Benchmark.__init__`
 
-        """
+		 """
 
-        Benchmark.__init__(self, Lower, Upper)
+        Benchmark.__init__(self, lower, Upper)
 
     @staticmethod
     def latex_code():

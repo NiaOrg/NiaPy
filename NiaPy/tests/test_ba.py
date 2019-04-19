@@ -8,7 +8,7 @@ class BATestCase(AlgorithmTestCase):
     def test_parameter_type(self):
         """Test BA parameters."""
 
-        d = BatAlgorithm.typeParameters()
+        d = BatAlgorithm.parameter_types()
         self.assertTrue(d['Qmax'](10))
         self.assertTrue(d['Qmin'](10))
         self.assertTrue(d['r'](10))

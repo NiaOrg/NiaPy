@@ -42,21 +42,21 @@ class DixonPrice(Benchmark):
 
     """
 
-    Name = ["DixonPrice"]
+    name = ["DixonPrice"]
 
-    def __init__(self, Lower=-10.0, Upper=10):
-        r"""Initialize of Dixon Price benchmark.
+    def __init__(self, lower=-10.0, upper=10):
+		 r"""Initialize of Dixon Price benchmark.
 
-        Args:
-            Lower (Optional[float]): Lower bound of problem.
-            Upper (Optional[float]): Upper bound of problem.
+		 Args:
+			  lower (Optional[float]): lower bound of problem.
+			  upper (Optional[float]): upper bound of problem.
 
-        See Also:
-            :func:`NiaPy.benchmarks.Benchmark.__init__`
+		 See Also:
+			  :func:`NiaPy.benchmarks.Benchmark.__init__`
 
-        """
+		 """
 
-        Benchmark.__init__(self, Lower, Upper)
+        Benchmark.__init__(self, lower, Upper)
 
     @staticmethod
     def latex_code():

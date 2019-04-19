@@ -41,7 +41,7 @@ class Trid(Benchmark):
 
     """
 
-    Name = ["Trid"]
+    name = ["Trid"]
 
     def __init__(self, D=2):
         r"""Initialize Trid benchmark.

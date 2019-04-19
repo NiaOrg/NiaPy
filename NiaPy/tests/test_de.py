@@ -58,10 +58,10 @@ class DETestCase(AlgorithmTestCase):
 
 class dynNpDETestCase(AlgorithmTestCase):
 	def test_algorithm_info(self):
-		self.assertIsNotNone(DynNpDifferentialEvolution.algorithmInfo())
+		self.assertIsNotNone(DynNpDifferentialEvolution.algorithm_info())
 
 	def test_type_parameters(self):
-		d = DynNpDifferentialEvolution.typeParameters()
+		d = DynNpDifferentialEvolution.parameter_types()
 		self.assertTrue(d['rp'](10))
 		self.assertTrue(d['rp'](10.10))
 		self.assertFalse(d['rp'](0))
@@ -83,10 +83,10 @@ class dynNpDETestCase(AlgorithmTestCase):
 
 class ANpDETestCase(AlgorithmTestCase):
 	def test_algorithm_info(self):
-		self.assertIsNotNone(AgingNpDifferentialEvolution.algorithmInfo())
+		self.assertIsNotNone(AgingNpDifferentialEvolution.algorithm_info())
 
 	def test_type_parameters(self):
-		d = AgingNpDifferentialEvolution.typeParameters()
+		d = AgingNpDifferentialEvolution.parameter_types()
 		self.assertIsNotNone(d.pop('Lt_min', None))
 		self.assertIsNotNone(d.pop('Lt_max', None))
 		self.assertIsNotNone(d.pop('delta_np', None))
@@ -124,10 +124,10 @@ class ANpDETestCase(AlgorithmTestCase):
 
 class MsDETestCase(AlgorithmTestCase):
 	def test_algorithm_info(self):
-		self.assertIsNotNone(MultiStrategyDifferentialEvolution.algorithmInfo())
+		self.assertIsNotNone(MultiStrategyDifferentialEvolution.algorithm_info())
 
 	def test_type_parameters(self):
-		d = MultiStrategyDifferentialEvolution.typeParameters()
+		d = MultiStrategyDifferentialEvolution.parameter_types()
 		self.assertIsNone(d.get('CrossMutt', None))
 		self.assertIsNotNone(d.get('strategies', None))
 
@@ -143,10 +143,10 @@ class MsDETestCase(AlgorithmTestCase):
 
 class DynNpMsDETestCase(AlgorithmTestCase):
 	def test_algorithm_info(self):
-		self.assertIsNotNone(DynNpMultiStrategyDifferentialEvolution.algorithmInfo())
+		self.assertIsNotNone(DynNpMultiStrategyDifferentialEvolution.algorithm_info())
 
 	def test_type_parameters(self):
-		d = DynNpMultiStrategyDifferentialEvolution.typeParameters()
+		d = DynNpMultiStrategyDifferentialEvolution.parameter_types()
 		self.assertTrue(d['rp'](10))
 		self.assertTrue(d['rp'](10.10))
 		self.assertFalse(d['rp'](0))
@@ -168,10 +168,10 @@ class DynNpMsDETestCase(AlgorithmTestCase):
 
 class ANpMsDETestCase(AlgorithmTestCase):
 	def test_algorithm_info(self):
-		self.assertIsNotNone(AgingNpMultiMutationDifferentialEvolution.algorithmInfo())
+		self.assertIsNotNone(AgingNpMultiMutationDifferentialEvolution.algorithm_info())
 
 	def test_type_parameters(self):
-		d = AgingNpMultiMutationDifferentialEvolution.typeParameters()
+		d = AgingNpMultiMutationDifferentialEvolution.parameter_types()
 		self.assertIsNotNone(d.pop('Lt_min', None))
 		self.assertIsNotNone(d.pop('Lt_max', None))
 		self.assertIsNotNone(d.pop('delta_np', None))

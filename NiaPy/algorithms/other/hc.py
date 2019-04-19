@@ -57,10 +57,10 @@ class HillClimbAlgorithm(Algorithm):
 		delta (float): Change for searching in neighborhood.
 		Neighborhood (Callable[numpy.ndarray, float, Task], Tuple[numpy.ndarray, float]]): Function for getting neighbours.
 	"""
-	Name = ['HillClimbAlgorithm', 'BBFA']
+	name = ['HillClimbAlgorithm', 'BBFA']
 
 	@staticmethod
-	def algorithmInfo():
+	def algorithm_info():
 		r"""Get basic information of algorithm.
 
 		Returns:
@@ -69,7 +69,7 @@ class HillClimbAlgorithm(Algorithm):
 		return r"""TODO"""
 
 	@staticmethod
-	def typeParameters():
+	def parameter_types():
 		r"""TODO.
 
 		Returns:
@@ -78,18 +78,18 @@ class HillClimbAlgorithm(Algorithm):
 		"""
 		return {'delta': lambda x: isinstance(x, (int, float)) and x > 0}
 
-	def setParameters(self, delta=0.5, Neighborhood=Neighborhood, **ukwargs):
+	def set_parameters(self, delta=0.5, Neighborhood=Neighborhood, **ukwargs):
 		r"""Set the algorithm parameters/arguments.
 
 		Args:
 			* delta (Optional[float]): Change for searching in neighborhood.
 			* Neighborhood (Optional[Callable[numpy.ndarray, float, Task], Tuple[numpy.ndarray, float]]]): Function for getting neighbours.
 		"""
-		Algorithm.setParameters(self, NP=1, **ukwargs)
+		Algorithm.set_parameters(self, NP=1, **ukwargs)
 		self.delta, self.Neighborhood = delta, Neighborhood
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def initPopulation(self, task):
+	def init_population(self, task):
 		r"""Initialize stating point.
 
 		Args:
@@ -104,7 +104,7 @@ class HillClimbAlgorithm(Algorithm):
 		x = task.Lower + self.rand(task.D) * task.bRange
 		return x, task.eval(x), {}
 
-	def runIteration(self, task, x, fx, xb, fxb, **dparams):
+	def run_iteration(self, task, x, fx, xb, fxb, **dparams):
 		r"""Core function of HillClimbAlgorithm algorithm.
 
 		Args:
@@ -121,12 +121,12 @@ class HillClimbAlgorithm(Algorithm):
 				2. New solutions function/fitness value.
 				3. Additional arguments.
 		"""
-		lo, xn = False, task.bcLower() + task.bcRange() * self.rand(task.D)
+		lo, xn = False, task.bcLower() + task.range() * self.rand(task.D)
 		xn_f = task.eval(xn)
 		while not lo:
 			yn, yn_f = self.Neighborhood(x, self.delta, task, rnd=self.Rand)
 			if yn_f < xn_f: xn, xn_f = yn, yn_f
-			else: lo = True or task.stopCond()
+			else: lo = True or task.is_stopping_cond()
 		return xn, xn_f, {}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

@@ -31,50 +31,50 @@ class MothFlameOptimizer(Algorithm):
 		Mirjalili, Seyedali. "Moth-flame optimization algorithm: A novel nature-inspired heuristic paradigm." Knowledge-Based Systems 89 (2015): 228-249.
 
 	Attributes:
-		Name (List[str]): List of strings representing algorithm name.
+		name (List[str]): List of strings representing algorithm name.
 
 	See Also:
 		* :class:`NiaPy.algorithms.algorithm.Algorithm`
 	"""
-	Name = ['MothFlameOptimizer', 'MFO']
+	name = ['MothFlameOptimizer', 'MFO']
 
 	@staticmethod
-	def algorithmInfo():
+	def algorithm_info():
 		r"""Get basic information of algorithm.
 
 		Returns:
 			str: Basic information.
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+			* :func:`NiaPy.algorithms.Algorithm.algorithm_info`
 		"""
 		return r"""Mirjalili, Seyedali. "Moth-flame optimization algorithm: A novel nature-inspired heuristic paradigm." Knowledge-Based Systems 89 (2015): 228-249."""
 
 	@staticmethod
-	def typeParameters():
+	def parameter_types():
 		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
 			Dict[str, Callable]: TODO
 
 		See Also:
-			* :func:`NiaPy.algorithms.algorithm.Algorithm.typeParameters`
+			* :func:`NiaPy.algorithms.algorithm.Algorithm.parameter_types`
 		"""
-		return Algorithm.typeParameters()
+		return Algorithm.parameter_types()
 
-	def setParameters(self, NP=25, **ukwargs):
+	def set_parameters(self, NP=25, **ukwargs):
 		r"""Set the algorithm parameters.
 
 		Arguments:
 			NP (int): Number of individuals in population
 
 		See Also:
-			* :func:`NiaPy.algorithms.algorithm.Algorithm.setParameters`
+			* :func:`NiaPy.algorithms.algorithm.Algorithm.set_parameters`
 		"""
-		Algorithm.setParameters(self, NP=NP, **ukwargs)
+		Algorithm.set_parameters(self, NP=NP, **ukwargs)
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def initPopulation(self, task):
+	def init_population(self, task):
 		r"""Initialize starting population.
 
 		Args:
@@ -91,9 +91,9 @@ class MothFlameOptimizer(Algorithm):
 					* previous_fitness (numpy.ndarray[float]): Previous population fitness/function values
 
 		See Also:
-			* :func:`NiaPy.algorithms.algorithm.Algorithm.initPopulation`
+			* :func:`NiaPy.algorithms.algorithm.Algorithm.init_population`
 		"""
-		moth_pos, moth_fitness, d = Algorithm.initPopulation(self, task)
+		moth_pos, moth_fitness, d = Algorithm.init_population(self, task)
 		# Create best population
 		indexes = argsort(moth_fitness)
 		best_flames, best_flame_fitness = moth_pos[indexes], moth_fitness[indexes]
@@ -102,7 +102,7 @@ class MothFlameOptimizer(Algorithm):
 		d.update({'best_flames': best_flames, 'best_flame_fitness': best_flame_fitness, 'previous_population': previous_population, 'previous_fitness': previous_fitness})
 		return moth_pos, moth_fitness, d
 
-	def runIteration(self, task, moth_pos, moth_fitness, xb, fxb, best_flames, best_flame_fitness, previous_population, previous_fitness, **dparams):
+	def run_iteration(self, task, moth_pos, moth_fitness, xb, fxb, best_flames, best_flame_fitness, previous_population, previous_fitness, **dparams):
 		r"""Core function of MothFlameOptimizer algorithm.
 
 		Args:

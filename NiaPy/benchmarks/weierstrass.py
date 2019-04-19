@@ -42,20 +42,20 @@ class Weierstrass(Benchmark):
         http://www5.zzu.edu.cn/__local/A/69/BC/D3B5DFE94CD2574B38AD7CD1D12_C802DAFE_BC0C0.pdf
     """
 
-    Name = ["Weierstrass"]
+    name = ["Weierstrass"]
 
-    def __init__(self, Lower=-100.0, Upper=100.0, a=0.5, b=3, k_max=20):
+    def __init__(self, lower=-100.0, upper=100.0, a=0.5, b=3, k_max=20):
         """Initialize Weierstrass benchmark.
 
-        Args:
-            Lower (Optional[float]): Lower bound of problem.
-            Upper (Optional[float]): Upper bound of problem.
-            a (Optional[float]) -- a value. (default: {0.5})
-            b (Optional[int]) -- b value. (default: {3})
-            k_max (Optional[int]) -- k_max value. (default: {20})
-        """
+		  Args:
+				lower (Optional[float]): lower bound of problem.
+				upper (Optional[float]): upper bound of problem.
+				a (Optional[float]) -- a value. (default: {0.5})
+				b (Optional[int]) -- b value. (default: {3})
+				k_max (Optional[int]) -- k_max value. (default: {20})
+		  """
 
-        Benchmark.__init__(self, Lower, Upper)
+        Benchmark.__init__(self, lower, Upper)
         Weierstrass.a = a
         Weierstrass.b = b
         Weierstrass.k_max = k_max

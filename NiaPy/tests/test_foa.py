@@ -5,7 +5,7 @@ from NiaPy.algorithms.basic import ForestOptimizationAlgorithm
 class FOATestCase(AlgorithmTestCase):
 
     def test_type_parameters(self):
-        tp = ForestOptimizationAlgorithm.typeParameters()
+        tp = ForestOptimizationAlgorithm.parameter_types()
         self.assertTrue(tp['NP'](1))
         self.assertFalse(tp['NP'](0))
         self.assertFalse(tp['NP'](-1))

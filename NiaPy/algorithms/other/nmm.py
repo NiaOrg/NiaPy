@@ -31,7 +31,7 @@ class NelderMeadMethod(Algorithm):
 		https://en.wikipedia.org/wiki/Nelder%E2%80%93Mead_method
 
 	Attributes:
-		Name (List[str]): list of strings represeing algorithm name
+		name (List[str]): list of strings represeing algorithm name
 		alpha (float): Reflection coefficient parameter
 		gamma (float): Expansion coefficient parameter
 		rho (float): Contraction coefficient parameter
@@ -40,22 +40,22 @@ class NelderMeadMethod(Algorithm):
 	See Also:
 		* :class:`NiaPy.algorithms.Algorithm`
 	"""
-	Name = ['NelderMeadMethod', 'NMM']
+	name = ['NelderMeadMethod', 'NMM']
 
 	@staticmethod
-	def algorithmInfo():
+	def algorithm_info():
 		r"""Get basic information of algorithm.
 
 		Returns:
 			str: Basic information of algorithm.
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+			* :func:`NiaPy.algorithms.Algorithm.algorithm_info`
 		"""
 		return r"""No info"""
 
 	@staticmethod
-	def typeParameters():
+	def parameter_types():
 		r"""Get dictionary with function for testing correctness of parameters.
 
 		Returns:
@@ -66,9 +66,9 @@ class NelderMeadMethod(Algorithm):
 				* sigma (Callable[[Union[int, float]], bool])
 
 		See Also
-			* :func:`NiaPy.algorithms.Algorithm.typeParameters`
+			* :func:`NiaPy.algorithms.Algorithm.parameter_types`
 		"""
-		d = Algorithm.typeParameters()
+		d = Algorithm.parameter_types()
 		d.update({
 			'alpha': lambda x: isinstance(x, (int, float)) and x >= 0,
 			'gamma': lambda x: isinstance(x, (int, float)) and x >= 0,
@@ -77,7 +77,7 @@ class NelderMeadMethod(Algorithm):
 		})
 		return d
 
-	def setParameters(self, NP=None, alpha=0.1, gamma=0.3, rho=-0.2, sigma=-0.2, **ukwargs):
+	def set_parameters(self, NP=None, alpha=0.1, gamma=0.3, rho=-0.2, sigma=-0.2, **ukwargs):
 		r"""Set the arguments of an algorithm.
 
 		Arguments:
@@ -88,9 +88,9 @@ class NelderMeadMethod(Algorithm):
 			sigma (Optional[float]): Shrink coefficient parameter
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.setParameters`
+			* :func:`NiaPy.algorithms.Algorithm.set_parameters`
 		"""
-		Algorithm.setParameters(self, NP=NP, InitPopFunc=ukwargs.pop('InitPopFunc', self.initPop), **ukwargs)
+		Algorithm.set_parameters(self, NP=NP, InitPopFunc=ukwargs.pop('InitPopFunc', self.initPop), **ukwargs)
 		self.alpha, self.gamma, self.rho, self.sigma = alpha, gamma, rho, sigma
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
@@ -147,7 +147,7 @@ class NelderMeadMethod(Algorithm):
 		X[1:], X_f[1:] = Xn, Xn_f
 		return X, X_f
 
-	def runIteration(self, task, X, X_f, xb, fxb, **dparams):
+	def run_iteration(self, task, X, X_f, xb, fxb, **dparams):
 		r"""Core iteration function of NelderMeadMethod algorithm.
 
 		Args:

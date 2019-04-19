@@ -169,7 +169,7 @@ class AnarchicSocietyOptimization(Algorithm):
 		Ahmadi-Javid, Amir. "Anarchic Society Optimization: A human-inspired method." Evolutionary Computation (CEC), 2011 IEEE Congress on. IEEE, 2011.
 
 	Attributes:
-		Name (list of str): List of stings representing name of algorithm.
+		name (list of str): List of stings representing name of algorithm.
 		alpha (List[float]): Factor for fickleness index function :math:`\in [0, 1]`.
 		gamma (List[float]): Factor for external irregularity index function :math:`\in [0, \infty)`.
 		theta (List[float]): Factor for internal irregularity index function :math:`\in [0, \infty)`.
@@ -183,10 +183,10 @@ class AnarchicSocietyOptimization(Algorithm):
 	See Also:
 		* :class:`NiaPy.algorithms.Algorithm`
 	"""
-	Name = ['AnarchicSocietyOptimization', 'ASO']
+	name = ['AnarchicSocietyOptimization', 'ASO']
 
 	@staticmethod
-	def typeParameters():
+	def parameter_types():
 		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
@@ -199,9 +199,9 @@ class AnarchicSocietyOptimization(Algorithm):
 				* CR (Callable[[Union[float, int]], bool]): TODO
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.typeParameters`
+			* :func:`NiaPy.algorithms.Algorithm.parameter_types`
 		"""
-		d = Algorithm.typeParameters()
+		d = Algorithm.parameter_types()
 		d.update({
 			'alpha': lambda x: True,
 			'gamma': lambda x: True,
@@ -212,7 +212,7 @@ class AnarchicSocietyOptimization(Algorithm):
 		})
 		return d
 
-	def setParameters(self, NP=43, alpha=(1, 0.83), gamma=(1.17, 0.56), theta=(0.932, 0.832), d=euclidean, dn=euclidean, nl=1, F=1.2, CR=0.25, Combination=Elitism, **ukwargs):
+	def set_parameters(self, NP=43, alpha=(1, 0.83), gamma=(1.17, 0.56), theta=(0.932, 0.832), d=euclidean, dn=euclidean, nl=1, F=1.2, CR=0.25, Combination=Elitism, **ukwargs):
 		r"""Set the parameters for the algorith.
 
 		Arguments:
@@ -227,13 +227,13 @@ class AnarchicSocietyOptimization(Algorithm):
 			Combination (Optional[Callable[numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray, float, float, float, float, float, float, Task, mtrand.RandomState]]): Function for combining individuals to get new position/individual.
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.setParameters`
+			* :func:`NiaPy.algorithms.Algorithm.set_parameters`
 			* Combination methods:
 				* :func:`NiaPy.algorithms.other.Elitism'
 				* :func:`NiaPy.algorithms.other.Crossover`
 				* :func:`NiaPy.algorithms.other.Sequential`
 		"""
-		Algorithm.setParameters(self, NP=NP)
+		Algorithm.set_parameters(self, NP=NP)
 		self.alpha, self.gamma, self.theta, self.d, self.dn, self.nl, self.F, self.CR, self.Combination = alpha, gamma, theta, d, dn, nl, F, CR, Combination
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
@@ -329,7 +329,7 @@ class AnarchicSocietyOptimization(Algorithm):
 		Xpb[ix_pb], Xpb_f[ix_pb] = X[ix_pb], X_f[ix_pb]
 		return Xpb, Xpb_f
 
-	def initPopulation(self, task):
+	def init_population(self, task):
 		r"""Initialize first population and additional arguments.
 
 		Args:
@@ -348,16 +348,16 @@ class AnarchicSocietyOptimization(Algorithm):
 					* rs (float): Distance of search space.
 
 		See Also:
-			* :func:`NiaPy.algorithms.algorithm.Algorithm.initPopulation`
+			* :func:`NiaPy.algorithms.algorithm.Algorithm.init_population`
 			* :func:`NiaPy.algorithms.other.aso.AnarchicSocietyOptimization.init`
 		"""
-		X, X_f, d = Algorithm.initPopulation(self, task)
+		X, X_f, d = Algorithm.init_population(self, task)
 		alpha, gamma, theta = self.init(task)
 		Xpb, Xpb_f = self.uBestAndPBest(X, X_f, full([self.NP, task.D], 0.0), full(self.NP, task.optType.value * inf))
 		d.update({'Xpb': Xpb, 'Xpb_f': Xpb_f, 'alpha': alpha, 'gamma': gamma, 'theta': theta, 'rs': self.d(task.Upper, task.Lower)})
 		return X, X_f, d
 
-	def runIteration(self, task, X, X_f, xb, fxb, Xpb, Xpb_f, alpha, gamma, theta, rs, **dparams):
+	def run_iteration(self, task, X, X_f, xb, fxb, Xpb, Xpb_f, alpha, gamma, theta, rs, **dparams):
 		r"""Core function of AnarchicSocietyOptimization algorithm.
 
 		Args:

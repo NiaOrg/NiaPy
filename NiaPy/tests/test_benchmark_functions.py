@@ -29,8 +29,8 @@ class TestBenchmarkFunctions(TestCase):
 
         Arguments:
             bench [Benchmark]: Benchmark to test.
-            lower [float]: Lower bound.
-            upper [type]: Upper bound.
+            lower [float]: lower bound.
+            upper [type]: upper bound.
 
         Returns:
             [fun]: Returns benchmarks evaluation function.

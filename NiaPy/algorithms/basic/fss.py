@@ -56,7 +56,7 @@ class FishSchoolSearch(Algorithm):
 		Bastos Filho, Lima Neto, Lins, D. O. Nascimento and P. Lima, “A novel search algorithm based on fish school behavior,” in 2008 IEEE International Conference on Systems, Man and Cybernetics, Oct 2008, pp. 2646–2651.
 
 	Attributes:
-		Name (List[str]): List of strings representing algorithm name.
+		name (List[str]): List of strings representing algorithm name.
 		SI_init (int): Length of initial individual step.
 		SI_final (int): Length of final individual step.
 		SV_init (int): Length of initial volatile step.
@@ -67,14 +67,14 @@ class FishSchoolSearch(Algorithm):
 	See Also:
 		* :class:`NiaPy.algorithms.algorithm.Algorithm`
 	"""
-	Name = ['FSS', 'FishSchoolSearch']
+	name = ['FSS', 'FishSchoolSearch']
 
 	@staticmethod
-	def typeParameters():
+	def parameter_types():
 		# TODO
 		return {'school_size': lambda x: False, 'SI_final': lambda x: False}
 
-	def setParameters(self, NP=25, SI_init=3, SI_final=10, SV_init=3, SV_final=13, min_w=0.3, w_scale=0.7, **ukwargs):
+	def set_parameters(self, NP=25, SI_init=3, SI_final=10, SV_init=3, SV_final=13, min_w=0.3, w_scale=0.7, **ukwargs):
 		r"""Set core arguments of FishSchoolSearch algorithm.
 
 		Arguments:
@@ -87,9 +87,9 @@ class FishSchoolSearch(Algorithm):
 			w_scale (Optional[float]): Maximum weight of a fish.
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.setParameters`
+			* :func:`NiaPy.algorithms.Algorithm.set_parameters`
 		"""
-		Algorithm.setParameters(self, NP=NP, **ukwargs)
+		Algorithm.set_parameters(self, NP=NP, **ukwargs)
 		self.step_individual_init = SI_init
 		self.step_individual_final = SI_final
 		self.step_volitive_init = SV_init
@@ -231,11 +231,11 @@ class FishSchoolSearch(Algorithm):
 			fish.evaluate(task, rnd=self.Rand)
 		return school
 
-	def initPopulation(self, task):
+	def init_population(self, task):
 		curr_step_individual, curr_step_volitive, curr_weight_school, prev_weight_school, school = self.init_school(task)
 		return school, asarray([f.f for f in school]), {'curr_step_individual': curr_step_individual, 'curr_step_volitive': curr_step_volitive, 'curr_weight_school': curr_weight_school, 'prev_weight_school': prev_weight_school}
 
-	def runIteration(self, task, school, fschool, best_fish, fxb, curr_step_individual, curr_step_volitive, curr_weight_school, prev_weight_school, **dparams):
+	def run_iteration(self, task, school, fschool, best_fish, fxb, curr_step_individual, curr_step_volitive, curr_weight_school, prev_weight_school, **dparams):
 		school = self.individual_movement(school, curr_step_individual, task)
 		school = self.feeding(school)
 		school = self.collective_instinctive_movement(school, task)

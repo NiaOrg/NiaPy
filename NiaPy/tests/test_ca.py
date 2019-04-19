@@ -5,7 +5,7 @@ from NiaPy.algorithms.basic import CamelAlgorithm
 
 class CATestCase(AlgorithmTestCase):
 	def test_type_parameters(self):
-		d = CamelAlgorithm.typeParameters()
+		d = CamelAlgorithm.parameter_types()
 		self.assertTrue(d['NP'](1))
 		self.assertFalse(d['NP'](0))
 		self.assertFalse(d['NP'](-1))

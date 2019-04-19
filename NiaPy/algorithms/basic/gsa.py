@@ -34,15 +34,15 @@ class GravitationalSearchAlgorithm(Algorithm):
 		Esmat Rashedi, Hossein Nezamabadi-pour, Saeid Saryazdi, GSA: A Gravitational Search Algorithm, Information Sciences, Volume 179, Issue 13, 2009, Pages 2232-2248, ISSN 0020-0255
 
 	Attributes:
-		Name (List[str]): List of strings representing algorithm name.
+		name (List[str]): List of strings representing algorithm name.
 
 	See Also:
 		* :class:`NiaPy.algorithms.algorithm.Algorithm`
 	"""
-	Name = ['GravitationalSearchAlgorithm', 'GSA']
+	name = ['GravitationalSearchAlgorithm', 'GSA']
 
 	@staticmethod
-	def typeParameters():
+	def parameter_types():
 		r"""TODO.
 
 		Returns:
@@ -51,16 +51,16 @@ class GravitationalSearchAlgorithm(Algorithm):
 				* epsilon (Callable[[float], bool]): TODO
 
 		See Also:
-			* :func:`NiaPy.algorithms.algorithm.Algorithm.typeParameters`
+			* :func:`NiaPy.algorithms.algorithm.Algorithm.parameter_types`
 		"""
-		d = Algorithm.typeParameters()
+		d = Algorithm.parameter_types()
 		d.update({
 			'G_0': lambda x: isinstance(x, (int, float)) and x >= 0,
 			'epsilon': lambda x: isinstance(x, float) and 0 < x < 1
 		})
 		return d
 
-	def setParameters(self, NP=40, G_0=2.467, epsilon=1e-17, **ukwargs):
+	def set_parameters(self, NP=40, G_0=2.467, epsilon=1e-17, **ukwargs):
 		r"""Set the algorithm parameters.
 
 		Arguments:
@@ -68,9 +68,9 @@ class GravitationalSearchAlgorithm(Algorithm):
 			epsilon (float): TODO.
 
 		See Also:
-			* :func:`NiaPy.algorithms.algorithm.Algorithm.setParameters`
+			* :func:`NiaPy.algorithms.algorithm.Algorithm.set_parameters`
 		"""
-		Algorithm.setParameters(self, NP=NP, **ukwargs)
+		Algorithm.set_parameters(self, NP=NP, **ukwargs)
 		self.G_0, self.epsilon = G_0, epsilon
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
@@ -98,7 +98,7 @@ class GravitationalSearchAlgorithm(Algorithm):
 		"""
 		return sum((x - y) ** ln) ** (1 / ln)
 
-	def initPopulation(self, task):
+	def init_population(self, task):
 		r"""Initialize staring population.
 
 		Args:
@@ -112,13 +112,13 @@ class GravitationalSearchAlgorithm(Algorithm):
 					* v (numpy.ndarray[float]): TODO
 
 		See Also:
-			* :func:`NiaPy.algorithms.algorithm.Algorithm.initPopulation`
+			* :func:`NiaPy.algorithms.algorithm.Algorithm.init_population`
 		"""
-		X, X_f, _ = Algorithm.initPopulation(self, task)
+		X, X_f, _ = Algorithm.init_population(self, task)
 		v = full([self.NP, task.D], 0.0)
 		return X, X_f, {'v': v}
 
-	def runIteration(self, task, X, X_f, xb, fxb, v, **dparams):
+	def run_iteration(self, task, X, X_f, xb, fxb, v, **dparams):
 		r"""Core function of GravitationalSearchAlgorithm algorithm.
 
 		Args:

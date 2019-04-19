@@ -97,7 +97,7 @@ class Camel(Individual):
 		"""
 		delta = -1 + rnd.rand() * 2
 		self.x = self.x_past + delta * (1 - (self.E / E_init)) * exp(1 - self.S / S_init) * (cb - self.x_past)
-		if not task.isFeasible(self.x): self.x = self.x_past
+		if not task.is_feasible(self.x): self.x = self.x_past
 		else: self.f = task.eval(self.x)
 
 	def next(self):
@@ -136,7 +136,7 @@ class CamelAlgorithm(Algorithm):
 		Ali, Ramzy. (2016). Novel Optimization Algorithm Inspired by Camel Traveling Behavior. Iraq J. Electrical and Electronic Engineering. 12. 167-177.
 
 	Attributes:
-		Name (List[str]): List of strings representing name of the algorithm.
+		name (List[str]): List of strings representing name of the algorithm.
 		T_min (float): Minimal temperature of environment.
 		T_max (float): Maximal temperature of environment.
 		E_init (float): Starting value of energy.
@@ -145,10 +145,10 @@ class CamelAlgorithm(Algorithm):
 	See Also:
 		* :class:`NiaPy.algorithms.Algorithm`
 	"""
-	Name = ['CamelAlgorithm', 'CA']
+	name = ['CamelAlgorithm', 'CA']
 
 	@staticmethod
-	def typeParameters():
+	def parameter_types():
 		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
@@ -162,9 +162,9 @@ class CamelAlgorithm(Algorithm):
 				* T_max (Callable[[Union[float, int], bool])
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.typeParameters`
+			* :func:`NiaPy.algorithms.Algorithm.parameter_types`
 		"""
-		d = Algorithm.typeParameters()
+		d = Algorithm.parameter_types()
 		d.update({
 			'omega': lambda x: isinstance(x, (float, int)),
 			'mu': lambda x: isinstance(x, float) and 0 <= x <= 1,
@@ -176,7 +176,7 @@ class CamelAlgorithm(Algorithm):
 		})
 		return d
 
-	def setParameters(self, NP=50, omega=0.25, mu=0.5, alpha=0.5, S_init=10, E_init=10, T_min=-10, T_max=10, **ukwargs):
+	def set_parameters(self, NP=50, omega=0.25, mu=0.5, alpha=0.5, S_init=10, E_init=10, T_min=-10, T_max=10, **ukwargs):
 		r"""Set the arguments of an algorithm.
 
 		Arguments:
@@ -189,9 +189,9 @@ class CamelAlgorithm(Algorithm):
 			E_init (Optional[float]): Initial endurance :math:`\in (0, \infty)`.
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.setParameters`
+			* :func:`NiaPy.algorithms.Algorithm.set_parameters`
 		"""
-		Algorithm.setParameters(self, NP=NP, itype=Camel, InitPopFunc=ukwargs.pop('InitPopFunc', self.initPop), **ukwargs)
+		Algorithm.set_parameters(self, NP=NP, itype=Camel, InitPopFunc=ukwargs.pop('InitPopFunc', self.initPop), **ukwargs)
 		self.omega, self.mu, self.alpha, self.S_init, self.E_init, self.T_min, self.T_max = omega, mu, alpha, S_init, E_init, T_min, T_max
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
@@ -259,7 +259,7 @@ class CamelAlgorithm(Algorithm):
 		c.next()
 		return c
 
-	def initPopulation(self, task):
+	def init_population(self, task):
 		r"""Initialize population.
 
 		Args:
@@ -272,12 +272,12 @@ class CamelAlgorithm(Algorithm):
 				3. Additional arguments.
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.initPopulation`
+			* :func:`NiaPy.algorithms.Algorithm.init_population`
 		"""
-		caravan, fcaravan, _ = Algorithm.initPopulation(self, task)
+		caravan, fcaravan, _ = Algorithm.init_population(self, task)
 		return caravan, fcaravan, {}
 
-	def runIteration(self, task, caravan, fcaravan, cb, fcb, **dparams):
+	def run_iteration(self, task, caravan, fcaravan, cb, fcb, **dparams):
 		r"""Core function of Camel Algorithm.
 
 		Args:

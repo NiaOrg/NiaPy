@@ -32,9 +32,9 @@ def MakeArgParser():
 
 	Parser:
 		* `-a` or `--algorithm` (str):
-			Name of algorithm to use. Default value is `jDE`.
+			name of algorithm to use. Default value is `jDE`.
 		* `-b` or `--bech` (str):
-			Name of benchmark to use. Default values is `Benchmark`.
+			name of benchmark to use. Default values is `Benchmark`.
 		* `-D` (int):
 			Number of dimensions/components usd by benchmark. Default values is `10`.
 		* `-nFES` (int):

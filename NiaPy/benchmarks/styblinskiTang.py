@@ -48,21 +48,21 @@ class StyblinskiTang(Benchmark):
 
     """
 
-    Name = ["StyblinskiTang"]
+    name = ["StyblinskiTang"]
 
-    def __init__(self, Lower=-5.0, Upper=5.0):
-        r"""Initialize Styblinski Tang benchmark.
+    def __init__(self, lower=-5.0, upper=5.0):
+		 r"""Initialize Styblinski Tang benchmark.
 
-        Args:
-            Lower (Optional[float]): Lower bound of problem.
-            Upper (Optional[float]): Upper bound of problem.
+		 Args:
+			  lower (Optional[float]): lower bound of problem.
+			  upper (Optional[float]): upper bound of problem.
 
-        See Also:
-            :func:`NiaPy.benchmarks.Benchmark.__init__`
+		 See Also:
+			  :func:`NiaPy.benchmarks.Benchmark.__init__`
 
-        """
+		 """
 
-        Benchmark.__init__(self, Lower, Upper)
+        Benchmark.__init__(self, lower, Upper)
 
     @staticmethod
     def latex_code():

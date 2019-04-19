@@ -6,7 +6,7 @@ from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
 class PSOTestCase(AlgorithmTestCase):
 
     def test_parameter_type(self):
-        d = ParticleSwarmAlgorithm.typeParameters()
+        d = ParticleSwarmAlgorithm.parameter_types()
         self.assertTrue(d['C1'](10))
         self.assertTrue(d['C2'](10))
         self.assertTrue(d['C1'](0))

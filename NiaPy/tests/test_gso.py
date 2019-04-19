@@ -5,10 +5,10 @@ from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
 
 class GSOTestCase(AlgorithmTestCase):
 	def test_algorithm_info_fine(self):
-		self.assertIsNotNone(GlowwormSwarmOptimization.algorithmInfo())
+		self.assertIsNotNone(GlowwormSwarmOptimization.algorithm_info())
 
 	def test_type_parameters_fine(self):
-		d = GlowwormSwarmOptimization.typeParameters()
+		d = GlowwormSwarmOptimization.parameter_types()
 		self.assertIsNotNone(d.get('n', None))
 		self.assertIsNotNone(d.get('l0', None))
 		self.assertIsNotNone(d.get('nt', None))

@@ -56,21 +56,21 @@ class Pinter(Benchmark):
 
     """
 
-    Name = ["Pinter"]
+    name = ["Pinter"]
 
-    def __init__(self, Lower=-10.0, Upper=10.0):
-        r"""Initialize Pinter benchmark.
+    def __init__(self, lower=-10.0, upper=10.0):
+		 r"""Initialize Pinter benchmark.
 
-        Args:
-            Lower (Optional[float]): Lower bound of problem.
-            Upper (Optional[float]): Upper bound of problem.
+		 Args:
+			  lower (Optional[float]): lower bound of problem.
+			  upper (Optional[float]): upper bound of problem.
 
-        See Also:
-            :func:`NiaPy.benchmarks.Benchmark.__init__`
+		 See Also:
+			  :func:`NiaPy.benchmarks.Benchmark.__init__`
 
-        """
+		 """
 
-        Benchmark.__init__(self, Lower, Upper)
+        Benchmark.__init__(self, lower, Upper)
 
     @staticmethod
     def latex_code():

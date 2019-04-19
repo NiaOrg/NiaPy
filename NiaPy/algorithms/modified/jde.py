@@ -60,7 +60,7 @@ class SelfAdaptiveDifferentialEvolution(DifferentialEvolution):
 		Brest, J., Greiner, S., Boskovic, B., Mernik, M., Zumer, V. Self-adapting control parameters in differential evolution: A comparative study on numerical benchmark problems. IEEE transactions on evolutionary computation, 10(6), 646-657, 2006.
 
 	Attributes:
-		Name (List[str]): List of strings representing algorithm name
+		name (List[str]): List of strings representing algorithm name
 		F_l (float): Scaling factor lower limit.
 		F_u (float): Scaling factor upper limit.
 		Tao1 (float): Change rate for F parameter update.
@@ -69,10 +69,10 @@ class SelfAdaptiveDifferentialEvolution(DifferentialEvolution):
 	See Also:
 		* :class:`NiaPy.algorithms.basic.DifferentialEvolution`
 	"""
-	Name = ['SelfAdaptiveDifferentialEvolution', 'jDE']
+	name = ['SelfAdaptiveDifferentialEvolution', 'jDE']
 
 	@staticmethod
-	def typeParameters():
+	def parameter_types():
 		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
@@ -83,16 +83,16 @@ class SelfAdaptiveDifferentialEvolution(DifferentialEvolution):
 				* Tao2 (Callable[[Union[float, int]], bool])
 
 		See Also:
-			* :func:`NiaPy.algorithms.basic.DifferentialEvolution.typeParameters`
+			* :func:`NiaPy.algorithms.basic.DifferentialEvolution.parameter_types`
 		"""
-		d = DifferentialEvolution.typeParameters()
+		d = DifferentialEvolution.parameter_types()
 		d['F_l'] = lambda x: isinstance(x, (float, int)) and x > 0
 		d['F_u'] = lambda x: isinstance(x, (float, int)) and x > 0
 		d['Tao1'] = lambda x: isinstance(x, (float, int)) and 0 <= x <= 1
 		d['Tao2'] = lambda x: isinstance(x, (float, int)) and 0 <= x <= 1
 		return d
 
-	def setParameters(self, F_l=0.0, F_u=1.0, Tao1=0.4, Tao2=0.2, **ukwargs):
+	def set_parameters(self, F_l=0.0, F_u=1.0, Tao1=0.4, Tao2=0.2, **ukwargs):
 		r"""Set the parameters of an algorithm.
 
 		Arguments:
@@ -102,9 +102,9 @@ class SelfAdaptiveDifferentialEvolution(DifferentialEvolution):
 			Tao2 (Optional[float]): Change rate for CR parameter update.
 
 		See Also:
-			* :func:`NiaPy.algorithms.basic.DifferentialEvolution.setParameters`
+			* :func:`NiaPy.algorithms.basic.DifferentialEvolution.set_parameters`
 		"""
-		DifferentialEvolution.setParameters(self, itype=ukwargs.pop('itype', SolutionjDE), **ukwargs)
+		DifferentialEvolution.set_parameters(self, itype=ukwargs.pop('itype', SolutionjDE), **ukwargs)
 		self.F_l, self.F_u, self.Tao1, self.Tao2 = F_l, F_u, Tao1, Tao2
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
@@ -181,17 +181,17 @@ class AgingSelfAdaptiveDifferentialEvolution(SelfAdaptiveDifferentialEvolution):
 		Brest, Janez, and Mirjam Sepesy Maučec. Population size reduction for the differential evolution algorithm. Applied Intelligence 29.3 (2008): 228-247.
 
 	Attributes:
-		Name (List[str]): List of strings representing algorithm name.
+		name (List[str]): List of strings representing algorithm name.
 	"""
-	Name = ['AgingSelfAdaptiveDifferentialEvolution', 'ANpjDE']
+	name = ['AgingSelfAdaptiveDifferentialEvolution', 'ANpjDE']
 
 	@staticmethod
-	def typeParameters():
-		d = SelfAdaptiveDifferentialEvolution.typeParameters()
+	def parameter_types():
+		d = SelfAdaptiveDifferentialEvolution.parameter_types()
 		# TODO
 		return d
 
-	def setParameters(self, LT_min=1, LT_max=7, age=proportional, **ukwargs):
+	def set_parameters(self, LT_min=1, LT_max=7, age=proportional, **ukwargs):
 		r"""Set core parameters of AgingSelfAdaptiveDifferentialEvolution algorithm.
 
 		Args:
@@ -201,9 +201,9 @@ class AgingSelfAdaptiveDifferentialEvolution(SelfAdaptiveDifferentialEvolution):
 			**ukwargs (Dict[str, Any]): Additional arguments.
 
 		See Also:
-			* :func:`SelfAdaptiveDifferentialEvolution.setParameters`
+			* :func:`SelfAdaptiveDifferentialEvolution.set_parameters`
 		"""
-		SelfAdaptiveDifferentialEvolution.setParameters(self, **ukwargs)
+		SelfAdaptiveDifferentialEvolution.set_parameters(self, **ukwargs)
 		self.LT_min, self.LT_max, self.age = LT_min, LT_max, age
 		self.mu = abs(self.LT_max - self.LT_min) / 2
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
@@ -230,35 +230,35 @@ class DynNpSelfAdaptiveDifferentialEvolutionAlgorithm(SelfAdaptiveDifferentialEv
 		Brest, Janez, and Mirjam Sepesy Maučec. Population size reduction for the differential evolution algorithm. Applied Intelligence 29.3 (2008): 228-247.
 
 	Attributes:
-		Name (List[str]): List of strings representing algorithm name.
+		name (List[str]): List of strings representing algorithm name.
 		rp (int): Small non-negative number which is added to value of generations.
 		pmax (int): Number of population reductions.
 
 	See Also:
 		* :class:`NiaPy.algorithms.modified.SelfAdaptiveDifferentialEvolution`
 	"""
-	Name = ['DynNpSelfAdaptiveDifferentialEvolutionAlgorithm', 'dynNPjDE']
+	name = ['DynNpSelfAdaptiveDifferentialEvolutionAlgorithm', 'dynNPjDE']
 
 	@staticmethod
-	def algorithmInfo():
+	def algorithm_info():
 		return r"""Brest, Janez, and Mirjam Sepesy Maučec. Population size reduction for the differential evolution algorithm. Applied Intelligence 29.3 (2008): 228-247."""
 
 	@staticmethod
-	def typeParameters():
+	def parameter_types():
 		r"""Get basic information of algorithm.
 
 		Returns:
 			str: Basic information of algorithm.
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+			* :func:`NiaPy.algorithms.Algorithm.algorithm_info`
 		"""
-		d = SelfAdaptiveDifferentialEvolution.typeParameters()
+		d = SelfAdaptiveDifferentialEvolution.parameter_types()
 		d['rp'] = lambda x: isinstance(x, (float, int)) and x > 0
 		d['pmax'] = lambda x: isinstance(x, int) and x > 0
 		return d
 
-	def setParameters(self, rp=0, pmax=10, **ukwargs):
+	def set_parameters(self, rp=0, pmax=10, **ukwargs):
 		r"""Set the parameters of an algorithm.
 
 		Arguments:
@@ -266,10 +266,10 @@ class DynNpSelfAdaptiveDifferentialEvolutionAlgorithm(SelfAdaptiveDifferentialEv
 			pmax (Optional[int]): Number of population reductions.
 
 		See Also:
-			* :func:`NiaPy.algorithms.modified.SelfAdaptiveDifferentialEvolution.setParameters`
+			* :func:`NiaPy.algorithms.modified.SelfAdaptiveDifferentialEvolution.set_parameters`
 		"""
-		DynNpDifferentialEvolution.setParameters(self, rp=rp, pmax=pmax, **ukwargs)
-		SelfAdaptiveDifferentialEvolution.setParameters(self, **ukwargs)
+		DynNpDifferentialEvolution.set_parameters(self, rp=rp, pmax=pmax, **ukwargs)
+		SelfAdaptiveDifferentialEvolution.set_parameters(self, **ukwargs)
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def postSelection(self, pop, task, **kwargs):
@@ -300,14 +300,14 @@ class MultiStrategySelfAdaptiveDifferentialEvolution(SelfAdaptiveDifferentialEvo
 		MIT
 
 	Attributes:
-		Name (List[str]): List of strings representing algorithm name
+		name (List[str]): List of strings representing algorithm name
 
 	See Also:
 		* :class:`NiaPy.algorithms.modified.SelfAdaptiveDifferentialEvolution`
 	"""
-	Name = ['MultiStrategySelfAdaptiveDifferentialEvolution', 'MsjDE']
+	name = ['MultiStrategySelfAdaptiveDifferentialEvolution', 'MsjDE']
 
-	def setParameters(self, strategies=(CrossCurr2Rand1, CrossCurr2Best1, CrossRand1, CrossBest1, CrossBest2), **kwargs):
+	def set_parameters(self, strategies=(CrossCurr2Rand1, CrossCurr2Best1, CrossRand1, CrossBest1, CrossBest2), **kwargs):
 		r"""Set core parameters of MultiStrategySelfAdaptiveDifferentialEvolution algorithm.
 
 		Args:
@@ -315,9 +315,9 @@ class MultiStrategySelfAdaptiveDifferentialEvolution(SelfAdaptiveDifferentialEvo
 			**kwargs:
 
 		See Also:
-			* :func:`NiaPy.algorithms.modified.SelfAdaptiveDifferentialEvolution.setParameters`
+			* :func:`NiaPy.algorithms.modified.SelfAdaptiveDifferentialEvolution.set_parameters`
 		"""
-		SelfAdaptiveDifferentialEvolution.setParameters(self, CrossMutt=kwargs.pop('CrossMutt', multiMutations), **kwargs)
+		SelfAdaptiveDifferentialEvolution.set_parameters(self, CrossMutt=kwargs.pop('CrossMutt', multiMutations), **kwargs)
 		self.strategies = strategies
 
 	def evolve(self, pop, xb, task, **kwargs):
@@ -350,15 +350,15 @@ class DynNpMultiStrategySelfAdaptiveDifferentialEvolution(MultiStrategySelfAdapt
 		MIT
 
 	Attributes:
-		Name (List[str]): List of strings representing algorithm name.
+		name (List[str]): List of strings representing algorithm name.
 
 	See Also:
 		* :class:`NiaPy.algorithms.modified.MultiStrategySelfAdaptiveDifferentialEvolution`
 		* :class:`NiaPy.algorithms.modified.DynNpSelfAdaptiveDifferentialEvolutionAlgorithm`
 	"""
-	Name = ['DynNpMultiStrategySelfAdaptiveDifferentialEvolution', 'dynNpMsjDE']
+	name = ['DynNpMultiStrategySelfAdaptiveDifferentialEvolution', 'dynNpMsjDE']
 
-	def setParameters(self, pmax=10, rp=5, **kwargs):
+	def set_parameters(self, pmax=10, rp=5, **kwargs):
 		r"""Set core parameters for algorithm instance.
 
 		Args:
@@ -367,9 +367,9 @@ class DynNpMultiStrategySelfAdaptiveDifferentialEvolution(MultiStrategySelfAdapt
 			**kwargs (Dict[str, Any]):
 
 		See Also:
-			* :func:`NiaPy.algorithms.modified.MultiStrategySelfAdaptiveDifferentialEvolution.setParameters`
+			* :func:`NiaPy.algorithms.modified.MultiStrategySelfAdaptiveDifferentialEvolution.set_parameters`
 		"""
-		MultiStrategySelfAdaptiveDifferentialEvolution.setParameters(self, **kwargs)
+		MultiStrategySelfAdaptiveDifferentialEvolution.set_parameters(self, **kwargs)
 		self.pmax, self.rp = pmax, rp
 
 	def postSelection(self, pop, task, **kwargs):

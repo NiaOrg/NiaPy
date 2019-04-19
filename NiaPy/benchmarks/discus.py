@@ -43,21 +43,21 @@ class Discus(Benchmark):
 
     """
 
-    Name = ["Discus"]
+    name = ["Discus"]
 
-    def __init__(self, Lower=-100.0, Upper=100.0):
-        r"""Initialize Alpine1 benchmark.
+    def __init__(self, lower=-100.0, upper=100.0):
+		 r"""Initialize Alpine1 benchmark.
 
-        Args:
-            Lower (Optional[float]): Lower bound of problem.
-            Upper (Optional[float]): Upper bound of problem.
+		 Args:
+			  lower (Optional[float]): lower bound of problem.
+			  upper (Optional[float]): upper bound of problem.
 
-        See Also:
-            :func:`NiaPy.benchmarks.Benchmark.__init__`
+		 See Also:
+			  :func:`NiaPy.benchmarks.Benchmark.__init__`
 
-        """
+		 """
 
-        Benchmark.__init__(self, Lower, Upper)
+        Benchmark.__init__(self, lower, Upper)
 
     @staticmethod
     def latex_code():

@@ -30,27 +30,27 @@ class ParticleSwarmAlgorithm(Algorithm):
 		Kennedy, J. and Eberhart, R. "Particle Swarm Optimization". Proceedings of IEEE International Conference on Neural Networks. IV. pp. 1942--1948, 1995.
 
 	Attributes:
-		Name (List[str]): List of strings representing algorithm names
+		name (List[str]): List of strings representing algorithm names
 
 	See Also:
 		* :class:`NiaPy.algorithms.Algorithm`
 	"""
-	Name = ['ParticleSwarmAlgorithm', 'PSO']
+	name = ['ParticleSwarmAlgorithm', 'PSO']
 
 	@staticmethod
-	def algorithmInfo():
+	def algorithm_info():
 		r"""Get basic information of algorithm.
 
 		Returns:
 			str: Basic information of algorithm.
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+			* :func:`NiaPy.algorithms.Algorithm.algorithm_info`
 		"""
 		return r"""Kennedy, J. and Eberhart, R. "Particle Swarm Optimization". Proceedings of IEEE International Conference on Neural Networks. IV. pp. 1942--1948, 1995."""
 
 	@staticmethod
-	def typeParameters():
+	def parameter_types():
 		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
@@ -71,7 +71,7 @@ class ParticleSwarmAlgorithm(Algorithm):
 			'vMax': lambda x: isinstance(x, (int, float))
 		}
 
-	def setParameters(self, NP=25, C1=2.0, C2=2.0, w=0.7, vMin=-4, vMax=4, **ukwargs):
+	def set_parameters(self, NP=25, C1=2.0, C2=2.0, w=0.7, vMin=-4, vMax=4, **ukwargs):
 		r"""Set Particle Swarm Algorithm main parameters.
 
 		Args:
@@ -84,9 +84,9 @@ class ParticleSwarmAlgorithm(Algorithm):
 			**ukwargs: Additional arguments
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.setParameters`
+			* :func:`NiaPy.algorithms.Algorithm.set_parameters`
 		"""
-		Algorithm.setParameters(self, NP=NP, **ukwargs)
+		Algorithm.set_parameters(self, NP=NP, **ukwargs)
 		self.C1, self.C2, self.w, self.vMin, self.vMax = C1, C2, w, vMin, vMax
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
@@ -95,8 +95,8 @@ class ParticleSwarmAlgorithm(Algorithm):
 
 		Args:
 			x (numpy.ndarray): Array to repair.
-			l (numpy.ndarray): Lower limit of allowed range.
-			u (numpy.ndarray): Upper limit of allowed range.
+			l (numpy.ndarray): lower limit of allowed range.
+			u (numpy.ndarray): upper limit of allowed range.
 
 		Returns:
 			numpy.ndarray: Repaired array.
@@ -122,7 +122,7 @@ class ParticleSwarmAlgorithm(Algorithm):
 		"""
 		return {'w': fullArray(self.w, task.D), 'vMin': fullArray(self.vMin, task.D), 'vMax': fullArray(self.vMax, task.D), 'V': full([self.NP, task.D], 0.0)}
 
-	def initPopulation(self, task):
+	def init_population(self, task):
 		r"""Initialize population and dynamic arguments of the Particle Swarm Optimization algorithm.
 
 		Args:
@@ -141,14 +141,14 @@ class ParticleSwarmAlgorithm(Algorithm):
 					* V (numpy.ndarray): Initial velocity of particle.
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.initPopulation`
+			* :func:`NiaPy.algorithms.Algorithm.init_population`
 		"""
-		pop, fpop, d = Algorithm.initPopulation(self, task)
+		pop, fpop, d = Algorithm.init_population(self, task)
 		d.update(self.init(task))
 		d.update({'popb': pop, 'fpopb': fpop})
 		return pop, fpop, d
 
-	def runIteration(self, task, pop, fpop, xb, fxb, popb, fpopb, w, vMin, vMax, V, **dparams):
+	def run_iteration(self, task, pop, fpop, xb, fxb, popb, fpopb, w, vMin, vMax, V, **dparams):
 		r"""Core function of Particle Swarm Optimization algorithm.
 
 		Args:

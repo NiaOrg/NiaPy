@@ -46,20 +46,20 @@ class Csendes(Benchmark):
 
     """
 
-    Name = ["Csendes"]
+    name = ["Csendes"]
 
-    def __init__(self, Lower=-1.0, Upper=1.0):
-        r"""Initialize Csendes benchmark.
+    def __init__(self, lower=-1.0, upper=1.0):
+		 r"""Initialize Csendes benchmark.
 
-        Args:
-            Lower (Optional[float]): Lower bound of problem.
-            Upper (Optional[float]): Upper bound of problem.
+		 Args:
+			  lower (Optional[float]): lower bound of problem.
+			  upper (Optional[float]): upper bound of problem.
 
-        See Also:
-            :func:`NiaPy.benchmarks.Benchmark.__init__`
+		 See Also:
+			  :func:`NiaPy.benchmarks.Benchmark.__init__`
 
-        """
-        Benchmark.__init__(self, Lower, Upper)
+		 """
+        Benchmark.__init__(self, lower, Upper)
 
     @staticmethod
     def latex_code():

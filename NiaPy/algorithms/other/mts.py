@@ -282,7 +282,7 @@ class MultipleTrajectorySearch(Algorithm):
 		Lin-Yu Tseng and Chun Chen, "Multiple trajectory search for Large Scale Global Optimization," 2008 IEEE Congress on Evolutionary Computation (IEEE World Congress on Computational Intelligence), Hong Kong, 2008, pp. 3052-3059. doi: 10.1109/CEC.2008.4631210
 
 	Attributes:
-		Name (List[Str]): List of strings representing algorithm name.
+		name (List[Str]): List of strings representing algorithm name.
 		LSs (Iterable[Callable[[numpy.ndarray, float, numpy.ndarray, float, bool, numpy.ndarray, Task, Dict[str, Any]], Tuple[numpy.ndarray, float, numpy.ndarray, float, bool, int, numpy.ndarray]]]): Local searches to use.
 		BONUS1 (int): Bonus for improving global best solution.
 		BONUS2 (int): Bonus for improving solution.
@@ -294,22 +294,22 @@ class MultipleTrajectorySearch(Algorithm):
 	See Also:
 		* :class:`NiaPy.algorithms.Algorithm`
 	"""
-	Name = ['MultipleTrajectorySearch', 'MTS']
+	name = ['MultipleTrajectorySearch', 'MTS']
 
 	@staticmethod
-	def algorithmInfo():
+	def algorithm_info():
 		r"""Get basic information of algorithm.
 
 		Returns:
 			str: Basic information of algorithm.
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+			* :func:`NiaPy.algorithms.Algorithm.algorithm_info`
 		"""
 		return r"""Lin-Yu Tseng and Chun Chen, "Multiple trajectory search for Large Scale Global Optimization," 2008 IEEE Congress on Evolutionary Computation (IEEE World Congress on Computational Intelligence), Hong Kong, 2008, pp. 3052-3059. doi: 10.1109/CEC.2008.4631210"""
 
 	@staticmethod
-	def typeParameters():
+	def parameter_types():
 		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
@@ -326,7 +326,7 @@ class MultipleTrajectorySearch(Algorithm):
 			'NoEnabled': lambda x: isinstance(x, int) and x > 0
 		}
 
-	def setParameters(self, M=40, NoLsTests=5, NoLs=5, NoLsBest=5, NoEnabled=17, BONUS1=10, BONUS2=1, LSs=(MTS_LS1v1, MTS_LS2, MTS_LS3v1), **ukwargs):
+	def set_parameters(self, M=40, NoLsTests=5, NoLs=5, NoLsBest=5, NoEnabled=17, BONUS1=10, BONUS2=1, LSs=(MTS_LS1v1, MTS_LS2, MTS_LS3v1), **ukwargs):
 		r"""Set the arguments of the algorithm.
 
 		Arguments:
@@ -340,9 +340,9 @@ class MultipleTrajectorySearch(Algorithm):
 			LSs (Iterable[Callable[[numpy.ndarray, float, numpy.ndarray, float, bool, numpy.ndarray, Task, Dict[str, Any]], Tuple[numpy.ndarray, float, numpy.ndarray, float, bool, int, numpy.ndarray]]]): Local searches to use.
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.setParameters`
+			* :func:`NiaPy.algorithms.Algorithm.set_parameters`
 		"""
-		Algorithm.setParameters(self, NP=M)
+		Algorithm.set_parameters(self, NP=M)
 		self.NoLsTests, self.NoLs, self.NoLsBest, self.NoEnabled, self.BONUS1, self.BONUS2 = NoLsTests, NoLs, NoLsBest, NoEnabled, BONUS1, BONUS2
 		self.LSs = LSs
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
@@ -406,7 +406,7 @@ class MultipleTrajectorySearch(Algorithm):
 		xb, xb_f = min(XBn, key=lambda x: x[1])
 		return x, x_f, xb, xb_f, improve, SR, g
 
-	def initPopulation(self, task):
+	def init_population(self, task):
 		r"""Initialize starting population.
 
 		Args:
@@ -422,14 +422,14 @@ class MultipleTrajectorySearch(Algorithm):
 					* SR (numpy.ndarray): Search range.
 					* grades (numpy.ndarray[int]): Grade of solution/individual.
 		"""
-		X, X_f, d = Algorithm.initPopulation(self, task)
+		X, X_f, d = Algorithm.init_population(self, task)
 		enable, improve, SR, grades = full(self.NP, True), full(self.NP, True), full([self.NP, task.D], task.bRange / 2), full(self.NP, 0.0)
 		d.update({
 			'enable': enable, 'improve': improve, 'SR': SR, 'grades': grades
 		})
 		return X, X_f, d
 
-	def runIteration(self, task, X, X_f, xb, xb_f, enable, improve, SR, grades, **dparams):
+	def run_iteration(self, task, X, X_f, xb, xb_f, enable, improve, SR, grades, **dparams):
 		r"""Core function of MultipleTrajectorySearch algorithm.
 
 		Args:
@@ -485,35 +485,35 @@ class MultipleTrajectorySearchV1(MultipleTrajectorySearch):
 		Tseng, Lin-Yu, and Chun Chen. "Multiple trajectory search for unconstrained/constrained multi-objective optimization." Evolutionary Computation, 2009. CEC'09. IEEE Congress on. IEEE, 2009.
 
 	Attributes:
-		Name (List[str]): List of strings representing algorithm name.
+		name (List[str]): List of strings representing algorithm name.
 
 	See Also:
 		* :class:`NiaPy.algorithms.other.MultipleTrajectorySearch``
 	"""
-	Name = ['MultipleTrajectorySearchV1', 'MTSv1']
+	name = ['MultipleTrajectorySearchV1', 'MTSv1']
 
 	@staticmethod
-	def algorithmInfo():
+	def algorithm_info():
 		r"""Get basic information of algorithm.
 
 		Returns:
 			str: Basic information of algorithm.
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+			* :func:`NiaPy.algorithms.Algorithm.algorithm_info`
 		"""
 		return r"""Tseng, Lin-Yu, and Chun Chen. "Multiple trajectory search for unconstrained/constrained multi-objective optimization." Evolutionary Computation, 2009. CEC'09. IEEE Congress on. IEEE, 2009."""
 
-	def setParameters(self, **kwargs):
+	def set_parameters(self, **kwargs):
 		r"""Set core parameters of MultipleTrajectorySearchV1 algorithm.
 
 		Args:
 			**kwargs (Dict[str, Any]): Additional arguments.
 
 		See Also:
-			* :func:`NiaPy.algorithms.other.MultipleTrajectorySearch.setParameters`
+			* :func:`NiaPy.algorithms.other.MultipleTrajectorySearch.set_parameters`
 		"""
 		kwargs.pop('NoLsBest', None)
-		MultipleTrajectorySearch.setParameters(self, NoLsBest=0, LSs=(MTS_LS1v1, MTS_LS2, MTS_LS3v1), **kwargs)
+		MultipleTrajectorySearch.set_parameters(self, NoLsBest=0, LSs=(MTS_LS1v1, MTS_LS2, MTS_LS3v1), **kwargs)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

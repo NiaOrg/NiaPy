@@ -48,21 +48,21 @@ class Step(Benchmark):
 
     """
 
-    Name = ["Step"]
+    name = ["Step"]
 
-    def __init__(self, Lower=-100.0, Upper=100.0):
+    def __init__(self, lower=-100.0, upper=100.0):
         r"""Initialize Step benchmark.
 
-        Args:
-            Lower (Optional[float]): Lower bound of problem.
-            Upper (Optional[float]): Upper bound of problem.
+		  Args:
+				lower (Optional[float]): lower bound of problem.
+				upper (Optional[float]): upper bound of problem.
 
-        See Also:
-            :func:`NiaPy.benchmarks.Benchmark.__init__`
+		  See Also:
+				:func:`NiaPy.benchmarks.Benchmark.__init__`
 
-        """
+		  """
 
-        Benchmark.__init__(self, Lower, Upper)
+        Benchmark.__init__(self, lower, Upper)
 
     @staticmethod
     def latex_code():
@@ -135,21 +135,21 @@ class Step2(Benchmark):
 
     """
 
-    Name = ["Step2"]
+    name = ["Step2"]
 
-    def __init__(self, Lower=-100.0, Upper=100.0):
+    def __init__(self, lower=-100.0, upper=100.0):
         r"""Initialize Step2 benchmark.
 
-        Args:
-            Lower (Optional[float]): Lower bound of problem.
-            Upper (Optional[float]): Upper bound of problem.
+		  Args:
+				lower (Optional[float]): lower bound of problem.
+				upper (Optional[float]): upper bound of problem.
 
-        See Also:
-            :func:`NiaPy.benchmarks.Benchmark.__init__`
+		  See Also:
+				:func:`NiaPy.benchmarks.Benchmark.__init__`
 
-        """
+		  """
 
-        Benchmark.__init__(self, Lower, Upper)
+        Benchmark.__init__(self, lower, Upper)
 
     @staticmethod
     def latex_code():
@@ -221,21 +221,21 @@ class Step3(Benchmark):
 
     """
 
-    Name = ["Step3"]
+    name = ["Step3"]
 
-    def __init__(self, Lower=-100.0, Upper=100.0):
+    def __init__(self, lower=-100.0, upper=100.0):
         r"""Initialize Step3 benchmark.
 
-        Args:
-            Lower (Optional[float]): Lower bound of problem.
-            Upper (Optional[float]): Upper bound of problem.
+		  Args:
+				lower (Optional[float]): lower bound of problem.
+				upper (Optional[float]): upper bound of problem.
 
-        See Also:
-            :func:`NiaPy.benchmarks.Benchmark.__init__`
+		  See Also:
+				:func:`NiaPy.benchmarks.Benchmark.__init__`
 
-        """
+		  """
 
-        Benchmark.__init__(self, Lower, Upper)
+        Benchmark.__init__(self, lower, Upper)
 
     @staticmethod
     def latex_code():

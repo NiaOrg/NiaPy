@@ -5,7 +5,7 @@ import logging
 from numpy import random as rand, argmin, argmax, mean, cos, asarray, append, sin
 from scipy.spatial.distance import euclidean
 
-from NiaPy.algorithms.algorithm import Algorithm, Individual, defaultIndividualInit
+from NiaPy.algorithms.algorithm import Algorithm, Individual, default_individual_init
 from NiaPy.util.utility import objects2array
 
 __all__ = ['DifferentialEvolution', 'DynNpDifferentialEvolution', 'AgingNpDifferentialEvolution', 'CrowdingDifferentialEvolution', 'MultiStrategyDifferentialEvolution', 'DynNpMultiStrategyDifferentialEvolution', 'AgingNpMultiMutationDifferentialEvolution', 'AgingIndividual', 'CrossRand1', 'CrossBest2', 'CrossBest1', 'CrossBest2', 'CrossCurr2Rand1', 'CrossCurr2Best1', 'multiMutations']
@@ -20,13 +20,13 @@ def CrossRand1(pop, ic, x_b, f, cr, rnd=rand, *args):
 	Mutation strategy uses three different random individuals from population to perform mutation.
 
 	Mutation:
-		Name: DE/rand/1
+		name: DE/rand/1
 
 		:math:`\mathbf{x}_{r_1, G} + F \cdot (\mathbf{x}_{r_2, G} - \mathbf{x}_{r_3, G}`
 		where :math:`r_1, r_2, r_3` are random indexes representing current population individuals.
 
 	Crossover:
-		Name: Binomial crossover
+		name: Binomial crossover
 
 		:math:`\mathbf{x}_{i, G+1} = \begin{cases} \mathbf{u}_{i, G+1}, & \text{if $f(\mathbf{u}_{i, G+1}) \leq f(\mathbf{x}_{i, G})$}, \\ \mathbf{x}_{i, G}, & \text{otherwise}. \end{cases}`
 
@@ -54,13 +54,13 @@ def CrossBest1(pop, ic, x_b, f, cr, rnd=rand, *args):
 	Mutation strategy uses two different random individuals from population and global best individual.
 
 	Mutation:
-		Name: de/best/1
+		name: de/best/1
 
 		:math:`\mathbf{v}_{i, G} = \mathbf{x}_{best, G} + F \cdot (\mathbf{x}_{r_1, G} - \mathbf{x}_{r_2, G})`
 		where :math:`r_1, r_2` are random indexes representing current population individuals.
 
 	Crossover:
-		Name: Binomial crossover
+		name: Binomial crossover
 
 		:math:`\mathbf{x}_{i, G+1} = \begin{cases} \mathbf{u}_{i, G+1}, & \text{if $f(\mathbf{u}_{i, G+1}) \leq f(\mathbf{x}_{i, G})$}, \\ \mathbf{x}_{i, G}, & \text{otherwise}. \end{cases}`
 
@@ -88,13 +88,13 @@ def CrossRand2(pop, ic, x_b, f, cr, rnd=rand, *args):
 	Mutation strategy uses five different random individuals from population.
 
 	Mutation:
-		Name: de/best/1
+		name: de/best/1
 
 		:math:`\mathbf{v}_{i, G} = \mathbf{x}_{r_1, G} + F \cdot (\mathbf{x}_{r_2, G} - \mathbf{x}_{r_3, G}) + F \cdot (\mathbf{x}_{r_4, G} - \mathbf{x}_{r_5, G})`
 		where :math:`r_1, r_2, r_3, r_4, r_5` are random indexes representing current population individuals.
 
 	Crossover:
-		Name: Binomial crossover
+		name: Binomial crossover
 
 		:math:`\mathbf{x}_{i, G+1} = \begin{cases} \mathbf{u}_{i, G+1}, & \text{if $f(\mathbf{u}_{i, G+1}) \leq f(\mathbf{x}_{i, G})$}, \\ \mathbf{x}_{i, G}, & \text{otherwise}. \end{cases}`
 
@@ -120,13 +120,13 @@ def CrossBest2(pop, ic, x_b, f, cr, rnd=rand, *args):
 	r"""Mutation strategy with crossover.
 
 	Mutation:
-		Name: de/best/2
+		name: de/best/2
 
 		:math:`\mathbf{v}_{i, G} = \mathbf{x}_{best, G} + F \cdot (\mathbf{x}_{r_1, G} - \mathbf{x}_{r_2, G}) + F \cdot (\mathbf{x}_{r_3, G} - \mathbf{x}_{r_4, G})`
 		where :math:`r_1, r_2, r_3, r_4` are random indexes representing current population individuals.
 
 	Crossover:
-		Name: Binomial crossover
+		name: Binomial crossover
 
 		:math:`\mathbf{x}_{i, G+1} = \begin{cases} \mathbf{u}_{i, G+1}, & \text{if $f(\mathbf{u}_{i, G+1}) \leq f(\mathbf{x}_{i, G})$}, \\ \mathbf{x}_{i, G}, & \text{otherwise}. \end{cases}`
 
@@ -152,13 +152,13 @@ def CrossCurr2Rand1(pop, ic, x_b, f, cr, rnd=rand, *args):
 	r"""Mutation strategy with crossover.
 
 	Mutation:
-		Name: de/curr2rand/1
+		name: de/curr2rand/1
 
 		:math:`\mathbf{v}_{i, G} = \mathbf{x}_{i, G} + F \cdot (\mathbf{x}_{r_1, G} - \mathbf{x}_{r_2, G}) + F \cdot (\mathbf{x}_{r_3, G} - \mathbf{x}_{r_4, G})`
 		where :math:`r_1, r_2, r_3, r_4` are random indexes representing current population individuals
 
 	Crossover:
-		Name: Binomial crossover
+		name: Binomial crossover
 
 		:math:`\mathbf{x}_{i, G+1} = \begin{cases} \mathbf{u}_{i, G+1}, & \text{if $f(\mathbf{u}_{i, G+1}) \leq f(\mathbf{x}_{i, G})$}, \\ \mathbf{x}_{i, G}, & \text{otherwise}. \end{cases}`
 
@@ -184,13 +184,13 @@ def CrossCurr2Best1(pop, ic, x_b, f, cr, rnd=rand, **kwargs):
 	r"""Mutation strategy with crossover.
 
 	Mutation:
-		Name: de/curr-to-best/1
+		name: de/curr-to-best/1
 
 		:math:`\mathbf{v}_{i, G} = \mathbf{x}_{i, G} + F \cdot (\mathbf{x}_{r_1, G} - \mathbf{x}_{r_2, G}) + F \cdot (\mathbf{x}_{r_3, G} - \mathbf{x}_{r_4, G})`
 		where :math:`r_1, r_2, r_3, r_4` are random indexes representing current population individuals
 
 	Crossover:
-		Name: Binomial crossover
+		name: Binomial crossover
 
 		:math:`\mathbf{x}_{i, G+1} = \begin{cases} \mathbf{u}_{i, G+1}, & \text{if $f(\mathbf{u}_{i, G+1}) \leq f(\mathbf{x}_{i, G})$}, \\ \mathbf{x}_{i, G}, & \text{otherwise}. \end{cases}`
 
@@ -231,7 +231,7 @@ class DifferentialEvolution(Algorithm):
 		Storn, Rainer, and Kenneth Price. "Differential evolution - a simple and efficient heuristic for global optimization over continuous spaces." Journal of global optimization 11.4 (1997): 341-359.
 
 	Attributes:
-		Name (List[str]): List of string of names for algorithm.
+		name (List[str]): List of string of names for algorithm.
 		F (float): Scale factor.
 		CR (float): Crossover probability.
 		CrossMutt (Callable[numpy.ndarray, int, numpy.ndarray, float, float, mtrand.RandomState, Dict[str, Any]]): crossover and mutation strategy.
@@ -239,22 +239,22 @@ class DifferentialEvolution(Algorithm):
 	See Also:
 		* :class:`NiaPy.algorithms.Algorithm`
 	"""
-	Name = ['DifferentialEvolution', 'DE']
+	name = ['DifferentialEvolution', 'DE']
 
 	@staticmethod
-	def algorithmInfo():
+	def algorithm_info():
 		r"""Get basic information of algorithm.
 
 		Returns:
 			str: Basic information of algorithm.
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+			* :func:`NiaPy.algorithms.Algorithm.algorithm_info`
 		"""
 		return r"""Storn, Rainer, and Kenneth Price. "Differential evolution - a simple and efficient heuristic for global optimization over continuous spaces." Journal of global optimization 11.4 (1997): 341-359."""
 
 	@staticmethod
-	def typeParameters():
+	def parameter_types():
 		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
@@ -263,16 +263,16 @@ class DifferentialEvolution(Algorithm):
 				* CR (Callable[[float], bool]): Check for correct value of parameter.
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.typeParameters`
+			* :func:`NiaPy.algorithms.Algorithm.parameter_types`
 		"""
-		d = Algorithm.typeParameters()
+		d = Algorithm.parameter_types()
 		d.update({
 			'F': lambda x: isinstance(x, (float, int)) and 0 < x <= 2,
 			'CR': lambda x: isinstance(x, float) and 0 <= x <= 1
 		})
 		return d
 
-	def setParameters(self, NP=50, F=1, CR=0.8, CrossMutt=CrossRand1, **ukwargs):
+	def set_parameters(self, NP=50, F=1, CR=0.8, CrossMutt=CrossRand1, **ukwargs):
 		r"""Set the algorithm parameters.
 
 		Arguments:
@@ -283,9 +283,9 @@ class DifferentialEvolution(Algorithm):
 			ukwargs (Dict[str, Any]): Additional arguments.
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.setParameters`
+			* :func:`NiaPy.algorithms.Algorithm.set_parameters`
 		"""
-		Algorithm.setParameters(self, NP=NP, InitPopFunc=ukwargs.pop('InitPopFunc', defaultIndividualInit), itype=ukwargs.pop('itype', Individual), **ukwargs)
+		Algorithm.set_parameters(self, NP=NP, InitPopFunc=ukwargs.pop('InitPopFunc', default_individual_init), itype=ukwargs.pop('itype', Individual), **ukwargs)
 		self.F, self.CR, self.CrossMutt = F, CR, CrossMutt
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
@@ -330,7 +330,7 @@ class DifferentialEvolution(Algorithm):
 		"""
 		return pop
 
-	def runIteration(self, task, pop, fpop, xb, fxb, **dparams):
+	def run_iteration(self, task, pop, fpop, xb, fxb, **dparams):
 		r"""Core function of Differential Evolution algorithm.
 
 		Args:
@@ -373,27 +373,27 @@ class CrowdingDifferentialEvolution(DifferentialEvolution):
 		MIT
 
 	Attributes:
-		Name (List[str]): List of strings representing algorithm name.
+		name (List[str]): List of strings representing algorithm name.
 		CrowPop (float): Proportion of range for cowding.
 
 	See Also:
 		* :class:`NiaPy.algorithms.basic.DifferentialEvolution`
 	"""
-	Name = ['CrowdingDifferentialEvolution', 'CDE']
+	name = ['CrowdingDifferentialEvolution', 'CDE']
 
 	@staticmethod
-	def algorithmInfo():
+	def algorithm_info():
 		r"""Get basic information of algorithm.
 
 		Returns:
 			str: Basic information of algorithm.
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+			* :func:`NiaPy.algorithms.Algorithm.algorithm_info`
 		"""
 		return r"""No New"""
 
-	def setParameters(self, CrowPop=0.1, **ukwargs):
+	def set_parameters(self, CrowPop=0.1, **ukwargs):
 		r"""Set core parameters of algorithm.
 
 		Args:
@@ -401,9 +401,9 @@ class CrowdingDifferentialEvolution(DifferentialEvolution):
 			**ukwargs: Additional arguments.
 
 		See Also:
-			* :func:`NiaPy.algorithms.basic.DifferentialEvolution.setParameters`
+			* :func:`NiaPy.algorithms.basic.DifferentialEvolution.set_parameters`
 		"""
-		DifferentialEvolution.setParameters(self, **ukwargs)
+		DifferentialEvolution.set_parameters(self, **ukwargs)
 		self.CrowPop = CrowPop
 
 	def selection(self, pop, npop, **kwargs):
@@ -439,29 +439,29 @@ class DynNpDifferentialEvolution(DifferentialEvolution):
 		MIT
 
 	Attributes:
-		Name (List[str]): List of strings representing algorithm names.
+		name (List[str]): List of strings representing algorithm names.
 		pmax (int): Number of population reductions.
 		rp (int): Small non-negative number which is added to value of generations.
 
 	See Also:
 		* :class:`NiaPy.algorithms.basic.DifferentialEvolution`
 	"""
-	Name = ['DynNpDifferentialEvolution', 'dynNpDE']
+	name = ['DynNpDifferentialEvolution', 'dynNpDE']
 
 	@staticmethod
-	def algorithmInfo():
+	def algorithm_info():
 		r"""Get basic information of algorithm.
 
 		Returns:
 			str: Basic information of algorithm.
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+			* :func:`NiaPy.algorithms.Algorithm.algorithm_info`
 		"""
 		return r"""No info"""
 
 	@staticmethod
-	def typeParameters():
+	def parameter_types():
 		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
@@ -470,14 +470,14 @@ class DynNpDifferentialEvolution(DifferentialEvolution):
 				* pmax (Callable[[int], bool])
 
 		See Also:
-			* :func:`NiaPy.algorithms.basic.DifferentialEvolution.typeParameters`
+			* :func:`NiaPy.algorithms.basic.DifferentialEvolution.parameter_types`
 		"""
-		r = DifferentialEvolution.typeParameters()
+		r = DifferentialEvolution.parameter_types()
 		r['rp'] = lambda x: isinstance(x, (float, int)) and x > 0
 		r['pmax'] = lambda x: isinstance(x, int) and x > 0
 		return r
 
-	def setParameters(self, pmax=50, rp=3, **ukwargs):
+	def set_parameters(self, pmax=50, rp=3, **ukwargs):
 		r"""Set the algorithm parameters.
 
 		Arguments:
@@ -485,9 +485,9 @@ class DynNpDifferentialEvolution(DifferentialEvolution):
 			rp (Optional[int]): Small non-negative number which is added to value of generations.
 
 		See Also:
-			* :func:`NiaPy.algorithms.basic.DifferentialEvolution.setParameters`
+			* :func:`NiaPy.algorithms.basic.DifferentialEvolution.set_parameters`
 		"""
-		DifferentialEvolution.setParameters(self, **ukwargs)
+		DifferentialEvolution.set_parameters(self, **ukwargs)
 		self.pmax, self.rp = pmax, rp
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
@@ -601,7 +601,7 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 		MIT
 
 	Attributes:
-		Name (List[str]): list of strings representing algorithm names.
+		name (List[str]): list of strings representing algorithm names.
 		Lt_min (int): Minimal age of individual.
 		Lt_max (int): Maximal age of individual.
 		delta_np (float): Proportion of how many individuals shall die.
@@ -612,22 +612,22 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 	See Also:
 		* :class:`NiaPy.algorithms.basic.DifferentialEvolution`
 	"""
-	Name = ['AgingNpDifferentialEvolution', 'ANpDE']
+	name = ['AgingNpDifferentialEvolution', 'ANpDE']
 
 	@staticmethod
-	def algorithmInfo():
+	def algorithm_info():
 		r"""Get basic information of algorithm.
 
 		Returns:
 			str: Basic information of algorithm.
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+			* :func:`NiaPy.algorithms.Algorithm.algorithm_info`
 		"""
 		return r"""No info"""
 
 	@staticmethod
-	def typeParameters():
+	def parameter_types():
 		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
@@ -638,9 +638,9 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 				* omega (Callable[[float], bool])
 
 		See Also:
-			* :func:`NiaPy.algorithms.basic.DifferentialEvolution.typeParameters`
+			* :func:`NiaPy.algorithms.basic.DifferentialEvolution.parameter_types`
 		"""
-		r = DifferentialEvolution.typeParameters()
+		r = DifferentialEvolution.parameter_types()
 		r.update({
 			'Lt_min': lambda x: isinstance(x, int) and x >= 0,
 			'Lt_max': lambda x: isinstance(x, int) and x >= 0,
@@ -649,7 +649,7 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 		})
 		return r
 
-	def setParameters(self, Lt_min=0, Lt_max=12, delta_np=0.3, omega=0.3, age=proportional, CrossMutt=CrossBest1, **ukwargs):
+	def set_parameters(self, Lt_min=0, Lt_max=12, delta_np=0.3, omega=0.3, age=proportional, CrossMutt=CrossBest1, **ukwargs):
 		r"""Set the algorithm parameters.
 
 		Arguments:
@@ -658,9 +658,9 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 			age (Optional[Callable[[int, int, float, float, float, float, float], int]]): Function for calculation of age for individual.
 
 		See Also:
-			* :func:`NiaPy.algorithms.basic.DifferentialEvolution.setParameters`
+			* :func:`NiaPy.algorithms.basic.DifferentialEvolution.set_parameters`
 		"""
-		DifferentialEvolution.setParameters(self, itype=AgingIndividual, **ukwargs)
+		DifferentialEvolution.set_parameters(self, itype=AgingIndividual, **ukwargs)
 		self.Lt_min, self.Lt_max, self.age, self.delta_np, self.omega = Lt_min, Lt_max, age, delta_np, omega
 		self.mu = abs(self.Lt_max - self.Lt_min) / 2
 		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
@@ -807,43 +807,43 @@ class MultiStrategyDifferentialEvolution(DifferentialEvolution):
 		MIT
 
 	Attributes:
-		Name (List[str]): List of strings representing algorithm names.
+		name (List[str]): List of strings representing algorithm names.
 		strategies (Iterable[Callable[[numpy.ndarray[Individual], int, Individual, float, float, mtrand.RandomState], numpy.ndarray[Individual]]]): List of mutation strategies.
 		CrossMutt (Callable[[numpy.ndarray[Individual], int, Individual, float, float, Task, Individual, Iterable[Callable[[numpy.ndarray, int, numpy.ndarray, float, float, mtrand.RandomState, Dict[str, Any]], Individual]]], Individual]): Multi crossover and mutation combiner function.
 
 	See Also:
 		* :class:`NiaPy.algorithms.basic.DifferentialEvolution`
 	"""
-	Name = ['MultiStrategyDifferentialEvolution', 'MsDE']
+	name = ['MultiStrategyDifferentialEvolution', 'MsDE']
 
 	@staticmethod
-	def algorithmInfo():
+	def algorithm_info():
 		r"""Get basic information of algorithm.
 
 		Returns:
 			str: Basic information of algorithm.
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+			* :func:`NiaPy.algorithms.Algorithm.algorithm_info`
 		"""
 		return r"""No info"""
 
 	@staticmethod
-	def typeParameters():
+	def parameter_types():
 		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
 			Dict[str, Callable]: Testing functions for parameters.
 
 		See Also:
-			* :func:`NiaPy.algorithms.basic.DifferentialEvolution.typeParameters`
+			* :func:`NiaPy.algorithms.basic.DifferentialEvolution.parameter_types`
 		"""
-		r = DifferentialEvolution.typeParameters()
+		r = DifferentialEvolution.parameter_types()
 		r.pop('CrossMutt', None)
 		r.update({'strategies': lambda x: callable(x)})
 		return r
 
-	def setParameters(self, strategies=(CrossRand1, CrossBest1, CrossCurr2Best1, CrossRand2), **ukwargs):
+	def set_parameters(self, strategies=(CrossRand1, CrossBest1, CrossCurr2Best1, CrossRand2), **ukwargs):
 		r"""Set the arguments of the algorithm.
 
 		Arguments:
@@ -851,9 +851,9 @@ class MultiStrategyDifferentialEvolution(DifferentialEvolution):
 			CrossMutt (Optional[Callable[[numpy.ndarray[Individual], int, Individual, float, float, Task, Individual, Iterable[Callable[[numpy.ndarray, int, numpy.ndarray, float, float, mtrand.RandomState, Dict[str, Any]], Individual]]], Individual]]): Multi crossover and mutation combiner function.
 
 		See Also:
-			* :func:`NiaPy.algorithms.basic.DifferentialEvolution.setParameters`
+			* :func:`NiaPy.algorithms.basic.DifferentialEvolution.set_parameters`
 		"""
-		DifferentialEvolution.setParameters(self, CrossMutt=multiMutations, **ukwargs)
+		DifferentialEvolution.set_parameters(self, CrossMutt=multiMutations, **ukwargs)
 		self.strategies = strategies
 
 	def evolve(self, pop, xb, task, **kwargs):
@@ -886,28 +886,28 @@ class DynNpMultiStrategyDifferentialEvolution(MultiStrategyDifferentialEvolution
 		MIT
 
 	Attributes:
-		Name (List[str]): List of strings representing algorithm name.
+		name (List[str]): List of strings representing algorithm name.
 
 	See Also:
 		* :class:`NiaPy.algorithms.basic.MultiStrategyDifferentialEvolution`
 		* :class:`NiaPy.algorithms.basic.DynNpDifferentialEvolution`
 	"""
-	Name = ['DynNpMultiStrategyDifferentialEvolution', 'dynNpMsDE']
+	name = ['DynNpMultiStrategyDifferentialEvolution', 'dynNpMsDE']
 
 	@staticmethod
-	def algorithmInfo():
+	def algorithm_info():
 		r"""Get basic information of algorithm.
 
 		Returns:
 			str: Basic information of algorithm.
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+			* :func:`NiaPy.algorithms.Algorithm.algorithm_info`
 		"""
 		return r"""No info"""
 
 	@staticmethod
-	def typeParameters():
+	def parameter_types():
 		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
@@ -916,25 +916,25 @@ class DynNpMultiStrategyDifferentialEvolution(MultiStrategyDifferentialEvolution
 				* pmax (Callable[[int], bool]): TODO
 
 		See Also:
-			* :func:`NiaPy.algorithms.basic.MultiStrategyDifferentialEvolution.typeParameters`
+			* :func:`NiaPy.algorithms.basic.MultiStrategyDifferentialEvolution.parameter_types`
 		"""
-		r = MultiStrategyDifferentialEvolution.typeParameters()
+		r = MultiStrategyDifferentialEvolution.parameter_types()
 		r['rp'] = lambda x: isinstance(x, (float, int)) and x > 0
 		r['pmax'] = lambda x: isinstance(x, int) and x > 0
 		return r
 
-	def setParameters(self, **ukwargs):
+	def set_parameters(self, **ukwargs):
 		r"""Set the arguments of the algorithm.
 
 		Args:
 			ukwargs (Dict[str, Any]): Additional arguments.
 
 		See Also:
-			* :func:`NiaPy.algorithms.basic.MultiStrategyDifferentialEvolution.setParameters`
-			* :func:`NiaPy.algorithms.basic.DynNpDifferentialEvolution.setParameters`
+			* :func:`NiaPy.algorithms.basic.MultiStrategyDifferentialEvolution.set_parameters`
+			* :func:`NiaPy.algorithms.basic.DynNpDifferentialEvolution.set_parameters`
 		"""
-		DynNpDifferentialEvolution.setParameters(self, **ukwargs)
-		MultiStrategyDifferentialEvolution.setParameters(self, **ukwargs)
+		DynNpDifferentialEvolution.set_parameters(self, **ukwargs)
+		MultiStrategyDifferentialEvolution.set_parameters(self, **ukwargs)
 
 	def evolve(self, pop, xb, task, **kwargs):
 		return MultiStrategyDifferentialEvolution.evolve(self, pop, xb, task, **kwargs)
@@ -971,53 +971,53 @@ class AgingNpMultiMutationDifferentialEvolution(AgingNpDifferentialEvolution, Mu
 		MIT
 
 	Attributes:
-		Name (List[str]): List of strings representing algorithm names
+		name (List[str]): List of strings representing algorithm names
 
 	See Also:
 		* :class:`NiaPy.algorithms.basic.AgingNpDifferentialEvolution`
 		* :class:`NiaPy.algorithms.basic.MultiStrategyDifferentialEvolution`
 	"""
-	Name = ['AgingNpMultiMutationDifferentialEvolution', 'ANpMSDE']
+	name = ['AgingNpMultiMutationDifferentialEvolution', 'ANpMSDE']
 
 	@staticmethod
-	def algorithmInfo():
+	def algorithm_info():
 		r"""Get basic information of algorithm.
 
 		Returns:
 			str: Basic information of algorithm.
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+			* :func:`NiaPy.algorithms.Algorithm.algorithm_info`
 		"""
 		return r"""No info"""
 
 	@staticmethod
-	def typeParameters():
+	def parameter_types():
 		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
 			Dict[str, Callable]: Mappings form parameter names to test functions.
 
 		See Also:
-			* :func:`NiaPy.algorithms.basic.MultiStrategyDifferentialEvolution.typeParameters`
-			* :func:`NiaPy.algorithms.basic.AgingNpDifferentialEvolution.typeParameters`
+			* :func:`NiaPy.algorithms.basic.MultiStrategyDifferentialEvolution.parameter_types`
+			* :func:`NiaPy.algorithms.basic.AgingNpDifferentialEvolution.parameter_types`
 		"""
-		d = AgingNpDifferentialEvolution.typeParameters()
-		d.update(MultiStrategyDifferentialEvolution.typeParameters())
+		d = AgingNpDifferentialEvolution.parameter_types()
+		d.update(MultiStrategyDifferentialEvolution.parameter_types())
 		return d
 
-	def setParameters(self, **ukwargs):
+	def set_parameters(self, **ukwargs):
 		r"""Set core parameter arguments.
 
 		Args:
 			**ukwargs (Dict[str, Any]): Additional arguments.
 
 		See Also:
-			* :func:`NiaPy.algorithms.basic.AgingNpDifferentialEvolution.setParameters`
-			* :func:`NiaPy.algorithms.basic.MultiStrategyDifferentialEvolution.setParameters`
+			* :func:`NiaPy.algorithms.basic.AgingNpDifferentialEvolution.set_parameters`
+			* :func:`NiaPy.algorithms.basic.MultiStrategyDifferentialEvolution.set_parameters`
 		"""
-		AgingNpDifferentialEvolution.setParameters(self, **ukwargs)
-		MultiStrategyDifferentialEvolution.setParameters(self, stratgeys=(CrossRand1, CrossBest1, CrossCurr2Rand1, CrossRand2), itype=AgingIndividual, **ukwargs)
+		AgingNpDifferentialEvolution.set_parameters(self, **ukwargs)
+		MultiStrategyDifferentialEvolution.set_parameters(self, stratgeys=(CrossRand1, CrossBest1, CrossCurr2Rand1, CrossRand2), itype=AgingIndividual, **ukwargs)
 
 	def evolve(self, pop, xb, task, **kwargs):
 		r"""Evolve current population.

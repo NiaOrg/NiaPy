@@ -46,21 +46,21 @@ class Qing(Benchmark):
 
     """
 
-    Name = ["Qing"]
+    name = ["Qing"]
 
-    def __init__(self, Lower=-500.0, Upper=500.0):
-        """Initialize Quing benchmark.
+    def __init__(self, lower=-500.0, upper=500.0):
+		 """Initialize Quing benchmark.
 
-        Args:
-            Lower (Optional[float]): Lower bound of problem.
-            Upper (Optional[float]): Upper bound of problem.
+		 Args:
+			  lower (Optional[float]): lower bound of problem.
+			  upper (Optional[float]): upper bound of problem.
 
-        See Also:
-            :func:`NiaPy.benchmarks.Benchmark.__init__`
+		 See Also:
+			  :func:`NiaPy.benchmarks.Benchmark.__init__`
 
-        """
+		 """
 
-        Benchmark.__init__(self, Lower, Upper)
+        Benchmark.__init__(self, lower, Upper)
 
     @staticmethod
     def latex_code():
