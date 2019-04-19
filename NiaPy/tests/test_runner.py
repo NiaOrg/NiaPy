@@ -1,6 +1,6 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, line-too-long, multiple-statements
-from unittest import TestCase, skip
+from unittest import TestCase
 
 import NiaPy
 
@@ -23,7 +23,7 @@ class RunnerTestCase(TestCase):
 		self.benchmarks = ['griewank', MyBenchmark()]
 
 	def test_runner_works_fine(self):
-		self.assertTrue(NiaPy.Runner(4, 100, 5, useAlgorithms=self.algorithms, useBenchmarks=self.benchmarks).run())
+		self.assertTrue(NiaPy.Runner(4, 500, 10, 2, useAlgorithms=self.algorithms, useBenchmarks=self.benchmarks).run())
 
 	def test_runner_bad_algorithm_thorws_fine(self):
 		self.assertRaises(TypeError, lambda: NiaPy.Runner(4, 10, 3, 2, 'EvolutionStrategy', self.benchmarks).run())

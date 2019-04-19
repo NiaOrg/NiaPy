@@ -5,8 +5,6 @@ from numpy import random as rnd, array_equal
 from NiaPy.algorithms.modified import DifferentialEvolutionMTS, DifferentialEvolutionMTSv1, MultiStrategyDifferentialEvolutionMTS, MultiStrategyDifferentialEvolutionMTSv1, DynNpMultiStrategyDifferentialEvolutionMTS, DynNpMultiStrategyDifferentialEvolutionMTSv1, DynNpDifferentialEvolutionMTS, DynNpDifferentialEvolutionMTSv1
 from NiaPy.algorithms.modified.hde import MtsIndividual
 
-from NiaPy.util import StoppingTask
-
 from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark, IndividualTestCase
 
 class MtsIndividualTestCase(IndividualTestCase):
