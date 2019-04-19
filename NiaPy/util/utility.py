@@ -178,7 +178,7 @@ def limitRepair(x, Lower, Upper, **kwargs):
 	ir = where(x < Lower)
 	x[ir] = Lower[ir]
 	ir = where(x > Upper)
-	x[ir] = Lower[ir]
+	x[ir] = Upper[ir]
 	return x
 
 def limitInversRepair(x, Lower, Upper, **kwargs):
