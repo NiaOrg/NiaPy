@@ -76,6 +76,7 @@ Other examples:
 - Using different termination conditions (nFES, nGEN, reference value) ([see example](examples/stopping_criterions.py))
 - Basic statistics example (min, max, mean, median, std) ([see example](examples/basic_stats.py))
 - Storing improvements during the evolutionary cycle ([see example](examples/log_results.py))
+- Custom initialization of initial population ([see example](examples/custom_init_population.py))
 
 The following benchmark functions are included in NiaPy:
 - Ackley
