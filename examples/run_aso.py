@@ -7,7 +7,7 @@ sys.path.append('../')
 
 from NiaPy.algorithms.other import AnarchicSocietyOptimization
 from NiaPy.algorithms.other.aso import Elitism, Sequential, Crossover
-from NiaPy.util import StoppingTask, OptimizationType
+from NiaPy.task.Task import StoppingTask, OptimizationType
 from NiaPy.benchmarks import Sphere
 
 # we will run Anarchic Society Optimization for 5 independent runs

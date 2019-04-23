@@ -5,7 +5,7 @@ import sys
 sys.path.append('../')
 # End of fix
 
-from NiaPy.util import TaskConvSave, OptimizationType
+from NiaPy.task.Task import TaskConvSave, OptimizationType
 from NiaPy.algorithms.basic import DifferentialEvolution 
 from NiaPy.benchmarks import Sphere
 

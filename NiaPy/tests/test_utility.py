@@ -4,7 +4,10 @@ from unittest import TestCase
 
 from numpy import full, random as rnd, inf, sum, array_equal, asarray
 
-from NiaPy.util import Utility, StoppingTask, ThrowingTask, fullArray, limitRepair, limitInversRepair, wangRepair, randRepair, reflectRepair, ScaledTask, TaskConvPrint, TaskComposition, FesException, GenException, RefException  # TimeException
+from NiaPy.util import Utility, fullArray, limit_repair, limitInversRepair, wangRepair, randRepair, reflectRepair, \
+    FesException, GenException, RefException  # TimeException
+from NiaPy.task.Task import StoppingTask, ThrowingTask, ScaledTask, TaskConvPrint, TaskComposition
+
 
 class FullArrayTestCase(TestCase):
 	r"""Test case for testing method `fullarray`.
@@ -184,10 +187,10 @@ class RepairMethodsTest(TestCase):
 		return True not in il and True not in iu
 
 	def test_limit_repair(self):
-		self.assertTrue(self.is_solution_in_range(limitRepair(self.x1, self.lower, self.upper)))
-		self.assertTrue(self.is_solution_in_range(limitRepair(self.x2, self.lower, self.upper)))
-		self.assertTrue(self.is_solution_in_range(limitRepair(self.x3, self.lower, self.upper)))
-		self.assertTrue(self.is_solution_in_range(limitRepair(self.x4, self.lower, self.upper)))
+		self.assertTrue(self.is_solution_in_range(limit_repair(self.x1, self.lower, self.upper)))
+		self.assertTrue(self.is_solution_in_range(limit_repair(self.x2, self.lower, self.upper)))
+		self.assertTrue(self.is_solution_in_range(limit_repair(self.x3, self.lower, self.upper)))
+		self.assertTrue(self.is_solution_in_range(limit_repair(self.x4, self.lower, self.upper)))
 
 	def test_limit_inverse_repair(self):
 		self.assertTrue(self.is_solution_in_range(limitInversRepair(self.x1, self.lower, self.upper)))

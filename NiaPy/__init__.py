@@ -10,11 +10,11 @@ import json
 import datetime
 import xlsxwriter
 from numpy import amin, amax, median, mean, std
-from NiaPy import benchmarks, util, algorithms
-from NiaPy.algorithms import Algorithm
-from NiaPy.algorithms import basic as balgos, modified as malgos, other as oalgos
 
-__all__ = ["algorithms", "benchmarks", "util"]
+from NiaPy import util, algorithms, benchmarks, task
+from NiaPy.algorithms import Algorithm, AlgorithmUtility
+
+__all__ = ["algorithms", "benchmarks", "util", "task"]
 __project__ = "NiaPy"
 __version__ = "2.0.0rc4"
 
@@ -23,80 +23,6 @@ VERSION = "{0} v{1}".format(__project__, __version__)
 logging.basicConfig()
 logger = logging.getLogger("NiaPy")
 logger.setLevel("INFO")
-
-NiaPyAlgos = [
-    balgos.BatAlgorithm,
-    balgos.DifferentialEvolution,
-    balgos.CrowdingDifferentialEvolution,
-    balgos.DynNpDifferentialEvolution,
-    balgos.AgingNpDifferentialEvolution,
-    balgos.MultiStrategyDifferentialEvolution,
-    balgos.DynNpMultiStrategyDifferentialEvolution,
-    balgos.AgingNpMultiMutationDifferentialEvolution,
-    balgos.FireflyAlgorithm,
-    balgos.FlowerPollinationAlgorithm,
-    balgos.GreyWolfOptimizer,
-    balgos.ArtificialBeeColonyAlgorithm,
-    balgos.GeneticAlgorithm,
-    balgos.ParticleSwarmAlgorithm,
-    balgos.CamelAlgorithm,
-    balgos.BareBonesFireworksAlgorithm,
-    balgos.MonkeyKingEvolutionV1,
-    balgos.MonkeyKingEvolutionV2,
-    balgos.MonkeyKingEvolutionV3,
-    balgos.EvolutionStrategy1p1,
-    balgos.EvolutionStrategyMp1,
-    balgos.EvolutionStrategyMpL,
-    balgos.SineCosineAlgorithm,
-    balgos.HarmonySearch,
-    balgos.HarmonySearchV1,
-    balgos.GlowwormSwarmOptimization,
-    balgos.GlowwormSwarmOptimizationV1,
-    balgos.GlowwormSwarmOptimizationV2,
-    balgos.GlowwormSwarmOptimizationV3,
-    balgos.KrillHerdV1,
-    balgos.KrillHerdV2,
-    balgos.KrillHerdV3,
-    balgos.KrillHerdV4,
-    balgos.KrillHerdV11,
-    balgos.FireworksAlgorithm,
-    balgos.EnhancedFireworksAlgorithm,
-    balgos.DynamicFireworksAlgorithm,
-    balgos.DynamicFireworksAlgorithmGauss,
-    balgos.GravitationalSearchAlgorithm,
-    balgos.FishSchoolSearch,
-    balgos.MothFlameOptimizer,
-    balgos.CuckooSearch,
-    balgos.CovarianceMatrixAdaptionEvolutionStrategy,
-    balgos.CoralReefsOptimization,
-    balgos.ForestOptimizationAlgorithm
-]
-
-NiaPyAlgos += [
-    malgos.HybridBatAlgorithm,
-    malgos.DifferentialEvolutionMTS,
-    malgos.DifferentialEvolutionMTSv1,
-    malgos.DynNpDifferentialEvolutionMTS,
-    malgos.DynNpDifferentialEvolutionMTSv1,
-    malgos.MultiStrategyDifferentialEvolutionMTS,
-    malgos.MultiStrategyDifferentialEvolutionMTSv1,
-    malgos.DynNpMultiStrategyDifferentialEvolutionMTS,
-    malgos.DynNpMultiStrategyDifferentialEvolutionMTSv1,
-    malgos.SelfAdaptiveDifferentialEvolution,
-    malgos.DynNpSelfAdaptiveDifferentialEvolutionAlgorithm,
-    malgos.MultiStrategySelfAdaptiveDifferentialEvolution,
-    malgos.DynNpMultiStrategySelfAdaptiveDifferentialEvolution
-]
-
-NiaPyAlgos += [
-    oalgos.MultipleTrajectorySearch,
-    oalgos.MultipleTrajectorySearchV1,
-    oalgos.NelderMeadMethod,
-    oalgos.HillClimbAlgorithm,
-    oalgos.SimulatedAnnealing,
-    oalgos.AnarchicSocietyOptimization,
-    # oalgos.TabuSearch
-]
 
 
 class Runner:
@@ -138,27 +64,6 @@ class Runner:
         self.useBenchmarks = useBenchmarks
         self.results = {}
 
-    @staticmethod
-    def getAlgorithm(name):
-        r"""Get algorithm definition based on the given string.
-
-        Args:
-                name (str): Name of the algorithm
-
-        Returns:
-                str: Return algorithm definition.
-
-        """
-
-        algorithm = None
-        for alg in NiaPyAlgos:
-            if name in alg.Name:
-                algorithm = alg
-                break
-        if algorithm is None:
-            raise TypeError("Passed algorithm is not defined!")
-        return algorithm
-
     def benchmarkFactory(self, name):
         r"""Create optimization task.
 
@@ -170,28 +75,9 @@ class Runner:
 
         """
 
-        return util.StoppingTask(D=self.D, nFES=self.nFES, optType=util.OptimizationType.MINIMIZATION, benchmark=name)
+        from NiaPy.task import StoppingTask, OptimizationType
+        return StoppingTask(D=self.D, nFES=self.nFES, optType=OptimizationType.MINIMIZATION, benchmark=name)
 
-    def algorithmFactory(self, algorithm):
-        r"""Create algorithm based on the passed algorithm name.
-
-        Args:
-                algorithm (Union[str, Algorithm]): Name or instance of algorithm.
-
-        Returns:
-                Algorithm: Initialized algorithm with parameters.
-
-        """
-
-        if issubclass(type(algorithm), Algorithm):
-            return algorithm
-
-        algorithm, params = self.getAlgorithm(algorithm), dict()
-        for key, value in algorithm.typeParameters().items():
-            val = self.args.get(key, None)
-            if val is not None and value(val):
-                params[key] = val
-        return algorithm(**params)
 
     @classmethod
     def __createExportDir(cls):
@@ -347,24 +233,30 @@ class Runner:
         """
 
         for alg in self.useAlgorithms:
-            self.results[alg] = {}
+            alg_name = ""
+            if not isinstance(alg, "".__class__):
+                alg_name = str(type(alg).__name__)
+            else:
+                alg_name = alg
+
+            self.results[alg_name] = {}
             if verbose:
-                logger.info("Running %s...", alg)
+                logger.info("Running %s...", alg_name)
 
             for bench in self.useBenchmarks:
-                benchName = ""
+                bench_name = ""
                 if not isinstance(bench, "".__class__):
-                    benchName = str(type(bench).__name__)
+                    bench_name = str(type(bench).__name__)
                 else:
-                    benchName = bench
+                    bench_name = bench
                 if verbose:
-                    logger.info("Running %s algorithm on %s benchmark...", alg, benchName)
+                    logger.info("Running %s algorithm on %s benchmark...", alg_name, bench_name)
 
-                bm = self.benchmarkFactory(bench)
-                self.results[alg][benchName] = []
+                benchmark_stopping_task = self.benchmarkFactory(bench)
+                self.results[alg_name][bench_name] = []
                 for _ in range(self.nRuns):
-                    algorithm = self.algorithmFactory(alg)
-                    self.results[alg][benchName].append(algorithm.run(bm))
+                    algorithm = AlgorithmUtility().get_algorithm(alg)
+                    self.results[alg_name][bench_name].append(algorithm.run(benchmark_stopping_task))
             if verbose:
                 logger.info("---------------------------------------------------")
         if export == "log":
