@@ -2,10 +2,23 @@
 
 import logging
 
-from numpy import random as rand, inf, ndarray, asarray, array_equal, argmin, apply_along_axis
+from numpy import (
+    random as rand,
+    inf,
+    ndarray,
+    asarray,
+    array_equal,
+    argmin,
+    apply_along_axis
+)
 
 from NiaPy.util.utility import objects2array
-from NiaPy.util.exception import FesException, GenException, TimeException, RefException
+from NiaPy.util.exception import (
+    FesException,
+    GenException,
+    TimeException,
+    RefException
+)
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.util.utility')
@@ -466,5 +479,3 @@ class Individual:
                 int: Number of components.
         """
         return len(self.x)
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

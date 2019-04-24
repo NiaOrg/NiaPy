@@ -2,7 +2,6 @@
 # This is temporary fix to import module from parent folder
 # It will be removed when package is published on PyPI
 from NiaPy import Runner
-from NiaPy.algorithms.modified import SelfAdaptiveDifferentialEvolution
 from NiaPy.algorithms.basic import (
     GreyWolfOptimizer,
     ParticleSwarmAlgorithm
@@ -20,10 +19,12 @@ runner = Runner(
     nFES=100,
     nRuns=1,
     useAlgorithms=[
-        SelfAdaptiveDifferentialEvolution(),
-        "DifferentialEvolution",
         GreyWolfOptimizer(),
-        ParticleSwarmAlgorithm(NP=40)],
+        "FlowerPollinationAlgorithm",
+        ParticleSwarmAlgorithm(),
+        "HybridBatAlgorithm",
+        "SimulatedAnnealing",
+        "CuckooSearch"],
     useBenchmarks=[
         Ackley(),
         Griewank(),
