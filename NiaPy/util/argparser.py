@@ -1,5 +1,7 @@
 # encoding=utf8
 
+"""Arguments parser utility functions."""
+
 import sys
 import logging
 from argparse import ArgumentParser
@@ -51,18 +53,16 @@ def MakeArgParser():
         * `-NP` (int):
             Number of individuals in population. Default values is `43`.
         * `-r` or `--runType` (str);
-            Run type of run. Value can be:
+            Run type of run. Value can be (Default value is `''`.):
                 * '': No output during the run. Output is shown only at the end of algorithm run.
                 * `log`: Output is shown every time new global best solution is found
                 * `plot`: Output is shown only at the end of run. Output is shown as graph plotted in mathplotlib. Graph represents convegance of algorithm over run time of algorithm.
-            Default value is `''`.
         * `-seed` (list of int or int):
             Set the starting seed of algorithm run. If multiple runs, user can provide list of ints, where each int usd use at new run. Default values is `None`.
         * `-optType` (str):
-            Optimization type of the run. Values can be:
+            Optimization type of the run. Values can be (Default value is `min`.):
                 * `min`: For minimization problems
                 * `max`: For maximization problems
-            Default value is `min`.
 
     Returns:
         ArgumentParser: Parser for parsing arguments from string.
@@ -70,7 +70,9 @@ def MakeArgParser():
     See Also:
         * :class:`ArgumentParser`
         * :func:`ArgumentParser.add_argument`
+
     """
+
     parser, cbechs = ArgumentParser(description='Runer example.'), makeCbechs()
     parser.add_argument('-a', '--algorithm', dest='algo', default='jDE', type=str)
     parser.add_argument('-b', '--bench', dest='bench', nargs='*', default=cbechs[0], choices=cbechs, type=str)
@@ -96,7 +98,9 @@ def getArgs(av):
     See Also:
         * :func:`NiaPy.util.argparser.MakeArgParser`.
         * :func:`ArgumentParser.parse_args`
+
     """
+
     parser = MakeArgParser()
     a = parser.parse_args(av)
     return a
@@ -113,7 +117,9 @@ def getDictArgs(argv):
 
     See Also:
         * :func:`NiaPy.utils.getArgs`
+
     """
+
     return vars(getArgs(argv))
 
 
