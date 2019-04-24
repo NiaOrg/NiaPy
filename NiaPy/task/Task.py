@@ -1,3 +1,5 @@
+# encoding=utf8
+
 """The implementation of tasks."""
 
 import logging
