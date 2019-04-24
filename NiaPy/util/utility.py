@@ -4,9 +4,68 @@
 
 import logging
 
-from numpy import ndarray, asarray, full, empty, where, random as rand, ceil, amin, amax
-
-from NiaPy.benchmarks import Benchmark, Rastrigin, Rosenbrock, Griewank, Sphere, Ackley, Schwefel, Schwefel221, Schwefel222, Whitley, Alpine1, Alpine2, HappyCat, Ridge, ChungReynolds, Csendes, Pinter, Qing, Quintic, Salomon, SchumerSteiglitz, Step, Step2, Step3, Stepint, SumSquares, StyblinskiTang, BentCigar, Discus, Elliptic, ExpandedGriewankPlusRosenbrock, HGBat, Katsuura, ExpandedSchaffer, ModifiedSchwefel, Weierstrass, Michalewichz, Levy, Sphere2, Sphere3, Trid, Perm, Zakharov, DixonPrice, Powell, CosineMixture, Infinity, SchafferN2, SchafferN4
+from numpy import (
+    ndarray,
+    asarray,
+    full,
+    empty,
+    where,
+    random as rand,
+    ceil,
+    amin,
+    amax
+)
+from NiaPy.benchmarks import (
+    Benchmark,
+    Rastrigin,
+    Rosenbrock,
+    Griewank,
+    Sphere,
+    Ackley,
+    Schwefel,
+    Schwefel221,
+    Schwefel222,
+    Whitley,
+    Alpine1,
+    Alpine2,
+    HappyCat,
+    Ridge,
+    ChungReynolds,
+    Csendes,
+    Pinter,
+    Qing,
+    Quintic,
+    Salomon,
+    SchumerSteiglitz,
+    Step,
+    Step2,
+    Step3,
+    Stepint,
+    SumSquares,
+    StyblinskiTang,
+    BentCigar,
+    Discus,
+    Elliptic,
+    ExpandedGriewankPlusRosenbrock,
+    HGBat,
+    Katsuura,
+    ExpandedSchaffer,
+    ModifiedSchwefel,
+    Weierstrass,
+    Michalewichz,
+    Levy,
+    Sphere2,
+    Sphere3,
+    Trid,
+    Perm,
+    Zakharov,
+    DixonPrice,
+    Powell,
+    CosineMixture,
+    Infinity,
+    SchafferN2,
+    SchafferN4
+)
 
 logging.basicConfig()
 logger = logging.getLogger("NiaPy.util.utility")
@@ -87,7 +146,6 @@ class Utility:
         }
 
         self.algorithm_classes = {}
-
 
     def get_benchmark(self, benchmark):
         r"""Get the optimization problem.
