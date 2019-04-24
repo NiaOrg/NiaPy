@@ -78,7 +78,6 @@ class Runner:
         from NiaPy.task import StoppingTask, OptimizationType
         return StoppingTask(D=self.D, nFES=self.nFES, optType=OptimizationType.MINIMIZATION, benchmark=name)
 
-
     @classmethod
     def __createExportDir(cls):
         r"""Create export directory if not already createed."""
