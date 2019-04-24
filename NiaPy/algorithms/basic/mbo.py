@@ -33,11 +33,8 @@ class MonarchButterflyOptimization(Algorithm):
 
     Attributes:
         Name (List[str]): List of strings representing algorithm name.
-        lt (int): Life time of trees parameter.
-        al (int): Area limit parameter.
-        lsc (int): Local seeding changes parameter.
-        gsc (int): Global seeding changes parameter.
-        tr (float): Transfer rate parameter.
+        PAR (float): Partition.
+        PER (float): Period.
 
     See Also:
         * :class:`NiaPy.algorithms.Algorithm`
