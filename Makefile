@@ -69,15 +69,15 @@ check: flake8 pycodestyle pydocstyle ## Run linters and static analysis
 
 
 .PHONY: flake8
-flake8:
+flake8: install
 	$(FLAKE8) $(PACKAGES) $(CONFIG)
 
 .PHONY: pycodestyle
-pycodestyle:
+pycodestyle: install
 	$(PYCODESTYLE) $(PACKAGES) $(CONFIG) --config=.pycodestyle.ini
 
 .PHONY: pydocstyle
-pydocstyle:
+pydocstyle: install
 	$(PYDOCSTYLE) $(PACKAGES) $(CONFIG)
 
 # TESTS #######################################################################
