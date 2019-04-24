@@ -3,7 +3,7 @@
 from math import pow, isnan
 from unittest import TestCase
 from numpy import asarray, pi, full
-from NiaPy.util import Utility
+from NiaPy.benchmarks.utility import Utility
 
 
 class TestBenchmarkFunctions(TestCase):

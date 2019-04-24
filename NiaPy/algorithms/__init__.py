@@ -7,7 +7,7 @@ from NiaPy.algorithms import modified
 from NiaPy.algorithms import other
 from NiaPy.algorithms.algorithm import Algorithm, Individual, defaultNumPyInit, defaultIndividualInit
 from NiaPy.algorithms.statistics import BasicStatistics
-from NiaPy.algorithms.Utility import AlgorithmUtility
+from NiaPy.algorithms.utility import AlgorithmUtility
 
 __all__ = [
 	'basic',

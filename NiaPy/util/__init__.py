@@ -1,5 +1,6 @@
+"""Module with implementation of utility classess and functions."""
+
 from NiaPy.util.utility import (
-    Utility,
     fullArray,
     objects2array,
     limit_repair,
@@ -17,7 +18,6 @@ from NiaPy.util.exception import (
 )
 
 __all__ = [
-    'Utility',
     'fullArray',
     'objects2array',
     'limit_repair',

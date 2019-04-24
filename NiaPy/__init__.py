@@ -12,7 +12,7 @@ import xlsxwriter
 from numpy import amin, amax, median, mean, std
 
 from NiaPy import util, algorithms, benchmarks, task
-from NiaPy.algorithms import Algorithm, AlgorithmUtility
+from NiaPy.algorithms import AlgorithmUtility
 
 __all__ = ["algorithms", "benchmarks", "util", "task"]
 __project__ = "NiaPy"

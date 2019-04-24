@@ -1,6 +1,6 @@
 # encoding=utf8
 
-"""Implementation of benchmarks utility function."""
+"""Implementation of various utility functions."""
 
 import logging
 
@@ -14,57 +14,6 @@ from numpy import (
     ceil,
     amin,
     amax
-)
-from NiaPy.benchmarks import (
-    Benchmark,
-    Rastrigin,
-    Rosenbrock,
-    Griewank,
-    Sphere,
-    Ackley,
-    Schwefel,
-    Schwefel221,
-    Schwefel222,
-    Whitley,
-    Alpine1,
-    Alpine2,
-    HappyCat,
-    Ridge,
-    ChungReynolds,
-    Csendes,
-    Pinter,
-    Qing,
-    Quintic,
-    Salomon,
-    SchumerSteiglitz,
-    Step,
-    Step2,
-    Step3,
-    Stepint,
-    SumSquares,
-    StyblinskiTang,
-    BentCigar,
-    Discus,
-    Elliptic,
-    ExpandedGriewankPlusRosenbrock,
-    HGBat,
-    Katsuura,
-    ExpandedSchaffer,
-    ModifiedSchwefel,
-    Weierstrass,
-    Michalewichz,
-    Levy,
-    Sphere2,
-    Sphere3,
-    Trid,
-    Perm,
-    Zakharov,
-    DixonPrice,
-    Powell,
-    CosineMixture,
-    Infinity,
-    SchafferN2,
-    SchafferN4
 )
 
 logging.basicConfig()
@@ -82,99 +31,6 @@ __all__ = [
 ]
 
 
-class Utility:
-    r"""Base class with string mappings to benchmarks and algorithms.
-
-    Attributes:
-        classes (Dict[str, Benchmark]): Mapping from stings to benchmark.
-
-    """
-
-    def __init__(self):
-        r"""Initializing the algorithm and benchmark objects."""
-
-        self.benchmark_classes = {
-            "ackley": Ackley,
-            "alpine1": Alpine1,
-            "alpine2": Alpine2,
-            "bentcigar": BentCigar,
-            "chungReynolds": ChungReynolds,
-            "cosinemixture": CosineMixture,
-            "csendes": Csendes,
-            "discus": Discus,
-            "dixonprice": DixonPrice,
-            "conditionedellptic": Elliptic,
-            "elliptic": Elliptic,
-            "expandedgriewankplusrosenbrock": ExpandedGriewankPlusRosenbrock,
-            "expandedschaffer": ExpandedSchaffer,
-            "griewank": Griewank,
-            "happyCat": HappyCat,
-            "hgbat": HGBat,
-            "infinity": Infinity,
-            "katsuura": Katsuura,
-            "levy": Levy,
-            "michalewicz": Michalewichz,
-            "modifiedscwefel": ModifiedSchwefel,
-            "perm": Perm,
-            "pinter": Pinter,
-            "powell": Powell,
-            "qing": Qing,
-            "quintic": Quintic,
-            "rastrigin": Rastrigin,
-            "ridge": Ridge,
-            "rosenbrock": Rosenbrock,
-            "salomon": Salomon,
-            "schaffer2": SchafferN2,
-            "schaffer4": SchafferN4,
-            "schumerSteiglitz": SchumerSteiglitz,
-            "schwefel": Schwefel,
-            "schwefel221": Schwefel221,
-            "schwefel222": Schwefel222,
-            "sphere": Sphere,
-            "sphere2": Sphere2,
-            "sphere3": Sphere3,
-            "step": Step,
-            "step2": Step2,
-            "step3": Step3,
-            "stepint": Stepint,
-            "styblinskiTang": StyblinskiTang,
-            "sumSquares": SumSquares,
-            "trid": Trid,
-            "weierstrass": Weierstrass,
-            "whitley": Whitley,
-            "zakharov": Zakharov
-        }
-
-        self.algorithm_classes = {}
-
-    def get_benchmark(self, benchmark):
-        r"""Get the optimization problem.
-
-        Arguments:
-            benchmark (Union[str, Benchmark]): String or class that represents the optimization problem.
-
-        Returns:
-            Benchmark: Optimization function with limits.
-
-        """
-
-        if issubclass(type(benchmark), Benchmark):
-            return benchmark
-        elif benchmark in self.benchmark_classes.keys():
-            return self.benchmark_classes[benchmark]()
-        else:
-            raise TypeError("Passed benchmark is not defined!")
-
-    @classmethod
-    def __raiseLowerAndUpperNotDefined(cls):
-        r"""Trow exception if lower and upper bounds are not defined in benchmark.
-
-        Raises:
-            TypeError: Type error.
-        """
-        raise TypeError("Upper and Lower value must be defined!")
-
-
 def limit_repair(x, Lower, Upper, **kwargs):
     r"""Repair solution and put the solution in the random position inside of the bounds of problem.
 
@@ -186,7 +42,9 @@ def limit_repair(x, Lower, Upper, **kwargs):
 
     Returns:
             numpy.ndarray: Solution in search space.
+
     """
+
     ir = where(x < Lower)
     x[ir] = Lower[ir]
     ir = where(x > Upper)
@@ -205,7 +63,9 @@ def limitInversRepair(x, Lower, Upper, **kwargs):
 
     Returns:
             numpy.ndarray: Solution in search space.
+
     """
+
     ir = where(x < Lower)
     x[ir] = Upper[ir]
     ir = where(x > Upper)
@@ -224,7 +84,9 @@ def wangRepair(x, Lower, Upper, **kwargs):
 
     Returns:
             numpy.ndarray: Solution in search space.
+
     """
+
     ir = where(x < Lower)
     x[ir] = amin([Upper[ir], 2 * Lower[ir] - x[ir]], axis=0)
     ir = where(x > Upper)
@@ -244,7 +106,9 @@ def randRepair(x, Lower, Upper, rnd=rand, **kwargs):
 
     Returns:
             numpy.ndarray: Fixed solution.
+
     """
+
     ir = where(x < Lower)
     x[ir] = rnd.uniform(Lower[ir], Upper[ir])
     ir = where(x > Upper)
@@ -263,7 +127,9 @@ def reflectRepair(x, Lower, Upper, **kwargs):
 
     Returns:
             numpy.ndarray: Fix solution.
+
     """
+
     ir = where(x > Upper)
     x[ir] = Lower[ir] + x[ir] % (Upper[ir] - Lower[ir])
     ir = where(x < Lower)

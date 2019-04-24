@@ -79,7 +79,7 @@ class AlgorithmUtility:
     """
 
     def __init__(self):
-        r"""Initializing the algorithms."""
+        r"""Initialize the algorithms."""
 
         self.algorithm_classes = {
             "BatAlgorithm": BatAlgorithm,
