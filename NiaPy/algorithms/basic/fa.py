@@ -47,7 +47,7 @@ class FireflyAlgorithm(Algorithm):
         	Description: Firefly algorithm is inspired by the flashing behavior of fireflies.
         	Author: Xin-She Yang
         	Year: 2008
-       	Main reference: Yang, Xin-She. Nature-Inspired Metaheuristic Algorithms,  Luniver Press, 2008.
+                Main reference: Yang, Xin-She. Nature-Inspired Metaheuristic Algorithms,  Luniver Press, 2008.
         """
 
 	@staticmethod

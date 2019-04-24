@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, logging-not-lazy, attribute-defined-outside-init, line-too-long, arguments-differ, singleton-comparison, bad-continuation, dangerous-default-value, too-many-ancestors
+
 import logging
 
 from numpy import argsort
@@ -42,7 +42,7 @@ class MtsIndividual(Individual):
 		Individual.__init__(self, task=task, **kwargs)
 		self.grade, self.enable, self.improved = grade, enable, improved
 		if SR is None and task is not None: self.SR = task.bRange / 4
-		elif SR is not None: self.SR = SR
+		else: self.SR = SR
 
 class DifferentialEvolutionMTS(DifferentialEvolution, MultipleTrajectorySearch):
 	r"""Implementation of Differential Evolution with MTS local searches.

@@ -1,8 +1,9 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, redefined-builtin, line-too-long, no-self-use, arguments-differ, no-else-return, bad-continuation
 import logging
-from numpy import where, apply_along_axis, zeros, append, ndarray, delete, arange, argmin, absolute
+from numpy import where, apply_along_axis, zeros, append, ndarray, delete, arange, argmin, absolute, int32
 from NiaPy.algorithms.algorithm import Algorithm
+from NiaPy.util import limitRepair
 
 __all__ = ['ForestOptimizationAlgorithm']
 
@@ -28,6 +29,9 @@ class ForestOptimizationAlgorithm(Algorithm):
     Reference paper:
         Manizheh Ghaemi, Mohammad-Reza Feizi-Derakhshi, Forest Optimization Algorithm, Expert Systems with Applications, Volume 41, Issue 15, 2014, Pages 6676-6687, ISSN 0957-4174, https://doi.org/10.1016/j.eswa.2014.05.009.
 
+    References URL:
+        Implementation is based on the following MATLAB code: https://github.com/cominsys/FOA
+
     Attributes:
         Name (List[str]): List of strings representing algorithm name.
         lt (int): Life time of trees parameter.
@@ -47,7 +51,7 @@ class ForestOptimizationAlgorithm(Algorithm):
         Description: Forest Optimization Algorithm is inspired by few trees in the forests which can survive for several decades, while other trees could live for a limited period.
         Authors: Manizheh Ghaemi, Mohammad-Reza Feizi-Derakhshi
         Year: 2014
-    Main reference: Manizheh Ghaemi, Mohammad-Reza Feizi-Derakhshi, Forest Optimization Algorithm, Expert Systems with Applications, Volume 41, Issue 15, 2014, Pages 6676-6687, ISSN 0957-4174, https://doi.org/10.1016/j.eswa.2014.05.009.
+        Main reference: Manizheh Ghaemi, Mohammad-Reza Feizi-Derakhshi, Forest Optimization Algorithm, Expert Systems with Applications, Volume 41, Issue 15, 2014, Pages 6676-6687, ISSN 0957-4174, https://doi.org/10.1016/j.eswa.2014.05.009.
     """
 
     @staticmethod
@@ -94,41 +98,23 @@ class ForestOptimizationAlgorithm(Algorithm):
         self.lt, self.al, self.lsc, self.gsc, self.tr = lt, al, lsc, gsc, tr
         if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-    def repair(self, x, lower, upper):
-        r"""Truncate exceeded dimensions to the limits.
-
-        Args:
-            x (numpy.ndarray): Individual to repair.
-            lower (numpy.ndarray): Lower limits for dimensions.
-            upper (numpy.ndarray): Upper limits for dimensions.
-
-        Returns:
-            numpy.ndarray: Repaired individual.
-        """
-        ir = where(x < lower)
-        x[ir] = lower[ir]
-        ir = where(x > upper)
-        x[ir] = upper[ir]
-        return x
-
-    def localSeeding(self, task, trees, dx):
+    def localSeeding(self, task, trees):
         r"""Local optimum search stage.
 
         Args:
             task (Task): Optimization task.
             trees (numpy.ndarray): Zero age trees for local seeding.
-            dx (float): A small value used in local seeding stage.
 
         Returns:
             numpy.ndarray: Resulting zero age trees.
         """
         n = trees.shape[0]
-        deltas = self.uniform(-dx, dx, (n, self.lsc))
+        deltas = self.uniform(-self.dx, self.dx, (n, self.lsc))
         deltas = append(deltas, zeros((n, task.D - self.lsc)), axis=1)
         perms = self.rand([deltas.shape[0], deltas.shape[1]]).argsort(1)
         deltas = deltas[arange(deltas.shape[0])[:, None], perms]
-        trees[:, :-1] += deltas
-        trees[:, :-1] = apply_along_axis(self.repair, 1, trees[:, :-1], task.Lower, task.Upper)
+        trees += deltas
+        trees = apply_along_axis(limitRepair, 1, trees, task.Lower, task.Upper)
         return trees
 
     def globalSeeding(self, task, candidates, size):
@@ -142,7 +128,7 @@ class ForestOptimizationAlgorithm(Algorithm):
         Returns:
             numpy.ndarray: Resulting trees.
         """
-        seeds = candidates[self.randint(len(candidates), D=size), :-1]
+        seeds = candidates[self.randint(len(candidates), D=size)]
         deltas = self.uniform(task.benchmark.Lower, task.benchmark.Upper, (size, self.gsc))
         deltas = append(deltas, zeros((size, task.D - self.gsc)), axis=1)
         perms = self.rand([deltas.shape[0], deltas.shape[1]]).argsort(1)
@@ -152,45 +138,51 @@ class ForestOptimizationAlgorithm(Algorithm):
         seeds = seeds.flatten()
         seeds[deltas != 0] = deltas[deltas != 0]
 
-        return append(seeds.reshape(size, task.D), zeros((size, 1)), axis=1)
+        return seeds.reshape(size, task.D)
 
-    def removeLifeTimeExceeded(self, trees, candidates):
+    def removeLifeTimeExceeded(self, trees, candidates, age):
         r"""Remove dead trees.
 
         Args:
             trees (numpy.ndarray): Population to test.
             candidates (numpy.ndarray): Candidate population array to be updated.
+            age (numpy.ndarray[int32]): Age of trees.
 
         Returns:
-            Tuple[numpy.ndarray, numpy.ndarray]:
+            Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray[int32]]:
                 1. Alive trees.
                 2. New candidate population.
+                3. Age of trees.
         """
-        lifeTimeExceeded = where(trees[:, -1] > self.lt)
+        lifeTimeExceeded = where(age > self.lt)
         candidates = trees[lifeTimeExceeded]
         trees = delete(trees, lifeTimeExceeded, axis=0)
-        return trees, candidates
+        age = delete(age, lifeTimeExceeded, axis=0)
+        return trees, candidates, age
 
-    def survivalOfTheFittest(self, task, trees, candidates):
+    def survivalOfTheFittest(self, task, trees, candidates, age):
         r"""Evaluate and filter current population.
 
         Args:
             task (Task): Optimization task.
             trees (numpy.ndarray): Population to evaluate.
             candidates (numpy.ndarray): Candidate population array to be updated.
+            age (numpy.ndarray[int32]): Age of trees.
 
         Returns:
-            Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray[float]]:
+            Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray[float], numpy.ndarray[int32]]:
                 1. Trees sorted by fitness value.
                 2. Updated candidate population.
                 3. Population fitness values.
+                4. Age of trees
         """
-        evaluations = apply_along_axis(task.eval, 1, trees[:, :-1])
+        evaluations = apply_along_axis(task.eval, 1, trees)
         ei = evaluations.argsort()
         candidates = append(candidates, trees[ei[self.al:]], axis=0)
         trees = trees[ei[:self.al]]
+        age = age[ei[:self.al]]
         evaluations = evaluations[ei[:self.al]]
-        return trees, candidates, evaluations
+        return trees, candidates, evaluations, age
 
     def initPopulation(self, task):
         r"""Initialize the starting population.
@@ -203,18 +195,17 @@ class ForestOptimizationAlgorithm(Algorithm):
                 1. New population.
                 2. New population fitness/function values.
                 3. Additional arguments:
-                    * dx (float): A small value used in local seeding stage.
+                    * age (numpy.ndarray[int32]): Age of trees.
 
         See Also:
             * :func:`NiaPy.algorithms.Algorithm.initPopulation`
         """
         Trees, Evaluations, _ = Algorithm.initPopulation(self, task)
-        z = zeros((self.NP, 1))
-        Trees = append(Trees, z, axis=1)
-        dx = absolute(task.benchmark.Upper) / 5
-        return Trees, Evaluations, {'dx': dx}
+        age = zeros(self.NP, dtype=int32)
+        self.dx = absolute(task.benchmark.Upper) / 5
+        return Trees, Evaluations, {'age': age}
 
-    def runIteration(self, task, Trees, Evaluations, xb, fxb, dx, **dparams):
+    def runIteration(self, task, Trees, Evaluations, xb, fxb, age, **dparams):
         r"""Core function of Forest Optimization Algorithm.
 
         Args:
@@ -223,7 +214,7 @@ class ForestOptimizationAlgorithm(Algorithm):
             Evaluations (numpy.ndarray[float]): Current population function/fitness values.
             xb (numpy.ndarray): Global best individual.
             fxb (float): Global best individual fitness/function value.
-            dx (float): A small value used in local seeding stage.
+            age (numpy.ndarray[int32]): Age of trees.
             **dparams (Dict[str, Any]): Additional arguments.
 
         Returns:
@@ -231,25 +222,27 @@ class ForestOptimizationAlgorithm(Algorithm):
                 1. New population.
                 2. New population fitness/function values.
                 3. Additional arguments:
-                    * dx (float): A small value used in local seeding stage.
+                    * age (numpy.ndarray[int32]): Age of trees.
         """
         candidatePopulation = ndarray((0, task.D + 1))
-        zeroAgeTrees = Trees[Trees[:, -1] == 0]
+        zeroAgeTrees = Trees[age == 0]
 
-        localSeeds = self.localSeeding(task, zeroAgeTrees, dx)
-        Trees[:, -1] += 1
+        localSeeds = self.localSeeding(task, zeroAgeTrees)
+        age += 1
 
-        Trees, candidatePopulation = self.removeLifeTimeExceeded(Trees, candidatePopulation)
+        Trees, candidatePopulation, age = self.removeLifeTimeExceeded(Trees, candidatePopulation, age)
         Trees = append(Trees, localSeeds, axis=0)
-        Trees, candidatePopulation, Evaluations = self.survivalOfTheFittest(task, Trees, candidatePopulation)
+        age = append(age, zeros(len(localSeeds), dtype=int32))
+        Trees, candidatePopulation, Evaluations, age = self.survivalOfTheFittest(task, Trees, candidatePopulation, age)
 
         gsn = int(self.tr * len(candidatePopulation))
         if gsn > 0:
             globalSeeds = self.globalSeeding(task, candidatePopulation, gsn)
             Trees = append(Trees, globalSeeds, axis=0)
-            gste = apply_along_axis(task.eval, 1, globalSeeds[:, :-1])
+            age = append(age, zeros(len(globalSeeds), dtype=int32))
+            gste = apply_along_axis(task.eval, 1, globalSeeds)
             Evaluations = append(Evaluations, gste)
 
         ib = argmin(Evaluations)
-        Trees[ib, -1] = 0
-        return Trees, Evaluations, {'dx': dx}
+        age[ib] = 0
+        return Trees, Evaluations, {'age': age}

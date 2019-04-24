@@ -10,7 +10,7 @@ from NiaPy.algorithms.basic import ForestOptimizationAlgorithm
 from NiaPy.util import StoppingTask, OptimizationType
 from NiaPy.benchmarks import Sphere
 
-#we will run Forest Optimization Algorithm for 5 independent runs
+# we will run Forest Optimization Algorithm for 5 independent runs
 for i in range(5):
     task = StoppingTask(D=10, nFES=10000, optType=OptimizationType.MINIMIZATION, benchmark=Sphere())
     algo = ForestOptimizationAlgorithm(NP=20, lt=5, lsc=1, gsc=1, al=20, tr=0.35)
