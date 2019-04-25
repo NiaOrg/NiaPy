@@ -6,7 +6,13 @@ from NiaPy.algorithms.basic import (
     GreyWolfOptimizer,
     ParticleSwarmAlgorithm
 )
-from NiaPy.benchmarks import Ackley, Griewank, Sphere, HappyCat
+from NiaPy.benchmarks import (
+    Ackley,
+    Griewank,
+    Sphere,
+    HappyCat
+)
+
 import sys
 sys.path.append('../')
 # End of fix

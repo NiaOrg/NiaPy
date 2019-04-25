@@ -1,6 +1,9 @@
 # This is temporary fix to import module from parent folder
 # It will be removed when package is published on PyPI
 import sys
+
+import NiaPy.runner
+
 sys.path.append('../')
 # End of fix
 
@@ -44,4 +47,4 @@ benchmarks = ['ackley', 'alpine1', 'alpine2', 'chungReynolds',
               'step2', 'step3', 'stepint', 'styblinskiTang',
               'sumSquares', 'whitley', MyBenchmark()]
 
-NiaPy.Runner(10, 40, 1000, 3, algorithms, benchmarks).run(export='json', verbose=True)
+NiaPy.runner.Runner(10, 40, 1000, 3, algorithms, benchmarks).run(export='json', verbose=True)
