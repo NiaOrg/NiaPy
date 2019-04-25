@@ -5,7 +5,7 @@ from unittest import TestCase
 import NiaPy
 
 
-class MyBenchmark:
+class MyBenchmark(NiaPy.benchmarks.Benchmark):
     def __init__(self):
         self.Lower = -11
         self.Upper = 11
@@ -32,5 +32,5 @@ class RunnerTestCase(TestCase):
     def test_runner_bad_algorithm_thorws_fine(self):
         self.assertRaises(TypeError, lambda: NiaPy.Runner(4, 10, 3, 2, 'EvolutionStrategy', self.benchmarks).run())
 
-    def test_runner_bad_benchmark_thorws_fine(self):
+    def test_runner_bad_benchmark_throws_fine(self):
         self.assertRaises(TypeError, lambda: NiaPy.Runner(4, 10, 3, 2, 'EvolutionStrategy1p1', 'TesterMan').run())
