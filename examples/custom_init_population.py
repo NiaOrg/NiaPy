@@ -6,7 +6,7 @@ sys.path.append('../')
 # End of fix
 
 from NiaPy.algorithms.basic import ParticleSwarmAlgorithm
-from NiaPy.task.Task import StoppingTask, OptimizationType
+from NiaPy.task.task import StoppingTask, OptimizationType
 from NiaPy.benchmarks import Sphere
 from numpy import random as rand, apply_along_axis
 

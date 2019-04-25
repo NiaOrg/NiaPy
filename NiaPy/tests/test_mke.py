@@ -4,7 +4,7 @@ from unittest import TestCase
 
 from numpy import array_equal, full, inf, random as rnd
 
-from NiaPy.task.Task import Task
+from NiaPy.task import Task
 from NiaPy.algorithms.basic import MonkeyKingEvolutionV1, MonkeyKingEvolutionV2, MonkeyKingEvolutionV3
 from NiaPy.algorithms.basic.mke import MkeSolution
 from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark

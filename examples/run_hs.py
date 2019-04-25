@@ -8,7 +8,7 @@ sys.path.append('../')
 import random
 from NiaPy.algorithms.basic import HarmonySearch
 from NiaPy.util import StoppingTask
-from NiaPy.task.Task import OptimizationType
+from NiaPy.task.task import OptimizationType
 from NiaPy.benchmarks import Sphere
 
 #we will run Harmony Search for 5 independent runs

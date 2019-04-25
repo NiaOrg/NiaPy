@@ -7,7 +7,8 @@ from numpy import full, random as rnd, inf, sum, array_equal, asarray
 from NiaPy.util import fullArray, limit_repair, limitInversRepair, wangRepair, randRepair, reflectRepair, \
     FesException, GenException, RefException  # TimeException
 from NiaPy.benchmarks.utility import Utility
-from NiaPy.task.Task import StoppingTask, ThrowingTask, ScaledTask, TaskConvPrint, TaskComposition
+from NiaPy import benchmarks
+from NiaPy.task import StoppingTask, ThrowingTask, ScaledTask, TaskConvPrint, TaskComposition
 
 
 class FullArrayTestCase(TestCase):
@@ -131,7 +132,7 @@ class NoLimits:
         return evaluate
 
 
-class MyBenchmark:
+class MyBenchmark(benchmarks.Benchmark):
     def __init__(self):
         self.Lower = -10.0
         self.Upper = 10

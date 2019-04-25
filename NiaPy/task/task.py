@@ -19,19 +19,6 @@ from NiaPy.util import (
 )
 from NiaPy.benchmarks.utility import Utility
 
-__all__ = [
-    "OptimizationType",
-    "Task",
-    "CountingTask",
-    "StoppingTask",
-    "MoveTask",
-    "TaskComposition",
-    "TaskConvPlot",
-    "TaskConvPrint",
-    "TaskConvSave",
-    "ThrowingTask",
-    "ScaledTask"
-]
 
 logging.basicConfig()
 logger = logging.getLogger("NiaPy.task.Task")

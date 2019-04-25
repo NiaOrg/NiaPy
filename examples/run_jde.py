@@ -7,7 +7,7 @@ sys.path.append('../')
 
 from NiaPy.algorithms.modified import SelfAdaptiveDifferentialEvolution
 from NiaPy.util import StoppingTask
-from NiaPy.task.Task import OptimizationType
+from NiaPy.task.task import OptimizationType
 from NiaPy.benchmarks import Sphere
 
 # we will run jDE algorithm for 5 independent runs

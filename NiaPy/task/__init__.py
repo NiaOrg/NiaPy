@@ -1,6 +1,6 @@
 """Module with implementations of tasks."""
 
-from NiaPy.task.Task import (
+from NiaPy.task.task import (
     Task,
     CountingTask,
     StoppingTask,

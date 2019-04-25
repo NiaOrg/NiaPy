@@ -7,7 +7,7 @@ sys.path.append('../')
 
 from NiaPy.algorithms.modified import DynNpDifferentialEvolutionMTSv1
 from NiaPy.util import StoppingTask
-from NiaPy.task.Task import OptimizationType
+from NiaPy.task.task import OptimizationType
 from NiaPy.benchmarks import Sphere
 
 # we will run Differential Evolution for 5 independent runs

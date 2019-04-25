@@ -7,7 +7,7 @@ sys.path.append('../')
 
 import random
 from NiaPy.algorithms.basic import FishSchoolSearch
-from NiaPy.task.Task import StoppingTask, OptimizationType
+from NiaPy.task.task import StoppingTask, OptimizationType
 from NiaPy.benchmarks import Sphere
 
 #we will run Fish School Search for 5 independent runs

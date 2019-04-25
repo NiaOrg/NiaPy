@@ -8,7 +8,7 @@ sys.path.append('../')
 import random
 from NiaPy.algorithms.basic import CamelAlgorithm
 from NiaPy.util import OptimizationType
-from NiaPy.task.Task import StoppingTask
+from NiaPy.task.task import StoppingTask
 from NiaPy.benchmarks import Sphere
 
 #we will run Camel Algorithm for 5 independent runs

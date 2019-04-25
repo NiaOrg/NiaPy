@@ -7,7 +7,7 @@ sys.path.append('../')
 
 import random
 from NiaPy.algorithms.other import SimulatedAnnealing
-from NiaPy.task.Task import StoppingTask, OptimizationType
+from NiaPy.task.task import StoppingTask, OptimizationType
 from NiaPy.benchmarks import Sphere
 from NiaPy.algorithms.other.sa import coolLinear
 

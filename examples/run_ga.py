@@ -7,7 +7,7 @@ sys.path.append('../')
 
 from NiaPy.algorithms.basic import GeneticAlgorithm
 from NiaPy.algorithms.basic.ga import MutationUros, CrossoverUros
-from NiaPy.task.Task import StoppingTask, OptimizationType
+from NiaPy.task.task import StoppingTask, OptimizationType
 from NiaPy.benchmarks import Sphere
 
 # we will run Fireworks Algorithm for 5 independent runs

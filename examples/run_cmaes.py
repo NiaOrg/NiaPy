@@ -1,7 +1,7 @@
 # encoding=utf8
 # This is temporary fix to import module from parent folder
 # It will be removed when package is published on PyPI
-from NiaPy.task.Task import Task, TaskConvPrint, TaskConvPlot, OptimizationType
+from NiaPy.task.task import Task, TaskConvPrint, TaskConvPlot, OptimizationType
 from NiaPy.util import getDictArgs
 from NiaPy import Runner
 import logging
