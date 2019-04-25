@@ -79,7 +79,8 @@ class AlgorithmUtility:
             "HillClimbAlgorithm": other_algorithms.HillClimbAlgorithm,
             "SimulatedAnnealing": other_algorithms.SimulatedAnnealing,
             "MultipleTrajectorySearch": other_algorithms.MultipleTrajectorySearch,
-            "MultipleTrajectorySearchV1": other_algorithms.MultipleTrajectorySearchV1
+            "MultipleTrajectorySearchV1": other_algorithms.MultipleTrajectorySearchV1,
+            "AnarchicSocietyOptimization": other_algorithms.AnarchicSocietyOptimization
         }
 
     def get_algorithm(self, algorithm):
