@@ -5,10 +5,8 @@
 import logging
 from enum import Enum
 
-from matplotlib import pyplot as plt, animation as anim
-from numpy import inf, random as rand, asarray
-from numpy.core.multiarray import ndarray, dot
-from numpy.core.umath import fabs
+from matplotlib import pyplot as plt
+from numpy import inf, random as rand
 
 from NiaPy.util import (
     limit_repair,
@@ -314,6 +312,7 @@ class StoppingTask(CountingTask):
                 nFES (Optional[int]): Number of function evaluations.
                 nGEN (Optional[int]): Number of generations or iterations.
                 refValue (Optional[float]): Reference value of function/fitness function.
+                logger (Optional[bool]): Enable/disable logging of improvements.
 
         Note:
                 Storing improvements during the evolutionary cycle is
@@ -396,7 +395,15 @@ class StoppingTask(CountingTask):
                     2. List of ints of function/fitness values.
 
         """
-        return self.evals, self.x_f_vals
+        return self.n_evals, self.x_f_vals
+
+    def plot(self):
+        """Plot a simple convergence graph."""
+        plt.plot(self.n_evals, self.x_f_vals)
+        plt.xlabel('nFes')
+        plt.ylabel('Fitness')
+        plt.title('Convergence graph')
+        plt.show()
 
 
 class ThrowingTask(StoppingTask):
@@ -457,267 +464,3 @@ class ThrowingTask(StoppingTask):
 
         self.stopCondE()
         return StoppingTask.eval(self, A)
-
-
-class MoveTask(StoppingTask):
-    """Move task implementation."""
-
-    def __init__(self, o=None, fo=None, M=None, fM=None, optF=None, **kwargs):
-        r"""Initialize task class for optimization.
-
-        Arguments:
-                o (numpy.ndarray[Union[float, int]]): Array for shifting.
-                of (Callable[numpy.ndarray[Union[float, int]]]): Function applied on shifted input.
-                M (numpy.ndarray[Union[float, int]]): Matrix for rotating.
-                fM (Callable[numpy.ndarray[Union[float, int]]]): Function applied after rotating.
-
-        See Also:
-                * :func:`NiaPy.util.StoppingTask.__init__`
-
-        """
-
-        StoppingTask.__init__(self, **kwargs)
-        self.o = o if isinstance(o, ndarray) or o is None else asarray(o)
-        self.M = M if isinstance(M, ndarray) or M is None else asarray(M)
-        self.fo, self.fM, self.optF = fo, fM, optF
-
-    def eval(self, A):
-        r"""Evaluate the solution.
-
-        Args:
-                A (numpy.ndarray): Solution to evaluate
-
-        Returns:
-                float: Fitness/function value of solution.
-
-        See Also:
-                * :func:`NiaPy.util.StoppingTask.stopCond`
-                * :func:`NiaPy.util.StoppingTask.eval`
-
-        """
-
-        if self.stopCond():
-            return inf * self.optType.value
-        X = A - self.o if self.o is not None else A
-        X = self.fo(X) if self.fo is not None else X
-        X = dot(X, self.M) if self.M is not None else X
-        X = self.fM(X) if self.fM is not None else X
-        r = StoppingTask.eval(self, X) + (self.optF if self.optF is not None else 0)
-        if r <= self.x_f:
-            self.x, self.x_f = A, r
-        return r
-
-
-class ScaledTask(Task):
-    r"""Scaled task.
-
-    Attributes:
-            _task (Task): Optimization task with evaluation function.
-            Lower (numpy.ndarray): Scaled lower limit of search space.
-            Upper (numpy.ndarray): Scaled upper limit of search space.
-
-    See Also:
-            * :class:`NiaPy.util.Task`
-
-    """
-
-    def __init__(self, task, Lower, Upper, **kwargs):
-        r"""Initialize scaled task.
-
-        Args:
-                task (Task): Optimization task to scale to new bounds.
-                Lower (Union[float, int, numpy.ndarray]): New lower bounds.
-                Upper (Union[float, int, numpy.ndarray]): New upper bounds.
-                **kwargs (Dict[str, Any]): Additional arguments.
-
-        See Also:
-                * :func:`NiaPy.util.fullArray`
-
-        """
-
-        Task.__init__(self)
-        self._task = task
-        self.D = self._task.D
-        self.Lower, self.Upper = fullArray(Lower, self.D), fullArray(Upper, self.D)
-        self.bRange = fabs(Upper - Lower)
-
-    def stopCond(self):
-        r"""Test for stopping condition.
-
-        This function uses `self._task` for checking the stopping criteria.
-
-        Returns:
-                bool: `True` if stopping condition is meet else `False`.
-
-        """
-
-        return self._task.stopCond()
-
-    def stopCondI(self):
-        r"""Test for stopping condition and increments the number of algorithm generations/iterations.
-
-        This function uses `self._task` for checking the stopping criteria.
-
-        Returns:
-                bool: `True` if stopping condition is meet else `False`.
-
-        """
-
-        return self._task.stopCondI()
-
-    def eval(self, A):
-        r"""Evaluate solution.
-
-        Args:
-                A (numpy.ndarray): Solution for calculating function/fitness value.
-
-        Returns:
-                float: Function values of solution.
-
-        """
-
-        return self._task.eval(A)
-
-    def evals(self):
-        r"""Get the number of function evaluations.
-
-        Returns:
-                int: Number of function evaluations.
-
-        """
-
-        return self._task.evals()
-
-    def iters(self):
-        r"""Get the number of algorithms generations/iterations.
-
-        Returns:
-                int: Number of algorithms generations/iterations.
-
-        """
-
-        return self._task.iters()
-
-    def nextIter(self):
-        r"""Increment the number of iterations/generations.
-
-        Function uses `self._task` to increment number of generations/iterations.
-
-        """
-
-        self._task.nextIter()
-
-
-class TaskConvPlot():
-    r"""Task class with ability of showing convergence graph.
-
-    Attributes:
-            iters (List[int]): List of ints representing when the new global best was found.
-            x_fs (List[float]): List of floats representing function/fitness values found.
-
-    See Also:
-            * :class:`NiaPy.util.StoppingTask`
-
-    """
-
-    def __init__(self, **kwargs):
-        r"""TODO.
-
-        Args:
-                **kwargs (Dict[str, Any]): Additional arguments.
-
-        See Also:
-                * :func:`NiaPy.util.StoppingTask.__init__`
-
-        """
-
-        StoppingTask.__init__(self, **kwargs)
-        self.fig = plt.figure()
-        self.ax = self.fig.subplots(nrows=1, ncols=1)
-        self.ax.set_xlim(0, self.nFES)
-        self.line, = self.ax.plot(self.iters, self.x_fs, animated=True)
-        self.ani = anim.FuncAnimation(self.fig, self.updatePlot, blit=True)
-        self.showPlot()
-
-    def eval(self, A):
-        r"""Evaluate solution.
-
-        Args:
-                A (numpy.ndarray): Solution to evaluate.
-
-        Returns:
-                float: Fitness/function values of solution.
-
-        """
-
-        x_f = StoppingTask.eval(self, A)
-        if not self.x_f_vals:
-            self.x_f_vals.append(x_f)
-        elif x_f < self.x_f_vals[-1]:
-            self.x_f_vals.append(x_f)
-        else:
-            self.x_f_vals.append(self.x_f_vals[-1])
-        self.evals.append(self.Evals)
-        return x_f
-
-    def showPlot(self):
-        r"""Animation updating function."""
-        plt.show(block=False)
-        plt.pause(0.001)
-
-    def updatePlot(self, frame):
-        r"""Update mathplotlib figure.
-
-        Args:
-                frame (): TODO
-
-        Returns:
-                Tuple[List[float], Any]:
-                        1. Line
-
-        """
-
-        if self.x_f_vals:
-            max_fs, min_fs = self.x_f_vals[0], self.x_f_vals[-1]
-            self.ax.set_ylim(min_fs + 1, max_fs + 1)
-            self.line.set_data(self.evals, self.x_f_vals)
-        return self.line,
-
-
-class TaskComposition(MoveTask):
-    """Task compostion."""
-
-    def __init__(self, benchmarks=None, rho=None, lamb=None, bias=None, **kwargs):
-        r"""Initialize of composite function problem.
-
-        Arguments:
-                benchmarks (List[Benchmark]): Optimization function to use in composition
-                delta (numpy.ndarray[float]): TODO
-                lamb (numpy.ndarray[float]): TODO
-                bias (numpy.ndarray[float]): TODO
-
-        See Also:
-                * :func:`NiaPy.util.MoveTask.__init__`
-
-        TODO:
-                Class is a work in progress.
-
-        """
-
-        MoveTask.__init__(self, **kwargs)
-
-    def eval(self, A):
-        r"""TODO.
-
-        Args:
-                A:
-
-        Returns:
-                float:
-
-        Todo:
-                Usage of multiple functions on the same time
-
-        """
-
-        return inf
