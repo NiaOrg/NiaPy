@@ -43,15 +43,12 @@ class Runner:
 
     """
 
-    def __init__(self, D=10, nFES=1000000, nGEN=100000, nRuns=1, useAlgorithms='ArtificialBeeColonyAlgorithm', useBenchmarks='Ackley', **kwargs):
+    def __init__(self, D=10, nFES=1000000, nRuns=1, useAlgorithms='ArtificialBeeColonyAlgorithm', useBenchmarks='Ackley', **kwargs):
         r"""Initialize Runner.
 
-        **__init__(self, D, NP, nFES, nRuns, useAlgorithms, useBenchmarks, ...)**
-
-        Arguments:
+        Args:
                 D (int): Dimension of problem
                 nFES (int): Number of function evaluations
-                nGEN (int): Number of generations
                 nRuns (int): Number of repetitions
                 useAlgorithms (list of Algorithm): List of algorithms to run
                 useBenchmarks (list of Benchmarks): List of benchmarks to run
