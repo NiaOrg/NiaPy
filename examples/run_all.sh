@@ -1,4 +1,4 @@
-for file in ./*
+for file in ./*.py
 do
   python "$file"
 done

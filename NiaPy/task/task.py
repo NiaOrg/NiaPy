@@ -45,7 +45,7 @@ class Task:
             2019
 
     Author:
-            Klemen Berkovič
+            Klemen Berkovič and others
 
     Attributes:
             D (int): Dimension of the problem.
@@ -307,13 +307,17 @@ class StoppingTask(CountingTask):
 
     """
 
-    def __init__(self, nFES=inf, nGEN=inf, refValue=None, **kwargs):
+    def __init__(self, nFES=inf, nGEN=inf, refValue=None, logger=False, **kwargs):
         r"""Initialize task class for optimization.
 
         Arguments:
                 nFES (Optional[int]): Number of function evaluations.
                 nGEN (Optional[int]): Number of generations or iterations.
                 refValue (Optional[float]): Reference value of function/fitness function.
+
+        Note:
+                Storing improvements during the evolutionary cycle is
+                captured in self.n_evals and self.x_f_vals
 
         See Also:
                 * :func:`NiaPy.util.CountingTask.__init__`
@@ -322,8 +326,11 @@ class StoppingTask(CountingTask):
 
         CountingTask.__init__(self, **kwargs)
         self.refValue = (-inf if refValue is None else refValue)
+        self.logger = logger
         self.x, self.x_f = None, inf
         self.nFES, self.nGEN = nFES, nGEN
+        self.n_evals = []
+        self.x_f_vals = []
 
     def eval(self, A):
         r"""Evaluate solution.
@@ -347,6 +354,10 @@ class StoppingTask(CountingTask):
 
         if x_f < self.x_f:
             self.x_f = x_f
+            self.n_evals.append(self.Evals)
+            self.x_f_vals.append(x_f)
+            if self.logger:
+                logger.info('nFES:%d => %s' % (self.Evals, self.x_f))
 
         return x_f
 
@@ -375,6 +386,17 @@ class StoppingTask(CountingTask):
         r = self.stopCond()
         CountingTask.nextIter(self)
         return r
+
+    def return_conv(self):
+        r"""Get values of x and y axis for plotting covariance graph.
+
+        Returns:
+                Tuple[List[int], List[float]]:
+                    1. List of ints of function evaluations.
+                    2. List of ints of function/fitness values.
+
+        """
+        return self.evals, self.x_f_vals
 
 
 class ThrowingTask(StoppingTask):
@@ -586,114 +608,7 @@ class ScaledTask(Task):
         self._task.nextIter()
 
 
-class TaskConvPrint(StoppingTask):
-    r"""Task class with printing out new global best solutions found.
-
-    Attributes:
-            xb (numpy.ndarray): Global best solution.
-            xb_f (float): Global best function/fitness values.
-
-    See Also:
-            * :class:`NiaPy.util.StoppingTask`
-
-    """
-
-    def __init__(self, **kwargs):
-        r"""Initialize TaskConvPrint class.
-
-        Args:
-                **kwargs (Dict[str, Any]): Additional arguments.
-
-        See Also:
-                * :func:`NiaPy.util.StoppingTask.__init__`
-
-        """
-
-        StoppingTask.__init__(self, **kwargs)
-        self.xb, self.xb_f = None, inf
-
-    def eval(self, A):
-        r"""Evaluate solution.
-
-        Args:
-                A (nupy.ndarray): Solution to evaluate.
-
-        Returns:
-                float: Function/Fitness values of solution.
-
-        See Also:
-                * :func:`NiaPy.util.StoppingTask.eval`
-
-        """
-
-        x_f = StoppingTask.eval(self, A)
-        if self.x_f != self.xb_f:
-            self.xb, self.xb_f = A, x_f
-            logger.info('nFES:%d nGEN:%d => %s -> %s' % (self.Evals, self.Iters, self.xb, self.xb_f * self.optType.value))
-        return x_f
-
-
-class TaskConvSave(StoppingTask):
-    r"""Task class with logging of function evaluations need to reach some function vale.
-
-    Attributes:
-            evals (List[int]): List of ints representing when the new global best was found.
-            x_f_vals (List[float]): List of floats representing function/fitness values found.
-
-    See Also:
-            * :class:`NiaPy.util.StoppingTask`
-
-    """
-
-    def __init__(self, **kwargs):
-        r"""Initialize TaskConvSave class.
-
-        Args:
-                **kwargs (Dict[str, Any]): Additional arguments.
-
-        See Also:
-                * :func:`NiaPy.util.StoppingTask.__init__`
-
-        """
-
-        StoppingTask.__init__(self, **kwargs)
-        self.evals = []
-        self.x_f_vals = []
-
-    def eval(self, A):
-        r"""Evaluate solution.
-
-        Args:
-                A (numpy.ndarray): Individual/solution to evaluate.
-
-        Returns:
-                float: Function/fitness values of individual.
-
-        See Also:
-                * :func:`SNiaPy.util.toppingTask.eval`
-
-        """
-
-        x_f = StoppingTask.eval(self, A)
-        if x_f <= self.x_f:
-            self.evals.append(self.Evals)
-            self.x_f_vals.append(x_f)
-        return x_f
-
-    def return_conv(self):
-        r"""Get values of x and y axis for plotting covariance graph.
-
-        Returns:
-                Tuple[List[int], List[float]]:
-                        1. List of ints of function evaluations.
-                        2. List of ints of function/fitness values.
-
-        """
-
-        return self.evals, self.x_f_vals
-
-
-class TaskConvPlot(TaskConvSave):
+class TaskConvPlot():
     r"""Task class with ability of showing convergence graph.
 
     Attributes:
