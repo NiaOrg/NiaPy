@@ -7,7 +7,7 @@ sys.path.append('../')
 
 import random
 from NiaPy.algorithms.basic import MothFlameOptimizer
-from NiaPy.util import StoppingTask, OptimizationType
+from NiaPy.task.task import StoppingTask, OptimizationType
 from NiaPy.benchmarks import Sphere
 
 # we will run Moth Flame Optimizer for 5 independent runs

@@ -7,7 +7,7 @@ sys.path.append('../')
 
 import random
 import logging
-from NiaPy.util import StoppingTask, OptimizationType
+from NiaPy.task.task import StoppingTask, OptimizationType
 from NiaPy.algorithms.basic import DifferentialEvolution
 from NiaPy.benchmarks import Griewank, Sphere
 

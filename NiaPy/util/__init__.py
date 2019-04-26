@@ -1,23 +1,26 @@
-# pylint: disable=line-too-long
-from NiaPy.util.utility import Utility, Task, CountingTask, StoppingTask, ThrowingTask, ScaledTask, TaskComposition, TaskConvPrint, TaskConvPlot, TaskConvSave, OptimizationType, fullArray, objects2array, MoveTask, limitRepair, limitInversRepair, wangRepair, randRepair, reflectRepair
+"""Module with implementation of utility classess and functions."""
+
+from NiaPy.util.utility import (
+    fullArray,
+    objects2array,
+    limit_repair,
+    limitInversRepair,
+    wangRepair,
+    randRepair,
+    reflectRepair
+)
 from NiaPy.util.argparser import MakeArgParser, getArgs, getDictArgs
-from NiaPy.util.exception import FesException, GenException, TimeException, RefException
+from NiaPy.util.exception import (
+    FesException,
+    GenException,
+    TimeException,
+    RefException
+)
 
 __all__ = [
-    'Utility',
-    'Task',
-    'CountingTask',
-    'StoppingTask',
-    'ThrowingTask',
-    'TaskConvPrint',
-    'TaskConvPlot',
-    'TaskConvSave',
-    'TaskComposition',
-    'MoveTask',
-    'OptimizationType',
     'fullArray',
     'objects2array',
-    'limitRepair',
+    'limit_repair',
     'limitInversRepair',
     'wangRepair',
     'randRepair',
@@ -25,7 +28,6 @@ __all__ = [
     'MakeArgParser',
     'getArgs',
     'getDictArgs',
-    'ScaledTask',
     'FesException',
     'GenException',
     'TimeException',
