@@ -8,7 +8,7 @@ from NiaPy.util import fullArray, limit_repair, limitInversRepair, wangRepair, r
     FesException, GenException, RefException  # TimeException
 from NiaPy.benchmarks.utility import Utility
 from NiaPy.benchmarks import Benchmark
-from NiaPy.task import StoppingTask, ThrowingTask, ScaledTask, TaskConvPrint, TaskComposition
+from NiaPy.task import StoppingTask, ThrowingTask, ScaledTask, TaskComposition
 
 
 class FullArrayTestCase(TestCase):
@@ -611,29 +611,6 @@ class ScaledTaskTestCase(TestCase):
         self.tc.nextIter()
         self.assertTrue(self.t.stopCond())
         self.assertTrue(self.tc.stopCond())
-
-
-class TaskConvPrintTestCase(TestCase):
-    def setUp(self):
-        self.D, self.nFES, self.nGEN = 10, 10, 10
-        self.t = TaskConvPrint(D=self.D, nFES=self.nFES, nGEN=self.nGEN, benchmark=MyBenchmark())
-
-    def test_eval(self):
-        self.t.eval(full(self.D, 2.))
-        self.assertTrue(array_equal(full(self.D, 2.), self.t.xb))
-        self.t.eval(full(self.D, -1.))
-        self.assertTrue(array_equal(full(self.D, -1.), self.t.xb))
-        self.t.eval(full(self.D, .0))
-        self.assertTrue(array_equal(full(self.D, .0), self.t.xb))
-
-
-class TaskConvPlotTestCase(TestCase):
-    def setUp(self):
-        self.D, self.nFES, self.nGEN = 10, 10, 10
-        self.t = TaskConvPrint(D=self.D, nFES=self.nFES, nGEN=self.nGEN, benchmark=MyBenchmark())
-
-    def test_eval(self):
-        pass
 
 
 class TaskCompositionTestCase(TestCase):

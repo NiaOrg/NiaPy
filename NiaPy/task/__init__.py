@@ -7,8 +7,6 @@ from NiaPy.task.task import (
     MoveTask,
     TaskComposition,
     TaskConvPlot,
-    TaskConvPrint,
-    TaskConvSave,
     ThrowingTask,
     ScaledTask,
     OptimizationType
@@ -21,8 +19,6 @@ __all__ = [
     "MoveTask",
     "TaskComposition",
     "TaskConvPlot",
-    "TaskConvPrint",
-    "TaskConvSave",
     "ThrowingTask",
     "ScaledTask",
     "OptimizationType"
