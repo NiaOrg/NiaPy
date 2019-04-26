@@ -5,7 +5,7 @@
 import logging
 from enum import Enum
 
-from matplotlib import pyplot as plt, animation as anim
+from matplotlib import pyplot as plt
 from numpy import inf, random as rand
 
 from NiaPy.util import (
@@ -312,6 +312,7 @@ class StoppingTask(CountingTask):
                 nFES (Optional[int]): Number of function evaluations.
                 nGEN (Optional[int]): Number of generations or iterations.
                 refValue (Optional[float]): Reference value of function/fitness function.
+                logger (Optional[bool]): Enable/disable logging of improvements.
 
         Note:
                 Storing improvements during the evolutionary cycle is
@@ -394,7 +395,15 @@ class StoppingTask(CountingTask):
                     2. List of ints of function/fitness values.
 
         """
-        return self.evals, self.x_f_vals
+        return self.n_evals, self.x_f_vals
+
+    def plot(self):
+        """Plot a simple convergence graph."""
+        plt.plot(self.n_evals, self.x_f_vals)
+        plt.xlabel('nFes')
+        plt.ylabel('Fitness')
+        plt.title('Convergence graph')
+        plt.show()
 
 
 class ThrowingTask(StoppingTask):
@@ -455,79 +464,3 @@ class ThrowingTask(StoppingTask):
 
         self.stopCondE()
         return StoppingTask.eval(self, A)
-
-
-class TaskConvPlot():
-    r"""Task class with ability of showing convergence graph.
-
-    Attributes:
-            iters (List[int]): List of ints representing when the new global best was found.
-            x_fs (List[float]): List of floats representing function/fitness values found.
-
-    See Also:
-            * :class:`NiaPy.util.StoppingTask`
-
-    """
-
-    def __init__(self, **kwargs):
-        r"""TODO.
-
-        Args:
-                **kwargs (Dict[str, Any]): Additional arguments.
-
-        See Also:
-                * :func:`NiaPy.util.StoppingTask.__init__`
-
-        """
-
-        StoppingTask.__init__(self, **kwargs)
-        self.fig = plt.figure()
-        self.ax = self.fig.subplots(nrows=1, ncols=1)
-        self.ax.set_xlim(0, self.nFES)
-        self.line, = self.ax.plot(self.iters, self.x_fs, animated=True)
-        self.ani = anim.FuncAnimation(self.fig, self.updatePlot, blit=True)
-        self.showPlot()
-
-    def eval(self, A):
-        r"""Evaluate solution.
-
-        Args:
-                A (numpy.ndarray): Solution to evaluate.
-
-        Returns:
-                float: Fitness/function values of solution.
-
-        """
-
-        x_f = StoppingTask.eval(self, A)
-        if not self.x_f_vals:
-            self.x_f_vals.append(x_f)
-        elif x_f < self.x_f_vals[-1]:
-            self.x_f_vals.append(x_f)
-        else:
-            self.x_f_vals.append(self.x_f_vals[-1])
-        self.evals.append(self.Evals)
-        return x_f
-
-    def showPlot(self):
-        r"""Animation updating function."""
-        plt.show(block=False)
-        plt.pause(0.001)
-
-    def updatePlot(self, frame):
-        r"""Update mathplotlib figure.
-
-        Args:
-                frame (): TODO
-
-        Returns:
-                Tuple[List[float], Any]:
-                        1. Line
-
-        """
-
-        if self.x_f_vals:
-            max_fs, min_fs = self.x_f_vals[0], self.x_f_vals[-1]
-            self.ax.set_ylim(min_fs + 1, max_fs + 1)
-            self.line.set_data(self.evals, self.x_f_vals)
-        return self.line,
