@@ -1,5 +1,22 @@
 # Revision History
 
+## 2.0.0rc5 (May 6, 2019)
+
+- fixes and improvements of algorithm interface
+- various algorithm implementation fixes
+- add support for Python 3.7
+- documentation fixes
+- introduced maximization
+- added algorithms:
+  - Fish School Search
+  - Coral Reefs Optimization
+  - Cuckoo Search
+  - Forest Optimization Algorithm
+  - Monarch Butterfly Optimization
+- update runner utility
+- update examples
+- various bugfixes
+
 ## 2.0.0rc4 (Nov 30, 2018)
 
 - fix dependecies versions
