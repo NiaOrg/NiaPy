@@ -1,7 +1,7 @@
 # coding=utf-8
 # pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, redefined-builtin, line-too-long, no-self-use, arguments-differ, no-else-return, bad-continuation
 import logging
-from numpy import array, argsort
+from numpy import array, argsort, where
 from NiaPy.algorithms.algorithm import Algorithm
 
 __all__ = ['BeesAlgorithm']
@@ -117,6 +117,7 @@ class BeesAlgorithm(Algorithm):
         ind = self.randint(task.D)
         y = array(x, copy=True)
         y[ind] = x[ind] + self.uniform(-ngh, ngh)
+        y = self.repair(y, task.Lower, task.Upper)
         res = task.eval(y)
         return y, res
 
@@ -141,6 +142,23 @@ class BeesAlgorithm(Algorithm):
         BeesPosition = BeesPosition[idxs, :]
 
         return BeesPosition, BeesCost, {'ngh': self.ngh}
+
+    def repair(self, x, lower, upper):
+        r"""Truncate exceeded dimensions to the limits.
+
+        Args:
+            x (numpy.ndarray): Individual to repair.
+            lower (numpy.ndarray): Lower limits for dimensions.
+            upper (numpy.ndarray): Upper limits for dimensions.
+
+        Returns:
+            numpy.ndarray: Repaired individual.
+        """
+        ir = where(x < lower)
+        x[ir] = lower[ir]
+        ir = where(x > upper)
+        x[ir] = upper[ir]
+        return x
 
     def runIteration(self, task, BeesPosition, BeesCost, xb, fxb, ngh, **dparams):
         r"""Core function of Forest Optimization Algorithm.
