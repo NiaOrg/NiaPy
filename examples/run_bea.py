@@ -5,7 +5,6 @@ from NiaPy.benchmarks import Sphere
 from NiaPy.task.task import StoppingTask, OptimizationType
 from NiaPy.algorithms.basic import BeesAlgorithm
 
-import random
 import sys
 sys.path.append('../')
 # End of fix
