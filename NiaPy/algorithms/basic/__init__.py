@@ -6,6 +6,7 @@ from NiaPy.algorithms.basic.fa import FireflyAlgorithm
 from NiaPy.algorithms.basic.de import DifferentialEvolution, MultiStrategyDifferentialEvolution, DynNpDifferentialEvolution, AgingNpDifferentialEvolution, DynNpMultiStrategyDifferentialEvolution, AgingNpMultiMutationDifferentialEvolution, CrowdingDifferentialEvolution, multiMutations
 from NiaPy.algorithms.basic.fpa import FlowerPollinationAlgorithm
 from NiaPy.algorithms.basic.gwo import GreyWolfOptimizer
+from NiaPy.algorithms.basic.cso import CatSwarmOptimization
 from NiaPy.algorithms.basic.ga import GeneticAlgorithm
 from NiaPy.algorithms.basic.abc import ArtificialBeeColonyAlgorithm
 from NiaPy.algorithms.basic.pso import ParticleSwarmAlgorithm
@@ -24,6 +25,7 @@ from NiaPy.algorithms.basic.cs import CuckooSearch
 from NiaPy.algorithms.basic.cro import CoralReefsOptimization
 from NiaPy.algorithms.basic.foa import ForestOptimizationAlgorithm
 from NiaPy.algorithms.basic.mbo import MonarchButterflyOptimization
+from NiaPy.algorithms.basic.aco import AntColonyOptimization
 
 __all__ = [
     'BatAlgorithm',
@@ -38,6 +40,7 @@ __all__ = [
     'AgingNpMultiMutationDifferentialEvolution',
     'FlowerPollinationAlgorithm',
     'GreyWolfOptimizer',
+    'CatSwarmOptimization',
     'GeneticAlgorithm',
     'ArtificialBeeColonyAlgorithm',
     'ParticleSwarmAlgorithm',
@@ -73,5 +76,6 @@ __all__ = [
     'CuckooSearch',
     'CoralReefsOptimization',
     'ForestOptimizationAlgorithm',
-    'MonarchButterflyOptimization'
+    'MonarchButterflyOptimization'#,
+    #'AntColonyOptimization'
 ]

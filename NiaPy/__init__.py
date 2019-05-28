@@ -35,6 +35,7 @@ NiaPyAlgos = [
     balgos.FireflyAlgorithm,
     balgos.FlowerPollinationAlgorithm,
     balgos.GreyWolfOptimizer,
+    balgos.CatSwarmOptimization,
     balgos.ArtificialBeeColonyAlgorithm,
     balgos.GeneticAlgorithm,
     balgos.ParticleSwarmAlgorithm,
@@ -69,7 +70,8 @@ NiaPyAlgos = [
     balgos.CovarianceMatrixAdaptionEvolutionStrategy,
     balgos.CoralReefsOptimization,
     balgos.ForestOptimizationAlgorithm,
-    balgos.MonarchButterflyOptimization
+    balgos.MonarchButterflyOptimization#,
+    #balgos.AntColonyOptimization
 ]
 
 NiaPyAlgos += [
