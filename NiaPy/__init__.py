@@ -70,8 +70,7 @@ NiaPyAlgos = [
     balgos.CovarianceMatrixAdaptionEvolutionStrategy,
     balgos.CoralReefsOptimization,
     balgos.ForestOptimizationAlgorithm,
-    balgos.MonarchButterflyOptimization#,
-    #balgos.AntColonyOptimization
+    balgos.MonarchButterflyOptimization
 ]
 
 NiaPyAlgos += [

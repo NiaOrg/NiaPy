@@ -5,7 +5,6 @@ from NiaPy.algorithms.basic import CatSwarmOptimization
 
 
 class CSOTestCase(AlgorithmTestCase):
-
     def test_custom_works_fine(self):
         cso_custom = CatSwarmOptimization(NP=20, seed=self.seed)
         cso_customc = CatSwarmOptimization(NP=20, seed=self.seed)
