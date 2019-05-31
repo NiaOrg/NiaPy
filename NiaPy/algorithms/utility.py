@@ -24,7 +24,6 @@ class AlgorithmUtility:
             "DynNpDifferentialEvolution": basic_algorithms.DynNpDifferentialEvolution,
             "MultiStrategyDifferentialEvolution": basic_algorithms.MultiStrategyDifferentialEvolution,
             "DynNpMultiStrategyDifferentialEvolution": basic_algorithms.DynNpMultiStrategyDifferentialEvolution,
-            "multiMutations": basic_algorithms.multiMutations,
             "AgingNpMultiMutationDifferentialEvolution": basic_algorithms.AgingNpMultiMutationDifferentialEvolution,
             "FlowerPollinationAlgorithm": basic_algorithms.FlowerPollinationAlgorithm,
             "GreyWolfOptimizer": basic_algorithms.GreyWolfOptimizer,
