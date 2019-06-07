@@ -25,7 +25,7 @@ from NiaPy.algorithms.basic.cs import CuckooSearch
 from NiaPy.algorithms.basic.cro import CoralReefsOptimization
 from NiaPy.algorithms.basic.foa import ForestOptimizationAlgorithm
 from NiaPy.algorithms.basic.mbo import MonarchButterflyOptimization
-
+from NiaPy.algorithms.basic.bea import BeesAlgorithm
 __all__ = [
     'BatAlgorithm',
     'FireflyAlgorithm',
@@ -75,5 +75,6 @@ __all__ = [
     'CuckooSearch',
     'CoralReefsOptimization',
     'ForestOptimizationAlgorithm',
-    'MonarchButterflyOptimization'
+    'MonarchButterflyOptimization',
+    'BeesAlgorithm'
 ]

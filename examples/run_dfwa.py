@@ -6,7 +6,8 @@ sys.path.append('../')
 # End of fix
 
 from NiaPy.algorithms.basic import DynamicFireworksAlgorithm
-from NiaPy.util import StoppingTask, OptimizationType
+from NiaPy.util import StoppingTask
+from NiaPy.task.task import OptimizationType
 from NiaPy.benchmarks import Sphere
 
 # we will run Fireworks Algorithm for 5 independent runs

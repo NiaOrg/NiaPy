@@ -1,12 +1,26 @@
 |Unix Build Status|
 |Windows Build status|
-|Coverage Status|
-|Scrutinizer Code Quality|
 |PyPI Version|
-|PyPI Downloads|
-|Conda Install|
+|PyPI - Python Version|
+|PyPI - Status|
+|PyPI - Downloads|
+|GitHub Release Date|
+|Anaconda-Server Badge|
 |Documentation Status|
 |GitHub license|
+
+|Scrutinizer Code Quality|
+|Coverage Status|
+|GitHub commit activity|
+|Updates|
+|Average time to resolve an issue|
+|Percentage of issues still open|
+|GitHub contributors|
+
+|DOI zenodo|
+|DOI JOSS|
+
+
 
 About
 =====
@@ -50,14 +64,18 @@ The micro framework features following algorithms:
     -  Artificial bee colony algorithm
     -  Bat algorithm
     -  Camel algorithm
+    -  Cuckoo search
     -  Differential evolution algorithm
     -  Evolution Strategy
     -  Firefly algorithm
     -  Fireworks algorithm
     -  Flower pollination algorithm
+    -  Forest optimization algorithm
     -  Genetic algorithm
     -  Glowworm swarm optimization
     -  Grey wolf optimizer
+    -  Monarch butterfly optimization
+    -  Moth flame optimizer
     -  Harmony Search algorithm
     -  Krill herd algorithm
     -  Monkey king evolution
@@ -126,20 +144,17 @@ Setup
 Requirements
 ------------
 
--  Python 3.6+ (backward compatibility with 2.7.14)
+-  Python 3.6.x or 3.7.x (backward compatibility with 2.7.x)
 -  Pip
 
 Dependencies
 ~~~~~~~~~~~~
 
--  pytest == 3.7.1
--  coverage == 4.4.2
--  coverage-space == 1.0.2
--  click == 6.0
--  numpy == 1.14.0
--  scipy == 1.0.0
--  xlsxwriter == 1.0.2
--  matplotlib == 2.2.2
+-  numpy >= 1.16.2
+-  scipy >= 1.2.1
+-  enum34 >= 1.1.6 (if using python version < 3.4)
+-  xlsxwriter >= 1.1.6
+-  matplotlib >= 2.2.4
 
 List of development dependencies and requirements can be found in the `installation section of NiaPy documentation <http://niapy.readthedocs.io/en/stable/installation.html>`_.
 
@@ -208,6 +223,24 @@ fits your purposes or that it is bug-free. Use it at your own risk!
 
 Revision History
 ================
+
+## 2.0.0rc5 (May 6, 2019)
+-------------------------
+
+- fixes and improvements of algorithm interface
+- various algorithm implementation fixes
+- add support for Python 3.7
+- documentation fixes
+- introduced maximization
+- added algorithms:
+  - Fish School Search
+  - Coral Reefs Optimization
+  - Cuckoo Search
+  - Forest Optimization Algorithm
+  - Monarch Butterfly Optimization
+- update runner utility
+- update examples
+- various bugfixes
 
 2.0.0rc4 (Nov 30, 2018)
 -----------------------
@@ -305,23 +338,38 @@ This release reflects the changes from Journal of Open Source Software (JOSS) re
    :target: https://travis-ci.org/NiaOrg/NiaPy
 .. |Windows Build status| image:: https://ci.appveyor.com/api/projects/status/l5c0rp04mp04mbtq?svg=true
    :target: https://ci.appveyor.com/project/GregaVrbancic/niapy
-.. |Coverage Status| image:: https://img.shields.io/coveralls/NiaOrg/NiaPy/master.svg
-   :target: https://coveralls.io/r/NiaOrg/NiaPy
-.. |Scrutinizer Code Quality| image:: https://img.shields.io/scrutinizer/g/NiaOrg/NiaPy.svg
-   :target: https://scrutinizer-ci.com/g/NiaOrg/NiaPy/?branch=master
 .. |PyPI Version| image:: https://img.shields.io/pypi/v/NiaPy.svg
    :target: https://pypi.python.org/pypi/NiaPy
-.. |PyPI Downloads| image:: https://pypistats.com/badge/niapy.svg
-   :target: https://pypistats.com/package/niapy
-.. |Conda Install| image:: https://anaconda.org/niaorg/niapy/badges/installer/conda.svg
+.. |PyPI - Python Version| image:: https://img.shields.io/pypi/pyversions/NiaPy.svg
+.. |PyPI - Status| image:: https://img.shields.io/pypi/status/NiaPy.svg
+.. |PyPI - Downloads| image:: https://img.shields.io/pypi/dm/NiaPy.svg
+.. |GitHub Release Date| image:: https://img.shields.io/github/release-date/NiaOrg/NiaPy.svg
+.. |Anaconda-Server Badge| image:: https://anaconda.org/niaorg/niapy/badges/installer/conda.svg
    :target: https://conda.anaconda.org/niaorg
 .. |Documentation Status| image:: https://readthedocs.org/projects/niapy/badge/?version=latest
    :target: http://niapy.readthedocs.io/en/latest/?badge=latest
+.. |GitHub license| image:: https://img.shields.io/github/license/NiaOrg/NiaPy.svg
+   :target: https://github.com/NiaOrg/NiaPy/blob/master/LICENSE
+
+
+.. |Scrutinizer Code Quality| image:: https://img.shields.io/scrutinizer/g/NiaOrg/NiaPy.svg
+   :target: https://scrutinizer-ci.com/g/NiaOrg/NiaPy/?branch=master
+.. |Coverage Status| image:: https://img.shields.io/coveralls/NiaOrg/NiaPy/master.svg
+   :target: https://coveralls.io/r/NiaOrg/NiaPy
+.. |GitHub commit activity| image:: https://img.shields.io/github/commit-activity/w/NiaOrg/NiaPy.svg
+.. |Updates| image:: https://pyup.io/repos/github/NiaOrg/NiaPy/shield.svg
+   :target: https://pyup.io/repos/github/NiaOrg/NiaPy/
 .. |Average time to resolve an issue| image:: http://isitmaintained.com/badge/resolution/NiaOrg/NiaPy.svg
    :target: http://isitmaintained.com/project/NiaOrg/NiaPy
 .. |Percentage of issues still open| image:: http://isitmaintained.com/badge/open/NiaOrg/NiaPy.svg
    :target: http://isitmaintained.com/project/NiaOrg/NiaPy
-.. |GitHub license| image:: https://img.shields.io/github/license/NiaOrg/NiaPy.svg
-   :target: https://github.com/NiaOrg/NiaPy/blob/master/LICENSE
+.. |GitHub contributors| image:: https://img.shields.io/github/contributors/NiaOrg/NiaPy.svg
+
+
+.. |DOI zenodo| image:: https://zenodo.org/badge/DOI/10.5281/zenodo.1205048.svg
+   :target: https://doi.org/10.5281/zenodo.1205048
+.. |DOI JOSS| image:: http://joss.theoj.org/papers/10.21105/joss.00613/status.svg
+   :target: https://doi.org/10.21105/joss.00613
+
 .. |Open Source Helpers| image:: https://www.codetriage.com/niaorg/niapy/badges/users.svg
    :target: https://www.codetriage.com/niaorg/niapy

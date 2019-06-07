@@ -14,7 +14,7 @@ logger.setLevel("INFO")
 __all__ = ["Benchmark"]
 
 
-class Benchmark:
+class Benchmark(object):
     r"""Class representing benchmarks.
 
     Attributes:

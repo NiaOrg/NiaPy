@@ -7,7 +7,7 @@ sys.path.append('../')
 
 import random
 from NiaPy.algorithms.basic import ParticleSwarmAlgorithm
-from NiaPy.util import StoppingTask, OptimizationType
+from NiaPy.task import StoppingTask, OptimizationType
 from NiaPy.benchmarks import Sphere
 
 #we will run ParticleSwarmAlgorithm for 5 independent runs

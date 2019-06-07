@@ -54,19 +54,18 @@ def build_description():
 
 check_python_version()
 
-setuptools.setup(
-    name=read_package_variable('__project__'),
-    version=read_package_variable('__version__'),
+PACKAGE_VERSION = read_package_variable('__version__')
 
+setuptools.setup(
+    name=PACKAGE_NAME,
+    version="2.0.0rc5",
     description="""
         Python micro framework for building nature-inspired algorithms.
         """,
     url='https://github.com/NiaOrg/NiaPy',
     author='NiaOrg',
     author_email='niapy.organization@gmail.com',
-
     packages=setuptools.find_packages(),
-
     long_description=build_description(),
     license='MIT',
     classifiers=[
@@ -84,7 +83,6 @@ setuptools.setup(
         'Topic :: Scientific/Engineering',
         'Topic :: Software Development'
     ],
-
     tests_requires=[
         'flake8 ~= 3.7.7',
         'astroid >= 2.0.4',
@@ -92,7 +90,6 @@ setuptools.setup(
         'coverage ~= 4.4.2',
         'coverage-space ~= 1.0.2'
     ],
-
     install_requires=[
         'numpy >= 1.16.2',
         'scipy >= 1.1.0',

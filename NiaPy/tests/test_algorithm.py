@@ -5,7 +5,8 @@ from unittest import TestCase
 
 from numpy import random as rnd, full, inf, array_equal, apply_along_axis, asarray
 
-from NiaPy.util import Task, StoppingTask, objects2array
+from NiaPy.util import objects2array
+from NiaPy.task import Task, StoppingTask
 from NiaPy.algorithms.algorithm import Individual, Algorithm
 from NiaPy.benchmarks import Benchmark
 

@@ -5,7 +5,6 @@ import logging
 import numpy as np
 import math
 from NiaPy.algorithms.algorithm import Algorithm
-from NiaPy.util import OptimizationType
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.basic')
 logger.setLevel('INFO')
@@ -39,7 +38,7 @@ class CatSwarmOptimization(Algorithm):
         'vMax': lambda x: isinstance(x, (int, float)) and x > 0
     }
 
-    def setParameters(self, NP=20, MR=0.05, C1=2.05, SMP=3, SPC=True, CDC=0.85, SRD=0.2, vMax=0.9, **ukwargs):
+    def setParameters(self, NP=30, MR=0.1, C1=2.05, SMP=3, SPC=True, CDC=0.85, SRD=0.2, vMax=1.9, **ukwargs):
         r"""Set the algorithm parameters.
 
         Arguments:
@@ -127,15 +126,17 @@ class CatSwarmOptimization(Algorithm):
         cumulative_sum = np.cumsum(weights)
         return np.argmax(cumulative_sum >= (self.rand() * cumulative_sum[-1]))
 
-    def seekingMode(self, task, cat, fcat, xb, fxb):
+    def seekingMode(self, task, cat, fcat, pop, fpop, fxb):
         r"""Seeking mode.
 
         Args:
             task (Task): Optimization task.
             cat (numpy.ndarray): Individual from population.
             fcat (float): Current individual's fitness/function value.
-            xb (numpy.ndarray): Current best individual.
+            pop (numpy.ndarray): Current population.
+            fpop (numpy.ndarray): Current population fitness/function values.
             fxb (float): Current best cat fitness/function value.
+
         Returns:
             Tuple[numpy.ndarray, float, numpy.ndarray, float]:
                 1. Updated individual's position
@@ -143,8 +144,8 @@ class CatSwarmOptimization(Algorithm):
                 3. Updated global best position
                 4. Updated global best fitness/function value
         """
-        cat_copies = []  # potential next positions
-        cat_copies_fs = []  # their fitness values
+        cat_copies = []
+        cat_copies_fs = []
         for j in range(self.SMP - 1 if self.SPC else self.SMP):
             cat_copies.append(cat.copy())
             indexes = np.arange(task.D)
@@ -163,20 +164,19 @@ class CatSwarmOptimization(Algorithm):
         cat_copies_select_probs = np.ones(len(cat_copies))
         fmax = np.max(cat_copies_fs)
         fmin = np.min(cat_copies_fs)
-        if any(x != cat_copies_fs[0] for x in cat_copies_fs):  # if all fitness values are not equal calculate the weights
-            fb = fmax if task.optType == OptimizationType.MINIMIZATION else fmin
+        if any(x != cat_copies_fs[0] for x in cat_copies_fs):
+            fb = fmax
             if math.isinf(fb):
                 cat_copies_select_probs = np.full(len(cat_copies), fb)
             else:
                 cat_copies_select_probs = np.abs(cat_copies_fs - fb) / (fmax - fmin)
-        if task.optType == OptimizationType.MINIMIZATION and fmin < fxb:
+        if fmin < fxb:
             fxb = fmin
-            xb = cat_copies[np.where(cat_copies_fs == fmin)[0][0]]
-        elif task.optType == OptimizationType.MAXIMIZATION and fmax > fxb:
-            fxb = fmax
-            xb = cat_copies[np.where(cat_copies_fs == fmax)[0][0]]
+            ind = self.randint(self.NP, 1, 0)
+            pop[ind] = cat_copies[np.where(cat_copies_fs == fmin)[0][0]]
+            fpop[ind] = fmin
         sel_index = self.weightedSelection(cat_copies_select_probs)
-        return cat_copies[sel_index], cat_copies_fs[sel_index], xb, fxb
+        return cat_copies[sel_index], cat_copies_fs[sel_index], pop, fpop
 
     def tracingMode(self, task, cat, velocity, xb):
         r"""Tracing mode.
@@ -217,11 +217,11 @@ class CatSwarmOptimization(Algorithm):
                     * Dictionary of modes (seek or trace) and velocities for each cat
         """
         pop_copies = pop.copy()
-        for k in range(len(pop_copies)):  # for each cat
-            if modes[k] == 0:  # if cat in seeking mode
-                pop_copies[k], fpop[k], xb, fxb = self.seekingMode(task, pop_copies[k], fpop[k], xb, fxb)  # Seek
+        for k in range(len(pop_copies)):
+            if modes[k] == 0:
+                pop_copies[k], fpop[k], pop_copies[:], fpop[:] = self.seekingMode(task, pop_copies[k], fpop[k], pop_copies, fpop, fxb)
             else:  # if cat in tracing mode
-                pop_copies[k], fpop[k], velocities[k] = self.tracingMode(task, pop_copies[k], velocities[k], xb)  # Trace
+                pop_copies[k], fpop[k], velocities[k] = self.tracingMode(task, pop_copies[k], velocities[k], xb)
         return pop_copies, fpop, {'velocities': velocities, 'modes': self.randomSeekTrace()}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

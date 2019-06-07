@@ -4,7 +4,7 @@ from unittest import TestCase, skip
 
 from numpy import random as rnd
 
-from NiaPy.util import Task
+from NiaPy.task import Task
 from NiaPy.algorithms.modified import SelfAdaptiveDifferentialEvolution, DynNpSelfAdaptiveDifferentialEvolutionAlgorithm, MultiStrategySelfAdaptiveDifferentialEvolution, DynNpMultiStrategySelfAdaptiveDifferentialEvolution, AgingSelfAdaptiveDifferentialEvolution
 from NiaPy.algorithms.modified.jde import SolutionjDE, AgingIndividualJDE
 from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
