@@ -43,19 +43,12 @@ class CatSwarmOptimization(Algorithm):
 
         Arguments:
             NP (int): Number of individuals in population
-
             MR (float): Mixture ratio
-
             C1 (float): Constant in tracing mode
-
             SMP (int): Seeking memory pool
-
             SPC (bool): Self-position considering
-
             CDC (float): Decides how many dimensions will be varied
-
             SRD (float): Seeking range of the selected dimension
-
             vMax (float): Maximal velocity
 
             See Also:
