@@ -6,7 +6,7 @@ sys.path.append('../')
 # End of fix
 
 from NiaPy.algorithms.modified import SelfAdaptiveDifferentialEvolution
-from NiaPy.util import StoppingTask
+from NiaPy.task.task import StoppingTask
 from NiaPy.task.task import OptimizationType
 from NiaPy.benchmarks import Sphere
 
