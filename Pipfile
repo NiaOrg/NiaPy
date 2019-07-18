@@ -17,7 +17,7 @@ xlsxwriter = "==1.0.2"
 
 pylint = "~=1.9.3"
 pycodestyle = "*"
-pydocstyle = "*"
+pydocstyle = "~=3.0.0"
 pytest = "~=3.3"
 pytest-describe = "*"
 pytest-expecter = "*"
