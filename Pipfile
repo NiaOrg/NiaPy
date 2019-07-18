@@ -28,7 +28,6 @@ coveragespace = "*"
 docutils = "*"
 pygments = "*"
 wheel = "*"
-pyinstaller = "*"
 twine = "*"
 sniffer = "*"
 macfsevents = {version = "*", sys_platform = "== 'darwin'"}
