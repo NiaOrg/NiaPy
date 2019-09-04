@@ -1,6 +1,10 @@
 # encoding=utf8
 # This is temporary fix to import module from parent folder
 # It will be removed when package is published on PyPI
+import sys
+sys.path.append('../')
+# End of fix
+
 from NiaPy import Runner
 from NiaPy.algorithms.basic import (
     GreyWolfOptimizer,
@@ -13,9 +17,6 @@ from NiaPy.benchmarks import (
     HappyCat
 )
 
-import sys
-sys.path.append('../')
-# End of fix
 
 """Example demonstrating the use of NiaPy Runner."""
 
@@ -23,7 +24,7 @@ sys.path.append('../')
 runner = Runner(
     D=40,
     nFES=100,
-    nRuns=1,
+    nRuns=2,
     useAlgorithms=[
         GreyWolfOptimizer(),
         "FlowerPollinationAlgorithm",
