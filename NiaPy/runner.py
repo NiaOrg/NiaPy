@@ -249,10 +249,10 @@ class Runner:
                 if verbose:
                     logger.info("Running %s algorithm on %s benchmark...", alg_name, bench_name)
 
-                benchmark_stopping_task = self.benchmark_factory(bench)
                 self.results[alg_name][bench_name] = []
                 for _ in range(self.nRuns):
                     algorithm = AlgorithmUtility().get_algorithm(alg)
+                    benchmark_stopping_task = self.benchmark_factory(bench)
                     self.results[alg_name][bench_name].append(algorithm.run(benchmark_stopping_task))
             if verbose:
                 logger.info("---------------------------------------------------")
