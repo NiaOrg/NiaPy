@@ -5,6 +5,7 @@ matrix:
     - python: 2.7 # latest 2.7.x version
     - python: 3.6 # latest 3.6.x version
     - python: 3.7 # latest 3.7.x version
+    - python: 3.8 # latest 3.8.x version
       dist: xenial
       sudo: true
 
