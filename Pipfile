@@ -40,3 +40,4 @@ MacFSEvents = {version = "~=0.8.1",sys_platform = "== 'darwin'"}
 Sphinx = "~=1.8.0b1"
 sphinx-rtd-theme = "~=0.4.3"
 sphinx-autobuild = "~=0.7.1"
+bump2version = "*"
