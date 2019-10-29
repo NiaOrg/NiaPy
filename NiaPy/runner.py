@@ -35,8 +35,8 @@ class Runner:
             NP (int): Population size
             nFES (int): Number of function evaluations
             nRuns (int): Number of repetitions
-            useAlgorithms (list of Algorithm): List of algorithms to run
-            useBenchmarks (list of Benchmarks): List of benchmarks to run
+            useAlgorithms (Union[List[str], List[Algorithm]]): List of algorithms to run
+            useBenchmarks (Union[List[str], List[Benchmark]]): List of benchmarks to run
 
     Returns:
             results (Dict[str, Dict]): Returns the results.
@@ -50,8 +50,8 @@ class Runner:
                 D (int): Dimension of problem
                 nFES (int): Number of function evaluations
                 nRuns (int): Number of repetitions
-                useAlgorithms (list of Algorithm): List of algorithms to run
-                useBenchmarks (list of Benchmarks): List of benchmarks to run
+                useAlgorithms (List[Algorithm]): List of algorithms to run
+                useBenchmarks (List[Benchmarks]): List of benchmarks to run
 
         """
 
@@ -214,7 +214,7 @@ class Runner:
 
         Arguments:
                 export (str): Takes export type (e.g. log, json, xlsx, latex) (default: "log")
-                verbose (bool: Switch for verbose logging (default: {False})
+                verbose (bool): Switch for verbose logging (default: {False})
 
         Raises:
                 TypeError: Raises TypeError if export type is not supported
