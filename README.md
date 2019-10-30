@@ -252,6 +252,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/mihael-mika"><img src="https://avatars2.githubusercontent.com/u/22932805?s=460&v=4" width="100px;" alt="mihaelmika"/><br /><sub><b>mihaelmika</b></sub></a><br /><a href="https://github.com/NiaOrg/NiaPy/commits?author=mihael-mika" title="Code">💻</a> <a href="https://github.com/NiaOrg/NiaPy/commits?author=mihael-mika" title="Documentation">📖</a> <a href="#example-mihael-mika" title="Examples">💡</a></td>
     <td align="center"><a href="https://github.com/jacebrowning"><img src="https://avatars1.githubusercontent.com/u/939501?s=460&v=4" width="100px;" alt="Jace Browning"/><br /><sub><b>Jace Browning</b></sub></a><br /><a href="https://github.com/NiaOrg/NiaPy/commits?author=jacebrowning" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/musawakiliML"><img src="https://avatars1.githubusercontent.com/u/19978292?v=4" width="100px;" alt="Musa Adamu Wakili"/><br /><sub><b>Musa Adamu Wakili</b></sub></a><br /><a href="#question-musawakiliML" title="Answering Questions">💬</a></td>
+    <td align="center"><a href="http://www.uni-kassel.de/eecs/en/faculties/e2n/staff/florian-schaefer.html"><img src="https://avatars2.githubusercontent.com/u/23655422?v=4" width="100px;" alt="Florian Schaefer"/><br /><sub><b>Florian Schaefer</b></sub></a><br /><a href="#ideas-FlorianShepherd" title="Ideas, Planning, & Feedback">🤔</a></td>
   </tr>
 </table>
 
