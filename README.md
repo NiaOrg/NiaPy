@@ -234,8 +234,7 @@ Are you using NiaPy in your project or research? Please cite us!
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore-start -->
-<!-- markdownlint-disable -->
+<!-- prettier-ignore -->
 <table>
   <tr>
     <td align="center"><a href="https://github.com/GregaVrbancic"><img src="https://avatars0.githubusercontent.com/u/1894788?v=4" width="100px;" alt="Grega Vrbančič"/><br /><sub><b>Grega Vrbančič</b></sub></a><br /><a href="https://github.com/NiaOrg/NiaPy/commits?author=GregaVrbancic" title="Code">💻</a> <a href="https://github.com/NiaOrg/NiaPy/commits?author=GregaVrbancic" title="Documentation">📖</a> <a href="https://github.com/NiaOrg/NiaPy/issues?q=author%3AGregaVrbancic" title="Bug reports">🐛</a> <a href="#example-GregaVrbancic" title="Examples">💡</a> <a href="#maintenance-GregaVrbancic" title="Maintenance">🚧</a> <a href="#platform-GregaVrbancic" title="Packaging/porting to new platform">📦</a> <a href="#projectManagement-GregaVrbancic" title="Project Management">📆</a> <a href="#review-GregaVrbancic" title="Reviewed Pull Requests">👀</a></td>
@@ -252,11 +251,10 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/RokPot"><img src="https://avatars0.githubusercontent.com/u/23029990?s=460&v=4" width="100px;" alt="RokPot"/><br /><sub><b>RokPot</b></sub></a><br /><a href="https://github.com/NiaOrg/NiaPy/commits?author=RokPot" title="Code">💻</a> <a href="https://github.com/NiaOrg/NiaPy/commits?author=RokPot" title="Documentation">📖</a> <a href="#example-RokPot" title="Examples">💡</a></td>
     <td align="center"><a href="https://github.com/mihael-mika"><img src="https://avatars2.githubusercontent.com/u/22932805?s=460&v=4" width="100px;" alt="mihaelmika"/><br /><sub><b>mihaelmika</b></sub></a><br /><a href="https://github.com/NiaOrg/NiaPy/commits?author=mihael-mika" title="Code">💻</a> <a href="https://github.com/NiaOrg/NiaPy/commits?author=mihael-mika" title="Documentation">📖</a> <a href="#example-mihael-mika" title="Examples">💡</a></td>
     <td align="center"><a href="https://github.com/jacebrowning"><img src="https://avatars1.githubusercontent.com/u/939501?s=460&v=4" width="100px;" alt="Jace Browning"/><br /><sub><b>Jace Browning</b></sub></a><br /><a href="https://github.com/NiaOrg/NiaPy/commits?author=jacebrowning" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/musawakiliML"><img src="https://avatars1.githubusercontent.com/u/19978292?v=4" width="100px;" alt="Musa Adamu Wakili"/><br /><sub><b>Musa Adamu Wakili</b></sub></a><br /><a href="#question-musawakiliML" title="Answering Questions">💬</a></td>
   </tr>
 </table>
 
-<!-- markdownlint-enable -->
-<!-- prettier-ignore-end -->
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind are welcome!

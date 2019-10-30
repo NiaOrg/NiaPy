@@ -146,6 +146,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "musawakiliML",
+      "name": "Musa Adamu Wakili",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/19978292?v=4",
+      "profile": "https://github.com/musawakiliML",
+      "contributions": [
+        "question"
+      ]
     }
   ],
   "skipCi": "true",
