@@ -1,12 +1,12 @@
 name: Check and Test
 
-on: [push, pull_request]
+on: [push]
 
 jobs:
   build:
     runs-on: ${{ matrix.os }}
     strategy:
-      max-parallel: 3
+      max-parallel: 9
       matrix:
         os: [ubuntu-latest, windows-latest, macOS-latest]
         python-version: [2.7, 3.6, 3.7]
@@ -32,3 +32,6 @@ jobs:
     - name: Check docstyle
       run: |
         pipenv run pydocstyle NiaPy tests scent.py setup.py
+    - name: Run tests
+      run: |
+        pipenv run pytest -ra -vv --random --random-seed=32786 --cov=NiaPy --no-cov-on-fail --cov-report=term-missing:skip-covered --cov-report=html NiaPy tests --junitxml=xmlreport/overall.xml
