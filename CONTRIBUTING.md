@@ -16,12 +16,12 @@ Before creating bug reports, please check existing issues list as you might find
 
 ### Pull requests
 
-If you are not so familiar with Git or/and GitHub, we suggest you take a look at our [beginner's guide](.github/beginners_guide.md). 
+If you are not so familiar with Git or/and GitHub, we suggest you take a look at our [beginner's guide](.github/beginners_guide.md).
 
 - Fill in the [reqired template](.github/pull_request_template.md)
 - Document new code
 - Make sure all the code goes through Pylint without problems (run ```make check``` command)
-- Make sure PR builds (Travis and AppVeyor) goes through
+- Make sure PR builds goes through
 
 
 
@@ -51,14 +51,14 @@ List of NiaPy's dependencies:
 
 
 List of development dependencies:
- 
+
 | Package                       | Version | Platform |
 | ----------------------------- |:-------:|:--------:|
 |pylint                         | Any     | Any      |
 |pycodestyle                    | Any     | Any      |
 |pydocstyle                     | Any     | Any      |
 |pytest                         | ~=3.3   | Any      |
-|pytest-describe                | Any     | Any      | 
+|pytest-describe                | Any     | Any      |
 |pytest-expecter                | Any     | Any      |
 |pytest-random                  | Any     | Any      |
 |pytest-cov                     | Any     | Any      |
