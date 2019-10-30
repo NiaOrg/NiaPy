@@ -155,6 +155,15 @@
       "contributions": [
         "question"
       ]
+    },
+    {
+      "login": "FlorianShepherd",
+      "name": "Florian Schaefer",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/23655422?v=4",
+      "profile": "http://www.uni-kassel.de/eecs/en/faculties/e2n/staff/florian-schaefer.html",
+      "contributions": [
+        "ideas"
+      ]
     }
   ],
   "skipCi": "true",
