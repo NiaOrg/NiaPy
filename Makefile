@@ -49,7 +49,7 @@ METADATA := *.egg-info
 .PHONY: install
 install: $(DEPENDENCIES) $(METADATA)
 
-$(DEPENDENCIES): 
+$(DEPENDENCIES):
 	@ if [ $(TPV) = T ]; then pipenv --python $(shell $(PYTHON) -c "import sys; print('%d.%d.%d' % (sys.version_info.major, sys.version_info.minor, sys.version_info.micro))"); fi
 	pipenv install --skip-lock --dev
 	@ touch $@
@@ -163,9 +163,9 @@ build: dist
 dist: install $(DIST_FILES)
 $(DIST_FILES): $(MODULES) README.rst
 	rm -f $(DIST_FILES)
-	pipenv run $(PYTHON) setup.py check --restructuredtext --strict --metadata
 	pipenv run $(PYTHON) setup.py sdist
 	pipenv run $(PYTHON) setup.py bdist_wheel
+	$(TWINE) check dist/*
 
 .PHONY: exe
 exe: install $(EXE_FILES)
