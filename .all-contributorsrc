@@ -1,0 +1,166 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "GregaVrbancic",
+      "name": "Grega Vrbančič",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/1894788?v=4",
+      "profile": "https://github.com/GregaVrbancic",
+      "contributions": [
+        "code",
+        "doc",
+        "bug",
+        "example",
+        "maintenance",
+        "platform",
+        "projectManagement",
+        "review"
+      ]
+    },
+    {
+      "login": "firefly-cpp",
+      "name": "firefly-cpp",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/1633361?v=4",
+      "profile": "https://github.com/firefly-cpp",
+      "contributions": [
+        "code",
+        "doc",
+        "bug",
+        "example",
+        "review"
+      ]
+    },
+    {
+      "login": "lucijabrezocnik",
+      "name": "Lucija Brezočnik",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/36370699?v=4",
+      "profile": "https://github.com/lucijabrezocnik",
+      "contributions": [
+        "code",
+        "doc",
+        "bug",
+        "example"
+      ]
+    },
+    {
+      "login": "mlaky88",
+      "name": "mlaky88",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/23091578?v=4",
+      "profile": "https://github.com/mlaky88",
+      "contributions": [
+        "code",
+        "doc",
+        "example"
+      ]
+    },
+    {
+      "login": "rhododendrom",
+      "name": "rhododendrom",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/3198785?v=4",
+      "profile": "https://github.com/rhododendrom",
+      "contributions": [
+        "code",
+        "doc",
+        "example",
+        "bug",
+        "review"
+      ]
+    },
+    {
+      "login": "kb2623",
+      "name": "Klemen",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/7480221?s=460&v=4",
+      "profile": "https://github.com/kb2623",
+      "contributions": [
+        "code",
+        "doc",
+        "example",
+        "bug",
+        "review"
+      ]
+    },
+    {
+      "login": "flyzoor",
+      "name": "Jan Popič",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/38717032?s=40&v=4",
+      "profile": "https://github.com/flyzoor",
+      "contributions": [
+        "code",
+        "doc",
+        "example"
+      ]
+    },
+    {
+      "login": "lukapecnik",
+      "name": "Luka Pečnik",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/23029992?s=460&v=4",
+      "profile": "https://github.com/lukapecnik",
+      "contributions": [
+        "code",
+        "doc",
+        "example"
+      ]
+    },
+    {
+      "login": "bankojan",
+      "name": "Jan Banko",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/44372016?s=460&v=4",
+      "profile": "https://github.com/bankojan",
+      "contributions": [
+        "code",
+        "doc",
+        "example"
+      ]
+    },
+    {
+      "login": "RokPot",
+      "name": "RokPot",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/23029990?s=460&v=4",
+      "profile": "https://github.com/RokPot",
+      "contributions": [
+        "code",
+        "doc",
+        "example"
+      ]
+    },
+    {
+      "login": "mihael-mika",
+      "name": "mihaelmika",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/22932805?s=460&v=4",
+      "profile": "https://github.com/mihael-mika",
+      "contributions": [
+        "code",
+        "doc",
+        "example"
+      ]
+    },
+    {
+      "login": "jacebrowning",
+      "name": "Jace Browning",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/939501?s=460&v=4",
+      "profile": "https://github.com/jacebrowning",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "musawakiliML",
+      "name": "Musa Adamu Wakili",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/19978292?v=4",
+      "profile": "https://github.com/musawakiliML",
+      "contributions": [
+        "question"
+      ]
+    }
+  ],
+  "skipCi": "true",
+  "contributorsPerLine": 7,
+  "projectName": "NiaPy",
+  "projectOwner": "NiaOrg",
+  "repoType": "github",
+  "repoHost": "https://github.com"
+}
