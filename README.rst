@@ -333,11 +333,6 @@ This release reflects the changes from Journal of Open Source Software (JOSS) re
 - added 26 benchmark functions
 - added Runner utility with export functionality
 
-
-.. |Unix Build Status| image:: https://img.shields.io/travis/NiaOrg/NiaPy/master.svg
-   :target: https://travis-ci.org/NiaOrg/NiaPy
-.. |Windows Build status| image:: https://ci.appveyor.com/api/projects/status/l5c0rp04mp04mbtq?svg=true
-   :target: https://ci.appveyor.com/project/GregaVrbancic/niapy
 .. |PyPI Version| image:: https://img.shields.io/pypi/v/NiaPy.svg
    :target: https://pypi.python.org/pypi/NiaPy
 .. |PyPI - Python Version| image:: https://img.shields.io/pypi/pyversions/NiaPy.svg

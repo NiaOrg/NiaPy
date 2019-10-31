@@ -5,8 +5,8 @@ First off, thanks for taking the time to contribute!
 
 Code of Conduct
 ---------------
-This project and everyone participating in it is governed by the :doc:`/code_of_conduct`. 
-By participating, you are expected to uphold this code. Please report unacceptable behavior 
+This project and everyone participating in it is governed by the :doc:`/code_of_conduct`.
+By participating, you are expected to uphold this code. Please report unacceptable behavior
 to niapy.organization@gmail.com.
 
 How Can I Contribute?
@@ -14,9 +14,9 @@ How Can I Contribute?
 
 Reporting Bugs
 ~~~~~~~~~~~~~~
-Before creating bug reports, please check existing issues list as you might find out that 
-you don't need to create one. When you are creating a bug report, please include as many 
-details as possible. Fill out the required template, the information it asks for helps us 
+Before creating bug reports, please check existing issues list as you might find out that
+you don't need to create one. When you are creating a bug report, please include as many
+details as possible. Fill out the required template, the information it asks for helps us
 resolve issues faster.
 
 Suggesting Enhancements
@@ -31,7 +31,7 @@ Pull requests (PR)
 
 .. note::
 
-    If you are not so familiar with Git or/and GitHub, we suggest you take a look at our :doc:`/guides/git_beginners`. 
+    If you are not so familiar with Git or/and GitHub, we suggest you take a look at our :doc:`/guides/git_beginners`.
 
 .. note::
 
@@ -41,5 +41,5 @@ Pull requests (PR)
 - Document new code
 - Make sure all the code goes through Pylint without problems (run ``make check`` command)
 - Run tests (run ``make test`` command)
-- Make sure PR builds (Travis and AppVeyor) goes through
+- Make sure PR builds goes through
 - Follow discussion in opened PR for any possible needed changes and/or fixes
