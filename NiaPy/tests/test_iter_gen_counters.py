@@ -1,8 +1,9 @@
+# encoding=utf8
 # pylint: disable=line-too-long
 
 from unittest import TestCase
 from NiaPy.algorithms.basic import BatAlgorithm, FireflyAlgorithm
-from NiaPy.task import StoppingTask, OptimizationType
+from NiaPy.task.task import StoppingTask, OptimizationType
 from NiaPy.algorithms.basic import DifferentialEvolution
 from NiaPy.benchmarks import Sphere
 
