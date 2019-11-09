@@ -100,7 +100,6 @@ class EvolutionStrategy1p1(Algorithm):
 		"""
 		Algorithm.setParameters(self, NP=mu, itype=ukwargs.pop('itype', IndividualES), **ukwargs)
 		self.mu, self.k, self.c_a, self.c_r, self.epsilon = mu, k, c_a, c_r, epsilon
-		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def mutate(self, x, rho):
 		r"""Mutate individual.
@@ -158,18 +157,22 @@ class EvolutionStrategy1p1(Algorithm):
 			**dparams (Dict[str, Any]): Additional arguments.
 
 		Returns:
-			Tuple[Individual, float, Dict[str, Any]]:
+			Tuple[Individual, float, Individual, float, Dict[str, Any]]:
 				1, Initialized individual.
 				2, Initialized individual fitness/function value.
-				3. Additional arguments:
+				3. New global best solution.
+				4. New global best soluitons fitness/objective value.
+				5. Additional arguments:
 					* ki (int): Number of successful rho update.
 		"""
 		if task.Iters % self.k == 0: c.rho, ki = self.updateRho(c.rho, ki), 0
 		cn = objects2array([task.repair(self.mutate(c.x, c.rho), self.Rand) for _i in range(self.mu)])
 		cn_f = asarray([task.eval(cn[i]) for i in range(len(cn))])
 		ib = argmin(cn_f)
-		if cn_f[ib] < c.f: c.x, c.f, ki = cn[ib], cn_f[ib], ki + 1
-		return c, c.f, {'ki': ki}
+		if cn_f[ib] < c.f:
+			c.x, c.f, ki = cn[ib], cn_f[ib], ki + 1
+			if cn_f[ib] < fxb: xb, fxb = self.getBest(cn[ib], cn_f[ib], xb, fxb)
+		return c, c.f, xb, fxb, {'ki': ki}
 
 class EvolutionStrategyMp1(EvolutionStrategy1p1):
 	r"""Implementation of (mu + 1) evolution strategy algorithm. Algorithm creates mu mutants but into new generation goes only one individual.
@@ -264,7 +267,6 @@ class EvolutionStrategyMpL(EvolutionStrategy1p1):
 		"""
 		EvolutionStrategy1p1.setParameters(self, InitPopFunc=defaultIndividualInit, **ukwargs)
 		self.lam = lam
-		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def updateRho(self, pop, k):
 		r"""Update standard deviation for population.
@@ -332,18 +334,20 @@ class EvolutionStrategyMpL(EvolutionStrategy1p1):
 
 		Args:
 			task (Task): Optimization task.
-			c (numpy.ndarray[Individual]): Current population.
-			fpop (numpy.ndarray[float]): Current populations fitness/function values.
-			xb (Individual): Global best individual.
+			c (numpy.ndarray): Current population.
+			fpop (numpy.ndarray): Current populations fitness/function values.
+			xb (numpy.ndarray): Global best individual.
 			fxb (float): Global best individuals fitness/function value.
 			ki (int): Number of successful mutations.
 			**dparams (Dict[str, Any]): Additional arguments.
 
 		Returns:
-			Tuple[numpy.ndarray[Individual], numpy.ndarray[float], Dict[str, Any]]:
+			Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, float, Dict[str, Any]]:
 				1. New population.
 				2. New populations function/fitness values.
-				3. Additional arguments:
+				3. New global best solution.
+				4. New global best solutions fitness/objective value.
+				5. Additional arguments:
 					* ki (int): Number of successful mutations.
 		"""
 		if task.Iters % self.k == 0: _, ki = self.updateRho(c, ki), 0
@@ -351,7 +355,9 @@ class EvolutionStrategyMpL(EvolutionStrategy1p1):
 		cn = append(cn, c)
 		cn = objects2array([cn[i] for i in argsort([i.f for i in cn])[:self.mu]])
 		ki += self.changeCount(c, cn)
-		return cn, [x.f for x in cn], {'ki': ki}
+		fcn = asarray([x.f for x in cn])
+		xb, fxb = self.getBest(cn, fcn, xb, fxb)
+		return cn, fcn, xb, fxb, {'ki': ki}
 
 class EvolutionStrategyML(EvolutionStrategyMpL):
 	r"""Implementation of (mu, lambda) evolution strategy algorithm. Algorithm is good for dynamic environments. Mu individual create lambda chields. Only best mu chields go to new generation. Mu parents are discarded.
@@ -418,21 +424,25 @@ class EvolutionStrategyML(EvolutionStrategyMpL):
 
 		Args:
 			task (Task): Optimization task.
-			c (numpy.ndarray[Individual]): Current population.
-			fpop (numpy.ndarray[float]): Current population fitness/function values.
-			xb (Individual): Global best individual.
+			c (numpy.ndarray): Current population.
+			fpop (numpy.ndarray): Current population fitness/function values.
+			xb (numpy.ndarray): Global best individual.
 			fxb (float): Global best individuals fitness/function value.
 			**dparams Dict[str, Any]: Additional arguments.
 
 		Returns:
-			Tuple[numpy.ndarray[Individual], numpy.ndarray[float], Dict[str, Any]]:
+			Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, float, Dict[str, Any]]:
 				1. New population.
 				2. New populations fitness/function values.
-				3. Additional arguments.
+				3. New global best solution.
+				4. New global best solutions fitness/objective value.
+				5. Additional arguments.
 		"""
 		cn = objects2array([IndividualES(x=self.mutateRand(c, task), task=task, rand=self.Rand) for _ in range(self.lam)])
 		c = self.newPop(cn)
-		return c, asarray([x.f for x in c]), {}
+		fc = asarray([x.f for x in c])
+		xb, fxb = self.getBest(c, fc, xb, fxb)
+		return c, fc, xb, fxb, {}
 
 def CovarianceMaatrixAdaptionEvolutionStrategyF(task, epsilon=1e-20, rnd=rand):
 	lam, alpha_mu, hs, sigma0 = (4 + round(3 * log(task.D))) * 10, 2, 0, 0.3 * task.bcRange()
@@ -512,8 +522,8 @@ class CovarianceMatrixAdaptionEvolutionStrategy(Algorithm):
 			epsilon (float): Small number.
 			**ukwargs (Dict[str, Any]): Additional arguments.
 		"""
+		Algorithm.setParameters(self, **ukwargs)
 		self.epsilon = epsilon
-		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def runTask(self, task):
 		r"""TODO.
