@@ -46,7 +46,7 @@ class Ackley(Benchmark):
     Name = ['Ackley']
 
     def __init__(self, Lower=-32.768, Upper=32.768):
-        r"""Initialize Ackley benchmark.
+        r"""Initialize of Ackley benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.
