@@ -4,6 +4,9 @@ from NiaPy.algorithms.basic import MonarchButterflyOptimization
 
 
 class MBOTestCase(AlgorithmTestCase):
+    def setUp(self):
+        AlgorithmTestCase.setUp(self)
+        self.algo = MonarchButterflyOptimization
 
     def test_type_parameters(self):
         tp = MonarchButterflyOptimization.typeParameters()
@@ -19,11 +22,11 @@ class MBOTestCase(AlgorithmTestCase):
         self.assertFalse(tp['PER'](-1.0))
 
     def test_works_fine(self):
-        mbo = MonarchButterflyOptimization(NP=20, PAR=5.0 / 12.0, PER=1.2, seed=self.seed)
-        mboc = MonarchButterflyOptimization(NP=20, PAR=5.0 / 12.0, PER=1.2, seed=self.seed)
-        AlgorithmTestCase.algorithm_run_test(self, mbo, mboc, MyBenchmark())
+        mbo = self.algo(NP=20, PAR=5.0 / 12.0, PER=1.2, seed=self.seed)
+        mboc = self.algo(NP=20, PAR=5.0 / 12.0, PER=1.2, seed=self.seed)
+        AlgorithmTestCase.test_algorithm_run(self, mbo, mboc, MyBenchmark())
 
     def test_griewank_works_fine(self):
-        mbo_griewank = MonarchButterflyOptimization(NP=20, PAR=5.0 / 12.0, PER=1.2, seed=self.seed)
-        mbo_griewankc = MonarchButterflyOptimization(NP=20, PAR=5.0 / 12.0, PER=1.2, seed=self.seed)
-        AlgorithmTestCase.algorithm_run_test(self, mbo_griewank, mbo_griewankc)
+        mbo_griewank = self.algo(NP=20, PAR=5.0 / 12.0, PER=1.2, seed=self.seed)
+        mbo_griewankc = self.algo(NP=20, PAR=5.0 / 12.0, PER=1.2, seed=self.seed)
+        AlgorithmTestCase.test_algorithm_run(self, mbo_griewank, mbo_griewankc)
