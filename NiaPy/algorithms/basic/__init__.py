@@ -9,7 +9,7 @@ from NiaPy.algorithms.basic.gwo import GreyWolfOptimizer
 from NiaPy.algorithms.basic.cso import CatSwarmOptimization
 from NiaPy.algorithms.basic.ga import GeneticAlgorithm
 from NiaPy.algorithms.basic.abc import ArtificialBeeColonyAlgorithm
-from NiaPy.algorithms.basic.pso import ParticleSwarmAlgorithm
+from NiaPy.algorithms.basic.pso import ParticleSwarmAlgorithm, ParticleSwarmOptimization, CenterParticleSwarmOptimization, ComprehensiveLearningParticleSwarmOptimizer, OppositionVelocityClampingParticleSwarmOptimization, MutatedCenterParticleSwarmOptimization, MutatedCenterUnifiedParticleSwarmOptimization, MutatedParticleSwarmOptimization
 from NiaPy.algorithms.basic.ca import CamelAlgorithm
 from NiaPy.algorithms.basic.mke import MonkeyKingEvolutionV1, MonkeyKingEvolutionV2, MonkeyKingEvolutionV3
 from NiaPy.algorithms.basic.es import EvolutionStrategy1p1, EvolutionStrategyMp1, EvolutionStrategyMpL, EvolutionStrategyML, CovarianceMatrixAdaptionEvolutionStrategy
@@ -76,5 +76,12 @@ __all__ = [
     'CoralReefsOptimization',
     'ForestOptimizationAlgorithm',
     'MonarchButterflyOptimization',
-    'BeesAlgorithm'
+    'BeesAlgorithm',
+    'ParticleSwarmOptimization',
+    'MutatedParticleSwarmOptimization',
+    'MutatedCenterUnifiedParticleSwarmOptimization',
+    'MutatedCenterParticleSwarmOptimization',
+    'OppositionVelocityClampingParticleSwarmOptimization',
+    'ComprehensiveLearningParticleSwarmOptimizer',
+    'CenterParticleSwarmOptimization'
 ]
