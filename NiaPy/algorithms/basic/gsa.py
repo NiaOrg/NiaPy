@@ -42,6 +42,15 @@ class GravitationalSearchAlgorithm(Algorithm):
 	Name = ['GravitationalSearchAlgorithm', 'GSA']
 
 	@staticmethod
+	def algorithmInfo():
+		r"""Get algorithm information.
+
+		Returns:
+			str: Algorithm information.
+		"""
+		return r"""Esmat Rashedi, Hossein Nezamabadi-pour, Saeid Saryazdi, GSA: A Gravitational Search Algorithm, Information Sciences, Volume 179, Issue 13, 2009, Pages 2232-2248, ISSN 0020-0255"""
+
+	@staticmethod
 	def typeParameters():
 		r"""TODO.
 
@@ -72,7 +81,22 @@ class GravitationalSearchAlgorithm(Algorithm):
 		"""
 		Algorithm.setParameters(self, NP=NP, **ukwargs)
 		self.G_0, self.epsilon = G_0, epsilon
-		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
+
+	def getParameters(self):
+		r"""Get algorithm parameters values.
+
+		Returns:
+			Dict[str, Any]: TODO.
+
+		See Also:
+			* :func:`NiaPy.algorithms.algorithm.Algorithm.getParameters`
+		"""
+		d = Algorithm.getParameters(self)
+		d.update({
+			'G_0': self.G_0,
+			'epsilon': self.epsilon
+		})
+		return d
 
 	def G(self, t):
 		r"""TODO.
@@ -124,18 +148,20 @@ class GravitationalSearchAlgorithm(Algorithm):
 		Args:
 			task (Task): Optimization task.
 			X (numpy.ndarray): Current population.
-			X_f (numpy.ndarray[float]): Current populations fitness/function values.
+			X_f (numpy.ndarray): Current populations fitness/function values.
 			xb (numpy.ndarray): Global best solution.
 			fxb (float): Global best fitness/function value.
-			v (): TODO
+			v (numpy.ndarray): TODO
 			**dparams (Dict[str, Any]): Additional arguments.
 
 		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+			Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, float, Dict[str, Any]]:
 				1. New population.
 				2. New populations fitness/function values.
-				3. Additional arguments:
-					* v (numpy.ndarray[float]): TODO
+				3. New global best solution
+				4. New global best solutions fitness/objective value
+				5. Additional arguments:
+					* v (numpy.ndarray): TODO
 		"""
 		ib, iw = argmin(X_f), argmax(X_f)
 		m = (X_f - X_f[iw]) / (X_f[ib] - X_f[iw])
@@ -146,6 +172,7 @@ class GravitationalSearchAlgorithm(Algorithm):
 		v = self.rand([self.NP, task.D]) * v + a.T
 		X = apply_along_axis(task.repair, 1, X + v, self.Rand)
 		X_f = apply_along_axis(task.eval, 1, X)
-		return X, X_f, {'v': v}
+		xb, fxb = self.getBest(X, X_f, xb, fxb)
+		return X, X_f, xb, fxb, {'v': v}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
