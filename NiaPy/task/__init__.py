@@ -12,7 +12,7 @@ from NiaPy.task.utility import Utility
 __all__ = [
     'Task',
     'CountingTask',
-    "StoppingTask',
+    'StoppingTask',
     'ThrowingTask',
     'OptimizationType',
     'Utility'
