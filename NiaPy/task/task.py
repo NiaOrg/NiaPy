@@ -1,4 +1,5 @@
 # encoding=utf8
+# pylint: disable=line-too-long, unused-argument, no-self-use, logging-not-lazy, superfluous-parens, redefined-outer-name
 
 """The implementation of tasks."""
 
@@ -8,14 +9,16 @@ from enum import Enum
 from matplotlib import pyplot as plt
 from numpy import inf, random as rand
 
-from NiaPy.util import (
+from NiaPy.util.utility import (
     limit_repair,
-    fullArray,
+    fullArray
+)
+from NiaPy.util.exception import (
     FesException,
     GenException,
     RefException
 )
-from NiaPy.benchmarks.utility import Utility
+from NiaPy.task.utility import Utility
 
 
 logging.basicConfig()

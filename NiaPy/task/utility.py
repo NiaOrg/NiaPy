@@ -1,3 +1,6 @@
+# encoding=utf8
+# pylint: disable=no-else-return
+
 """Implementation of benchmarks utility function."""
 
 from NiaPy import benchmarks
