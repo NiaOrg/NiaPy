@@ -12,8 +12,6 @@ logger.setLevel('INFO')
 
 __all__ = ['AnarchicSocietyOptimization', 'Elitism', 'Sequential', 'Crossover']
 
-# FIXME fix algorithm!!!
-
 def Elitism(x, xpb, xb, xr, MP_c, MP_s, MP_p, F, CR, task, rnd=rand):
 	r"""Select the best of all three strategies.
 
