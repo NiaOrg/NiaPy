@@ -1,5 +1,8 @@
 # encoding=utf8
 # pylint: disable=anomalous-backslash-in-string
+
+"""Impementation of Happy Cat funtion."""
+
 import math
 from NiaPy.benchmarks.benchmark import Benchmark
 
@@ -71,7 +74,7 @@ class HappyCat(Benchmark):
     @classmethod
     def function(cls):
         r"""Return benchmark evaluation function.
-        
+
         Returns:
             Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function
         """
@@ -81,9 +84,9 @@ class HappyCat(Benchmark):
             Args:
                 D (int): Dimensionality of the problem
                 sol (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
-            
+
             Returns:
-                float: Fitness value for the solution.    
+                float: Fitness value for the solution.
             """
             val1 = 0.0
             val2 = 0.0

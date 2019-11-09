@@ -1,5 +1,8 @@
 # encoding=utf8
 # pylint: disable=anomalous-backslash-in-string
+
+"""Implementaion of Rastrigin function."""
+
 import math
 from NiaPy.benchmarks.benchmark import Benchmark
 
@@ -65,7 +68,7 @@ class Rastrigin(Benchmark):
     @classmethod
     def function(cls):
         r"""Return benchmark evaluation function.
-        
+
         Returns:
             Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function
         """
@@ -75,9 +78,9 @@ class Rastrigin(Benchmark):
             Args:
                 D (int): Dimensionality of the problem
                 sol (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
-            
+
             Returns:
-                float: Fitness value for the solution.    
+                float: Fitness value for the solution.
             """
             val = 0.0
 

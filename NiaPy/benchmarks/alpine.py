@@ -1,5 +1,6 @@
 # encoding=utf8
 # pylint: disable=anomalous-backslash-in-string
+
 """Implementations of Alpine functions."""
 
 import math
@@ -79,9 +80,9 @@ class Alpine1(Benchmark):
             Args:
                 D (int): Dimensionality of the problem
                 sol (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
-            
+
             Returns:
-                float: Fitness value for the solution.    
+                float: Fitness value for the solution.
             """
             val = 0.0
 
@@ -157,7 +158,7 @@ class Alpine2(Benchmark):
         r"""Return benchmark evaluation function.
 
         Returns:
-            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function	
+            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function
         """
         def evaluate(D, sol):
             r"""Fitness function.
@@ -165,9 +166,9 @@ class Alpine2(Benchmark):
             Args:
                 D (int): Dimensionality of the problem
                 sol (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
-            
+
             Returns:
-                float: Fitness value for the solution.    
+                float: Fitness value for the solution.
             """
             val = 1.0
 

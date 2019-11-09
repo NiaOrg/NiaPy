@@ -1,6 +1,8 @@
 # encoding=utf8
 # pylint: disable=anomalous-backslash-in-string, mixed-indentation, redefined-builtin, multiple-statements
 
+"""Sphere benchmarks."""
+
 from numpy import abs
 from NiaPy.benchmarks.benchmark import Benchmark
 

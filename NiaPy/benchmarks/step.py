@@ -1,5 +1,6 @@
 # encoding=utf8
 # pylint: disable=anomalous-backslash-in-string
+
 """Implementations of Step functions."""
 
 import math
@@ -72,7 +73,7 @@ class Step(Benchmark):
     @classmethod
     def function(cls):
         r"""Return benchmark evaluation function.
-        
+
         Returns:
             Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function
         """
@@ -82,9 +83,9 @@ class Step(Benchmark):
             Args:
                 D (int): Dimensionality of the problem
                 sol (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
-            
+
             Returns:
-                float: Fitness value for the solution.    
+                float: Fitness value for the solution.
             """
             val = 0.0
 
@@ -158,7 +159,7 @@ class Step2(Benchmark):
     @classmethod
     def function(cls):
         r"""Return benchmark evaluation function.
-        
+
         Returns:
             Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function
         """
@@ -168,9 +169,9 @@ class Step2(Benchmark):
             Args:
                 D (int): Dimensionality of the problem
                 sol (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
-            
+
             Returns:
-                float: Fitness value for the solution.    
+                float: Fitness value for the solution.
             """
             val = 0.0
 
@@ -244,7 +245,7 @@ class Step3(Benchmark):
     @classmethod
     def function(cls):
         r"""Return benchmark evaluation function.
-        
+
         Returns:
             Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function
         """
@@ -254,9 +255,9 @@ class Step3(Benchmark):
             Args:
                 D (int): Dimensionality of the problem
                 sol (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
-            
+
             Returns:
-                float: Fitness value for the solution.    
+                float: Fitness value for the solution.
             """
             val = 0.0
 

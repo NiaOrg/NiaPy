@@ -1,5 +1,8 @@
 # encoding=utf8
 # pylint: disable=mixed-indentation, line-too-long, multiple-statements, too-many-function-args
+
+"""Argparser class."""
+
 import sys
 import logging
 from argparse import ArgumentParser
@@ -13,7 +16,9 @@ logger.setLevel('INFO')
 
 __all__ = ['MakeArgParser', 'getArgs', 'getDictArgs']
 
-def makeCbechs(): return bencs.__all__
+def makeCbechs():
+	r"""Make benchmarks."""
+	return bencs.__all__
 
 def optimizationType(x):
 	r"""Map function for optimization type.
@@ -108,6 +113,7 @@ def getDictArgs(argv):
 	return vars(getArgs(argv))
 
 if __name__ == '__main__':
+	r"""Run the algorithms based on parameters from the command line interface."""
 	args = getArgs(sys.argv[1:])
 	logger.info(str(args))
 

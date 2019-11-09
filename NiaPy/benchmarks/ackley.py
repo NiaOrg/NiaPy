@@ -1,5 +1,8 @@
 # encoding=utf8
 # pylint: disable=anomalous-backslash-in-string
+
+"""Implementation of Ackley benchmark."""
+
 from numpy import exp, pi, cos, sqrt
 
 from NiaPy.benchmarks.benchmark import Benchmark
@@ -71,7 +74,7 @@ class Ackley(Benchmark):
     @classmethod
     def function(cls):
         r"""Return benchmark evaluation function.
-        
+
         Returns:
             Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function
         """
@@ -81,9 +84,9 @@ class Ackley(Benchmark):
             Args:
                 D (int): Dimensionality of the problem
                 sol (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
-            
+
             Returns:
-                float: Fitness value for the solution.    
+                float: Fitness value for the solution.
             """
             a = 20  # Recommended variable value
             b = 0.2  # Recommended variable value

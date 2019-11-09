@@ -1,5 +1,8 @@
 # encoding=utf8
 # pylint: disable=anomalous-backslash-in-string
+
+"""Rosenbrock benchmark."""
+
 import math
 from NiaPy.benchmarks.benchmark import Benchmark
 

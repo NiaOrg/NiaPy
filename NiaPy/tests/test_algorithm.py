@@ -235,7 +235,7 @@ class TestingTask(StoppingTask, TestCase):
 		* :class:`NiaPy.util.StoppingTask`
 	"""
 	def names(self):
-		r"""
+		r"""Get names of benchmark.
 
 		Returns:
 			 List[str]: List of task names.
