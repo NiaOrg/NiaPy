@@ -70,7 +70,6 @@ class BareBonesFireworksAlgorithm(Algorithm):
 		ukwargs.pop('NP', None)
 		Algorithm.setParameters(self, NP=1, **ukwargs)
 		self.n, self.C_a, self.C_r = n, C_a, C_r
-		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def initPopulation(self, task):
 		r"""Initialize starting population.
@@ -102,10 +101,12 @@ class BareBonesFireworksAlgorithm(Algorithm):
 			dparams (Dict[str, Any]): Additional parameters.
 
 		Returns:
-			Tuple[numpy.ndarray, float, Dict[str, Any]]:
+			Tuple[numpy.ndarray, float, numpy.ndarray, float, Dict[str, Any]]:
 				1. New solution.
 				2. New solution fitness/function value.
-				3. Additional arguments:
+				3. New global best solution.
+				4. New global best solutions fitness/objective value.
+				5. Additional arguments:
 					* A (numpy.ndarray): Serach range.
 		"""
 		S = apply_along_axis(task.repair, 1, self.uniform(x - A, x + A, [self.n, task.D]), self.Rand)
@@ -113,7 +114,7 @@ class BareBonesFireworksAlgorithm(Algorithm):
 		iS = argmin(S_fit)
 		if S_fit[iS] < x_fit: x, x_fit, A = S[iS], S_fit[iS], self.C_a * A
 		else: A = self.C_r * A
-		return x, x_fit, {'A': A}
+		return x, x_fit, x.copy(), x_fit, {'A': A}
 
 class FireworksAlgorithm(Algorithm):
 	r"""Implementation of fireworks algorithm.
@@ -175,7 +176,6 @@ class FireworksAlgorithm(Algorithm):
 		"""
 		Algorithm.setParameters(self, NP=N, **ukwargs)
 		self.m, self.a, self.b, self.A, self.epsilon = m, a, b, A, epsilon
-		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def initAmplitude(self, task):
 		r"""Initialize amplitudes for dimensions.
@@ -339,10 +339,12 @@ class FireworksAlgorithm(Algorithm):
 			**dparams (Dict[str, Any)]: Additional arguments
 
 		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+			Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, float, Dict[str, Any]]:
 				1. Initialized population.
 				2. Initialized populations function/fitness values.
-				3. Additional arguments:
+				3. New global best solution.
+				4. New global best solutions fitness/objective value.
+				5. Additional arguments:
 					* Ah (numpy.ndarray): Initialized amplitudes.
 
 		See Also:
@@ -359,7 +361,8 @@ class FireworksAlgorithm(Algorithm):
 		FWn = [self.ExplodeSpark(FW[i], A[i], task) for i in range(self.NP) for _ in range(S[i])]
 		for i in range(self.m): FWn.append(self.GaussianSpark(self.randint(self.NP), task))
 		FW, FW_f = self.NextGeneration(FW, FW_f, FWn, task)
-		return FW, FW_f, {'Ah': Ah}
+		xb, fxb = self.getBest(FW, FW_f, xb, fxb)
+		return FW, FW_f, xb, fxb, {'Ah': Ah}
 
 class EnhancedFireworksAlgorithm(FireworksAlgorithm):
 	r"""Implementation of enganced fireworks algorithm.
@@ -553,10 +556,12 @@ class EnhancedFireworksAlgorithm(FireworksAlgorithm):
 			**dparams (Dict[str, Any]): Additional arguments.
 
 		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+			Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, float, Dict[str, Any]]:
 				1. Initial population.
 				2. Initial populations fitness/function values.
-				3. Additional arguments:
+				3. New global best solution.
+				4. New global best solutions fitness/objective value.
+				5. Additional arguments:
 					* Ainit (numpy.ndarray): Initial amplitude values.
 					* Afinal (numpy.ndarray): Final amplitude values.
 					* A_min (numpy.ndarray): Minimal amplitude values.
@@ -569,7 +574,8 @@ class EnhancedFireworksAlgorithm(FireworksAlgorithm):
 		FWn = [self.ExplodeSpark(FW[i], A[i], task) for i in range(self.NP) for _ in range(S[i])]
 		for i in range(self.m): FWn.append(self.GaussianSpark(self.randint(self.NP), FW[ib], task))
 		FW, FW_f = self.NextGeneration(FW, FW_f, FWn, task)
-		return FW, FW_f, {'Ah': Ah, 'Ainit': Ainit, 'Afinal': Afinal, 'A_min': A_min}
+		xb, fxb = self.getBest(FW, FW_f, xb, fxb)
+		return FW, FW_f, xb, fxb, {'Ah': Ah, 'Ainit': Ainit, 'Afinal': Afinal, 'A_min': A_min}
 
 class DynamicFireworksAlgorithmGauss(EnhancedFireworksAlgorithm):
 	r"""Implementation of dynamic fireworks algorithm.
@@ -764,20 +770,22 @@ class DynamicFireworksAlgorithmGauss(EnhancedFireworksAlgorithm):
 		Args:
 			task (Task): Optimization task.
 			FW (numpy.ndarray): Current population.
-			FW_f (numpy.ndarray[float]): Current populations function/fitness values.
+			FW_f (numpy.ndarray): Current populations function/fitness values.
 			xb (numpy.ndarray): Global best individual.
 			fxb (float): Global best fitness/function value.
-			Ah (): TODO
-			Ab (): TODO
+			Ah (Union[numpy.ndarray, float]): TODO
+			Ab (Union[numpy.ndarray, float]): TODO
 			**dparams (Dict[str, Any]): Additional arguments.
 
 		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+			Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, float, Dict[str, Any]]:
 				1. New population.
 				2. New populations fitness/function values.
-				3. Additional arguments:
-					* Ah (): TODO
-					* Ab (): TODO
+				3. New global best solution.
+				4. New global best solutions fitness/objective value.
+				5. Additional arguments:
+					* Ah (Union[numpy.ndarray, float]): TODO
+					* Ab (Union[numpy.ndarray, float]): TODO
 		"""
 		iw, ib = argmax(FW_f), argmin(FW_f)
 		Ss, As = sum(FW_f[iw] - FW_f), sum(FW_f - FW_f[ib])
@@ -787,8 +795,8 @@ class DynamicFireworksAlgorithmGauss(EnhancedFireworksAlgorithm):
 		for i in range(self.m): FWn.append(self.GaussianSpark(self.randint(self.NP), FW[ib], task))
 		FW, FW_f = self.NextGeneration(FW, FW_f, FWn, task)
 		iw, ib = argmax(FW_f), 0
-		_, _, Ab = self.uCF(xnb, FW[ib], FW_f[ib], xb, fxb, Ab, task)
-		return FW, FW_f, {'Ah': Ah, 'Ab': Ab}
+		xb, fxb, Ab = self.uCF(xnb, FW[ib], FW_f[ib], xb, fxb, Ab, task)
+		return FW, FW_f, xb, fxb, {'Ah': Ah, 'Ab': Ab}
 
 class DynamicFireworksAlgorithm(DynamicFireworksAlgorithmGauss):
 	r"""Implementation of dynamic fireworks algorithm.
@@ -859,7 +867,7 @@ class DynamicFireworksAlgorithm(DynamicFireworksAlgorithmGauss):
 		FWn, xnb = [self.ExplodeSpark(FW[i], A[i], task) for i in range(self.NP) for _ in range(S[i])], [self.ExplodeSpark(xb, Ab, task) for _ in range(sb)]
 		FW, FW_f = self.NextGeneration(FW, FW_f, FWn, task)
 		iw, ib = argmax(FW_f), 0
-		_, _, Ab = self.uCF(xnb, FW[ib], FW_f[ib], xb, fxb, Ab, task)
-		return FW, FW_f, {'Ah': Ah, 'Ab': Ab}
+		xb, fxb, Ab = self.uCF(xnb, FW[ib], FW_f[ib], xb, fxb, Ab, task)
+		return FW, FW_f, xb, fxb, {'Ah': Ah, 'Ab': Ab}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
