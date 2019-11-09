@@ -1,4 +1,6 @@
-from NiaPy.algorithms import Algorithm
+# encoding=utf8
+# pylint: disable=no-else-return, no-member
+from NiaPy.algorithms.algorithm import Algorithm
 from NiaPy.algorithms import basic as basic_algorithms
 from NiaPy.algorithms import modified as modified_algorithms
 from NiaPy.algorithms import other as other_algorithms
@@ -97,4 +99,4 @@ class AlgorithmUtility:
         elif algorithm in self.algorithm_classes:
             return self.algorithm_classes[algorithm]()
         else:
-            raise TypeError("Passed algorithm is not defined!")
+            raise TypeError("Passed algorithm is not defined! --> %s" % algorithm)

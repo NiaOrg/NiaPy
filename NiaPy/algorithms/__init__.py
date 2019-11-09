@@ -18,5 +18,5 @@ __all__ = [
 	'defaultIndividualInit',
 	'Individual',
 	'BasicStatistics',
-	"AlgorithmUtility"
+	'AlgorithmUtility'
 ]
