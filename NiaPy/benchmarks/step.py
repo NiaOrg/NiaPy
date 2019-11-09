@@ -1,12 +1,11 @@
 # encoding=utf8
-
-"""Implementations of Step benchmarks."""
+# pylint: disable=anomalous-backslash-in-string
+"""Implementations of Step functions."""
 
 import math
 from NiaPy.benchmarks.benchmark import Benchmark
 
-__all__ = ["Step", "Step2", "Step3"]
-
+__all__ = ['Step', 'Step2', 'Step3']
 
 class Step(Benchmark):
     r"""Implementation of Step function.
@@ -45,13 +44,11 @@ class Step(Benchmark):
         A literature survey of benchmark functions for global optimisation problems.
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
-
     """
-
-    Name = ["Step"]
+    Name = ['Step']
 
     def __init__(self, Lower=-100.0, Upper=100.0):
-        r"""Initialize Step benchmark.
+        r"""Initialize of Step benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.
@@ -59,34 +56,36 @@ class Step(Benchmark):
 
         See Also:
             :func:`NiaPy.benchmarks.Benchmark.__init__`
-
         """
-
         Benchmark.__init__(self, Lower, Upper)
 
     @staticmethod
     def latex_code():
-        """Return the latex code of the problem.
+        r"""Return the latex code of the problem.
 
         Returns:
-            [str] -- latex code.
-
+            str: Latex code
         """
-
-        return r"""$f(\mathbf{x}) = \sum_{i=1}^D \left( \lfloor \left |
-                x_i \right | \rfloor \right)$"""
+        return r'''$f(\mathbf{x}) = \sum_{i=1}^D \left( \lfloor \left |
+                x_i \right | \rfloor \right)$'''
 
     @classmethod
     def function(cls):
-        """Return benchmark evaluation function.
-
+        r"""Return benchmark evaluation function.
+        
         Returns:
-            [fun] -- Evaluation function.
-
+            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function
         """
-
         def evaluate(D, sol):
+            r"""Fitness function.
 
+            Args:
+                D (int): Dimensionality of the problem
+                sol (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
+            
+            Returns:
+                float: Fitness value for the solution.    
+            """
             val = 0.0
 
             for i in range(D):
@@ -132,13 +131,11 @@ class Step2(Benchmark):
         A literature survey of benchmark functions for global optimisation problems.
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
-
     """
-
-    Name = ["Step2"]
+    Name = ['Step2']
 
     def __init__(self, Lower=-100.0, Upper=100.0):
-        r"""Initialize Step2 benchmark.
+        r"""Initialize of Step2 benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.
@@ -146,33 +143,35 @@ class Step2(Benchmark):
 
         See Also:
             :func:`NiaPy.benchmarks.Benchmark.__init__`
-
         """
-
         Benchmark.__init__(self, Lower, Upper)
 
     @staticmethod
     def latex_code():
-        """Return the latex code of the problem.
+        r"""Return the latex code of the problem.
 
         Returns:
-            [str] -- latex code.
-
+            str: Latex code
         """
-
-        return r"""$f(\mathbf{x}) = \sum_{i=1}^D \left( \lfloor x_i + 0.5 \rfloor \right)^2$"""
+        return r'''$f(\mathbf{x}) = \sum_{i=1}^D \left( \lfloor x_i + 0.5 \rfloor \right)^2$'''
 
     @classmethod
     def function(cls):
-        """Return benchmark evaluation function.
-
+        r"""Return benchmark evaluation function.
+        
         Returns:
-            [fun] -- Evaluation function.
-
+            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function
         """
-
         def evaluate(D, sol):
+            r"""Fitness function.
 
+            Args:
+                D (int): Dimensionality of the problem
+                sol (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
+            
+            Returns:
+                float: Fitness value for the solution.    
+            """
             val = 0.0
 
             for i in range(D):
@@ -218,13 +217,11 @@ class Step3(Benchmark):
         A literature survey of benchmark functions for global optimisation problems.
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
-
     """
-
-    Name = ["Step3"]
+    Name = ['Step3']
 
     def __init__(self, Lower=-100.0, Upper=100.0):
-        r"""Initialize Step3 benchmark.
+        r"""Initialize of Step3 benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.
@@ -232,33 +229,35 @@ class Step3(Benchmark):
 
         See Also:
             :func:`NiaPy.benchmarks.Benchmark.__init__`
-
         """
-
         Benchmark.__init__(self, Lower, Upper)
 
     @staticmethod
     def latex_code():
-        """Return the latex code of the problem.
+        r"""Return the latex code of the problem.
 
         Returns:
-            [str] -- latex code.
-
+            str: Latex code
         """
-
-        return r"""$f(\mathbf{x}) = \sum_{i=1}^D \left( \lfloor x_i^2 \rfloor \right)$"""
+        return r'''$f(\mathbf{x}) = \sum_{i=1}^D \left( \lfloor x_i^2 \rfloor \right)$'''
 
     @classmethod
     def function(cls):
-        """Return benchmark evaluation function.
-
+        r"""Return benchmark evaluation function.
+        
         Returns:
-            [fun] -- Evaluation function.
-
+            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function
         """
-
         def evaluate(D, sol):
+            r"""Fitness function.
 
+            Args:
+                D (int): Dimensionality of the problem
+                sol (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
+            
+            Returns:
+                float: Fitness value for the solution.    
+            """
             val = 0.0
 
             for i in range(D):

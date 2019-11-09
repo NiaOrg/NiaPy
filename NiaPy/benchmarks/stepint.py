@@ -1,12 +1,9 @@
 # encoding=utf8
-
-"""Implementation of Stepint benchmark."""
-
+# pylint: disable=anomalous-backslash-in-string
 import math
 from NiaPy.benchmarks.benchmark import Benchmark
 
-__all__ = ["Stepint"]
-
+__all__ = ['Stepint']
 
 class Stepint(Benchmark):
     r"""Implementation of Stepint functions.
@@ -42,13 +39,11 @@ class Stepint(Benchmark):
         A literature survey of benchmark functions for global optimisation problems.
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
-
     """
-
-    Name = ["Stepint"]
+    Name = ['Stepint']
 
     def __init__(self, Lower=-5.12, Upper=5.12):
-        """Initialize Stepint benchmark.
+        r"""Initialize of Stepint benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.
@@ -56,33 +51,35 @@ class Stepint(Benchmark):
 
         See Also:
             :func:`NiaPy.benchmarks.Benchmark.__init__`
-
         """
-
         Benchmark.__init__(self, Lower, Upper)
 
     @staticmethod
     def latex_code():
-        """Return the latex code of the problem.
+        r"""Return the latex code of the problem.
 
         Returns:
-            [str] -- latex code.
-
+            str: Latex code
         """
-
         return r'''$f(\mathbf{x}) = \sum_{i=1}^D x_i^2$'''
 
     @classmethod
     def function(cls):
-        """Return benchmark evaluation function.
-
+        r"""Return benchmark evaluation function.
+        
         Returns:
-            [fun] -- Evaluation function.
-
+            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function
         """
-
         def evaluate(D, sol):
+            r"""Fitness function.
 
+            Args:
+                D (int): Dimensionality of the problem
+                sol (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
+            
+            Returns:
+                float: Fitness value for the solution.    
+            """
             val = 0.0
 
             for i in range(D):

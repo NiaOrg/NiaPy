@@ -1,12 +1,9 @@
 # encoding=utf8
-
-"""Implementation of Whitley benchmark."""
-
+# pylint: disable=anomalous-backslash-in-string
 import math
 from NiaPy.benchmarks.benchmark import Benchmark
 
-__all__ = ["Whitley"]
-
+__all__ = ['Whitley']
 
 class Whitley(Benchmark):
     r"""Implementation of Whitley function.
@@ -49,13 +46,11 @@ class Whitley(Benchmark):
         A literature survey of benchmark functions for global optimisation problems.
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
-
     """
-
-    Name = ["Whitley"]
+    Name = ['Whitley']
 
     def __init__(self, Lower=-10.24, Upper=10.24):
-        """Initialize Whitley benchmark.
+        r"""Initialize of Whitley benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.
@@ -63,35 +58,37 @@ class Whitley(Benchmark):
 
         See Also:
             :func:`NiaPy.benchmarks.Benchmark.__init__`
-
         """
-
         Benchmark.__init__(self, Lower, Upper)
 
     @staticmethod
     def latex_code():
-        """Return the latex code of the problem.
+        r"""Return the latex code of the problem.
 
         Returns:
-            [str] -- latex code.
-
+            str: Latex code
         """
-
         return r'''$f(\mathbf{x}) =
                 \sum_{i=1}^D \sum_{j=1}^D \left(\frac{(100(x_i^2-x_j)^2 +
                 (1-x_j)^2)^2}{4000} - \cos(100(x_i^2-x_j)^2 + (1-x_j)^2)+1\right)$'''
 
     @classmethod
     def function(cls):
-        """Return benchmark evaluation function.
-
+        r"""Return benchmark evaluation function.
+        
         Returns:
-            [fun] -- Evaluation function.
-
+            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function
         """
-
         def evaluate(D, sol):
+            r"""Fitness function.
 
+            Args:
+                D (int): Dimensionality of the problem
+                sol (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
+            
+            Returns:
+                float: Fitness value for the solution.    
+            """
             val = 0.0
 
             for i in range(D):
