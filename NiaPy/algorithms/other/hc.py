@@ -87,7 +87,14 @@ class HillClimbAlgorithm(Algorithm):
 		"""
 		Algorithm.setParameters(self, NP=1, **ukwargs)
 		self.delta, self.Neighborhood = delta, Neighborhood
-		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
+
+	def getParameters(self):
+		d = Algorithm.getParameters(self)
+		d.update({
+			'delta': self.delta,
+			'Neighborhood': self.Neighborhood
+		})
+		return d
 
 	def initPopulation(self, task):
 		r"""Initialize stating point.
@@ -116,7 +123,7 @@ class HillClimbAlgorithm(Algorithm):
 			**dparams (Dict[str, Any]): Additional arguments.
 
 		Returns:
-			Tuple[numpy.ndarray, float, Dict[str, Any]]:
+			Tuple[numpy.ndarray, float, numpy.ndarray, float, Dict[str, Any]]:
 				1. New solution.
 				2. New solutions function/fitness value.
 				3. Additional arguments.
@@ -127,6 +134,7 @@ class HillClimbAlgorithm(Algorithm):
 			yn, yn_f = self.Neighborhood(x, self.delta, task, rnd=self.Rand)
 			if yn_f < xn_f: xn, xn_f = yn, yn_f
 			else: lo = True or task.stopCond()
-		return xn, xn_f, {}
+		xb, fxb = self.getBest(xn, xn_f, xb, fxb)
+		return xn, xn_f, xb, fxb, {}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
