@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, line-too-long, singleton-comparison, multiple-statements, attribute-defined-outside-init, no-self-use, logging-not-lazy, unused-variable, arguments-differ, bad-continuation, unused-argument
+# pylint: disable=mixed-indentation, line-too-long, singleton-comparison, multiple-statements, attribute-defined-outside-init, no-self-use, logging-not-lazy, unused-variable, arguments-differ, bad-continuation, unused-argument, no-else-return
 import logging
 
 from numpy import exp, random as rand, asarray
@@ -102,8 +102,9 @@ class Camel(Individual):
 
 	def next(self):
 		r"""Save new position of Camel to old position."""
-		self.x_past, self.f_past, self.E_past, self.S_past = self.x, self.f, self.E, self.S
+		self.x_past, self.f_past, self.E_past, self.S_past = self.x.copy(), self.f, self.E, self.S
 		self.steps += 1
+		return self
 
 	def refill(self, S=None, E=None):
 		r"""Apply this function to Camel.
@@ -146,6 +147,15 @@ class CamelAlgorithm(Algorithm):
 		* :class:`NiaPy.algorithms.Algorithm`
 	"""
 	Name = ['CamelAlgorithm', 'CA']
+
+	@staticmethod
+	def algorithmInfo():
+		r"""Get information about algorithm.
+
+		Returns:
+			str: Algorithm information
+		"""
+		return r'''Ali, Ramzy. (2016). Novel Optimization Algorithm Inspired by Camel Traveling Behavior. Iraq J. Electrical and Electronic Engineering. 12. 167-177.'''
 
 	@staticmethod
 	def typeParameters():
@@ -193,7 +203,24 @@ class CamelAlgorithm(Algorithm):
 		"""
 		Algorithm.setParameters(self, NP=NP, itype=Camel, InitPopFunc=ukwargs.pop('InitPopFunc', self.initPop), **ukwargs)
 		self.omega, self.mu, self.alpha, self.S_init, self.E_init, self.T_min, self.T_max = omega, mu, alpha, S_init, E_init, T_min, T_max
-		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
+
+	def getParameters(self):
+		r"""Get parameters of the algorithm.
+
+		Returns:
+			Dict[str, Any]:
+		"""
+		d = Algorithm.getParameters(self)
+		d.update({
+			'omega': self.omega,
+			'mu': self.mu,
+			'alpha': self.alpha,
+			'S_init': self.S_init,
+			'E_init': self.E_init,
+			'T_min': self.T_min,
+			'T_max': self.T_max
+		})
+		return d
 
 	def initPop(self, task, NP, rnd, itype, **kwargs):
 		r"""Initialize starting population.
@@ -227,7 +254,7 @@ class CamelAlgorithm(Algorithm):
 		c.nextT(self.T_min, self.T_max, self.Rand)
 		c.nextS(self.omega, task.nGEN)
 		c.nextE(task.nGEN, self.T_max)
-		c.nextX(cb.x, self.E_init, self.S_init, task, self.Rand)
+		c.nextX(cb, self.E_init, self.S_init, task, self.Rand)
 		return c
 
 	def oasis(self, c, rn, alpha):
@@ -256,8 +283,7 @@ class CamelAlgorithm(Algorithm):
 			Camel: Camel with life cycle applyed to it.
 		"""
 		if c.f_past < mu * c.f: return Camel(self.E_init, self.S_init, rnd=self.Rand, task=task)
-		c.next()
-		return c
+		else: return c.next()
 
 	def initPopulation(self, task):
 		r"""Initialize population.
@@ -289,14 +315,18 @@ class CamelAlgorithm(Algorithm):
 			**dparams (Dict[str, Any]): Additional arguments.
 
 		Returns:
-			Tuple[array of array of (float or int), array of float, dict]:
+			Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, folat, dict]:
 				1. New population
 				2. New population function/fitness value
-				3. Additional arguments
+				3. New global best solution
+				4. New global best fitness/objective value
+				5. Additional arguments
 		"""
 		ncaravan = objects2array([self.walk(c, cb, task) for c in caravan])
 		ncaravan = objects2array([self.oasis(c, self.rand(), self.alpha) for c in ncaravan])
 		ncaravan = objects2array([self.lifeCycle(c, self.mu, task) for c in ncaravan])
-		return ncaravan, asarray([x.f for x in ncaravan]), {}
+		fncaravan = asarray([c.f for c in ncaravan])
+		cb, fcb = self.getBest(ncaravan, fncaravan, cb, fcb)
+		return ncaravan, fncaravan, cb, fcb, {}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
