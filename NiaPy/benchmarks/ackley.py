@@ -59,6 +59,11 @@ class Ackley(Benchmark):
 
     @staticmethod
     def latex_code():
+        r"""Return the latex code of the problem.
+
+        Returns:
+            str: Latex code
+        """
         return r'''$f(\mathbf{x}) = -a\;\exp\left(-b \sqrt{\frac{1}{D}
                 \sum_{i=1}^D x_i^2}\right) - \exp\left(\frac{1}{D}
                 \sum_{i=1}^D cos(c\;x_i)\right) + a + \exp(1)$'''
@@ -68,10 +73,18 @@ class Ackley(Benchmark):
         r"""Return benchmark evaluation function.
         
         Returns:
-            Callable[[int, numpy.ndarray], float]: Fitness function
+            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function
         """
         def evaluate(D, sol):
+            r"""Fitness function.
 
+            Args:
+                D (int): Dimensionality of the problem
+                sol (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
+            
+            Returns:
+                float: Fitness value for the solution.    
+            """
             a = 20  # Recommended variable value
             b = 0.2  # Recommended variable value
             c = 2 * pi  # Recommended variable value
