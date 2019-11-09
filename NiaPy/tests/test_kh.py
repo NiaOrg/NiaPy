@@ -15,8 +15,12 @@ class KHV1TestCase(AlgorithmTestCase):
 	See Also:
 		* :class:`NiaPy.tests.test_algorithm.AlgorithmTestCase`
 	"""
+	def setUp(self):
+		AlgorithmTestCase.setUp(self)
+		self.algo = KrillHerdV1
+
 	def test_type_parametes(self):
-		d = KrillHerdV1.typeParameters()
+		d = self.algo.typeParameters()
 		self.assertIsNotNone(d.get('N_max', None))
 		self.assertIsNotNone(d.get('V_f', None))
 		self.assertIsNotNone(d.get('D_max', None))
@@ -30,14 +34,14 @@ class KHV1TestCase(AlgorithmTestCase):
 		self.assertIsNotNone(d.get('epsilon', None))
 
 	def test_custom_works_fine(self):
-		kh_custom = KrillHerdV1(n=10, C_a=2, C_r=0.5, seed=self.seed)
-		kh_customc = KrillHerdV1(n=10, C_a=2, C_r=0.5, seed=self.seed)
-		AlgorithmTestCase.algorithm_run_test(self, kh_custom, kh_customc, MyBenchmark())
+		kh_custom = self.algo(n=10, C_a=2, C_r=0.5, seed=self.seed)
+		kh_customc = self.algo(n=10, C_a=2, C_r=0.5, seed=self.seed)
+		AlgorithmTestCase.test_algorithm_run(self, kh_custom, kh_customc, MyBenchmark())
 
 	def test_griewank_works_fine(self):
-		kh_griewank = KrillHerdV1(n=10, C_a=5, C_r=0.5, seed=self.seed)
-		kh_griewankc = KrillHerdV1(n=10, C_a=5, C_r=0.5, seed=self.seed)
-		AlgorithmTestCase.algorithm_run_test(self, kh_griewank, kh_griewankc)
+		kh_griewank = self.algo(n=10, C_a=5, C_r=0.5, seed=self.seed)
+		kh_griewankc = self.algo(n=10, C_a=5, C_r=0.5, seed=self.seed)
+		AlgorithmTestCase.test_algorithm_run(self, kh_griewank, kh_griewankc)
 
 class KHV2TestCase(AlgorithmTestCase):
 	r"""Test case for KrillHerdV2 algorithm.
@@ -51,8 +55,12 @@ class KHV2TestCase(AlgorithmTestCase):
 	See Also:
 		* :class:`NiaPy.tests.test_algorithm.AlgorithmTestCase`
 	"""
+	def setUp(self):
+		AlgorithmTestCase.setUp(self)
+		self.algo = KrillHerdV2
+
 	def test_type_parametes(self):
-		d = KrillHerdV2.typeParameters()
+		d = self.algo.typeParameters()
 		self.assertIsNotNone(d.get('N_max', None))
 		self.assertIsNotNone(d.get('V_f', None))
 		self.assertIsNotNone(d.get('D_max', None))
@@ -66,14 +74,14 @@ class KHV2TestCase(AlgorithmTestCase):
 		self.assertIsNotNone(d.get('epsilon', None))
 
 	def test_custom_works_fine(self):
-		kh_custom = KrillHerdV2(n=10, C_a=2, C_r=0.5, seed=self.seed)
-		kh_customc = KrillHerdV2(n=10, C_a=2, C_r=0.5, seed=self.seed)
-		AlgorithmTestCase.algorithm_run_test(self, kh_custom, kh_customc, MyBenchmark())
+		kh_custom = self.algo(n=10, C_a=2, C_r=0.5, seed=self.seed)
+		kh_customc = self.algo(n=10, C_a=2, C_r=0.5, seed=self.seed)
+		AlgorithmTestCase.test_algorithm_run(self, kh_custom, kh_customc, MyBenchmark())
 
 	def test_griewank_works_fine(self):
-		kh_griewank = KrillHerdV2(n=10, C_a=5, C_r=0.5, seed=self.seed)
-		kh_griewankc = KrillHerdV2(n=10, C_a=5, C_r=0.5, seed=self.seed)
-		AlgorithmTestCase.algorithm_run_test(self, kh_griewank, kh_griewankc)
+		kh_griewank = self.algo(n=10, C_a=5, C_r=0.5, seed=self.seed)
+		kh_griewankc = self.algo(n=10, C_a=5, C_r=0.5, seed=self.seed)
+		AlgorithmTestCase.test_algorithm_run(self, kh_griewank, kh_griewankc)
 
 class KHV3TestCase(AlgorithmTestCase):
 	r"""Test case for KrillHerdV3 algorithm.
@@ -87,8 +95,12 @@ class KHV3TestCase(AlgorithmTestCase):
 	See Also:
 		* :class:`NiaPy.tests.test_algorithm.AlgorithmTestCase`
 	"""
+	def setUp(self):
+		AlgorithmTestCase.setUp(self)
+		self.algo = KrillHerdV3
+
 	def test_type_parametes(self):
-		d = KrillHerdV3.typeParameters()
+		d = self.algo.typeParameters()
 		self.assertIsNotNone(d.get('N_max', None))
 		self.assertIsNotNone(d.get('V_f', None))
 		self.assertIsNotNone(d.get('D_max', None))
@@ -102,14 +114,14 @@ class KHV3TestCase(AlgorithmTestCase):
 		self.assertIsNotNone(d.get('epsilon', None))
 
 	def test_custom_works_fine(self):
-		kh_custom = KrillHerdV3(n=10, C_a=2, C_r=0.5, seed=self.seed)
-		kh_customc = KrillHerdV3(n=10, C_a=2, C_r=0.5, seed=self.seed)
-		AlgorithmTestCase.algorithm_run_test(self, kh_custom, kh_customc, MyBenchmark())
+		kh_custom = self.algo(n=10, C_a=2, C_r=0.5, seed=self.seed)
+		kh_customc = self.algo(n=10, C_a=2, C_r=0.5, seed=self.seed)
+		AlgorithmTestCase.test_algorithm_run(self, kh_custom, kh_customc, MyBenchmark())
 
 	def test_griewank_works_fine(self):
-		kh_griewank = KrillHerdV3(n=10, C_a=5, C_r=0.5, seed=self.seed)
-		kh_griewankc = KrillHerdV3(n=10, C_a=5, C_r=0.5, seed=self.seed)
-		AlgorithmTestCase.algorithm_run_test(self, kh_griewank, kh_griewankc)
+		kh_griewank = self.algo(n=10, C_a=5, C_r=0.5, seed=self.seed)
+		kh_griewankc = self.algo(n=10, C_a=5, C_r=0.5, seed=self.seed)
+		AlgorithmTestCase.test_algorithm_run(self, kh_griewank, kh_griewankc)
 
 class KHV4TestCase(AlgorithmTestCase):
 	r"""Test case for KrillHerdV4 algorithm.
@@ -123,8 +135,12 @@ class KHV4TestCase(AlgorithmTestCase):
 	See Also:
 		* :class:`NiaPy.tests.test_algorithm.AlgorithmTestCase`
 	"""
+	def setUp(self):
+		AlgorithmTestCase.setUp(self)
+		self.algo = KrillHerdV4
+
 	def test_type_parametes(self):
-		d = KrillHerdV4.typeParameters()
+		d = self.algo.typeParameters()
 		self.assertIsNotNone(d.get('N_max', None))
 		self.assertIsNotNone(d.get('V_f', None))
 		self.assertIsNotNone(d.get('D_max', None))
@@ -138,14 +154,14 @@ class KHV4TestCase(AlgorithmTestCase):
 		self.assertIsNone(d.get('epsilon', None))
 
 	def test_custom_works_fine(self):
-		kh_custom = KrillHerdV4(n=10, C_a=2, C_r=0.5, seed=self.seed)
-		kh_customc = KrillHerdV4(n=10, C_a=2, C_r=0.5, seed=self.seed)
-		AlgorithmTestCase.algorithm_run_test(self, kh_custom, kh_customc, MyBenchmark())
+		kh_custom = self.algo(n=10, C_a=2, C_r=0.5, seed=self.seed)
+		kh_customc = self.algo(n=10, C_a=2, C_r=0.5, seed=self.seed)
+		AlgorithmTestCase.test_algorithm_run(self, kh_custom, kh_customc, MyBenchmark())
 
 	def test_griewank_works_fine(self):
-		kh_griewank = KrillHerdV4(n=10, C_a=5, C_r=0.5, seed=self.seed)
-		kh_griewankc = KrillHerdV4(n=10, C_a=5, C_r=0.5, seed=self.seed)
-		AlgorithmTestCase.algorithm_run_test(self, kh_griewank, kh_griewankc)
+		kh_griewank = self.algo(n=10, C_a=5, C_r=0.5, seed=self.seed)
+		kh_griewankc = self.algo(n=10, C_a=5, C_r=0.5, seed=self.seed)
+		AlgorithmTestCase.test_algorithm_run(self, kh_griewank, kh_griewankc)
 
 class KHV11TestCase(AlgorithmTestCase):
 	r"""Test case for KrillHerdV11 algorithm.
@@ -159,8 +175,12 @@ class KHV11TestCase(AlgorithmTestCase):
 	See Also:
 		* :class:`NiaPy.tests.test_algorithm.AlgorithmTestCase`
 	"""
+	def setUp(self):
+		AlgorithmTestCase.setUp(self)
+		self.algo = KrillHerdV11
+
 	def test_type_parametes(self):
-		d = KrillHerdV11.typeParameters()
+		d = self.algo.typeParameters()
 		self.assertIsNotNone(d.get('N_max', None))
 		self.assertIsNotNone(d.get('V_f', None))
 		self.assertIsNotNone(d.get('D_max', None))
@@ -174,13 +194,13 @@ class KHV11TestCase(AlgorithmTestCase):
 		self.assertIsNotNone(d.get('epsilon', None))
 
 	def test_custom_works_fine(self):
-		kh_custom = KrillHerdV11(n=10, C_a=2, C_r=0.5, seed=self.seed)
-		kh_customc = KrillHerdV11(n=10, C_a=2, C_r=0.5, seed=self.seed)
-		AlgorithmTestCase.algorithm_run_test(self, kh_custom, kh_customc, MyBenchmark())
+		kh_custom = self.algo(n=10, C_a=2, C_r=0.5, seed=self.seed)
+		kh_customc = self.algo(n=10, C_a=2, C_r=0.5, seed=self.seed)
+		AlgorithmTestCase.test_algorithm_run(self, kh_custom, kh_customc, MyBenchmark())
 
 	def test_griewank_works_fine(self):
-		kh_griewank = KrillHerdV11(n=10, C_a=5, C_r=0.5, seed=self.seed)
-		kh_griewankc = KrillHerdV11(n=10, C_a=5, C_r=0.5, seed=self.seed)
-		AlgorithmTestCase.algorithm_run_test(self, kh_griewank, kh_griewankc)
+		kh_griewank = self.algo(n=10, C_a=5, C_r=0.5, seed=self.seed)
+		kh_griewankc = self.algo(n=10, C_a=5, C_r=0.5, seed=self.seed)
+		AlgorithmTestCase.test_algorithm_run(self, kh_griewank, kh_griewankc)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
