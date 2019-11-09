@@ -78,8 +78,6 @@ class FlowerPollinationAlgorithm(Algorithm):
 		self.p, self.beta = p, beta
 		self.S = zeros((NP, 10))
 
-		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
-
 	def repair(self, x, task):
 		r"""Repair solution to search space.
 
@@ -116,16 +114,18 @@ class FlowerPollinationAlgorithm(Algorithm):
 		Args:
 			task (Task): Optimization task.
 			Sol (numpy.ndarray): Current population.
-			Sol_f (numpy.ndarray[float]): Current population fitness/function values.
+			Sol_f (numpy.ndarray): Current population fitness/function values.
 			xb (numpy.ndarray): Global best solution.
 			fxb (float): Global best solution function/fitness value.
 			**dparams (Dict[str, Any]): Additional arguments.
 
 		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+			Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, float, Dict[str, Any]]:
 				1. New population.
 				2. New populations fitness/function values.
-				3. Additional arguments.
+				3. New global best solution
+				4. New global best solution fitness/objective value
+				5. Additional arguments.
 		"""
 		for i in range(self.NP):
 			if self.uniform(0, 1) > self.p: S[i] += self.levy(task.D) * (Sol[i] - xb)
@@ -135,7 +135,7 @@ class FlowerPollinationAlgorithm(Algorithm):
 			S[i] = self.repair(S[i], task)
 			f_i = task.eval(S[i])
 			if f_i <= Sol_f[i]: Sol[i], Sol_f[i] = S[i], f_i
-			if f_i <= fxb: xb, fxb = S[i], f_i
-		return Sol, Sol_f, {'S': S}
+			if f_i <= fxb: xb, fxb = S[i].copy(), f_i
+		return Sol, Sol_f, xb, fxb, {'S': S}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
