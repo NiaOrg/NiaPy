@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, line-too-long, unused-argument, no-self-use, no-self-use, attribute-defined-outside-init, logging-not-lazy, len-as-condition, singleton-comparison, arguments-differ, bad-continuation, dangerous-default-value, keyword-arg-before-vararg
+# pylint: disable=mixed-indentation, multiple-statements, line-too-long, unused-argument, no-self-use, no-self-use, attribute-defined-outside-init, logging-not-lazy, len-as-condition, singleton-comparison, arguments-differ, bad-continuation, dangerous-default-value, keyword-arg-before-vararg, too-many-lines, unnecessary-lambda
 import logging
 
 from numpy import random as rand, argmin, argmax, mean, cos, asarray, append, sin
@@ -287,65 +287,94 @@ class DifferentialEvolution(Algorithm):
 		"""
 		Algorithm.setParameters(self, NP=NP, InitPopFunc=ukwargs.pop('InitPopFunc', defaultIndividualInit), itype=ukwargs.pop('itype', Individual), **ukwargs)
 		self.F, self.CR, self.CrossMutt = F, CR, CrossMutt
-		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
+
+	def getParameters(self):
+		r"""Get parameters values of the algorithm.
+
+		Returns:
+			Dict[str, Any]: TODO
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.getParameters`
+		"""
+		d = Algorithm.getParameters(self)
+		d.update({
+			'F': self.F,
+			'CR': self.CR,
+			'CrossMutt': self.CrossMutt
+		})
+		return d
 
 	def evolve(self, pop, xb, task, **kwargs):
 		r"""Evolve population.
 
 		Args:
-			pop (numpy.ndarray[Individual]): Current population.
+			pop (numpy.ndarray): Current population.
 			xb (Individual): Current best individual.
 			task (Task): Optimization task.
 			**kwargs (Dict[str, Any]): Additional arguments.
 
 		Returns:
-			numpy.ndarray[Individual]: New evolved populations.
+			numpy.ndarray: New evolved populations.
 		"""
 		return objects2array([self.itype(x=self.CrossMutt(pop, i, xb, self.F, self.CR, self.Rand), task=task, rnd=self.Rand, e=True) for i in range(len(pop))])
 
-	def selection(self, pop, npop, **kwargs):
+	def selection(self, pop, npop, xb, fxb, task, **kwargs):
 		r"""Operator for selection.
 
 		Args:
-			pop (numpy.ndarray[Individual]): Current population.
-			npop (numpy.ndarray[Individual]): New Population.
+			pop (numpy.ndarray): Current population.
+			npop (numpy.ndarray): New Population.
+			xb (numpy.ndarray): Current global best solution.
+			fxb (float): Current global best solutions fitness/objective value.
+			task (Task): Optimization task.
 			**kwargs (Dict[str, Any]): Additional arguments.
 
 		Returns:
-			numpy.ndarray[Individual]: New selected individuals.
+			Tuple[numpy.ndarray, numpy.ndarray, float]:
+				1. New selected individuals.
+				2. New global best solution.
+				3. New global best solutions fitness/objective value.
 		"""
-		return objects2array([e if e.f < pop[i].f else pop[i] for i, e in enumerate(npop)])
+		arr = objects2array([e if e.f < pop[i].f else pop[i] for i, e in enumerate(npop)])
+		xb, fxb = self.getBest(arr, asarray([e.f for e in arr]), xb, fxb)
+		return arr, xb, fxb
 
-	def postSelection(self, pop, task, xb=None, **kwargs):
+	def postSelection(self, pop, task, xb, fxb, **kwargs):
 		r"""Apply additional operation after selection.
 
 		Args:
-			pop (numpy.ndarray[Individual]): Current population.
+			pop (numpy.ndarray): Current population.
 			task (Task): Optimization task.
-			xb (Optional[Individual]): Global best solution.
+			xb (numpy.ndarray): Global best solution.
 			**kwargs (Dict[str, Any]): Additional arguments.
 
 		Returns:
-			numpy.ndarray[Individual]: New population.
+			Tuple[numpy.ndarray, numpy.ndarray, float]:
+				1. New population.
+				2. New global best solution.
+				3. New global best solutions fitness/objective value.
 		"""
-		return pop
+		return pop, xb, fxb
 
 	def runIteration(self, task, pop, fpop, xb, fxb, **dparams):
 		r"""Core function of Differential Evolution algorithm.
 
 		Args:
 			task (Task): Optimization task.
-			pop (numpy.ndarray[Initialized]): Current population.
-			fpop (numpy.ndarray[float]): Current populations fitness/function values.
-			xb (Individual): Current best individual.
+			pop (numpy.ndarray): Current population.
+			fpop (numpy.ndarray): Current populations fitness/function values.
+			xb (numpy.ndarray): Current best individual.
 			fxb (float): Current best individual function/fitness value.
-			**dparams (Dict[str, Any]): Additional arguments.
+			**dparams (dict): Additional arguments.
 
 		Returns:
-			Tuple[numpy.ndarray[Individual], numpy.ndarray[float], Dict[str, Any]]:
+			Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, float, Dict[str, Any]]:
 				1. New population.
 				2. New population fitness/function values.
-				3. Additional arguments.
+				3. New global best solution.
+				4. New global best solutions fitness/objective value.
+				5. Additional arguments.
 
 		See Also:
 			* :func:`NiaPy.algorithms.basic.DifferentialEvolution.evolve`
@@ -353,9 +382,11 @@ class DifferentialEvolution(Algorithm):
 			* :func:`NiaPy.algorithms.basic.DifferentialEvolution.postSelection`
 		"""
 		npop = self.evolve(pop, xb, task)
-		pop = self.selection(pop, npop, task=task)
-		pop = self.postSelection(pop, task, xb=xb)
-		return pop, asarray([x.f for x in pop]), {}
+		pop, xb, fxb = self.selection(pop, npop, xb, fxb, task=task)
+		pop, xb, fxb = self.postSelection(pop, task, xb, fxb)
+		fpop = asarray([x.f for x in pop])
+		xb, fxb = self.getBest(pop, fpop, xb, fxb)
+		return pop, fpop, xb, fxb, {}
 
 class CrowdingDifferentialEvolution(DifferentialEvolution):
 	r"""Implementation of Differential evolution algorithm with multiple mutation strateys.
@@ -406,22 +437,28 @@ class CrowdingDifferentialEvolution(DifferentialEvolution):
 		DifferentialEvolution.setParameters(self, **ukwargs)
 		self.CrowPop = CrowPop
 
-	def selection(self, pop, npop, **kwargs):
+	def selection(self, pop, npop, xb, fxb, task, **kwargs):
 		r"""Operator for selection of individuals.
 
 		Args:
-			pop (numpy.ndarray[Individual]): Current population.
-			npop (numpy.ndarray[Individual]): New population.
+			pop (numpy.ndarray): Current population.
+			npop (numpy.ndarray): New population.
+			xb (numpy.ndarray): Current global best solution.
+			fxb (float): Current global best solutions fitness/objective value.
+			task (Task): Optimization task.
 			kwargs (Dict[str, Any]): Additional arguments.
 
 		Returns:
-			numpy.ndarray[Individual]: New population.
+			Tuple[numpy.ndarray, numpy.ndarray, float]:
+				1. New population.
+				2. New global best solution.
+				3. New global best solutions fitness/objective value.
 		"""
 		P = []
 		for e in npop:
 			i = argmin([euclidean(e, f) for f in pop])
 			P.append(pop[i] if pop[i].f < e.f else e)
-		return asarray(P)
+		return asarray(P), xb, fxb
 
 class DynNpDifferentialEvolution(DifferentialEvolution):
 	r"""Implementation of Dynamic poulation size Differential evolution algorithm.
@@ -489,25 +526,27 @@ class DynNpDifferentialEvolution(DifferentialEvolution):
 		"""
 		DifferentialEvolution.setParameters(self, **ukwargs)
 		self.pmax, self.rp = pmax, rp
-		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def postSelection(self, pop, task, **kwargs):
+	def postSelection(self, pop, task, xb, fxb, **kwargs):
 		r"""Post selection operator.
 
 		In this algorithm the post selection operator decrements the population at specific iterations/generations.
 
 		Args:
-			pop (numpy.ndarray[Individual]): Current population.
+			pop (numpy.ndarray): Current population.
 			task (Task): Optimization task.
 			kwargs (Dict[str, Any]): Additional arguments.
 
 		Returns:
-			numpy.ndarray[Individual]: Changed current population.
+			Tuple[numpy.ndarray, numpy.ndarray, float]:
+				1. Changed current population.
+				2. New global best solution.
+				3. New global best solutions fitness/objective value.
 		"""
 		Gr = task.nFES // (self.pmax * len(pop)) + self.rp
 		nNP = len(pop) // 2
 		if task.Iters == Gr and len(pop) > 3: pop = objects2array([pop[i] if pop[i].f < pop[i + nNP].f else pop[i + nNP] for i in range(nNP)])
-		return pop
+		return pop, xb, fxb
 
 def proportional(Lt_min, Lt_max, mu, x_f, avg, **args):
 	r"""Proportional calculation of age of individual.
@@ -663,7 +702,6 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 		DifferentialEvolution.setParameters(self, itype=AgingIndividual, **ukwargs)
 		self.Lt_min, self.Lt_max, self.age, self.delta_np, self.omega = Lt_min, Lt_max, age, delta_np, omega
 		self.mu = abs(self.Lt_max - self.Lt_min) / 2
-		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def deltaPopE(self, t):
 		r"""Calculate how many individuals are going to dye.
@@ -739,24 +777,30 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 			elif self.rand() >= self.omega: npop.append(e)
 		return objects2array(npop)
 
-	def selection(self, pop, npop, task, **kwargs):
+	def selection(self, pop, npop, xb, fxb, task, **kwargs):
 		r"""Select operator for individuals with aging.
 
 		Args:
-			pop (numpy.ndarray[Individual]): Current population.
-			npop (numpy.ndarray[Individual]): New population.
+			pop (numpy.ndarray): Current population.
+			npop (numpy.ndarray): New population.
+			xb (numpy.ndarray): Current global best solution.
+			fxb (float): Current global best solutions fitness/objective value.
 			task (Task): Optimization task.
 			**kwargs (Dict[str, Any]): Additional arguments.
 
 		Returns:
-			numpy.ndarray[Individual]: New population of individuals.
+			Tuple[numpy.ndarray, numpy.ndarray, float]:
+				1. New population of individuals.
+				2. New global best solution.
+				3. New global best solutions fitness/objective value.
 		"""
-		npop = DifferentialEvolution.selection(self, pop, npop)
+		npop, xb, fxb = DifferentialEvolution.selection(self, pop, npop, xb, fxb, task)
 		npop = append(npop, self.popIncrement(pop, task))
+		xb, fxb = self.getBest(npop, asarray([e.f for e in npop]), xb, fxb)
 		pop = self.aging(task, npop)
-		return pop
+		return pop, xb, fxb
 
-	def postSelection(self, pop, task, xb=None, **kwargs):
+	def postSelection(self, pop, task, xb, fxb, **kwargs):
 		r"""Post selection operator.
 
 		Args:
@@ -766,9 +810,12 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 			**kwargs (Dict[str, Any]): Additional arguments.
 
 		Returns:
-			numpy.ndarray[Individual]: New population.
+			Tuple[numpy.ndarray, numpy.ndarray, float]:
+			1. New population.
+			2. New global best solution
+			3. New global best solutions fitness/objective value
 		"""
-		return self.popDecrement(pop, task) if len(pop) > self.NP else pop
+		return self.popDecrement(pop, task) if len(pop) > self.NP else pop, xb, fxb
 
 def multiMutations(pop, i, xb, F, CR, rnd, task, itype, strategies, **kwargs):
 	r"""Mutation strategy that takes more than one strategy and applys them to individual.
@@ -856,17 +903,30 @@ class MultiStrategyDifferentialEvolution(DifferentialEvolution):
 		DifferentialEvolution.setParameters(self, CrossMutt=multiMutations, **ukwargs)
 		self.strategies = strategies
 
+	def getParameters(self):
+		r"""Get parameters values of the algorithm.
+
+		Returns:
+			Dict[str, Any]: TODO.
+
+		See Also:
+			* :func:`NiaPy.algorithms.basic.DifferentialEvolution.getParameters`
+		"""
+		d = DifferentialEvolution.getParameters(self)
+		d.update({'strategies': self.strategies})
+		return d
+
 	def evolve(self, pop, xb, task, **kwargs):
 		r"""Evolve population with the help multiple mutation strategies.
 
 		Args:
-			pop (numpy.ndarray[Individual]): Current population.
-			xb (Individual): Current best individual.
+			pop (numpy.ndarray): Current population.
+			xb (numpy.ndarray): Current best individual.
 			task (Task): Optimization task.
 			**kwargs (Dict[str, Any]): Additional arguments.
 
 		Returns:
-			numpy.ndarray[Individual]: New population of individuals.
+			numpy.ndarray: New population of individuals.
 		"""
 		return objects2array([self.CrossMutt(pop, i, xb, self.F, self.CR, self.Rand, task, self.itype, self.strategies) for i in range(len(pop))])
 
@@ -937,23 +997,37 @@ class DynNpMultiStrategyDifferentialEvolution(MultiStrategyDifferentialEvolution
 		MultiStrategyDifferentialEvolution.setParameters(self, **ukwargs)
 
 	def evolve(self, pop, xb, task, **kwargs):
+		r"""Evolve the current population.
+
+		Args:
+			pop (numpy.ndarray): Current population.
+			xb (numpy.ndarray): Global best solution.
+			task (Task): Optimization task.
+			**kwargs (dict): Additional arguments.
+
+		Returns:
+			numpy.ndarray: Evolved new population.
+		"""
 		return MultiStrategyDifferentialEvolution.evolve(self, pop, xb, task, **kwargs)
 
-	def postSelection(self, pop, task, **kwargs):
+	def postSelection(self, pop, task, xb, fxb, **kwargs):
 		r"""Post selection operator.
 
 		Args:
-			pop (numpy.ndarray[Individual]): Current population.
+			pop (numpy.ndarray): Current population.
 			task (Task): Optimization task.
 			**kwargs (Dict[str, Any]): Additional arguments.
 
 		Returns:
-			numpy.ndarray: New population.
+			Tuple[numpy.ndarray, numpy.ndarray, float]:
+				1. New population.
+				2. New global best solution.
+				3. New global best solutions fitness/objective value.
 
 		See Also:
 			* :func:`NiaPy.algorithms.basic.DynNpDifferentialEvolution.postSelection`
 		"""
-		return DynNpDifferentialEvolution.postSelection(self, pop, task)
+		return DynNpDifferentialEvolution.postSelection(self, pop, task, xb, fxb)
 
 class AgingNpMultiMutationDifferentialEvolution(AgingNpDifferentialEvolution, MultiStrategyDifferentialEvolution):
 	r"""Implementation of Differential evolution algorithm with aging individuals.
@@ -1023,13 +1097,13 @@ class AgingNpMultiMutationDifferentialEvolution(AgingNpDifferentialEvolution, Mu
 		r"""Evolve current population.
 
 		Args:
-			pop (numpy.ndarray[Individual]): Current population.
-			xb (Individual): Global best individual.
+			pop (numpy.ndarray): Current population.
+			xb (numpy.ndarray): Global best individual.
 			task (Task): Optimization task.
 			**kwargs (Dict[str, Any]): Additional arguments.
 
 		Returns:
-			numpy.ndarray[Individual]: New population of individuals.
+			numpy.ndarray: New population of individuals.
 		"""
 		return MultiStrategyDifferentialEvolution.evolve(self, pop, xb, task, **kwargs)
 
