@@ -1,9 +1,9 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, line-too-long, arguments-differ, bad-continuation
+# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, line-too-long, arguments-differ, bad-continuation, consider-using-enumerate
 import logging
+import math
 
 import numpy as np
-import math
 from NiaPy.algorithms.algorithm import Algorithm
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.basic')
@@ -56,7 +56,6 @@ class CatSwarmOptimization(Algorithm):
         """
         Algorithm.setParameters(self, NP=NP, **ukwargs)
         self.MR, self.C1, self.SMP, self.SPC, self.CDC, self.SRD, self.vMax = MR, C1, SMP, SPC, CDC, SRD, vMax
-        if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
     def initPopulation(self, task):
         r"""Initialize population.
