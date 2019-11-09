@@ -1,11 +1,9 @@
 # encoding=utf8
-
-"""Implementation of Happy Cat benchmark."""
-
+# pylint: disable=anomalous-backslash-in-string
 import math
 from NiaPy.benchmarks.benchmark import Benchmark
 
-__all__ = ["HappyCat"]
+__all__ = ['HappyCat']
 
 
 class HappyCat(Benchmark):
@@ -42,15 +40,13 @@ class HappyCat(Benchmark):
                 $-100 \leq x_i \leq 100$
 
     Reference: http://bee22.com/manual/tf_images/Liang%20CEC2014.pdf &
-        Beyer, H. G., & Finck, S. (2012). HappyCat - A Simple Function Class Where Well-Known Direct Search Algorithms Do Fail.
-        In International Conference on Parallel Problem Solving from Nature (pp. 367-376). Springer, Berlin, Heidelberg.
-
+    Beyer, H. G., & Finck, S. (2012). HappyCat - A Simple Function Class Where Well-Known Direct Search Algorithms Do Fail.
+    In International Conference on Parallel Problem Solving from Nature (pp. 367-376). Springer, Berlin, Heidelberg.
     """
-
-    Name = ["HappyCat"]
+    Name = ['HappyCat']
 
     def __init__(self, Lower=-100.0, Upper=100.0):
-        """Initialize Happy Cat benchmark.
+        r"""Initialize of Happy cat benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.
@@ -58,35 +54,37 @@ class HappyCat(Benchmark):
 
         See Also:
             :func:`NiaPy.benchmarks.Benchmark.__init__`
-
         """
-
         Benchmark.__init__(self, Lower, Upper)
 
     @staticmethod
     def latex_code():
-        """Return the latex code of the problem.
+        r"""Return the latex code of the problem.
 
         Returns:
-            [str] -- latex code
-
+            str: Latex code
         """
-
         return r'''$f(\mathbf{x}) = {\left|\sum_{i = 1}^D {x_i}^2 -
                 D \right|}^{1/4} + (0.5 \sum_{i = 1}^D {x_i}^2 +
                 \sum_{i = 1}^D x_i) / D + 0.5$'''
 
     @classmethod
     def function(cls):
-        """Return benchmark evaluation function.
-
+        r"""Return benchmark evaluation function.
+        
         Returns:
-            [fun] -- Evaluation function.
-
+            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function
         """
-
         def evaluate(D, sol):
+            r"""Fitness function.
 
+            Args:
+                D (int): Dimensionality of the problem
+                sol (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
+            
+            Returns:
+                float: Fitness value for the solution.    
+            """
             val1 = 0.0
             val2 = 0.0
             alpha = 0.125
