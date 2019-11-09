@@ -12,8 +12,6 @@ logger.setLevel('INFO')
 
 __all__ = ['SineCosineAlgorithm']
 
-# FIXME test if algorithm realy works OK
-
 class SineCosineAlgorithm(Algorithm):
 	r"""Implementation of sine cosine algorithm.
 
@@ -93,7 +91,23 @@ class SineCosineAlgorithm(Algorithm):
 		"""
 		Algorithm.setParameters(self, NP=NP, **ukwargs)
 		self.a, self.Rmin, self.Rmax = a, Rmin, Rmax
-		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
+
+	def getParameters(self):
+		r"""Get algorithm parameters values.
+
+		Returns:
+			Dict[str, Any]:
+
+		See Also:
+			* :func:`NiaPy.algorithms.algorithm.Algorithm.getParameters`
+		"""
+		d = Algorithm.getParameters(self)
+		d.update({
+			'a': self.a,
+			'Rmin': self.Rmin,
+			'Rmax': self.Rmax
+		})
+		return d
 
 	def nextPos(self, x, x_b, r1, r2, r3, r4, task):
 		r"""Move individual to new position in search space.
@@ -119,7 +133,7 @@ class SineCosineAlgorithm(Algorithm):
 			task (Task): Optimization task
 
 		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+			Tuple[numpy.ndarray, numpy.ndarray, Dict[str, Any]]:
 				1. Initialized population of individuals
 				2. Function/fitness values for individuals
 				3. Additional arguments
@@ -138,14 +152,17 @@ class SineCosineAlgorithm(Algorithm):
 			dparams (Dict[str, Any]): Additional parameters.
 
 		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+			Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, float, Dict[str, Any]]:
 				1. New population.
 				2. New populations fitness/function values.
-				3. Additional arguments.
+				3. New global best solution
+				4. New global best fitness/objective value
+				5. Additional arguments.
 		"""
 		r1, r2, r3, r4 = self.a - task.Iters * (self.a / task.Iters), self.uniform(0, 2 * pi), self.uniform(self.Rmin, self.Rmax), self.rand()
 		P = apply_along_axis(self.nextPos, 1, P, xb, r1, r2, r3, r4, task)
 		P_f = apply_along_axis(task.eval, 1, P)
-		return P, P_f, {}
+		xb, fxb = self.getBest(P, P_f, xb, fxb)
+		return P, P_f, xb, fxb, {}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
