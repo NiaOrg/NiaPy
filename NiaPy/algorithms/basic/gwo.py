@@ -54,7 +54,6 @@ class GreyWolfOptimizer(Algorithm):
 			* :func:`NiaPy.algorithms.Algorithm.setParameters`
 		"""
 		Algorithm.setParameters(self, NP=NP, **ukwargs)
-		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def initPopulation(self, task):
 		r"""Initialize population.
@@ -63,7 +62,7 @@ class GreyWolfOptimizer(Algorithm):
 			task (Task): Optimization task.
 
 		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+			Tuple[numpy.ndarray, numpy.ndarray, Dict[str, Any]]:
 				1. Initialized population.
 				2. Initialized populations fitness/function values.
 				3. Additional arguments:
@@ -87,7 +86,7 @@ class GreyWolfOptimizer(Algorithm):
 		Args:
 			task (Task): Optimization task.
 			pop (numpy.ndarray): Current population.
-			fpop (numpy.ndarray[float]): Current populations function/fitness values.
+			fpop (numpy.ndarray): Current populations function/fitness values.
 			xb (numpy.ndarray):
 			fxb (float):
 			A (numpy.ndarray):
@@ -99,7 +98,7 @@ class GreyWolfOptimizer(Algorithm):
 			**dparams (Dict[str, Any]): Additional arguments.
 
 		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+			Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, float, Dict[str, Any]]:
 				1. New population
 				2. New population fitness/function values
 				3. Additional arguments:
@@ -116,9 +115,10 @@ class GreyWolfOptimizer(Algorithm):
 			pop[i] = task.repair((X1 + X2 + X3) / 3, self.Rand)
 			fpop[i] = task.eval(pop[i])
 		for i, f in enumerate(fpop):
-			if f < A_f: A, A_f = pop[i], f
-			elif A_f < f < B_f: B, B_f = pop[i], f
-			elif B_f < f < D_f: D, D_f = pop[i], f
-		return pop, fpop, {'A': A, 'A_f': A_f, 'B': B, 'B_f': B_f, 'D': D, 'D_f': D_f}
+			if f < A_f: A, A_f = pop[i].copy(), f
+			elif A_f < f < B_f: B, B_f = pop[i].copy(), f
+			elif B_f < f < D_f: D, D_f = pop[i].copy(), f
+		xb, fxb = self.getBest(A, A_f, xb, fxb)
+		return pop, fpop, xb, fxb, {'A': A, 'A_f': A_f, 'B': B, 'B_f': B_f, 'D': D, 'D_f': D_f}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
