@@ -32,8 +32,7 @@ class IndividualES(Individual):
 		"""
 		Individual.__init__(self, **kwargs)
 		task, x, rho = kwargs.get('task', None), kwargs.get('x', None), kwargs.get('rho', 1)
-		if rho != None: self.rho = rho
-		elif task != None or x != None: self.rho = 1.0
+		self.rho = rho
 
 class EvolutionStrategy1p1(Algorithm):
 	r"""Implementation of (1 + 1) evolution strategy algorithm. Uses just one individual.

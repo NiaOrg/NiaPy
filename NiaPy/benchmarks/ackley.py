@@ -44,7 +44,8 @@ class Ackley(Benchmark):
         Domain:
                 $-32.768 \leq x_i \leq 32.768$
 
-    Reference: https://www.sfu.ca/~ssurjano/ackley.html
+    Reference:
+        https://www.sfu.ca/~ssurjano/ackley.html
     """
     Name = ['Ackley']
 
@@ -71,8 +72,7 @@ class Ackley(Benchmark):
                 \sum_{i=1}^D x_i^2}\right) - \exp\left(\frac{1}{D}
                 \sum_{i=1}^D cos(c\;x_i)\right) + a + \exp(1)$'''
 
-    @classmethod
-    def function(cls):
+    def function(slef):
         r"""Return benchmark evaluation function.
 
         Returns:

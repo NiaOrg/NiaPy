@@ -67,8 +67,7 @@ class Alpine1(Benchmark):
         """
         return r'''$f(\mathbf{x}) = \sum_{i=1}^{D} \left |x_i \sin(x_i)+0.1x_i \right|$'''
 
-    @classmethod
-    def function(cls):
+    def function(self):
         r"""Return benchmark evaluation function.
 
         Returns:
@@ -153,8 +152,7 @@ class Alpine2(Benchmark):
         """
         return r'''$f(\mathbf{x}) = \prod_{i=1}^{D} \sqrt{x_i} \sin(x_i)$'''
 
-    @classmethod
-    def function(cls):
+    def function(self):
         r"""Return benchmark evaluation function.
 
         Returns:

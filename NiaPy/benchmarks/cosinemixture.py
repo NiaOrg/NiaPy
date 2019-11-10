@@ -64,8 +64,7 @@ class CosineMixture(Benchmark):
 		"""
 		return r'''$f(\textbf{x}) = - 0.1 \sum_{i = 1}^D \cos (5 \pi x_i) - \sum_{i = 1}^D x_i^2$'''
 
-	@classmethod
-	def function(cls):
+	def function(self):
 		r"""Return benchmark evaluation function.
 
 		Returns:

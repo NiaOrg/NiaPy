@@ -70,8 +70,7 @@ class Griewank(Benchmark):
 		return r'''$f(\mathbf{x}) = \sum_{i=1}^D \frac{x_i^2}{4000} -
 				\prod_{i=1}^D \cos(\frac{x_i}{\sqrt{i}}) + 1$'''
 
-	@classmethod
-	def function(cls):
+	def function(self):
 		r"""Return benchmark evaluation function.
 
 		Returns:
@@ -125,7 +124,7 @@ class ExpandedGriewankPlusRosenbrock(Benchmark):
 				$-100 \leq x_i \leq 100$
 
 	Reference:
-	http://www5.zzu.edu.cn/__local/A/69/BC/D3B5DFE94CD2574B38AD7CD1D12_C802DAFE_BC0C0.pdf
+		http://www5.zzu.edu.cn/__local/A/69/BC/D3B5DFE94CD2574B38AD7CD1D12_C802DAFE_BC0C0.pdf
 	"""
 	Name = ['ExpandedGriewankPlusRosenbrock']
 
@@ -150,8 +149,7 @@ class ExpandedGriewankPlusRosenbrock(Benchmark):
 		"""
 		return r'''$f(\textbf{x}) = h(g(x_D, x_1)) + \sum_{i=2}^D h(g(x_{i - 1}, x_i)) \\ g(x, y) = 100 (x^2 - y)^2 + (x - 1)^2 \\ h(z) = \frac{z^2}{4000} - \cos \left( \frac{z}{\sqrt{1}} \right) + 1$'''
 
-	@classmethod
-	def function(cls):
+	def function(self):
 		r"""Return benchmark evaluation function.
 
 		Returns:

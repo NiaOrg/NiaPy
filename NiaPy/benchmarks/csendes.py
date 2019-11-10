@@ -68,8 +68,7 @@ class Csendes(Benchmark):
         """
         return r'''$f(\mathbf{x}) = \sum_{i=1}^D x_i^6\left( 2 + \sin \frac{1}{x_i}\right)$'''
 
-    @classmethod
-    def function(cls):
+    def function(self):
         r"""Return benchmark evaluation function.
 
         Returns:

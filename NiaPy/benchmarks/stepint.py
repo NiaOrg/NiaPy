@@ -66,8 +66,7 @@ class Stepint(Benchmark):
         """
         return r'''$f(\mathbf{x}) = \sum_{i=1}^D x_i^2$'''
 
-    @classmethod
-    def function(cls):
+    def function(self):
         r"""Return benchmark evaluation function.
 
         Returns:

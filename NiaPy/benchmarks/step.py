@@ -70,8 +70,7 @@ class Step(Benchmark):
         return r'''$f(\mathbf{x}) = \sum_{i=1}^D \left( \lfloor \left |
                 x_i \right | \rfloor \right)$'''
 
-    @classmethod
-    def function(cls):
+    def function(self):
         r"""Return benchmark evaluation function.
 
         Returns:
@@ -156,8 +155,7 @@ class Step2(Benchmark):
         """
         return r'''$f(\mathbf{x}) = \sum_{i=1}^D \left( \lfloor x_i + 0.5 \rfloor \right)^2$'''
 
-    @classmethod
-    def function(cls):
+    def function(self):
         r"""Return benchmark evaluation function.
 
         Returns:
@@ -242,8 +240,7 @@ class Step3(Benchmark):
         """
         return r'''$f(\mathbf{x}) = \sum_{i=1}^D \left( \lfloor x_i^2 \rfloor \right)$'''
 
-    @classmethod
-    def function(cls):
+    def function(self):
         r"""Return benchmark evaluation function.
 
         Returns:

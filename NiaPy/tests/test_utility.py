@@ -4,7 +4,7 @@ from unittest import TestCase
 
 from numpy import full, random as rnd, inf, sum, array_equal, asarray
 
-from NiaPy.util import fullArray, FesException, GenException  # TimeException, RefException
+from NiaPy.util import fullArray, limit_repair, limitInversRepair, wangRepair, randRepair, reflectRepair, FesException, GenException  # TimeException, RefException
 from NiaPy.task import Utility, StoppingTask, ThrowingTask
 from NiaPy.benchmarks import Benchmark
 
@@ -119,8 +119,7 @@ class MyBenchmark(Benchmark):
 	def __init__(self):
 		Benchmark.__init__(self, -10, 10)
 
-	@classmethod
-	def function(cls):
+	def function(self):
 		def evaluate(D, x): return sum(x ** 2)
 		return evaluate
 
@@ -324,5 +323,59 @@ class ThrowingTaskTestCase(TestCase):
 			self.assertFalse(self.t.stopCond())
 		self.t.nextIter()
 		self.assertTrue(self.t.stopCond())
+
+class LimitRepairTestCase(TestCase):
+	def setUp(self):
+		self.D = 10
+		self.Upper, self.Lower = fullArray(10, self.D), fullArray(-10, self.D)
+		self.met = limit_repair
+
+	def generateIndividual(self, D, upper, lower):
+		u, l = fullArray(upper, D), fullArray(lower, D)
+		return l + rnd.rand(D) * (u - l)
+
+	def test_limit_repair_good_solution_fine(self):
+		x = self.generateIndividual(self.D, self.Upper, self.Lower)
+		x = self.met(x, self.Lower, self.Upper)
+		self.assertFalse((x > self.Upper).any())
+		self.assertFalse((x < self.Lower).any())
+
+	def test_limit_repair_bad_upper_solution_fine(self):
+		x = self.generateIndividual(self.D, 12, 11)
+		x = self.met(x, self.Lower, self.Upper)
+		self.assertFalse((x > self.Upper).any())
+		self.assertFalse((x < self.Lower).any())
+
+	def test_limit_repair_bad_lower_soluiton_fine(self):
+		x = self.generateIndividual(self.D, -11, -12)
+		x = self.met(x, self.Lower, self.Upper)
+		self.assertFalse((x > self.Upper).any())
+		self.assertFalse((x < self.Lower).any())
+
+	def test_limit_repair_bad_upper_lower_soluiton_fine(self):
+		x = self.generateIndividual(self.D, 100, -100)
+		x = self.met(x, self.Lower, self.Upper)
+		self.assertFalse((x > self.Upper).any())
+		self.assertFalse((x < self.Lower).any())
+
+class LimitInverseRepairTestCase(LimitRepairTestCase):
+	def setUp(self):
+		LimitRepairTestCase.setUp(self)
+		self.met = limitInversRepair
+
+class WangRepairTestCase(LimitRepairTestCase):
+	def setUp(self):
+		LimitRepairTestCase.setUp(self)
+		self.met = wangRepair
+
+class RandRepairTestCase(LimitRepairTestCase):
+	def setUp(self):
+		LimitRepairTestCase.setUp(self)
+		self.met = randRepair
+
+class ReflectRepairTestCase(LimitRepairTestCase):
+	def setUp(self):
+		LimitRepairTestCase.setUp(self)
+		self.met = reflectRepair
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

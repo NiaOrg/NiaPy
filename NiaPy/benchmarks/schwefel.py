@@ -37,7 +37,8 @@ class Schwefel(Benchmark):
 		Domain:
 				$-500 \leq x_i \leq 500$
 
-	Reference: https://www.sfu.ca/~ssurjano/schwef.html
+	Reference:
+		https://www.sfu.ca/~ssurjano/schwef.html
 	"""
 	Name = ['Schwefel']
 
@@ -62,8 +63,7 @@ class Schwefel(Benchmark):
 		"""
 		return r'''$f(\textbf{x}) = 418.9829d - \sum_{i=1}^{D} x_i \sin(\sqrt{|x_i|})$'''
 
-	@classmethod
-	def function(cls):
+	def function(self):
 		r"""Return benchmark evaluation function.
 
 		Returns:
@@ -115,10 +115,10 @@ class Schwefel221(Benchmark):
 				$-100 \leq x_i \leq 100$
 
 	Reference paper:
-	Jamil, M., and Yang, X. S. (2013).
-	A literature survey of benchmark functions for global optimisation problems.
-	International Journal of Mathematical Modelling and Numerical Optimisation,
-	4(2), 150-194.
+		Jamil, M., and Yang, X. S. (2013).
+		A literature survey of benchmark functions for global optimisation problems.
+		International Journal of Mathematical Modelling and Numerical Optimisation,
+		4(2), 150-194.
 	"""
 	Name = ['Schwefel221']
 
@@ -143,8 +143,7 @@ class Schwefel221(Benchmark):
 		"""
 		return r'''$f(\mathbf{x})=\max_{i=1,...,D}|x_i|$'''
 
-	@classmethod
-	def function(cls):
+	def function(self):
 		r"""Return benchmark evaluation function.
 
 		Returns:
@@ -198,10 +197,10 @@ class Schwefel222(Benchmark):
 				$-100 \leq x_i \leq 100$
 
 	Reference paper:
-	Jamil, M., and Yang, X. S. (2013).
-	A literature survey of benchmark functions for global optimisation problems.
-	International Journal of Mathematical Modelling and Numerical Optimisation,
-	4(2), 150-194.
+		Jamil, M., and Yang, X. S. (2013).
+		A literature survey of benchmark functions for global optimisation problems.
+		International Journal of Mathematical Modelling and Numerical Optimisation,
+		4(2), 150-194.
 	"""
 	Name = ['Schwefel222']
 
@@ -226,8 +225,7 @@ class Schwefel222(Benchmark):
 		"""
 		return r'''$f(\mathbf{x})=\sum_{i=1}^{D}|x_i|+\prod_{i=1}^{D}|x_i|$'''
 
-	@classmethod
-	def function(cls):
+	def function(self):
 		r"""Return benchmark evaluation function.
 
 		Returns:
@@ -282,7 +280,7 @@ class ModifiedSchwefel(Benchmark):
 				$-100 \leq x_i \leq 100$
 
 	Reference:
-	http://www5.zzu.edu.cn/__local/A/69/BC/D3B5DFE94CD2574B38AD7CD1D12_C802DAFE_BC0C0.pdf
+		http://www5.zzu.edu.cn/__local/A/69/BC/D3B5DFE94CD2574B38AD7CD1D12_C802DAFE_BC0C0.pdf
 	"""
 	Name = ['ModifiedSchwefel']
 
@@ -307,8 +305,7 @@ class ModifiedSchwefel(Benchmark):
 		"""
 		return r'''$f(\textbf{x}) = 418.9829 \cdot D - \sum_{i=1}^D h(x_i) \\ h(x) = g(x + 420.9687462275036)  \\ g(z) = \begin{cases} z \sin \left( | z |^{\frac{1}{2}} \right) &\quad | z | \leq 500 \\ \left( 500 - \mod (z, 500) \right) \sin \left( \sqrt{| 500 - \mod (z, 500) |} \right) - \frac{ \left( z - 500 \right)^2 }{ 10000 D }  &\quad z > 500 \\ \left( \mod (| z |, 500) - 500 \right) \sin \left( \sqrt{| \mod (|z|, 500) - 500 |} \right) + \frac{ \left( z - 500 \right)^2 }{ 10000 D } &\quad z < -500\end{cases}$'''
 
-	@classmethod
-	def function(cls):
+	def function(self):
 		r"""Return benchmark evaluation function.
 
 		Returns:
@@ -365,7 +362,7 @@ class ExpandedScaffer(Benchmark):
 				$-100 \leq x_i \leq 100$
 
 	Reference:
-	http://www5.zzu.edu.cn/__local/A/69/BC/D3B5DFE94CD2574B38AD7CD1D12_C802DAFE_BC0C0.pdf
+		http://www5.zzu.edu.cn/__local/A/69/BC/D3B5DFE94CD2574B38AD7CD1D12_C802DAFE_BC0C0.pdf
 	"""
 	Name = ['ExpandedScaffer']
 
@@ -390,8 +387,7 @@ class ExpandedScaffer(Benchmark):
 		"""
 		return r'''$f(\textbf{x}) = g(x_D, x_1) + \sum_{i=2}^D g(x_{i - 1}, x_i) \\ g(x, y) = 0.5 + \frac{\sin \left(\sqrt{x^2 + y^2} \right)^2 - 0.5}{\left( 1 + 0.001 (x^2 + y^2) \right)}^2$'''
 
-	@classmethod
-	def function(cls):
+	def function(self):
 		r"""Return benchmark evaluation function.
 
 		Returns:

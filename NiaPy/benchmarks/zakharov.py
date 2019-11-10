@@ -38,7 +38,7 @@ class Zakharov(Benchmark):
 				$-5 \leq x_i \leq 10$
 
 	Reference:
-	https://www.sfu.ca/~ssurjano/levy.html
+		https://www.sfu.ca/~ssurjano/levy.html
 	"""
 	Name = ['Zakharov']
 
@@ -63,8 +63,7 @@ class Zakharov(Benchmark):
 		"""
 		return r'''$f(\textbf{x}) = \sum_{i = 1}^D x_i^2 + \left( \sum_{i = 1}^D 0.5 i x_i \right)^2 + \left( \sum_{i = 1}^D 0.5 i x_i \right)^4$'''
 
-	@classmethod
-	def function(cls):
+	def function(self):
 		r"""Return benchmark evaluation function.
 
 		Returns:

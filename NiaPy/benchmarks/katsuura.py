@@ -38,7 +38,7 @@ class Katsuura(Benchmark):
 				$-100 \leq x_i \leq 100$
 
 	Reference:
-	http://www5.zzu.edu.cn/__local/A/69/BC/D3B5DFE94CD2574B38AD7CD1D12_C802DAFE_BC0C0.pdf
+		http://www5.zzu.edu.cn/__local/A/69/BC/D3B5DFE94CD2574B38AD7CD1D12_C802DAFE_BC0C0.pdf
 	"""
 	Name = ['Katsuura']
 
@@ -63,8 +63,7 @@ class Katsuura(Benchmark):
 		"""
 		return r'''$f(\textbf{x}) = \frac{10}{D^2} \prod_{i=1}^D \left( 1 + i \sum_{j=1}^{32} \frac{| 2^j x_i - round\left(2^j x_i \right) |}{2^j} \right)^\frac{10}{D^{1.2}} - \frac{10}{D^2}$'''
 
-	@classmethod
-	def function(cls):
+	def function(self):
 		r"""Return benchmark evaluation function.
 
 		Returns:

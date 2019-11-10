@@ -18,8 +18,6 @@ __all__ = [
 	'DynNpMultiStrategySelfAdaptiveDifferentialEvolution'
 ]
 
-# FIXME for new interface
-
 class SolutionjDE(Individual):
 	r"""Individual for jDE algorithm.
 

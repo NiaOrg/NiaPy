@@ -61,8 +61,7 @@ class Ridge(Benchmark):
         """
         return r'''$f(\mathbf{x}) = \sum_{i=1}^D (\sum_{j=1}^i x_j)^2 $'''
 
-    @classmethod
-    def function(cls):
+    def function(self):
         r"""Return benchmark evaluation function.
         
         Returns:

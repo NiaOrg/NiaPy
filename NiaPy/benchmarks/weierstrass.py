@@ -39,7 +39,7 @@ class Weierstrass(Benchmark):
 				$-100 \leq x_i \leq 100$
 
 	Reference:
-	http://www5.zzu.edu.cn/__local/A/69/BC/D3B5DFE94CD2574B38AD7CD1D12_C802DAFE_BC0C0.pdf
+		http://www5.zzu.edu.cn/__local/A/69/BC/D3B5DFE94CD2574B38AD7CD1D12_C802DAFE_BC0C0.pdf
 	"""
 	Name = ['Weierstrass']
 	a, b, k_max = 0.5, 3, 20
@@ -69,14 +69,14 @@ class Weierstrass(Benchmark):
 		"""
 		return r'''$$f(\textbf{x}) = \sum_{i=1}^D \left( \sum_{k=0}^{k_{max}} a^k \cos\left( 2 \pi b^k ( x_i + 0.5) \right) \right) - D \sum_{k=0}^{k_{max}} a^k \cos \left( 2 \pi b^k \cdot 0.5 \right)'''
 
-	@classmethod
-	def function(cls):
+	def function(self):
 		r"""Return benchmark evaluation function.
 
 		Returns:
 			Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function
 		"""
-		def f(D, sol, a=cls.a, b=cls.b, k_max=cls.k_max):
+		a, b, k_max = self.a, self.b, self.k_max
+		def f(D, sol, a=a, b=b, k_max=k_max):
 			r"""Fitness function.
 
 			Args:

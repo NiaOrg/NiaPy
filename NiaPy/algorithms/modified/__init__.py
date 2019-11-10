@@ -3,7 +3,10 @@
 """Implementation of modified nature-inspired algorithms."""
 
 from NiaPy.algorithms.modified.hba import HybridBatAlgorithm
-from NiaPy.algorithms.modified.jade import AdaptiveArchiveDifferentialEvolution
+from NiaPy.algorithms.modified.jade import (
+    AdaptiveArchiveDifferentialEvolution,
+    CrossRandCurr2Pbest
+)
 from NiaPy.algorithms.modified.hde import (
     DifferentialEvolutionMTS,
     DifferentialEvolutionMTSv1,
@@ -41,6 +44,7 @@ __all__ = [
     'DynNpMultiStrategySelfAdaptiveDifferentialEvolution',
     'AgingSelfAdaptiveDifferentialEvolution',
     'AdaptiveArchiveDifferentialEvolution',
+    'CrossRandCurr2Pbest',
     'StrategyAdaptationDifferentialEvolution',
     'StrategyAdaptationDifferentialEvolutionV1'
 ]

@@ -71,8 +71,7 @@ class HappyCat(Benchmark):
                 D \right|}^{1/4} + (0.5 \sum_{i = 1}^D {x_i}^2 +
                 \sum_{i = 1}^D x_i) / D + 0.5$'''
 
-    @classmethod
-    def function(cls):
+    def function(self):
         r"""Return benchmark evaluation function.
 
         Returns:

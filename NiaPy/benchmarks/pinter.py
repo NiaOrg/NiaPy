@@ -82,8 +82,7 @@ class Pinter(Benchmark):
                 A = (x_{i-1}\sin(x_i)+\sin(x_{i+1}))\quad \text{and} \quad
                 B = (x_{i-1}^2 - 2x_i + 3x_{i+1} - \cos(x_i) + 1)$'''
 
-    @classmethod
-    def function(cls):
+    def function(self):
         r"""Return benchmark evaluation function.
 
         Returns:

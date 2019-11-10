@@ -72,8 +72,7 @@ class Quintic(Benchmark):
         return r'''$f(\mathbf{x}) = \sum_{i=1}^D \left| x_i^5 - 3x_i^4 +
                 4x_i^3 + 2x_i^2 - 10x_i - 4\right|$'''
 
-    @classmethod
-    def function(cls):
+    def function(self):
         r"""Return benchmark evaluation function.
 
         Returns:

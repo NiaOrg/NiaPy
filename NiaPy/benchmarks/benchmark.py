@@ -34,6 +34,15 @@ class Benchmark:
 		"""
 		self.Lower, self.Upper = Lower, Upper
 
+	@staticmethod
+	def latex_code():
+		r"""Return the latex code of the problem.
+
+		Returns:
+			str: Latex code
+		"""
+		return r'''$f(x) = \infty$'''
+
 	def function(self):
 		r"""Get the optimization function.
 
@@ -52,6 +61,14 @@ class Benchmark:
 			"""
 			return inf
 		return fun
+
+	def __call__(self):
+		r"""Get the optimization function.
+
+		Returns:
+			Callable[[int, Union[list, numpy.ndarray]], float]: Fitness funciton.
+		"""
+		return self.function()
 
 	def plot2d(self):
 		r"""Plot 2D graph."""

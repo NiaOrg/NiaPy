@@ -70,8 +70,7 @@ class StyblinskiTang(Benchmark):
         return r'''$f(\mathbf{x}) = \frac{1}{2} \sum_{i=1}^D \left(
                 x_i^4 - 16x_i^2 + 5x_i \right) $'''
 
-    @classmethod
-    def function(cls):
+    def function(self):
         r"""Return benchmark evaluation function.
 
         Returns:

@@ -38,7 +38,7 @@ class BentCigar(Benchmark):
 				$-100 \leq x_i \leq 100$
 
 	Reference:
-	http://www5.zzu.edu.cn/__local/A/69/BC/D3B5DFE94CD2574B38AD7CD1D12_C802DAFE_BC0C0.pdf
+		http://www5.zzu.edu.cn/__local/A/69/BC/D3B5DFE94CD2574B38AD7CD1D12_C802DAFE_BC0C0.pdf
 	"""
 	Name = ['BentCigar']
 
@@ -63,8 +63,7 @@ class BentCigar(Benchmark):
 		"""
 		return r'''$f(\textbf{x}) = x_1^2 + 10^6 \sum_{i=2}^D x_i^2$'''
 
-	@classmethod
-	def function(cls):
+	def function(slef):
 		r"""Return benchmark evaluation function.
 
 		Returns:

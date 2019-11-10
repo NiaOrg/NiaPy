@@ -41,7 +41,7 @@ class Michalewichz(Benchmark):
 				$0 \leq x_i \leq \pi$
 
 	Reference URL:
-	https://www.sfu.ca/~ssurjano/michal.html
+		https://www.sfu.ca/~ssurjano/michal.html
 	"""
 	Name = ['Michalewichz']
 

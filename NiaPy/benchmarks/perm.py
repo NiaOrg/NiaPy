@@ -41,7 +41,7 @@ class Perm(Benchmark):
 				$-D \leq x_i \leq D$
 
 	Reference:
-	https://www.sfu.ca/~ssurjano/perm0db.html
+		https://www.sfu.ca/~ssurjano/perm0db.html
 	"""
 	Name = ['Perm']
 
@@ -67,13 +67,13 @@ class Perm(Benchmark):
 		"""
 		return r'''$f(\textbf{x}) = \sum_{i = 1}^D \left( \sum_{j = 1}^D (j - \beta) \left( x_j^i - \frac{1}{j^i} \right) \right)^2$'''
 
-	@classmethod
-	def function(cls):
+	def function(self):
 		r"""Return benchmark evaluation function.
 
 		Returns:
 			Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function
 		"""
+		beta = self.beta
 		def f(D, X):
 			r"""Fitness function.
 
@@ -87,7 +87,7 @@ class Perm(Benchmark):
 			v = .0
 			for i in range(1, D + 1):
 				vv = .0
-				for j in range(1, D + 1): vv += (j + cls.beta) * (X[j - 1] ** i - 1 / j ** i)
+				for j in range(1, D + 1): vv += (j + beta) * (X[j - 1] ** i - 1 / j ** i)
 				v += vv ** 2
 			return v
 		return f

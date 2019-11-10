@@ -38,7 +38,7 @@ class Trid(Benchmark):
 				$-D^2 \leq x_i \leq D^2$
 
 	Reference:
-	https://www.sfu.ca/~ssurjano/trid.html
+		https://www.sfu.ca/~ssurjano/trid.html
 	"""
 	Name = ['Trid']
 
@@ -63,8 +63,7 @@ class Trid(Benchmark):
 		"""
 		return r'''$f(\textbf{x}) = \sum_{i = 1}^D \left( x_i - 1 \right)^2 - \sum_{i = 2}^D x_i x_{i - 1}$'''
 
-	@classmethod
-	def function(cls):
+	def function(self):
 		r"""Return benchmark evaluation function.
 
 		Returns:

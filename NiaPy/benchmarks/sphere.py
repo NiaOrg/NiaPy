@@ -38,10 +38,10 @@ class Sphere(Benchmark):
 				$0 \leq x_i \leq 10$
 
 	Reference paper:
-	Jamil, M., and Yang, X. S. (2013).
-	A literature survey of benchmark functions for global optimisation problems.
-	International Journal of Mathematical Modelling and Numerical Optimisation,
-	4(2), 150-194.
+		Jamil, M., and Yang, X. S. (2013).
+		A literature survey of benchmark functions for global optimisation problems.
+		International Journal of Mathematical Modelling and Numerical Optimisation,
+		4(2), 150-194.
 	"""
 	Name = ['Sphere']
 
@@ -66,8 +66,7 @@ class Sphere(Benchmark):
 		"""
 		return r'''$f(\mathbf{x}) = \sum_{i=1}^D x_i^2$'''
 
-	@classmethod
-	def function(cls):
+	def function(self):
 		r"""Return benchmark evaluation function.
 
 		Returns:
@@ -118,7 +117,7 @@ class Sphere2(Benchmark):
 				$-1 \leq x_i \leq 1$
 
 	Reference URL:
-	https://www.sfu.ca/~ssurjano/sumpow.html
+		https://www.sfu.ca/~ssurjano/sumpow.html
 	"""
 	Name = ['Sphere2']
 
@@ -143,8 +142,7 @@ class Sphere2(Benchmark):
 		"""
 		return r'''$f(\textbf{x}) = \sum_{i = 1}^D | x_i |^{i + 1}$'''
 
-	@classmethod
-	def function(cls):
+	def function(self):
 		r"""Return benchmark evaluation function.
 
 		Returns:
@@ -195,7 +193,7 @@ class Sphere3(Benchmark):
 				$-65.536 \leq x_i \leq 65.536$
 
 	Reference URL:
-	https://www.sfu.ca/~ssurjano/rothyp.html
+		https://www.sfu.ca/~ssurjano/rothyp.html
 	"""
 	Name = ['Sphere3']
 
@@ -220,8 +218,7 @@ class Sphere3(Benchmark):
 		"""
 		return r'''$f(\textbf{x}) = \sum_{i = 1}^D \sum_{j = 1}^i x_j^2$'''
 
-	@classmethod
-	def function(cls):
+	def function(self):
 		r"""Return benchmark evaluation function.
 
 		Returns:

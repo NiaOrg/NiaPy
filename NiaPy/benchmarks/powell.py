@@ -38,7 +38,7 @@ class Powell(Benchmark):
 				$-4 \leq x_i \leq 5$
 
 	Reference:
-	https://www.sfu.ca/~ssurjano/levy.html
+		https://www.sfu.ca/~ssurjano/levy.html
 	"""
 	Name = ['Powell']
 
@@ -63,8 +63,7 @@ class Powell(Benchmark):
 		"""
 		return r'''$f(\textbf{x}) = \sum_{i = 1}^{D / 4} \left( (x_{4 i - 3} + 10 x_{4 i - 2})^2 + 5 (x_{4 i - 1} - x_{4 i})^2 + (x_{4 i - 2} - 2 x_{4 i - 1})^4 + 10 (x_{4 i - 3} - x_{4 i})^4 \right)$'''
 
-	@classmethod
-	def function(cls):
+	def function(self):
 		r"""Return benchmark evaluation function.
 
 		Returns:

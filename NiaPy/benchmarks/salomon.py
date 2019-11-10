@@ -72,8 +72,7 @@ class Salomon(Benchmark):
         return r'''$f(\mathbf{x}) = 1 - \cos\left(2\pi\sqrt{\sum_{i=1}^D x_i^2}
                 \right)+ 0.1 \sqrt{\sum_{i=1}^D x_i^2}$'''
 
-    @classmethod
-    def function(cls):
+    def function(self):
         r"""Return benchmark evaluation function.
 
         Returns:

@@ -67,8 +67,7 @@ class SchumerSteiglitz(Benchmark):
         """
         return r'''$f(\mathbf{x}) = \sum_{i=1}^D x_i^4$'''
 
-    @classmethod
-    def function(cls):
+    def function(self):
         r"""Return benchmark evaluation function.
 
         Returns:

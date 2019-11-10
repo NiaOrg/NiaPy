@@ -121,19 +121,6 @@ class GlowwormSwarmOptimization(Algorithm):
 		})
 		return d
 
-	def randMove(self, i):
-		r"""Move a glowworm to another glowworm.
-
-		Args:
-			i (int): Index of glowworm that is making a move.
-
-		Returns:
-			int: Index of glowworm to move to.
-		"""
-		j = i
-		while i == j: j = self.randint(self.n)
-		return j
-
 	def getNeighbors(self, i, r, GS, L):
 		r"""Get neighbours of glowworm.
 

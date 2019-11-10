@@ -39,7 +39,7 @@ class Infinity(Benchmark):
 				$-1 \leq x_i \leq 1$
 
 	Reference:
-	http://infinity77.net/global_optimization/test_functions_nd_I.html#go_benchmark.Infinity
+		http://infinity77.net/global_optimization/test_functions_nd_I.html#go_benchmark.Infinity
 	"""
 	Name = ['Infinity']
 
@@ -64,8 +64,7 @@ class Infinity(Benchmark):
 		"""
 		return r'''$f(\textbf{x}) = \sum_{i = 1}^D x_i^6 \left( \sin \left( \frac{1}{x_i} \right) + 2 \right)$'''
 
-	@classmethod
-	def function(cls):
+	def function(self):
 		r"""Return benchmark evaluation function.
 
 		Returns:

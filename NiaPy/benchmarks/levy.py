@@ -39,7 +39,7 @@ class Levy(Benchmark):
 				$-10 \leq x_i \leq 10$
 
 	Reference:
-	https://www.sfu.ca/~ssurjano/levy.html
+		https://www.sfu.ca/~ssurjano/levy.html
 	"""
 	Name = ['Levy']
 
@@ -64,8 +64,7 @@ class Levy(Benchmark):
 		"""
 		return r'''$f(\textbf{x}) = \sin^2 (\pi w_1) + \sum_{i = 1}^{D - 1} (w_i - 1)^2 \left( 1 + 10 \sin^2 (\pi w_i + 1) \right) + (w_d - 1)^2 (1 + \sin^2 (2 \pi w_d)) \\ w_i = 1 + \frac{x_i - 1}{4}$'''
 
-	@classmethod
-	def function(cls):
+	def function(self):
 		r"""Return benchmark evaluation function.
 
 		Returns:

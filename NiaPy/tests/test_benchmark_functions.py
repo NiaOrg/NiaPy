@@ -263,7 +263,6 @@ class TestBenchmarkFunctions(TestCase):
 
     def test_schaffern2(self):
         """Test the schaffer n. 2 benchmark."""
-
         fun = self.assertBounds('schaffer2', -100, 100)
         self.assertTrue(callable(fun))
         self.assertAlmostEqual(fun(self.D, self.array10), 0.02467, delta=1e-4)

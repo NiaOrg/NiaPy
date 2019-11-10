@@ -67,8 +67,7 @@ class ChungReynolds(Benchmark):
         """
         return r'''$f(\mathbf{x}) = \left(\sum_{i=1}^D x_i^2\right)^2$'''
 
-    @classmethod
-    def function(cls):
+    def function(self):
         r"""Return benchmark evaluation function.
 
         Returns:
