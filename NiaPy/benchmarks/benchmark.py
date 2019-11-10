@@ -21,7 +21,7 @@ class Benchmark:
 		Name (List[str]): List of names representiong benchmark names.
 		Lower (Union[int, float, list, numpy.ndarray]): Lower bounds.
 		Upper (Union[int, float, list, numpy.ndarray]): Upper bounds.
-   """
+	"""
 	Name = ['Benchmark', 'BBB']
 
 	def __init__(self, Lower, Upper, **kwargs):
@@ -100,7 +100,7 @@ class Benchmark:
 		X, Y = meshgrid(Xr, Yr)
 		Z = vectorize(self.__2dfun)(X, Y, func)
 		ax.plot_surface(X, Y, Z, rstride=8, cstride=8, alpha=0.3)
-		cset = ax.contourf(X, Y, Z, zdir='z', offset=-10, cmap=cm.coolwarm)
+		ax.contourf(X, Y, Z, zdir='z', offset=-10, cmap=cm.coolwarm)
 		ax.set_xlabel('X')
 		ax.set_ylabel('Y')
 		ax.set_zlabel('Z')

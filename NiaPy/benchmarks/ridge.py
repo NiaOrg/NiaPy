@@ -1,5 +1,8 @@
 # encoding=utf8
 # pylint: disable=anomalous-backslash-in-string
+
+"""Implementation of Ridge function."""
+
 import math
 from NiaPy.benchmarks.benchmark import Benchmark
 
@@ -63,7 +66,7 @@ class Ridge(Benchmark):
 
     def function(self):
         r"""Return benchmark evaluation function.
-        
+
         Returns:
             Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function
         """
@@ -73,9 +76,9 @@ class Ridge(Benchmark):
             Args:
                 D (int): Dimensionality of the problem
                 sol (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
-            
+
             Returns:
-                float: Fitness value for the solution.    
+                float: Fitness value for the solution.
             """
             val = 0.0
 

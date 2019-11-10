@@ -14,8 +14,6 @@ logger.setLevel('INFO')
 
 __all__ = ['ParticleSwarmAlgorithm', 'ParticleSwarmOptimization', 'OppositionVelocityClampingParticleSwarmOptimization', 'CenterParticleSwarmOptimization', 'MutatedParticleSwarmOptimization', 'MutatedCenterParticleSwarmOptimization', 'MutatedCenterUnifiedParticleSwarmOptimization', 'ComprehensiveLearningParticleSwarmOptimizer']
 
-# FIXME fix algorithms!!!
-
 class ParticleSwarmAlgorithm(Algorithm):
 	r"""Implementation of Particle Swarm Optimization algorithm.
 

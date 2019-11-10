@@ -31,8 +31,7 @@ class IndividualES(Individual):
 			* :func:`NiaPy.algorithms.Individual.__init__`
 		"""
 		Individual.__init__(self, **kwargs)
-		task, x, rho = kwargs.get('task', None), kwargs.get('x', None), kwargs.get('rho', 1)
-		self.rho = rho
+		self.rho = kwargs.get('rho', 1)
 
 class EvolutionStrategy1p1(Algorithm):
 	r"""Implementation of (1 + 1) evolution strategy algorithm. Uses just one individual.

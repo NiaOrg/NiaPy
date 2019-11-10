@@ -14,7 +14,7 @@ __all__ = ['TabuSearch']
 
 def TabuSearchF(task, SR=None, TL_size=25, rnd=rand):
 	if SR == None: SR = task.bRange
-	x, TL = rnd.uniform(task.Lower, task.Upper), list()
+	x = rnd.uniform(task.Lower, task.Upper)
 	x_f = task.eval(x)
 	# while not task.stopCondI():
 	# Generate neigours
