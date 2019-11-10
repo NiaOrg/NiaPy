@@ -253,6 +253,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/musawakiliML"><img src="https://avatars1.githubusercontent.com/u/19978292?v=4" width="100px;" alt="Musa Adamu Wakili"/><br /><sub><b>Musa Adamu Wakili</b></sub></a><br /><a href="#question-musawakiliML" title="Answering Questions">💬</a></td>
     <td align="center"><a href="http://www.uni-kassel.de/eecs/en/faculties/e2n/staff/florian-schaefer.html"><img src="https://avatars2.githubusercontent.com/u/23655422?v=4" width="100px;" alt="Florian Schaefer"/><br /><sub><b>Florian Schaefer</b></sub></a><br /><a href="#ideas-FlorianShepherd" title="Ideas, Planning, & Feedback">🤔</a></td>
   </tr>
+  <tr>
+    <td align="center"><a href="http://www.jhmenke.de"><img src="https://avatars0.githubusercontent.com/u/25080218?v=4" width="100px;" alt="Jan-Hendrik Menke"/><br /><sub><b>Jan-Hendrik Menke</b></sub></a><br /><a href="#question-jhmenke" title="Answering Questions">💬</a></td>
+  </tr>
 </table>
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
