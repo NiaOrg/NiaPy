@@ -164,6 +164,15 @@
       "contributions": [
         "ideas"
       ]
+    },
+    {
+      "login": "jhmenke",
+      "name": "Jan-Hendrik Menke",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/25080218?v=4",
+      "profile": "http://www.jhmenke.de",
+      "contributions": [
+        "question"
+      ]
     }
   ],
   "skipCi": "true",
