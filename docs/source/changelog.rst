@@ -1,6 +1,17 @@
 Changelog
 =========
 
+`2.0.0rc7 <https://github.com/NiaOrg/NiaPy/tree/2.0.0rc7>`__ (2019-11-11)
+-------------------------------------------------------------------------
+
+`Full
+Changelog <https://github.com/NiaOrg/NiaPy/compare/2.0.0rc6...2.0.0rc7>`__
+
+**Merged pull requests:**
+
+-  Fix bump2version `#234 <https://github.com/NiaOrg/NiaPy/pull/234>`__
+   (`GregaVrbancic <https://github.com/GregaVrbancic>`__)
+
 `2.0.0rc6 <https://github.com/NiaOrg/NiaPy/tree/2.0.0rc6>`__ (2019-11-11)
 -------------------------------------------------------------------------
 
