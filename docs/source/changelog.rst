@@ -1,6 +1,58 @@
 Changelog
 =========
 
+`2.0.0rc6 <https://github.com/NiaOrg/NiaPy/tree/2.0.0rc6>`__ (2019-11-11)
+-------------------------------------------------------------------------
+
+`Full
+Changelog <https://github.com/NiaOrg/NiaPy/compare/2.0.0rc5...2.0.0rc6>`__
+
+**Closed issues:**
+
+-  Confusion with GSO
+   `#221 <https://github.com/NiaOrg/NiaPy/issues/221>`__
+-  No module named 'NiaPy.algorithms'
+   `#219 <https://github.com/NiaOrg/NiaPy/issues/219>`__
+-  Documentation fix
+   `#211 <https://github.com/NiaOrg/NiaPy/issues/211>`__
+
+**Merged pull requests:**
+
+-  docs: add jhmenke as a contributor
+   `#232 <https://github.com/NiaOrg/NiaPy/pull/232>`__
+   (`allcontributors[bot] <https://github.com/apps/allcontributors>`__)
+-  replacing badges and mentions of appveyor and travis
+   `#231 <https://github.com/NiaOrg/NiaPy/pull/231>`__
+   (`GregaVrbancic <https://github.com/GregaVrbancic>`__)
+-  cleanup old ci configurations
+   `#230 <https://github.com/NiaOrg/NiaPy/pull/230>`__
+   (`GregaVrbancic <https://github.com/GregaVrbancic>`__)
+-  docs: add FlorianShepherd as a contributor
+   `#229 <https://github.com/NiaOrg/NiaPy/pull/229>`__
+   (`allcontributors[bot] <https://github.com/apps/allcontributors>`__)
+-  docs: add musawakiliML as a contributor
+   `#228 <https://github.com/NiaOrg/NiaPy/pull/228>`__
+   (`allcontributors[bot] <https://github.com/apps/allcontributors>`__)
+-  Automatic Release `#226 <https://github.com/NiaOrg/NiaPy/pull/226>`__
+   (`GregaVrbancic <https://github.com/GregaVrbancic>`__)
+-  Fixes comments in runner.py
+   `#225 <https://github.com/NiaOrg/NiaPy/pull/225>`__
+   (`GregaVrbancic <https://github.com/GregaVrbancic>`__)
+-  fix comment. replace mutation and crossover with uniform one.
+   `#223 <https://github.com/NiaOrg/NiaPy/pull/223>`__
+   (`GregaVrbancic <https://github.com/GregaVrbancic>`__)
+-  fix runner nRuns issue
+   `#222 <https://github.com/NiaOrg/NiaPy/pull/222>`__
+   (`GregaVrbancic <https://github.com/GregaVrbancic>`__)
+-  update run\_jde.py
+   `#217 <https://github.com/NiaOrg/NiaPy/pull/217>`__
+   (`rhododendrom <https://github.com/rhododendrom>`__)
+-  Added Cat Swarm Optimization algorithm
+   `#216 <https://github.com/NiaOrg/NiaPy/pull/216>`__
+   (`mihael-mika <https://github.com/mihael-mika>`__)
+-  Bea algorithm `#214 <https://github.com/NiaOrg/NiaPy/pull/214>`__
+   (`RokPot <https://github.com/RokPot>`__)
+
 `2.0.0rc5 <https://github.com/NiaOrg/NiaPy/tree/2.0.0rc5>`__ (2019-05-06)
 -------------------------------------------------------------------------
 
