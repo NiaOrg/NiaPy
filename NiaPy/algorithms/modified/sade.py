@@ -1,5 +1,4 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, logging-not-lazy, attribute-defined-outside-init, line-too-long, arguments-differ, singleton-comparison, bad-continuation, dangerous-default-value, consider-using-enumerate
 import logging
 
 # from numpy import random as rand, argmin, argmax, mean, asarray, cos

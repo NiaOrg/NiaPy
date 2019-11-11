@@ -1,4 +1,3 @@
-# pylint: disable=line-too-long
 from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
 from NiaPy.algorithms.basic import MonarchButterflyOptimization
 

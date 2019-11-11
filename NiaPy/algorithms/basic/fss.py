@@ -1,5 +1,4 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, arguments-differ, line-too-long, unused-argument, no-self-use, redefined-builtin, bad-continuation
 from numpy import nan, asarray, zeros, float, full
 
 from NiaPy.util.utility import objects2array

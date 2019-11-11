@@ -1,5 +1,4 @@
 """Implementation of basic nature-inspired algorithms."""
-# pylint: disable=line-too-long
 
 from NiaPy.algorithms.other.nmm import NelderMeadMethod
 from NiaPy.algorithms.other.hc import HillClimbAlgorithm

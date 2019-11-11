@@ -1,5 +1,4 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, line-too-long, bad-continuation, multiple-statements, singleton-comparison, unused-argument, no-self-use, trailing-comma-tuple, logging-not-lazy, no-else-return, unused-variable, no-member
 
 """Implementation of benchmarks utility function."""
 

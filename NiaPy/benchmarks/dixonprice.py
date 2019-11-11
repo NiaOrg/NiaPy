@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, line-too-long
+
 """Implementations of Dixon Price function."""
 
 from NiaPy.benchmarks.benchmark import Benchmark

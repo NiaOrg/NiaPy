@@ -1,5 +1,4 @@
 # encoding=utf8
-# pylint: disable=unused-argument
 
 """Implementation of Runner utility class."""
 

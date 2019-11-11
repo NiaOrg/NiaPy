@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements
+
 """Implementations of Infinity function."""
 
 from numpy import sin

@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements
+
 """Implementations of Michalewichz's function."""
 
 from numpy import sin, pi

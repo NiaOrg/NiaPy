@@ -1,5 +1,4 @@
 # encoding=utf8
-# pylint: disable=line-too-long, mixed-indentation, multiple-statements
 from unittest import TestCase, skip
 
 from numpy import random as rnd

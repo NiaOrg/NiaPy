@@ -1,5 +1,4 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, consider-using-enumerate, unused-argument, bad-continuation, line-too-long, redefined-builtin, arguments-differ, superfluous-parens
 import logging
 import operator as oper
 

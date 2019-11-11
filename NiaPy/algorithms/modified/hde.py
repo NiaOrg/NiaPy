@@ -1,6 +1,4 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, bad-continuation, line-too-long, multiple-statements, arguments-differ, too-many-ancestors
-
 import logging
 
 from numpy import argsort

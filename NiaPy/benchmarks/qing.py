@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=anomalous-backslash-in-string
+
 
 """Implementaiton of Qing funcion."""
 

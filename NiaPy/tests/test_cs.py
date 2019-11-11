@@ -1,5 +1,4 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, too-many-function-args
 from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
 from NiaPy.algorithms.basic import CuckooSearch
 

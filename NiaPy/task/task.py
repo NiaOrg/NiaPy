@@ -1,5 +1,4 @@
 # encoding=utf8
-# pylint: disable=line-too-long, unused-argument, no-self-use, logging-not-lazy, superfluous-parens, redefined-outer-name
 
 """The implementation of tasks."""
 

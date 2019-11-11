@@ -1,5 +1,4 @@
 """Implementation of basic nature-inspired algorithms."""
-# pylint: disable=line-too-long
 
 from NiaPy.algorithms.basic.ba import BatAlgorithm
 from NiaPy.algorithms.basic.fa import FireflyAlgorithm

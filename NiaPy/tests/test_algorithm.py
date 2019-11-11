@@ -1,5 +1,5 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, line-too-long, no-member, unused-variable, logging-not-lazy, multiple-statements, expression-not-assigned, unused-argument
+
 import logging
 from queue import Queue
 from threading import Thread

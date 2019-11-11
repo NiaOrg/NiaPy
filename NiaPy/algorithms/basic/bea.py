@@ -1,5 +1,4 @@
 # coding=utf-8
-# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, redefined-builtin, line-too-long, no-self-use, arguments-differ, no-else-return, bad-continuation, unused-variable
 import logging
 from numpy import array, argsort, where
 from NiaPy.algorithms.algorithm import Algorithm

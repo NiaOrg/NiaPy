@@ -1,5 +1,4 @@
 # encoding=utf8
-# pylint: disable=anomalous-backslash-in-string, mixed-indentation, multiple-statements, line-too-long
 
 """Implementation of Griewank funcion."""
 

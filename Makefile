@@ -60,17 +60,12 @@ $(METADATA): setup.py
 
 # CHECKS ######################################################################
 
-PYLINT := pipenv run pylint
 FLAKE8 := pipenv run flake8
 PYCODESTYLE := pipenv run pycodestyle
 PYDOCSTYLE := pipenv run pydocstyle
 
 .PHONY: check
 check: flake8 pycodestyle pydocstyle ## Run linters and static analysis
-
-.PHONY: pylint
-pylint: install
-	$(PYLINT) $(PACKAGES) $(CONFIG) --rcfile=.pylint.ini
 
 .PHONY: flake8
 flake8: install

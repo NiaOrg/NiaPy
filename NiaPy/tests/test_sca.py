@@ -1,5 +1,4 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements
 from NiaPy.algorithms.basic import SineCosineAlgorithm
 from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
 

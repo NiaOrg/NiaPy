@@ -1,5 +1,4 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, line-too-long, singleton-comparison, multiple-statements, attribute-defined-outside-init, no-self-use, logging-not-lazy, unused-variable, arguments-differ, bad-continuation, redefined-builtin, unused-argument, consider-using-enumerate, expression-not-assigned
 import logging
 from scipy.spatial.distance import euclidean
 from numpy import apply_along_axis, argsort, where, random as rand, asarray, delete, sqrt, sum, unique, append

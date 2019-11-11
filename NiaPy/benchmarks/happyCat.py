@@ -1,5 +1,4 @@
 # encoding=utf8
-# pylint: disable=anomalous-backslash-in-string
 
 """Impementation of Happy Cat funtion."""
 

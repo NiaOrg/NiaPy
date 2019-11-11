@@ -1,5 +1,4 @@
 # encoding=utf8
-# pylint: disable=no-else-return, no-member
 from NiaPy.algorithms.algorithm import Algorithm
 from NiaPy.algorithms import basic as basic_algorithms
 from NiaPy.algorithms import modified as modified_algorithms

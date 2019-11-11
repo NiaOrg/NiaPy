@@ -1,5 +1,4 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, unused-argument, arguments-differ, bad-continuation, singleton-comparison, no-self-use, unused-variable
 import logging
 from numpy import random as rand
 from NiaPy.algorithms.algorithm import Algorithm

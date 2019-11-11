@@ -1,5 +1,4 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, arguments-differ, unbalanced-tuple-unpacking, expression-not-assigned, line-too-long, unused-argument, no-self-use, too-many-lines, no-member, consider-using-enumerate, bad-continuation
 import logging
 
 import numpy as np

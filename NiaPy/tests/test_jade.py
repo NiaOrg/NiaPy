@@ -1,5 +1,4 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements
 from unittest import TestCase
 
 import numpy as np

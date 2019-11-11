@@ -1,5 +1,4 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, line-too-long
 import logging
 from unittest import TestCase
 

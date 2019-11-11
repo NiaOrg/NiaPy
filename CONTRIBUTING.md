@@ -20,7 +20,7 @@ If you are not so familiar with Git or/and GitHub, we suggest you take a look at
 
 - Fill in the [reqired template](.github/pull_request_template.md)
 - Document new code
-- Make sure all the code goes through Pylint without problems (run ```make check``` command)
+- Make sure all the code goes through Flake8 without problems (run ```make check``` command)
 - Make sure PR builds goes through
 
 
@@ -54,7 +54,7 @@ List of development dependencies:
 
 | Package                       | Version | Platform |
 | ----------------------------- |:-------:|:--------:|
-|pylint                         | Any     | Any      |
+|flake8                         | Any     | Any      |
 |pycodestyle                    | Any     | Any      |
 |pydocstyle                     | Any     | Any      |
 |pytest                         | ~=3.3   | Any      |
@@ -134,7 +134,7 @@ $ make docs
 Run linters and static analyzers:
 
 ```sh
-$ make pylint
+$ make flake8
 $ make pycodestyle
 $ make pydocstyle
 $ make check  # includes all checks

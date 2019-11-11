@@ -1,5 +1,4 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, line-too-long
 from NiaPy.algorithms.basic import ParticleSwarmOptimization, ParticleSwarmAlgorithm, OppositionVelocityClampingParticleSwarmOptimization, CenterParticleSwarmOptimization, MutatedParticleSwarmOptimization, MutatedCenterParticleSwarmOptimization, ComprehensiveLearningParticleSwarmOptimizer, MutatedCenterUnifiedParticleSwarmOptimization
 from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
 

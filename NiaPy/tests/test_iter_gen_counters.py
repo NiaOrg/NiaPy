@@ -1,5 +1,4 @@
 # encoding=utf8
-# pylint: disable=line-too-long
 
 from unittest import TestCase
 from NiaPy.algorithms.basic import BatAlgorithm, FireflyAlgorithm

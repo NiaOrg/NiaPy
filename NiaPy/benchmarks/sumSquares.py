@@ -1,6 +1,4 @@
 # encoding=utf8
-# pylint: disable=anomalous-backslash-in-string
-
 """Sum Squares benchmark."""
 
 import math
