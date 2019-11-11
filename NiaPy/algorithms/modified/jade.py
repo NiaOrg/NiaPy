@@ -37,16 +37,16 @@ def CrossRandCurr2Pbest(pop, ic, x_b, f, cr, p=0.2, arc=None, rnd=rand, *args):
 		numpy.ndarray: New position.
 	"""
 	# Get random index from current population
-	pb = [1 / (len(pop) - 1) if i != ic else 0 for i in range(len(pop))] if len(pop) > 1 else None
+	pb = [1.0 / (len(pop) - 1) if i != ic else 0 for i in range(len(pop))] if len(pop) > 1 else None
 	r = rnd.choice(len(pop), 1, replace=not len(pop) >= 3, p=pb)
 	# Get pbest index
 	index, pi = argsort(pop), int(len(pop) * p)
 	ppop = pop[index[:pi]]
-	pb = [1 / len(ppop) for i in range(pi)] if len(ppop) > 1 else None
+	pb = [1.0 / len(ppop) for i in range(pi)] if len(ppop) > 1 else None
 	rp = rnd.choice(pi, 1, replace=not len(ppop) >= 1, p=pb)
 	# Get union population and archive index
 	apop = concatenate((pop, arc)) if arc is not None else pop
-	pb = [1 / (len(apop) - 1) if i != ic else 0 for i in range(len(apop))] if len(apop) > 1 else None
+	pb = [1.0 / (len(apop) - 1) if i != ic else 0 for i in range(len(apop))] if len(apop) > 1 else None
 	ra = rnd.choice(len(apop), 1, replace=not len(apop) >= 1, p=pb)
 	# Generate new positoin
 	j = rnd.randint(len(pop[ic]))
