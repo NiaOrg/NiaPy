@@ -1,5 +1,29 @@
 # Changelog
 
+## [2.0.0rc9](https://github.com/NiaOrg/NiaPy/tree/2.0.0rc9) (2019-11-11)
+
+[Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2.0.0rc8...2.0.0rc9)
+
+**Merged pull requests:**
+
+- Fix publish workflow [\#236](https://github.com/NiaOrg/NiaPy/pull/236) ([GregaVrbancic](https://github.com/GregaVrbancic))
+
+## [2.0.0rc8](https://github.com/NiaOrg/NiaPy/tree/2.0.0rc8) (2019-11-11)
+
+[Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2.0.0rc7...2.0.0rc8)
+
+**Merged pull requests:**
+
+- Fix pypi README [\#235](https://github.com/NiaOrg/NiaPy/pull/235) ([GregaVrbancic](https://github.com/GregaVrbancic))
+
+## [2.0.0rc7](https://github.com/NiaOrg/NiaPy/tree/2.0.0rc7) (2019-11-11)
+
+[Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2.0.0rc6...2.0.0rc7)
+
+**Merged pull requests:**
+
+- Fix bump2version [\#234](https://github.com/NiaOrg/NiaPy/pull/234) ([GregaVrbancic](https://github.com/GregaVrbancic))
+
 ## [2.0.0rc6](https://github.com/NiaOrg/NiaPy/tree/2.0.0rc6) (2019-11-11)
 
 [Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2.0.0rc5...2.0.0rc6)
