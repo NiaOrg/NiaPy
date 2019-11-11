@@ -103,7 +103,6 @@ class AdaptiveBatAlgorithm(Algorithm):
 		"""
 		Sol, Fitness, d = Algorithm.initPopulation(self, task)
 		A, S, Q, v = fullArray(self.A, self.NP), np.full([self.NP, task.D], 0.0), np.full(self.NP, 0.0), np.full([self.NP, task.D], 0.0)
-		ib = np.argmin(Fitness)
 		d.update({'A': A, 'S': S, 'Q': Q, 'v': v})
 		return Sol, Fitness, d
 

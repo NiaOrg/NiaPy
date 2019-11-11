@@ -171,7 +171,7 @@ class BatAlgorithm(Algorithm):
 		"""
 		for i in range(self.NP):
 			Q[i] = self.Qmin + (self.Qmax - self.Qmin) * self.uniform(0, 1)
-			v[i] += (Sol[i] - best) * Q[i]
+			v[i] += (Sol[i] - xb) * Q[i]
 			S[i] = task.repair(Sol[i] + v[i])
 			if self.rand() > self.r: S[i] = self.localSearch(best=xb, task=task, i=i, Sol=Sol)
 			Fnew = task.eval(S[i])
