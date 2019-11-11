@@ -9,7 +9,7 @@ class ABATestCase(AlgorithmTestCase):
 		April 2019
 
 	Author:
-		Klemen Berkovič
+		Klemen Berkovic
 
 	See Also:
 		* :class:`NiaPy.algorithms.modified.AdaptiveBatAlgorithm`
