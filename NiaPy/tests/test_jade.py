@@ -18,7 +18,7 @@ class CrossRandCurr2pbestTestCase(TestCase):
 		return pop, np.asarray([self.evalFun(self.D, x) for x in pop])
 
 	def test_function_fine(self):
-		pop, fpop, apop, _ = *self.init_pop(), *self.init_pop()
+		pop, fpop, apop, _ = self.init_pop(), self.init_pop()
 		ib = np.argmin(fpop)
 		xb, fxb = pop[ib].copy(), fpop[ib]
 		for i, x in enumerate(pop):
