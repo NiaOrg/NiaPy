@@ -81,7 +81,6 @@ class Utility:
 
         """
 
-        print(benchmark)
         if issubclass(type(benchmark), benchmarks.Benchmark) or isinstance(benchmark, benchmarks.Benchmark):
             return benchmark
         elif benchmark in self.benchmark_classes.keys():
