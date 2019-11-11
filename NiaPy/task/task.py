@@ -397,7 +397,14 @@ class StoppingTask(CountingTask):
                     2. List of ints of function/fitness values.
 
         """
-        return self.n_evals, self.x_f_vals
+        r1, r2 = [], []
+        for i, v in enumerate(self.n_evals):
+            r1.append(v), r2.append(self.x_f_vals[i])
+            if i >= len(self.n_evals) - 1: break
+            diff = self.n_evals[i + 1] - v
+            if diff <= 1: continue
+            for j in range(diff - 1): r1.append(v + j + 1), r2.append(self.x_f_vals[i])
+        return r1, r2
 
     def plot(self):
         """Plot a simple convergence graph."""
