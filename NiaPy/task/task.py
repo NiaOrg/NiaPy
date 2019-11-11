@@ -408,7 +408,8 @@ class StoppingTask(CountingTask):
 
     def plot(self):
         """Plot a simple convergence graph."""
-        plt.plot(self.n_evals, self.x_f_vals)
+        fess, fitnesses = self.return_conv()
+        plt.plot(fess, fitnesses)
         plt.xlabel('nFes')
         plt.ylabel('Fitness')
         plt.title('Convergence graph')
