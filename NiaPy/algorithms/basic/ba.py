@@ -140,7 +140,7 @@ class BatAlgorithm(Algorithm):
 		"""
 		return task.repair(best + 0.001 * self.normal(0, 1, task.D))
 
-	def runIteration(self, task, Sol, Fitness, xb, fxb, S, Q, v, best, f_min, **dparams):
+	def runIteration(self, task, Sol, Fitness, xb, fxb, S, Q, v, **dparams):
 		r"""Core function of Bat Algorithm.
 
 		Parameters:
@@ -173,10 +173,10 @@ class BatAlgorithm(Algorithm):
 			Q[i] = self.Qmin + (self.Qmax - self.Qmin) * self.uniform(0, 1)
 			v[i] += (Sol[i] - best) * Q[i]
 			S[i] = task.repair(Sol[i] + v[i])
-			if self.rand() > self.r: S[i] = self.localSearch(best=best, task=task, i=i, Sol=Sol)
+			if self.rand() > self.r: S[i] = self.localSearch(best=xb, task=task, i=i, Sol=Sol)
 			Fnew = task.eval(S[i])
 			if (Fnew <= Fitness[i]) and (self.rand() < self.A): Sol[i], Fitness[i] = S[i], Fnew
 			if Fnew <= fxb: xb, fxb = S[i].copy(), Fnew
-		return Sol, Fitness, xb, fxb, {'S': S, 'Q': Q, 'v': v, 'best': best, 'f_min': f_min}
+		return Sol, Fitness, xb, fxb, {'S': S, 'Q': Q, 'v': v}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

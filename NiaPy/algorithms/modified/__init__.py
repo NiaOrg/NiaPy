@@ -27,6 +27,11 @@ from NiaPy.algorithms.modified.sade import (
     StrategyAdaptationDifferentialEvolution,
     StrategyAdaptationDifferentialEvolutionV1
 )
+from NiaPy.algorithms.modified.saba import (
+    AdaptiveBatAlgorithm,
+    SelfAdaptiveBatAlgorithm
+)
+from NiaPy.algorithms.modified.hsaba import HybridSelfAdaptiveBatAlgorithm
 __all__ = [
     'HybridBatAlgorithm',
     'DifferentialEvolutionMTS',
@@ -45,5 +50,8 @@ __all__ = [
     'AdaptiveArchiveDifferentialEvolution',
     'CrossRandCurr2Pbest',
     'StrategyAdaptationDifferentialEvolution',
-    'StrategyAdaptationDifferentialEvolutionV1'
+    'StrategyAdaptationDifferentialEvolutionV1',
+    'AdaptiveBatAlgorithm',
+    'SelfAdaptiveBatAlgorithm',
+    'HybridSelfAdaptiveBatAlgorithm'
 ]
