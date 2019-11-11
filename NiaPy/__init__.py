@@ -10,6 +10,6 @@ from NiaPy.runner import Runner
 
 __all__ = ["algorithms", "benchmarks", "util", "task", "Runner"]
 __project__ = "NiaPy"
-__version__ = "2.0.0rc7"
+__version__ = "2.0.0rc8"
 
 VERSION = "{0} v{1}".format(__project__, __version__)
