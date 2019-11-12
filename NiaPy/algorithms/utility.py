@@ -93,7 +93,7 @@ class AlgorithmUtility:
             Algorithm: Instance of an Algorithm.
         """
 
-        if issubclass(type(algorithm), Algorithm):
+        if issubclass(type(algorithm), Algorithm) or isinstance(algorithm, Algorithm):
             return algorithm
         elif algorithm in self.algorithm_classes:
             return self.algorithm_classes[algorithm]()
