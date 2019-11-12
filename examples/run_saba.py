@@ -7,12 +7,12 @@ sys.path.append('../')
 
 from NiaPy.algorithms.modified import SelfAdaptiveBatAlgorithm
 from NiaPy.task import StoppingTask
-from NiaPy.benchmarks import Sphere
+from NiaPy.benchmarks import Griewank
 
 # we will run Bat Algorithm for 5 independent runs
 algo = SelfAdaptiveBatAlgorithm()
 for i in range(5):
-    task = StoppingTask(D=10, nGEN=1000, benchmark=Sphere())
+    task = StoppingTask(D=10, nGEN=10000, benchmark=Griewank(Lower=-600, Upper=600))
     best = algo.run(task)
     print('%s -> %s' % (best[0], best[1]))
 print(algo.getParameters())

@@ -248,7 +248,7 @@ class SelfAdaptiveBatAlgorithm(AdaptiveBatAlgorithm):
 		})
 		return d
 
-	def setParameters(self, A_l=0.001, A_u=0.7, r_l=0.1, r_u=0.09, tao_1=0.3, tao_2=0.5, **ukwargs):
+	def setParameters(self, A_l=0.9, A_u=1.0, r_l=0.001, r_u=0.1, tao_1=0.1, tao_2=0.1, **ukwargs):
 		r"""Set core parameters of HybridBatAlgorithm algorithm.
 
 		Arguments:
@@ -275,7 +275,6 @@ class SelfAdaptiveBatAlgorithm(AdaptiveBatAlgorithm):
 			* :func:`NiaPy.algorithms.modified.AdaptiveBatAlgorithm.getParameters`
 		"""
 		d = AdaptiveBatAlgorithm.getParameters(self)
-		d.pop('A', None), d.pop('r', None)
 		d.update({
 			'A_l': self.A_l,
 			'A_u': self.A_u,
@@ -288,8 +287,7 @@ class SelfAdaptiveBatAlgorithm(AdaptiveBatAlgorithm):
 
 	def initPopulation(self, task):
 		Sol, Fitness, d = AdaptiveBatAlgorithm.initPopulation(self, task)
-		A, r = self.A_l + self.rand(self.NP) * (self.A_u - self.A_l), self.r_l + self.rand(self.NP) * (self.r_u - self.r_l)
-		d.pop('A', None)
+		A, r = np.full(self.NP, self.A), np.full(self.NP, self.r)
 		d.update({'A': A, 'r': r})
 		return Sol, Fitness, d
 

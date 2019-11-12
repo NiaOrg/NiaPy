@@ -8,12 +8,12 @@ sys.path.append('../')
 import random
 from NiaPy.algorithms.basic import ParticleSwarmAlgorithm
 from NiaPy.task import StoppingTask
-from NiaPy.benchmarks import Sphere
+from NiaPy.benchmarks import Griewank
 
 # we will run ParticleSwarmAlgorithm for 5 independent runs
-algo = ParticleSwarmAlgorithm(NP=75, C1=0.53, C2=1.4)
+algo = ParticleSwarmAlgorithm(NP=100, vMin=-4.0, vMax=4.0)
 for i in range(5):
-	task = StoppingTask(D=10, nFES=20000, benchmark=Sphere())
+	task = StoppingTask(D=10, nFES=10000, benchmark=Griewank(Lower=-600, Upper=600))
 	best = algo.run(task=task)
 	print('%s -> %f' % (best[0], best[1]))
 print(algo.getParameters())

@@ -2,7 +2,7 @@
 import logging
 
 from NiaPy.algorithms.modified import SelfAdaptiveBatAlgorithm
-from NiaPy.algorithms.basic.de import CrossRand2
+from NiaPy.algorithms.basic.de import CrossBest1
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.modified')
@@ -68,7 +68,7 @@ class HybridSelfAdaptiveBatAlgorithm(SelfAdaptiveBatAlgorithm):
 		})
 		return d
 
-	def setParameters(self, F=0.9, CR=0.85, CrossMutt=CrossRand2, **ukwargs):
+	def setParameters(self, F=0.9, CR=0.85, CrossMutt=CrossBest1, **ukwargs):
 		r"""Set core parameters of HybridBatAlgorithm algorithm.
 
 		Arguments:
