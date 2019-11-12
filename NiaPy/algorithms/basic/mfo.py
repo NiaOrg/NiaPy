@@ -1,5 +1,4 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, line-too-long, arguments-differ, bad-continuation
 import logging
 
 from numpy import apply_along_axis, zeros, argsort, concatenate, array, exp, cos, pi
@@ -72,7 +71,6 @@ class MothFlameOptimizer(Algorithm):
 			* :func:`NiaPy.algorithms.algorithm.Algorithm.setParameters`
 		"""
 		Algorithm.setParameters(self, NP=NP, **ukwargs)
-		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def initPopulation(self, task):
 		r"""Initialize starting population.
@@ -108,24 +106,26 @@ class MothFlameOptimizer(Algorithm):
 		Args:
 			task (Task): Optimization task.
 			moth_pos (numpy.ndarray): Current population.
-			moth_fitness (numpy.ndarray[float]): Current population fitness/function values.
+			moth_fitness (numpy.ndarray): Current population fitness/function values.
 			xb (numpy.ndarray): Current population best individual.
 			fxb (float): Current best individual
 			best_flames (numpy.ndarray): Best found individuals
-			best_flame_fitness (numpy.ndarray[float]): Best found individuals fitness/function values
+			best_flame_fitness (numpy.ndarray): Best found individuals fitness/function values
 			previous_population (numpy.ndarray): Previous population
-			previous_fitness (numpy.ndarray[float]): Previous population fitness/function values
+			previous_fitness (numpy.ndarray): Previous population fitness/function values
 			**dparams (Dict[str, Any]): Additional parameters
 
 		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+			Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, float, Dict[str, Any]]:
 				1. New population.
 				2. New population fitness/function values.
-				3. Additional arguments:
+				3. New global best solution
+				4. New global best fitness/objective value
+				5. Additional arguments:
 					* best_flames (numpy.ndarray): Best individuals.
-					* best_flame_fitness (numpy.ndarray[float]): Best individuals fitness/function values.
+					* best_flame_fitness (numpy.ndarray): Best individuals fitness/function values.
 					* previous_population (numpy.ndarray): Previous population.
-					* previous_fitness (numpy.ndarray[float]): Previous population fitness/function values.
+					* previous_fitness (numpy.ndarray): Previous population fitness/function values.
 		"""
 		# Previous positions
 		previous_population, previous_fitness = moth_pos, moth_fitness
@@ -141,11 +141,12 @@ class MothFlameOptimizer(Algorithm):
 				else: moth_pos[i, j] = distance_to_flame * exp(b * t) * cos(2 * pi * t) + sorted_population[flame_no, j]
 		moth_pos = apply_along_axis(task.repair, 1, moth_pos, self.Rand)
 		moth_fitness = apply_along_axis(task.eval, 1, moth_pos)
+		xb, fxb = self.getBest(moth_pos, moth_fitness, xb, fxb)
 		double_population, double_fitness = concatenate((previous_population, best_flames), axis=0), concatenate((previous_fitness, best_flame_fitness), axis=0)
 		indexes = argsort(double_fitness)
 		double_sorted_fitness, double_sorted_population = double_fitness[indexes], double_population[indexes]
 		for newIdx in range(2 * self.NP): double_sorted_population[newIdx] = array(double_population[indexes[newIdx], :])
 		best_flame_fitness, best_flames = double_sorted_fitness[:self.NP], double_sorted_population[:self.NP]
-		return moth_pos, moth_fitness, {'best_flames': best_flames, 'best_flame_fitness': best_flame_fitness, 'previous_population': previous_population, 'previous_fitness': previous_fitness}
+		return moth_pos, moth_fitness, xb, fxb, {'best_flames': best_flames, 'best_flame_fitness': best_flame_fitness, 'previous_population': previous_population, 'previous_fitness': previous_fitness}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

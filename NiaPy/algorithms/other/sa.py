@@ -1,5 +1,4 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, unused-argument, arguments-differ, bad-continuation
 import logging
 
 from numpy import exp
@@ -115,19 +114,67 @@ class SimulatedAnnealing(Algorithm):
 		ukwargs.pop('NP', None)
 		Algorithm.setParameters(self, NP=1, **ukwargs)
 		self.delta, self.T, self.deltaT, self.cool, self.epsilon = delta, T, deltaT, coolingMethod, epsilon
-		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
+
+	def getParameters(self):
+		r"""Get algorithms parametes values.
+
+		Returns:
+			Dict[str, Any]:
+
+		See Also
+			* :func:`NiaPy.algorithms.Algorithm.getParameters`
+		"""
+		d = Algorithm.getParameters(self)
+		d.update({
+			'delta': self.delta,
+			'deltaT': self.deltaT,
+			'T': self.T,
+			'epsilon': self.epsilon
+		})
+		return d
 
 	def initPopulation(self, task):
+		r"""Initialize the starting population.
+
+		Args:
+			task (Task): Optimization task.
+
+		Returns:
+			Tuple[numpy.ndarray, float, dict]:
+			1. Initial solution
+			2. Initial solutions fitness/objective value
+			3. Additional arguments
+		"""
 		x = task.Lower + task.bcRange() * self.rand(task.D)
 		curT, xfit = self.T, task.eval(x)
 		return x, xfit, {'curT': curT}
 
 	def runIteration(self, task, x, xfit, xb, fxb, curT, **dparams):
+		r"""Core funciton of the algorithm.
+
+		Args:
+			task (Task):
+			x (numpy.ndarray):
+			xfit (float):
+			xb (numpy.ndarray):
+			fxb (float):
+			curT (float):
+			**dparams (dict): Additional arguments.
+
+		Returns:
+			Tuple[numpy.ndarray, float, numpy.ndarray, float, dict]:
+			1. New solution
+			2. New solutions fitness/objective value
+			3. New global best solution
+			4. New global best solutions fitness/objective value
+			5. Additional arguments
+		"""
 		c = task.repair(x - self.delta / 2 + self.rand(task.D) * self.delta, rnd=self.Rand)
 		cfit = task.eval(c)
 		deltaFit, r = cfit - xfit, self.rand()
 		if deltaFit < 0 or r < exp(deltaFit / curT): x, xfit = c, cfit
 		curT = self.cool(curT, self.T, deltaT=self.deltaT, nFES=task.nFES)
-		return x, xfit, {'curT': curT}
+		xb, fxb = self.getBest(x, xfit, xb, fxb)
+		return x, xfit, xb, fxb, {'curT': curT}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

@@ -1,5 +1,4 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, line-too-long, singleton-comparison, multiple-statements, attribute-defined-outside-init, no-self-use, logging-not-lazy, unused-variable, arguments-differ, bad-continuation
 import logging
 from numpy import apply_along_axis, argsort
 from scipy.stats import levy
@@ -41,6 +40,15 @@ class CuckooSearch(Algorithm):
 	Name = ['CuckooSearch', 'CS']
 
 	@staticmethod
+	def algorithmInfo():
+		r"""Get algorithms information.
+
+		Returns:
+			str: Algorithm information.
+		"""
+		return r"""Yang, Xin-She, and Suash Deb. "Cuckoo search via Lévy flights." Nature & Biologically Inspired Computing, 2009. NaBIC 2009. World Congress on. IEEE, 2009."""
+
+	@staticmethod
 	def typeParameters():
 		r"""TODO.
 
@@ -71,7 +79,16 @@ class CuckooSearch(Algorithm):
 		ukwargs.pop('NP', None)
 		Algorithm.setParameters(self, NP=N, **ukwargs)
 		self.pa, self.alpha = pa, alpha
-		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
+
+	def getParameters(self):
+		d = Algorithm.getParameters(self)
+		d.pop('NP', None)
+		d.update({
+			'N': self.NP,
+			'pa': self.pa,
+			'alpha': self.alpha
+		})
+		return d
 
 	def emptyNests(self, pop, fpop, pa_v, task):
 		r"""Empty ensts.
@@ -118,17 +135,19 @@ class CuckooSearch(Algorithm):
 		Args:
 			task (Task): Optimization task.
 			pop (numpy.ndarray): Current population.
-			fpop (numpy.ndarray[float]): Current populations fitness/function values.
+			fpop (numpy.ndarray): Current populations fitness/function values.
 			xb (numpy.ndarray): Global best individual.
 			fxb (float): Global best individual function/fitness values.
 			pa_v (float): TODO
 			**dparams (Dict[str, Any]): Additional arguments.
 
 		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+			Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, float, Dict[str, Any]]:
 				1. Initialized population.
 				2. Initialized populations fitness/function values.
-				3. Additional arguments:
+				3. New global best solution
+				4. New global best solutions fitness/objective value
+				5. Additional arguments:
 					* pa_v (float): TODO
 		"""
 		i = self.randint(self.NP)
@@ -138,6 +157,7 @@ class CuckooSearch(Algorithm):
 		while i == j: j = self.randint(self.NP)
 		if Nn_f <= fpop[j]: pop[j], fpop[j] = Nn, Nn_f
 		pop, fpop = self.emptyNests(pop, fpop, pa_v, task)
-		return pop, fpop, {'pa_v': pa_v}
+		xb, fxb = self.getBest(pop, fpop, xb, fxb)
+		return pop, fpop, xb, fxb, {'pa_v': pa_v}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

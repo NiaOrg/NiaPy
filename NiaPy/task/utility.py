@@ -1,3 +1,5 @@
+# encoding=utf8
+
 """Implementation of benchmarks utility function."""
 
 from NiaPy import benchmarks
@@ -79,7 +81,7 @@ class Utility:
 
         """
 
-        if issubclass(type(benchmark), benchmarks.Benchmark):
+        if issubclass(type(benchmark), benchmarks.Benchmark) or isinstance(benchmark, benchmarks.Benchmark):
             return benchmark
         elif benchmark in self.benchmark_classes.keys():
             return self.benchmark_classes[benchmark]()

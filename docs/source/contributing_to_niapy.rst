@@ -39,7 +39,7 @@ Pull requests (PR)
 
 - Fill in the reqired template
 - Document new code
-- Make sure all the code goes through Pylint without problems (run ``make check`` command)
+- Make sure all the code goes through Flake8 without problems (run ``make check`` command)
 - Run tests (run ``make test`` command)
 - Make sure PR builds goes through
 - Follow discussion in opened PR for any possible needed changes and/or fixes

@@ -67,7 +67,6 @@ PYDOCSTYLE := pipenv run pydocstyle
 .PHONY: check
 check: flake8 pycodestyle pydocstyle ## Run linters and static analysis
 
-
 .PHONY: flake8
 flake8: install
 	$(FLAKE8) $(PACKAGES) $(CONFIG)

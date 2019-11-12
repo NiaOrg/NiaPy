@@ -1,3 +1,5 @@
+# encoding=utf8
+
 """Implementation of Runner utility class."""
 
 import datetime
@@ -14,7 +16,7 @@ from numpy import (
     std
 )
 
-
+from NiaPy.task import StoppingTask, OptimizationType
 from NiaPy.algorithms import AlgorithmUtility
 
 logging.basicConfig()
@@ -72,8 +74,6 @@ class Runner:
                 Task: Optimization task to use.
 
         """
-
-        from NiaPy.task import StoppingTask, OptimizationType
         return StoppingTask(D=self.D, nFES=self.nFES, optType=OptimizationType.MINIMIZATION, benchmark=name)
 
     @classmethod
@@ -266,3 +266,4 @@ class Runner:
             self.__export_to_latex()
         else:
             raise TypeError("Passed export type is not supported!")
+        return self.results

@@ -1,14 +1,16 @@
 # encoding=utf8
 
 import logging
+from queue import Queue
+from threading import Thread
 from unittest import TestCase
 
 from numpy import random as rnd, full, inf, array_equal, apply_along_axis, asarray
 
 from NiaPy.util import objects2array
-from NiaPy.task import Task, StoppingTask
+from NiaPy.task.task import Task, StoppingTask
 from NiaPy.algorithms.algorithm import Individual, Algorithm
-from NiaPy.benchmarks import Benchmark
+from NiaPy.benchmarks import Benchmark, Sphere
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.test')
@@ -29,13 +31,8 @@ class MyBenchmark(Benchmark):
 	def __init__(self):
 		Benchmark.__init__(self, -5.12, 5.12)
 
-	@classmethod
-	def function(cls):
-		def evaluate(D, sol):
-			val = 0.0
-			for i in range(D): val = val + sol[i] * sol[i]
-			return val
-		return evaluate
+	def function(self):
+		return Sphere(self.Lower, self.Upper).function()
 
 class IndividualTestCase(TestCase):
 	r"""Test case for testing Individual class.
@@ -137,6 +134,21 @@ class AlgorithBaseTestCase(TestCase):
 		self.rnd = rnd.RandomState(self.seed)
 		self.a = Algorithm(seed=self.seed)
 
+	def test_algorithm_info_fine(self):
+		r"""Check if method works fine."""
+		i = Algorithm.algorithmInfo()
+		self.assertIsNotNone(i)
+
+	def test_algorithm_getParameters_fine(self):
+		r"""Check if method works fine."""
+		algo = Algorithm()
+		params = algo.getParameters()
+		self.assertIsNotNone(params)
+
+	def test_type_parameters_fine(self):
+		d = Algorithm.typeParameters()
+		self.assertIsNotNone(d)
+
 	def test_init_population_numpy_fine(self):
 		r"""Test if custome generation initialization works ok."""
 		a = Algorithm(NP=10, InitPopFunc=init_pop_numpy)
@@ -222,6 +234,14 @@ class TestingTask(StoppingTask, TestCase):
 	See Also:
 		* :class:`NiaPy.util.StoppingTask`
 	"""
+	def names(self):
+		r"""Get names of benchmark.
+
+		Returns:
+			 List[str]: List of task names.
+		"""
+		return self.benchmark.Name
+
 	def eval(self, A):
 		r"""Check if is algorithm trying to evaluate solution out of bounds."""
 		self.assertTrue(self.isFeasible(A), 'Solution %s is not in feasible space!!!' % A)
@@ -237,7 +257,7 @@ class AlgorithmTestCase(TestCase):
 		Klemen Berkovič
 
 	Attributes:
-		D (int): Dimension of problem.
+		D (List[int]): Dimension of problem.
 		nGEN (int): Number of generations/iterations.
 		nFES (int): Number of function evaluations.
 		seed (int): Starting seed of random generator.
@@ -246,13 +266,41 @@ class AlgorithmTestCase(TestCase):
 		* :class:`NiaPy.algorithms.Algorithm`
 	"""
 	def setUp(self):
-		self.D, self.nGEN, self.nFES, self.seed = 40, 1000, 1000, 1
+		r"""Setup basic parameters of the algorithm run."""
+		self.D, self.nGEN, self.nFES, self.seed = [10, 40], 1000, 1000, 1
+		self.algo = Algorithm
 
-	def setUpTasks(self, bech='griewank', nFES=None, nGEN=None):
-		taskOne, taskTwo = TestingTask(D=self.D, nFES=self.nFES if nFES is None else nFES, nGEN=self.nGEN if nGEN is None else nGEN, benchmark=bech), TestingTask(D=self.D, nFES=self.nFES, nGEN=self.nGEN, benchmark=bech)
-		return taskOne, taskTwo
+	def test_algorithm_type_parameters(self):
+		r"""Test if type parametes for algorithm work fine."""
+		tparams = self.algo.typeParameters()
+		self.assertIsNotNone(tparams)
 
-	def algorithm_run_test(self, a, b, benc='griewank', nFES=None, nGEN=None):
+	def test_algorithm_info_fine(self):
+		r"""Test if algorithm info works fine."""
+		info = self.algo.algorithmInfo()
+		self.assertIsNotNone(info)
+
+	def test_algorithm_get_parameters_fine(self):
+		r"""Test if algorithms parameters values are fine."""
+		params = self.algo().getParameters()
+		self.assertIsNotNone(params)
+
+	def setUpTasks(self, D, bech='griewank', nFES=None, nGEN=None):
+		r"""Setup optimization tasks for testing.
+
+		Args:
+			D (int): Dimension of the problem.
+			bech (Optional[str, class]): Optimization problem to use.
+			nFES (int): Number of fitness/objective function evaluations.
+			nGEN (int): Number of generations.
+
+		Returns:
+			Tuple[Taks, Taks]: Two testing tasks.
+		"""
+		task1, task2 = TestingTask(D=D, nFES=self.nFES if nFES is None else nFES, nGEN=self.nGEN if nGEN is None else nGEN, benchmark=bech), TestingTask(D=D, nFES=self.nFES if nFES is None else nFES, nGEN=self.nGEN if nGEN is None else nGEN, benchmark=bech)
+		return task1, task2
+
+	def test_algorithm_run(self, a=None, b=None, benc='griewank', nFES=None, nGEN=None):
 		r"""Run main testing of algorithm.
 
 		Args:
@@ -262,18 +310,22 @@ class AlgorithmTestCase(TestCase):
 			nFES (int): Number of function evaluations.
 			nGEN (int): Number of algorithm generations/iterations.
 		"""
-		tOne, tTwo = self.setUpTasks(benc, nFES=nFES)
-		x = a.run(tOne)
-		self.assertTrue(x)
-		logger.info('%s -> %s' % (x[0], x[1]))
-		y = b.run(tTwo)
-		self.assertTrue(y)
-		logger.info('%s -> %s' % (y[0], y[1]))
-		self.assertTrue(array_equal(x[0], y[0]), 'Results can not be reproduced, check usages of random number generator')
-		self.assertEqual(x[1], y[1], 'Results can not be reproduced or bad function value')
-		self.assertTrue(self.nFES >= tOne.Evals)
-		self.assertEqual(tOne.Evals, tTwo.Evals)
-		self.assertTrue(self.nGEN >= tOne.Iters)
-		self.assertEqual(tOne.Iters, tTwo.Iters)
+		if a is None or b is None: return
+		for D in self.D:
+			task1, task2 = self.setUpTasks(D, benc, nFES=nFES)
+			q = Queue(maxsize=2)
+			thread1, thread2 = Thread(target=lambda a, t, q: q.put(a.run(t)), args=(a, task1, q)), Thread(target=lambda a, t, q: q.put(a.run(t)), args=(b, task2, q))
+			thread1.start(), thread2.start()
+			thread1.join(), thread2.join()
+			x, y = q.get(block=True), q.get(block=True)
+			self.assertFalse(a.bad_run() or b.bad_run(), "Something went wrong at runtime of the algorithm --> %s" % a.exception)
+			self.assertIsNotNone(x), self.assertIsNotNone(y)
+			logger.info('%s\n%s -> %s\n%s -> %s' % (task1.names(), x[0], x[1], y[0], y[1]))
+			self.assertAlmostEqual(task1.benchmark.function()(D, x[0].x if isinstance(x[0], Individual) else x[0]), x[1], msg='Best individual fitness values does not mach the given one')
+			self.assertAlmostEqual(task1.x_f, x[1], msg='While running the algorithm, algorithm got better individual with fitness: %s' % task1.x_f)
+			self.assertTrue(array_equal(x[0], y[0]), 'Results can not be reproduced, check usages of random number generator')
+			self.assertAlmostEqual(x[1], y[1], msg='Results can not be reproduced or bad function value')
+			self.assertTrue(self.nFES >= task1.Evals), self.assertEqual(task1.Evals, task2.Evals)
+			self.assertTrue(self.nGEN >= task1.Iters), self.assertEqual(task1.Iters, task2.Iters)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

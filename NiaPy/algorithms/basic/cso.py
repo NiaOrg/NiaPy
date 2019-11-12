@@ -1,9 +1,8 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, line-too-long, arguments-differ, bad-continuation
 import logging
+import math
 
 import numpy as np
-import math
 from NiaPy.algorithms.algorithm import Algorithm
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.basic')
@@ -56,7 +55,6 @@ class CatSwarmOptimization(Algorithm):
         """
         Algorithm.setParameters(self, NP=NP, **ukwargs)
         self.MR, self.C1, self.SMP, self.SPC, self.CDC, self.SRD, self.vMax = MR, C1, SMP, SPC, CDC, SRD, vMax
-        if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
     def initPopulation(self, task):
         r"""Initialize population.
@@ -203,11 +201,13 @@ class CatSwarmOptimization(Algorithm):
             **dparams (Dict[str, Any]): Additional function arguments.
 
         Returns:
-            Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
-                1. New population
-                2. New population fitness/function values
-                3. Additional arguments:
-                    * Dictionary of modes (seek or trace) and velocities for each cat
+            Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, float, Dict[str, Any]]:
+                1. New population.
+                2. New population fitness/function values.
+                3. New global best solution.
+                4. New global best solutions fitness/objective value.
+                5. Additional arguments:
+                    * Dictionary of modes (seek or trace) and velocities for each cat.
         """
         pop_copies = pop.copy()
         for k in range(len(pop_copies)):
@@ -215,6 +215,8 @@ class CatSwarmOptimization(Algorithm):
                 pop_copies[k], fpop[k], pop_copies[:], fpop[:] = self.seekingMode(task, pop_copies[k], fpop[k], pop_copies, fpop, fxb)
             else:  # if cat in tracing mode
                 pop_copies[k], fpop[k], velocities[k] = self.tracingMode(task, pop_copies[k], velocities[k], xb)
-        return pop_copies, fpop, {'velocities': velocities, 'modes': self.randomSeekTrace()}
+        ib = np.argmin(fpop)
+        if fpop[ib] < fxb: xb, fxb = pop_copies[ib].copy(), fpop[ib]
+        return pop_copies, fpop, xb, fxb, {'velocities': velocities, 'modes': self.randomSeekTrace()}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

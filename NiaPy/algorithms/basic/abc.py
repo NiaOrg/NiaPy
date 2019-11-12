@@ -1,5 +1,4 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, line-too-long, multiple-statements, attribute-defined-outside-init, logging-not-lazy, arguments-differ, bad-continuation
 import copy
 import logging
 
@@ -90,7 +89,6 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 		"""
 		Algorithm.setParameters(self, NP=NP, InitPopFunc=defaultIndividualInit, itype=SolutionABC, **ukwargs)
 		self.FoodNumber, self.Limit = int(self.NP / 2), Limit
-		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def CalculateProbs(self, Foods, Probs):
 		r"""Calculate the probes.
@@ -142,10 +140,12 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 			dparams (Dict[str, Any]): Additional parameters
 
 		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+			Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, float, Dict[str, Any]]:
 				1. New population
 				2. New population fitness/function values
-				3. Additional arguments:
+				3. New global best solution
+				4. New global best fitness/objecive value
+				5. Additional arguments:
 					* Probes (numpy.ndarray): TODO
 					* Trial (numpy.ndarray): TODO
 		"""
@@ -155,7 +155,9 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 			neighbor = int(self.FoodNumber * self.rand())
 			newSolution.x[param2change] = Foods[i].x[param2change] + (-1 + 2 * self.rand()) * (Foods[i].x[param2change] - Foods[neighbor].x[param2change])
 			newSolution.evaluate(task, rnd=self.Rand)
-			if newSolution.f < Foods[i].f: Foods[i], Trial[i] = newSolution, 0
+			if newSolution.f < Foods[i].f:
+				Foods[i], Trial[i] = newSolution, 0
+				if newSolution.f < fxb: xb, fxb = newSolution.x.copy(), newSolution.f
 			else: Trial[i] += 1
 		Probs, t, s = self.CalculateProbs(Foods, Probs), 0, 0
 		while t < self.FoodNumber:
@@ -167,12 +169,16 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 				while neighbor == s: neighbor = int(self.FoodNumber * self.rand())
 				Solution.x[param2change] = Foods[s].x[param2change] + (-1 + 2 * self.rand()) * (Foods[s].x[param2change] - Foods[neighbor].x[param2change])
 				Solution.evaluate(task, rnd=self.Rand)
-				if Solution.f < Foods[s].f: Foods[s], Trial[s] = Solution, 0
+				if Solution.f < Foods[s].f:
+					Foods[s], Trial[s] = Solution, 0
+					if Solution.f < fxb: xb, fxb = Solution.x.copy(), Solution.f
 				else: Trial[s] += 1
 			s += 1
 			if s == self.FoodNumber: s = 0
 		mi = argmax(Trial)
-		if Trial[mi] >= self.Limit: Foods[mi], Trial[mi] = SolutionABC(task=task, rnd=self.Rand), 0
-		return Foods, asarray([f.f for f in Foods]), {'Probs': Probs, 'Trial': Trial}
+		if Trial[mi] >= self.Limit:
+			Foods[mi], Trial[mi] = SolutionABC(task=task, rnd=self.Rand), 0
+			if Foods[mi].f < fxb: xb, fxb = Foods[mi].x.copy(), Foods[mi].f
+		return Foods, asarray([f.f for f in Foods]), xb, fxb, {'Probs': Probs, 'Trial': Trial}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

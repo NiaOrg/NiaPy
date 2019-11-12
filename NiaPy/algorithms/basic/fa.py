@@ -1,5 +1,4 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, redefined-builtin, line-too-long, no-self-use, arguments-differ, no-else-return, bad-continuation
 import logging
 
 from numpy import argsort, sum, exp, apply_along_axis, asarray, where
@@ -86,7 +85,6 @@ class FireflyAlgorithm(Algorithm):
 		"""
 		Algorithm.setParameters(self, NP=NP, **ukwargs)
 		self.alpha, self.betamin, self.gamma = alpha, betamin, gamma
-		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def alpha_new(self, a, alpha):
 		r"""Optionally recalculate the new alpha value.
@@ -152,17 +150,19 @@ class FireflyAlgorithm(Algorithm):
 		Args:
 			task (Task): Optimization task.
 			Fireflies (numpy.ndarray): Current population.
-			Intensity (numpy.ndarray[float]): Current population function/fitness values.
+			Intensity (numpy.ndarray): Current population function/fitness values.
 			xb (numpy.ndarray): Global best individual.
 			fxb (float): Global best individual fitness/function value.
 			alpha (float): TODO.
 			**dparams (Dict[str, Any]): Additional arguments.
 
 		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+			Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, float, Dict[str, Any]]:
 				1. New population.
 				2. New population fitness/function values.
-				3. Additional arguments:
+				3. New global best solution
+				4. New global best solutions fitness/objective value
+				5. Additional arguments:
 					* alpha (float): TODO
 
 		See Also:
@@ -173,6 +173,7 @@ class FireflyAlgorithm(Algorithm):
 		tmp = asarray([self.move_ffa(i, Fireflies[Index], Intensity[Index], Fireflies, alpha, task) for i in range(self.NP)])
 		Fireflies, evalF = asarray([tmp[i][0] for i in range(len(tmp))]), asarray([tmp[i][1] for i in range(len(tmp))])
 		Intensity[where(evalF)] = apply_along_axis(task.eval, 1, Fireflies[where(evalF)])
-		return Fireflies, Intensity, {'alpha': alpha}
+		xb, fxb = self.getBest(Fireflies, Intensity, xb, fxb)
+		return Fireflies, Intensity, xb, fxb, {'alpha': alpha}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
