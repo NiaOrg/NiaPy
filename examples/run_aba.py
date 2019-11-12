@@ -5,14 +5,15 @@ import sys
 sys.path.append('../')
 # End of fix
 
-import random
-from NiaPy.algorithms.basic import ArtificialBeeColonyAlgorithm
+from NiaPy.algorithms.modified import AdaptiveBatAlgorithm
 from NiaPy.task import StoppingTask
 from NiaPy.benchmarks import Sphere
 
-# we will run Artificial Bee Colony Algorithm for 5 independent runs
+# we will run Bat Algorithm for 5 independent runs
+algo = AdaptiveBatAlgorithm()
 for i in range(5):
-    task = StoppingTask(D=10, nFES=1000, benchmark=Sphere())
-    algo = ArtificialBeeColonyAlgorithm(NP=40, Limit=2)
+    task = StoppingTask(D=10, nGEN=1000, benchmark=Sphere())
     best = algo.run(task)
     print('%s -> %s' % (best[0], best[1]))
+print(algo.getParameters())
+

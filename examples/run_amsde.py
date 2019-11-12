@@ -15,7 +15,7 @@ from NiaPy.benchmarks import Sphere
 for i in range(5):
     task = StoppingTask(D=10, nFES=5000, benchmark=Sphere())
     algo = AgingNpMultiMutationDifferentialEvolution(NP=10, F=0.2, CR=0.65, strategies=(CrossCurr2Best1, CrossBest2), delta_np=0.05, omega=0.9)
-    best = algo.run(task=task)
+    best = algo.run(task)
     print('%s -> %s' % (best[0], best[1]))
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

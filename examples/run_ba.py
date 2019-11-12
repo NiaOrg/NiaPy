@@ -12,6 +12,6 @@ from NiaPy.benchmarks import Sphere
 # we will run Bat Algorithm for 5 independent runs
 for i in range(5):
     task = StoppingTask(D=10, nGEN=1000, benchmark=Sphere())
-    algo = BatAlgorithm(NP=40, A=0.5, r=0.5, Qmin=0.0, Qmax=2.0)
+    algo = BatAlgorithm()
     best = algo.run(task)
     print('%s -> %s' % (best[0], best[1]))

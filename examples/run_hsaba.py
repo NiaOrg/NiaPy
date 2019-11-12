@@ -5,17 +5,16 @@ import sys
 sys.path.append('../')
 # End of fix
 
-import random
-from NiaPy.algorithms.basic import AgingNpDifferentialEvolution
-from NiaPy.algorithms.basic.de import bilinear
+from NiaPy.algorithms.modified import HybridSelfAdaptiveBatAlgorithm
 from NiaPy.task import StoppingTask
 from NiaPy.benchmarks import Sphere
 
-# we will run Differential Evolution for 5 independent runs
+# we will run Bat Algorithm for 5 independent runs
+algo = HybridSelfAdaptiveBatAlgorithm(NP=70)
 for i in range(5):
-	task = StoppingTask(D=10, nFES=10000, benchmark=Sphere())
-	algo = AgingNpDifferentialEvolution(NP=40, F=0.63, CR=0.9, Lt_min=3, Lt_max=7, omega=0.2, delta_np=0.1, age=bilinear)
+	task = StoppingTask(D=10, nGEN=1000, benchmark=Sphere())
 	best = algo.run(task)
 	print('%s -> %s' % (best[0], best[1]))
+print(algo.getParameters())
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

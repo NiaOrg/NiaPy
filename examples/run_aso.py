@@ -14,5 +14,5 @@ from NiaPy.benchmarks import Sphere
 for i in range(5):
     task = StoppingTask(D=10, nFES=6500, benchmark=Sphere())
     algo = AnarchicSocietyOptimization(NP=40, Combination=Elitism)
-    best = algo.run(task=task)
+    best = algo.run(task)
     print('%s -> %s' % (best[0], best[1]))
