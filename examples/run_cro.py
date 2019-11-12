@@ -7,13 +7,13 @@ sys.path.append('../')
 
 import random
 from NiaPy.algorithms.basic import CoralReefsOptimization
-from NiaPy.task.task import StoppingTask, OptimizationType
+from NiaPy.task import StoppingTask
 from NiaPy.benchmarks import Sphere
 
 #we will run Coral Reefs Optimization algorithm for 5 independent runs
 for i in range(5):
-    task = StoppingTask(D=10, nFES=1000, optType=OptimizationType.MINIMIZATION, benchmark=Sphere())
+    task = StoppingTask(D=10, nFES=1000, benchmark=Sphere())
     algo = CoralReefsOptimization(N=60, Fb=0.9, Fa=0.4, Fd=0.3, phi=25)
-    best = algo.run(task=task)
+    best = algo.run(task)
     print(best)
  
