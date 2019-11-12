@@ -1,5 +1,4 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, logging-not-lazy, attribute-defined-outside-init, line-too-long, arguments-differ, singleton-comparison, bad-continuation, dangerous-default-value, consider-using-enumerate, unused-argument, unused-argument
 import logging
 
 from NiaPy.algorithms.algorithm import Individual
@@ -72,6 +71,15 @@ class SelfAdaptiveDifferentialEvolution(DifferentialEvolution):
 	Name = ['SelfAdaptiveDifferentialEvolution', 'jDE']
 
 	@staticmethod
+	def algorithmInfo():
+		r"""Get algorithm information.
+
+		Returns:
+			str: Algorithm information.
+		"""
+		return r"""Brest, J., Greiner, S., Boskovic, B., Mernik, M., Zumer, V. Self-adapting control parameters in differential evolution: A comparative study on numerical benchmark problems. IEEE transactions on evolutionary computation, 10(6), 646-657, 2006."""
+
+	@staticmethod
 	def typeParameters():
 		r"""Get dictionary with functions for checking values of parameters.
 
@@ -106,7 +114,21 @@ class SelfAdaptiveDifferentialEvolution(DifferentialEvolution):
 		"""
 		DifferentialEvolution.setParameters(self, itype=ukwargs.pop('itype', SolutionjDE), **ukwargs)
 		self.F_l, self.F_u, self.Tao1, self.Tao2 = F_l, F_u, Tao1, Tao2
-		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
+
+	def getParameters(self):
+		r"""TODO.
+
+		Returns:
+			Dict[str, Any]: TODO.
+		"""
+		d = DifferentialEvolution.getParameters(self)
+		d.update({
+			'F_l': self.F_l,
+			'F_u': self.F_u,
+			'Tao1': self.Tao1,
+			'Tao2': self.Tao2
+		})
+		return d
 
 	def AdaptiveGen(self, x):
 		r"""Adaptive update scale factor in crossover probability.
@@ -206,7 +228,6 @@ class AgingSelfAdaptiveDifferentialEvolution(SelfAdaptiveDifferentialEvolution):
 		SelfAdaptiveDifferentialEvolution.setParameters(self, **ukwargs)
 		self.LT_min, self.LT_max, self.age = LT_min, LT_max, age
 		self.mu = abs(self.LT_max - self.LT_min) / 2
-		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 class DynNpSelfAdaptiveDifferentialEvolutionAlgorithm(SelfAdaptiveDifferentialEvolution, DynNpDifferentialEvolution):
 	r"""Implementation of Dynamic population size self-adaptive differential evolution algorithm.
@@ -270,7 +291,6 @@ class DynNpSelfAdaptiveDifferentialEvolutionAlgorithm(SelfAdaptiveDifferentialEv
 		"""
 		DynNpDifferentialEvolution.setParameters(self, rp=rp, pmax=pmax, **ukwargs)
 		SelfAdaptiveDifferentialEvolution.setParameters(self, **ukwargs)
-		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def postSelection(self, pop, task, **kwargs):
 		r"""Post selection operator.

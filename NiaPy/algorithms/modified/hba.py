@@ -1,5 +1,4 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, logging-not-lazy, attribute-defined-outside-init, arguments-differ, bad-continuation, unused-argument
 import logging
 
 from NiaPy.algorithms.basic import BatAlgorithm
@@ -79,7 +78,6 @@ class HybridBatAlgorithm(BatAlgorithm):
 		"""
 		BatAlgorithm.setParameters(self, **ukwargs)
 		self.F, self.CR, self.CrossMutt = F, CR, CrossMutt
-		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def localSearch(self, best, task, i, Sol, **kwargs):
 		r"""Improve the best solution.

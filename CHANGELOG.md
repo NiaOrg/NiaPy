@@ -1,5 +1,54 @@
 # Changelog
 
+## [2.0.0rc9](https://github.com/NiaOrg/NiaPy/tree/2.0.0rc9) (2019-11-11)
+
+[Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2.0.0rc8...2.0.0rc9)
+
+**Merged pull requests:**
+
+- Fix publish workflow [\#236](https://github.com/NiaOrg/NiaPy/pull/236) ([GregaVrbancic](https://github.com/GregaVrbancic))
+
+## [2.0.0rc8](https://github.com/NiaOrg/NiaPy/tree/2.0.0rc8) (2019-11-11)
+
+[Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2.0.0rc7...2.0.0rc8)
+
+**Merged pull requests:**
+
+- Fix pypi README [\#235](https://github.com/NiaOrg/NiaPy/pull/235) ([GregaVrbancic](https://github.com/GregaVrbancic))
+
+## [2.0.0rc7](https://github.com/NiaOrg/NiaPy/tree/2.0.0rc7) (2019-11-11)
+
+[Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2.0.0rc6...2.0.0rc7)
+
+**Merged pull requests:**
+
+- Fix bump2version [\#234](https://github.com/NiaOrg/NiaPy/pull/234) ([GregaVrbancic](https://github.com/GregaVrbancic))
+
+## [2.0.0rc6](https://github.com/NiaOrg/NiaPy/tree/2.0.0rc6) (2019-11-11)
+
+[Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2.0.0rc5...2.0.0rc6)
+
+**Closed issues:**
+
+- Confusion with GSO [\#221](https://github.com/NiaOrg/NiaPy/issues/221)
+- No module named 'NiaPy.algorithms' [\#219](https://github.com/NiaOrg/NiaPy/issues/219)
+- Documentation fix [\#211](https://github.com/NiaOrg/NiaPy/issues/211)
+
+**Merged pull requests:**
+
+- docs: add jhmenke as a contributor [\#232](https://github.com/NiaOrg/NiaPy/pull/232) ([allcontributors[bot]](https://github.com/apps/allcontributors))
+- replacing badges and mentions of appveyor and travis [\#231](https://github.com/NiaOrg/NiaPy/pull/231) ([GregaVrbancic](https://github.com/GregaVrbancic))
+- cleanup old ci configurations [\#230](https://github.com/NiaOrg/NiaPy/pull/230) ([GregaVrbancic](https://github.com/GregaVrbancic))
+- docs: add FlorianShepherd as a contributor [\#229](https://github.com/NiaOrg/NiaPy/pull/229) ([allcontributors[bot]](https://github.com/apps/allcontributors))
+- docs: add musawakiliML as a contributor [\#228](https://github.com/NiaOrg/NiaPy/pull/228) ([allcontributors[bot]](https://github.com/apps/allcontributors))
+- Automatic Release [\#226](https://github.com/NiaOrg/NiaPy/pull/226) ([GregaVrbancic](https://github.com/GregaVrbancic))
+- Fixes comments in runner.py [\#225](https://github.com/NiaOrg/NiaPy/pull/225) ([GregaVrbancic](https://github.com/GregaVrbancic))
+- fix comment. replace mutation and crossover with uniform one. [\#223](https://github.com/NiaOrg/NiaPy/pull/223) ([GregaVrbancic](https://github.com/GregaVrbancic))
+- fix runner nRuns issue [\#222](https://github.com/NiaOrg/NiaPy/pull/222) ([GregaVrbancic](https://github.com/GregaVrbancic))
+- update run\_jde.py [\#217](https://github.com/NiaOrg/NiaPy/pull/217) ([rhododendrom](https://github.com/rhododendrom))
+- Added Cat Swarm Optimization algorithm [\#216](https://github.com/NiaOrg/NiaPy/pull/216) ([mihael-mika](https://github.com/mihael-mika))
+- Bea algorithm [\#214](https://github.com/NiaOrg/NiaPy/pull/214) ([RokPot](https://github.com/RokPot))
+
 ## [2.0.0rc5](https://github.com/NiaOrg/NiaPy/tree/2.0.0rc5) (2019-05-06)
 
 [Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2.0.0rc4...2.0.0rc5)

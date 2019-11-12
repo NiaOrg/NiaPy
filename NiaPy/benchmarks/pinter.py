@@ -1,11 +1,11 @@
 # encoding=utf8
 
-"""Implementation of Pinter benchmark."""
+"""Implementation of Pinter function."""
 
 import math
 from NiaPy.benchmarks.benchmark import Benchmark
 
-__all__ = ["Pinter"]
+__all__ = ['Pinter']
 
 
 class Pinter(Benchmark):
@@ -53,13 +53,11 @@ class Pinter(Benchmark):
         A literature survey of benchmark functions for global optimisation problems.
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
-
     """
-
-    Name = ["Pinter"]
+    Name = ['Pinter']
 
     def __init__(self, Lower=-10.0, Upper=10.0):
-        r"""Initialize Pinter benchmark.
+        r"""Initialize of Pinter benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.
@@ -67,37 +65,38 @@ class Pinter(Benchmark):
 
         See Also:
             :func:`NiaPy.benchmarks.Benchmark.__init__`
-
         """
-
         Benchmark.__init__(self, Lower, Upper)
 
     @staticmethod
     def latex_code():
-        """Return the latex code of the problem.
+        r"""Return the latex code of the problem.
 
         Returns:
-            [str] -- latex code.
-
+            str: Latex code
         """
-
         return r''' $f(\mathbf{x}) =
                 \sum_{i=1}^D ix_i^2 + \sum_{i=1}^D 20i \sin^2 A + \sum_{i=1}^D i
                 \log_{10} (1 + iB^2);
                 A = (x_{i-1}\sin(x_i)+\sin(x_{i+1}))\quad \text{and} \quad
                 B = (x_{i-1}^2 - 2x_i + 3x_{i+1} - \cos(x_i) + 1)$'''
 
-    @classmethod
-    def function(cls):
-        """Return benchmark evaluation function.
+    def function(self):
+        r"""Return benchmark evaluation function.
 
         Returns:
-            [fun] -- Evaluation function.
-
+            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function
         """
-
         def evaluate(D, sol):
+            r"""Fitness function.
 
+            Args:
+                D (int): Dimensionality of the problem
+                sol (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
+
+            Returns:
+                float: Fitness value for the solution.
+            """
             val1 = 0.0
             val2 = 0.0
             val3 = 0.0

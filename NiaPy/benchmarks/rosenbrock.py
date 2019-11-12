@@ -1,11 +1,11 @@
 # encoding=utf8
 
-"""Implementation of Rosenbrock benchmark."""
+"""Rosenbrock benchmark."""
 
 import math
 from NiaPy.benchmarks.benchmark import Benchmark
 
-__all__ = ["Rosenbrock"]
+__all__ = ['Rosenbrock']
 
 
 class Rosenbrock(Benchmark):
@@ -44,13 +44,11 @@ class Rosenbrock(Benchmark):
         A literature survey of benchmark functions for global optimisation problems.
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
-
     """
-
-    Name = ["Rosenbrock"]
+    Name = ['Rosenbrock']
 
     def __init__(self, Lower=-30.0, Upper=30.0):
-        """Initialize Rosenbrock benchmark.
+        r"""Initialize of Rosenbrock benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.
@@ -58,33 +56,34 @@ class Rosenbrock(Benchmark):
 
         See Also:
             :func:`NiaPy.benchmarks.Benchmark.__init__`
-
         """
-
         Benchmark.__init__(self, Lower, Upper)
 
     @staticmethod
     def latex_code():
-        """Return the latex code of the problem.
+        r"""Return the latex code of the problem.
 
         Returns:
-            [str] -- latex code.
-
+            str: Latex code
         """
-
         return r'''$f(\mathbf{x}) = \sum_{i=1}^{D-1} (100 (x_{i+1} - x_i^2)^2 + (x_i - 1)^2)$'''
 
-    @classmethod
-    def function(cls):
-        """Return benchmark evaluation function.
+    def function(self):
+        r"""Return benchmark evaluation function.
 
         Returns:
-            [fun] -- Evaluation function.
-
+            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function
         """
-
         def evaluate(D, sol):
+            r"""Fitness function.
 
+            Args:
+                D (int): Dimensionality of the problem
+                sol (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
+
+            Returns:
+                float: Fitness value for the solution.
+            """
             val = 0.0
 
             for i in range(D - 1):

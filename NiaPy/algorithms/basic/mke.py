@@ -1,9 +1,8 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, len-as-condition, singleton-comparison, arguments-differ, bad-continuation
 import logging
 from math import ceil
 
-from numpy import apply_along_axis, vectorize, argmin, argmax, full, tril
+from numpy import apply_along_axis, vectorize, argmin, argmax, full, tril, asarray
 
 from NiaPy.algorithms.algorithm import Algorithm, Individual, defaultIndividualInit, defaultNumPyInit
 
@@ -132,7 +131,24 @@ class MonkeyKingEvolutionV1(Algorithm):
 		"""
 		Algorithm.setParameters(self, NP=NP, itype=ukwargs.pop('itype', MkeSolution), InitPopFunc=ukwargs.pop('InitPopFunc', defaultIndividualInit), **ukwargs)
 		self.F, self.R, self.C, self.FC = F, R, C, FC
-		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
+
+	def getParameters(self):
+		r"""Get algorithms parametes values.
+
+		Returns:
+			Dict[str, Any]
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.getParameters
+		"""
+		d = Algorithm.getParameters(self)
+		d.update({
+			'F': self.F,
+			'R': self.R,
+			'C': self.C,
+			'FC': self.FC
+		})
+		return d
 
 	def moveP(self, x, x_pb, x_b, task):
 		r"""Move normal particle in search space.
@@ -178,7 +194,7 @@ class MonkeyKingEvolutionV1(Algorithm):
 			p_b (MkeSolution): Population best particle.
 			task (Task): Optimization task.
 		"""
-		p.x = self.moveP(p.x, p.x_pb, p_b.x, task)
+		p.x = self.moveP(p.x, p.x_pb, p_b, task)
 		p.evaluate(task, rnd=self.Rand)
 
 	def moveMokeyKingPartice(self, p, task):
@@ -246,7 +262,9 @@ class MonkeyKingEvolutionV1(Algorithm):
 		"""
 		pop = self.movePopulation(pop, xb, task)
 		for i in self.Rand.choice(self.NP, int(self.R * len(pop)), replace=False): pop[i].MonkeyKing = True
-		return pop, [m.f for m in pop], {}
+		fpop = asarray([m.f for m in pop])
+		xb, fxb = self.getBest(pop, fpop, xb, fxb)
+		return pop, fpop, xb, fxb, {}
 
 class MonkeyKingEvolutionV2(MonkeyKingEvolutionV1):
 	r"""Implementation of monkey king evolution algorithm version 2.
@@ -447,13 +465,15 @@ class MonkeyKingEvolutionV3(MonkeyKingEvolutionV1):
 		"""
 		X_gb = apply_along_axis(task.repair, 1, xb + self.FC * X[self.Rand.choice(len(X), c)] - X[self.Rand.choice(len(X), c)], self.Rand)
 		X_gb_f = apply_along_axis(task.eval, 1, X_gb)
+		xb, fxb = self.getBest(X_gb, X_gb_f, xb, fxb)
 		M = full([self.NP, task.D], 1.0)
 		for i in range(k): M[i * task.D:(i + 1) * task.D] = tril(M[i * task.D:(i + 1) * task.D])
 		for i in range(self.NP): self.Rand.shuffle(M[i])
 		X = apply_along_axis(task.repair, 1, M * X + vectorize(self.neg)(M) * xb, self.Rand)
 		X_f = apply_along_axis(task.eval, 1, X)
+		xb, fxb = self.getBest(X, X_f, xb, fxb)
 		iw, ib_gb = argmax(X_f), argmin(X_gb_f)
 		if X_gb_f[ib_gb] <= X_f[iw]: X[iw], X_f[iw] = X_gb[ib_gb], X_gb_f[ib_gb]
-		return X, X_f, {'k': k, 'c': c}
+		return X, X_f, xb, fxb, {'k': k, 'c': c}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

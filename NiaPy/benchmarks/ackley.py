@@ -1,11 +1,12 @@
 # encoding=utf8
-"""The module implementing Ackley benchmark."""
+
+"""Implementation of Ackley benchmark."""
 
 from numpy import exp, pi, cos, sqrt
+
 from NiaPy.benchmarks.benchmark import Benchmark
 
-__all__ = ["Ackley"]
-
+__all__ = ['Ackley']
 
 class Ackley(Benchmark):
     r"""Implementation of Ackley function.
@@ -42,13 +43,13 @@ class Ackley(Benchmark):
         Domain:
                 $-32.768 \leq x_i \leq 32.768$
 
-    Reference: https://www.sfu.ca/~ssurjano/ackley.html
+    Reference:
+        https://www.sfu.ca/~ssurjano/ackley.html
     """
-
-    Name = ["Ackley"]
+    Name = ['Ackley']
 
     def __init__(self, Lower=-32.768, Upper=32.768):
-        """Initialize Ackley benchmark.
+        r"""Initialize of Ackley benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.
@@ -56,35 +57,36 @@ class Ackley(Benchmark):
 
         See Also:
             :func:`NiaPy.benchmarks.Benchmark.__init__`
-
         """
-
         Benchmark.__init__(self, Lower, Upper)
 
     @staticmethod
     def latex_code():
-        """Return the latex code of the problem.
+        r"""Return the latex code of the problem.
 
         Returns:
-            [str] -- latex code.
-
+            str: Latex code
         """
-
-        return r"""$f(\mathbf{x}) = -a\;\exp\left(-b \sqrt{\frac{1}{D}
+        return r'''$f(\mathbf{x}) = -a\;\exp\left(-b \sqrt{\frac{1}{D}
                 \sum_{i=1}^D x_i^2}\right) - \exp\left(\frac{1}{D}
-                \sum_{i=1}^D cos(c\;x_i)\right) + a + \exp(1)$"""
+                \sum_{i=1}^D cos(c\;x_i)\right) + a + \exp(1)$'''
 
-    @classmethod
-    def function(cls):
-        """Return benchmark evaluation function.
+    def function(slef):
+        r"""Return benchmark evaluation function.
 
         Returns:
-            [fun] -- Evaluation function.
-
+            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function
         """
-
         def evaluate(D, sol):
+            r"""Fitness function.
 
+            Args:
+                D (int): Dimensionality of the problem
+                sol (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
+
+            Returns:
+                float: Fitness value for the solution.
+            """
             a = 20  # Recommended variable value
             b = 0.2  # Recommended variable value
             c = 2 * pi  # Recommended variable value

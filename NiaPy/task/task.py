@@ -8,14 +8,16 @@ from enum import Enum
 from matplotlib import pyplot as plt
 from numpy import inf, random as rand
 
-from NiaPy.util import (
+from NiaPy.util.utility import (
     limit_repair,
-    fullArray,
+    fullArray
+)
+from NiaPy.util.exception import (
     FesException,
     GenException,
     RefException
 )
-from NiaPy.benchmarks.utility import Utility
+from NiaPy.task.utility import Utility
 
 
 logging.basicConfig()
@@ -395,11 +397,19 @@ class StoppingTask(CountingTask):
                     2. List of ints of function/fitness values.
 
         """
-        return self.n_evals, self.x_f_vals
+        r1, r2 = [], []
+        for i, v in enumerate(self.n_evals):
+            r1.append(v), r2.append(self.x_f_vals[i])
+            if i >= len(self.n_evals) - 1: break
+            diff = self.n_evals[i + 1] - v
+            if diff <= 1: continue
+            for j in range(diff - 1): r1.append(v + j + 1), r2.append(self.x_f_vals[i])
+        return r1, r2
 
     def plot(self):
         """Plot a simple convergence graph."""
-        plt.plot(self.n_evals, self.x_f_vals)
+        fess, fitnesses = self.return_conv()
+        plt.plot(fess, fitnesses)
         plt.xlabel('nFes')
         plt.ylabel('Fitness')
         plt.title('Convergence graph')

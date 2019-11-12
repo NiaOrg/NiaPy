@@ -1,10 +1,9 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, multiple-statements, too-many-function-args
 from unittest import TestCase
 
 from numpy import array_equal, full, inf, random as rnd
 
-from NiaPy.task import Task
+from NiaPy.task.task import Task
 from NiaPy.algorithms.basic import MonkeyKingEvolutionV1, MonkeyKingEvolutionV2, MonkeyKingEvolutionV3
 from NiaPy.algorithms.basic.mke import MkeSolution
 from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
@@ -27,36 +26,48 @@ class MkeSolutionTestCase(TestCase):
 		self.assertEqual(self.sol3.f_pb, self.sol3.f)
 
 class MKEv1TestCase(AlgorithmTestCase):
+	def setUp(self):
+		AlgorithmTestCase.setUp(self)
+		self.algo = MonkeyKingEvolutionV1
+
 	def test_custom_works_fine(self):
-		mke_custom = MonkeyKingEvolutionV1(n=10, C_a=2, C_r=0.5, seed=self.seed)
-		mke_customc = MonkeyKingEvolutionV1(n=10, C_a=2, C_r=0.5, seed=self.seed)
-		AlgorithmTestCase.algorithm_run_test(self, mke_custom, mke_customc, MyBenchmark())
+		mke_custom = self.algo(n=10, C_a=2, C_r=0.5, seed=self.seed)
+		mke_customc = self.algo(n=10, C_a=2, C_r=0.5, seed=self.seed)
+		AlgorithmTestCase.test_algorithm_run(self, mke_custom, mke_customc, MyBenchmark())
 
 	def test_griewank_works_fine(self):
-		mke_griewank = MonkeyKingEvolutionV1(n=10, C_a=5, C_r=0.5, seed=self.seed)
-		mke_griewankc = MonkeyKingEvolutionV1(n=10, C_a=5, C_r=0.5, seed=self.seed)
-		AlgorithmTestCase.algorithm_run_test(self, mke_griewank, mke_griewankc)
+		mke_griewank = self.algo(n=10, C_a=5, C_r=0.5, seed=self.seed)
+		mke_griewankc = self.algo(n=10, C_a=5, C_r=0.5, seed=self.seed)
+		AlgorithmTestCase.test_algorithm_run(self, mke_griewank, mke_griewankc)
 
 class MKEv2TestCase(AlgorithmTestCase):
+	def setUp(self):
+		AlgorithmTestCase.setUp(self)
+		self.algo = MonkeyKingEvolutionV2
+
 	def test_custom_works_fine(self):
-		mke_custom = MonkeyKingEvolutionV2(n=10, C_a=2, C_r=0.5, seed=self.seed)
-		mke_customc = MonkeyKingEvolutionV2(n=10, C_a=2, C_r=0.5, seed=self.seed)
-		AlgorithmTestCase.algorithm_run_test(self, mke_custom, mke_customc, MyBenchmark())
+		mke_custom = self.algo(n=10, C_a=2, C_r=0.5, seed=self.seed)
+		mke_customc = self.algo(n=10, C_a=2, C_r=0.5, seed=self.seed)
+		AlgorithmTestCase.test_algorithm_run(self, mke_custom, mke_customc, MyBenchmark())
 
 	def test_griewank_works_fine(self):
-		mke_griewank = MonkeyKingEvolutionV1(n=10, C_a=5, C_r=0.5, seed=self.seed)
-		mke_griewankc = MonkeyKingEvolutionV1(n=10, C_a=5, C_r=0.5, seed=self.seed)
-		AlgorithmTestCase.algorithm_run_test(self, mke_griewank, mke_griewankc)
+		mke_griewank = self.algo(n=10, C_a=5, C_r=0.5, seed=self.seed)
+		mke_griewankc = self.algo(n=10, C_a=5, C_r=0.5, seed=self.seed)
+		AlgorithmTestCase.test_algorithm_run(self, mke_griewank, mke_griewankc)
 
 class MKEv3TestCase(AlgorithmTestCase):
+	def setUp(self):
+		AlgorithmTestCase.setUp(self)
+		self.algo = MonkeyKingEvolutionV3
+
 	def test_custom_works_fine(self):
-		mke_custom = MonkeyKingEvolutionV3(n=10, C_a=2, C_r=0.5, seed=self.seed)
-		mke_customc = MonkeyKingEvolutionV3(n=10, C_a=2, C_r=0.5, seed=self.seed)
-		AlgorithmTestCase.algorithm_run_test(self, mke_custom, mke_customc, MyBenchmark())
+		mke_custom = self.algo(n=10, C_a=2, C_r=0.5, seed=self.seed)
+		mke_customc = self.algo(n=10, C_a=2, C_r=0.5, seed=self.seed)
+		AlgorithmTestCase.test_algorithm_run(self, mke_custom, mke_customc, MyBenchmark())
 
 	def test_griewank_works_fine(self):
-		mke_griewank = MonkeyKingEvolutionV3(n=10, C_a=5, C_r=0.5, seed=self.seed)
-		mke_griewankc = MonkeyKingEvolutionV3(n=10, C_a=5, C_r=0.5, seed=self.seed)
-		AlgorithmTestCase.algorithm_run_test(self, mke_griewank, mke_griewankc)
+		mke_griewank = self.algo(n=10, C_a=5, C_r=0.5, seed=self.seed)
+		mke_griewankc = self.algo(n=10, C_a=5, C_r=0.5, seed=self.seed)
+		AlgorithmTestCase.test_algorithm_run(self, mke_griewank, mke_griewankc)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

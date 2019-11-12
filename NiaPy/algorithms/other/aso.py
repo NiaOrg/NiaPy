@@ -1,5 +1,4 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, line-too-long, singleton-comparison, multiple-statements, attribute-defined-outside-init, no-self-use, logging-not-lazy, unused-variable, arguments-differ, unused-argument, dangerous-default-value, bad-continuation, no-else-return
 import logging
 from scipy.spatial.distance import euclidean
 from numpy import apply_along_axis, argmin, full, inf, where, asarray, random as rand, sort, exp
@@ -233,9 +232,8 @@ class AnarchicSocietyOptimization(Algorithm):
 				* :func:`NiaPy.algorithms.other.Crossover`
 				* :func:`NiaPy.algorithms.other.Sequential`
 		"""
-		Algorithm.setParameters(self, NP=NP)
+		Algorithm.setParameters(self, NP=NP, **ukwargs)
 		self.alpha, self.gamma, self.theta, self.d, self.dn, self.nl, self.F, self.CR, self.Combination = alpha, gamma, theta, d, dn, nl, F, CR, Combination
-		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def init(self, task):
 		r"""Initialize dynamic parameters of algorithm.
@@ -336,15 +334,15 @@ class AnarchicSocietyOptimization(Algorithm):
 			task (Task): Optimization task
 
 		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray[float], dict]:
+			Tuple[numpy.ndarray, numpy.ndarray, dict]:
 				1. Initialized population
 				2. Initialized population fitness/function values
-				3. Dict[str, Union[float, int, array[Union[float, int]]]:
+				3. Dict[str, Any]:
 					* Xpb (numpy.ndarray): Initialized populations best positions.
-					* Xpb_f (numpy.ndarray[float]): Initialized populations best positions function/fitness values.
-					* alpha (numpy.ndarray[float]):
-					* gamma (numpy.ndarray[float]):
-					* theta (numpy.ndarray[float]):
+					* Xpb_f (numpy.ndarray): Initialized populations best positions function/fitness values.
+					* alpha (numpy.ndarray):
+					* gamma (numpy.ndarray):
+					* theta (numpy.ndarray):
 					* rs (float): Distance of search space.
 
 		See Also:
@@ -363,26 +361,28 @@ class AnarchicSocietyOptimization(Algorithm):
 		Args:
 			task (Task): Optimization task.
 			X (numpy.ndarray): Current populations positions.
-			X_f (numpy.ndarray[float]): Current populations function/fitness values.
+			X_f (numpy.ndarray): Current populations function/fitness values.
 			xb (numpy.ndarray): Current global best individuals position.
 			fxb (float): Current global best individual function/fitness value.
 			Xpb (numpy.ndarray): Current populations best positions.
-			Xpb_f (numpy.ndarray[float]): Current population best positions function/fitness values.
-			alpha (numpy.ndarray[float]): TODO.
-			gamma (numpy.ndarray[float]):
-			theta (numpy.ndarray[float]):
+			Xpb_f (numpy.ndarray): Current population best positions function/fitness values.
+			alpha (numpy.ndarray): TODO.
+			gamma (numpy.ndarray):
+			theta (numpy.ndarray):
 			**dparams: Additional arguments.
 
 		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray[float], dict]:
+			Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, float, dict]:
 				1. Initialized population
 				2. Initialized population fitness/function values
-				3. Dict[str, Union[float, int, array[Union[float, int]]]:
+				3. New global best solution
+				4. New global best solutions fitness/objective value
+				5. Dict[str, Union[float, int, numpy.ndarray]:
 					* Xpb (numpy.ndarray): Initialized populations best positions.
-					* Xpb_f (numpy.ndarray[float]): Initialized populations best positions function/fitness values.
-					* alpha (numpy.ndarray[float]):
-					* gamma (numpy.ndarray[float]):
-					* theta (numpy.ndarray[float]):
+					* Xpb_f (numpy.ndarray): Initialized populations best positions function/fitness values.
+					* alpha (numpy.ndarray):
+					* gamma (numpy.ndarray):
+					* theta (numpy.ndarray):
 					* rs (float): Distance of search space.
 		"""
 		Xin = [self.getBestNeighbors(i, X, X_f, rs) for i in range(len(X))]
@@ -390,6 +390,7 @@ class AnarchicSocietyOptimization(Algorithm):
 		Xtmp = asarray([self.Combination(X[i], Xpb[i], xb, X[self.randint(len(X), skip=[i])], MP_c[i], MP_s[i], MP_p[i], self.F, self.CR, task, self.Rand) for i in range(len(X))])
 		X, X_f = asarray([Xtmp[i][0] for i in range(len(X))]), asarray([Xtmp[i][1] for i in range(len(X))])
 		Xpb, Xpb_f = self.uBestAndPBest(X, X_f, Xpb, Xpb_f)
-		return X, X_f, {'Xpb': Xpb, 'Xpb_f': Xpb_f, 'alpha': alpha, 'gamma': gamma, 'theta': theta, 'rs': rs}
+		xb, fxb = self.getBest(X, X_f, xb, fxb)
+		return X, X_f, xb, fxb, {'Xpb': Xpb, 'Xpb_f': Xpb_f, 'alpha': alpha, 'gamma': gamma, 'theta': theta, 'rs': rs}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

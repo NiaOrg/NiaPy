@@ -1,5 +1,4 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, multiple-statements, attribute-defined-outside-init, logging-not-lazy, unused-argument, line-too-long, len-as-condition, useless-super-delegation, redefined-builtin, arguments-differ, bad-continuation, not-an-iterable
 import logging
 
 from numpy import argmin, sort, random as rand, asarray, fmin, fmax, sum, empty
@@ -43,7 +42,7 @@ def RouletteSelection(pop, ic, ts, x_b, rnd=rand):
 	"""
 	f = sum([x.f for x in pop])
 	qi = sum([pop[i].f / f for i in range(ic + 1)])
-	return pop[ic].x if rnd.rand() < qi else x_b.x
+	return pop[ic].x if rnd.rand() < qi else x_b
 
 def TwoPointCrossover(pop, ic, cr, rnd=rand):
 	r"""Two point crossover method.
@@ -256,24 +255,25 @@ class GeneticAlgorithm(Algorithm):
 		Algorithm.setParameters(self, NP=NP, itype=ukwargs.pop('itype', Individual), InitPopFunc=ukwargs.pop('InitPopFunc', defaultIndividualInit), **ukwargs)
 		self.Ts, self.Mr, self.Cr = Ts, Mr, Cr
 		self.Selection, self.Crossover, self.Mutation = Selection, Crossover, Mutation
-		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
 	def runIteration(self, task, pop, fpop, xb, fxb, **dparams):
 		r"""Core function of GeneticAlgorithm algorithm.
 
 		Args:
 			task (Task): Optimization task.
-			pop (numpy.ndarray[Individual]): Current population.
-			fpop (numpy.ndarray[float]): Current populations fitness/function values.
-			xb (Individual): Global best individual.
+			pop (numpy.ndarray): Current population.
+			fpop (numpy.ndarray): Current populations fitness/function values.
+			xb (numpy.ndarray): Global best individual.
 			fxb (float): Global best individuals function/fitness value.
 			**dparams (Dict[str, Any]): Additional arguments.
 
 		Returns:
-			Tuple[numpy.ndarray[Individual], numpy.ndarray[float], Dict[str, Any]]:
+			Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, float, Dict[str, Any]]:
 				1. New population.
 				2. New populations function/fitness values.
-				3. Additional arguments.
+				3. New global best solution
+				4. New global best solutions fitness/objective value
+				5. Additional arguments.
 		"""
 		npop = empty(self.NP, dtype=object)
 		for i in range(self.NP):
@@ -282,6 +282,7 @@ class GeneticAlgorithm(Algorithm):
 			ind.x = self.Mutation(pop, i, self.Mr, task, self.Rand)
 			ind.evaluate(task, rnd=self.Rand)
 			npop[i] = ind
-		return npop, asarray([i.f for i in npop]), {}
+			if npop[i].f < fxb: xb, fxb = self.getBest(npop[i], npop[i].f, xb, fxb)
+		return npop, asarray([i.f for i in npop]), xb, fxb, {}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

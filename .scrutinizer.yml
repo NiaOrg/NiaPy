@@ -3,7 +3,7 @@ build:
     python: 3.6.3
   tests:
     override:
-      - pylint-run --rcfile=.pylint.ini
+      - flake8
 checks:
   python:
     code_rating: true

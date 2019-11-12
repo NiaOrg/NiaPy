@@ -1,5 +1,4 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, line-too-long, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, redefined-builtin, singleton-comparison, unused-argument, arguments-differ, no-else-return, bad-continuation
 import logging
 
 from scipy.spatial.distance import euclidean
@@ -100,20 +99,26 @@ class GlowwormSwarmOptimization(Algorithm):
 		ukwargs.pop('NP', None)
 		Algorithm.setParameters(self, NP=n, **ukwargs)
 		self.l0, self.nt, self.rho, self.gamma, self.beta, self.s, self.Distance = l0, nt, rho, gamma, beta, s, Distance
-		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
 
-	def randMove(self, i):
-		r"""Move a glowworm to another glowworm.
-
-		Args:
-			i (int): Index of glowworm that is making a move.
+	def getParameters(self):
+		r"""Get algorithms parameters values.
 
 		Returns:
-			int: Index of glowworm to move to.
+			Dict[str, Any]: TODO.
 		"""
-		j = i
-		while i == j: j = self.randint(self.n)
-		return j
+		d = Algorithm.getParameters(self)
+		d.pop('NP', None)
+		d.update({
+			'n': self.NP,
+			'l0': self.l0,
+			'nt': self.nt,
+			'rho': self.rho,
+			'gamma': self.gamma,
+			'beta': self.beta,
+			's': self.s,
+			'Distance': self.Distance
+		})
+		return d
 
 	def getNeighbors(self, i, r, GS, L):
 		r"""Get neighbours of glowworm.
@@ -214,7 +219,7 @@ class GlowwormSwarmOptimization(Algorithm):
 		Args:
 			task (Task): Optimization taks.
 			GS (numpy.ndarray): Current population.
-			GS_f (numpy.ndarray[float]): Current populations fitness/function values.
+			GS_f (numpy.ndarray): Current populations fitness/function values.
 			xb (numpy.ndarray): Global best individual.
 			fxb (float): Global best individuals function/fitness value.
 			L (numpy.ndarray):
@@ -223,10 +228,12 @@ class GlowwormSwarmOptimization(Algorithm):
 			**dparams Dict[str, Any]: Additional arguments.
 
 		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+			Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, float, Dict[str, Any]]:
 				1. Initialized population of glowwarms.
 				2. Initialized populations function/fitness values.
-				3. Additional arguments:
+				3. New global best solution
+				4. New global best sloutions fitness/objective value.
+				5. Additional arguments:
 					* L (numpy.ndarray): TODO.
 					* R (numpy.ndarray): TODO.
 					* rs (numpy.ndarray): TODO.
@@ -239,7 +246,8 @@ class GlowwormSwarmOptimization(Algorithm):
 		for i in range(self.NP): GS[i] = task.repair(GSo[i] + self.s * ((GSo[j[i]] - GSo[i]) / (self.Distance(GSo[j[i]], GSo[i]) + 1e-31)), rnd=self.Rand)
 		for i in range(self.NP): R[i] = max(0, min(rs, self.rangeUpdate(Ro[i], N[i], rs)))
 		GS_f = apply_along_axis(task.eval, 1, GS)
-		return GS, GS_f, {'L': L, 'R': R, 'rs': rs}
+		xb, fxb = self.getBest(GS, GS_f, xb, fxb)
+		return GS, GS_f, xb, fxb, {'L': L, 'R': R, 'rs': rs}
 
 class GlowwormSwarmOptimizationV1(GlowwormSwarmOptimization):
 	r"""Implementation of glowwarm swarm optimization.
@@ -272,17 +280,12 @@ class GlowwormSwarmOptimizationV1(GlowwormSwarmOptimization):
 	Name = ['GlowwormSwarmOptimizationV1', 'GSOv1']
 
 	def setParameters(self, **kwargs):
-		self.__setParams(**kwargs)
-		GlowwormSwarmOptimization.setParameters(self, **kwargs)
+		r"""Set default parameters of the algorithm.
 
-	def __setParams(self, alpha=0.2, **ukwargs):
-		r"""Set the arguments of an algorithm.
-
-		Arguments:
-			alpha (float): --
+		Args:
+			**kwargs (dict): Additional arguments.
 		"""
-		self.alpha = alpha
-		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
+		GlowwormSwarmOptimization.setParameters(self, **kwargs)
 
 	def calcLuciferin(self, L, GS_f):
 		r"""TODO.
@@ -351,7 +354,6 @@ class GlowwormSwarmOptimizationV2(GlowwormSwarmOptimization):
 		"""
 		GlowwormSwarmOptimization.setParameters(self, **kwargs)
 		self.alpha = alpha
-		if kwargs: logger.info('Unused arguments: %s' % (kwargs))
 
 	def rangeUpdate(self, P, N, rs):
 		r"""TODO.
@@ -408,7 +410,6 @@ class GlowwormSwarmOptimizationV3(GlowwormSwarmOptimization):
 		"""
 		GlowwormSwarmOptimization.setParameters(self, **kwargs)
 		self.beta1 = beta1
-		if kwargs: logger.info('Unused arguments: %s' % (kwargs))
 
 	def rangeUpdate(self, R, N, rs):
 		r"""TODO.

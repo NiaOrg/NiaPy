@@ -1,5 +1,4 @@
 # encoding=utf8
-# pylint: disable=mixed-indentation, trailing-whitespace, line-too-long, multiple-statements, attribute-defined-outside-init, logging-not-lazy, no-self-use, arguments-differ, redefined-builtin, bad-continuation, unused-argument
 import logging
 
 from numpy import apply_along_axis, argsort, sum
@@ -92,7 +91,16 @@ class NelderMeadMethod(Algorithm):
 		"""
 		Algorithm.setParameters(self, NP=NP, InitPopFunc=ukwargs.pop('InitPopFunc', self.initPop), **ukwargs)
 		self.alpha, self.gamma, self.rho, self.sigma = alpha, gamma, rho, sigma
-		if ukwargs: logger.info('Unused arguments: %s' % (ukwargs))
+
+	def getParameters(self):
+		d = Algorithm.getParameters(self)
+		d.update({
+			'alpha': self.alpha,
+			'gamma': self.gamma,
+			'rho': self.rho,
+			'sigma': self.sigma
+		})
+		return d
 
 	def initPop(self, task, NP, **kwargs):
 		r"""Init starting population.
@@ -153,20 +161,23 @@ class NelderMeadMethod(Algorithm):
 		Args:
 			task (Task): Optimization task.
 			X (numpy.ndarray): Current population.
-			X_f (numpy.ndarray[float]): Current populations fitness/function values.
+			X_f (numpy.ndarray): Current populations fitness/function values.
 			xb (numpy.ndarray): Global best individual.
 			fxb (float): Global best function/fitness value.
 			**dparams (Dict[str, Any]): Additional arguments.
 
 		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+			Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, float, Dict[str, Any]]:
 				1. New population.
 				2. New population fitness/function values.
-				3. Additional arguments.
+				3. New global best solution
+				4. New global best solutions fitness/objective value
+				5. Additional arguments.
 		"""
 		inds = argsort(X_f)
 		X, X_f = X[inds], X_f[inds]
 		X, X_f = self.method(X, X_f, task)
-		return X, X_f, {}
+		xb, fxb = self.getBest(X, X_f, xb, fxb)
+		return X, X_f, xb, fxb, {}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

@@ -1,11 +1,11 @@
 # encoding=utf8
 
-"""Implementation of Quintic benchmark."""
+"""Implementaiton of Quintic funcion."""
 
 import math
 from NiaPy.benchmarks.benchmark import Benchmark
 
-__all__ = ["Quintic"]
+__all__ = ['Quintic']
 
 
 class Quintic(Benchmark):
@@ -46,13 +46,11 @@ class Quintic(Benchmark):
         A literature survey of benchmark functions for global optimisation problems.
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
-
     """
-
-    Name = ["Quintic"]
+    Name = ['Quintic']
 
     def __init__(self, Lower=-10.0, Upper=10.0):
-        """Initialize Quintic benchmark.
+        r"""Initialize of Quintic benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.
@@ -60,39 +58,39 @@ class Quintic(Benchmark):
 
         See Also:
             :func:`NiaPy.benchmarks.Benchmark.__init__`
-
         """
-
         Benchmark.__init__(self, Lower, Upper)
 
     @staticmethod
     def latex_code():
-        """Return the latex code of the problem.
+        r"""Return the latex code of the problem.
 
         Returns:
-            [str] -- latex code.
-
+            str: Latex code
         """
-
         return r'''$f(\mathbf{x}) = \sum_{i=1}^D \left| x_i^5 - 3x_i^4 +
                 4x_i^3 + 2x_i^2 - 10x_i - 4\right|$'''
 
-    @classmethod
-    def function(cls):
-        """Return benchmark evaluation function.
+    def function(self):
+        r"""Return benchmark evaluation function.
 
         Returns:
-            [fun] -- Evaluation function.
-
+            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function
         """
-
         def evaluate(D, sol):
+            r"""Fitness function.
 
+            Args:
+                D (int): Dimensionality of the problem
+                sol (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
+
+            Returns:
+                float: Fitness value for the solution.
+            """
             val = 0.0
 
             for i in range(D):
-                val += abs(
-                    math.pow(sol[i], 5) - 3.0 * math.pow(sol[i], 4) + 4.0 * math.pow(sol[i], 3) + 2.0 * math.pow(sol[i], 2) - 10.0 * sol[i] - 4)
+                val += abs(math.pow(sol[i], 5) - 3.0 * math.pow(sol[i], 4) + 4.0 * math.pow(sol[i], 3) + 2.0 * math.pow(sol[i], 2) - 10.0 * sol[i] - 4)
 
             return val
 
