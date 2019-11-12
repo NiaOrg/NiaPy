@@ -1,7 +1,7 @@
 # encoding=utf8
 import logging
 
-from numpy import full, argmin
+from numpy import full
 
 from NiaPy.algorithms.algorithm import Algorithm
 

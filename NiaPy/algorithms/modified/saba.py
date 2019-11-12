@@ -3,7 +3,6 @@ import logging
 
 import numpy as np
 
-from NiaPy.util import fullArray
 from NiaPy.algorithms.algorithm import Algorithm
 
 logging.basicConfig()
