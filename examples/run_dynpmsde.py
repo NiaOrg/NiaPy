@@ -8,13 +8,12 @@ sys.path.append('../')
 import random
 from NiaPy.algorithms.basic import DynNpMultiStrategyDifferentialEvolution
 from NiaPy.algorithms.basic.de import CrossBest2, CrossCurr2Best1
-from NiaPy.util import OptimizationType
-from NiaPy.task.task import StoppingTask
+from NiaPy.task import StoppingTask
 from NiaPy.benchmarks import Sphere
 
 #we will run Differential Evolution for 5 independent runs
 for i in range(5):
-    task = StoppingTask(D=10, nFES=1000, optType=OptimizationType.MINIMIZATION, benchmark=Sphere())
+    task = StoppingTask(D=10, nFES=10000, benchmark=Sphere())
     algo = DynNpMultiStrategyDifferentialEvolution(NP=80, F=0.2, CR=0.7, strategies=(CrossCurr2Best1, CrossBest2), pmax=5)
-    best = algo.run(task=task)
-    print('%s -> %s' % (best[0].x, best[1]))
+    best = algo.run(task)
+    print('%s -> %s' % (best[0], best[1]))

@@ -3,7 +3,6 @@ import logging
 
 import numpy as np
 
-from NiaPy.util import fullArray
 from NiaPy.algorithms.algorithm import Algorithm
 
 logging.basicConfig()
@@ -65,7 +64,7 @@ class AdaptiveBatAlgorithm(Algorithm):
 		})
 		return d
 
-	def setParameters(self, NP=40, A=0.5, epsilon=1, alpha=0.77, r=0.5, Qmin=0.0, Qmax=2.0, **ukwargs):
+	def setParameters(self, NP=100, A=0.5, epsilon=0.001, alpha=1.0, r=0.5, Qmin=0.0, Qmax=2.0, **ukwargs):
 		r"""Set the parameters of the algorithm.
 
 		Args:
@@ -81,6 +80,26 @@ class AdaptiveBatAlgorithm(Algorithm):
 		"""
 		Algorithm.setParameters(self, NP=NP, **ukwargs)
 		self.A, self.epsilon, self.alpha, self.r, self.Qmin, self.Qmax = A, epsilon, alpha, r, Qmin, Qmax
+
+	def getParameters(self):
+		r"""Get algorithm parameters.
+
+		Returns:
+			Dict[str, Any]: Arguments values.
+
+		See Also:
+			* :func:`NiaPy.algorithms.algorithm.Algorithm.getParameters`
+		"""
+		d = Algorithm.getParameters(self)
+		d.update({
+			'A': self.A,
+			'epsilon': self.epsilon,
+			'alpha': self.alpha,
+			'r': self.r,
+			'Qmin': self.Qmin,
+			'Qmax': self.Qmax
+		})
+		return d
 
 	def initPopulation(self, task):
 		r"""Initialize the starting population.
@@ -102,7 +121,7 @@ class AdaptiveBatAlgorithm(Algorithm):
 			* :func:`NiaPy.algorithms.Algorithm.initPopulation`
 		"""
 		Sol, Fitness, d = Algorithm.initPopulation(self, task)
-		A, S, Q, v = fullArray(self.A, self.NP), np.full([self.NP, task.D], 0.0), np.full(self.NP, 0.0), np.full([self.NP, task.D], 0.0)
+		A, S, Q, v = np.full(self.NP, self.A), np.full([self.NP, task.D], 0.0), np.full(self.NP, 0.0), np.full([self.NP, task.D], 0.0)
 		d.update({'A': A, 'S': S, 'Q': Q, 'v': v})
 		return Sol, Fitness, d
 
@@ -159,10 +178,10 @@ class AdaptiveBatAlgorithm(Algorithm):
 		for i in range(self.NP):
 			Q[i] = self.Qmin + (self.Qmax - self.Qmin) * self.uniform(0, 1)
 			v[i] += (Sol[i] - xb) * Q[i]
-			S[i] = task.repair(Sol[i] + v[i], rnd=self.Rand)
 			if self.rand() > self.r: S[i] = self.localSearch(best=xb, A=A[i], task=task, i=i, Sol=Sol)
+			else: S[i] = task.repair(Sol[i] + v[i], rnd=self.Rand)
 			Fnew = task.eval(S[i])
-			if (Fnew <= Fitness[i]) and (self.rand() < A[i] / self.A): Sol[i], Fitness[i] = S[i], Fnew
+			if (Fnew <= Fitness[i]) and (self.rand() < A[i]): Sol[i], Fitness[i] = S[i], Fnew
 			if Fnew <= fxb: xb, fxb, A[i] = S[i].copy(), Fnew, self.updateLoudness(A[i])
 		return Sol, Fitness, xb, fxb, {'A': A, 'S': S, 'Q': Q, 'v': v}
 
@@ -218,7 +237,7 @@ class SelfAdaptiveBatAlgorithm(AdaptiveBatAlgorithm):
 			* :func:`NiaPy.algorithms.basic.BatAlgorithm.typeParameters`
 		"""
 		d = AdaptiveBatAlgorithm.typeParameters()
-		d.pop('A_s', None), d.pop('A_min', None)
+		d.pop('A', None), d.pop('r', None)
 		d.update({
 			'A_l': lambda x: isinstance(x, (float, int)) and x >= 0,
 			'A_u': lambda x: isinstance(x, (float, int)) and x >= 0,
@@ -229,7 +248,7 @@ class SelfAdaptiveBatAlgorithm(AdaptiveBatAlgorithm):
 		})
 		return d
 
-	def setParameters(self, A_l=0.001, A_u=0.1, r_l=0.1, r_u=0.9, tao_1=0.5, tao_2=0.5, **ukwargs):
+	def setParameters(self, A_l=0.9, A_u=1.0, r_l=0.001, r_u=0.1, tao_1=0.1, tao_2=0.1, **ukwargs):
 		r"""Set core parameters of HybridBatAlgorithm algorithm.
 
 		Arguments:
@@ -241,15 +260,34 @@ class SelfAdaptiveBatAlgorithm(AdaptiveBatAlgorithm):
 			tao_2 (Optional[float]): Learning rate for pulse rate.
 
 		See Also:
-			* :func:`NiaPy.algorithms.basic.BatAlgorithm.setParameters`
+			* :func:`NiaPy.algorithms.modified.AdaptiveBatAlgorithm.setParameters`
 		"""
 		AdaptiveBatAlgorithm.setParameters(self, **ukwargs)
 		self.A_l, self.A_u, self.r_l, self.r_u, self.tao_1, self.tao_2 = A_l, A_u, r_l, r_u, tao_1, tao_2
 
+	def getParameters(self):
+		r"""Get parameters of the algorithm.
+
+		Returns:
+			Dict[str, Any]: Parameters of the algorithm.
+
+		See Also:
+			* :func:`NiaPy.algorithms.modified.AdaptiveBatAlgorithm.getParameters`
+		"""
+		d = AdaptiveBatAlgorithm.getParameters(self)
+		d.update({
+			'A_l': self.A_l,
+			'A_u': self.A_u,
+			'r_l': self.r_l,
+			'r_u': self.r_u,
+			'tao_1': self.tao_1,
+			'tao_2': self.tao_2
+		})
+		return d
+
 	def initPopulation(self, task):
 		Sol, Fitness, d = AdaptiveBatAlgorithm.initPopulation(self, task)
-		A, r = self.A_l + self.rand(self.NP) * (self.A_u - self.A_l), self.r_l + self.rand(self.NP) * (self.r_u - self.r_l)
-		d.pop('A', None)
+		A, r = np.full(self.NP, self.A), np.full(self.NP, self.r)
 		d.update({'A': A, 'r': r})
 		return Sol, Fitness, d
 
@@ -298,8 +336,8 @@ class SelfAdaptiveBatAlgorithm(AdaptiveBatAlgorithm):
 			A[i], r[i] = self.selfAdaptation(A[i], r[i])
 			Q[i] = self.Qmin + (self.Qmax - self.Qmin) * self.uniform(0, 1)
 			v[i] += (Sol[i] - xb) * Q[i]
-			S[i] = task.repair(Sol[i] + v[i], rnd=self.Rand)
 			if self.rand() > r[i]: S[i] = self.localSearch(best=xb, A=A[i], task=task, i=i, Sol=Sol)
+			else: S[i] = task.repair(Sol[i] + v[i], rnd=self.Rand)
 			Fnew = task.eval(S[i])
 			if (Fnew <= Fitness[i]) and (self.rand() < (self.A_l - A[i]) / self.A): Sol[i], Fitness[i] = S[i], Fnew
 			if Fnew <= fxb: xb, fxb = S[i].copy(), Fnew

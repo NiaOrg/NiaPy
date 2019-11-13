@@ -7,14 +7,13 @@ sys.path.append('../')
 
 import random
 from NiaPy.algorithms.basic import HarmonySearch
-from NiaPy.util import StoppingTask
-from NiaPy.task.task import OptimizationType
+from NiaPy.task import StoppingTask
 from NiaPy.benchmarks import Sphere
 
 #we will run Harmony Search for 5 independent runs
 for i in range(5):
-    task = StoppingTask(D=10, nFES=10000, optType=OptimizationType.MINIMIZATION, benchmark=Sphere())
+    task = StoppingTask(D=10, nFES=10000, benchmark=Sphere())
     algo = HarmonySearch()
-    best = algo.run(task=task)
+    best = algo.run(task)
     print(best)
 

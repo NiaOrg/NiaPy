@@ -1,7 +1,7 @@
 # encoding=utf8
 import logging
 
-from numpy import full, argmin
+from numpy import full
 
 from NiaPy.algorithms.algorithm import Algorithm
 
@@ -123,8 +123,7 @@ class BatAlgorithm(Algorithm):
 		"""
 		Sol, Fitness, d = Algorithm.initPopulation(self, task)
 		S, Q, v = full([self.NP, task.D], 0.0), full(self.NP, 0.0), full([self.NP, task.D], 0.0)
-		ib = argmin(Fitness)
-		d.update({'S': S, 'Q': Q, 'v': v, 'best': Sol[ib], 'f_min': Sol[ib]})
+		d.update({'S': S, 'Q': Q, 'v': v})
 		return Sol, Fitness, d
 
 	def localSearch(self, best, task, **kwargs):
@@ -172,8 +171,8 @@ class BatAlgorithm(Algorithm):
 		for i in range(self.NP):
 			Q[i] = self.Qmin + (self.Qmax - self.Qmin) * self.uniform(0, 1)
 			v[i] += (Sol[i] - xb) * Q[i]
-			S[i] = task.repair(Sol[i] + v[i])
 			if self.rand() > self.r: S[i] = self.localSearch(best=xb, task=task, i=i, Sol=Sol)
+			else: S[i] = task.repair(Sol[i] + v[i], rnd=self.Rand)
 			Fnew = task.eval(S[i])
 			if (Fnew <= Fitness[i]) and (self.rand() < self.A): Sol[i], Fitness[i] = S[i], Fnew
 			if Fnew <= fxb: xb, fxb = S[i].copy(), Fnew
