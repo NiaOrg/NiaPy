@@ -7,12 +7,16 @@ sys.path.append('../')
 import logging
 import NiaPy
 
+from NiaPy.benchmarks import Benchmark
+
 logging.basicConfig()
 logger = logging.getLogger('examples')
 logger.setLevel('INFO')
 
 
-class MyBenchmark(object):
+class MyBenchmark(Benchmark):
+    Name = ['MyBenchmark']
+
     def __init__(self):
         self.Lower = -5.12
         self.Upper = 5.12
@@ -38,10 +42,10 @@ algorithms = ['BatAlgorithm',
               'SelfAdaptiveDifferentialEvolution']
 benchmarks = ['ackley', 'alpine1', 'alpine2', 'chungReynolds',
               'csendes', 'griewank', 'happyCat', 'pinter',
-              'quing', 'quintic', 'rastrigin', 'ridge',
+              'qing', 'quintic', 'rastrigin', 'ridge',
               'rosenbrock', 'salomon', 'schumerSteiglitz', 'schwefel',
               'schwefel221', 'schwefel222', 'sphere', 'step',
               'step2', 'step3', 'stepint', 'styblinskiTang',
               'sumSquares', 'whitley', MyBenchmark()]
 
-NiaPy.Runner(10, 40, 1000, 3, algorithms, benchmarks).run(export='json', verbose=True)
+NiaPy.Runner(D=10, nFES=1000, nRuns=3, useAlgorithms=algorithms, useBenchmarks=benchmarks).run(export='json', verbose=True)

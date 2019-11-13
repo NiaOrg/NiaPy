@@ -6,6 +6,7 @@ import logging
 from numpy import inf, arange, meshgrid, vectorize
 from matplotlib import pyplot as plt
 from matplotlib import cm
+from mpl_toolkits.mplot3d import Axes3D
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.benchmarks.benchmark')
@@ -84,7 +85,7 @@ class Benchmark:
 		Returns:
 			float: Calculate functional value for given input
 		"""
-		return f(2, x, y)
+		return f(2, [x, y])
 
 	def plot3d(self, scale=0.32):
 		r"""Plot 3d scatter plot of benchmark function.
@@ -93,7 +94,7 @@ class Benchmark:
 			scale (float): Scale factor for points.
 		"""
 		fig = plt.figure()
-		ax = fig.gca(projection='3d')
+		ax = Axes3D(fig)
 		func = self.function()
 		Xr, Yr = arange(self.Lower, self.Upper, scale), arange(self.Lower, self.Upper, scale)
 		X, Y = meshgrid(Xr, Yr)

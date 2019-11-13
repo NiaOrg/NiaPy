@@ -6,16 +6,16 @@ sys.path.append('../')
 # End of fix
 
 import random
-from NiaPy.algorithms.basic import ParticleSwarmOptimization
-from NiaPy.task.task import StoppingTask, OptimizationType
-from NiaPy.benchmarks import Sphere
+from NiaPy.algorithms.basic import ParticleSwarmAlgorithm
+from NiaPy.task import StoppingTask
+from NiaPy.benchmarks import Griewank
 
 # we will run ParticleSwarmAlgorithm for 5 independent runs
-algo = ParticleSwarmOptimization(NP=50, C1=1.3, C2=2.0, w=0.86, vMin=-1, vMax=1)
+algo = ParticleSwarmAlgorithm(NP=100, vMin=-4.0, vMax=4.0)
 for i in range(5):
-	task = StoppingTask(D=100, nFES=20000, optType=OptimizationType.MINIMIZATION, benchmark=Sphere())
+	task = StoppingTask(D=10, nFES=10000, benchmark=Griewank(Lower=-600, Upper=600))
 	best = algo.run(task=task)
 	print('%s -> %f' % (best[0], best[1]))
-# print(algo.getParameters())
+print(algo.getParameters())
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

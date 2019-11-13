@@ -68,7 +68,7 @@ class HybridSelfAdaptiveBatAlgorithm(SelfAdaptiveBatAlgorithm):
 		})
 		return d
 
-	def setParameters(self, F=3, CR=0.5, CrossMutt=CrossBest1, **ukwargs):
+	def setParameters(self, F=0.9, CR=0.85, CrossMutt=CrossBest1, **ukwargs):
 		r"""Set core parameters of HybridBatAlgorithm algorithm.
 
 		Arguments:
@@ -82,6 +82,22 @@ class HybridSelfAdaptiveBatAlgorithm(SelfAdaptiveBatAlgorithm):
 		"""
 		SelfAdaptiveBatAlgorithm.setParameters(self, **ukwargs)
 		self.F, self.CR, self.CrossMutt = F, CR, CrossMutt
+
+	def getParameters(self):
+		r"""Get parameters of the algorithm.
+
+		Returns:
+			Dict[str, Any]: Parameters of the algorithm.
+
+		See Also:
+			* :func:`NiaPy.algorithms.modified.AdaptiveBatAlgorithm.getParameters`
+		"""
+		d = SelfAdaptiveBatAlgorithm.getParameters(self)
+		d.update({
+			'F': self.F,
+			'CR': self.CR
+		})
+		return d
 
 	def localSearch(self, best, A, i, Sol, task, **kwargs):
 		r"""Improve the best solution.

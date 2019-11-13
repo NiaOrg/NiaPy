@@ -3,11 +3,10 @@
 # It will be removed when package is published on PyPI
 import sys
 sys.path.append('../')
-# End of fix
 
-from NiaPy.algorithms.basic import ParticleSwarmAlgorithm
-from NiaPy.task.task import StoppingTask, OptimizationType
+from NiaPy.task import StoppingTask, OptimizationType
 from NiaPy.benchmarks import Benchmark
+from NiaPy.algorithms.basic import ParticleSwarmAlgorithm
 
 class MyBenchmark(Benchmark):
 	def __init__(self):

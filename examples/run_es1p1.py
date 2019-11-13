@@ -7,14 +7,14 @@ sys.path.append('../')
 
 import random
 from NiaPy.algorithms.basic import EvolutionStrategy1p1
-from NiaPy.task.task import StoppingTask, OptimizationType
+from NiaPy.task import StoppingTask
 from NiaPy.benchmarks import Sphere
 
 #we will run Differential Evolution for 5 independent runs
 for i in range(5):
-	task = StoppingTask(D=10, nFES=1000, optType=OptimizationType.MINIMIZATION, benchmark=Sphere())
+	task = StoppingTask(D=10, nFES=10000, benchmark=Sphere())
 	algo = EvolutionStrategy1p1()
-	best = algo.run(task=task)
-	print('%s -> %f' % (best[0].x, best[1]))
+	best = algo.run(task)
+	print('%s -> %f' % (best[0], best[1]))
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
