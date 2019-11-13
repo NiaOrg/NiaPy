@@ -8,6 +8,8 @@ sys.path.append('../')
 import random
 import logging
 
+from matplotlib import pyplot as plt
+
 from NiaPy.algorithms.basic import BareBonesFireworksAlgorithm
 from NiaPy.benchmarks import Benchmark, Katsuura, Elliptic
 from NiaPy.task import StoppingTask
@@ -32,11 +34,14 @@ class MyBenchmark(Benchmark):
 
 benc = MyBenchmark()
 benc.plot3d()
+plt.show()
 
 benc = Katsuura(-1, 1)
 benc.plot3d(0.06)
+plt.show()
 
 benc = Elliptic()
 benc.plot3d(0.65)
+plt.show()
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

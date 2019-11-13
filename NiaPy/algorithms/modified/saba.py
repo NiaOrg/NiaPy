@@ -336,7 +336,7 @@ class SelfAdaptiveBatAlgorithm(AdaptiveBatAlgorithm):
 			A[i], r[i] = self.selfAdaptation(A[i], r[i])
 			Q[i] = self.Qmin + (self.Qmax - self.Qmin) * self.uniform(0, 1)
 			v[i] += (Sol[i] - xb) * Q[i]
-			if self.rand() > r[i]: S[i] = self.localSearch(best=xb, A=A[i], task=task, i=i, Sol=Sol)
+			if self.rand() > r[i]: S[i] = self.localSearch(best=xb, A=A[i], task=task, i=i, Sol=Sol, Fitness=Fitness)
 			else: S[i] = task.repair(Sol[i] + v[i], rnd=self.Rand)
 			Fnew = task.eval(S[i])
 			if (Fnew <= Fitness[i]) and (self.rand() < (self.A_l - A[i]) / self.A): Sol[i], Fitness[i] = S[i], Fnew

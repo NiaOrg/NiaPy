@@ -99,14 +99,15 @@ class HybridSelfAdaptiveBatAlgorithm(SelfAdaptiveBatAlgorithm):
 		})
 		return d
 
-	def localSearch(self, best, A, i, Sol, task, **kwargs):
+	def localSearch(self, best, A, i, Sol, Fitness, task, **kwargs):
 		r"""Improve the best solution.
 
 		Args:
 			best (numpy.ndarray): Global best individual.
 			task (Task): Optimization task.
 			i (int): Index of current individual.
-			Sol (numpy.ndarray): Current best population.
+			Sol (numpy.ndarray): Current population.
+			Fitness (numpy.ndarray): Current populations fitness/objecive values.
 			**kwargs (Dict[str, Any]):
 
 		Returns:

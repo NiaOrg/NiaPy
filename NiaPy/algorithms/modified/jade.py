@@ -23,13 +23,13 @@ def CrossRandCurr2Pbest(pop, ic, x_b, f, cr, p=0.2, arc=None, rnd=rand, *args):
 		Name: DE/curr2pbest/1
 
 	Args:
-		pop (numpy.ndarray): Current population.
+		pop (Tuple[numpy.ndarray, numpy.ndarray]): Current population with fithness values.
 		ic (int): Index of current individual.
 		x_b (numpy.ndarray): Global best individual.
 		f (float): Scale factor.
 		cr (float): Crossover probability.
 		p (float): Procentage of best individuals to use.
-		arc (numpy.ndarray): Achived individuals.
+		arc (Tuple[numpy.ndarray, numpy.ndarray]): Achived individuals with fitness values.
 		rnd (mtrand.RandomState): Random generator.
 		*args (Dict[str, Any]): Additional argumets.
 
@@ -37,20 +37,20 @@ def CrossRandCurr2Pbest(pop, ic, x_b, f, cr, p=0.2, arc=None, rnd=rand, *args):
 		numpy.ndarray: New position.
 	"""
 	# Get random index from current population
-	pb = [1.0 / (len(pop) - 1) if i != ic else 0 for i in range(len(pop))] if len(pop) > 1 else None
-	r = rnd.choice(len(pop), 1, replace=not len(pop) >= 3, p=pb)
+	pb = [1.0 / (len(pop[0]) - 1) if i != ic else 0 for i in range(len(pop[0]))] if len(pop[0]) > 1 else None
+	r = rnd.choice(len(pop[0]), 1, replace=not len(pop[0]) >= 3, p=pb)
 	# Get pbest index
-	index, pi = argsort(pop), int(len(pop) * p)
-	ppop = pop[index[:pi]]
+	index, pi = argsort(pop[1]), int(len(pop[0]) * p)
+	ppop = pop[0][index[:pi]]
 	pb = [1.0 / len(ppop) for i in range(pi)] if len(ppop) > 1 else None
 	rp = rnd.choice(pi, 1, replace=not len(ppop) >= 1, p=pb)
 	# Get union population and archive index
-	apop = concatenate((pop, arc)) if arc is not None else pop
+	apop = concatenate((pop[0], arc)) if arc is not None else pop[0]
 	pb = [1.0 / (len(apop) - 1) if i != ic else 0 for i in range(len(apop))] if len(apop) > 1 else None
 	ra = rnd.choice(len(apop), 1, replace=not len(apop) >= 1, p=pb)
 	# Generate new positoin
-	j = rnd.randint(len(pop[ic]))
-	x = [pop[ic][i] + f * (ppop[rp[0]][i] - pop[ic][i]) + f * (pop[r[0]][i] - apop[ra[0]][i]) if rnd.rand() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
+	j = rnd.randint(len(pop[0][ic]))
+	x = [pop[0][ic][i] + f * (ppop[rp[0]][i] - pop[0][ic][i]) + f * (pop[0][r[0]][i] - apop[ra[0]][i]) if rnd.rand() < cr or i == j else pop[0][ic][i] for i in range(len(pop[0][ic]))]
 	return asarray(x)
 
 class AdaptiveArchiveDifferentialEvolution(DifferentialEvolution):

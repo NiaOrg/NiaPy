@@ -104,6 +104,5 @@ class Benchmark:
 		ax.set_xlabel('X')
 		ax.set_ylabel('Y')
 		ax.set_zlabel('Z')
-		plt.show()
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
