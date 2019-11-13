@@ -255,6 +255,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   </tr>
   <tr>
     <td align="center"><a href="http://www.jhmenke.de"><img src="https://avatars0.githubusercontent.com/u/25080218?v=4" width="100px;" alt="Jan-Hendrik Menke"/><br /><sub><b>Jan-Hendrik Menke</b></sub></a><br /><a href="#question-jhmenke" title="Answering Questions">💬</a></td>
+    <td align="center"><a href="https://github.com/brett18618"><img src="https://avatars2.githubusercontent.com/u/44141573?v=4" width="100px;" alt="brett18618"/><br /><sub><b>brett18618</b></sub></a><br /><a href="#question-brett18618" title="Answering Questions">💬</a></td>
   </tr>
 </table>
 
