@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.0.0rc10](https://github.com/NiaOrg/NiaPy/tree/2.0.0rc10) (2019-11-12)
+
+[Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2.0.0rc9...2.0.0rc10)
+
+**Implemented enhancements:**
+
+- PSO binary functionality [\#187](https://github.com/NiaOrg/NiaPy/issues/187)
+- Development [\#233](https://github.com/NiaOrg/NiaPy/pull/233) ([kb2623](https://github.com/kb2623))
+
+**Fixed bugs:**
+
+- FSS implementation [\#186](https://github.com/NiaOrg/NiaPy/issues/186)
+- FPA implementation [\#185](https://github.com/NiaOrg/NiaPy/issues/185)
+
 ## [2.0.0rc9](https://github.com/NiaOrg/NiaPy/tree/2.0.0rc9) (2019-11-11)
 
 [Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2.0.0rc8...2.0.0rc9)
@@ -240,6 +254,7 @@
 - CS fix [\#103](https://github.com/NiaOrg/NiaPy/pull/103) ([mlaky88](https://github.com/mlaky88))
 - Documentation [\#102](https://github.com/NiaOrg/NiaPy/pull/102) ([GregaVrbancic](https://github.com/GregaVrbancic))
 - Finishing runner [\#101](https://github.com/NiaOrg/NiaPy/pull/101) ([GregaVrbancic](https://github.com/GregaVrbancic))
+- version 0.1.2a1 [\#99](https://github.com/NiaOrg/NiaPy/pull/99) ([GregaVrbancic](https://github.com/GregaVrbancic))
 
 ## [0.1.3a2](https://github.com/NiaOrg/NiaPy/tree/0.1.3a2) (2018-02-26)
 
@@ -271,7 +286,6 @@
 
 **Merged pull requests:**
 
-- version 0.1.2a1 [\#99](https://github.com/NiaOrg/NiaPy/pull/99) ([GregaVrbancic](https://github.com/GregaVrbancic))
 - ga fix [\#98](https://github.com/NiaOrg/NiaPy/pull/98) ([mlaky88](https://github.com/mlaky88))
 - test fix [\#97](https://github.com/NiaOrg/NiaPy/pull/97) ([lucijabrezocnik](https://github.com/lucijabrezocnik))
 - fix docs [\#96](https://github.com/NiaOrg/NiaPy/pull/96) ([GregaVrbancic](https://github.com/GregaVrbancic))
@@ -334,7 +348,6 @@
 - description added [\#36](https://github.com/NiaOrg/NiaPy/pull/36) ([lucijabrezocnik](https://github.com/lucijabrezocnik))
 - Feature functions2 [\#35](https://github.com/NiaOrg/NiaPy/pull/35) ([lucijabrezocnik](https://github.com/lucijabrezocnik))
 - add runner export to xlsx [\#34](https://github.com/NiaOrg/NiaPy/pull/34) ([GregaVrbancic](https://github.com/GregaVrbancic))
-- Runner export [\#33](https://github.com/NiaOrg/NiaPy/pull/33) ([GregaVrbancic](https://github.com/GregaVrbancic))
 - Feature functions2 [\#32](https://github.com/NiaOrg/NiaPy/pull/32) ([lucijabrezocnik](https://github.com/lucijabrezocnik))
 
 
