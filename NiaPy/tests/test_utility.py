@@ -6,6 +6,8 @@ from numpy import full, random as rnd, inf, sum, array_equal, asarray
 from NiaPy.util import fullArray, limit_repair, limitInversRepair, wangRepair, randRepair, reflectRepair, FesException, GenException  # TimeException, RefException
 from NiaPy.task import Utility, StoppingTask, ThrowingTask
 from NiaPy.benchmarks import Benchmark
+from NiaPy.algorithms import Algorithm, AlgorithmUtility
+from NiaPy.algorithms.basic import GreyWolfOptimizer
 
 class FullArrayTestCase(TestCase):
 	def test_a_float_fine(self):
@@ -130,6 +132,28 @@ class UtilityTestCase(TestCase):
 		self.assertRaises(TypeError, lambda: self.u.get_benchmark('hihihihihihihihihi'))
 		self.assertRaises(TypeError, lambda: self.u.get_benchmark(MyBenchmark))
 		self.assertRaises(TypeError, lambda: self.u.get_benchmark(NoLimits))
+
+class MyFakeAlgorithm:
+	def __init__(self):
+		pass
+
+class MyCustomAlgorithm(Algorithm):
+	pass
+
+class AlgorithmUtilityTestCase(TestCase):
+	def setUp(self):
+		self.algorithm_utility = AlgorithmUtility()
+
+	def test_get_bad_algorithm_fine(self):
+		self.assertRaises(TypeError, lambda: self.algorithm_utility.get_algorithm('hihihihihihihihihi'))
+		self.assertRaises(TypeError, lambda: self.algorithm_utility.get_algorithm(MyFakeAlgorithm()))
+
+	def test_get_algorithm_fine(self):
+		algorithm = MyCustomAlgorithm()
+		gwo = GreyWolfOptimizer()
+		self.assertEqual(algorithm, self.algorithm_utility.get_algorithm(algorithm))
+		self.assertEqual(gwo, self.algorithm_utility.get_algorithm(gwo))
+		self.assertTrue(isinstance(self.algorithm_utility.get_algorithm("GreyWolfOptimizer"), GreyWolfOptimizer))
 
 class StoppingTaskBaseTestCase(TestCase):
 	def setUp(self):
