@@ -143,9 +143,9 @@ List of development dependencies and requirements can be found [here](CONTRIBUTI
 
 Install NiaPy with pip:
 
-### Latest version (2.0.0rc5)
+### Latest version (2.0.0rc10)
 ```sh
-$ pip install NiaPy==2.0.0rc5
+$ pip install NiaPy==2.0.0rc10
 ```
 
 ### Latest stable version
