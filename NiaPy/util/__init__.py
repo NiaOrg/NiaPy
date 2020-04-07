@@ -16,7 +16,6 @@ from NiaPy.util.exception import (
     TimeException,
     RefException
 )
-from NiaPy.util.basicunit import cm
 
 __all__ = [
     'fullArray',
@@ -33,5 +32,4 @@ __all__ = [
     'GenException',
     'TimeException',
     'RefException',
-    'cm'
 ]

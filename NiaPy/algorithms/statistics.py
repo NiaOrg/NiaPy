@@ -7,17 +7,11 @@ import numpy as np
 import pandas as pd
 import scipy.stats as stats
 
-import matplotlib.pyplot as plt
-from matplotlib.ticker import AutoMinorLocator
-import matplotlib.lines as lines
-
 import NiaPy.data as pkg_data
-from NiaPy.util.basicunit import cm
 
 __all__ = [
     'BasicStatistics',
     'wilcoxonSignedRanks',
-    'friedmanNemenyi',
     'wilcoxonTest',
     'friedmanRanks'
 ]
@@ -134,37 +128,6 @@ def cd(alpha, k, n):
     nemenyi_df = pd.read_csv(StringIO(pkgutil.get_data(pkg_data.__package__, 'nemenyi.csv').decode('utf-8')))
     q_a = nemenyi_df['%.2f' % alpha][nemenyi_df['k'] == k].values
     return q_a[0] * np.sqrt((k * (k + 1)) / (6 * n))
-
-def friedmanNemenyi(data, names=None, q=.05, s=.1, ax=None, ylabel='Average rank', xlabel='Algorithm'):
-    r"""Plot Friedman Nemenyi test with critical distances.
-
-    Args:
-        data (numpy.ndarray): TODO.
-        names (Optional[Iterable[str]]): TODO.
-        q (Optional[float]): TODO.
-        s (Optional[float]): Scaling factor.
-        ax (Optional[]): TODO.
-        ylabel (Optional[str]): TODO.
-        xlabel (Optional[str]): TODO.
-    """
-    cd_h = cd(q, len(data), len(data[0])) / 2.0
-    r = friedmanRanks(*data)
-    if ax is None: f, ax = plt.subplots(figsize=(10, 10))
-    if names is None: names = np.arange(len(data))
-    ax.xaxis.set_units(cm), ax.yaxis.set_units(cm)
-    for i, e in enumerate(r):
-        line = lines.Line2D([s * (i - .1) * cm, s * (i + .1) * cm], [(e + cd_h) * cm, (e + cd_h) * cm], lw=2, color='blue', axes=ax)
-        ax.add_line(line)
-        line = lines.Line2D([s * (i - .1) * cm, s * (i + .1) * cm], [(e - cd_h) * cm, (e - cd_h) * cm], lw=2, color='blue', axes=ax)
-        ax.add_line(line)
-        line = lines.Line2D([s * i * cm, s * i * cm], [(e - cd_h) * cm, (e + cd_h) * cm], lw=2, color='blue', axes=ax)
-        ax.add_line(line)
-        ax.plot(s * i, e, 'o', label=names[i])
-    ax.set_ylim((np.min(r) - cd_h - .25) * cm, (np.max(r) + cd_h + .25) * cm), ax.set_xlim((-0.1 * s) * cm, s * (len(r) - .9) * cm)
-    ax.xaxis.set_minor_locator(AutoMinorLocator(7)), ax.yaxis.set_minor_locator(AutoMinorLocator(7))
-    ax.grid(which='both'), ax.grid(which='minor', alpha=0.2, linestyle=':'), ax.grid(which='major', alpha=0.5, linestyle='--')
-    ax.set_xticks([s * i for i in range(len(names))]), ax.set_xticklabels(names)
-    ax.set_ylabel(ylabel), ax.set_xlabel(xlabel)
 
 def wilcoxonTest(data, names, q=None):
     r"""Get p-values or tagged differences between algorithms.
