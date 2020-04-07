@@ -2,7 +2,7 @@
 
 r"""Basic Units."""
 
-import math
+from six import with_metaclass
 
 import numpy as np
 
@@ -75,7 +75,7 @@ class PassThroughProxy:
         return ret
 
 
-class ConvertArgsProxy(PassThroughProxy):
+class ConvertArgsProxy(with_metaclass(PassThroughProxy, object)):
     r"""Convert arguments proxy."""
     def __init__(self, fn_name, obj):
         r"""Init convert arguments proxy.
@@ -683,8 +683,8 @@ def cos(x):
     Returns:
         float: Cosinus value.
     """
-    if np.iterable(x): return [math.cos(val.convert_to(radians).get_value()) for val in x]
-    else: return math.cos(x.convert_to(radians).get_value())
+    if np.iterable(x): return [np.cos(val.convert_to(radians).get_value()) for val in x]
+    else: return np.cos(x.convert_to(radians).get_value())
 
 basicConverter = BasicUnitConverter()
 units.registry[BasicUnit] = basicConverter
