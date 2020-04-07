@@ -172,7 +172,7 @@ class ConvertAllProxy(PassThroughProxy):
         return TaggedValue(ret, ret_unit)
 
 
-class _TaggedValue:
+class _TaggedValue(type):
     r"""Tagged value.
 
     Attributes:
@@ -333,7 +333,7 @@ class _TaggedValue:
         return self.unit
 
 
-TaggedValue = TaggedValueMeta('TaggedValue', (_TaggedValue, ), {})
+TaggedValue = TaggedValueMeta('TaggedValue', (_TaggedValue,), {})
 
 
 class BasicUnit:
@@ -581,25 +581,15 @@ def rad_fn(x, pos=None):
     Returns:
         str: Formatted string.
     """
-    if x >= 0:
-        n = int((x / np.pi) * 2.0 + 0.25)
-    else:
-        n = int((x / np.pi) * 2.0 - 0.25)
-
-    if n == 0:
-        return '0'
-    elif n == 1:
-        return r'$pi/2$'
-    elif n == 2:
-        return r'$pi$'
-    elif n == -1:
-        return r'$-pi/2$'
-    elif n == -2:
-        return r'$-pi$'
-    elif n % 2 == 0:
-        return fr'${n//2}pi$'
-    else:
-        return fr'${n}pi/2$'
+    if x >= 0: n = int((x / np.pi) * 2.0 + 0.25)
+    else: n = int((x / np.pi) * 2.0 - 0.25)
+    if n == 0: return '0'
+    elif n == 1: return r'$pi/2$'
+    elif n == 2: return r'$pi$'
+    elif n == -1: return r'$-pi/2$'
+    elif n == -2: return r'$-pi$'
+    elif n % 2 == 0: return fr'${n//2}pi$'
+    else: return fr'${n}pi/2$'
 
 
 class BasicUnitConverter(units.ConversionInterface):
