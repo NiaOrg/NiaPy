@@ -179,7 +179,7 @@ class ConvertAllProxy(PassThroughProxy):
         return TaggedValue(ret, ret_unit)
 
 
-class TaggedValue(metaclass=TaggedValueMeta):
+class TaggedValue(TaggedValueMeta):
     r"""Tagged value.
 
     Attributes:
@@ -599,17 +599,17 @@ def rad_fn(x, pos=None):
     if n == 0:
         return '0'
     elif n == 1:
-        return r'$\pi/2$'
+        return r'$pi/2$'
     elif n == 2:
-        return r'$\pi$'
+        return r'$pi$'
     elif n == -1:
-        return r'$-\pi/2$'
+        return r'$-pi/2$'
     elif n == -2:
-        return r'$-\pi$'
+        return r'$-pi$'
     elif n % 2 == 0:
-        return fr'${n//2}\pi$'
+        return fr'${n//2}pi$'
     else:
-        return fr'${n}\pi/2$'
+        return fr'${n}pi/2$'
 
 
 class BasicUnitConverter(units.ConversionInterface):
