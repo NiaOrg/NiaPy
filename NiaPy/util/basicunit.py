@@ -2,8 +2,6 @@
 
 r"""Basic Units."""
 
-from six import with_metaclass
-
 import numpy as np
 
 import matplotlib.units as units
@@ -75,7 +73,7 @@ class PassThroughProxy:
         return ret
 
 
-class ConvertArgsProxy(with_metaclass(PassThroughProxy, object)):
+class ConvertArgsProxy(PassThroughProxy):
     r"""Convert arguments proxy."""
     def __init__(self, fn_name, obj):
         r"""Init convert arguments proxy.
@@ -174,7 +172,7 @@ class ConvertAllProxy(PassThroughProxy):
         return TaggedValue(ret, ret_unit)
 
 
-class TaggedValue(TaggedValueMeta):
+class _TaggedValue:
     r"""Tagged value.
 
     Attributes:
@@ -202,7 +200,7 @@ class TaggedValue(TaggedValueMeta):
         """
         value_class = type(value)
         try:
-            subcls = type(f'TaggedValue_of_{value_class.__name__}', (cls, value_class,), {})
+            subcls = type(f'TaggedValue_of_{value_class.__name__}', (cls, value_class), {})
             if subcls not in units.registry: units.registry[subcls] = basicConverter
             return object.__new__(subcls)
         except TypeError:
@@ -333,6 +331,9 @@ class TaggedValue(TaggedValueMeta):
             BasicUnit: Unit
         """
         return self.unit
+
+
+TaggedValue = TaggedValueMeta('TaggedValue', (_TaggedValue, ), {})
 
 
 class BasicUnit:
