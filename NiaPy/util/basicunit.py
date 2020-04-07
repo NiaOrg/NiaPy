@@ -200,7 +200,7 @@ class _TaggedValue(type):
         """
         value_class = type(value)
         try:
-            subcls = type(f'TaggedValue_of_{value_class.__name__}', (cls, value_class), {})
+            subcls = type(f'TaggedValue_of_{value_class.__name__}', (type(cls), value_class), {})
             if subcls not in units.registry: units.registry[subcls] = basicConverter
             return object.__new__(subcls)
         except TypeError:
