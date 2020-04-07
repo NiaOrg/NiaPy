@@ -31,7 +31,7 @@ def CrossRandCurr2Pbest(pop, ic, x_b, f, cr, p=0.2, arc=None, rnd=rand, *args):
 		p (float): Procentage of best individuals to use.
 		arc (Tuple[numpy.ndarray, numpy.ndarray]): Achived individuals with fitness values.
 		rnd (mtrand.RandomState): Random generator.
-		*args (Dict[str, Any]): Additional argumets.
+		args (Dict[str, Any]): Additional argumets.
 
 	Returns:
 		numpy.ndarray: New position.

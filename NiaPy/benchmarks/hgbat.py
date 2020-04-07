@@ -2,7 +2,8 @@
 
 """Implementations of HGBat functions."""
 
-from math import fabs
+import numpy as np
+
 from NiaPy.benchmarks.benchmark import Benchmark
 
 __all__ = ['HGBat']
@@ -10,15 +11,18 @@ __all__ = ['HGBat']
 class HGBat(Benchmark):
 	r"""Implementations of HGBat functions.
 
-	Date: 2018
+	Date:
+		2018
 
-	Author: Klemen Berkovič
+	Author:
+		Klemen Berkovič
 
-	License: MIT
+	License:
+		MIT
 
 	Function:
 		**HGBat Function**
-		:math:``f(\textbf{x}) = \left| \left( \sum_{i=1}^D x_i^2 \right)^2 - \left( \sum_{i=1}^D x_i \right)^2 \right|^{\frac{1}{2}} + \frac{0.5 \sum_{i=1}^D x_i^2 + \sum_{i=1}^D x_i}{D} + 0.5
+		:math:`f(\textbf{x}) = \lvert \left( \sum_{i=1}^D x_i^2 \right)^2 - \left( \sum_{i=1}^D x_i \right)^2 \rvert^{\frac{1}{2}} + \frac{0.5 \sum_{i=1}^D x_i^2 + \sum_{i=1}^D x_i}{D} + 0.5`
 
 		**Input domain:**
 		The function can be defined on any input domain but it is usually
@@ -29,10 +33,10 @@ class HGBat(Benchmark):
 
 	LaTeX formats:
 		Inline:
-				$$f(\textbf{x}) = \left| \left( \sum_{i=1}^D x_i^2 \right)^2 - \left( \sum_{i=1}^D x_i \right)^2 \right|^{\frac{1}{2}} + \frac{0.5 \sum_{i=1}^D x_i^2 + \sum_{i=1}^D x_i}{D} + 0.5
+				$$f(\textbf{x}) = \lvert \left( \sum_{i=1}^D x_i^2 \right)^2 - \left( \sum_{i=1}^D x_i \right)^2 \rvert^{\frac{1}{2}} + \frac{0.5 \sum_{i=1}^D x_i^2 + \sum_{i=1}^D x_i}{D} + 0.5
 
 		Equation:
-				\begin{equation} f(\textbf{x}) = \left| \left( \sum_{i=1}^D x_i^2 \right)^2 - \left( \sum_{i=1}^D x_i \right)^2 \right|^{\frac{1}{2}} + \frac{0.5 \sum_{i=1}^D x_i^2 + \sum_{i=1}^D x_i}{D} + 0.5 \end{equation}
+				\begin{equation} f(\textbf{x}) = \lvert \left( \sum_{i=1}^D x_i^2 \right)^2 - \left( \sum_{i=1}^D x_i \right)^2 \rvert^{\frac{1}{2}} + \frac{0.5 \sum_{i=1}^D x_i^2 + \sum_{i=1}^D x_i}{D} + 0.5 \end{equation}
 
 		Domain:
 				$-100 \leq x_i \leq 100$
@@ -61,7 +65,7 @@ class HGBat(Benchmark):
 		Returns:
 			str: Latex code
 		"""
-		return r'''$f(\textbf{x}) = \left| \left( \sum_{i=1}^D x_i^2 \right)^2 - \left( \sum_{i=1}^D x_i \right)^2 \right|^{\frac{1}{2}} + \frac{0.5 \sum_{i=1}^D x_i^2 + \sum_{i=1}^D x_i}{D} + 0.5$'''
+		return r'''$f(\textbf{x}) = \lvert \left( \sum_{i=1}^D x_i^2 \right)^2 - \left( \sum_{i=1}^D x_i \right)^2 \rvert^{\frac{1}{2}} + \frac{0.5 \sum_{i=1}^D x_i^2 + \sum_{i=1}^D x_i}{D} + 0.5$'''
 
 	def function(self):
 		r"""Return benchmark evaluation function.
@@ -82,7 +86,7 @@ class HGBat(Benchmark):
 			val1, val2 = 0.0, 0.0
 			for i in range(D): val1 += x[i] ** 2
 			for i in range(D): val2 += x[i]
-			return fabs(val1 ** 2 - val2 ** 2) ** (1 / 2) + (0.5 * val1 + val2) / D + 0.5
+			return np.fabs(val1 ** 2 - val2 ** 2) ** (1 / 2) + (0.5 * val1 + val2) / D + 0.5
 		return f
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

@@ -2,7 +2,8 @@
 
 """Implementations of Alpine functions."""
 
-import math
+import numpy as np
+
 from NiaPy.benchmarks.benchmark import Benchmark
 
 __all__ = ['Alpine1', 'Alpine2']
@@ -17,22 +18,24 @@ class Alpine1(Benchmark):
 
     License: MIT
 
-    Function: **Alpine1 function**
+    Function:
+        **Alpine1 function**
 
-        :math:`f(\mathbf{x}) = \sum_{i=1}^{D} |x_i \sin(x_i)+0.1x_i|`
+        :math:`f(\mathbf{x}) = \sum_{i=1}^{D} \lvert x_i \sin(x_i)+0.1x_i \rvert`
 
         **Input domain:**
         The function can be defined on any input domain but it is usually
         evaluated on the hypercube :math:`x_i ∈ [-10, 10]`, for all :math:`i = 1, 2,..., D`.
 
-        **Global minimum:** :math:`f(x^*) = 0`, at :math:`x^* = (0,...,0)`
+        **Global minimum:**
+        :math:`f(x^*) = 0`, at :math:`x^* = (0,...,0)`
 
     LaTeX formats:
         Inline:
-                $f(\mathbf{x}) = \sum_{i=1}^{D} \left |x_i \sin(x_i)+0.1x_i \right|$
+                $f(\mathbf{x}) = \sum_{i=1}^{D} \lvert x_i \sin(x_i)+0.1x_i \rvert$
 
         Equation:
-                \begin{equation} f(x) = \sum_{i=1}^{D} \left|x_i \sin(x_i) + 0.1x_i \right| \end{equation}
+                \begin{equation} f(\mathbf{x}) = \sum_{i=1}^{D} \lvert x_i \sin(x_i)+0.1x_i \rvert \end{equation}
 
         Domain:
                 $-10 \leq x_i \leq 10$
@@ -64,7 +67,7 @@ class Alpine1(Benchmark):
         Returns:
             str: Latex code
         """
-        return r'''$f(\mathbf{x}) = \sum_{i=1}^{D} \left |x_i \sin(x_i)+0.1x_i \right|$'''
+        return r'''$f(\mathbf{x}) = \sum_{i=1}^{D} \lvert x_i \sin(x_i)+0.1x_i \rvert$'''
 
     def function(self):
         r"""Return benchmark evaluation function.
@@ -77,7 +80,7 @@ class Alpine1(Benchmark):
 
             Args:
                 D (int): Dimensionality of the problem
-                sol (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
+                sol (numpy.ndarray): Solution to check.
 
             Returns:
                 float: Fitness value for the solution.
@@ -85,7 +88,7 @@ class Alpine1(Benchmark):
             val = 0.0
 
             for i in range(D):
-                val += abs(math.sin(sol[i]) + 0.1 * sol[i])
+                val += abs(np.sin(sol[i]) + 0.1 * sol[i])
 
             return val
 
@@ -162,7 +165,7 @@ class Alpine2(Benchmark):
 
             Args:
                 D (int): Dimensionality of the problem
-                sol (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
+                sol (numpy.ndarray): Solution to check.
 
             Returns:
                 float: Fitness value for the solution.
@@ -170,7 +173,7 @@ class Alpine2(Benchmark):
             val = 1.0
 
             for i in range(D):
-                val *= math.sqrt(sol[i]) * math.sin(sol[i])
+                val *= np.sqrt(sol[i]) * np.sin(sol[i])
 
             return val
 

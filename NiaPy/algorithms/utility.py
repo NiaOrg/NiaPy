@@ -10,7 +10,6 @@ class AlgorithmUtility:
 
     Attributes:
         classes (Dict[str, Algorithm]): Mapping from stings to algorithms.
-
     """
 
     def __init__(self):

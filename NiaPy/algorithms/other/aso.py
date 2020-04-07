@@ -177,7 +177,7 @@ class AnarchicSocietyOptimization(Algorithm):
 		nl (float): Normalized range for neighborhood search :math:`\in (0, 1]`.
 		F (float): Mutation parameter.
 		CR (float): Crossover parameter :math:`\in [0, 1]`.
-		Combination (Callable[numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray, float, float, float, float, float, float, Task, mtrand.RandomState]): Function for combining individuals to get new position/individual.
+		Combination (Callable[[numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray, float, float, float, float, float, float, Task, mtrand.RandomState], Tuple[numpy.ndarray, float]]): Function for combining individuals to get new position/individual.
 
 	See Also:
 		* :class:`NiaPy.algorithms.Algorithm`
@@ -189,11 +189,11 @@ class AnarchicSocietyOptimization(Algorithm):
 		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
-			Dict[str, Callable]:
-				* alpha (Callable): TODO
-				* gamma (Callable): TODO
-				* theta (Callable): TODO
-				* nl (Callable): TODO
+			Dict[str, Callable[[Union[list, dict]], bool]]:
+				* alpha (Callable[[Union[float, int]], bool]): TODO
+				* gamma (Callable[[Union[float, int]], bool]): TODO
+				* theta (Callable[[Union[float, int]], bool]): TODO
+				* nl (Callable[[Union[float, int]], bool]): TODO
 				* F (Callable[[Union[float, int]], bool]): TODO
 				* CR (Callable[[Union[float, int]], bool]): TODO
 
@@ -219,16 +219,16 @@ class AnarchicSocietyOptimization(Algorithm):
 			gamma (Optional[List[float]]): Factor for external irregularity index function :math:`\in [0, \infty)`.
 			theta (Optional[List[float]]): Factor for internal irregularity index function :math:`\in [0, \infty)`.
 			d (Optional[Callable[[float, float], float]]): function that takes two arguments that are function values and calcs the distance between them.
-			dn (Optional[Callable[[numpy.ndarray, numpy.ndarray], float]]): function that takes two arguments that are points in function landscape and calcs the distance between them.
+			dn (Optional[Callable[[numpy.ndarray, numpy.ndarray], float]]]): function that takes two arguments that are points in function landscape and calcs the distance between them.
 			nl (Optional[float]): Normalized range for neighborhood search :math:`\in (0, 1]`.
 			F (Optional[float]): Mutation parameter.
 			CR (Optional[float]): Crossover parameter :math:`\in [0, 1]`.
-			Combination (Optional[Callable[numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray, float, float, float, float, float, float, Task, mtrand.RandomState]]): Function for combining individuals to get new position/individual.
+			Combination (Optional[Callable[[numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray, float, float, float, float, float, float, Task, mtrand.RandomState], Tuple[numpy.ndarray, float]]]): Function for combining individuals to get new position/individual.
 
 		See Also:
 			* :func:`NiaPy.algorithms.Algorithm.setParameters`
 			* Combination methods:
-				* :func:`NiaPy.algorithms.other.Elitism'
+				* :func:`NiaPy.algorithms.other.Elitism`
 				* :func:`NiaPy.algorithms.other.Crossover`
 				* :func:`NiaPy.algorithms.other.Sequential`
 		"""
