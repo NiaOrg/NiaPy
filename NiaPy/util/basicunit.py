@@ -98,10 +98,8 @@ class ConvertArgsProxy(PassThroughProxy):
         """
         converted_args = []
         for a in args:
-            try:
-                converted_args.append(a.convert_to(self.unit))
-            except AttributeError:
-                converted_args.append(TaggedValue(a, self.unit))
+            try: converted_args.append(a.convert_to(self.unit))
+            except AttributeError: converted_args.append(TaggedValue(a, self.unit))
         converted_args = tuple([c.get_value() for c in converted_args])
         return PassThroughProxy.__call__(self, *converted_args)
 
@@ -128,8 +126,7 @@ class ConvertReturnProxy(PassThroughProxy):
             Union[NotImplemented, TaggedValue]: Tagged value or error.
         """
         ret = PassThroughProxy.__call__(self, *args)
-        return (NotImplemented if ret is NotImplemented
-                else TaggedValue(ret, self.unit))
+        return (NotImplemented if ret is NotImplemented else TaggedValue(ret, self.unit))
 
 
 class ConvertAllProxy(PassThroughProxy):
@@ -167,10 +164,8 @@ class ConvertAllProxy(PassThroughProxy):
                 converted_args.append(a.get_value())
             else:
                 converted_args.append(a)
-                if hasattr(a, 'get_unit'):
-                    arg_units.append(a.get_unit())
-                else:
-                    arg_units.append(None)
+                if hasattr(a, 'get_unit'): arg_units.append(a.get_unit())
+                else: arg_units.append(None)
         converted_args = tuple(converted_args)
         ret = PassThroughProxy.__call__(self, *converted_args)
         if ret is NotImplemented: return NotImplemented
@@ -205,17 +200,13 @@ class TaggedValue(TaggedValueMeta):
         Returns:
             TaggedValue: Tagged value.
         """
-        # generate a new subclass for value
         value_class = type(value)
         try:
-            subcls = type(f'TaggedValue_of_{value_class.__name__}',
-                          (cls, value_class), {})
-            if subcls not in units.registry:
-                units.registry[subcls] = basicConverter
+            subcls = type(f'TaggedValue_of_{value_class.__name__}', (cls, value_class), {})
+            if subcls not in units.registry: units.registry[subcls] = basicConverter
             return object.__new__(subcls)
         except TypeError:
-            if cls not in units.registry:
-                units.registry[cls] = basicConverter
+            if cls not in units.registry: units.registry[cls] = basicConverter
             return object.__new__(cls)
 
     def __init__(self, value, unit):
@@ -238,11 +229,9 @@ class TaggedValue(TaggedValueMeta):
         Returns:
             Any: Attribute for given name.
         """
-        if name.startswith('__'):
-            return object.__getattribute__(self, name)
+        if name.startswith('__'): return object.__getattribute__(self, name)
         variable = object.__getattribute__(self, 'value')
-        if hasattr(variable, name) and name not in self.__class__.__dict__:
-            return getattr(variable, name)
+        if hasattr(variable, name) and name not in self.__class__.__dict__: return getattr(variable, name)
         return object.__getattribute__(self, name)
 
     def __array__(self, dtype=object):
