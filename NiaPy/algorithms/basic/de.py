@@ -1,9 +1,14 @@
 # encoding=utf8
 
-from numpy import random as rand, argmin, argmax, mean, cos, asarray, append, sin
+import numpy as np
+from numpy import random as rand
 from scipy.spatial.distance import euclidean
 
-from NiaPy.algorithms.algorithm import Algorithm, Individual, defaultIndividualInit
+from NiaPy.algorithms.algorithm import Algorithm
+from NiaPy.algorithms.individual import (
+    Individual,
+    defaultIndividualInit
+)
 from NiaPy.util.utility import objects2array
 
 __all__ = ['DifferentialEvolution', 'DynNpDifferentialEvolution', 'AgingNpDifferentialEvolution', 'CrowdingDifferentialEvolution', 'MultiStrategyDifferentialEvolution', 'DynNpMultiStrategyDifferentialEvolution', 'AgingNpMultiMutationDifferentialEvolution', 'AgingIndividual', 'CrossRand1', 'CrossBest2', 'CrossBest1', 'CrossBest2', 'CrossCurr2Rand1', 'CrossCurr2Best1', 'multiMutations']
@@ -25,7 +30,7 @@ def CrossRand1(pop, ic, x_b, f, cr, rnd=rand, *args):
         :math:`\mathbf{x}_{i, G+1} = \begin{cases} \mathbf{u}_{i, G+1}, & \text{if $f(\mathbf{u}_{i, G+1}) \leq f(\mathbf{x}_{i, G})$}, \\ \mathbf{x}_{i, G}, & \text{otherwise}. \end{cases}`
 
     Args:
-        pop (numpy.ndarray[Individual]): Current population.
+        pop (numpy.ndarray): Current population.
         ic (int): Index of individual being mutated.
         x_b (Individual): Current global best individual.
         f (float): Scale factor.
@@ -40,7 +45,7 @@ def CrossRand1(pop, ic, x_b, f, cr, rnd=rand, *args):
     p = [1 / (len(pop) - 1.0) if i != ic else 0 for i in range(len(pop))] if len(pop) > 3 else None
     r = rnd.choice(len(pop), 3, replace=not len(pop) >= 3, p=p)
     x = [pop[r[0]][i] + f * (pop[r[1]][i] - pop[r[2]][i]) if rnd.rand() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
-    return asarray(x)
+    return np.asarray(x)
 
 def CrossBest1(pop, ic, x_b, f, cr, rnd=rand, *args):
     r"""Mutation strategy with crossover.
@@ -59,7 +64,7 @@ def CrossBest1(pop, ic, x_b, f, cr, rnd=rand, *args):
         :math:`\mathbf{x}_{i, G+1} = \begin{cases} \mathbf{u}_{i, G+1}, & \text{if $f(\mathbf{u}_{i, G+1}) \leq f(\mathbf{x}_{i, G})$}, \\ \mathbf{x}_{i, G}, & \text{otherwise}. \end{cases}`
 
     args:
-        pop (numpy.ndarray[Individual]): Current population.
+        pop (numpy.ndarray): Current population.
         ic (int): Index of individual being mutated.
         x_b (Individual): Current global best individual.
         f (float): Scale factor.
@@ -74,7 +79,7 @@ def CrossBest1(pop, ic, x_b, f, cr, rnd=rand, *args):
     p = [1 / (len(pop) - 1.0) if i != ic else 0 for i in range(len(pop))] if len(pop) > 2 else None
     r = rnd.choice(len(pop), 2, replace=not len(pop) >= 2, p=p)
     x = [x_b[i] + f * (pop[r[0]][i] - pop[r[1]][i]) if rnd.rand() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
-    return asarray(x)
+    return np.asarray(x)
 
 def CrossRand2(pop, ic, x_b, f, cr, rnd=rand, *args):
     r"""Mutation strategy with crossover.
@@ -93,7 +98,7 @@ def CrossRand2(pop, ic, x_b, f, cr, rnd=rand, *args):
         :math:`\mathbf{x}_{i, G+1} = \begin{cases} \mathbf{u}_{i, G+1}, & \text{if $f(\mathbf{u}_{i, G+1}) \leq f(\mathbf{x}_{i, G})$}, \\ \mathbf{x}_{i, G}, & \text{otherwise}. \end{cases}`
 
     Args:
-        pop (numpy.ndarray[Individual]): Current population.
+        pop (numpy.ndarray): Current population.
         ic (int): Index of individual being mutated.
         x_b (Individual): Current global best individual.
         f (float): Scale factor.
@@ -108,7 +113,7 @@ def CrossRand2(pop, ic, x_b, f, cr, rnd=rand, *args):
     p = [1 / (len(pop) - 1.0) if i != ic else 0 for i in range(len(pop))] if len(pop) > 5 else None
     r = rnd.choice(len(pop), 5, replace=not len(pop) >= 5, p=p)
     x = [pop[r[0]][i] + f * (pop[r[1]][i] - pop[r[2]][i]) + f * (pop[r[3]][i] - pop[r[4]][i]) if rnd.rand() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
-    return asarray(x)
+    return np.asarray(x)
 
 def CrossBest2(pop, ic, x_b, f, cr, rnd=rand, *args):
     r"""Mutation strategy with crossover.
@@ -125,7 +130,7 @@ def CrossBest2(pop, ic, x_b, f, cr, rnd=rand, *args):
         :math:`\mathbf{x}_{i, G+1} = \begin{cases} \mathbf{u}_{i, G+1}, & \text{if $f(\mathbf{u}_{i, G+1}) \leq f(\mathbf{x}_{i, G})$}, \\ \mathbf{x}_{i, G}, & \text{otherwise}. \end{cases}`
 
     Args:
-        pop (numpy.ndarray[Individual]): Current population.
+        pop (numpy.ndarray): Current population.
         ic (int): Index of individual being mutated.
         x_b (Individual): Current global best individual.
         f (float): Scale factor.
@@ -140,7 +145,7 @@ def CrossBest2(pop, ic, x_b, f, cr, rnd=rand, *args):
     p = [1 / (len(pop) - 1.0) if i != ic else 0 for i in range(len(pop))] if len(pop) > 4 else None
     r = rnd.choice(len(pop), 4, replace=not len(pop) >= 4, p=p)
     x = [x_b[i] + f * (pop[r[0]][i] - pop[r[1]][i]) + f * (pop[r[2]][i] - pop[r[3]][i]) if rnd.rand() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
-    return asarray(x)
+    return np.asarray(x)
 
 def CrossCurr2Rand1(pop, ic, x_b, f, cr, rnd=rand, *args):
     r"""Mutation strategy with crossover.
@@ -157,7 +162,7 @@ def CrossCurr2Rand1(pop, ic, x_b, f, cr, rnd=rand, *args):
         :math:`\mathbf{x}_{i, G+1} = \begin{cases} \mathbf{u}_{i, G+1}, & \text{if $f(\mathbf{u}_{i, G+1}) \leq f(\mathbf{x}_{i, G})$}, \\ \mathbf{x}_{i, G}, & \text{otherwise}. \end{cases}`
 
     Args:
-        pop (numpy.ndarray[Individual]): Current population.
+        pop (numpy.ndarray]): Current population.
         ic (int): Index of individual being mutated.
         x_b (Individual): Current global best individual.
         f (float): Scale factor.
@@ -172,7 +177,7 @@ def CrossCurr2Rand1(pop, ic, x_b, f, cr, rnd=rand, *args):
     p = [1 / (len(pop) - 1.0) if i != ic else 0 for i in range(len(pop))] if len(pop) > 4 else None
     r = rnd.choice(len(pop), 4, replace=not len(pop) >= 4, p=p)
     x = [pop[ic][i] + f * (pop[r[0]][i] - pop[r[1]][i]) + f * (pop[r[2]][i] - pop[r[3]][i]) if rnd.rand() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
-    return asarray(x)
+    return np.asarray(x)
 
 def CrossCurr2Best1(pop, ic, x_b, f, cr, rnd=rand, **kwargs):
     r"""Mutation strategy with crossover.
@@ -189,7 +194,7 @@ def CrossCurr2Best1(pop, ic, x_b, f, cr, rnd=rand, **kwargs):
         :math:`\mathbf{x}_{i, G+1} = \begin{cases} \mathbf{u}_{i, G+1}, & \text{if $f(\mathbf{u}_{i, G+1}) \leq f(\mathbf{x}_{i, G})$}, \\ \mathbf{x}_{i, G}, & \text{otherwise}. \end{cases}`
 
     Args:
-        pop (numpy.ndarray[Individual]): Current population.
+        pop (numpy.ndarray): Current population.
         ic (int): Index of individual being mutated.
         x_b (Individual): Current global best individual.
         f (float): Scale factor.
@@ -204,7 +209,7 @@ def CrossCurr2Best1(pop, ic, x_b, f, cr, rnd=rand, **kwargs):
     p = [1 / (len(pop) - 1.0) if i != ic else 0 for i in range(len(pop))] if len(pop) > 3 else None
     r = rnd.choice(len(pop), 3, replace=not len(pop) >= 3, p=p)
     x = [pop[ic][i] + f * (x_b[i] - pop[r[0]][i]) + f * (pop[r[1]][i] - pop[r[2]][i]) if rnd.rand() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
-    return asarray(x)
+    return np.asarray(x)
 
 class DifferentialEvolution(Algorithm):
     r"""Implementation of Differential evolution algorithm.
@@ -331,7 +336,7 @@ class DifferentialEvolution(Algorithm):
                 3. New global best solutions fitness/objective value.
         """
         arr = objects2array([e if e.f < pop[i].f else pop[i] for i, e in enumerate(npop)])
-        xb, fxb = self.getBest(arr, asarray([e.f for e in arr]), xb, fxb)
+        xb, fxb = self.getBest(arr, np.asarray([e.f for e in arr]), xb, fxb)
         return arr, xb, fxb
 
     def postSelection(self, pop, task, xb, fxb, **kwargs):
@@ -378,7 +383,7 @@ class DifferentialEvolution(Algorithm):
         npop = self.evolve(pop, xb, task)
         pop, xb, fxb = self.selection(pop, npop, xb, fxb, task=task)
         pop, xb, fxb = self.postSelection(pop, task, xb, fxb)
-        fpop = asarray([x.f for x in pop])
+        fpop = np.asarray([x.f for x in pop])
         xb, fxb = self.getBest(pop, fpop, xb, fxb)
         return pop, fpop, xb, fxb, {}
 
@@ -450,9 +455,9 @@ class CrowdingDifferentialEvolution(DifferentialEvolution):
         """
         P = []
         for e in npop:
-            i = argmin([euclidean(e, f) for f in pop])
+            i = np.argmin([euclidean(e, f) for f in pop])
             P.append(pop[i] if pop[i].f < e.f else e)
-        return asarray(P), xb, fxb
+        return np.asarray(P), xb, fxb
 
 class DynNpDifferentialEvolution(DifferentialEvolution):
     r"""Implementation of Dynamic poulation size Differential evolution algorithm.
@@ -706,7 +711,7 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
         Returns:
             int: Number of individuals to dye.
         """
-        return int(self.delta_np * abs(sin(t)))
+        return int(self.delta_np * np.abs(np.sin(t)))
 
     def deltaPopC(self, t):
         r"""Calculate how many individuals are going to be created.
@@ -717,7 +722,7 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
         Returns:
             int: Number of individuals to be born.
         """
-        return int(self.delta_np * abs(cos(t)))
+        return int(self.delta_np * abs(np.cos(t)))
 
     def aging(self, task, pop):
         r"""Apply aging to individuals.
@@ -729,9 +734,9 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
         Returns:
             numpy.ndarray[Individual]: New population.
         """
-        fpop = asarray([x.f for x in pop])
-        x_b, x_w = pop[argmin(fpop)], pop[argmax(fpop)]
-        avg, npop = mean(fpop), []
+        fpop = np.asarray([x.f for x in pop])
+        x_b, x_w = pop[np.argmin(fpop)], pop[np.argmax(fpop)]
+        avg, npop = np.mean(fpop), []
         for x in pop:
             x.age += 1
             Lt = round(self.age(Lt_min=self.Lt_min, Lt_max=self.Lt_max, mu=self.mu, x_f=x.f, avg=avg, x_gw=x_w.f, x_gb=x_b.f))
@@ -789,8 +794,8 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
                 3. New global best solutions fitness/objective value.
         """
         npop, xb, fxb = DifferentialEvolution.selection(self, pop, npop, xb, fxb, task)
-        npop = append(npop, self.popIncrement(pop, task))
-        xb, fxb = self.getBest(npop, asarray([e.f for e in npop]), xb, fxb)
+        npop = np.append(npop, self.popIncrement(pop, task))
+        xb, fxb = self.getBest(npop, np.asarray([e.f for e in npop]), xb, fxb)
         pop = self.aging(task, npop)
         return pop, xb, fxb
 
@@ -830,7 +835,7 @@ def multiMutations(pop, i, xb, F, CR, rnd, task, itype, strategies, **kwargs):
         Individual: Best individual from applyed mutations strategies.
     """
     L = [itype(x=strategy(pop, i, xb, F, CR, rnd=rnd), task=task, e=True, rnd=rnd) for strategy in strategies]
-    return L[argmin([x.f for x in L])]
+    return L[np.argmin([x.f for x in L])]
 
 class MultiStrategyDifferentialEvolution(DifferentialEvolution):
     r"""Implementation of Differential evolution algorithm with multiple mutation strateys.

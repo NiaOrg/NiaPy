@@ -1,4 +1,5 @@
 # encoding=utf8
+
 import numpy as np
 
 from NiaPy.algorithms.algorithm import Algorithm

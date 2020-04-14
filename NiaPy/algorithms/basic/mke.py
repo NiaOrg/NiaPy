@@ -1,11 +1,21 @@
 # encoding=utf8
+
 from math import ceil
 
-from numpy import apply_along_axis, vectorize, argmin, argmax, full, tril, asarray
+import numpy as np
 
-from NiaPy.algorithms.algorithm import Algorithm, Individual, defaultIndividualInit, defaultNumPyInit
+from NiaPy.algorithms.algorithm import Algorithm
+from NiaPy.algorithms.individual import (
+    Individual,
+    defaultNumPyInit,
+    defaultIndividualInit
+)
 
-__all__ = ['MonkeyKingEvolutionV1', 'MonkeyKingEvolutionV2', 'MonkeyKingEvolutionV3']
+__all__ = [
+    'MonkeyKingEvolutionV1',
+    'MonkeyKingEvolutionV2',
+    'MonkeyKingEvolutionV3'
+]
 
 class MkeSolution(Individual):
     r"""Implementation of Monkey King Evolution individual.
@@ -200,9 +210,9 @@ class MonkeyKingEvolutionV1(Algorithm):
             task (Task): Optimization task
         """
         p.MonkeyKing = False
-        A = apply_along_axis(task.repair, 1, self.moveMK(p.x, task), self.Rand)
-        A_f = apply_along_axis(task.eval, 1, A)
-        ib = argmin(A_f)
+        A = np.apply_along_axis(task.repair, 1, self.moveMK(p.x, task), self.Rand)
+        A_f = np.apply_along_axis(task.eval, 1, A)
+        ib = np.argmin(A_f)
         p.x, p.f = A[ib], A_f[ib]
 
     def movePopulation(self, pop, xb, task):
@@ -257,7 +267,7 @@ class MonkeyKingEvolutionV1(Algorithm):
         """
         pop = self.movePopulation(pop, xb, task)
         for i in self.Rand.choice(self.NP, int(self.R * len(pop)), replace=False): pop[i].MonkeyKing = True
-        fpop = asarray([m.f for m in pop])
+        fpop = np.asarray([m.f for m in pop])
         xb, fxb = self.getBest(pop, fpop, xb, fxb)
         return pop, fpop, xb, fxb, {}
 
@@ -408,10 +418,10 @@ class MonkeyKingEvolutionV3(MonkeyKingEvolutionV1):
         r"""Transform function.
 
         Args:
-            x (Union[int, float]): Sould be 0 or 1.
+            x (Union[int, float]): Should be 0 or 1.
 
         Returns:
-            float: If 0 thet 1 else 1 then 0.
+            float: If 0 theta 1 else 1 then 0.
         """
         return 0.0 if x == 1.0 else 1.0
 
@@ -458,15 +468,15 @@ class MonkeyKingEvolutionV3(MonkeyKingEvolutionV1):
                     * k (int): TODO.
                     * c (int): TODO.
         """
-        X_gb = apply_along_axis(task.repair, 1, xb + self.FC * X[self.Rand.choice(len(X), c)] - X[self.Rand.choice(len(X), c)], self.Rand)
-        X_gb_f = apply_along_axis(task.eval, 1, X_gb)
+        X_gb = np.apply_along_axis(task.repair, 1, xb + self.FC * X[self.Rand.choice(len(X), c)] - X[self.Rand.choice(len(X), c)], self.Rand)
+        X_gb_f = np.apply_along_axis(task.eval, 1, X_gb)
         xb, fxb = self.getBest(X_gb, X_gb_f, xb, fxb)
-        M = full([self.NP, task.D], 1.0)
-        for i in range(k): M[i * task.D:(i + 1) * task.D] = tril(M[i * task.D:(i + 1) * task.D])
+        M = np.full([self.NP, task.D], 1.0)
+        for i in range(k): M[i * task.D:(i + 1) * task.D] = np.tril(M[i * task.D:(i + 1) * task.D])
         for i in range(self.NP): self.Rand.shuffle(M[i])
-        X = apply_along_axis(task.repair, 1, M * X + vectorize(self.neg)(M) * xb, self.Rand)
-        X_f = apply_along_axis(task.eval, 1, X)
+        X = np.apply_along_axis(task.repair, 1, M * X + np.vectorize(self.neg)(M) * xb, self.Rand)
+        X_f = np.apply_along_axis(task.eval, 1, X)
         xb, fxb = self.getBest(X, X_f, xb, fxb)
-        iw, ib_gb = argmax(X_f), argmin(X_gb_f)
+        iw, ib_gb = np.argmax(X_f), np.argmin(X_gb_f)
         if X_gb_f[ib_gb] <= X_f[iw]: X[iw], X_f[iw] = X_gb[ib_gb], X_gb_f[ib_gb]
         return X, X_f, xb, fxb, {'k': k, 'c': c}
