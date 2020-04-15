@@ -16,8 +16,11 @@ from numpy import (
     std
 )
 
-from NiaPy.task import StoppingTask, OptimizationType
-from NiaPy.algorithms import AlgorithmUtility
+from NiaPy.task import (
+    StoppingTask,
+    OptimizationType
+)
+from NiaPy.factory import Factory
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.runner.Runner')
@@ -63,6 +66,7 @@ class Runner:
         self.useAlgorithms = useAlgorithms
         self.useBenchmarks = useBenchmarks
         self.results = {}
+        self.factory = Factory()
 
     def benchmark_factory(self, name):
         r"""Create optimization task.
@@ -251,7 +255,7 @@ class Runner:
 
                 self.results[alg_name][bench_name] = []
                 for _ in range(self.nRuns):
-                    algorithm = AlgorithmUtility().get_algorithm(alg)
+                    algorithm = self.factory.get_algorithm(alg)
                     benchmark_stopping_task = self.benchmark_factory(bench)
                     self.results[alg_name][bench_name].append(algorithm.run(benchmark_stopping_task))
             if verbose:

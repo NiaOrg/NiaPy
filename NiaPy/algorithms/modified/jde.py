@@ -15,10 +15,11 @@ from NiaPy.algorithms.individual import Individual
 from NiaPy.util.utility import objects2array
 
 __all__ = [
+    'SolutionjDE',
     'SelfAdaptiveDifferentialEvolution',
-    'DynNpSelfAdaptiveDifferentialEvolutionAlgorithm',
     'AgingSelfAdaptiveDifferentialEvolution',
     'MultiStrategySelfAdaptiveDifferentialEvolution',
+    'DynNpSelfAdaptiveDifferentialEvolutionAlgorithm',
     'DynNpMultiStrategySelfAdaptiveDifferentialEvolution'
 ]
 

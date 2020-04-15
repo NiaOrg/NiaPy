@@ -11,14 +11,17 @@ __all__ = ['Katsuura']
 class Katsuura(Benchmark):
     r"""Implementations of Katsuura functions.
 
-    Date: 2018
+    Date:
+        2018
 
-    Author: Klemen Berkovič
+    Author:
+        Klemen Berkovič
 
-    License: MIT
+    License:
+        MIT
 
     Function:
-    **Katsuura Function**
+        **Katsuura Function**
 
         :math:`f(\textbf{x}) = \frac{10}{D^2} \prod_{i=1}^D \left( 1 + i \sum_{j=1}^{32} \frac{\lvert 2^j x_i - round\left(2^j x_i \right) \rvert}{2^j} \right)^\frac{10}{D^{1.2}} - \frac{10}{D^2}`
 
@@ -38,10 +41,16 @@ class Katsuura(Benchmark):
         Domain:
                 $-100 \leq x_i \leq 100$
 
+    Attributes:
+        Name (List[str]): Names of the benchmark.
+
+    See Also:
+        * :class:`NiaPy.benchmarks.Benchmark`
+
     Reference:
         http://www5.zzu.edu.cn/__local/A/69/BC/D3B5DFE94CD2574B38AD7CD1D12_C802DAFE_BC0C0.pdf
     """
-    Name = ['Katsuura']
+    Name = ['Katsuura', 'katsuura']
 
     def __init__(self, Lower=-100.0, Upper=100.0, **kwargs):
         r"""Initialize of Katsuura benchmark.
@@ -49,6 +58,7 @@ class Katsuura(Benchmark):
         Args:
             Lower (Optional[float]): Lower bound of problem.
             Upper (Optional[float]): Upper bound of problem.
+            kwargs (Dict[str, Any]): Additional arguments.
 
         See Also:
             :func:`NiaPy.benchmarks.Benchmark.__init__`
@@ -68,14 +78,15 @@ class Katsuura(Benchmark):
         r"""Return benchmark evaluation function.
 
         Returns:
-            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function
+            Callable[[int, Union[int, float, list, numpy.ndarray], Dict[str, Any]], float]: Fitness function
         """
-        def f(D, x):
+        def f(D, x, **kwargs):
             r"""Fitness function.
 
             Args:
                 D (int): Dimensionality of the problem
-                sol (numpy.ndarray): Solution to check.
+                x (Union[int, float, list, numpy.ndarray]): Solution to check.
+                kwargs (Dict[str, Any]): Additional arguments.
 
             Returns:
                 float: Fitness value for the solution.

@@ -38,19 +38,27 @@ class Ridge(Benchmark):
         Domain:
                 $-64 \leq x_i \leq 64$
 
-    Reference: http://www.cs.unm.edu/~neal.holts/dga/benchmarkFunction/ridge.html
-    """
-    Name = ['Ridge']
+    Reference:
+        http://www.cs.unm.edu/~neal.holts/dga/benchmarkFunction/ridge.html
 
-    def __init__(self, Lower=-64.0, Upper=64.0):
+    Attributes:
+        Name (List[str]): Names of the benchmark.
+
+    See Also:
+        * :class:`NiaPy.benchmarks.Benchmark`
+    """
+    Name = ['Ridge', 'ridge']
+
+    def __init__(self, Lower=-64.0, Upper=64.0, **kwargs):
         r"""Initialize of Ridge benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.
             Upper (Optional[float]): Upper bound of problem.
+            kwargs (Dict[str, Any]): Additional arguments.
 
         See Also:
-            :func:`NiaPy.benchmarks.Benchmark.__init__`
+            * :func:`NiaPy.benchmarks.Benchmark.__init__`
         """
         Benchmark.__init__(self, Lower, Upper)
 
@@ -67,14 +75,15 @@ class Ridge(Benchmark):
         r"""Return benchmark evaluation function.
 
         Returns:
-            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function
+            Callable[[int, Union[int, float, list, numpy.ndarray], Dict[str, Any]], float]: Fitness function
         """
-        def evaluate(D, sol):
+        def evaluate(D, sol, **kwargs):
             r"""Fitness function.
 
             Args:
                 D (int): Dimensionality of the problem
-                sol (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
+                sol (Union[int, float, list, numpy.ndarray]): Solution to check.
+                kwargs (Dict[str, Any]): Additional arguments.
 
             Returns:
                 float: Fitness value for the solution.

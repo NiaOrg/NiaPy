@@ -1,8 +1,16 @@
 # encoding=utf8
+
 from unittest import skip
 
-from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
-from NiaPy.algorithms.modified import StrategyAdaptationDifferentialEvolution, StrategyAdaptationDifferentialEvolutionV1
+from NiaPy.algorithms.modified.sade import (
+    StrategyAdaptationDifferentialEvolution,
+    StrategyAdaptationDifferentialEvolutionV1
+)
+from NiaPy.tests.test_algorithm import (
+    AlgorithmTestCase,
+    MyBenchmark
+)
+
 
 class SADETestCase(AlgorithmTestCase):
     def setUp(self):
@@ -20,6 +28,7 @@ class SADETestCase(AlgorithmTestCase):
         sade_griewank = self.algo(n=10, C_a=5, C_r=0.5, seed=self.seed)
         sade_griewankc = self.algo(n=10, C_a=5, C_r=0.5, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, sade_griewank, sade_griewankc)
+
 
 class SADEv1TestCase(AlgorithmTestCase):
     def setUp(self):

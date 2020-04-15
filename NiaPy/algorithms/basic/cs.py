@@ -97,7 +97,7 @@ class CuckooSearch(Algorithm):
             task (Task): Optimization task
 
         Returns:
-            Tuple[numpy.ndarray, numpy.ndarray[float]]:
+            Tuple[numpy.ndarray, numpy.ndarray]:
                 1. New population
                 2. New population fitness/function values
         """
@@ -113,7 +113,7 @@ class CuckooSearch(Algorithm):
             task (Task): Optimization task.
 
         Returns:
-            Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+            Tuple[numpy.ndarray, numpy.ndarray, Dict[str, Any]]:
                 1. Initialized population.
                 2. Initialized populations fitness/function values.
                 3. Additional arguments:

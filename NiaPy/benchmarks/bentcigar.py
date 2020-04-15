@@ -37,20 +37,27 @@ class BentCigar(Benchmark):
         Domain:
                 $-100 \leq x_i \leq 100$
 
+    Attributes:
+        Name (List[str]): Names of benchmark.
+
+    See Also:
+        * :class:`NiaPy.benchmarks.Benchmark`
+
     Reference:
         http://www5.zzu.edu.cn/__local/A/69/BC/D3B5DFE94CD2574B38AD7CD1D12_C802DAFE_BC0C0.pdf
     """
-    Name = ['BentCigar']
+    Name = ['BentCigar', 'bentcigar']
 
-    def __init__(self, Lower=-100.0, Upper=100.0):
+    def __init__(self, Lower=-100.0, Upper=100.0, **kwargs):
         r"""Initialize of Bent Cigar benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.
             Upper (Optional[float]): Upper bound of problem.
+            kwargs (Dict[str, Any]): Additional arguments.
 
         See Also:
-            :func:`NiaPy.benchmarks.Benchmark.__init__`
+            * :func:`NiaPy.benchmarks.Benchmark.__init__`
         """
         Benchmark.__init__(self, Lower, Upper)
 
@@ -67,14 +74,15 @@ class BentCigar(Benchmark):
         r"""Return benchmark evaluation function.
 
         Returns:
-            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function
+            Callable[[int, Union[int, float, list, numpy.ndarray], Dict[str, Any]], float]: Fitness function
         """
-        def f(D, sol):
+        def f(D, sol, **kwargs):
             r"""Fitness function.
 
             Args:
                 D (int): Dimensionality of the problem
-                sol (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
+                sol (Union[int, float, list, numpy.ndarray]): Solution to check.
+                kwargs (Dict[str, Any]): Additional arguments.
 
             Returns:
                 float: Fitness value for the solution.

@@ -25,15 +25,14 @@ class Clustering(Benchmark):
         MIT
 
     Function:
-        Clustering function
-
+        **Clustering function**
         :math:`f(\mathbf{O}, \mathbf{Z}) = \sum_{i=1}^N \sum_{j=1}^K w_{ij} || \mathbf{o}_i - \mathbf{z}_j ||^2`
 
         Input domain:
-            Depends on dataset used.
+        Depends on dataset used.
 
         Global minimum:
-            Depends on dataset used.
+        Depends on dataset used.
 
     LaTeX formats:
         Inline:
@@ -43,19 +42,23 @@ class Clustering(Benchmark):
             \begin{equation} f(\mathbf{O}, \mathbf{Z}) = \sum_{i=1}^N \sum_{j=1}^K w_{ij} || \mathbf{o}_i - \mathbf{z}_j ||^2 \end{equation}
 
     Attributes:
-        Name (List[str): List of names for the benchmark
+        Name (List[str]): List of names for the benchmark
         dataset (numpy.ndarray): Dataset to use for clustering.
         a (int): Number of attirbutes in dataset.
+
+    See Also:
+        * :class:`NiaPy.benchmarks.Benchmark`
     """
-    Name = ["Clustering"]
+    Name = ["Clustering", "clustering"]
     dataset = None
     a = 0
 
-    def __init__(self, dataset):
+    def __init__(self, dataset, **kwargs):
         """Initialize Clustering benchmark.
 
         Args:
             dataset (numpy.ndarray): Dataset.
+            kwargs (Dict[str, Any]): Additional arguments.
 
         See Also:
             * :func:`NiaPy.benchmarks.Benchmark.__init__`
@@ -98,15 +101,14 @@ class ClusteringMin(Clustering):
         MIT
 
     Function:
-        Clustering min function
-
+        **Clustering min function**
         :math:`f(\mathbf{O}, \mathbf{Z}) = \min_{j=1}^M \left( \sum_{i=1}^N w_{ij} || \mathbf{o}_i - \mathbf{z}_j ||^2 \right)`
 
         Input domain:
-            Depends on dataset used.
+        Depends on dataset used.
 
         Global minimum:
-            Depends on dataset used.
+        Depends on dataset used.
 
     LaTeX formats:
         Inline:
@@ -115,16 +117,20 @@ class ClusteringMin(Clustering):
         Equation:
             \begin{equation}  f(\mathbf{O}, \mathbf{Z}) = \min_{j=1}^M \left( \sum_{i=1}^N w_{ij} || \mathbf{o}_i - \mathbf{z}_j ||^2 \right) \end{equation}
 
+    Attributes:
+        Name (List[str]): Names of the benchmark.
+
     See Also:
         * :class:`NiaPy.benchmark.Clustering`
     """
-    Name = ["ClusteringMin"]
+    Name = ["ClusteringMin", "clusteringmin"]
 
-    def __init__(self, dataset):
+    def __init__(self, dataset, **kwargs):
         """Initialize Clustering min benchmark.
 
         Args:
             dataset (numpy.ndarray): Dataset.
+            kwargs (Dict[str, Any]): Additional arguments.
 
         See Also:
             * :func:`NiaPy.benchmarks.Clustering.__init__`
@@ -168,15 +174,14 @@ class ClusteringMinPenalty(ClusteringMin):
         MIT
 
     Function:
-        Clustering min with penalty function
-
+        **Clustering min with penalty function**
         :math:`\mathcal{f} \left(\mathbf{O}, \mathbf{Z} \right) = \mathcal{p} \left( \mathbf{Z} \right) + \sum_{i=0}^{\mathit{N}-1} \min_{\forall j \in \mathfrak{k}} \left( w_{i, j} \times || \mathbf{o}_i - \mathbf{z}_j ||^2 \right) \\ \mathcal{p} \left(\mathbf{Z} \right) = \sum_{\forall \mathbf{e} \in \mathfrak{I}} \sum_{j=0}^{\mathit{A}-1} \min \left(\frac{r}{\mathit{K}}, \max \left(0, \frac{r}{\mathit{K}} - || z_{e_0, j} - z_{e_1, j} ||^2 \right) \right)`
 
         Input domain:
-            Depends on dataset used.
+        Depends on dataset used.
 
         Global minimum:
-            Depends on dataset used.
+        Depends on dataset used.
 
     LaTeX formats:
         Inline:
@@ -186,18 +191,19 @@ class ClusteringMinPenalty(ClusteringMin):
             \begin{equation} \mathcal{f} \left(\mathbf{O}, \mathbf{Z} \right) = \mathcal{p} \left( \mathbf{Z} \right) + \sum_{i=0}^{\mathit{N}-1} \min_{\forall j \in \mathfrak{k}} \left( w_{i, j} \times || \mathbf{o}_i - \mathbf{z}_j ||^2 \right) \\ \mathcal{p} \left(\mathbf{Z} \right) = \sum_{\forall \mathbf{e} \in \mathfrak{I}} \sum_{j=0}^{\mathit{A}-1} \min \left(\frac{r}{\mathit{K}}, \max \left(0, \frac{r}{\mathit{K}} - || z_{e_0, j} - z_{e_1, j} ||^2 \right) \right) \end{equation}
 
     Attributes:
-        range: Array of ranges between lower and upper values.
+        Name (List[str]): Names of the benchmark.
 
     See Also:
         * :class:`NiaPy.benchmark.ClusteringMin`
     """
-    Name = ["ClusteringMinPenalty"]
+    Name = ["ClusteringMinPenalty", "clusteringminpen"]
 
-    def __init__(self, dataset):
+    def __init__(self, dataset, **kwargs):
         """Initialize Clustering min benchmark.
 
         Args:
             dataset (numpy.ndarray): Dataset.
+            kwargs (Dict[str, Any]): Additional arguments.
 
         See Also:
             * :func:`NiaPy.benchmarks.ClusteringMin.__init__`

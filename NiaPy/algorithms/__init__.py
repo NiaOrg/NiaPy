@@ -11,17 +11,13 @@ from NiaPy.algorithms.individual import (
     defaultNumPyInit,
     defaultIndividualInit
 )
-from NiaPy.algorithms.statistics import BasicStatistics
-from NiaPy.algorithms.utility import AlgorithmUtility
 
 __all__ = [
     'Individual',
     'defaultNumPyInit',
     'defaultIndividualInit',
     'Algorithm',
-    'AlgorithmUtility',
     'basic',
     'modified',
-    'other',
-    'BasicStatistics'
+    'other'
 ]

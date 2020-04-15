@@ -12,12 +12,21 @@ __all__ = ['Benchmark']
 class Benchmark:
     r"""Class representing benchmarks.
 
+    Date:
+        2018
+
+    Author:
+        Klemen Berkovič
+
+    License:
+        MIT
+
     Attributes:
         Name (List[str]): List of names representing benchmark names.
         Lower (Union[int, float, list, numpy.ndarray]): Lower bounds.
         Upper (Union[int, float, list, numpy.ndarray]): Upper bounds.
     """
-    Name = ['Benchmark', 'BBB']
+    Name = ['Benchmark', 'BBB', 'benchmark', 'bbb']
 
     def __init__(self, Lower, Upper, **kwargs):
         r"""Initialize benchmark.
@@ -25,7 +34,7 @@ class Benchmark:
         Args:
             Lower (Union[int, float, list, numpy.ndarray]): Lower bounds.
             Upper (Union[int, float, list, numpy.ndarray]): Upper bounds.
-            **kwargs (Dict[str, Any]): Additional arguments.
+            kwargs (Dict[str, Any]): Additional arguments.
         """
         self.Lower, self.Upper = Lower, Upper
 
@@ -42,16 +51,17 @@ class Benchmark:
         r"""Get the optimization function.
 
         Returns:
-            Callable[[int, Union[list, numpy.ndarray]], float]: Fitness funciton.
+            Callable[[int, Union[list, numpy.ndarray]], float]: Fitness function.
         """
-        def fun(D, X):
+        def fun(D, X, **kwargs):
             r"""Initialize benchmark.
 
             Args:
-                D (int): Dimesionality of the problem.
+                D (int): Dimensionality of the problem.
                 X (Union[int, float, list, numpy.ndarray]): Solution to the problem.
+                kwargs (Dict[str, Any]): Additional arguments for the objective/utility/fitness function.
 
-            Retruns:
+            Returns:
                 float: Fitness value for the solution
             """
             return np.inf
@@ -75,7 +85,7 @@ class Benchmark:
         Args:
             x (float): First coordinate.
             y (float): Second coordinate.
-            f (Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]): Evaluation function.
+            f (Callable[[int, Union[int, float, list, numpy.ndarray]], float]): Evaluation function.
 
         Returns:
             float: Calculate functional value for given input

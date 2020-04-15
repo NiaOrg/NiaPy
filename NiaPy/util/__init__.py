@@ -7,9 +7,14 @@ from NiaPy.util.utility import (
     limitInversRepair,
     wangRepair,
     randRepair,
-    reflectRepair
+    reflectRepair,
+    explore_package_for_classes
 )
-from NiaPy.util.argparser import MakeArgParser, getArgs, getDictArgs
+from NiaPy.util.argparser import (
+    MakeArgParser,
+    getArgs,
+    getDictArgs
+)
 from NiaPy.util.exception import (
     FesException,
     GenException,
@@ -32,4 +37,5 @@ __all__ = [
     'GenException',
     'TimeException',
     'RefException',
+    'explore_package_for_classes'
 ]

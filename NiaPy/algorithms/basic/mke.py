@@ -12,6 +12,7 @@ from NiaPy.algorithms.individual import (
 )
 
 __all__ = [
+    'MkeSolution',
     'MonkeyKingEvolutionV1',
     'MonkeyKingEvolutionV2',
     'MonkeyKingEvolutionV3'

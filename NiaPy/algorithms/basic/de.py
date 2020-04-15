@@ -11,7 +11,24 @@ from NiaPy.algorithms.individual import (
 )
 from NiaPy.util.utility import objects2array
 
-__all__ = ['DifferentialEvolution', 'DynNpDifferentialEvolution', 'AgingNpDifferentialEvolution', 'CrowdingDifferentialEvolution', 'MultiStrategyDifferentialEvolution', 'DynNpMultiStrategyDifferentialEvolution', 'AgingNpMultiMutationDifferentialEvolution', 'AgingIndividual', 'CrossRand1', 'CrossBest2', 'CrossBest1', 'CrossBest2', 'CrossCurr2Rand1', 'CrossCurr2Best1', 'multiMutations']
+__all__ = [
+    'DifferentialEvolution',
+    'DynNpDifferentialEvolution',
+    'AgingNpDifferentialEvolution',
+    'CrowdingDifferentialEvolution',
+    'MultiStrategyDifferentialEvolution',
+    'DynNpMultiStrategyDifferentialEvolution',
+    'AgingNpMultiMutationDifferentialEvolution',
+    'AgingIndividual',
+    'CrossRand1',
+    'CrossRand2',
+    'CrossBest2',
+    'CrossBest1',
+    'CrossBest2',
+    'CrossCurr2Rand1',
+    'CrossCurr2Best1',
+    'multiMutations'
+]
 
 def CrossRand1(pop, ic, x_b, f, cr, rnd=rand, *args):
     r"""Mutation strategy with crossover.

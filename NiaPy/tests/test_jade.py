@@ -1,11 +1,19 @@
 # encoding=utf8
+
 from unittest import TestCase, skip
 
 import numpy as np
 
-from NiaPy.util import fullArray
-from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
-from NiaPy.algorithms.modified import AdaptiveArchiveDifferentialEvolution, CrossRandCurr2Pbest
+from NiaPy.util.utility import fullArray
+from NiaPy.algorithms.modified import (
+    AdaptiveArchiveDifferentialEvolution,
+    CrossRandCurr2Pbest
+)
+from NiaPy.tests.test_algorithm import (
+    AlgorithmTestCase,
+    MyBenchmark
+)
+
 
 class CrossRandCurr2pbestTestCase(TestCase):
     def setUp(self):
@@ -26,6 +34,7 @@ class CrossRandCurr2pbestTestCase(TestCase):
         for i, x in enumerate(pop):
             xn = CrossRandCurr2Pbest(pop, i, xb, self.F, self.CR, self.p, apop)
             self.assertFalse(np.array_equal(x, xn))
+
 
 class JADETestCase(AlgorithmTestCase):
     def setUp(self):

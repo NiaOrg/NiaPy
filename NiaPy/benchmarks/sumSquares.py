@@ -40,15 +40,22 @@ class SumSquares(Benchmark):
         A literature survey of benchmark functions for global optimisation problems.
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
-    """
-    Name = ['SumSquares']
 
-    def __init__(self, Lower=-10.0, Upper=10.0):
+    Attributes:
+        Name (List[str]): Names of the benchmark.
+
+    See Also:
+        * :class:`NiaPy.benchmarks.Benchmark`
+    """
+    Name = ['SumSquares', 'sumSquares', 'sumsquares']
+
+    def __init__(self, Lower=-10.0, Upper=10.0, **kwargs):
         r"""Initialize of Sum Squares benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.
             Upper (Optional[float]): Upper bound of problem.
+            kwargs (dict): Additional arguments.
 
         See Also:
             :func:`NiaPy.benchmarks.Benchmark.__init__`
@@ -68,14 +75,15 @@ class SumSquares(Benchmark):
         r"""Return benchmark evaluation function.
 
         Returns:
-            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function
+            Callable[[int, Union[int, float, list, numpy.ndarray], dict], float]: Fitness function
         """
-        def evaluate(D, sol):
+        def evaluate(D, sol, **kwargs):
             r"""Fitness function.
 
             Args:
                 D (int): Dimensionality of the problem
-                sol (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
+                sol (Union[int, float, list, numpy.ndarray]): Solution to check.
+                kwargs (dict): Additional arguments.
 
             Returns:
                 float: Fitness value for the solution.

@@ -1,7 +1,10 @@
 # encoding=utf8
 
-from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
 from NiaPy.algorithms.basic import CatSwarmOptimization
+from NiaPy.tests.test_algorithm import (
+    AlgorithmTestCase,
+    MyBenchmark
+)
 
 
 class CSOTestCase(AlgorithmTestCase):

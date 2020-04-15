@@ -6,7 +6,13 @@ import numpy as np
 
 from NiaPy.benchmarks.benchmark import Benchmark
 
-__all__ = ['Schwefel', 'Schwefel221', 'Schwefel222', 'ModifiedSchwefel']
+__all__ = [
+    'Schwefel',
+    'Schwefel221',
+    'Schwefel222',
+    'ModifiedSchwefel'
+]
+
 
 class Schwefel(Benchmark):
     r"""Implementation of Schewel function.
@@ -40,15 +46,22 @@ class Schwefel(Benchmark):
 
     Reference:
         https://www.sfu.ca/~ssurjano/schwef.html
-    """
-    Name = ['Schwefel']
 
-    def __init__(self, Lower=-500.0, Upper=500.0):
+    Attributes:
+        Name (List[str]): Names of the benchmark.
+
+    See Also:
+        * :class:`NiaPy.benchmarks.Benchmark`
+    """
+    Name = ['Schwefel', 'schwefel']
+
+    def __init__(self, Lower=-500.0, Upper=500.0, **kwargs):
         r"""Initialize of Schwefel benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.
             Upper (Optional[float]): Upper bound of problem.
+            kwargs (dict): Additional arguments.
 
         See Also:
             :func:`NiaPy.benchmarks.Benchmark.__init__`
@@ -121,15 +134,22 @@ class Schwefel221(Benchmark):
         A literature survey of benchmark functions for global optimisation problems.
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
-    """
-    Name = ['Schwefel221']
 
-    def __init__(self, Lower=-100.0, Upper=100.0):
+    Attributes:
+        Name (List[str]): Names of the benchmark.
+
+    See Also:
+        * :class:`NiaPy.benchmarks.Benchmark`
+    """
+    Name = ['Schwefel221', 'schwefel221']
+
+    def __init__(self, Lower=-100.0, Upper=100.0, **kwargs):
         r"""Initialize of Schwefel221 benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.
             Upper (Optional[float]): Upper bound of problem.
+            kwargs (dict): Additional arguments.
 
         See Also:
             :func:`NiaPy.benchmarks.Benchmark.__init__`
@@ -203,15 +223,22 @@ class Schwefel222(Benchmark):
         A literature survey of benchmark functions for global optimisation problems.
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
-    """
-    Name = ['Schwefel222']
 
-    def __init__(self, Lower=-100.0, Upper=100.0):
+    Attributes:
+        Name (List[str]): Names of the benchmark.
+
+    See Also:
+        * :class:`NiaPy.benchmarks.Benchmark`
+    """
+    Name = ['Schwefel222', 'schwefel222']
+
+    def __init__(self, Lower=-100.0, Upper=100.0, **kwargs):
         r"""Initialize of Schwefel222 benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.
             Upper (Optional[float]): Upper bound of problem.
+            kwargs (Dict[str, Any]): Additional arguments.
 
         See Also:
             :func:`NiaPy.benchmarks.Benchmark.__init__`
@@ -231,7 +258,7 @@ class Schwefel222(Benchmark):
         r"""Return benchmark evaluation function.
 
         Returns:
-            Callable[[int, numpy.ndarray, dict], float]: Fitness function
+            Callable[[int, numpy.ndarray, Dict[str, Any]], float]: Fitness function
         """
         def evaluate(D, sol, **dict):
             r"""Fitness function.
@@ -239,7 +266,7 @@ class Schwefel222(Benchmark):
             Args:
                 D (int): Dimensionality of the problem
                 sol (numpy.ndarray): Solution to check.
-                dict (dict): Additional arguments.
+                dict (Dict[str, Any]): Additional arguments.
 
             Returns:
                 float: Fitness value for the solution.
@@ -255,44 +282,53 @@ class Schwefel222(Benchmark):
 class ModifiedSchwefel(Benchmark):
     r"""Implementations of Modified Schwefel functions.
 
-    Date: 2018
+    Date:
+        2018
 
-    Author: Klemen Berkovič
+    Author:
+        Klemen Berkovič
 
-    License: MIT
+    License:
+        MIT
 
     Function:
-    **Modified Schwefel Function**
-
+        **Modified Schwefel Function**
         :math:`f(\textbf{x}) = 418.9829 \cdot D - \sum_{i=1}^D h(x_i) \\ h(x) = g(x + 420.9687462275036)  \\ g(z) = \begin{cases} z \sin \left( \lvert z \rvert^{\frac{1}{2}} \right) &\quad \lvert z \rvert \leq 500 \\ \left( 500 - \mod (z, 500) \right) \sin \left( \sqrt{\lvert 500 - \mod (z, 500) \rvert} \right) - \frac{ \left( z - 500 \right)^2 }{ 10000 D }  &\quad z > 500 \\ \left( \mod (\lvert z \rvert, 500) - 500 \right) \sin \left( \sqrt{\lvert \mod (\lvert z \rvert, 500) - 500 \rvert} \right) + \frac{ \left( z - 500 \right)^2 }{ 10000 D } &\quad z < -500\end{cases}`
 
         **Input domain:**
-        The function can be defined on any input domain but it is usually
-        evaluated on the hypercube :math:`x_i ∈ [-100, 100]`, for all :math:`i = 1, 2,..., D`.
+        The function can be defined on any input domain but it is usually evaluated on the hypercube :math:`x_i ∈ [-100, 100]`, for all :math:`i = 1, 2,..., D`.
 
-        **Global minimum:** :math:`f(x^*) = 0`, at :math:`x^* = (420.968746,...,420.968746)`
+        **Global minimum:**
+        :math:`f(x^*) = 0`, at :math:`x^* = (420.968746,...,420.968746)`
 
     LaTeX formats:
         Inline:
-                $f(\textbf{x}) = 418.9829 \cdot D - \sum_{i=1}^D h(x_i) \\ h(x) = g(x + 420.9687462275036)  \\ g(z) = \begin{cases} z \sin \left( \lvert z \rvert^{\frac{1}{2}} \right) &\quad \lvert z \rvert \leq 500 \\ \left( 500 - \mod (z, 500) \right) \sin \left( \sqrt{\lvert 500 - \mod (z, 500) \rvert} \right) - \frac{ \left( z - 500 \right)^2 }{ 10000 D }  &\quad z > 500 \\ \left( \mod (\lvert z \rvert, 500) - 500 \right) \sin \left( \sqrt{\lvert \mod (\lvert z \rvert, 500) - 500 \rvert} \right) + \frac{ \left( z - 500 \right)^2 }{ 10000 D } &\quad z < -500\end{cases}$
+            $f(\textbf{x}) = 418.9829 \cdot D - \sum_{i=1}^D h(x_i) \\ h(x) = g(x + 420.9687462275036)  \\ g(z) = \begin{cases} z \sin \left( \lvert z \rvert^{\frac{1}{2}} \right) &\quad \lvert z \rvert \leq 500 \\ \left( 500 - \mod (z, 500) \right) \sin \left( \sqrt{\lvert 500 - \mod (z, 500) \rvert} \right) - \frac{ \left( z - 500 \right)^2 }{ 10000 D }  &\quad z > 500 \\ \left( \mod (\lvert z \rvert, 500) - 500 \right) \sin \left( \sqrt{\lvert \mod (\lvert z \rvert, 500) - 500 \rvert} \right) + \frac{ \left( z - 500 \right)^2 }{ 10000 D } &\quad z < -500\end{cases}$
 
         Equation:
-                \begin{equation} f(\textbf{x}) = 418.9829 \cdot D - \sum_{i=1}^D h(x_i) \\ h(x) = g(x + 420.9687462275036)  \\ g(z) = \begin{cases} z \sin \left( \lvert z \rvert^{\frac{1}{2}} \right) &\quad \lvert z \rvert \leq 500 \\ \left( 500 - \mod (z, 500) \right) \sin \left( \sqrt{\lvert 500 - \mod (z, 500) \rvert} \right) - \frac{ \left( z - 500 \right)^2 }{ 10000 D }  &\quad z > 500 \\ \left( \mod (\lvert z \rvert, 500) - 500 \right) \sin \left( \sqrt{\lvert \mod (\lvert z \rvert, 500) - 500 \rvert} \right) + \frac{ \left( z - 500 \right)^2 }{ 10000 D } &\quad z < -500\end{cases} \end{equation}
+            \begin{equation} f(\textbf{x}) = 418.9829 \cdot D - \sum_{i=1}^D h(x_i) \\ h(x) = g(x + 420.9687462275036)  \\ g(z) = \begin{cases} z \sin \left( \lvert z \rvert^{\frac{1}{2}} \right) &\quad \lvert z \rvert \leq 500 \\ \left( 500 - \mod (z, 500) \right) \sin \left( \sqrt{\lvert 500 - \mod (z, 500) \rvert} \right) - \frac{ \left( z - 500 \right)^2 }{ 10000 D }  &\quad z > 500 \\ \left( \mod (\lvert z \rvert, 500) - 500 \right) \sin \left( \sqrt{\lvert \mod (\lvert z \rvert, 500) - 500 \rvert} \right) + \frac{ \left( z - 500 \right)^2 }{ 10000 D } &\quad z < -500\end{cases} \end{equation}
 
         Domain:
-                $-100 \leq x_i \leq 100$
+            $-100 \leq x_i \leq 100$
 
     Reference:
         http://www5.zzu.edu.cn/__local/A/69/BC/D3B5DFE94CD2574B38AD7CD1D12_C802DAFE_BC0C0.pdf
-    """
-    Name = ['ModifiedSchwefel']
 
-    def __init__(self, Lower=-100.0, Upper=100.0):
+    Attributes:
+        Name (List[str]): Names of the benchmark.
+
+    See Also:
+        * :class:`NiaPy.benchmarks.Benchmark`
+    """
+    Name = ['ModifiedSchwefel', 'modifiedschwefel']
+
+    def __init__(self, Lower=-100.0, Upper=100.0, **kwargs):
         r"""Initialize of Modified Schwefel benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.
             Upper (Optional[float]): Upper bound of problem.
+            kwargs (dict): Additional arguments.
 
         See Also:
             :func:`NiaPy.benchmarks.Benchmark.__init__`
@@ -319,12 +355,13 @@ class ModifiedSchwefel(Benchmark):
             elif z < -500: return (np.fmod(z, 500) - 500) * np.sin(np.sqrt(np.fabs(np.fmod(z, 500) - 500))) + (z - 500) ** 2 / (10000 * D)
             return z * np.sin(np.fabs(z) ** (1 / 2))
         def h(x, D): return g(x + 420.9687462275036, D)
-        def f(D, sol):
+        def f(D, sol, **kwargs):
             r"""Fitness function.
 
             Args:
                 D (int): Dimensionality of the problem
                 sol (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
+                kwargs (Dict[str, Any]): Additional arguments.
 
             Returns:
                 float: Fitness value for the solution.
@@ -332,83 +369,4 @@ class ModifiedSchwefel(Benchmark):
             val = 0.0
             for i in range(D): val += h(sol[i], D)
             return 418.9829 * D - val
-        return f
-
-class ExpandedScaffer(Benchmark):
-    r"""Implementations of High Conditioned Elliptic functions.
-
-    Date: 2018
-
-    Author: Klemen Berkovič
-
-    License: MIT
-
-    Function:
-    **High Conditioned Elliptic Function**
-
-        :math:`f(\textbf{x}) = g(x_D, x_1) + \sum_{i=2}^D g(x_{i - 1}, x_i) \\ g(x, y) = 0.5 + \frac{\sin \left(\sqrt{x^2 + y^2} \right)^2 - 0.5}{\left( 1 + 0.001 (x^2 + y^2) \right)}^2`
-
-        **Input domain:**
-        The function can be defined on any input domain but it is usually
-        evaluated on the hypercube :math:`x_i ∈ [-100, 100]`, for all :math:`i = 1, 2,..., D`.
-
-        **Global minimum:** :math:`f(x^*) = 0`, at :math:`x^* = (420.968746,...,420.968746)`
-
-    LaTeX formats:
-        Inline:
-                $f(\textbf{x}) = g(x_D, x_1) + \sum_{i=2}^D g(x_{i - 1}, x_i) \\ g(x, y) = 0.5 + \frac{\sin \left(\sqrt{x^2 + y^2} \right)^2 - 0.5}{\left( 1 + 0.001 (x^2 + y^2) \right)}^2$
-
-        Equation:
-                \begin{equation} f(\textbf{x}) = g(x_D, x_1) + \sum_{i=2}^D g(x_{i - 1}, x_i) \\ g(x, y) = 0.5 + \frac{\sin \left(\sqrt{x^2 + y^2} \right)^2 - 0.5}{\left( 1 + 0.001 (x^2 + y^2) \right)}^2 \end{equation}
-
-        Domain:
-                $-100 \leq x_i \leq 100$
-
-    Reference:
-        http://www5.zzu.edu.cn/__local/A/69/BC/D3B5DFE94CD2574B38AD7CD1D12_C802DAFE_BC0C0.pdf
-    """
-    Name = ['ExpandedScaffer']
-
-    def __init__(self, Lower=-100.0, Upper=100.0):
-        r"""Initialize of Expanded Scaffer benchmark.
-
-        Args:
-            Lower (Optional[float]): Lower bound of problem.
-            Upper (Optional[float]): Upper bound of problem.
-
-        See Also:
-            :func:`NiaPy.benchmarks.Benchmark.__init__`
-        """
-        Benchmark.__init__(self, Lower=Lower, Upper=Lower)
-
-    @staticmethod
-    def latex_code():
-        r"""Return the latex code of the problem.
-
-        Returns:
-            str: Latex code
-        """
-        return r'''$f(\textbf{x}) = g(x_D, x_1) + \sum_{i=2}^D g(x_{i - 1}, x_i) \\ g(x, y) = 0.5 + \frac{\sin \left(\sqrt{x^2 + y^2} \right)^2 - 0.5}{\left( 1 + 0.001 (x^2 + y^2) \right)}^2$'''
-
-    def function(self):
-        r"""Return benchmark evaluation function.
-
-        Returns:
-            Callable[[int, numpy.ndarray, dict], float]: Fitness function
-        """
-        def g(x, y): return 0.5 + (np.sin(np.sqrt(x ** 2 + y ** 2)) ** 2 - 0.5) / (1 + 0.001 * (x ** 2 + y ** 2)) ** 2
-        def f(D, x, **dict):
-            r"""Fitness function.
-
-            Args:
-                D (int): Dimensionality of the problem
-                sol (numpy.ndarray): Solution to check.
-                dict (dict): Additional arguments.
-
-            Returns:
-                float: Fitness value for the solution.
-            """
-            val = 0.0
-            for i in range(1, D): val += g(x[i - 1], x[i])
-            return g(x[D - 1], x[0]) + val
         return f

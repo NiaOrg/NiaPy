@@ -40,20 +40,27 @@ class Alpine1(Benchmark):
         Domain:
                 $-10 \leq x_i \leq 10$
 
+    Attributes:
+        Name (List[str]): Names of benchmark.
+
+    See Also:
+        * :class:`NiaPy.benchmarks.Benchmark`
+
     Reference paper:
         Jamil, M., and Yang, X. S. (2013).
         A literature survey of benchmark functions for global optimisation problems.
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
     """
-    Name = ['Alpine1']
+    Name = ['Alpine1', 'alpine1']
 
-    def __init__(self, Lower=-10.0, Upper=10.0):
+    def __init__(self, Lower=-10.0, Upper=10.0, **kwargs):
         r"""Initialize of Alpine1 benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.
             Upper (Optional[float]): Upper bound of problem.
+            kwargs (Dict[str, Any]): Additional arguments.
 
         See Also:
             :func:`NiaPy.benchmarks.Benchmark.__init__`
@@ -75,12 +82,13 @@ class Alpine1(Benchmark):
         Returns:
             Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function
         """
-        def evaluate(D, sol):
+        def evaluate(D, sol, **kwargs):
             r"""Fitness function.
 
             Args:
                 D (int): Dimensionality of the problem
                 sol (numpy.ndarray): Solution to check.
+                kwargs (Dict[str, Any]): Additional arguments.
 
             Returns:
                 float: Fitness value for the solution.
@@ -125,23 +133,30 @@ class Alpine2(Benchmark):
         Domain:
                 $0 \leq x_i \leq 10$
 
+    Attributes:
+        Name (List[str]): Names of the benchmark.
+
+    See Also:
+        * :class:`NiaPy.benchmarks.Benchmark`
+
     Reference paper:
         Jamil, M., and Yang, X. S. (2013).
         A literature survey of benchmark functions for global optimisation problems.
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
     """
-    Name = ['Alpine2']
+    Name = ['Alpine2', 'alpine2']
 
-    def __init__(self, Lower=0.0, Upper=10.0):
+    def __init__(self, Lower=0.0, Upper=10.0, **kwargs):
         r"""Initialize of Alpine2 benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.
             Upper (Optional[float]): Upper bound of problem.
+            kwargs (Dict[str, Any]): Additional arguments.
 
         See Also:
-            :func:`NiaPy.benchmarks.Benchmark.__init__`
+            * :func:`NiaPy.benchmarks.Benchmark.__init__`
         """
         Benchmark.__init__(self, Lower=Lower, Upper=Upper)
 
@@ -158,14 +173,15 @@ class Alpine2(Benchmark):
         r"""Return benchmark evaluation function.
 
         Returns:
-            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function
+            Callable[[int, Union[int, float, list, numpy.ndarray], Dict[str, Any]], float]: Fitness function
         """
-        def evaluate(D, sol):
+        def evaluate(D, sol, **kwargs):
             r"""Fitness function.
 
             Args:
                 D (int): Dimensionality of the problem
                 sol (numpy.ndarray): Solution to check.
+                kwargs (Dict[str, Any]): Additional arguments.
 
             Returns:
                 float: Fitness value for the solution.

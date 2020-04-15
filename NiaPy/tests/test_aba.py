@@ -1,7 +1,11 @@
 # encoding=utf8
 
-from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
 from NiaPy.algorithms.modified import AdaptiveBatAlgorithm
+from NiaPy.tests.test_algorithm import (
+    AlgorithmTestCase,
+    MyBenchmark
+)
+
 
 class ABATestCase(AlgorithmTestCase):
     r"""Test case for AdaptiveBatAlgorithm algorithm.

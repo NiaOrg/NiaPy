@@ -23,7 +23,8 @@ __all__ = [
     'EvolutionStrategyMp1',
     'EvolutionStrategyMpL',
     'EvolutionStrategyML',
-    'CovarianceMatrixAdaptionEvolutionStrategy'
+    'CovarianceMatrixAdaptionEvolutionStrategy',
+    'IndividualES'
 ]
 
 class IndividualES(Individual):

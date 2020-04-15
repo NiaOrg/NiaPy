@@ -9,14 +9,14 @@ __all__ = ['Perm']
 class Perm(Benchmark):
 	r"""Implementations of Perm functions.
 
-	Date: 2018
+	Date:
+		2018
 
-	Author: Klemen Berkovič
+	Author:
+		Klemen Berkovič
 
-	License: MIT
-
-	Arguments:
-	beta {real} -- value added to inner sum of funciton
+	License:
+		MIT
 
 	Function:
 	**Perm Function**
@@ -40,23 +40,34 @@ class Perm(Benchmark):
 		Domain:
 				$-D \leq x_i \leq D$
 
+	Attributes:
+		Name (List[str]): Names of the benchmark.
+		D (float): Function argument.
+		beta (float): Function argument.
+
+	See Also:
+		* :class:`NiaPy.benchmarks.Benchmark`
+
 	Reference:
 		https://www.sfu.ca/~ssurjano/perm0db.html
 	"""
-	Name = ['Perm']
+	Name = ['Perm', 'perm']
+	D = 10.0
+	beta = 0.5
 
-	def __init__(self, D=10.0, beta=.5):
+	def __init__(self, D=10.0, beta=.5, **kwargs):
 		r"""Initialize of Bent Cigar benchmark.
 
 		Args:
-			Lower (Optional[float]): Lower bound of problem.
-			Upper (Optional[float]): Upper bound of problem.
+			D (Optional[float]): Function argument.
+			beta (Optional[float]): Function argument.
+			kwargs (Dict[str, Any]): Additional arguments.
 
 		See Also:
 			:func:`NiaPy.benchmarks.Benchmark.__init__`
 		"""
 		Benchmark.__init__(self, -D, D)
-		Perm.beta = beta
+		self.beta = beta
 
 	@staticmethod
 	def latex_code():
@@ -71,15 +82,16 @@ class Perm(Benchmark):
 		r"""Return benchmark evaluation function.
 
 		Returns:
-			Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function
+			Callable[[int, Union[int, float, list, numpy.ndarray], Dict[str, Any]], float]: Fitness function
 		"""
 		beta = self.beta
-		def f(D, X):
+		def f(D, X, **kwargs):
 			r"""Fitness function.
 
 			Args:
 				D (int): Dimensionality of the problem
-				sol (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
+				X (Union[int, float, list, numpy.ndarray]): Solution to check.
+				kwargs (Dict[str, Any]): Additional arguments.
 
 			Returns:
 				float: Fitness value for the solution.

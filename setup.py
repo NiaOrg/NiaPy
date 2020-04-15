@@ -96,9 +96,5 @@ setuptools.setup(
         'enum34 >= 1.1.6',
         'xlsxwriter >= 1.1.5',
         'matplotlib >= 2.2.4',
-    ],
-    package_data={
-        '': ['*.csv'],
-        read_package_variable('__project__'): ['data/*.csv'],
-    }
+    ]
 )

@@ -1,10 +1,17 @@
 # encoding=utf8
 
 from unittest import TestCase
-from NiaPy.algorithms.basic import BatAlgorithm, FireflyAlgorithm
-from NiaPy.task.task import StoppingTask, OptimizationType
+
 from NiaPy.algorithms.basic import DifferentialEvolution
+from NiaPy.algorithms.basic import (
+    BatAlgorithm,
+    FireflyAlgorithm
+)
 from NiaPy.benchmarks import Sphere
+from NiaPy.task import (
+    StoppingTask,
+    OptimizationType
+)
 
 
 class DETestCase(TestCase):
@@ -13,7 +20,7 @@ class DETestCase(TestCase):
 
         **Date:** November 2018
 
-        **Author:** Iztok
+        **Author:** Iztok Fister
 
         **Author:** This is a very important test!
         """
@@ -47,7 +54,7 @@ class BATestCase(TestCase):
 
         **Date:** November 2018
 
-        **Author:** Iztok
+        **Author:** Iztok Fister
 
         **Author:** This is a very important test!
         """
@@ -85,6 +92,7 @@ class BATestCase(TestCase):
         algo.runTask(task)
         evals = task.evals()
         self.assertEqual(10000, evals)
+
 
 class FATestCase(TestCase):
 
