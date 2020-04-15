@@ -82,7 +82,7 @@ class Clustering(Benchmark):
             Callable[[int, numpy.ndarray, Dict[str, Any]], float]: Evaluation function.
         """
         dataset, a = self.dataset, self.a
-        def fun(k, x, w=None, p=2, **dict) -> float:
+        def fun(k, x, w=None, p=2, **dict):
             k = k if k is not None else int(len(x) / a)  # Number of clusters
             w = w if w is not None else np.ones([k, len(dataset), a], dtype=float)  # Weights
             return np.sum([np.sum((w[i] * (dataset - x[a * i:a * (i + 1)]) ** p)[:, 0]) for i in range(k)])

@@ -58,7 +58,7 @@ class Individual:
         """
         if task is not None: self.x = task.Lower + task.bRange * rnd.rand(task.D)
 
-    def evaluate(self, task, rnd=rand) -> None:
+    def evaluate(self, task, rnd=rand):
         r"""Evaluate the solution.
 
         Evaluate solution ``this.x`` with the help of task.
