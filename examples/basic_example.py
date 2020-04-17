@@ -12,4 +12,4 @@ for i in range(10):
     task = StoppingTask(D=10, nFES=1000, benchmark='pinter')
     algorithm = GreyWolfOptimizer(NP=20)
     best = algorithm.run(task)
-    print(best)
+    print(best[-1])

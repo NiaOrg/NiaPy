@@ -17,9 +17,9 @@ class Katsuura(Benchmark):
 	License: MIT
 
 	Function:
-	**Katsuura Function**
+		**Katsuura Function**
 
-		:math:`f(\textbf{x}) = \frac{10}{D^2} \prod_{i=1}^D \left( 1 + i \sum_{j=1}^{32} \frac{| 2^j x_i - round\left(2^j x_i \right) |}{2^j} \right)^\frac{10}{D^{1.2}} - \frac{10}{D^2}`
+		:math:`f(\textbf{x}) = \frac{10}{D^2} \prod_{i=1}^D \left( 1 + i \sum_{j=1}^{32} \frac{\lvert 2^j x_i - round\left(2^j x_i \right) \rvert}{2^j} \right)^\frac{10}{D^{1.2}} - \frac{10}{D^2}`
 
 		**Input domain:**
 		The function can be defined on any input domain but it is usually
@@ -29,10 +29,9 @@ class Katsuura(Benchmark):
 
 	LaTeX formats:
 		Inline:
-				$f(\textbf{x}) = \frac{10}{D^2} \prod_{i=1}^D \left( 1 + i \sum_{j=1}^{32} \frac{| 2^j x_i - round\left(2^j x_i \right) |}{2^j} \right)^\frac{10}{D^{1.2}} - \frac{10}{D^2}$
-
+				$f(\textbf{x}) = \frac{10}{D^2} \prod_{i=1}^D \left( 1 + i \sum_{j=1}^{32} \frac{\lvert 2^j x_i - round\left(2^j x_i \right) \rvert}{2^j} \right)^\frac{10}{D^{1.2}} - \frac{10}{D^2}$
 		Equation:
-				\begin{equation} f(\textbf{x}) = \frac{10}{D^2} \prod_{i=1}^D \left( 1 + i \sum_{j=1}^{32} \frac{| 2^j x_i - round\left(2^j x_i \right) |}{2^j} \right)^\frac{10}{D^{1.2}} - \frac{10}{D^2} \end{equation}
+				\begin{equation} f(\textbf{x}) = \frac{10}{D^2} \prod_{i=1}^D \left( 1 + i \sum_{j=1}^{32} \frac{\lvert 2^j x_i - round\left(2^j x_i \right) \rvert}{2^j} \right)^\frac{10}{D^{1.2}} - \frac{10}{D^2} \end{equation}
 
 		Domain:
 				$-100 \leq x_i \leq 100$

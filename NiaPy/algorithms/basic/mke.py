@@ -139,7 +139,7 @@ class MonkeyKingEvolutionV1(Algorithm):
 			Dict[str, Any]
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.getParameters
+			* :func:`NiaPy.algorithms.Algorithm.getParameters`
 		"""
 		d = Algorithm.getParameters(self)
 		d.update({
