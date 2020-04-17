@@ -19,7 +19,7 @@ class Alpine1(Benchmark):
 
     Function: **Alpine1 function**
 
-        :math:`f(\mathbf{x}) = \sum_{i=1}^{D} |x_i \sin(x_i)+0.1x_i|`
+        :math:`f(\mathbf{x}) = \sum_{i=1}^{D} \lvert x_i \sin(x_i)+0.1x_i \rvert`
 
         **Input domain:**
         The function can be defined on any input domain but it is usually
@@ -29,10 +29,10 @@ class Alpine1(Benchmark):
 
     LaTeX formats:
         Inline:
-                $f(\mathbf{x}) = \sum_{i=1}^{D} \left |x_i \sin(x_i)+0.1x_i \right|$
+                $f(\mathbf{x}) = \sum_{i=1}^{D} \lvert x_i \sin(x_i)+0.1x_i \rvert$
 
         Equation:
-                \begin{equation} f(x) = \sum_{i=1}^{D} \left|x_i \sin(x_i) + 0.1x_i \right| \end{equation}
+                \begin{equation} f(\mathbf{x}) = \sum_{i=1}^{D} \lvert x_i \sin(x_i)+0.1x_i \rvert \end{equation}
 
         Domain:
                 $-10 \leq x_i \leq 10$
@@ -64,7 +64,7 @@ class Alpine1(Benchmark):
         Returns:
             str: Latex code
         """
-        return r'''$f(\mathbf{x}) = \sum_{i=1}^{D} \left |x_i \sin(x_i)+0.1x_i \right|$'''
+        return r'''$f(\mathbf{x}) = \sum_{i=1}^{D} \lvert x_i \sin(x_i)+0.1x_i \rvert$'''
 
     def function(self):
         r"""Return benchmark evaluation function.

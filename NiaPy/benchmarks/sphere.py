@@ -97,7 +97,7 @@ class Sphere2(Benchmark):
 
 	Function: **Sun of different powers function**
 
-		:math:`f(\textbf{x}) = \sum_{i = 1}^D | x_i |^{i + 1}`
+		:math:`f(\textbf{x}) = \sum_{i = 1}^D \lvert x_i \rvert^{i + 1}`
 
 		**Input domain:**
 		The function can be defined on any input domain but it is usually
@@ -107,10 +107,10 @@ class Sphere2(Benchmark):
 
 	LaTeX formats:
 		Inline:
-				$f(\textbf{x}) = \sum_{i = 1}^D | x_i |^{i + 1}$
+				$f(\textbf{x}) = \sum_{i = 1}^D \lvert x_i \rvert^{i + 1}$
 
 		Equation:
-				\begin{equation} f(\textbf{x}) = \sum_{i = 1}^D | x_i |^{i + 1} \end{equation}
+				\begin{equation} f(\textbf{x}) = \sum_{i = 1}^D \lvert x_i \rvert^{i + 1} \end{equation}
 
 		Domain:
 				$-1 \leq x_i \leq 1$
@@ -139,7 +139,7 @@ class Sphere2(Benchmark):
 		Returns:
 			str: Latex code
 		"""
-		return r'''$f(\textbf{x}) = \sum_{i = 1}^D | x_i |^{i + 1}$'''
+		return r'''$f(\textbf{x}) = \sum_{i = 1}^D \lvert x_i \rvert^{i + 1}$'''
 
 	def function(self):
 		r"""Return benchmark evaluation function.

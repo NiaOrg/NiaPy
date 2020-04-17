@@ -18,7 +18,7 @@ class Schwefel(Benchmark):
 
 	Function: **Schwefel function**
 
-		:math:`f(\textbf{x}) = 418.9829d - \sum_{i=1}^{D} x_i \sin(\sqrt{|x_i|})`
+		:math:`f(\textbf{x}) = 418.9829d - \sum_{i=1}^{D} x_i \sin(\sqrt{\lvert x_i \rvert})`
 
 		**Input domain:**
 		The function can be defined on any input domain but it is usually
@@ -28,11 +28,11 @@ class Schwefel(Benchmark):
 
 	LaTeX formats:
 		Inline:
-				$f(\textbf{x}) = 418.9829d - \sum_{i=1}^{D} x_i \sin(\sqrt{|x_i|})$
+				$f(\textbf{x}) = 418.9829d - \sum_{i=1}^{D} x_i \sin(\sqrt{\lvert x_i \rvert})$
 
 		Equation:
 				\begin{equation} f(\textbf{x}) = 418.9829d - \sum_{i=1}^{D} x_i
-				\sin(\sqrt{|x_i|}) \end{equation}
+				\sin(\sqrt{\lvert x_i \rvert}) \end{equation}
 
 		Domain:
 				$-500 \leq x_i \leq 500$
@@ -61,7 +61,7 @@ class Schwefel(Benchmark):
 		Returns:
 			str: Latex code
 		"""
-		return r'''$f(\textbf{x}) = 418.9829d - \sum_{i=1}^{D} x_i \sin(\sqrt{|x_i|})$'''
+		return r'''$f(\textbf{x}) = 418.9829d - \sum_{i=1}^{D} x_i \sin(\sqrt{\lvert x_i \rvert})$'''
 
 	def function(self):
 		r"""Return benchmark evaluation function.
@@ -106,10 +106,10 @@ class Schwefel221(Benchmark):
 
 	LaTeX formats:
 		Inline:
-				$f(\mathbf{x})=\max_{i=1,...,D}|x_i|$
+				$f(\mathbf{x})=\max_{i=1,...,D} \lvert x_i \rvert$
 
 		Equation:
-				\begin{equation}f(\mathbf{x}) = \max_{i=1,...,D}|x_i| \end{equation}
+				\begin{equation}f(\mathbf{x}) = \max_{i=1,...,D} \lvert x_i \rvert \end{equation}
 
 		Domain:
 				$-100 \leq x_i \leq 100$
@@ -141,7 +141,7 @@ class Schwefel221(Benchmark):
 		Returns:
 			str: Latex code
 		"""
-		return r'''$f(\mathbf{x})=\max_{i=1,...,D}|x_i|$'''
+		return r'''$f(\mathbf{x})=\max_{i=1,...,D} \lvert x_i \rvert$'''
 
 	def function(self):
 		r"""Return benchmark evaluation function.
@@ -157,7 +157,7 @@ class Schwefel221(Benchmark):
 				sol (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
 
 			Returns:
-				float: Fitness value for the solution.
+				Callable[[int, numpy.ndarray, dict], float]: Fitness function
 			"""
 			maximum = 0.0
 			for i in range(D):
@@ -177,7 +177,7 @@ class Schwefel222(Benchmark):
 
 	Function: **Schwefel 2.22 function**
 
-		:math:`f(\mathbf{x})=\sum_{i=1}^{D}|x_i|+\prod_{i=1}^{D}|x_i|`
+		:math:`f(\mathbf{x})=\sum_{i=1}^{D} \lvert x_i \rvert +\prod_{i=1}^{D} \lvert x_i \rvert`
 
 		**Input domain:**
 		The function can be defined on any input domain but it is usually
@@ -187,11 +187,10 @@ class Schwefel222(Benchmark):
 
 	LaTeX formats:
 		Inline:
-				$f(\mathbf{x})=\sum_{i=1}^{D}|x_i|+\prod_{i=1}^{D}|x_i|$
+				$f(\mathbf{x})=\sum_{i=1}^{D} \lvert x_i \rvert +\prod_{i=1}^{D} \lvert x_i \rvert$
 
 		Equation:
-				\begin{equation}f(\mathbf{x}) = \sum_{i=1}^{D}|x_i| +
-				\prod_{i=1}^{D}|x_i| \end{equation}
+				\begin{equation}f(\mathbf{x}) = \sum_{i=1}^{D} \lvert x_i \rvert + \prod_{i=1}^{D} \lvert x_i \rvert \end{equation}
 
 		Domain:
 				$-100 \leq x_i \leq 100$
@@ -223,7 +222,7 @@ class Schwefel222(Benchmark):
 		Returns:
 			str: Latex code
 		"""
-		return r'''$f(\mathbf{x})=\sum_{i=1}^{D}|x_i|+\prod_{i=1}^{D}|x_i|$'''
+		return r'''$f(\mathbf{x})=\sum_{i=1}^{D} \lvert x_i \rvert +\prod_{i=1}^{D} \lvert x_i \rvert$'''
 
 	def function(self):
 		r"""Return benchmark evaluation function.
@@ -261,7 +260,7 @@ class ModifiedSchwefel(Benchmark):
 	Function:
 	**Modified Schwefel Function**
 
-		:math:`f(\textbf{x}) = 418.9829 \cdot D - \sum_{i=1}^D h(x_i) \\ h(x) = g(x + 420.9687462275036)  \\ g(z) = \begin{cases} z \sin \left( | z |^{\frac{1}{2}} \right) &\quad | z | \leq 500 \\ \left( 500 - \mod (z, 500) \right) \sin \left( \sqrt{| 500 - \mod (z, 500) |} \right) - \frac{ \left( z - 500 \right)^2 }{ 10000 D }  &\quad z > 500 \\ \left( \mod (| z |, 500) - 500 \right) \sin \left( \sqrt{| \mod (|z|, 500) - 500 |} \right) + \frac{ \left( z - 500 \right)^2 }{ 10000 D } &\quad z < -500\end{cases}`
+		:math:`f(\textbf{x}) = 418.9829 \cdot D - \sum_{i=1}^D h(x_i) \\ h(x) = g(x + 420.9687462275036)  \\ g(z) = \begin{cases} z \sin \left( \lvert z \rvert^{\frac{1}{2}} \right) &\quad \lvert z \rvert \leq 500 \\ \left( 500 - \mod (z, 500) \right) \sin \left( \sqrt{\lvert 500 - \mod (z, 500) \rvert} \right) - \frac{ \left( z - 500 \right)^2 }{ 10000 D }  &\quad z > 500 \\ \left( \mod (\lvert z \rvert, 500) - 500 \right) \sin \left( \sqrt{\lvert \mod (\lvert z \rvert, 500) - 500 \rvert} \right) + \frac{ \left( z - 500 \right)^2 }{ 10000 D } &\quad z < -500\end{cases}`
 
 		**Input domain:**
 		The function can be defined on any input domain but it is usually
@@ -271,10 +270,10 @@ class ModifiedSchwefel(Benchmark):
 
 	LaTeX formats:
 		Inline:
-				$f(\textbf{x}) = 418.9829 \cdot D - \sum_{i=1}^D h(x_i) \\ h(x) = g(x + 420.9687462275036)  \\ g(z) = \begin{cases} z \sin \left( | z |^{\frac{1}{2}} \right) &\quad | z | \leq 500 \\ \left( 500 - \mod (z, 500) \right) \sin \left( \sqrt{| 500 - \mod (z, 500) |} \right) - \frac{ \left( z - 500 \right)^2 }{ 10000 D }  &\quad z > 500 \\ \left( \mod (| z |, 500) - 500 \right) \sin \left( \sqrt{| \mod (|z|, 500) - 500 |} \right) + \frac{ \left( z - 500 \right)^2 }{ 10000 D } &\quad z < -500\end{cases}$
+				$f(\textbf{x}) = 418.9829 \cdot D - \sum_{i=1}^D h(x_i) \\ h(x) = g(x + 420.9687462275036)  \\ g(z) = \begin{cases} z \sin \left( \lvert z \rvert^{\frac{1}{2}} \right) &\quad \lvert z \rvert \leq 500 \\ \left( 500 - \mod (z, 500) \right) \sin \left( \sqrt{\lvert 500 - \mod (z, 500) \rvert} \right) - \frac{ \left( z - 500 \right)^2 }{ 10000 D }  &\quad z > 500 \\ \left( \mod (\lvert z \rvert, 500) - 500 \right) \sin \left( \sqrt{\lvert \mod (\lvert z \rvert, 500) - 500 \rvert} \right) + \frac{ \left( z - 500 \right)^2 }{ 10000 D } &\quad z < -500\end{cases}$
 
 		Equation:
-				\begin{equation} f(\textbf{x}) = 418.9829 \cdot D - \sum_{i=1}^D h(x_i) \\ h(x) = g(x + 420.9687462275036)  \\ g(z) = \begin{cases} z \sin \left( | z |^{\frac{1}{2}} \right) &\quad | z | \leq 500 \\ \left( 500 - \mod (z, 500) \right) \sin \left( \sqrt{| 500 - \mod (z, 500) |} \right) - \frac{ \left( z - 500 \right)^2 }{ 10000 D }  &\quad z > 500 \\ \left( \mod (| z |, 500) - 500 \right) \sin \left( \sqrt{| \mod (|z|, 500) - 500 |} \right) + \frac{ \left( z - 500 \right)^2 }{ 10000 D } &\quad z < -500\end{cases} \end{equation}
+				\begin{equation} f(\textbf{x}) = 418.9829 \cdot D - \sum_{i=1}^D h(x_i) \\ h(x) = g(x + 420.9687462275036)  \\ g(z) = \begin{cases} z \sin \left( \lvert z \rvert^{\frac{1}{2}} \right) &\quad \lvert z \rvert \leq 500 \\ \left( 500 - \mod (z, 500) \right) \sin \left( \sqrt{\lvert 500 - \mod (z, 500) \rvert} \right) - \frac{ \left( z - 500 \right)^2 }{ 10000 D }  &\quad z > 500 \\ \left( \mod (\lvert z \rvert, 500) - 500 \right) \sin \left( \sqrt{\lvert \mod (\lvert z \rvert, 500) - 500 \rvert} \right) + \frac{ \left( z - 500 \right)^2 }{ 10000 D } &\quad z < -500\end{cases} \end{equation}
 
 		Domain:
 				$-100 \leq x_i \leq 100$
@@ -303,7 +302,7 @@ class ModifiedSchwefel(Benchmark):
 		Returns:
 			str: Latex code
 		"""
-		return r'''$f(\textbf{x}) = 418.9829 \cdot D - \sum_{i=1}^D h(x_i) \\ h(x) = g(x + 420.9687462275036)  \\ g(z) = \begin{cases} z \sin \left( | z |^{\frac{1}{2}} \right) &\quad | z | \leq 500 \\ \left( 500 - \mod (z, 500) \right) \sin \left( \sqrt{| 500 - \mod (z, 500) |} \right) - \frac{ \left( z - 500 \right)^2 }{ 10000 D }  &\quad z > 500 \\ \left( \mod (| z |, 500) - 500 \right) \sin \left( \sqrt{| \mod (|z|, 500) - 500 |} \right) + \frac{ \left( z - 500 \right)^2 }{ 10000 D } &\quad z < -500\end{cases}$'''
+		return r'''$f(\textbf{x}) = 418.9829 \cdot D - \sum_{i=1}^D h(x_i) \\ h(x) = g(x + 420.9687462275036)  \\ g(z) = \begin{cases} z \sin \left( \lvert z \rvert^{\frac{1}{2}} \right) &\quad \lvert z \rvert \leq 500 \\ \left( 500 - \mod (z, 500) \right) \sin \left( \sqrt{\lvert 500 - \mod (z, 500) \rvert} \right) - \frac{ \left( z - 500 \right)^2 }{ 10000 D }  &\quad z > 500 \\ \left( \mod (\lvert z \rvert, 500) - 500 \right) \sin \left( \sqrt{\lvert \mod (\lvert z \rvert, 500) - 500 \rvert} \right) + \frac{ \left( z - 500 \right)^2 }{ 10000 D } &\quad z < -500\end{cases}$'''
 
 	def function(self):
 		r"""Return benchmark evaluation function.

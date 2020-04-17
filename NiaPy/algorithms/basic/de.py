@@ -36,7 +36,7 @@ def CrossRand1(pop, ic, x_b, f, cr, rnd=rand, *args):
 		f (float): Scale factor.
 		cr (float): Crossover probability.
 		rnd (mtrand.RandomState): Random generator.
-		*args (list): Additional arguments.
+		args (list): Additional arguments.
 
 	Returns:
 		numpy.ndarray: Mutated and mixed individual.
@@ -70,7 +70,7 @@ def CrossBest1(pop, ic, x_b, f, cr, rnd=rand, *args):
 		f (float): Scale factor.
 		cr (float): Crossover probability.
 		rnd (mtrand.RandomState): Random generator.
-		*args (list): Additional arguments.
+		args (list): Additional arguments.
 
 	returns:
 		numpy.ndarray: Mutated and mixed individual.
@@ -104,7 +104,7 @@ def CrossRand2(pop, ic, x_b, f, cr, rnd=rand, *args):
 		f (float): Scale factor.
 		cr (float): Crossover probability.
 		rnd (mtrand.RandomState): Random generator.
-		*args (list): Additional arguments.
+		args (list): Additional arguments.
 
 	Returns:
 		numpy.ndarray: mutated and mixed individual.
@@ -136,7 +136,7 @@ def CrossBest2(pop, ic, x_b, f, cr, rnd=rand, *args):
 		f (float): Scale factor.
 		cr (float): Crossover probability.
 		rnd (mtrand.RandomState): Random generator.
-		*args (list): Additional arguments.
+		args (list): Additional arguments.
 
 	Returns:
 		numpy.ndarray: mutated and mixed individual.
@@ -168,7 +168,7 @@ def CrossCurr2Rand1(pop, ic, x_b, f, cr, rnd=rand, *args):
 		f (float): Scale factor.
 		cr (float): Crossover probability.
 		rnd (mtrand.RandomState): Random generator.
-		*args (list): Additional arguments.
+		args (list): Additional arguments.
 
 	Returns:
 		numpy.ndarray: mutated and mixed individual.
@@ -200,7 +200,7 @@ def CrossCurr2Best1(pop, ic, x_b, f, cr, rnd=rand, **kwargs):
 		f (float): Scale factor.
 		cr (float): Crossover probability.
 		rnd (mtrand.RandomState): Random generator.
-		*args (list): Additional arguments.
+		args (list): Additional arguments.
 
 	Returns:
 		numpy.ndarray: mutated and mixed individual.
@@ -556,7 +556,7 @@ def proportional(Lt_min, Lt_max, mu, x_f, avg, **args):
 		mu (float): Median of life time.
 		x_f (float): Individuals function/fitness value.
 		avg (float): Average fitness/function value of current population.
-		*args (list): Additional arguments.
+		args (list): Additional arguments.
 
 	Returns:
 		int: Age of individual.
@@ -574,7 +574,7 @@ def linear(Lt_min, mu, x_f, x_gw, x_gb, **args):
 		avg (float): Average fitness/function value.
 		x_gw (float): Global worst fitness/function value.
 		x_gb (float): Global best fitness/function value.
-		*args (list): Additional arguments.
+		args (list): Additional arguments.
 
 	Returns:
 		int: Age of individual.
@@ -592,7 +592,7 @@ def bilinear(Lt_min, Lt_max, mu, x_f, avg, x_gw, x_gb, **args):
 		avg (float): Average fitness/function value.
 		x_gw (float): Global worst fitness/function value.
 		x_gb (float): Global best fitness/function value.
-		*args (list): Additional arguments.
+		args (list): Additional arguments.
 
 	Returns:
 		int: Age of individual.
