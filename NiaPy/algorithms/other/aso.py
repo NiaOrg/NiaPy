@@ -228,7 +228,7 @@ class AnarchicSocietyOptimization(Algorithm):
 		See Also:
 			* :func:`NiaPy.algorithms.Algorithm.setParameters`
 			* Combination methods:
-				* :func:`NiaPy.algorithms.other.Elitism'
+				* :func:`NiaPy.algorithms.other.Elitism`
 				* :func:`NiaPy.algorithms.other.Crossover`
 				* :func:`NiaPy.algorithms.other.Sequential`
 		"""

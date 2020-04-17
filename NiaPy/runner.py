@@ -13,7 +13,8 @@ from numpy import (
     median,
     amax,
     mean,
-    std
+    std,
+    ndarray
 )
 
 from NiaPy.task import StoppingTask, OptimizationType
@@ -109,8 +110,17 @@ class Runner:
         """
 
         self.__create_export_dir()
+
+        class NumpyEncoder(json.JSONEncoder):
+            def default(self, obj):
+                if isinstance(obj, ndarray):
+                    return obj.tolist()
+                return json.JSONEncoder.default(self, obj)
+
+        dumped = json.dumps(self.results, cls=NumpyEncoder)
+
         with open(self.__generate_export_name("json"), "w") as outFile:
-            json.dump(self.results, outFile)
+            json.dump(dumped, outFile)
             logger.info("Export to JSON completed!")
 
     def __export_to_xlsx(self):

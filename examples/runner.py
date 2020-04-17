@@ -11,6 +11,7 @@ from NiaPy.algorithms.basic import (
     ParticleSwarmAlgorithm
 )
 from NiaPy.benchmarks import (
+    Benchmark,
     Ackley,
     Griewank,
     Sphere,
@@ -20,6 +21,16 @@ from NiaPy.benchmarks import (
 
 """Example demonstrating the use of NiaPy Runner."""
 
+class MyBenchmark(Benchmark):
+	def __init__(self):
+		Benchmark.__init__(self, -10, 10)
+
+	def function(self):
+		def evaluate(D, sol):
+			val = 0.0
+			for i in range(D): val += sol[i] ** 2
+			return val
+		return evaluate
 
 runner = Runner(
     D=40,
@@ -37,7 +48,9 @@ runner = Runner(
         Griewank(),
         Sphere(),
         HappyCat(),
-        "rastrigin"]
+        "rastrigin",
+        MyBenchmark()
+    ]
 )
 
-print(runner.run(verbose=True))
+runner.run(export='json', verbose=True)

@@ -26,4 +26,4 @@ for i in range(10):
     best = algo.run(task)
 
     # printing best minimum
-    print(best)
+    print(best[-1])
