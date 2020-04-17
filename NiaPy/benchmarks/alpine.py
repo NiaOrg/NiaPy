@@ -2,7 +2,8 @@
 
 """Implementations of Alpine functions."""
 
-import math
+import numpy as np
+
 from NiaPy.benchmarks.benchmark import Benchmark
 
 __all__ = ['Alpine1', 'Alpine2']
@@ -17,25 +18,33 @@ class Alpine1(Benchmark):
 
     License: MIT
 
-    Function: **Alpine1 function**
+    Function:
+        **Alpine1 function**
 
-        :math:`f(\mathbf{x}) = \sum_{i=1}^{D} |x_i \sin(x_i)+0.1x_i|`
+        :math:`f(\mathbf{x}) = \sum_{i=1}^{D} \lvert x_i \sin(x_i)+0.1x_i \rvert`
 
         **Input domain:**
         The function can be defined on any input domain but it is usually
         evaluated on the hypercube :math:`x_i ∈ [-10, 10]`, for all :math:`i = 1, 2,..., D`.
 
-        **Global minimum:** :math:`f(x^*) = 0`, at :math:`x^* = (0,...,0)`
+        **Global minimum:**
+        :math:`f(x^*) = 0`, at :math:`x^* = (0,...,0)`
 
     LaTeX formats:
         Inline:
-                $f(\mathbf{x}) = \sum_{i=1}^{D} \left |x_i \sin(x_i)+0.1x_i \right|$
+                $f(\mathbf{x}) = \sum_{i=1}^{D} \lvert x_i \sin(x_i)+0.1x_i \rvert$
 
         Equation:
-                \begin{equation} f(x) = \sum_{i=1}^{D} \left|x_i \sin(x_i) + 0.1x_i \right| \end{equation}
+                \begin{equation} f(\mathbf{x}) = \sum_{i=1}^{D} \lvert x_i \sin(x_i)+0.1x_i \rvert \end{equation}
 
         Domain:
                 $-10 \leq x_i \leq 10$
+
+    Attributes:
+        Name (List[str]): Names of benchmark.
+
+    See Also:
+        * :class:`NiaPy.benchmarks.Benchmark`
 
     Reference paper:
         Jamil, M., and Yang, X. S. (2013).
@@ -43,14 +52,15 @@ class Alpine1(Benchmark):
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
     """
-    Name = ['Alpine1']
+    Name = ['Alpine1', 'alpine1']
 
-    def __init__(self, Lower=-10.0, Upper=10.0):
+    def __init__(self, Lower=-10.0, Upper=10.0, **kwargs):
         r"""Initialize of Alpine1 benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.
             Upper (Optional[float]): Upper bound of problem.
+            kwargs (Dict[str, Any]): Additional arguments.
 
         See Also:
             :func:`NiaPy.benchmarks.Benchmark.__init__`
@@ -64,7 +74,7 @@ class Alpine1(Benchmark):
         Returns:
             str: Latex code
         """
-        return r'''$f(\mathbf{x}) = \sum_{i=1}^{D} \left |x_i \sin(x_i)+0.1x_i \right|$'''
+        return r'''$f(\mathbf{x}) = \sum_{i=1}^{D} \lvert x_i \sin(x_i)+0.1x_i \rvert$'''
 
     def function(self):
         r"""Return benchmark evaluation function.
@@ -72,12 +82,13 @@ class Alpine1(Benchmark):
         Returns:
             Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function
         """
-        def evaluate(D, sol):
+        def evaluate(D, sol, **kwargs):
             r"""Fitness function.
 
             Args:
                 D (int): Dimensionality of the problem
-                sol (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
+                sol (numpy.ndarray): Solution to check.
+                kwargs (Dict[str, Any]): Additional arguments.
 
             Returns:
                 float: Fitness value for the solution.
@@ -85,7 +96,7 @@ class Alpine1(Benchmark):
             val = 0.0
 
             for i in range(D):
-                val += abs(math.sin(sol[i]) + 0.1 * sol[i])
+                val += abs(np.sin(sol[i]) + 0.1 * sol[i])
 
             return val
 
@@ -122,23 +133,30 @@ class Alpine2(Benchmark):
         Domain:
                 $0 \leq x_i \leq 10$
 
+    Attributes:
+        Name (List[str]): Names of the benchmark.
+
+    See Also:
+        * :class:`NiaPy.benchmarks.Benchmark`
+
     Reference paper:
         Jamil, M., and Yang, X. S. (2013).
         A literature survey of benchmark functions for global optimisation problems.
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
     """
-    Name = ['Alpine2']
+    Name = ['Alpine2', 'alpine2']
 
-    def __init__(self, Lower=0.0, Upper=10.0):
+    def __init__(self, Lower=0.0, Upper=10.0, **kwargs):
         r"""Initialize of Alpine2 benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.
             Upper (Optional[float]): Upper bound of problem.
+            kwargs (Dict[str, Any]): Additional arguments.
 
         See Also:
-            :func:`NiaPy.benchmarks.Benchmark.__init__`
+            * :func:`NiaPy.benchmarks.Benchmark.__init__`
         """
         Benchmark.__init__(self, Lower=Lower, Upper=Upper)
 
@@ -155,14 +173,15 @@ class Alpine2(Benchmark):
         r"""Return benchmark evaluation function.
 
         Returns:
-            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function
+            Callable[[int, Union[int, float, list, numpy.ndarray], Dict[str, Any]], float]: Fitness function
         """
-        def evaluate(D, sol):
+        def evaluate(D, sol, **kwargs):
             r"""Fitness function.
 
             Args:
                 D (int): Dimensionality of the problem
-                sol (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
+                sol (numpy.ndarray): Solution to check.
+                kwargs (Dict[str, Any]): Additional arguments.
 
             Returns:
                 float: Fitness value for the solution.
@@ -170,7 +189,7 @@ class Alpine2(Benchmark):
             val = 1.0
 
             for i in range(D):
-                val *= math.sqrt(sol[i]) * math.sin(sol[i])
+                val *= np.sqrt(sol[i]) * np.sin(sol[i])
 
             return val
 

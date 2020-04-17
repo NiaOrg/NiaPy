@@ -6,12 +6,12 @@ sys.path.append('../')
 # End of fix
 
 from NiaPy.algorithms.basic import GlowwormSwarmOptimization
-from NiaPy.task.task import StoppingTask, OptimizationType
+from NiaPy.task import StoppingTask
 from NiaPy.benchmarks import Sphere
 
 # we will run Glowworm Swarm Optimization for 5 independent runs
 for i in range(5):
-    task = StoppingTask(D=10, nFES=1000, optType=OptimizationType.MINIMIZATION, benchmark=Sphere())
+    task = StoppingTask(D=10, nFES=1000, benchmark=Sphere())
     algo = GlowwormSwarmOptimization()
-    best = algo.run(task=task)
+    best = algo.run(task)
     print(best)

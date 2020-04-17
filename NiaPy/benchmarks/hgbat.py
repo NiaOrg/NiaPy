@@ -2,87 +2,97 @@
 
 """Implementations of HGBat functions."""
 
-from math import fabs
+import numpy as np
+
 from NiaPy.benchmarks.benchmark import Benchmark
 
 __all__ = ['HGBat']
 
 class HGBat(Benchmark):
-	r"""Implementations of HGBat functions.
+    r"""Implementations of HGBat functions.
 
-	Date: 2018
+    Date:
+        2018
 
-	Author: Klemen Berkovič
+    Author:
+        Klemen Berkovič
 
-	License: MIT
+    License:
+        MIT
 
-	Function:
-		**HGBat Function**
-		:math:``f(\textbf{x}) = \left| \left( \sum_{i=1}^D x_i^2 \right)^2 - \left( \sum_{i=1}^D x_i \right)^2 \right|^{\frac{1}{2}} + \frac{0.5 \sum_{i=1}^D x_i^2 + \sum_{i=1}^D x_i}{D} + 0.5
+    Function:
+        **HGBat Function**
 
-		**Input domain:**
-		The function can be defined on any input domain but it is usually
-		evaluated on the hypercube :math:`x_i ∈ [-100, 100]`, for all :math:`i = 1, 2,..., D`.
+        :math:`f(\textbf{x}) = \lvert \left( \sum_{i=1}^D x_i^2 \right)^2 - \left( \sum_{i=1}^D x_i \right)^2 \rvert^{\frac{1}{2}} + \frac{0.5 \sum_{i=1}^D x_i^2 + \sum_{i=1}^D x_i}{D} + 0.5`
 
-		**Global minimum:**
-		:math:`f(x^*) = 0`, at :math:`x^* = (420.968746,...,420.968746)`
+        **Input domain:**
+        The function can be defined on any input domain but it is usually
+        evaluated on the hypercube :math:`x_i ∈ [-100, 100]`, for all :math:`i = 1, 2,..., D`.
 
-	LaTeX formats:
-		Inline:
-				$$f(\textbf{x}) = \left| \left( \sum_{i=1}^D x_i^2 \right)^2 - \left( \sum_{i=1}^D x_i \right)^2 \right|^{\frac{1}{2}} + \frac{0.5 \sum_{i=1}^D x_i^2 + \sum_{i=1}^D x_i}{D} + 0.5
+        **Global minimum:**
+        :math:`f(x^*) = 0`, at :math:`x^* = (420.968746,...,420.968746)`
 
-		Equation:
-				\begin{equation} f(\textbf{x}) = \left| \left( \sum_{i=1}^D x_i^2 \right)^2 - \left( \sum_{i=1}^D x_i \right)^2 \right|^{\frac{1}{2}} + \frac{0.5 \sum_{i=1}^D x_i^2 + \sum_{i=1}^D x_i}{D} + 0.5 \end{equation}
+    LaTeX formats:
+        Inline:
+                $$f(\textbf{x}) = \lvert \left( \sum_{i=1}^D x_i^2 \right)^2 - \left( \sum_{i=1}^D x_i \right)^2 \rvert^{\frac{1}{2}} + \frac{0.5 \sum_{i=1}^D x_i^2 + \sum_{i=1}^D x_i}{D} + 0.5
 
-		Domain:
-				$-100 \leq x_i \leq 100$
+        Equation:
+                \begin{equation} f(\textbf{x}) = \lvert \left( \sum_{i=1}^D x_i^2 \right)^2 - \left( \sum_{i=1}^D x_i \right)^2 \rvert^{\frac{1}{2}} + \frac{0.5 \sum_{i=1}^D x_i^2 + \sum_{i=1}^D x_i}{D} + 0.5 \end{equation}
 
-	Reference:
-		http://www5.zzu.edu.cn/__local/A/69/BC/D3B5DFE94CD2574B38AD7CD1D12_C802DAFE_BC0C0.pdf
-	"""
-	Name = ['HGBat']
+        Domain:
+                $-100 \leq x_i \leq 100$
 
-	def __init__(self, Lower=-100.0, Upper=100.0):
-		r"""Initialize of HGBat benchmark.
+    Attributes:
+        Name (List[str]): Names of the benchmark.
 
-		Args:
-			Lower (Optional[float]): Lower bound of problem.
-			Upper (Optional[float]): Upper bound of problem.
+    See Also:
+        * :class:`NiaPy.benchmarks.Benchmark`
 
-		See Also:
-			:func:`NiaPy.benchmarks.Benchmark.__init__`
-		"""
-		Benchmark.__init__(self, Lower, Upper)
+    Reference:
+        http://www5.zzu.edu.cn/__local/A/69/BC/D3B5DFE94CD2574B38AD7CD1D12_C802DAFE_BC0C0.pdf
+    """
+    Name = ['HGBat', 'hgbat']
 
-	@staticmethod
-	def latex_code():
-		r"""Return the latex code of the problem.
+    def __init__(self, Lower=-100.0, Upper=100.0):
+        r"""Initialize of HGBat benchmark.
 
-		Returns:
-			str: Latex code
-		"""
-		return r'''$f(\textbf{x}) = \left| \left( \sum_{i=1}^D x_i^2 \right)^2 - \left( \sum_{i=1}^D x_i \right)^2 \right|^{\frac{1}{2}} + \frac{0.5 \sum_{i=1}^D x_i^2 + \sum_{i=1}^D x_i}{D} + 0.5$'''
+        Args:
+            Lower (Optional[float]): Lower bound of problem.
+            Upper (Optional[float]): Upper bound of problem.
 
-	def function(self):
-		r"""Return benchmark evaluation function.
+        See Also:
+            :func:`NiaPy.benchmarks.Benchmark.__init__`
+        """
+        Benchmark.__init__(self, Lower, Upper)
 
-		Returns:
-			Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function
-		"""
-		def f(D, x):
-			r"""Fitness function.
+    @staticmethod
+    def latex_code():
+        r"""Return the latex code of the problem.
 
-			Args:
-				D (int): Dimensionality of the problem
-				sol (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
+        Returns:
+            str: Latex code
+        """
+        return r'''$f(\textbf{x}) = \lvert \left( \sum_{i=1}^D x_i^2 \right)^2 - \left( \sum_{i=1}^D x_i \right)^2 \rvert^{\frac{1}{2}} + \frac{0.5 \sum_{i=1}^D x_i^2 + \sum_{i=1}^D x_i}{D} + 0.5$'''
 
-			Returns:
-				float: Fitness value for the solution.
-			"""
-			val1, val2 = 0.0, 0.0
-			for i in range(D): val1 += x[i] ** 2
-			for i in range(D): val2 += x[i]
-			return fabs(val1 ** 2 - val2 ** 2) ** (1 / 2) + (0.5 * val1 + val2) / D + 0.5
-		return f
+    def function(self):
+        r"""Return benchmark evaluation function.
 
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
+        Returns:
+            Callable[[int, Union[int, float, list, numpy.ndarray], Dict[str, Any]], float]: Fitness function
+        """
+        def f(D, x, **kwargs):
+            r"""Fitness function.
+
+            Args:
+                D (int): Dimensionality of the problem
+                sol (Union[int, float, list, numpy.ndarray]): Solution to check.
+                kwargs (Dict[str, Any]): Additional arguments.
+
+            Returns:
+                float: Fitness value for the solution.
+            """
+            val1, val2 = 0.0, 0.0
+            for i in range(D): val1 += x[i] ** 2
+            for i in range(D): val2 += x[i]
+            return np.fabs(val1 ** 2 - val2 ** 2) ** (1 / 2) + (0.5 * val1 + val2) / D + 0.5
+        return f

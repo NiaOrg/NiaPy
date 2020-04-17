@@ -3,6 +3,7 @@
 """Implementation of Pinter function."""
 
 import math
+
 from NiaPy.benchmarks.benchmark import Benchmark
 
 __all__ = ['Pinter']
@@ -48,23 +49,30 @@ class Pinter(Benchmark):
         Domain:
                 $-10 \leq x_i \leq 10$
 
+    Attributes:
+        Name (List[str]): Names of the benchmark.
+
+    See Also:
+        * :class:`NiaPy.benchmarks.Benchmark`
+
     Reference paper:
         Jamil, M., and Yang, X. S. (2013).
         A literature survey of benchmark functions for global optimisation problems.
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
     """
-    Name = ['Pinter']
+    Name = ['Pinter', 'pinter']
 
-    def __init__(self, Lower=-10.0, Upper=10.0):
+    def __init__(self, Lower=-10.0, Upper=10.0, **kwargs):
         r"""Initialize of Pinter benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.
             Upper (Optional[float]): Upper bound of problem.
+            kwargs (Dict[str, Any]): Additional arguments.
 
         See Also:
-            :func:`NiaPy.benchmarks.Benchmark.__init__`
+            * :func:`NiaPy.benchmarks.Benchmark.__init__`
         """
         Benchmark.__init__(self, Lower, Upper)
 
@@ -85,14 +93,15 @@ class Pinter(Benchmark):
         r"""Return benchmark evaluation function.
 
         Returns:
-            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function
+            Callable[[int, Union[int, float, list, numpy.ndarray], Dict[str, Any]], float]: Fitness function
         """
-        def evaluate(D, sol):
+        def evaluate(D, sol, **kwargs):
             r"""Fitness function.
 
             Args:
                 D (int): Dimensionality of the problem
-                sol (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
+                sol (Union[int, float, list, numpy.ndarray]): Solution to check.
+                kwargs (Dict[str, Any]): Additional arguments.
 
             Returns:
                 float: Fitness value for the solution.

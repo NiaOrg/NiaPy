@@ -1,6 +1,10 @@
 # encoding=utf8
-from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
+
 from NiaPy.algorithms.basic import GreyWolfOptimizer
+from NiaPy.tests.test_algorithm import (
+	AlgorithmTestCase,
+	MyBenchmark
+)
 
 
 class GWOTestCase(AlgorithmTestCase):

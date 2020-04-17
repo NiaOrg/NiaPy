@@ -2,7 +2,8 @@
 
 """Impementation of Happy Cat funtion."""
 
-import math
+import numpy as np
+
 from NiaPy.benchmarks.benchmark import Benchmark
 
 __all__ = ['HappyCat']
@@ -41,11 +42,20 @@ class HappyCat(Benchmark):
         Domain:
                 $-100 \leq x_i \leq 100$
 
-    Reference: http://bee22.com/manual/tf_images/Liang%20CEC2014.pdf &
-    Beyer, H. G., & Finck, S. (2012). HappyCat - A Simple Function Class Where Well-Known Direct Search Algorithms Do Fail.
-    In International Conference on Parallel Problem Solving from Nature (pp. 367-376). Springer, Berlin, Heidelberg.
+    Attributes:
+        Name (List[str]): Names of the benchmark.
+
+    See Also:
+        * :class:`NiaPy.benchmarks.Benchmark`
+
+    Reference URL:
+        http://bee22.com/manual/tf_images/Liang%20CEC2014.pdf
+
+    Reference:
+        Beyer, H. G., & Finck, S. (2012). HappyCat - A Simple Function Class Where Well-Known Direct Search Algorithms Do Fail.
+        In International Conference on Parallel Problem Solving from Nature (pp. 367-376). Springer, Berlin, Heidelberg.
     """
-    Name = ['HappyCat']
+    Name = ['HappyCat', 'happyCat', 'happycat']
 
     def __init__(self, Lower=-100.0, Upper=100.0):
         r"""Initialize of Happy cat benchmark.
@@ -66,22 +76,21 @@ class HappyCat(Benchmark):
         Returns:
             str: Latex code
         """
-        return r'''$f(\mathbf{x}) = {\left|\sum_{i = 1}^D {x_i}^2 -
-                D \right|}^{1/4} + (0.5 \sum_{i = 1}^D {x_i}^2 +
-                \sum_{i = 1}^D x_i) / D + 0.5$'''
+        return r'''$f(\mathbf{x}) = {\left|\sum_{i = 1}^D {x_i}^2 - D \right|}^{1/4} + (0.5 \sum_{i = 1}^D {x_i}^2 + \sum_{i = 1}^D x_i) / D + 0.5$'''
 
     def function(self):
         r"""Return benchmark evaluation function.
 
         Returns:
-            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function
+            Callable[[int, Union[int, float, list, numpy.ndarray], Dict[str, Any]], float]: Fitness function
         """
-        def evaluate(D, sol):
+        def evaluate(D, sol, **kwargs):
             r"""Fitness function.
 
             Args:
                 D (int): Dimensionality of the problem
-                sol (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
+                sol (Union[int, float, list, numpy.ndarray]): Solution to check.
+                kwargs (Dict[str, Any]): Additional arguments.
 
             Returns:
                 float: Fitness value for the solution.
@@ -91,8 +100,8 @@ class HappyCat(Benchmark):
             alpha = 0.125
 
             for i in range(D):
-                val1 += math.pow(abs(math.pow(sol[i], 2) - D), alpha)
-                val2 += (0.5 * math.pow(sol[i], 2) + sol[i]) / D
+                val1 += pow(np.abs(pow(sol[i], 2) - D), alpha)
+                val2 += (0.5 * pow(sol[i], 2) + sol[i]) / D
 
             return val1 + val2 + 0.5
 

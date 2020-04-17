@@ -6,9 +6,10 @@ name = "pypi"
 [packages]
 numpy = ">=1.16.2"
 scipy = ">=1.2.1"
-enum34 = {version = ">=1.1.6",markers = "python_version < '3.4'"}
-XlsxWriter = ">=1.1.5"
+pandas = ">=0.21.0"
 matplotlib = ">=2.2.4"
+XlsxWriter = ">=1.1.5"
+enum34 = {version = ">=1.1.6",markers = "python_version < '3.4'"}
 future = {version = ">=0.18.2",markers = "python_version < '3'"}
 
 [dev-packages]

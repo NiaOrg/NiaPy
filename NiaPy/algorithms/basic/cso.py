@@ -1,12 +1,9 @@
 # encoding=utf8
-import logging
+
 import math
 
 import numpy as np
 from NiaPy.algorithms.algorithm import Algorithm
-logging.basicConfig()
-logger = logging.getLogger('NiaPy.algorithms.basic')
-logger.setLevel('INFO')
 
 __all__ = ['CatSwarmOptimization']
 
@@ -218,5 +215,3 @@ class CatSwarmOptimization(Algorithm):
         ib = np.argmin(fpop)
         if fpop[ib] < fxb: xb, fxb = pop_copies[ib].copy(), fpop[ib]
         return pop_copies, fpop, xb, fxb, {'velocities': velocities, 'modes': self.randomSeekTrace()}
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

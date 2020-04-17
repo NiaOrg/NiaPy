@@ -1,5 +1,10 @@
-from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
+# encoding=utf8
+
 from NiaPy.algorithms.basic import MonarchButterflyOptimization
+from NiaPy.tests.test_algorithm import (
+    AlgorithmTestCase,
+    MyBenchmark
+)
 
 
 class MBOTestCase(AlgorithmTestCase):

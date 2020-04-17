@@ -18,7 +18,7 @@ def MyInit(task, NP, rnd=rand, **kwargs):
 
 # we will run Particle Swarm Algorithm with custom Init function for 5 independent runs
 for i in range(5):
-	task = StoppingTask(D=10, nFES=1000, optType=OptimizationType.MINIMIZATION, benchmark=Sphere())
+	task = StoppingTask(D=10, nFES=1000, benchmark=Sphere())
 	algo = ParticleSwarmAlgorithm(NP=10, C1=2.0, C2=2.0, w=0.7, vMin=-4, vMax=4, InitPopFunc=MyInit)
 	best = algo.run(task=task)
 	print(best)

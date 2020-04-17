@@ -5,16 +5,17 @@ import sys
 sys.path.append('../')
 # End of fix
 
-from NiaPy.algorithms.basic import DynamicFireworksAlgorithm
-from NiaPy.util import StoppingTask
-from NiaPy.task.task import OptimizationType
+from NiaPy.task import StoppingTask
 from NiaPy.benchmarks import Sphere
+from NiaPy.algorithms.basic import DynamicFireworksAlgorithm
+
 
 # we will run Fireworks Algorithm for 5 independent runs
+algo = DynamicFireworksAlgorithm(N=70, Ainit=0.1, Afinal=0.9)
 for i in range(5):
-	task = StoppingTask(D=10, nGEN=80, optType=OptimizationType.MINIMIZATION, benchmark=Sphere())
-	algo = DynamicFireworksAlgorithm(N=70, Ainit=0.1, Afinal=0.9)
-	best = algo.run(task=task)
+	task = StoppingTask(D=10, nGEN=80, benchmark=Sphere())
+	best = algo.run(task)
 	print('%s -> %s' % (best[0], best[1]))
+print(algo.getParameters())
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

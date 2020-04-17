@@ -5,18 +5,19 @@
 from NiaPy.algorithms import basic
 from NiaPy.algorithms import modified
 from NiaPy.algorithms import other
-from NiaPy.algorithms.algorithm import Algorithm, Individual, defaultNumPyInit, defaultIndividualInit
-from NiaPy.algorithms.statistics import BasicStatistics
-from NiaPy.algorithms.utility import AlgorithmUtility
+from NiaPy.algorithms.algorithm import Algorithm
+from NiaPy.algorithms.individual import (
+    Individual,
+    defaultNumPyInit,
+    defaultIndividualInit
+)
 
 __all__ = [
-	'basic',
-	'modified',
-	'other',
-	'Algorithm',
-	'defaultNumPyInit',
-	'defaultIndividualInit',
-	'Individual',
-	'BasicStatistics',
-	'AlgorithmUtility'
+    'Individual',
+    'defaultNumPyInit',
+    'defaultIndividualInit',
+    'Algorithm',
+    'basic',
+    'modified',
+    'other'
 ]

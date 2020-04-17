@@ -2,7 +2,7 @@
 
 """Implementation of Ackley benchmark."""
 
-from numpy import exp, pi, cos, sqrt
+import numpy as np
 
 from NiaPy.benchmarks.benchmark import Benchmark
 
@@ -13,7 +13,7 @@ class Ackley(Benchmark):
 
     Date: 2018
 
-    Author: Lucija Brezočnik
+    Author: Lucija Brezočnik and Klemen Berkovič
 
     License: MIT
 
@@ -45,15 +45,31 @@ class Ackley(Benchmark):
 
     Reference:
         https://www.sfu.ca/~ssurjano/ackley.html
-    """
-    Name = ['Ackley']
 
-    def __init__(self, Lower=-32.768, Upper=32.768):
+    Attributes:
+        Name (List[str]): Names of the benchmark.
+        a (float): Objective function argument.
+        b (float): Objective function argument.
+        c (float): Objective function argument.
+
+    See Also:
+        * :class:`NiaPy.benchmarks.Benchmark`
+    """
+    Name = ['Ackley', 'ackley']
+    a = 20         # Recommended variable value
+    b = 0.2        # Recommended variable value
+    c = 2 * np.pi  # Recommended variable value
+
+    def __init__(self, Lower=-32.768, Upper=32.768, a=20, b=0.2, c=2 * np.pi, **kwargs):
         r"""Initialize of Ackley benchmark.
 
         Args:
             Lower (Optional[float]): Lower bound of problem.
             Upper (Optional[float]): Upper bound of problem.
+            a (Optional[float]): Objective function argument.
+            b (Optional[float]): Objective function argument.
+            c (Optional[float]): Objective function argument.
+            kwargs (Dict[str, Any]): Additional arguments.
 
         See Also:
             :func:`NiaPy.benchmarks.Benchmark.__init__`
@@ -71,25 +87,30 @@ class Ackley(Benchmark):
                 \sum_{i=1}^D x_i^2}\right) - \exp\left(\frac{1}{D}
                 \sum_{i=1}^D cos(c\;x_i)\right) + a + \exp(1)$'''
 
-    def function(slef):
+    def function(self):
         r"""Return benchmark evaluation function.
 
         Returns:
-            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function
+            Callable[[int, Union[int, float, list, numpy.ndarray], Optional[float], Optional[float], Optional[float], Dict[str, Any]], float]: Fitness function
         """
-        def evaluate(D, sol):
+        self_a, self_b, self_c = self.a, self.b, self.c
+        def evaluate(D, sol, a=None, b=None, c=None, **kwargs):
             r"""Fitness function.
 
             Args:
                 D (int): Dimensionality of the problem
-                sol (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
+                sol (Union[int, float, list, numpy.ndarray]): Solution to check.
+                a (Optional[float]): Function argument.
+                b (Optional[float]): Function argument.
+                c (Optional[float]): Function argument.
+                kwargs (Dict[str, Any]): Additional arguments.
 
             Returns:
                 float: Fitness value for the solution.
             """
-            a = 20  # Recommended variable value
-            b = 0.2  # Recommended variable value
-            c = 2 * pi  # Recommended variable value
+            a = a if a is not None else self_a
+            b = b if b is not None else self_b
+            c = c if c is not None else self_c
 
             val = 0.0
             val1 = 0.0
@@ -97,12 +118,12 @@ class Ackley(Benchmark):
 
             for i in range(D):
                 val1 += sol[i] ** 2
-                val2 += cos(c * sol[i])
+                val2 += np.cos(c * sol[i])
 
-            temp1 = -b * sqrt(val1 / D)
+            temp1 = -b * np.sqrt(val1 / D)
             temp2 = val2 / D
 
-            val = -a * exp(temp1) - exp(temp2) + a + exp(1)
+            val = -a * np.exp(temp1) - np.exp(temp2) + a + np.exp(1)
 
             return val
 

@@ -2,11 +2,22 @@
 
 from NiaPy.benchmarks.benchmark import Benchmark
 from NiaPy.benchmarks.ackley import Ackley
-from NiaPy.benchmarks.alpine import Alpine1, Alpine2
+from NiaPy.benchmarks.alpine import (
+    Alpine1,
+    Alpine2
+)
 from NiaPy.benchmarks.rastrigin import Rastrigin
 from NiaPy.benchmarks.rosenbrock import Rosenbrock
-from NiaPy.benchmarks.griewank import Griewank, ExpandedGriewankPlusRosenbrock
-from NiaPy.benchmarks.schwefel import Schwefel, Schwefel221, Schwefel222, ModifiedSchwefel
+from NiaPy.benchmarks.griewank import (
+    Griewank,
+    ExpandedGriewankPlusRosenbrock
+)
+from NiaPy.benchmarks.schwefel import (
+    Schwefel,
+    Schwefel221,
+    Schwefel222,
+    ModifiedSchwefel
+)
 from NiaPy.benchmarks.whitley import Whitley
 from NiaPy.benchmarks.happyCat import HappyCat
 from NiaPy.benchmarks.ridge import Ridge
@@ -17,7 +28,11 @@ from NiaPy.benchmarks.qing import Qing
 from NiaPy.benchmarks.quintic import Quintic
 from NiaPy.benchmarks.salomon import Salomon
 from NiaPy.benchmarks.schumerSteiglitz import SchumerSteiglitz
-from NiaPy.benchmarks.step import Step, Step2, Step3
+from NiaPy.benchmarks.step import (
+    Step,
+    Step2,
+    Step3
+)
 from NiaPy.benchmarks.stepint import Stepint
 from NiaPy.benchmarks.sumSquares import SumSquares
 from NiaPy.benchmarks.styblinskiTang import StyblinskiTang
@@ -29,7 +44,11 @@ from NiaPy.benchmarks.elliptic import Elliptic
 from NiaPy.benchmarks.discus import Discus
 from NiaPy.benchmarks.michalewichz import Michalewichz
 from NiaPy.benchmarks.levy import Levy
-from NiaPy.benchmarks.sphere import Sphere, Sphere2, Sphere3
+from NiaPy.benchmarks.sphere import (
+    Sphere,
+    Sphere2,
+    Sphere3
+)
 from NiaPy.benchmarks.trid import Trid
 from NiaPy.benchmarks.perm import Perm
 from NiaPy.benchmarks.zakharov import Zakharov
@@ -37,7 +56,20 @@ from NiaPy.benchmarks.dixonprice import DixonPrice
 from NiaPy.benchmarks.powell import Powell
 from NiaPy.benchmarks.cosinemixture import CosineMixture
 from NiaPy.benchmarks.infinity import Infinity
-from NiaPy.benchmarks.schaffer import SchafferN2, SchafferN4, ExpandedSchaffer
+from NiaPy.benchmarks.schaffer import (
+    SchafferN2,
+    SchafferN4,
+    ExpandedSchaffer
+)
+from NiaPy.benchmarks.clustering import (
+    Clustering,
+    ClusteringMin,
+    ClusteringMinPenalty
+)
+from NiaPy.benchmarks.autocorelation import (
+    AutoCorrelation,
+    AutoCorrelationEnergy
+)
 
 __all__ = [
     'Benchmark',
@@ -89,5 +121,10 @@ __all__ = [
     'Infinity',
     'ExpandedSchaffer',
     'SchafferN2',
-    'SchafferN4'
+    'SchafferN4',
+    'Clustering',
+    'ClusteringMin',
+    'ClusteringMinPenalty',
+    'AutoCorrelation',
+    'AutoCorrelationEnergy',
 ]

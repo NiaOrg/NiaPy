@@ -7,18 +7,20 @@ sys.path.append('../')
 
 import random
 import logging
+
+from matplotlib import pyplot as plt
+
 from NiaPy.algorithms.basic import BareBonesFireworksAlgorithm
 from NiaPy.benchmarks import Benchmark, Katsuura, Elliptic
-from NiaPy.util import TaskConvPrint, TaskConvPlot
+from NiaPy.task import StoppingTask
 
 logging.basicConfig()
 logger = logging.getLogger('examples')
 logger.setLevel('INFO')
 
-# For reproducive results
-random.seed(1234)
-
 class MyBenchmark(Benchmark):
+	Name = ['MyBenchmark']
+
 	def __init__(self):
 		self.Lower = -11
 		self.Upper = 11
@@ -30,35 +32,16 @@ class MyBenchmark(Benchmark):
 			return val
 		return evaluate
 
-def simple_example(runs=10):
-	for i in range(runs):
-		algo = BareBonesFireworksAlgorithm(D=50, nFES=50000, n=15, C_a=1, C_r=0.5, benchmark=MyBenchmark())
-		best = algo.run()
-		logger.info('%s %s' % (best[0], best[1]))
-
-def logging_example():
-	task = TaskConvPrint(D=50, nFES=50000, nGEN=10000, benchmark=MyBenchmark())
-	algo = BareBonesFireworksAlgorithm(task=task, n=15, C_a=1, C_r=0.5)
-	best = algo.run()
-	logger.info('%s %s' % (best[0], best[1]))
-
-def plot_example():
-	task = TaskConvPlot(D=50, nFES=50000, nGEN=10000, benchmark=MyBenchmark())
-	algo = BareBonesFireworksAlgorithm(task=task, n=15, C_a=1, C_r=0.5)
-	best = algo.run()
-	logger.info('%s %s' % (best[0], best[1]))
-	input('Press [enter] to continue')
-
-# benc = MyBenchmark()
-# benc.plot3d()
+benc = MyBenchmark()
+benc.plot3d()
+plt.show()
 
 benc = Katsuura(-1, 1)
 benc.plot3d(0.06)
+plt.show()
 
 benc = Elliptic()
 benc.plot3d(0.65)
-# simple_example()
-# logging_example()
-# plot_example()
+plt.show()
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
