@@ -126,7 +126,7 @@ The following benchmark functions are included in NiaPy:
 
 ## Requirements
 
-- Python 3.6.x or 3.7.x (backward compatibility with 2.7.x)
+- Python 3.6.x, 3.7.x or 3.8.x (backward compatibility with 2.7.x)
 - Pip
 
 ### Dependencies
