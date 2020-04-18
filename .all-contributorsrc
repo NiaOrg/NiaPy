@@ -182,9 +182,18 @@
       "contributions": [
         "question"
       ]
+    },
+    {
+      "login": "timzatko",
+      "name": "Timotej Zaťko",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/11925394?v=4",
+      "profile": "http://timzatko.eu",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
-  "skipCi": "true",
+  "skipCi": true,
   "contributorsPerLine": 7,
   "projectName": "NiaPy",
   "projectOwner": "NiaOrg",
