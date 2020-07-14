@@ -171,6 +171,12 @@ Install NiaPy with conda:
 
     $ conda install -c niaorg niapy
 
+Install NiaPy on Fedora:
+
+.. code:: sh
+
+    $ yum install python3-niapy
+
 Or directly from the source code:
 
 .. code:: sh
