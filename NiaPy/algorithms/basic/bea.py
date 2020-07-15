@@ -42,6 +42,7 @@ class BeesAlgorithm(Algorithm):
 
 	"""
 	Name = ['BeesAlgorithm', 'BEA']
+
 	@staticmethod
 	def algorithmInfo():
 		return r"""
