@@ -38,19 +38,19 @@ runner = Runner(
     nRuns=2,
     useAlgorithms=[
         GreyWolfOptimizer(),
-        "FlowerPollinationAlgorithm",
-        ParticleSwarmAlgorithm(),
-        "HybridBatAlgorithm",
-        "SimulatedAnnealing",
+#        "FlowerPollinationAlgorithm",
+#        ParticleSwarmAlgorithm(),
+#        "HybridBatAlgorithm",
+#        "SimulatedAnnealing",
         "CuckooSearch"],
     useBenchmarks=[
-        Ackley(),
-        Griewank(),
-        Sphere(),
-        HappyCat(),
+#        Ackley(),
+#        Griewank(),
+#        Sphere(),
+#        HappyCat(),
         "rastrigin",
         MyBenchmark()
     ]
 )
 
-runner.run(export='json', verbose=True)
+runner.run(export='dataframe', verbose=True)

@@ -32,7 +32,7 @@ Our mission is to build a collection of nature-inspired algorithms and create a 
 - numerous benchmark functions implementations,
 - use of various nature-inspired algorithms without struggle and effort with a simple interface,
 - easy comparison between nature-inspired algorithms and
-- export of results in various formats (LaTeX, JSON, Excel).
+- export of results in various formats such as, for example,  Pandas DataFrame, JSON or even Excel (only when using Python >= 3.6).
 
 # Overview
 
