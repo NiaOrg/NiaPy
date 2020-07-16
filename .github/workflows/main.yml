@@ -24,7 +24,7 @@ jobs:
         pip install pipenv
     - name: Install dependencies
       run: |
-        pipenv install --skip-lock --dev
+        export PIP_NO_BINARY=:all: && pipenv install --skip-lock --dev
     - name: Lint with flake8
       run: |
         pipenv run flake8 NiaPy tests scent.py setup.py
