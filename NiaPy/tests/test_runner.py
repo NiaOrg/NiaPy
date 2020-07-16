@@ -18,7 +18,7 @@ class MyBenchmark(Benchmark):
 
 class RunnerTestCase(TestCase):
 	def setUp(self):
-		self.algorithms = ['DifferentialEvolution', 'GreyWolfOptimizer', 'GeneticAlgorithm', 'ParticleSwarmAlgorithm', 'HybridBatAlgorithm', 'SelfAdaptiveDifferentialEvolution', 'CamelAlgorithm', 'BareBonesFireworksAlgorithm', 'MonkeyKingEvolutionV1', 'MonkeyKingEvolutionV2', 'MonkeyKingEvolutionV3', 'EvolutionStrategy1p1', 'EvolutionStrategyMp1', 'SineCosineAlgorithm', 'GlowwormSwarmOptimization', 'GlowwormSwarmOptimizationV1', 'GlowwormSwarmOptimizationV2', 'GlowwormSwarmOptimizationV3', 'KrillHerdV1', 'KrillHerdV2', 'KrillHerdV3', 'KrillHerdV4', 'KrillHerdV11', 'HarmonySearch', 'HarmonySearchV1', 'FireworksAlgorithm', 'EnhancedFireworksAlgorithm', 'DynamicFireworksAlgorithm', 'MultipleTrajectorySearch', 'MultipleTrajectorySearchV1', 'NelderMeadMethod', 'HillClimbAlgorithm', 'SimulatedAnnealing', 'GravitationalSearchAlgorithm', 'AnarchicSocietyOptimization']
+		self.algorithms = ['DifferentialEvolution', 'GreyWolfOptimizer', 'GeneticAlgorithm']
 		self.benchmarks = ['griewank', MyBenchmark()]
 
 	def test_runner_works_fine(self):
@@ -27,7 +27,10 @@ class RunnerTestCase(TestCase):
 	def test_runner_bad_algorithm_thorws_fine(self):
 		self.assertRaises(TypeError, lambda: NiaPy.Runner(4, 10, 3, 'EvolutionStrategy', self.benchmarks).run())
 
-	def test_runner_bad_benchmark_thorws_fine(self):
+	def test_runner_bad_benchmark_throws_fine(self):
 		self.assertRaises(TypeError, lambda: NiaPy.Runner(4, 10, 3, 'EvolutionStrategy1p1', 'TesterMan').run())
+
+	def test_runner_bad_export_throws_fine(self):
+		self.assertRaises(TypeError, lambda: NiaPy.Runner(4, 10, 3, 'GreyWolfOptimizer', self.benchmarks).run(export="pandas"))
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

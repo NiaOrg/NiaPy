@@ -142,11 +142,11 @@ class Runner:
         dataframe.to_excel(self.__generate_export_name("xslx"))
         logger.info("Export to XLSX file completed!")
 
-    def run(self, export="log", verbose=False):
+    def run(self, export="dataframe", verbose=False):
         """Execute runner.
 
         Arguments:
-                export (str): Takes export type (e.g. log, json, xlsx, latex) (default: "log")
+                export (str): Takes export type (e.g. dataframe, json, xls, xlsx) (default: "dataframe")
                 verbose (bool): Switch for verbose logging (default: {False})
 
         Raises:
@@ -198,5 +198,5 @@ class Runner:
         elif export == "xlsx":
             self.__export_to_xlsx()
         else:
-            raise TypeError("Passed export type is not supported!")
+            raise TypeError("Passed export type %s is not supported!", export)
         return self.results
