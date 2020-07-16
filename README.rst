@@ -49,7 +49,7 @@ Mission
 -  use of various nature-inspired algorithms without struggle and effort
    with a simple interface,
 -  easy comparison between nature-inspired algorithms and
--  export of results in various formats (LaTeX, JSON, Excel).
+-  export of results in various formats (Pandas DataFrame, JSON, Excel).
 
 Overview
 ========

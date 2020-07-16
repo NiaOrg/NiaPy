@@ -241,7 +241,7 @@ Runner example
 For easier comparison between many different algorithms and benchmarks, we developed a useful feature called
 *Runner*. Runner can take an array of algorithms and an array of benchmarks to compare and run all combinations
 for you. We also provide an extra feature, which lets you easily exports those results in many different formats
-(LaTeX, Excell, JSON).
+(Pandas DataFrame, Excell, JSON).
 
 Below is given a usage example of our *Runner*, which will run various algorithms and benchmark
 functions. Results will be exported as JSON.
