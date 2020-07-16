@@ -1,6 +1,6 @@
 name: Check and Test
 
-on: [push, pull_request]
+on: [pull_request]
 
 jobs:
   build:
@@ -9,7 +9,7 @@ jobs:
       max-parallel: 9
       matrix:
         os: [ubuntu-latest, windows-latest, macOS-latest]
-        python-version: [2.7, 3.6, 3.7]
+        python-version: [2.7, 3.6, 3.7, 3.8]
     env:
       MPLBACKEND: "agg"
     steps:
