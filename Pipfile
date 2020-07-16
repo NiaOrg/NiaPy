@@ -7,9 +7,11 @@ name = "pypi"
 numpy = ">=1.16.2"
 scipy = ">=1.2.1"
 enum34 = {version = ">=1.1.6",markers = "python_version < '3.4'"}
-XlsxWriter = ">=1.1.5"
 matplotlib = ">=2.2.4"
 future = {version = ">=0.18.2",markers = "python_version < '3'"}
+pandas = ">=0.24.2"
+openpyxl = "==3.0.3"
+xlwt = "==1.3.0"
 
 [dev-packages]
 flake8 = "~=3.7.7"
@@ -37,9 +39,9 @@ futures = ">=3.1.1"
 Pygments = ">=2.3.1"
 "backports.functools_lru_cache" = "~=1.5"
 MacFSEvents = {version = "~=0.8.1",sys_platform = "== 'darwin'"}
-Sphinx = "~=1.8.0b1"
-sphinx-rtd-theme = "~=0.4.3"
-sphinx-autobuild = "~=0.7.1"
+Sphinx = {version = "~=3.1.2",sys_platform= "== 'linux'"}
+sphinx-rtd-theme = {version = "~=0.4.3",sys_platform= "== 'linux'"}
+sphinx-autobuild = {version = "~=0.7.1",sys_platform= "== 'linux'"}
 bump2version = "*"
 pandoc = "*"
 twine = "*"

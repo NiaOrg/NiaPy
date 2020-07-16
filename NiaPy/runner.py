@@ -2,20 +2,13 @@
 
 """Implementation of Runner utility class."""
 
+from __future__ import print_function
+
 import datetime
-import json
 import os
 import logging
 
-import xlsxwriter
-from numpy import (
-    amin,
-    median,
-    amax,
-    mean,
-    std,
-    ndarray
-)
+import pandas as pd
 
 from NiaPy.task import StoppingTask, OptimizationType
 from NiaPy.algorithms import AlgorithmUtility
@@ -31,7 +24,7 @@ class Runner:
     r"""Runner utility feature.
 
     Feature which enables running multiple algorithms with multiple benchmarks.
-    It also support exporting results in various formats (e.g. LaTeX, Excel, JSON)
+    It also support exporting results in various formats (e.g. Pandas DataFrame, JSON, Excel)
 
     Attributes:
             D (int): Dimension of problem
@@ -94,136 +87,66 @@ class Runner:
 
         """
 
+        Runner.__create_export_dir()
         return "export/" + str(datetime.datetime.now()).replace(":", ".") + "." + extension
 
-    def __export_to_log(self):
-        r"""Print the results to terminal."""
-
-        print(self.results)
-
-    def __export_to_json(self):
-        r"""Export the results in the JSON form.
+    def __export_to_dataframe_pickle(self):
+        r"""Export the results in the pandas dataframe pickle.
 
         See Also:
                 * :func:`NiaPy.Runner.__createExportDir`
+                * :func:`NiaPy.Runner.__generateExportName`
 
         """
 
-        self.__create_export_dir()
+        dataframe = pd.DataFrame.from_dict(self.results)
+        dataframe.to_pickle(self.__generate_export_name("pkl"))
+        logger.info("Export to Pandas DataFrame pickle (pkl) completed!")
 
-        class NumpyEncoder(json.JSONEncoder):
-            def default(self, obj):
-                if isinstance(obj, ndarray):
-                    return obj.tolist()
-                return json.JSONEncoder.default(self, obj)
+    def __export_to_json(self):
+        r"""Export the results in the JSON file.
 
-        dumped = json.dumps(self.results, cls=NumpyEncoder)
+        See Also:
+                * :func:`NiaPy.Runner.__createExportDir`
+                * :func:`NiaPy.Runner.__generateExportName`
 
-        with open(self.__generate_export_name("json"), "w") as outFile:
-            json.dump(dumped, outFile)
-            logger.info("Export to JSON completed!")
+        """
+
+        dataframe = pd.DataFrame.from_dict(self.results)
+        dataframe.to_json(self.__generate_export_name("json"))
+        logger.info("Export to JSON file completed!")
+
+    def _export_to_xls(self):
+        r"""Export the results in the xls file.
+
+        See Also:
+                * :func:`NiaPy.Runner.__createExportDir`
+                * :func:`NiaPy.Runner.__generateExportName`
+
+        """
+
+        dataframe = pd.DataFrame.from_dict(self.results)
+        dataframe.to_excel(self.__generate_export_name("xls"))
+        logger.info("Export to XLS completed!")
 
     def __export_to_xlsx(self):
-        r"""Export the results in the xlsx form.
+        r"""Export the results in the xlsx file.
 
         See Also:
-                :func:`NiaPy.Runner.__generateExportName`
+                * :func:`NiaPy.Runner.__createExportDir`
+                * :func:`NiaPy.Runner.__generateExportName`
 
         """
 
-        self.__create_export_dir()
-        workbook = xlsxwriter.Workbook(self.__generate_export_name("xlsx"))
-        worksheet = workbook.add_worksheet()
-        row, col, nRuns = 0, 0, 0
+        dataframe = pd.DataFrame.from_dict(self.results)
+        dataframe.to_excel(self.__generate_export_name("xslx"))
+        logger.info("Export to XLSX file completed!")
 
-        for alg in self.results:
-            _, col = worksheet.write(row, col, alg), col + 1
-            for bench in self.results[alg]:
-                worksheet.write(row, col, bench)
-                nRuns = len(self.results[alg][bench])
-                for i in range(len(self.results[alg][bench])):
-                    _, row = worksheet.write(row, col, self.results[alg][bench][i]), row + 1
-                row, col = row - len(self.results[alg][bench]), col + 1
-            row, col = row + 1 + nRuns, col - 1 + len(self.results[alg])
-
-        workbook.close()
-        logger.info("Export to XLSX completed!")
-
-    def __export_to_latex(self):
-        r"""Export the results in the form of latex table.
-
-        See Also:
-                :func:`NiaPy.Runner.__createExportDir`
-                :func:`NiaPy.Runner.__generateExportName`
-
-        """
-
-        self.__create_export_dir()
-
-        metrics = ["Best", "Median", "Worst", "Mean", "Std."]
-
-        def only_upper(s):
-            return "".join(c for c in s if c.isupper())
-
-        with open(self.__generate_export_name("tex"), "a") as outFile:
-            outFile.write("\\documentclass{article}\n")
-            outFile.write("\\usepackage[utf8]{inputenc}\n")
-            outFile.write("\\usepackage{siunitx}\n")
-            outFile.write("\\sisetup{\n")
-            outFile.write("round-mode=places,round-precision=3}\n")
-            outFile.write("\\begin{document}\n")
-            outFile.write("\\begin{table}[h]\n")
-            outFile.write("\\centering\n")
-            begin_tabular = "\\begin{tabular}{cc"
-            for alg in self.results:
-                for _i in range(len(self.results[alg])):
-                    begin_tabular += "S"
-                firstLine = "   &"
-                for benchmark in self.results[alg].keys():
-                    firstLine += "  &   \\multicolumn{1}{c}{\\textbf{" + benchmark + "}}"
-                firstLine += " \\\\"
-                break
-            begin_tabular += "}\n"
-            outFile.write(begin_tabular)
-            outFile.write("\\hline\n")
-            outFile.write(firstLine + "\n")
-            outFile.write("\\hline\n")
-            for alg in self.results:
-                for metric in metrics:
-                    line = ""
-                    if metric != "Worst":
-                        line += "   &   " + metric
-                    else:
-                        shortAlg = ""
-                        if alg.endswith("Algorithm"):
-                            shortAlg = only_upper(alg[:-9])
-                        else:
-                            shortAlg = only_upper(alg)
-                        line += "\\textbf{" + shortAlg + "} &   " + metric
-                        for benchmark in self.results[alg]:
-                            if metric == "Best":
-                                line += "   &   " + str(amin(self.results[alg][benchmark]))
-                            elif metric == "Median":
-                                line += "   &   " + str(median(self.results[alg][benchmark]))
-                            elif metric == "Worst":
-                                line += "   &   " + str(amax(self.results[alg][benchmark]))
-                            elif metric == "Mean":
-                                line += "   &   " + str(mean(self.results[alg][benchmark]))
-                            else:
-                                line += "   &   " + str(std(self.results[alg][benchmark]))
-                        line += "   \\\\"
-                        outFile.write(line + "\n")
-                    outFile.write("\\hline\n")
-                outFile.write("\\end{tabular}\n")
-                outFile.write("\\end{table}\n")
-                outFile.write("\\end{document}")
-        logger.info("Export to Latex completed!")
-
-    def run(self, export="log", verbose=False):
+    def run(self, export="dataframe", verbose=False):
         """Execute runner.
 
         Arguments:
-                export (str): Takes export type (e.g. log, json, xlsx, latex) (default: "log")
+                export (str): Takes export type (e.g. dataframe, json, xls, xlsx) (default: "dataframe")
                 verbose (bool): Switch for verbose logging (default: {False})
 
         Raises:
@@ -266,14 +189,14 @@ class Runner:
                     self.results[alg_name][bench_name].append(algorithm.run(benchmark_stopping_task))
             if verbose:
                 logger.info("---------------------------------------------------")
-        if export == "log":
-            self.__export_to_log()
+        if export == "dataframe":
+            self.__export_to_dataframe_pickle()
         elif export == "json":
             self.__export_to_json()
+        elif export == "xsl":
+            self._export_to_xls()
         elif export == "xlsx":
             self.__export_to_xlsx()
-        elif export == "latex":
-            self.__export_to_latex()
         else:
-            raise TypeError("Passed export type is not supported!")
+            raise TypeError("Passed export type %s is not supported!", export)
         return self.results

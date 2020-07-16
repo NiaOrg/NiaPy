@@ -53,4 +53,4 @@ runner = Runner(
     ]
 )
 
-runner.run(export='json', verbose=True)
+runner.run(export='dataframe', verbose=True)
