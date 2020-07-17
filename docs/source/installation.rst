@@ -36,7 +36,7 @@ click       Any      All
 numpy       1.14.0   All
 scipy       1.0.0    All
 xlsxwriter  1.0.2    All
-matplotlib  *        All
+matplotlib  \*        All
 ==========  =======  ========
 
 List of development dependencies:
