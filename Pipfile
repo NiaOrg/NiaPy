@@ -39,9 +39,10 @@ futures = ">=3.1.1"
 Pygments = ">=2.3.1"
 "backports.functools_lru_cache" = "~=1.5"
 MacFSEvents = {version = "~=0.8.1",sys_platform = "== 'darwin'"}
-Sphinx = {version = "~=3.1.2",sys_platform= "== 'linux'"}
-sphinx-rtd-theme = {version = "~=0.4.3",sys_platform= "== 'linux'"}
-sphinx-autobuild = {version = "~=0.7.1",sys_platform= "== 'linux'"}
+Sphinx = {version = "~=3.1.2",sys_platform= "!= 'win32'"}
+#sphinx-rtd-theme = {version = "~=0.4.3",sys_platform= "!= 'win32'"}
+sphinx-press-theme = {version = ">=0.5.1",sys_platform= "!= 'win32'"}
+sphinx-autobuild = {version = "~=0.7.1",sys_platform= "!= 'win32'"}
 bump2version = "*"
 pandoc = "*"
 twine = "*"
