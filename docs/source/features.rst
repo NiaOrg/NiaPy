@@ -24,11 +24,11 @@ Basic algorithms
 - Genetic algorithm
 - Glowworm Swarm Optimization
 - Grey wolf optimizer
-- Monarch butterfly optimization
-- Moth flame optimizer
 - Harmony Search Algorithm
 - Krill Herd Algorithm
+- Monarch butterfly optimization
 - Monkey King Evolution
+- Moth flame optimizer
 - Particle swarm optimization
 - Sine Cosine Algorithm
 

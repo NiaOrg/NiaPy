@@ -27,9 +27,22 @@ simple and quick use, without spending a time for implementing algorithms from s
 
 The main documentation is organized into a couple sections:
 
+* :ref:`about-docs`
 * :ref:`user-docs`
 * :ref:`dev-docs`
-* :ref:`about-docs`
+* :ref:`api-docs`
+
+.. _about-docs:
+
+.. toctree::
+   :maxdepth: 3
+   :caption: General
+
+   about
+   features
+   authors
+   changelog
+   code_of_conduct
 
 .. _user-docs:
 
@@ -38,7 +51,6 @@ The main documentation is organized into a couple sections:
    :caption: User Documentation
 
    getting_started
-   guides/index
    support
 
 .. _dev-docs:
@@ -47,19 +59,16 @@ The main documentation is organized into a couple sections:
    :maxdepth: 3
    :caption: Developer Documentation
 
-   changelog
+   guides/index
+   contributing_to_niapy
    installation
    testing
    documentation
-   api/index
 
-.. _about-docs:
+.. _api-docs:
 
 .. toctree::
-   :maxdepth: 3
-   :caption: About NiaPy
+  :maxdepth: 3
+  :caption: API Documentation
 
-   about
-   features
-   contributing_to_niapy
-   code_of_conduct
+  api/index
