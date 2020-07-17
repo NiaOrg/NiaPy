@@ -21,6 +21,10 @@ modified or adapted. However, implementation of nature-inspired algorithms is so
 difficult, complex and tedious task. In order to break this wall, NiaPy is intended for
 simple and quick use, without spending a time for implementing algorithms from scratch.
 
+* **Free software:** MIT license
+* **Github repository:** https://github.com/NiaOrg/NiaPy
+* **Python versions:** 3.6.x, 3.7.x or 3.8.x (backward compatibility with 2.7.x)
+
 The main documentation is organized into a couple sections:
 
 * :ref:`user-docs`
@@ -56,5 +60,6 @@ The main documentation is organized into a couple sections:
    :caption: About NiaPy
 
    about
+   features
    contributing_to_niapy
    code_of_conduct
