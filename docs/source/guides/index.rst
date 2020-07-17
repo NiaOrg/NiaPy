@@ -1,7 +1,7 @@
 Guides
 ======
 
-Here are gathered together user guides.
+Here are gathered user guides.
 
 .. toctree::
 
