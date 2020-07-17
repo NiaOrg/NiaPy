@@ -1,3 +1,9 @@
+<p align="center"><img src=".github/imgs/NiaPyLogo.png" alt="NiaPy" title="NiaPy"/></p>
+
+---
+
+
+
 ![Check codestyle and test build](https://github.com/NiaOrg/NiaPy/workflows/Check%20and%20Test/badge.svg)
 [![PyPI Version](https://img.shields.io/pypi/v/NiaPy.svg)](https://pypi.python.org/pypi/NiaPy)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/NiaPy.svg)
@@ -19,153 +25,47 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1205048.svg)](https://doi.org/10.5281/zenodo.1205048)
 [![DOI](http://joss.theoj.org/papers/10.21105/joss.00613/status.svg)](https://doi.org/10.21105/joss.00613)
 
-# About
 
 Nature-inspired algorithms are a very popular tool for solving optimization problems. Numerous variants of [nature-inspired algorithms have been developed](https://arxiv.org/abs/1307.4186) since the beginning of their era. To prove their versatility, those were tested in various domains on various applications, especially when they are hybridized, modified or adapted. However, implementation of nature-inspired algorithms is sometimes a difficult, complex and tedious task. In order to break this wall, NiaPy is intended for simple and quick use, without spending time for implementing algorithms from scratch.
 
-<p align="center"><img src=".github/imgs/NiaPyLogo.png" alt="NiaPy" title="NiaPy"/></p>
+* **Free software:** MIT license
+* **Documentation:** https://niapy.readthedocs.io/en/stable/
+* **Python versions:** 3.6.x, 3.7.x or 3.8.x (backward compatibility with 2.7.x)
+* **Dependencies:** [click](CONTRIBUTING.md#development-dependencies)
 
 # Mission
 
-Our mission is to build a collection of nature-inspired algorithms and create a simple interface for managing the optimization process. NiaPy will offer:
+Our mission is to build a collection of nature-inspired algorithms and create a simple interface for managing the optimization process. NiaPy offers:
 
 - numerous benchmark functions implementations,
 - use of various nature-inspired algorithms without struggle and effort with a simple interface,
-- easy comparison between nature-inspired algorithms and
-- export of results in various formats such as, for example,  Pandas DataFrame, JSON or even Excel (only when using Python >= 3.6).
+- easy comparison between nature-inspired algorithms, and
+- export of results in various formats such as Pandas DataFrame, JSON or even Excel (only when using Python >= 3.6).
 
-# Overview
 
-Python micro framework for building nature-inspired algorithms. Official documentation is available [here](https://niapy.readthedocs.io/en/stable/).
+# Installation
 
-The micro framework features following algorithms:
+To install NiaPy, run this command in your terminal:
 
-- basic:
-  - Artificial bee colony algorithm ([see example](examples/run_abc.py))
-  - Bat algorithm ([see example](examples/run_ba.py))
-  - Camel algorithm ([see example](example/run_ca.py))
-  - Cuckoo search ([see example](examples/run_cs.py))
-  - Differential evolution algorithm ([see example](examples/run_de.py))
-  - Evolution Strategy ([see example](example/run_es1p1.py), [see example](example/run_esMp1.py), [see example](example/run_esMpL.py), [see example](example/run_esML.py))
-  - Firefly algorithm ([see example](examples/run_fa.py))
-  - Fireworks algorithm ([see example](examples/run_fwa.py), [see example](examples/run_efwa.py), [see example](examples/run_dfwa.py), [see example](examples/run_bbfwa.py))
-  - Flower pollination algorithm ([see example](examples/run_fpa.py))
-  - Forest optimization algorithm ([see example](examples/run_foa.py))
-  - Genetic algorithm ([see example](examples/run_ga.py))
-  - Glowworm Swarm Optimization ([see example](examples/run_gso.py), [see example](examples/run_gsov1.py), [see example](examples/run_gsov2.py), [see example](examples/run_gsov3.py))
-  - Grey wolf optimizer ([see example](examples/run_gwo.py))
-  - Monarch butterfly optimization ([see example](examples/run_mbo.py))
-  - Moth flame optimizer ([see example](examples/run_mfo.py))
-  - Harmony Search Algorithm ([see example](examples/run_hs.py))
-  - Krill Herd Algorithm ([see example](examples/run_khv1.py), [see example](examples/run_khv2.py), [see example](examples/run_khv3.py), [see example](examples/run_khv4.py), [see example](examples/run_khV11.py))
-  - Monkey King Evolution ([see example](examples/run_mkev1.py), [see example](examples/run_mkev2.py), [see example](examples/run_mkev3.py))
-  - Particle swarm optimization ([see example](examples/run_pso.py))
-  - Sine Cosine Algorithm ([see example](examples/run_sca.py))
-- modified:
-  - Hybrid bat algorithm ([see example](examples/run_hba.py))
-  - Self-adaptive differential evolution algorithm ([see example](examples/run_jde.py))
-  - Dynamic population size self-adaptive differential evolution algorithm ([see example](examples/run_dynnpjde.py))
-- other:
-  - Anarchic society optimization ([see example](examples/run_aso.py))
-  - Hill climb algorithm ([see example](examples/run_hc.py))
-  - Multiple trajectory search ([see example](examples/run_mts.py), [see example](examples/run_mtsv1.py))
-  - Nelder mead method ([see example](examples/run_nmm.py))
-  - Simulated annealing algorithm ([see example](examples/run_sa.py))
-
-Other examples:
-- Using different termination conditions (nFES, nGEN, reference value) ([see example](examples/stopping_criterions.py))
-- Basic statistics example (min, max, mean, median, std) ([see example](examples/basic_stats.py))
-- Storing improvements during the evolutionary cycle ([see example](examples/log_results.py))
-- Custom initialization of initial population ([see example](examples/custom_init_population.py))
-
-The following benchmark functions are included in NiaPy:
-- Ackley
-- Alpine
-  - Alpine1
-  - Alpine2
-- Bent Cigar
-- Chung Reynolds
-- Csendes
-- Discus
-- Dixon-Price
-- Elliptic
-- Griewank
-- Happy cat
-- HGBat
-- Katsuura
-- Levy
-- Michalewicz
-- Perm
-- Pintér
-- Powell
-- Qing
-- Quintic
-- Rastrigin
-- Ridge
-- Rosenbrock
-- Salomon
-- Schumer Steiglitz
-- Schwefel
-  - Schwefel 2.21
-  - Schwefel 2.22
-- Sphere
-  - Sphere2 -> Sphere with different powers
-  - Sphere3 -> Rotated hyper-ellipsoid
-- Step
-  - Step2
-  - Step3
-- Stepint
-- Styblinski-Tang
-- Sum Squares
-- Trid
-- Weierstrass
-- Whitley
-- Zakharov
-
-# Setup
-
-## Requirements
-
-- Python 3.6.x, 3.7.x or 3.8.x (backward compatibility with 2.7.x)
-- Pip
-
-### Dependencies
-
-- numpy >= 1.16.2
-- scipy >= 1.2.1
-- enum34 >= 1.1.6 (if using python version < 3.4)
-- xlsxwriter >= 1.1.6
-- matplotlib >= 2.2.4
-
-List of development dependencies and requirements can be found [here](CONTRIBUTING.md#development-dependencies).
-
-## Installation
-
-Install NiaPy with pip:
-
-### Latest version (2.0.0rc10)
-```sh
-$ pip install NiaPy==2.0.0rc10
-```
-
-### Latest stable version
 ```sh
 $ pip install NiaPy
 ```
 
-Install NiaPy with conda:
+This is the preferred method to install NiaPy, as it will always install the most recent stable release.
+
+To install NiaPy with conda, use:
 
 ```sh
 conda install -c niaorg niapy
 ```
 
-Install NiaPy on Fedora:
+To install NiaPy on Fedora, use:
 
 ```sh
 yum install python3-niapy
 ```
 
-or directly from the source code:
+In case you want to install directly from the source code, use:
 
 ```sh
 $ git clone https://github.com/NiaOrg/NiaPy.git
@@ -175,7 +75,7 @@ $ python setup.py install
 
 # Usage
 
-After installation, the package can be imported:
+After installation, you can import NiaPy as any other Python module:
 
 ```sh
 $ python
@@ -183,15 +83,105 @@ $ python
 >>> NiaPy.__version__
 ```
 
-For more usage examples please look at **examples** folder.
+
+Let's go through a basic and advanced example.
+
+## Basic Example
+Let’s say, we want to try out Gray Wolf Optimizer algorithm against Pintér benchmark function. Firstly, we have to create new file, with name, for example *basic_example.py*. Then we have to import chosen algorithm from NiaPy, so we can use it. Afterwards we initialize GreyWolfOptimizer class instance and run the algorithm. Given bellow is complete source code of basic example.
+
+```sh
+from NiaPy.algorithms.basic import GreyWolfOptimizer
+from NiaPy.task import StoppingTask
+
+# we will run 10 repetitions of Grey Wolf Optimizer against Pinter benchmark function
+for i in range(10):
+    task = StoppingTask(D=10, nFES=1000, benchmark='pinter')
+    algorithm = GreyWolfOptimizer(NP=20)
+    best = algorithm.run(task)
+    print(best[-1])
+```
+
+Given example can be run with *python basic_example.py* command and should give you similar output as following:
+
+```sh
+0.27046073106003377
+50.89301186976975
+1.089147452727528
+1.18418058254198
+102.46876441081712
+0.11237241605812048
+1.8869331711450696
+0.04861881403346098
+2.5748611081742325
+135.6754069530421
+```
+
+## Advanced Example
+
+In this example we will show you how to implement your own benchmark function and use it with any of implemented algorithms. First let’s create new file named *advanced_example.py*. As in the previous examples we wil import algorithm we want to use from NiaPy module.
+
+For our custom benchmark function, we have to create new class. Let’s name it MyBenchmark. In the initialization method of MyBenchmark class we have to set Lower and Upper bounds of the function. Afterwards we have to implement a function which returns evaluation function which takes two parameters *D* (as dimension of problem) and *sol* (as solution of problem). Now we should have something similar as is shown in code snippet bellow.
+
+```sh
+from NiaPy.task import StoppingTask, OptimizationType
+from NiaPy.benchmarks import Benchmark
+from NiaPy.algorithms.basic import ParticleSwarmAlgorithm
+
+# our custom benchmark class
+class MyBenchmark(Benchmark):
+    def __init__(self):
+        Benchmark.__init__(self, -10, 10)
+
+    def function(self):
+        def evaluate(D, sol):
+            val = 0.0
+            for i in range(D): val += sol[i] ** 2
+            return val
+        return evaluate
+```
+
+Now, all we have to do is to initialize our algorithm as in previous examples and pass as benchmark parameter, instance of our MyBenchmark class.
+
+```sh
+for i in range(10):
+    task = StoppingTask(D=20, nGEN=100, optType=OptimizationType.MINIMIZATION, benchmark=MyBenchmark())
+
+    # parameter is population size
+    algo = GreyWolfOptimizer(NP=20)
+
+    # running algorithm returns best found minimum
+    best = algo.run(task)
+
+    # printing best minimum
+    print(best[-1])
+```
+
+Now we can run our advanced example with following command: *python advanced_example.py*. The results should be similar to those bellow.
+
+```sh
+7.606465129178389e-09
+5.288697102580944e-08
+6.875762169124336e-09
+1.386574251424837e-08
+2.174923591233085e-08
+2.578545710051624e-09
+1.1400628541972142e-08
+2.99387377733644e-08
+7.029492316948289e-09
+7.426212520156997e-09
+```
+
+For more usage examples please look at [examples](/examples) folder.
 
 More advanced examples can also be found in the [NiaPy-examples repository](https://github.com/NiaOrg/NiaPy-examples).
+
+
 
 # Cite us
 
 Are you using NiaPy in your project or research? Please cite us!
 
-- Plain format
+## Plain format
 
 ```
       Vrbančič, G., Brezočnik, L., Mlakar, U., Fister, D., & Fister Jr., I. (2018).
@@ -199,7 +189,7 @@ Are you using NiaPy in your project or research? Please cite us!
       Journal of Open Source Software, 3(23), 613\. <https://doi.org/10.21105/joss.00613>
 ```
 
-- Bibtex format
+## Bibtex format
 
 ```
     @article{NiaPyJOSS2018,
@@ -216,7 +206,7 @@ Are you using NiaPy in your project or research? Please cite us!
     }
 ```
 
-- RIS format
+## RIS format
 
 ```
     TY  - JOUR
