@@ -1,0 +1,43 @@
+{% set data = load_setup_py_data() %}
+
+package:
+  name: niapy
+  version: {{ data['version'] }}
+
+source:
+  path: ..
+
+build:
+  number: 0
+  script: python setup.py install --single-version-externally-managed --record=record.txt
+
+requirements:
+  build:
+    - python
+    - numpy>=1.16.2
+    - scipy
+    - matplotlib
+    - pandas
+    - openpyxl
+    - xlwt
+    - enum34
+    - future
+  run:
+    - python
+    - numpy>=1.16.2
+    - scipy
+    - matplotlib
+    - pandas
+    - openpyxl
+    - xlwt
+    - enum34
+    - future
+
+test:
+  imports:
+    - NiaPy
+
+about:
+  home: {{ data['url'] }}
+  license: {{ data['license'] }}
+summary: {{ data['description'] }}

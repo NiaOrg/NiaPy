@@ -1,4 +1,4 @@
-name: Build and Publish NiaPy Package
+name: Build and Publish NiaPy Pypi Package
 
 on:
   release:
