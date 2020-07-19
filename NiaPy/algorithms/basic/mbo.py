@@ -250,8 +250,8 @@ class MonarchButterflyOptimization(Algorithm):
 			 Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, float, Dict[str, Any]]:
 				  1. New population.
 				  2. New population fitness/function values.
-				  3. New global best solution
-				  4. New global best solutions fitness/objective value
+				  3. New global best solution.
+				  4. New global best solutions fitness/objective value.
 				  5. Additional arguments:
 						* dx (float): A small value used in local seeding stage.
 		"""

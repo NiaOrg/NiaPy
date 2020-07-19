@@ -44,6 +44,18 @@ class FlowerPollinationAlgorithm(Algorithm):
 	Name = ['FlowerPollinationAlgorithm', 'FPA']
 
 	@staticmethod
+	def algorithmInfo():
+		r"""Get default information of algorithm.
+
+		Returns:
+			str: Basic information.
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+		"""
+		return r"""Yang, Xin-She. "Flower pollination algorithm for global optimization. International conference on unconventional computing and natural computation. Springer, Berlin, Heidelberg, 2012."""
+
+	@staticmethod
 	def typeParameters():
 		r"""TODO.
 
@@ -122,8 +134,8 @@ class FlowerPollinationAlgorithm(Algorithm):
 			Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, float, Dict[str, Any]]:
 				1. New population.
 				2. New populations fitness/function values.
-				3. New global best solution
-				4. New global best solution fitness/objective value
+				3. New global best solution.
+				4. New global best solution fitness/objective value.
 				5. Additional arguments.
 		"""
 		for i in range(self.NP):

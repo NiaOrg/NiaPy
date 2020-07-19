@@ -76,6 +76,9 @@ class SelfAdaptiveDifferentialEvolution(DifferentialEvolution):
 
 		Returns:
 			str: Algorithm information.
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
 		"""
 		return r"""Brest, J., Greiner, S., Boskovic, B., Mernik, M., Zumer, V. Self-adapting control parameters in differential evolution: A comparative study on numerical benchmark problems. IEEE transactions on evolutionary computation, 10(6), 646-657, 2006."""
 
@@ -208,6 +211,18 @@ class AgingSelfAdaptiveDifferentialEvolution(SelfAdaptiveDifferentialEvolution):
 	Name = ['AgingSelfAdaptiveDifferentialEvolution', 'ANpjDE']
 
 	@staticmethod
+	def algorithmInfo():
+		r"""Get basic information about the algorithm.
+
+		Returns:
+			str: Basic information.
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+		"""
+		return r"""Brest, Janez, and Mirjam Sepesy Maučec. Population size reduction for the differential evolution algorithm. Applied Intelligence 29.3 (2008): 228-247."""
+
+	@staticmethod
 	def typeParameters():
 		d = SelfAdaptiveDifferentialEvolution.typeParameters()
 		# TODO
@@ -262,6 +277,14 @@ class DynNpSelfAdaptiveDifferentialEvolutionAlgorithm(SelfAdaptiveDifferentialEv
 
 	@staticmethod
 	def algorithmInfo():
+		r"""Get basic information about the algorithm.
+
+		Returns:
+			str: Basic information.
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+		"""
 		return r"""Brest, Janez, and Mirjam Sepesy Maučec. Population size reduction for the differential evolution algorithm. Applied Intelligence 29.3 (2008): 228-247."""
 
 	@staticmethod

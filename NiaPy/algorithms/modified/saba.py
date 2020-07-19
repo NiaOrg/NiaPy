@@ -40,6 +40,18 @@ class AdaptiveBatAlgorithm(Algorithm):
 	Name = ['AdaptiveBatAlgorithm', 'ABA']
 
 	@staticmethod
+	def algorithmInfo():
+		r"""Get basic information about the algorithm.
+
+		Returns:
+			str: Basic information.
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+		"""
+		return r"""TODO"""
+
+	@staticmethod
 	def typeParameters():
 		r"""Return dict with where key of dict represents parameter name and values represent checking functions for selected parameter.
 
@@ -223,6 +235,9 @@ class SelfAdaptiveBatAlgorithm(AdaptiveBatAlgorithm):
 
 		Returns:
 			str: Basic information.
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
 		"""
 		return r"""Fister Jr., Iztok and Fister, Dusan and Yang, Xin-She. "A Hybrid Bat Algorithm". Elektrotehniski vestnik, 2013. 1-7."""
 

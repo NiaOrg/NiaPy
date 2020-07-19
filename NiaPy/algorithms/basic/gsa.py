@@ -12,7 +12,7 @@ logger = logging.getLogger('NiaPy.algorithms.basic')
 logger.setLevel('INFO')
 
 class GravitationalSearchAlgorithm(Algorithm):
-	r"""Implementation of gravitational search algorithm.
+	r"""Implementation of Gravitational Search Algorithm.
 
 	Algorithm:
 		Gravitational Search Algorithm

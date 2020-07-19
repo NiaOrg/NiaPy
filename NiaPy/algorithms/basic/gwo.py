@@ -33,6 +33,18 @@ class GreyWolfOptimizer(Algorithm):
     """
     Name = ['GreyWolfOptimizer', 'GWO']
 
+	@staticmethod
+	def algorithmInfo():
+		r"""Get basic information of algorithm.
+
+		Returns:
+			str: Basic information of algorithm.
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+		"""
+		return r"""Mirjalili, Seyedali, Seyed Mohammad Mirjalili, and Andrew Lewis. "Grey wolf optimizer." Advances in engineering software 69 (2014): 46-61."""
+
     @staticmethod
     def typeParameters(): return {
         'NP': lambda x: isinstance(x, int) and x > 0

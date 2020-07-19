@@ -63,6 +63,18 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 	Name = ['ArtificialBeeColonyAlgorithm', 'ABC']
 
 	@staticmethod
+	def algorithmInfo():
+		r"""Get algorithms information.
+
+		Returns:
+			str: Algorithm information.
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+		"""
+		return r"""Karaboga, D., and Bahriye B. "A powerful and efficient algorithm for numerical function optimization: artificial bee colony (ABC) algorithm." Journal of global optimization 39.3 (2007): 459-471."""
+
+	@staticmethod
 	def typeParameters():
 		r"""Return functions for checking values of parameters.
 

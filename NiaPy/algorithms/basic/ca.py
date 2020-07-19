@@ -153,6 +153,9 @@ class CamelAlgorithm(Algorithm):
 
 		Returns:
 			str: Algorithm information
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
 		"""
 		return r'''Ali, Ramzy. (2016). Novel Optimization Algorithm Inspired by Camel Traveling Behavior. Iraq J. Electrical and Electronic Engineering. 12. 167-177.'''
 

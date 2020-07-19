@@ -105,6 +105,18 @@ class CoralReefsOptimization(Algorithm):
 	Name = ['CoralReefsOptimization', 'CRO']
 
 	@staticmethod
+	def algorithmInfo():
+		r"""Get algorithms information.
+
+		Returns:
+			str: Algorithm information.
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+		"""
+		return r"""S. Salcedo-Sanz, J. Del Ser, I. Landa-Torres, S. Gil-López, and J. A. Portilla-Figueras, “The Coral Reefs Optimization Algorithm: A Novel Metaheuristic for Efficiently Solving Optimization Problems,” The Scientific World Journal, vol. 2014, Article ID 739768, 15 pages, 2014."""
+
+	@staticmethod
 	def typeParameters():
 		r"""Get dictionary with functions for checking values of parameters.
 

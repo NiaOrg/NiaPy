@@ -13,10 +13,10 @@ logger.setLevel('INFO')
 __all__ = ['GlowwormSwarmOptimization', 'GlowwormSwarmOptimizationV1', 'GlowwormSwarmOptimizationV2', 'GlowwormSwarmOptimizationV3']
 
 class GlowwormSwarmOptimization(Algorithm):
-	r"""Implementation of glowwarm swarm optimization.
+	r"""Implementation of glowworm swarm optimization.
 
 	Algorithm:
-		Glowwarm Swarm Optimization Algorithm
+		Glowworm Swarm Optimization Algorithm
 
 	Date:
 		2018
@@ -279,6 +279,15 @@ class GlowwormSwarmOptimizationV1(GlowwormSwarmOptimization):
 	"""
 	Name = ['GlowwormSwarmOptimizationV1', 'GSOv1']
 
+	@staticmethod
+	def algorithmInfo():
+		r"""Get basic information of algorithm.
+
+		Returns:
+			str: Basic information.
+		"""
+		return r"""Kaipa, Krishnanand N., and Debasish Ghose. Glowworm swarm optimization: theory, algorithms, and applications. Vol. 698. Springer, 2017."""
+
 	def setParameters(self, **kwargs):
 		r"""Set default parameters of the algorithm.
 
@@ -342,6 +351,15 @@ class GlowwormSwarmOptimizationV2(GlowwormSwarmOptimization):
 	"""
 	Name = ['GlowwormSwarmOptimizationV2', 'GSOv2']
 
+	@staticmethod
+	def algorithmInfo():
+		r"""Get basic information of algorithm.
+
+		Returns:
+			str: Basic information.
+		"""
+		return r"""Kaipa, Krishnanand N., and Debasish Ghose. Glowworm swarm optimization: theory, algorithms, and applications. Vol. 698. Springer, 2017."""
+
 	def setParameters(self, alpha=0.2, **kwargs):
 		r"""Set core parameters for GlowwormSwarmOptimizationV2 algorithm.
 
@@ -398,6 +416,15 @@ class GlowwormSwarmOptimizationV3(GlowwormSwarmOptimization):
 	"""
 	Name = ['GlowwormSwarmOptimizationV3', 'GSOv3']
 
+	@staticmethod
+	def algorithmInfo():
+		r"""Get basic information of algorithm.
+
+		Returns:
+			str: Basic information.
+		"""
+		return r"""Kaipa, Krishnanand N., and Debasish Ghose. Glowworm swarm optimization: theory, algorithms, and applications. Vol. 698. Springer, 2017."""
+		
 	def setParameters(self, beta1=0.2, **kwargs):
 		r"""Set core parameters for GlowwormSwarmOptimizationV3 algorithm.
 
