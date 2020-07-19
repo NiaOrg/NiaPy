@@ -37,11 +37,11 @@ class GreyWolfOptimizer(Algorithm):
     def algorithmInfo():
         r"""Get basic information of algorithm.
 
-		Returns:
-			str: Basic information of algorithm.
+        Returns:
+            str: Basic information of algorithm.
 
-		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+        See Also:
+            * :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
 		"""
         return r"""Mirjalili, Seyedali, Seyed Mohammad Mirjalili, and Andrew Lewis. "Grey wolf optimizer." Advances in engineering software 69 (2014): 46-61."""
 
