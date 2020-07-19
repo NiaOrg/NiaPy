@@ -58,7 +58,7 @@ class TabuSearch(Algorithm):
 			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
 		"""
 		return r"""None"""
-		
+
 	@staticmethod
 	def typeParameters(): return {
 			'NP': lambda x: isinstance(x, int) and x > 0

@@ -25,8 +25,8 @@ class CatSwarmOptimization(Algorithm):
     """
     Name = ['CatSwarmOptimization', 'CSO']
 
-	@staticmethod
-	def algorithmInfo():
+    @staticmethod
+    def algorithmInfo():
 		r"""Get algorithms information.
 
 		Returns:

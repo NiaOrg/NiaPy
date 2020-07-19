@@ -424,7 +424,7 @@ class GlowwormSwarmOptimizationV3(GlowwormSwarmOptimization):
 			str: Basic information.
 		"""
 		return r"""Kaipa, Krishnanand N., and Debasish Ghose. Glowworm swarm optimization: theory, algorithms, and applications. Vol. 698. Springer, 2017."""
-		
+
 	def setParameters(self, beta1=0.2, **kwargs):
 		r"""Set core parameters for GlowwormSwarmOptimizationV3 algorithm.
 
