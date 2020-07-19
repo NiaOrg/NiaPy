@@ -7,6 +7,7 @@ Pipfile.lock
 
 # Temporary OS files
 Icon*
+.DS_Store
 
 # Temporary virtual environment files
 /.cache/
