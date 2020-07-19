@@ -45,12 +45,15 @@ class BeesAlgorithm(Algorithm):
 
 	@staticmethod
 	def algorithmInfo():
-		return r"""
-        Description: A new population-based search algorithm called the Bees Algorithm (BA) is presented. The algorithm mimics the food foraging behaviour of swarms of honey bees.
-        Authors: D.T. Pham, A. Ghanbarzadeh,  E. Koç, S. Otri,  S. Rahim, M. Zaidi
-        Year: 2006
-        Main reference: DT Pham, A Ghanbarzadeh, E Koc, S Otri, S Rahim, and M Zaidi. The bees algorithm-a novel tool for complex optimisation problems. In Proceedings of the 2nd Virtual International Conference on Intelligent Production Machines and Systems (IPROMS 2006), pages 454–459, 2006
-    """
+		r"""Get information about algorithm.
+
+		Returns:
+			str: Algorithm information
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+		"""
+		return r"""DT Pham, A Ghanbarzadeh, E Koc, S Otri, S Rahim, and M Zaidi. The bees algorithm-a novel tool for complex optimisation problems. In Proceedings of the 2nd Virtual International Conference on Intelligent Production Machines and Systems (IPROMS 2006), pages 454–459, 2006"""
 
 	@staticmethod
 	def typeParameters():
@@ -118,7 +121,7 @@ class BeesAlgorithm(Algorithm):
 
 		Args:
 			 x (numpy.ndarray): One instance from the population.
-			 task (Task): Optimization task
+			 task (Task): Optimization task.
 			 ngh (float): A small value for patch search.
 
 		Returns:
@@ -191,8 +194,8 @@ class BeesAlgorithm(Algorithm):
 			 Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, float, Dict[str, Any]]:
 				  1. New population.
 				  2. New population fitness/function values.
-				  3. New global best solution
-				  4. New global best fitness/objective value
+				  3. New global best solution.
+				  4. New global best fitness/objective value.
 				  5. Additional arguments:
 						* ngh (float): A small value used for patches.
 		"""

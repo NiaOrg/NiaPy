@@ -42,12 +42,15 @@ class FireflyAlgorithm(Algorithm):
 
 	@staticmethod
 	def algorithmInfo():
-		return r"""
-        	Description: Firefly algorithm is inspired by the flashing behavior of fireflies.
-        	Author: Xin-She Yang
-        	Year: 2008
-                Main reference: Yang, Xin-She. Nature-Inspired Metaheuristic Algorithms,  Luniver Press, 2008.
-        """
+		r"""Get algorithms information.
+
+		Returns:
+			str: Algorithm information.
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+		"""
+		return r"""Fister, I., Fister Jr, I., Yang, X. S., & Brest, J. (2013). A comprehensive review of firefly algorithms. Swarm and Evolutionary Computation, 13, 34-46."""
 
 	@staticmethod
 	def typeParameters():
@@ -94,7 +97,7 @@ class FireflyAlgorithm(Algorithm):
 			alpha (float):
 
 		Returns:
-			float: New value of parameter alpha
+			float: New value of parameter alpha.
 		"""
 		delta = 1.0 - pow(pow(10.0, -4.0) / 0.9, 1.0 / float(a))
 		return (1 - delta) * alpha

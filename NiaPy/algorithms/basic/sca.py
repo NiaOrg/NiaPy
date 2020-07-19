@@ -154,8 +154,8 @@ class SineCosineAlgorithm(Algorithm):
 			Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, float, Dict[str, Any]]:
 				1. New population.
 				2. New populations fitness/function values.
-				3. New global best solution
-				4. New global best fitness/objective value
+				3. New global best solution.
+				4. New global best fitness/objective value.
 				5. Additional arguments.
 		"""
 		r1, r2, r3, r4 = self.a - task.Iters * (self.a / task.Iters), self.uniform(0, 2 * pi), self.uniform(self.Rmin, self.Rmax), self.rand()

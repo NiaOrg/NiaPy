@@ -44,6 +44,9 @@ class HybridBatAlgorithm(BatAlgorithm):
 
 		Returns:
 			str: Basic information.
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
 		"""
 		return r"""Fister Jr., Iztok and Fister, Dusan and Yang, Xin-She. "A Hybrid Bat Algorithm". Elektrotehniski vestnik, 2013. 1-7."""
 

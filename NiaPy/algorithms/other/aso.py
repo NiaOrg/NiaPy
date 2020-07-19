@@ -185,6 +185,18 @@ class AnarchicSocietyOptimization(Algorithm):
 	Name = ['AnarchicSocietyOptimization', 'ASO']
 
 	@staticmethod
+	def algorithmInfo():
+		r"""Get basic information about the algorithm.
+
+		Returns:
+			str: Basic information.
+
+		See Also:
+			:func:`NiaPy.algorithms.algorithm.Algorithm.algorithmInfo`
+		"""
+		return r"""Ahmadi-Javid, Amir. "Anarchic Society Optimization: A human-inspired method." Evolutionary Computation (CEC), 2011 IEEE Congress on. IEEE, 2011."""
+
+	@staticmethod
 	def typeParameters():
 		r"""Get dictionary with functions for checking values of parameters.
 

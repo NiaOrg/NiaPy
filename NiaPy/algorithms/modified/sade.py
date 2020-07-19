@@ -46,10 +46,10 @@ class StrategyAdaptationDifferentialEvolution(DifferentialEvolution):
 
 	@staticmethod
 	def algorithmInfo():
-		r"""Geg basic algorithm information.
+		r"""Get basic information about the algorithm.
 
 		Returns:
-			str: Basic algorithm information.
+			str: Basic information.
 
 		See Also:
 			:func:`NiaPy.algorithms.algorithm.Algorithm.algorithmInfo`
@@ -100,10 +100,10 @@ class StrategyAdaptationDifferentialEvolutionV1(DifferentialEvolution):
 
 	@staticmethod
 	def algorithmInfo():
-		r"""Get algorithm information.
+		r"""Get basic information about the algorithm.
 
 		Returns:
-			str: Get algorithm information.
+			str: Basic information.
 
 		See Also:
 			:func:`NiaPy.algorithms.algorithm.Algorithm.algorithmInfo`

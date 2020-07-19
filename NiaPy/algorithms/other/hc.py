@@ -60,10 +60,13 @@ class HillClimbAlgorithm(Algorithm):
 
 	@staticmethod
 	def algorithmInfo():
-		r"""Get basic information of algorithm.
+		r"""Get basic information about the algorithm.
 
 		Returns:
 			str: Basic information.
+
+		See Also:
+			:func:`NiaPy.algorithms.algorithm.Algorithm.algorithmInfo`
 		"""
 		return r"""TODO"""
 
