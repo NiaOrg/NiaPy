@@ -1,6 +1,80 @@
 Changelog
 =========
 
+`2.0.0rc11 <https://github.com/NiaOrg/NiaPy/tree/2.0.0rc11>`__ (2020-07-19)
+---------------------------------------------------------------------------
+
+`Full
+Changelog <https://github.com/NiaOrg/NiaPy/compare/2.0.0rc10...2.0.0rc11>`__
+
+**Implemented enhancements:**
+
+-  Add workflow for publish to anaconda, setup.py fixes
+   `#259 <https://github.com/NiaOrg/NiaPy/pull/259>`__
+   (`GregaVrbancic <https://github.com/GregaVrbancic>`__)
+-  Fix runner exports
+   `#254 <https://github.com/NiaOrg/NiaPy/pull/254>`__
+   (`GregaVrbancic <https://github.com/GregaVrbancic>`__)
+-  Add python 3.8 `#250 <https://github.com/NiaOrg/NiaPy/pull/250>`__
+   (`GregaVrbancic <https://github.com/GregaVrbancic>`__)
+
+**Fixed bugs:**
+
+-  OptimizationType.MAXIMIZATION does not work with GWO
+   `#246 <https://github.com/NiaOrg/NiaPy/issues/246>`__
+-  Possible issue with unit test
+   `#241 <https://github.com/NiaOrg/NiaPy/issues/241>`__
+-  GWO TypeError: unsupported operand type(s)
+   `#218 <https://github.com/NiaOrg/NiaPy/issues/218>`__
+-  Fix algorithm utility to work with python2 and add tests
+   `#239 <https://github.com/NiaOrg/NiaPy/pull/239>`__
+   (`GregaVrbancic <https://github.com/GregaVrbancic>`__)
+
+**Closed issues:**
+
+-  No module named ‘NiaPy.task’
+   `#243 <https://github.com/NiaOrg/NiaPy/issues/243>`__
+-  Example run.py not working
+   `#238 <https://github.com/NiaOrg/NiaPy/issues/238>`__
+-  Algorithms checklist
+   `#188 <https://github.com/NiaOrg/NiaPy/issues/188>`__
+
+**Merged pull requests:**
+
+-  Update versionbump
+   `#260 <https://github.com/NiaOrg/NiaPy/pull/260>`__
+   (`GregaVrbancic <https://github.com/GregaVrbancic>`__)
+-  Documentation update
+   `#258 <https://github.com/NiaOrg/NiaPy/pull/258>`__
+   (`lucijabrezocnik <https://github.com/lucijabrezocnik>`__)
+-  Update Sphinx theme, update outdated stuff
+   `#257 <https://github.com/NiaOrg/NiaPy/pull/257>`__
+   (`GregaVrbancic <https://github.com/GregaVrbancic>`__)
+-  Documentation update
+   `#256 <https://github.com/NiaOrg/NiaPy/pull/256>`__
+   (`lucijabrezocnik <https://github.com/lucijabrezocnik>`__)
+-  updated README file
+   `#255 <https://github.com/NiaOrg/NiaPy/pull/255>`__
+   (`lucijabrezocnik <https://github.com/lucijabrezocnik>`__)
+-  Installation instructions for Fedora users
+   `#253 <https://github.com/NiaOrg/NiaPy/pull/253>`__
+   (`firefly-cpp <https://github.com/firefly-cpp>`__)
+-  docs: add timzatko as a contributor
+   `#251 <https://github.com/NiaOrg/NiaPy/pull/251>`__
+   (`allcontributors[bot] <https://github.com/apps/allcontributors>`__)
+-  Fix GWO maximization
+   `#249 <https://github.com/NiaOrg/NiaPy/pull/249>`__
+   (`GregaVrbancic <https://github.com/GregaVrbancic>`__)
+-  update getting started documentation
+   `#248 <https://github.com/NiaOrg/NiaPy/pull/248>`__
+   (`GregaVrbancic <https://github.com/GregaVrbancic>`__)
+-  docs: add brett18618 as a contributor
+   `#242 <https://github.com/NiaOrg/NiaPy/pull/242>`__
+   (`allcontributors[bot] <https://github.com/apps/allcontributors>`__)
+-  Fix HSABA, SABA, ABA and fixes for examples
+   `#240 <https://github.com/NiaOrg/NiaPy/pull/240>`__
+   (`kb2623 <https://github.com/kb2623>`__)
+
 `2.0.0rc10 <https://github.com/NiaOrg/NiaPy/tree/2.0.0rc10>`__ (2019-11-12)
 ---------------------------------------------------------------------------
 
@@ -65,7 +139,7 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/2.0.0rc5...2.0.0rc6>`__
 
 -  Confusion with GSO
    `#221 <https://github.com/NiaOrg/NiaPy/issues/221>`__
--  No module named 'NiaPy.algorithms'
+-  No module named ‘NiaPy.algorithms’
    `#219 <https://github.com/NiaOrg/NiaPy/issues/219>`__
 -  Documentation fix
    `#211 <https://github.com/NiaOrg/NiaPy/issues/211>`__
@@ -98,8 +172,7 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/2.0.0rc5...2.0.0rc6>`__
 -  fix runner nRuns issue
    `#222 <https://github.com/NiaOrg/NiaPy/pull/222>`__
    (`GregaVrbancic <https://github.com/GregaVrbancic>`__)
--  update run\_jde.py
-   `#217 <https://github.com/NiaOrg/NiaPy/pull/217>`__
+-  update run_jde.py `#217 <https://github.com/NiaOrg/NiaPy/pull/217>`__
    (`rhododendrom <https://github.com/rhododendrom>`__)
 -  Added Cat Swarm Optimization algorithm
    `#216 <https://github.com/NiaOrg/NiaPy/pull/216>`__
@@ -268,7 +341,8 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/1.0.2...2.0.0rc3>`__
 `1.0.2 <https://github.com/NiaOrg/NiaPy/tree/1.0.2>`__ (2018-10-24)
 -------------------------------------------------------------------
 
-`Full Changelog <https://github.com/NiaOrg/NiaPy/compare/2...1.0.2>`__
+`Full
+Changelog <https://github.com/NiaOrg/NiaPy/compare/2.0.0rc2...1.0.2>`__
 
 **Fixed bugs:**
 
@@ -280,17 +354,19 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/1.0.2...2.0.0rc3>`__
 -  fix Bat Algorithm `#161 <https://github.com/NiaOrg/NiaPy/pull/161>`__
    (`GregaVrbancic <https://github.com/GregaVrbancic>`__)
 
-`2 <https://github.com/NiaOrg/NiaPy/tree/2>`__ (2018-08-30)
------------------------------------------------------------
-
-`Full
-Changelog <https://github.com/NiaOrg/NiaPy/compare/2.0.0rc2...2>`__
-
 `2.0.0rc2 <https://github.com/NiaOrg/NiaPy/tree/2.0.0rc2>`__ (2018-08-30)
 -------------------------------------------------------------------------
 
 `Full
-Changelog <https://github.com/NiaOrg/NiaPy/compare/2.0.0rc1...2.0.0rc2>`__
+Changelog <https://github.com/NiaOrg/NiaPy/compare/2...2.0.0rc2>`__
+
+.. _section-1:
+
+`2 <https://github.com/NiaOrg/NiaPy/tree/2>`__ (2018-08-30)
+-----------------------------------------------------------
+
+`Full
+Changelog <https://github.com/NiaOrg/NiaPy/compare/2.0.0rc1...2>`__
 
 `2.0.0rc1 <https://github.com/NiaOrg/NiaPy/tree/2.0.0rc1>`__ (2018-08-30)
 -------------------------------------------------------------------------
@@ -340,10 +416,9 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/1.0.1...2.0.0rc1>`__
    (`kb2623 <https://github.com/kb2623>`__)
 -  update `#141 <https://github.com/NiaOrg/NiaPy/pull/141>`__
    (`rhododendrom <https://github.com/rhododendrom>`__)
--  Update run\_fa.py `#140 <https://github.com/NiaOrg/NiaPy/pull/140>`__
+-  Update run_fa.py `#140 <https://github.com/NiaOrg/NiaPy/pull/140>`__
    (`rhododendrom <https://github.com/rhododendrom>`__)
--  Update run\_abc.py
-   `#139 <https://github.com/NiaOrg/NiaPy/pull/139>`__
+-  Update run_abc.py `#139 <https://github.com/NiaOrg/NiaPy/pull/139>`__
    (`rhododendrom <https://github.com/rhododendrom>`__)
 -  fix failing build `#138 <https://github.com/NiaOrg/NiaPy/pull/138>`__
    (`GregaVrbancic <https://github.com/GregaVrbancic>`__)
@@ -365,6 +440,8 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/1.0.1...2.0.0rc1>`__
    (`lucijabrezocnik <https://github.com/lucijabrezocnik>`__)
 -  DOI added `#128 <https://github.com/NiaOrg/NiaPy/pull/128>`__
    (`lucijabrezocnik <https://github.com/lucijabrezocnik>`__)
+
+.. _section-2:
 
 `1.0.1 <https://github.com/NiaOrg/NiaPy/tree/1.0.1>`__ (2018-03-21)
 -------------------------------------------------------------------
@@ -409,6 +486,8 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/1.0.0...1.0.1>`__
 -  arguments: Ts->integer; TournamentSelection: use shuffled indices in
    … `#114 <https://github.com/NiaOrg/NiaPy/pull/114>`__
    (`mlaky88 <https://github.com/mlaky88>`__)
+
+.. _section-3:
 
 `1.0.0 <https://github.com/NiaOrg/NiaPy/tree/1.0.0>`__ (2018-02-28)
 -------------------------------------------------------------------
@@ -459,8 +538,6 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/0.1.3a2...1.0.0rc1>`__
    (`GregaVrbancic <https://github.com/GregaVrbancic>`__)
 -  Finishing runner `#101 <https://github.com/NiaOrg/NiaPy/pull/101>`__
    (`GregaVrbancic <https://github.com/GregaVrbancic>`__)
--  version 0.1.2a1 `#99 <https://github.com/NiaOrg/NiaPy/pull/99>`__
-   (`GregaVrbancic <https://github.com/GregaVrbancic>`__)
 
 `0.1.3a2 <https://github.com/NiaOrg/NiaPy/tree/0.1.3a2>`__ (2018-02-26)
 -----------------------------------------------------------------------
@@ -486,6 +563,8 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/0.1.2a3...0.1.2a4>`__
 `Full
 Changelog <https://github.com/NiaOrg/NiaPy/compare/0.1.2a2...0.1.2a3>`__
 
+.. _a2-2018-02-26-1:
+
 `0.1.2a2 <https://github.com/NiaOrg/NiaPy/tree/0.1.2a2>`__ (2018-02-26)
 -----------------------------------------------------------------------
 
@@ -497,6 +576,8 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/0.1.2a1...0.1.2a2>`__
 -  fix `#100 <https://github.com/NiaOrg/NiaPy/pull/100>`__
    (`lucijabrezocnik <https://github.com/lucijabrezocnik>`__)
 
+.. _a1-2018-02-26-1:
+
 `0.1.2a1 <https://github.com/NiaOrg/NiaPy/tree/0.1.2a1>`__ (2018-02-26)
 -----------------------------------------------------------------------
 
@@ -505,6 +586,8 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/cd5a1ff3e1c9f426fde8b40a625ab
 
 **Merged pull requests:**
 
+-  version 0.1.2a1 `#99 <https://github.com/NiaOrg/NiaPy/pull/99>`__
+   (`GregaVrbancic <https://github.com/GregaVrbancic>`__)
 -  ga fix `#98 <https://github.com/NiaOrg/NiaPy/pull/98>`__
    (`mlaky88 <https://github.com/mlaky88>`__)
 -  test fix `#97 <https://github.com/NiaOrg/NiaPy/pull/97>`__
@@ -649,8 +732,10 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/cd5a1ff3e1c9f426fde8b40a625ab
 -  add runner export to xlsx
    `#34 <https://github.com/NiaOrg/NiaPy/pull/34>`__
    (`GregaVrbancic <https://github.com/GregaVrbancic>`__)
+-  Runner export `#33 <https://github.com/NiaOrg/NiaPy/pull/33>`__
+   (`GregaVrbancic <https://github.com/GregaVrbancic>`__)
 -  Feature functions2 `#32 <https://github.com/NiaOrg/NiaPy/pull/32>`__
    (`lucijabrezocnik <https://github.com/lucijabrezocnik>`__)
 
-\* *This Changelog was automatically generated by
-`github\_changelog\_generator <https://github.com/github-changelog-generator/github-changelog-generator>`__*
+\* *This Changelog was automatically generated
+by*\ `github_changelog_generator <https://github.com/github-changelog-generator/github-changelog-generator>`__

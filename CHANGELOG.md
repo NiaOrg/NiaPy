@@ -1,5 +1,42 @@
 # Changelog
 
+## [2.0.0rc11](https://github.com/NiaOrg/NiaPy/tree/2.0.0rc11) (2020-07-19)
+
+[Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2.0.0rc10...2.0.0rc11)
+
+**Implemented enhancements:**
+
+- Add workflow for publish to anaconda, setup.py fixes [\#259](https://github.com/NiaOrg/NiaPy/pull/259) ([GregaVrbancic](https://github.com/GregaVrbancic))
+- Fix runner exports [\#254](https://github.com/NiaOrg/NiaPy/pull/254) ([GregaVrbancic](https://github.com/GregaVrbancic))
+- Add python 3.8 [\#250](https://github.com/NiaOrg/NiaPy/pull/250) ([GregaVrbancic](https://github.com/GregaVrbancic))
+
+**Fixed bugs:**
+
+- OptimizationType.MAXIMIZATION does not work with GWO [\#246](https://github.com/NiaOrg/NiaPy/issues/246)
+- Possible issue with unit test [\#241](https://github.com/NiaOrg/NiaPy/issues/241)
+- GWO TypeError: unsupported operand type\(s\) [\#218](https://github.com/NiaOrg/NiaPy/issues/218)
+- Fix algorithm utility to work with python2 and add tests [\#239](https://github.com/NiaOrg/NiaPy/pull/239) ([GregaVrbancic](https://github.com/GregaVrbancic))
+
+**Closed issues:**
+
+- No module named 'NiaPy.task' [\#243](https://github.com/NiaOrg/NiaPy/issues/243)
+- Example run.py not working [\#238](https://github.com/NiaOrg/NiaPy/issues/238)
+- Algorithms checklist [\#188](https://github.com/NiaOrg/NiaPy/issues/188)
+
+**Merged pull requests:**
+
+- Update versionbump [\#260](https://github.com/NiaOrg/NiaPy/pull/260) ([GregaVrbancic](https://github.com/GregaVrbancic))
+- Documentation update [\#258](https://github.com/NiaOrg/NiaPy/pull/258) ([lucijabrezocnik](https://github.com/lucijabrezocnik))
+- Update Sphinx theme, update outdated stuff [\#257](https://github.com/NiaOrg/NiaPy/pull/257) ([GregaVrbancic](https://github.com/GregaVrbancic))
+- Documentation update [\#256](https://github.com/NiaOrg/NiaPy/pull/256) ([lucijabrezocnik](https://github.com/lucijabrezocnik))
+- updated README file [\#255](https://github.com/NiaOrg/NiaPy/pull/255) ([lucijabrezocnik](https://github.com/lucijabrezocnik))
+- Installation instructions for Fedora users [\#253](https://github.com/NiaOrg/NiaPy/pull/253) ([firefly-cpp](https://github.com/firefly-cpp))
+- docs: add timzatko as a contributor [\#251](https://github.com/NiaOrg/NiaPy/pull/251) ([allcontributors[bot]](https://github.com/apps/allcontributors))
+- Fix GWO maximization [\#249](https://github.com/NiaOrg/NiaPy/pull/249) ([GregaVrbancic](https://github.com/GregaVrbancic))
+- update getting started documentation [\#248](https://github.com/NiaOrg/NiaPy/pull/248) ([GregaVrbancic](https://github.com/GregaVrbancic))
+- docs: add brett18618 as a contributor [\#242](https://github.com/NiaOrg/NiaPy/pull/242) ([allcontributors[bot]](https://github.com/apps/allcontributors))
+- Fix HSABA, SABA, ABA and fixes for examples [\#240](https://github.com/NiaOrg/NiaPy/pull/240) ([kb2623](https://github.com/kb2623))
+
 ## [2.0.0rc10](https://github.com/NiaOrg/NiaPy/tree/2.0.0rc10) (2019-11-12)
 
 [Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2.0.0rc9...2.0.0rc10)
@@ -143,7 +180,7 @@
 
 ## [1.0.2](https://github.com/NiaOrg/NiaPy/tree/1.0.2) (2018-10-24)
 
-[Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2...1.0.2)
+[Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2.0.0rc2...1.0.2)
 
 **Fixed bugs:**
 
@@ -153,13 +190,13 @@
 
 - fix Bat Algorithm [\#161](https://github.com/NiaOrg/NiaPy/pull/161) ([GregaVrbancic](https://github.com/GregaVrbancic))
 
-## [2](https://github.com/NiaOrg/NiaPy/tree/2) (2018-08-30)
-
-[Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2.0.0rc2...2)
-
 ## [2.0.0rc2](https://github.com/NiaOrg/NiaPy/tree/2.0.0rc2) (2018-08-30)
 
-[Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2.0.0rc1...2.0.0rc2)
+[Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2...2.0.0rc2)
+
+## [2](https://github.com/NiaOrg/NiaPy/tree/2) (2018-08-30)
+
+[Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2.0.0rc1...2)
 
 ## [2.0.0rc1](https://github.com/NiaOrg/NiaPy/tree/2.0.0rc1) (2018-08-30)
 
@@ -254,7 +291,6 @@
 - CS fix [\#103](https://github.com/NiaOrg/NiaPy/pull/103) ([mlaky88](https://github.com/mlaky88))
 - Documentation [\#102](https://github.com/NiaOrg/NiaPy/pull/102) ([GregaVrbancic](https://github.com/GregaVrbancic))
 - Finishing runner [\#101](https://github.com/NiaOrg/NiaPy/pull/101) ([GregaVrbancic](https://github.com/GregaVrbancic))
-- version 0.1.2a1 [\#99](https://github.com/NiaOrg/NiaPy/pull/99) ([GregaVrbancic](https://github.com/GregaVrbancic))
 
 ## [0.1.3a2](https://github.com/NiaOrg/NiaPy/tree/0.1.3a2) (2018-02-26)
 
@@ -286,6 +322,7 @@
 
 **Merged pull requests:**
 
+- version 0.1.2a1 [\#99](https://github.com/NiaOrg/NiaPy/pull/99) ([GregaVrbancic](https://github.com/GregaVrbancic))
 - ga fix [\#98](https://github.com/NiaOrg/NiaPy/pull/98) ([mlaky88](https://github.com/mlaky88))
 - test fix [\#97](https://github.com/NiaOrg/NiaPy/pull/97) ([lucijabrezocnik](https://github.com/lucijabrezocnik))
 - fix docs [\#96](https://github.com/NiaOrg/NiaPy/pull/96) ([GregaVrbancic](https://github.com/GregaVrbancic))
@@ -348,6 +385,7 @@
 - description added [\#36](https://github.com/NiaOrg/NiaPy/pull/36) ([lucijabrezocnik](https://github.com/lucijabrezocnik))
 - Feature functions2 [\#35](https://github.com/NiaOrg/NiaPy/pull/35) ([lucijabrezocnik](https://github.com/lucijabrezocnik))
 - add runner export to xlsx [\#34](https://github.com/NiaOrg/NiaPy/pull/34) ([GregaVrbancic](https://github.com/GregaVrbancic))
+- Runner export [\#33](https://github.com/NiaOrg/NiaPy/pull/33) ([GregaVrbancic](https://github.com/GregaVrbancic))
 - Feature functions2 [\#32](https://github.com/NiaOrg/NiaPy/pull/32) ([lucijabrezocnik](https://github.com/lucijabrezocnik))
 
 
