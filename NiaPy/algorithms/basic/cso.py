@@ -25,15 +25,15 @@ class CatSwarmOptimization(Algorithm):
     """
     Name = ['CatSwarmOptimization', 'CSO']
 
-    @staticmethod
-    def algorithmInfo():
-        r"""Get algorithms information.
+	@staticmethod
+	def algorithmInfo():
+		r"""Get basic information of algorithm.
 
-        Returns:
-            str: Algorithm information.
+		Returns:
+			str: Basic information of algorithm.
 
-        See Also:
-            * :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
 		"""
 		return r"""Chu, Shu-Chuan & Tsai, Pei-Wei & Pan, Jeng-Shyang. (2006). Cat Swarm Optimization. 854-858. 10.1007/11801603_94."""
 
