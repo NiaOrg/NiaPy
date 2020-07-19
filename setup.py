@@ -45,7 +45,7 @@ def build_description():
     """Build a description for the project from documentation files."""
     try:
         # changelog = open("CHANGELOG.rst").read()
-        readme = open("README.rst").read()
+        readme = open("README.rst", "rb").read().decode("UTF-8")
     except IOError:
         return "<placeholder>"
     else:
