@@ -12,6 +12,7 @@ from __future__ import (
     generators
 )
 
+import io
 import os
 import sys
 import logging
@@ -44,7 +45,7 @@ def read_package_variable(key, filename='__init__.py'):
 def build_description():
     """Build a description for the project from documentation files."""
     try:
-        readme = open("README.rst", encoding="UTF-8").read()
+        readme = io.open("README.rst", encoding="UTF-8").read()
     except IOError:
         return "<placeholder>"
     else:
