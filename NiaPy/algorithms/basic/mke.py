@@ -202,7 +202,7 @@ class MonkeyKingEvolutionV1(Algorithm):
 
 		Args:
 			p (MkeSolution): Monkey King particle to apply this function on.
-			task (Task): Optimization task
+			task (Task): Optimization task.
 		"""
 		p.MonkeyKing = False
 		A = apply_along_axis(task.repair, 1, self.moveMK(p.x, task), self.Rand)
@@ -247,9 +247,9 @@ class MonkeyKingEvolutionV1(Algorithm):
 		r"""Core function of Monkey King Evolution v1 algorithm.
 
 		Args:
-			task (Task): Optimization task
-			pop (numpy.ndarray[MkeSolution]): Current population
-			fpop (numpy.ndarray[float]): Current population fitness/function values
+			task (Task): Optimization task.
+			pop (numpy.ndarray[MkeSolution]): Current population.
+			fpop (numpy.ndarray[float]): Current population fitness/function values.
 			xb (MkeSolution): Current best solution.
 			fxb (float): Current best solutions function/fitness value.
 			**dparams (Dict[str, Any]): Additional arguments.
@@ -446,13 +446,13 @@ class MonkeyKingEvolutionV3(MonkeyKingEvolutionV1):
 		r"""Core funciton of Monkey King Evolution v3 algorithm.
 
 		Args:
-			task (Task): Optimization task
-			X (numpy.ndarray): Current population
-			X_f (numpy.ndarray[float]): Current population fitness/function values
-			xb (numpy.ndarray): Current best individual
-			fxb (float): Current best individual function/fitness value
-			k (int): TODO
-			c (int: TODO
+			task (Task): Optimization task.
+			X (numpy.ndarray): Current population.
+			X_f (numpy.ndarray[float]): Current population fitness/function values.
+			xb (numpy.ndarray): Current best individual.
+			fxb (float): Current best individual function/fitness value.
+			k (int): TODO.
+			c (int: TODO.
 			**dparams: Additional arguments
 
 		Returns:

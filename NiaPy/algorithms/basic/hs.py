@@ -51,7 +51,7 @@ class HarmonySearch(Algorithm):
 		r"""Get basic information about the algorithm.
 
 		Returns:
-				  str: Basic information.
+			str: Basic information.
 		"""
 		return r"""Yang, Xin-She. "Harmony search as a metaheuristic algorithm." Music-inspired harmony search algorithm. Springer, Berlin, Heidelberg, 2009. 1-14."""
 
@@ -60,11 +60,11 @@ class HarmonySearch(Algorithm):
 		r"""Get dictionary with functions for checking values of parameters.
 
 		Returns:
-				  Dict[str, Callable]:
-							 * HMS (Callable[[int], bool])
-							 * r_accept (Callable[[float], bool])
-							 * r_pa (Callable[[float], bool])
-							 * b_range (Callable[[float], bool])
+			Dict[str, Callable]:
+			* HMS (Callable[[int], bool])
+			* r_accept (Callable[[float], bool])
+		 	* r_pa (Callable[[float], bool])
+			* b_range (Callable[[float], bool])
 		"""
 		return {
 			"HMS": lambda x: isinstance(x, int) and x > 0,
@@ -77,7 +77,7 @@ class HarmonySearch(Algorithm):
 		r"""Set the arguments of the algorithm.
 
 		Arguments:
-				  HMS (Optional[int]): Number of harmony in the memory
+				  HMS (Optional[int]): Number of harmony in the memory.
 				  r_accept (Optional[float]): Probability of accepting new bandwidth to harmony.
 				  r_pa (Optional[float]): Probability of accepting random bandwidth into harmony.
 				  b_range (Optional[float]): Bandwidth range.

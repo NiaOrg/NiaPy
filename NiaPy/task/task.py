@@ -366,7 +366,7 @@ class StoppingTask(CountingTask):
         r"""Check if stopping condition reached.
 
         Returns:
-                bool: `True` if number of function evaluations or number of algorithm iterations/generations or reference values is reach else `False`
+                bool: `True` if number of function evaluations or number of algorithm iterations/generations or reference values is reach else `False`.
 
         """
 

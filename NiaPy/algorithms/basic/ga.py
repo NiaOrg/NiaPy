@@ -167,7 +167,7 @@ def CreepMutation(pop, ic, mr, task, rnd=rand):
 	return asarray(nx)
 
 class GeneticAlgorithm(Algorithm):
-	r"""Implementation of Genetic algorithm.
+	r"""Implementation of Genetic Algorithm.
 
 	Algorithm:
 		Genetic algorithm
@@ -201,6 +201,9 @@ class GeneticAlgorithm(Algorithm):
 
 		Returns:
 			str: Basic information of algorithm.
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
 		"""
 		return r"""On info"""
 

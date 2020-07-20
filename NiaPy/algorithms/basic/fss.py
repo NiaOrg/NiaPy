@@ -67,6 +67,18 @@ class FishSchoolSearch(Algorithm):
 	Name = ['FSS', 'FishSchoolSearch']
 
 	@staticmethod
+	def algorithmInfo():
+		r"""Get default information of algorithm.
+
+		Returns:
+			str: Basic information.
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+		"""
+		return r"""Bastos Filho, Lima Neto, Lins, D. O. Nascimento and P. Lima, “A novel search algorithm based on fish school behavior,” in 2008 IEEE International Conference on Systems, Man and Cybernetics, Oct 2008, pp. 2646–2651."""
+
+	@staticmethod
 	def typeParameters():
 		# TODO
 		return {'school_size': lambda x: False, 'SI_final': lambda x: False}

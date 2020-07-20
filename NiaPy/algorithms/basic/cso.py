@@ -26,6 +26,18 @@ class CatSwarmOptimization(Algorithm):
     Name = ['CatSwarmOptimization', 'CSO']
 
     @staticmethod
+    def algorithmInfo():
+    	r"""Get algorithm information.
+
+    	Returns:
+    		str: Algorithm information.
+
+    	See Also:
+    		* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+    	"""
+    	return r"""Chu, Shu-Chuan & Tsai, Pei-Wei & Pan, Jeng-Shyang. (2006). Cat Swarm Optimization. 854-858. 10.1007/11801603_94."""
+
+    @staticmethod
     def typeParameters(): return {
         'NP': lambda x: isinstance(x, int) and x > 0,
         'MR': lambda x: isinstance(x, (int, float)) and 0 <= x <= 1,
@@ -41,14 +53,14 @@ class CatSwarmOptimization(Algorithm):
         r"""Set the algorithm parameters.
 
         Arguments:
-            NP (int): Number of individuals in population
-            MR (float): Mixture ratio
-            C1 (float): Constant in tracing mode
-            SMP (int): Seeking memory pool
-            SPC (bool): Self-position considering
-            CDC (float): Decides how many dimensions will be varied
-            SRD (float): Seeking range of the selected dimension
-            vMax (float): Maximal velocity
+            NP (int): Number of individuals in population.
+            MR (float): Mixture ratio.
+            C1 (float): Constant in tracing mode.
+            SMP (int): Seeking memory pool.
+            SPC (bool): Self-position considering.
+            CDC (float): Decides how many dimensions will be varied.
+            SRD (float): Seeking range of the selected dimension.
+            vMax (float): Maximal velocity.
 
             See Also:
                 * :func:`NiaPy.algorithms.Algorithm.setParameters`

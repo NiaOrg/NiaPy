@@ -96,7 +96,7 @@ To create a new branch and start working on it:
 
     # Last two commands can be joined as following: git checkout -b newfeature
 
-Now, go to town hacking away and making whatever changes you want to
+Now, go to town hacking away and making whatever changes you want to.
 
 Submitting a Pull Request
 -------------------------

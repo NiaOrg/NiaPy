@@ -64,8 +64,8 @@ NiaPy features more than 30 benchmark functions. Documentation for them can be f
 
 - Ackley
 - Alpine
-  - Alpine1
-  - Alpine2
+    - Alpine1
+    - Alpine2
 - Bent Cigar
 - Chung Reynolds
 - Csendes
@@ -89,14 +89,14 @@ NiaPy features more than 30 benchmark functions. Documentation for them can be f
 - Salomon
 - Schumer Steiglitz
 - Schwefel
-  - Schwefel 2.21
-  - Schwefel 2.22
+    - Schwefel 2.21
+    - Schwefel 2.22
 - Sphere
-  - Sphere2 -> Sphere with different powers
-  - Sphere3 -> Rotated hyper-ellipsoid
+    - Sphere2 -> Sphere with different powers
+    - Sphere3 -> Rotated hyper-ellipsoid
 - Step
-  - Step2
-  - Step3
+    - Step2
+    - Step3
 - Stepint
 - Styblinski-Tang
 - Sum Squares

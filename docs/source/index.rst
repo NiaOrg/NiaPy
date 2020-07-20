@@ -11,15 +11,20 @@
 NiaPy's documentation
 =================================
 
+.. image:: http://joss.theoj.org/papers/10.21105/joss.00613/status.svg
+        :target: https://doi.org/10.21105/joss.00613
+        :alt: Citation
+
 .. automodule:: NiaPy
 
 Nature-inspired algorithms are a very popular tool for solving optimization problems.
-Since the beginning of their era, numerous variants of `nature-inspired algorithms were
-developed <https://arxiv.org/abs/1307.4186>`_. To prove their versatility, those were
-tested in various domains on various applications, especially when they are hybridized,
-modified or adapted. However, implementation of nature-inspired algorithms is sometimes
-difficult, complex and tedious task. In order to break this wall, NiaPy is intended for
-simple and quick use, without spending a time for implementing algorithms from scratch.
+Since the beginning of their era, numerous variants of nature-inspired algorithms were
+developed (`paper 1 <https://arxiv.org/abs/1307.4186>`_, `paper 2 <https://www.mdpi.com/2076-3417/8/9/1521>`_).
+To prove their versatility, those were tested in various domains on various applications,
+especially when they are hybridized, modified or adapted. However, implementation of
+nature-inspired algorithms is sometimes difficult, complex and tedious task. In order to break
+this wall, NiaPy is intended for simple and quick use, without spending a time for
+implementing algorithms from scratch.
 
 * **Free software:** MIT license
 * **Github repository:** https://github.com/NiaOrg/NiaPy
@@ -68,7 +73,6 @@ The main documentation is organized into a couple sections:
 .. _api-docs:
 
 .. toctree::
-  :maxdepth: 3
   :caption: API Documentation
 
   api/index

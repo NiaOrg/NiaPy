@@ -74,6 +74,18 @@ class DifferentialEvolutionMTS(DifferentialEvolution, MultipleTrajectorySearch):
 	Name = ['DifferentialEvolutionMTS', 'DEMTS']
 
 	@staticmethod
+	def algorithmInfo():
+		r"""Get basic information about the algorithm.
+
+		Returns:
+			str: Basic information.
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+		"""
+		return r"""TODO"""
+
+	@staticmethod
 	def typeParameters():
 		r"""Get dictionary with functions for checking values of parameters.
 
@@ -155,6 +167,18 @@ class DifferentialEvolutionMTSv1(DifferentialEvolutionMTS):
 	"""
 	Name = ['DifferentialEvolutionMTSv1', 'DEMTSv1']
 
+	@staticmethod
+	def algorithmInfo():
+		r"""Get basic information about the algorithm.
+
+		Returns:
+			str: Basic information.
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+		"""
+		return r"""TODO"""
+
 	def setParameters(self, **ukwargs):
 		r"""Set core parameters of DifferentialEvolutionMTSv1 algorithm.
 
@@ -189,6 +213,18 @@ class DynNpDifferentialEvolutionMTS(DifferentialEvolutionMTS, DynNpDifferentialE
 		* :class:`NiaPy.algorithms.basic.de.DynNpDifferentialEvolution`
 	"""
 	Name = ['DynNpDifferentialEvolutionMTS', 'dynNpDEMTS']
+
+	@staticmethod
+	def algorithmInfo():
+		r"""Get basic information about the algorithm.
+
+		Returns:
+			str: Basic information.
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+		"""
+		return r"""TODO"""
 
 	def setParameters(self, pmax=10, rp=3, **ukwargs):
 		r"""Set core parameters or DynNpDifferentialEvolutionMTS algorithm.
@@ -233,6 +269,18 @@ class DynNpDifferentialEvolutionMTSv1(DynNpDifferentialEvolutionMTS):
 	"""
 	Name = ['DynNpDifferentialEvolutionMTSv1', 'dynNpDEMTSv1']
 
+	@staticmethod
+	def algorithmInfo():
+		r"""Get basic information about the algorithm.
+
+		Returns:
+			str: Basic information.
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+		"""
+		return r"""TODO"""
+
 	def setParameters(self, **ukwargs):
 		r"""Set core arguments of DynNpDifferentialEvolutionMTSv1 algorithm.
 
@@ -267,6 +315,18 @@ class MultiStrategyDifferentialEvolutionMTS(DifferentialEvolutionMTS, MultiStrat
 		* :class:`NiaPy.algorithms.basic.de.MultiStrategyDifferentialEvolution`
 	"""
 	Name = ['MultiStrategyDifferentialEvolutionMTS', 'MSDEMTS']
+
+	@staticmethod
+	def algorithmInfo():
+		r"""Get basic information about the algorithm.
+
+		Returns:
+			str: Basic information.
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+		"""
+		return r"""TODO"""
 
 	def setParameters(self, **ukwargs):
 		r"""TODO.
@@ -318,6 +378,18 @@ class MultiStrategyDifferentialEvolutionMTSv1(MultiStrategyDifferentialEvolution
 	"""
 	Name = ['MultiStrategyDifferentialEvolutionMTSv1', 'MSDEMTSv1']
 
+	@staticmethod
+	def algorithmInfo():
+		r"""Get basic information about the algorithm.
+
+		Returns:
+			str: Basic information.
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+		"""
+		return r"""TODO"""
+
 	def setParameters(self, **ukwargs):
 		r"""Set core parameters of MultiStrategyDifferentialEvolutionMTSv1 algorithm.
 
@@ -352,6 +424,18 @@ class DynNpMultiStrategyDifferentialEvolutionMTS(MultiStrategyDifferentialEvolut
 		* :class:`NiaPy.algorithms.modified.DynNpDifferentialEvolutionMTS`
 	"""
 	Name = ['DynNpMultiStrategyDifferentialEvolutionMTS', 'dynNpMSDEMTS']
+
+	@staticmethod
+	def algorithmInfo():
+		r"""Get basic information about the algorithm.
+
+		Returns:
+			str: Basic information.
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+		"""
+		return r"""TODO"""
 
 	def setParameters(self, **ukwargs):
 		r"""Set core arguments of DynNpMultiStrategyDifferentialEvolutionMTS algorithm.
@@ -388,6 +472,18 @@ class DynNpMultiStrategyDifferentialEvolutionMTSv1(DynNpMultiStrategyDifferentia
 		* :class:`NiaPy.algorithm.modified.DynNpMultiStrategyDifferentialEvolutionMTS`
 	"""
 	Name = ['DynNpMultiStrategyDifferentialEvolutionMTSv1', 'dynNpMSDEMTSv1']
+
+	@staticmethod
+	def algorithmInfo():
+		r"""Get basic information about the algorithm.
+
+		Returns:
+			str: Basic information.
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+		"""
+		return r"""TODO"""
 
 	def setParameters(self, **kwargs):
 		r"""Set core parameters of DynNpMultiStrategyDifferentialEvolutionMTSv1 algorithm.
