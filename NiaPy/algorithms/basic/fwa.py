@@ -11,7 +11,7 @@ logger.setLevel('INFO')
 __all__ = ['FireworksAlgorithm', 'EnhancedFireworksAlgorithm', 'DynamicFireworksAlgorithm', 'DynamicFireworksAlgorithmGauss', 'BareBonesFireworksAlgorithm']
 
 class BareBonesFireworksAlgorithm(Algorithm):
-	r"""Implementation of bare bone fireworks algorithm.
+	r"""Implementation of Bare Bones Fireworks Algorithm.
 
 	Algorithm:
 		Bare Bones Fireworks Algorithm
@@ -134,7 +134,7 @@ class FireworksAlgorithm(Algorithm):
 		https://www.springer.com/gp/book/9783662463529
 
 	Reference paper:
-		Tan, Ying. "Firework Algorithm: A Novel Swarm Intelligence Optimization Method." (2015).
+		Tan, Ying. "Fireworks algorithm." Heidelberg, Germany: Springer 10 (2015): 978-3
 
 	Attributes:
 		Name (List[str]): List of stirngs representing algorithm names.
@@ -151,7 +151,7 @@ class FireworksAlgorithm(Algorithm):
 		See Also:
 			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
 		"""
-		return r"""Tan, Ying. "Firework Algorithm: A Novel Swarm Intelligence Optimization Method." (2015)."""
+		return r"""Tan, Ying. "Fireworks algorithm." Heidelberg, Germany: Springer 10 (2015): 978-3."""
 
 	@staticmethod
 	def typeParameters(): return {

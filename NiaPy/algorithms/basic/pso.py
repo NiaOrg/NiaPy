@@ -55,7 +55,7 @@ class ParticleSwarmAlgorithm(Algorithm):
 		See Also:
 			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
 		"""
-		return r"""TODO find one"""
+		return r"""Kennedy, J. and Eberhart, R. "Particle Swarm Optimization". Proceedings of IEEE International Conference on Neural Networks. IV. pp. 1942--1948, 1995."""
 
 	@staticmethod
 	def typeParameters():
@@ -103,7 +103,7 @@ class ParticleSwarmAlgorithm(Algorithm):
 		r"""Get value of parametrs for this instance of algorithm.
 
 		Returns:
-			Dict[str, Union[int, float, np.ndarray]]: Dictionari which has parameters maped to values.
+			Dict[str, Union[int, float, np.ndarray]]: Dictionary which has parameters maped to values.
 
 		See Also:
 			* :func:`NiaPy.algorithms.Algorithm.getParameters`
@@ -297,7 +297,7 @@ class ParticleSwarmOptimization(ParticleSwarmAlgorithm):
 		r"""Get value of parametrs for this instance of algorithm.
 
 		Returns:
-			Dict[str, Union[int, float, np.ndarray]]: Dictionari which has parameters maped to values.
+			Dict[str, Union[int, float, np.ndarray]]: Dictionary which has parameters maped to values.
 
 		See Also:
 			* :func:`NiaPy.algorithms.basic.ParticleSwarmAlgorithm.getParameters`
@@ -368,7 +368,7 @@ class OppositionVelocityClampingParticleSwarmOptimization(ParticleSwarmAlgorithm
 		r"""Get value of parametrs for this instance of algorithm.
 
 		Returns:
-			Dict[str, Union[int, float, np.ndarray]]: Dictionari which has parameters maped to values.
+			Dict[str, Union[int, float, np.ndarray]]: Dictionary which has parameters maped to values.
 
 		See Also:
 			* :func:`NiaPy.algorithms.basic.ParticleSwarmAlgorithm.getParameters`
@@ -533,7 +533,7 @@ class CenterParticleSwarmOptimization(ParticleSwarmAlgorithm):
 		r"""Get value of parametrs for this instance of algorithm.
 
 		Returns:
-			Dict[str, Union[int, float, np.ndarray]]: Dictionari which has parameters maped to values.
+			Dict[str, Union[int, float, np.ndarray]]: Dictionary which has parameters maped to values.
 
 		See Also:
 			* :func:`NiaPy.algorithms.basic.ParticleSwarmAlgorithm.getParameters`
@@ -626,7 +626,7 @@ class MutatedParticleSwarmOptimization(ParticleSwarmAlgorithm):
 		r"""Get value of parametrs for this instance of algorithm.
 
 		Returns:
-			Dict[str, Union[int, float, np.ndarray]]: Dictionari which has parameters maped to values.
+			Dict[str, Union[int, float, np.ndarray]]: Dictionary which has parameters maped to values.
 
 		See Also:
 			* :func:`NiaPy.algorithms.basic.ParticleSwarmAlgorithm.getParameters`
@@ -724,7 +724,7 @@ class MutatedCenterParticleSwarmOptimization(CenterParticleSwarmOptimization):
 		r"""Get value of parametrs for this instance of algorithm.
 
 		Returns:
-			Dict[str, Union[int, float, np.ndarray]]: Dictionari which has parameters maped to values.
+			Dict[str, Union[int, float, np.ndarray]]: Dictionary which has parameters maped to values.
 
 		See Also:
 			* :func:`NiaPy.algorithms.basic.CenterParticleSwarmOptimization.getParameters`
@@ -899,7 +899,7 @@ class ComprehensiveLearningParticleSwarmOptimizer(ParticleSwarmAlgorithm):
 		r"""Get value of parametrs for this instance of algorithm.
 
 		Returns:
-			Dict[str, Union[int, float, np.ndarray]]: Dictionari which has parameters maped to values.
+			Dict[str, Union[int, float, np.ndarray]]: Dictionary which has parameters maped to values.
 
 		See Also:
 			* :func:`NiaPy.algorithms.basic.ParticleSwarmAlgorithm.getParameters`

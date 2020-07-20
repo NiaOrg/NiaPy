@@ -64,6 +64,18 @@ class EvolutionStrategy1p1(Algorithm):
 	Name = ['EvolutionStrategy1p1', 'EvolutionStrategy(1+1)', 'ES(1+1)']
 
 	@staticmethod
+	def algorithmInfo():
+		r"""Get algorithms information.
+
+		Returns:
+			str: Algorithm information.
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+		"""
+		return r"""TODO"""
+
+	@staticmethod
 	def typeParameters():
 		r"""Get dictionary with functions for checking values of parameters.
 
@@ -198,6 +210,18 @@ class EvolutionStrategyMp1(EvolutionStrategy1p1):
 	"""
 	Name = ['EvolutionStrategyMp1', 'EvolutionStrategy(mu+1)', 'ES(m+1)']
 
+	@staticmethod
+	def algorithmInfo():
+		r"""Get algorithms information.
+
+		Returns:
+			str: Algorithm information.
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+		"""
+		return r"""TODO"""
+
 	def setParameters(self, **kwargs):
 		r"""Set core parameters of EvolutionStrategy(mu+1) algorithm.
 
@@ -237,6 +261,18 @@ class EvolutionStrategyMpL(EvolutionStrategy1p1):
 		* :class:`NiaPy.algorithms.basic.EvolutionStrategy1p1`
 	"""
 	Name = ['EvolutionStrategyMpL', 'EvolutionStrategy(mu+lambda)', 'ES(m+l)']
+
+	@staticmethod
+	def algorithmInfo():
+		r"""Get algorithms information.
+
+		Returns:
+			str: Algorithm information.
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+		"""
+		return r"""TODO"""
 
 	@staticmethod
 	def typeParameters():
@@ -383,6 +419,18 @@ class EvolutionStrategyML(EvolutionStrategyMpL):
 	"""
 	Name = ['EvolutionStrategyML', 'EvolutionStrategy(mu,lambda)', 'ES(m,l)']
 
+	@staticmethod
+	def algorithmInfo():
+		r"""Get algorithms information.
+
+		Returns:
+			str: Algorithm information.
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+		"""
+		return r"""TODO"""
+
 	def newPop(self, pop):
 		r"""Return new population.
 
@@ -506,6 +554,18 @@ class CovarianceMatrixAdaptionEvolutionStrategy(Algorithm):
 	"""
 	Name = ['CovarianceMatrixAdaptionEvolutionStrategy', 'CMA-ES', 'CMAES']
 	epsilon = 1e-20
+
+	@staticmethod
+	def algorithmInfo():
+		r"""Get algorithms information.
+
+		Returns:
+			str: Algorithm information.
+
+		See Also:
+			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
+		"""
+		return r"""TODO"""
 
 	@staticmethod
 	def typeParameters(): return {

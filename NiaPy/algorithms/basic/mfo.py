@@ -108,19 +108,19 @@ class MothFlameOptimizer(Algorithm):
 			moth_pos (numpy.ndarray): Current population.
 			moth_fitness (numpy.ndarray): Current population fitness/function values.
 			xb (numpy.ndarray): Current population best individual.
-			fxb (float): Current best individual
-			best_flames (numpy.ndarray): Best found individuals
-			best_flame_fitness (numpy.ndarray): Best found individuals fitness/function values
-			previous_population (numpy.ndarray): Previous population
-			previous_fitness (numpy.ndarray): Previous population fitness/function values
+			fxb (float): Current best individual.
+			best_flames (numpy.ndarray): Best found individuals.
+			best_flame_fitness (numpy.ndarray): Best found individuals fitness/function values.
+			previous_population (numpy.ndarray): Previous population.
+			previous_fitness (numpy.ndarray): Previous population fitness/function values.
 			**dparams (Dict[str, Any]): Additional parameters
 
 		Returns:
 			Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, float, Dict[str, Any]]:
 				1. New population.
 				2. New population fitness/function values.
-				3. New global best solution
-				4. New global best fitness/objective value
+				3. New global best solution.
+				4. New global best fitness/objective value.
 				5. Additional arguments:
 					* best_flames (numpy.ndarray): Best individuals.
 					* best_flame_fitness (numpy.ndarray): Best individuals fitness/function values.
