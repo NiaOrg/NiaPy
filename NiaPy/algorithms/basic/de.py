@@ -1,5 +1,6 @@
 # encoding=utf8
 import logging
+import math
 
 from numpy import random as rand, argmin, argmax, mean, cos, asarray, append, sin
 from scipy.spatial.distance import euclidean
@@ -561,7 +562,8 @@ def proportional(Lt_min, Lt_max, mu, x_f, avg, **args):
 	Returns:
 		int: Age of individual.
 	"""
-	return min(Lt_min + mu * avg / x_f, Lt_max)
+	proportional_result = Lt_max if math.isinf(avg) else Lt_min + mu * avg / x_f
+	return min(proportional_result, Lt_max)
 
 def linear(Lt_min, mu, x_f, x_gw, x_gb, **args):
 	r"""Linear calculation of age of individual.
