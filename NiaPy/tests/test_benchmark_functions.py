@@ -1,6 +1,6 @@
 # encoding=utf8
 
-from math import pow, isnan
+from math import pow
 from unittest import TestCase
 from numpy import asarray, pi, full, seterr
 from NiaPy.task import Utility
@@ -440,4 +440,4 @@ class TestBenchmarkFunctions(TestCase):
         for size in sizes:
             with self.assertRaises(FloatingPointError):
                     fun(size, full(size, .0))
-            self.assertAlmostEqual(fun(size, full(size, 1.0)), 2.84147098480789650665250232163*size)
+            self.assertAlmostEqual(fun(size, full(size, 1.0)), 2.84147098480789650665250232163 * size)
