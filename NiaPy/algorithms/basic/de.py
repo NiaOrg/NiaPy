@@ -2,7 +2,7 @@
 import logging
 import math
 
-from numpy import random as rand, argmin, argmax, mean, cos, asarray, append, sin
+from numpy import random as rand, argmin, argmax, mean, cos, asarray, append, sin, isfinite
 from scipy.spatial.distance import euclidean
 
 from NiaPy.algorithms.algorithm import Algorithm, Individual, defaultIndividualInit
@@ -738,7 +738,7 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 		"""
 		fpop = asarray([x.f for x in pop])
 		x_b, x_w = pop[argmin(fpop)], pop[argmax(fpop)]
-		avg, npop = mean(fpop), []
+		avg, npop = mean(fpop[isfinite(fpop)]), []
 		for x in pop:
 			x.age += 1
 			Lt = round(self.age(Lt_min=self.Lt_min, Lt_max=self.Lt_max, mu=self.mu, x_f=x.f, avg=avg, x_gw=x_w.f, x_gb=x_b.f))
