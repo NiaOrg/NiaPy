@@ -313,6 +313,8 @@ class AlgorithmTestCase(TestCase):
 		if a is None or b is None: return
 		for D in self.D:
 			task1, task2 = self.setUpTasks(D, benc, nFES=nFES)
+			# x = a.run(task1) # For debugging purposes
+			# y = b.run(task2) # For debugging purposes
 			q = Queue(maxsize=2)
 			thread1, thread2 = Thread(target=lambda a, t, q: q.put(a.run(t)), args=(a, task1, q)), Thread(target=lambda a, t, q: q.put(a.run(t)), args=(b, task2, q))
 			thread1.start(), thread2.start()

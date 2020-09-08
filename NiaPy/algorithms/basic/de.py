@@ -1,7 +1,8 @@
 # encoding=utf8
 import logging
+import math
 
-from numpy import random as rand, argmin, argmax, mean, cos, asarray, append, sin
+from numpy import random as rand, argmin, argmax, mean, cos, asarray, append, sin, isfinite
 from scipy.spatial.distance import euclidean
 
 from NiaPy.algorithms.algorithm import Algorithm, Individual, defaultIndividualInit
@@ -561,7 +562,8 @@ def proportional(Lt_min, Lt_max, mu, x_f, avg, **args):
 	Returns:
 		int: Age of individual.
 	"""
-	return min(Lt_min + mu * avg / x_f, Lt_max)
+	proportional_result = Lt_max if math.isinf(avg) else Lt_min + mu * avg / x_f
+	return min(proportional_result, Lt_max)
 
 def linear(Lt_min, mu, x_f, x_gw, x_gb, **args):
 	r"""Linear calculation of age of individual.
@@ -736,7 +738,7 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 		"""
 		fpop = asarray([x.f for x in pop])
 		x_b, x_w = pop[argmin(fpop)], pop[argmax(fpop)]
-		avg, npop = mean(fpop), []
+		avg, npop = mean(fpop[isfinite(fpop)]), []
 		for x in pop:
 			x.age += 1
 			Lt = round(self.age(Lt_min=self.Lt_min, Lt_max=self.Lt_max, mu=self.mu, x_f=x.f, avg=avg, x_gw=x_w.f, x_gb=x_b.f))

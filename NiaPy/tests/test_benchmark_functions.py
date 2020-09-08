@@ -1,8 +1,8 @@
 # encoding=utf8
 
-from math import pow, isnan
+from math import pow
 from unittest import TestCase
-from numpy import asarray, pi, full
+from numpy import asarray, pi, full, seterr
 from NiaPy.task import Utility
 
 
@@ -435,9 +435,9 @@ class TestBenchmarkFunctions(TestCase):
 
         fun = self.assertBounds('infinity', -1, 1)
         self.assertTrue(callable(fun))
-        self.assertTrue(isnan(fun(2, full(2, .0))))
-        self.assertTrue(isnan(fun(10, full(10, .0))))
-        self.assertTrue(isnan(fun(100, full(100, .0))))
-        self.assertAlmostEqual(fun(2, full(2, 1e-4)), .0)
-        self.assertAlmostEqual(fun(10, full(10, 1e-4)), .0)
-        self.assertAlmostEqual(fun(100, full(100, 1e-4)), .0)
+        sizes = [2, 10, 100]
+        seterr('raise')
+        for size in sizes:
+            with self.assertRaises(FloatingPointError):
+                    fun(size, full(size, .0))
+            self.assertAlmostEqual(fun(size, full(size, 1.0)), 2.84147098480789650665250232163 * size)
