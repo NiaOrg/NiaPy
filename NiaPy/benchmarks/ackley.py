@@ -69,7 +69,7 @@ class Ackley(Benchmark):
         """
         return r'''$f(\mathbf{x}) = -a\;\exp\left(-b \sqrt{\frac{1}{D}
                 \sum_{i=1}^D x_i^2}\right) - \exp\left(\frac{1}{D}
-                \sum_{i=1}^D cos(c\;x_i)\right) + a + \exp(1)$'''
+                \sum_{i=1}^D \cos(c\;x_i)\right) + a + \exp(1)$'''
 
     def function(slef):
         r"""Return benchmark evaluation function.
