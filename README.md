@@ -45,25 +45,39 @@ Our mission is to build a collection of nature-inspired algorithms and create a 
 
 # Installation
 
-To install NiaPy, run this command in your terminal:
+Install NiaPy with pip:	
+
+## Latest version (2.0.0rc11)	
+
+```sh	
+$ pip install NiaPy==2.0.0rc11	
+```
+
+To install NiaPy with conda, use:
+
+```sh
+$ conda install -c niaorg niapy=2.0.0rc11
+```
+
+## Latest stable version
 
 ```sh
 $ pip install NiaPy
 ```
 
-This is the preferred method to install NiaPy, as it will always install the most recent stable release.
-
 To install NiaPy with conda, use:
 
 ```sh
-conda install -c niaorg niapy
+$ conda install -c niaorg niapy
 ```
 
 To install NiaPy on Fedora, use:
 
 ```sh
-yum install python3-niapy
+$ dnf install python3-niapy
 ```
+
+## Install from source
 
 In case you want to install directly from the source code, use:
 
