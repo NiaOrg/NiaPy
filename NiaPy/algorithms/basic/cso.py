@@ -21,7 +21,7 @@ class CatSwarmOptimization(Algorithm):
 
     **License:** MIT
 
-    **Reference paper:** Chu, Shu-Chuan & Tsai, Pei-Wei & Pan, Jeng-Shyang. (2006). Cat Swarm Optimization. 854-858. 10.1007/11801603_94.
+    **Reference paper:** Chu, S. C., Tsai, P. W., & Pan, J. S. (2006). Cat swarm optimization. In Pacific Rim international conference on artificial intelligence (pp. 854-858). Springer, Berlin, Heidelberg..
     """
     Name = ['CatSwarmOptimization', 'CSO']
 
@@ -35,7 +35,7 @@ class CatSwarmOptimization(Algorithm):
     	See Also:
     		* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
     	"""
-    	return r"""Chu, Shu-Chuan & Tsai, Pei-Wei & Pan, Jeng-Shyang. (2006). Cat Swarm Optimization. 854-858. 10.1007/11801603_94."""
+    	return r"""Chu, S. C., Tsai, P. W., & Pan, J. S. (2006). Cat swarm optimization. In Pacific Rim international conference on artificial intelligence (pp. 854-858). Springer, Berlin, Heidelberg."""
 
     @staticmethod
     def typeParameters(): return {
