@@ -23,7 +23,7 @@ class GreyWolfOptimizer(Algorithm):
 
     Reference paper:
         * Mirjalili, Seyedali, Seyed Mohammad Mirjalili, and Andrew Lewis. "Grey wolf optimizer." Advances in engineering software 69 (2014): 46-61.
-        * Grey Wold Optimizer (GWO) source code version 1.0 (MATLAB) from MathWorks
+        * Grey Wolf Optimizer (GWO) source code version 1.0 (MATLAB) from MathWorks
 
     Attributes:
         Name (List[str]): List of strings representing algorithm names.

@@ -31,7 +31,7 @@ class HarmonySearch(Algorithm):
 			  https://link.springer.com/chapter/10.1007/978-3-642-00185-7_1
 
 	Reference paper:
-			  Yang, Xin-She. "Harmony search as a metaheuristic algorithm." Music-inspired harmony search algorithm. Springer, Berlin, Heidelberg, 2009. 1-14.
+			  Geem, Z. W., Kim, J. H., & Loganathan, G. V. (2001). A new heuristic optimization algorithm: harmony search. Simulation, 76(2), 60-68.
 
 	Attributes:
 			  Name (List[str]): List of strings representing algorithm names
@@ -53,7 +53,7 @@ class HarmonySearch(Algorithm):
 		Returns:
 			str: Basic information.
 		"""
-		return r"""Yang, Xin-She. "Harmony search as a metaheuristic algorithm." Music-inspired harmony search algorithm. Springer, Berlin, Heidelberg, 2009. 1-14."""
+		return r"""Geem, Z. W., Kim, J. H., & Loganathan, G. V. (2001). A new heuristic optimization algorithm: harmony search. Simulation, 76(2), 60-68."""
 
 	@staticmethod
 	def typeParameters():
