@@ -80,7 +80,8 @@ class AlgorithmUtility:
             "SimulatedAnnealing": other_algorithms.SimulatedAnnealing,
             "MultipleTrajectorySearch": other_algorithms.MultipleTrajectorySearch,
             "MultipleTrajectorySearchV1": other_algorithms.MultipleTrajectorySearchV1,
-            "AnarchicSocietyOptimization": other_algorithms.AnarchicSocietyOptimization
+            "AnarchicSocietyOptimization": other_algorithms.AnarchicSocietyOptimization,
+            "RandomSearch": other_algorithms.RandomSearch
         }
 
     def get_algorithm(self, algorithm):

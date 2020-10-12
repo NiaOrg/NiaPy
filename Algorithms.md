@@ -26,7 +26,7 @@
                                                                                                                                                                                                                                  |Moth-flame Optimization       |MFO|Mirjalili, Seyedali. "Moth-flame optimization algorithm: A novel nature-inspired heuristic paradigm." Knowledge-Based Systems 89 (2015): 228-249.
                                                                                                                                                                                                                                  |Monkey King Evolution         |MKE|Zhenyu Meng, Jeng-Shyang Pan, Monkey King Evolution: A new memetic evolutionary algorithm and its application in vehicle fuel consumption optimization, Knowledge-Based Systems, Volume 97, 2016, Pages 144-157.
                                                                                                                                                                                                                                  |Particle Swarm Optimization   |PSO|Kennedy, J. and Eberhart, R. "Particle Swarm Optimization". Proceedings of IEEE International Conference on Neural Networks. IV. pp. 1942--1948, 1995.
-                                                                                                                                                                                                                                 |Sine Cosine Algorithm         |SCA|eyedali Mirjalili, SCA: A Sine Cosine Algorithm for solving optimization problems, Knowledge-Based Systems, Volume 96, 2016, Pages 120-133,
+                                                                                                                                                                                                                                 |Sine Cosine Algorithm         |SCA|Seyedali Mirjalili, SCA: A Sine Cosine Algorithm for solving optimization problems, Knowledge-Based Systems, Volume 96, 2016, Pages 120-133,
 
 
 ##Modified algorithms
@@ -36,7 +36,7 @@
 |Hybrid Bat Algorithm                |HBA    | Fister Jr., Iztok and Fister, Dusan and Yang, Xin-She. "A Hybrid Bat Algorithm". Elektrotehniski vestnik, 2013. 1-7.                                                                                                                                     |
 |Hybrid self-adaptive bat algorithm  |HSABA  |                                                                                                                    Fister Jr., I, Fong, S., Brest, J., Fister, I. "A novel hybrid self-adaptive bat algorithm." The Scientific World Journal 2014 (2014).|
 |Adaptive differential evolution     |JADE   |Zhang, Jingqiao, and Arthur C. Sanderson. "JADE: adaptive differential evolution with optional external archive." IEEE Transactions on evolutionary computation 13.5 (2009): 945-958.                                                                     |
-|Self-adaptive differential evolution|jDE    |Brest, J., Greiner, S., Boskovic, B., Mernik, M., Zumer, V. Self-adapting control parameters in differential evolution: A comparative study on numerical benchmark problems. IEEE transactions on evolutionary computation, 10(6), 646-657, 2006.         
+|Self-adaptive differential evolution|jDE    |Brest, J., Greiner, S., Boskovic, B., Mernik, M., Zumer, V. Self-adapting control parameters in differential evolution: A comparative study on numerical benchmark problems. IEEE transactions on evolutionary computation, 10(6), 646-657, 2006.
 |Self-adaptive differential evolution|SADE   |Qin, A. Kai, and Ponnuthurai N. Suganthan. "Self-adaptive differential evolution algorithm for numerical optimization." 2005 IEEE congress on evolutionary computation. Vol. 2. IEEE, 2005.
 
 ##Other algorithms
@@ -45,4 +45,6 @@
 |-----------------------------|-------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 |Anarchic Society Optimization|ASO    |Ahmadi-Javid, Amir. "Anarchic Society Optimization: A human-inspired method." Evolutionary Computation (CEC), 2011 IEEE Congress on. IEEE, 2011.                                                       |
 |Nelder-Mead method           |NM     |                                                                                                                                               https://en.wikipedia.org/wiki/Nelder%E2%80%93Mead_method|
-|Simulated Annealing          |SA     |Kirkpatrick, S., Gelatt, C. D., & Vecchi, M. P. (1983). Optimization by simulated annealing. Science, 220(4598), 671-680.		                                                                          
+|Simulated Annealing          |SA     |Kirkpatrick, S., Gelatt, C. D., & Vecchi, M. P. (1983). Optimization by simulated annealing. Science, 220(4598), 671-680.|
+|Random Search          |RS     |https://en.wikipedia.org/wiki/Random_search
+
