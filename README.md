@@ -87,6 +87,10 @@ $ cd NiaPy
 $ python setup.py install
 ```
 
+# Algorithms
+
+[Click here](Algorithms.md) for the list of implemented algorithms.
+
 # Usage
 
 After installation, you can import NiaPy as any other Python module:
