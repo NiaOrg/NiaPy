@@ -8,6 +8,13 @@ class RSTestCase(AlgorithmTestCase):
 		AlgorithmTestCase.setUp(self)
 		self.algo = RandomSearch
 
+	def test_type_parameters(self):
+		d = self.algo.typeParameters()
+		self.assertEqual(len(d), 2)
+		self.assertTrue(d['NP'](10))
+		self.assertFalse(d['NP'](0))
+		self.assertFalse(d['NP'](-10))
+
 	def test_custom_works_fine(self):
 		ca_custom = self.algo(NP=40, seed=self.seed)
 		ca_customc = self.algo(NP=40, seed=self.seed)
