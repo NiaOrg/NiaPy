@@ -10,7 +10,6 @@ class RSTestCase(AlgorithmTestCase):
 
 	def test_type_parameters(self):
 		d = self.algo.typeParameters()
-		self.assertEqual(len(d), 2)
 		self.assertTrue(d['NP'](10))
 		self.assertFalse(d['NP'](0))
 		self.assertFalse(d['NP'](-10))

@@ -48,7 +48,7 @@ class RandomSearch(Algorithm):
 		"""
 		return r"""None"""
 
-	def setParameters(self):
+	def setParameters(self, **ukwargs):
 		r"""Set the algorithm parameters/arguments.
 
 		Arguments:
@@ -56,6 +56,7 @@ class RandomSearch(Algorithm):
 			* :func:`NiaPy.algorithms.Algorithm.setParameters`
 		"""
 
+		ukwargs.pop('NP', None)
 		Algorithm.setParameters(self, NP=1)
 
 	def getParameters(self):
