@@ -150,7 +150,7 @@ class SimulatedAnnealing(Algorithm):
 		return x, xfit, {'curT': curT}
 
 	def runIteration(self, task, x, xfit, xb, fxb, curT, **dparams):
-		r"""Core funciton of the algorithm.
+		r"""Core function of the algorithm.
 
 		Args:
 			task (Task):
