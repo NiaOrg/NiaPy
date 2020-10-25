@@ -32,6 +32,7 @@ from NiaPy.algorithms.modified.saba import (
     SelfAdaptiveBatAlgorithm
 )
 from NiaPy.algorithms.modified.hsaba import HybridSelfAdaptiveBatAlgorithm
+from NiaPy.algorithms.modified.plba import ParameterFreeBatAlgorithm
 __all__ = [
     'HybridBatAlgorithm',
     'DifferentialEvolutionMTS',
@@ -53,5 +54,6 @@ __all__ = [
     'StrategyAdaptationDifferentialEvolutionV1',
     'AdaptiveBatAlgorithm',
     'SelfAdaptiveBatAlgorithm',
-    'HybridSelfAdaptiveBatAlgorithm'
+    'HybridSelfAdaptiveBatAlgorithm',
+    'ParameterFreeBatAlgorithm'
 ]
