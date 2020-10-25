@@ -12,7 +12,7 @@ from NiaPy.benchmarks import Sphere
 
 algo = ParameterFreeBatAlgorithm()
 
-for i in range(5):
+for i in range(10):
 	task = StoppingTask(D=10, nFES=10000, benchmark=Sphere(Upper=5.12, Lower=-5.12))
 	best = algo.run(task)
 	print('%s -> %s' % (best[0], best[1]))
