@@ -117,9 +117,9 @@ class BatAlgorithm(Algorithm):
 				1. New population.
 				2. New population fitness/function values.
 				3. Additional arguments:
-					* S (numpy.ndarray): TODO
-					* Q (numpy.ndarray[float]): 	TODO
-					* v (numpy.ndarray[float]): TODO
+					* S (numpy.ndarray): Solutions
+					* Q (numpy.ndarray[float]): Frequencies
+					* v (numpy.ndarray[float]): Velocities
 
 		See Also:
 			* :func:`NiaPy.algorithms.Algorithm.initPopulation`
@@ -151,9 +151,9 @@ class BatAlgorithm(Algorithm):
 			Fitness (numpy.ndarray[float]): Current population fitness/funciton values
 			best (numpy.ndarray): Current best individual
 			f_min (float): Current best individual function/fitness value
-			S (numpy.ndarray): TODO
-			Q (numpy.ndarray): TODO
-			v (numpy.ndarray): TODO
+			S (numpy.ndarray): Solutions
+			Q (numpy.ndarray): Frequencies
+			v (numpy.ndarray): Velocities
 			best (numpy.ndarray): Global best used by the algorithm
 			f_min (float): Global best fitness value used by the algorithm
 			dparams (Dict[str, Any]): Additional algorithm arguments
@@ -165,11 +165,11 @@ class BatAlgorithm(Algorithm):
 				3. New global best solution
 				4. New global best fitness/objective value
 				5. Additional arguments:
-					* S (numpy.ndarray): TODO
-					* Q (numpy.ndarray): TODO
-					* v (numpy.ndarray): TODO
-					* best (numpy.ndarray): TODO
-					* f_min (float): TODO
+					* S (numpy.ndarray): Solutions
+					* Q (numpy.ndarray): Frequencies
+					* v (numpy.ndarray): Velocities
+					* best (numpy.ndarray): Global best
+					* f_min (float): Global best fitness
 		"""
 		for i in range(self.NP):
 			Q[i] = self.Qmin + (self.Qmax - self.Qmin) * self.uniform(0, 1)
