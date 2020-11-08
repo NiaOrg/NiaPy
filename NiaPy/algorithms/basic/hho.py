@@ -41,7 +41,7 @@ class HarrisHawksOptimization(Algorithm):
             2020
 
     Authors:
-            Francisco Jose Solis-Munoz and Iztok Fister Jr.
+            Francisco Jose Solis-Munoz
 
     License:
             MIT
