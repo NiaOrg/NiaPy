@@ -297,6 +297,7 @@ class AlgorithmTestCase(TestCase):
 		Returns:
 			Tuple[Taks, Taks]: Two testing tasks.
 		"""
+		# TODO Fix bech by bench
 		task1, task2 = TestingTask(D=D, nFES=self.nFES if nFES is None else nFES, nGEN=self.nGEN if nGEN is None else nGEN, benchmark=bech), TestingTask(D=D, nFES=self.nFES if nFES is None else nFES, nGEN=self.nGEN if nGEN is None else nGEN, benchmark=bech)
 		return task1, task2
 
@@ -312,7 +313,7 @@ class AlgorithmTestCase(TestCase):
 		"""
 		if a is None or b is None: return
 		for D in self.D:
-			task1, task2 = self.setUpTasks(D, benc, nFES=nFES)
+			task1, task2 = self.setUpTasks(D, benc, nGEN=nGEN, nFES=nFES)
 			# x = a.run(task1) # For debugging purposes
 			# y = b.run(task2) # For debugging purposes
 			q = Queue(maxsize=2)
