@@ -27,6 +27,7 @@ from NiaPy.algorithms.basic.foa import ForestOptimizationAlgorithm
 from NiaPy.algorithms.basic.mbo import MonarchButterflyOptimization
 from NiaPy.algorithms.basic.bea import BeesAlgorithm
 __all__ = [
+    'HarrisHawksOptimization',
     'BatAlgorithm',
     'FireflyAlgorithm',
     'DifferentialEvolution',
