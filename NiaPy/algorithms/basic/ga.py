@@ -178,6 +178,9 @@ class GeneticAlgorithm(Algorithm):
 	Author:
 		Klemen Berkovič
 
+	Reference paper:
+		Goldberg, David (1989). Genetic Algorithms in Search, Optimization and Machine Learning. Reading, MA: Addison-Wesley Professional.
+
 	License:
 		MIT
 

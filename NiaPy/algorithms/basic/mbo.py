@@ -28,7 +28,7 @@ class MonarchButterflyOptimization(Algorithm):
 		 MIT
 
 	Reference paper:
-		 Wang, Gai-Ge & Deb, Suash & Cui, Zhihua. (2015). Monarch Butterfly Optimization. Neural Computing and Applications. 10.1007/s00521-015-1923-y. , https://www.researchgate.net/publication/275964443_Monarch_Butterfly_Optimization.
+		 Wang, G. G., Deb, S., & Cui, Z. (2019). Monarch butterfly optimization. Neural computing and applications, 31(7), 1995-2014.
 
 	Attributes:
 		 Name (List[str]): List of strings representing algorithm name.
@@ -54,7 +54,7 @@ class MonarchButterflyOptimization(Algorithm):
 		Description: Monarch butterfly optimization algorithm is inspired by the migration behaviour of the monarch butterflies in nature.
 		Authors: Wang, Gai-Ge & Deb, Suash & Cui, Zhihua.
 		Year: 2015
-		Main reference: Wang, Gai-Ge & Deb, Suash & Cui, Zhihua. (2015). Monarch Butterfly Optimization. Neural Computing and Applications. 10.1007/s00521-015-1923-y. , https://www.researchgate.net/publication/275964443_Monarch_Butterfly_Optimization.
+		Main reference: Wang, G. G., Deb, S., & Cui, Z. (2019). Monarch butterfly optimization. Neural computing and applications, 31(7), 1995-2014.
     """
 
 	@staticmethod

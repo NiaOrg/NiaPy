@@ -29,7 +29,7 @@ class ParticleSwarmAlgorithm(Algorithm):
 		MIT
 
 	Reference paper:
-		TODO: Find the right paper
+		Kennedy, J. and Eberhart, R. "Particle Swarm Optimization". Proceedings of IEEE International Conference on Neural Networks. IV. pp. 1942--1948, 1995.
 
 	Attributes:
 		Name (List[str]): List of strings representing algorithm names

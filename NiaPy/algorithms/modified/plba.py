@@ -6,40 +6,37 @@ from numpy import full
 from NiaPy.algorithms.algorithm import Algorithm
 
 logging.basicConfig()
-logger = logging.getLogger('NiaPy.algorithms.basic')
+logger = logging.getLogger('NiaPy.algorithms.modified')
 logger.setLevel('INFO')
 
-__all__ = ['BatAlgorithm']
+__all__ = ['ParameterFreeBatAlgorithm']
 
-class BatAlgorithm(Algorithm):
-	r"""Implementation of Bat algorithm.
+class ParameterFreeBatAlgorithm(Algorithm):
+	r"""Implementation of Parameter-free Bat algorithm.
 
 	Algorithm:
-		Bat algorithm
+		Parameter-free Bat algorithm
 
 	Date:
-		2015
+		2020
 
 	Authors:
-		Iztok Fister Jr., Marko Burjek and Klemen Berkovič
+		Iztok Fister Jr.
+		This implementation is based on the implementation of basic BA from NiaPy
 
 	License:
 		MIT
 
 	Reference paper:
-		Yang, Xin-She. "A new metaheuristic bat-inspired algorithm." Nature inspired cooperative strategies for optimization (NICSO 2010). Springer, Berlin, Heidelberg, 2010. 65-74.
+		Iztok Fister Jr., Iztok Fister, Xin-She Yang. Towards the development of a parameter-free bat algorithm . In: FISTER Jr., Iztok (Ed.), BRODNIK, Andrej (Ed.). StuCoSReC : proceedings of the 2015 2nd Student Computer Science Research Conference. Koper: University of Primorska, 2015, pp. 31-34.
 
 	Attributes:
 		Name (List[str]): List of strings representing algorithm name.
-		A (float): Loudness.
-		r (float): Pulse rate.
-		Qmin (float): Minimum frequency.
-		Qmax (float): Maximum frequency.
 
 	See Also:
 		* :class:`NiaPy.algorithms.Algorithm`
 	"""
-	Name = ['BatAlgorithm', 'BA']
+	Name = ['ParameterFreeBatAlgorithm', 'PLBA']
 
 	@staticmethod
 	def algorithmInfo():
@@ -51,63 +48,22 @@ class BatAlgorithm(Algorithm):
 		See Also:
 			* :func:`NiaPy.algorithms.Algorithm.algorithmInfo`
 		"""
-		return r"""Yang, Xin-She. "A new metaheuristic bat-inspired algorithm." Nature inspired cooperative strategies for optimization (NICSO 2010). Springer, Berlin, Heidelberg, 2010. 65-74."""
+		return r"""Iztok Fister Jr., Iztok Fister, Xin-She Yang. Towards the development of a parameter-free bat algorithm . In: FISTER, Iztok (Ed.), BRODNIK, Andrej (Ed.). StuCoSReC : proceedings of the 2015 2nd Student Computer Science Research Conference. Koper: University of Primorska, 2015, pp. 31-34."""
 
-	@staticmethod
-	def typeParameters():
-		r"""Return dict with where key of dict represents parameter name and values represent checking functions for selected parameter.
-
-		Returns:
-			Dict[str, Callable]:
-				* A (Callable[[Union[float, int]], bool]): Loudness.
-				* r (Callable[[Union[float, int]], bool]): Pulse rate.
-				* Qmin (Callable[[Union[float, int]], bool]): Minimum frequency.
-				* Qmax (Callable[[Union[float, int]], bool]): Maximum frequency.
-
-		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.typeParameters`
-		"""
-		d = Algorithm.typeParameters()
-		d.update({
-			'A': lambda x: isinstance(x, (float, int)) and x > 0,
-			'r': lambda x: isinstance(x, (float, int)) and x > 0,
-			'Qmin': lambda x: isinstance(x, (float, int)),
-			'Qmax': lambda x: isinstance(x, (float, int))
-		})
-		return d
-
-	def setParameters(self, NP=40, A=0.5, r=0.5, Qmin=0.0, Qmax=2.0, **ukwargs):
+	def setParameters(self, **ukwargs):
 		r"""Set the parameters of the algorithm.
 
 		Args:
 			A (Optional[float]): Loudness.
 			r (Optional[float]): Pulse rate.
-			Qmin (Optional[float]): Minimum frequency.
-			Qmax (Optional[float]): Maximum frequency.
-
 		See Also:
 			* :func:`NiaPy.algorithms.Algorithm.setParameters`
 		"""
-		Algorithm.setParameters(self, NP=NP, **ukwargs)
-		self.A, self.r, self.Qmin, self.Qmax = A, r, Qmin, Qmax
-
-	def getParameters(self):
-		r"""Get parameters of the algorithm.
-
-		Returns:
-			Dict[str, Any]
-		"""
-		d = Algorithm.getParameters(self)
-		d.update({
-			'A': self.A,
-			'r': self.r,
-			'Qmin': self.Qmin,
-			'Qmax': self.Qmax
-		})
-		return d
+		Algorithm.setParameters(self, NP=80, **ukwargs)
+		self.A, self.r = 0.9, 0.1
 
 	def initPopulation(self, task):
-		r"""Initialize the starting population.
+		r"""Initialize the initial population.
 
 		Parameters:
 			task (Task): Optimization task
@@ -143,7 +99,7 @@ class BatAlgorithm(Algorithm):
 		return task.repair(best + 0.001 * self.normal(0, 1, task.D))
 
 	def runIteration(self, task, Sol, Fitness, xb, fxb, S, Q, v, **dparams):
-		r"""Core function of Bat Algorithm.
+		r"""Core function of Parameter-free Bat Algorithm.
 
 		Parameters:
 			task (Task): Optimization task.
@@ -171,8 +127,9 @@ class BatAlgorithm(Algorithm):
 					* best (numpy.ndarray): Global best
 					* f_min (float): Global best fitness
 		"""
+		upper, lower = task.bcUpper(), task.bcLower()
 		for i in range(self.NP):
-			Q[i] = self.Qmin + (self.Qmax - self.Qmin) * self.uniform(0, 1)
+			Q[i] = ((upper[0] - lower[0]) / float(self.NP)) * self.normal(0, 1)
 			v[i] += (Sol[i] - xb) * Q[i]
 			if self.rand() > self.r: S[i] = self.localSearch(best=xb, task=task, i=i, Sol=Sol)
 			else: S[i] = task.repair(Sol[i] + v[i], rnd=self.Rand)
