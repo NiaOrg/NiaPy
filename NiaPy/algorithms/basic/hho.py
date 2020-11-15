@@ -13,7 +13,6 @@ logger.setLevel('INFO')
 __all__ = ['HarrisHawksOptimization']
 
 
-
 class HarrisHawksOptimization(Algorithm):
     r"""Implementation of Harris Hawks Optimization algorithm.
 
@@ -116,11 +115,11 @@ class HarrisHawksOptimization(Algorithm):
 
     def levy_function(self, dims, step=0.01, rnd=rand):
         r"""Calculate levy function.
-    
+
         Parameters:
                 dim (int): Number of dimensions
                 step (float): Step of the Levy function
-    
+
         Returns:
                 float: The Levy function evaluation
         """
