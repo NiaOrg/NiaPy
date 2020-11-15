@@ -13,23 +13,6 @@ logger.setLevel('INFO')
 __all__ = ['HarrisHawksOptimization']
 
 
-def levy_function(dims, step=0.01, rnd=rand):
-    r"""Calculate levy function.
-
-    Parameters:
-            dim (int): Number of dimensions
-            step (float): Step of the Levy function
-
-    Returns:
-            float: The Levy function evaluation
-    """
-    beta = 1.5
-    sigma = (gamma(1 + beta) * sin(pi * beta / 2) / (gamma((1 + beta / 2) * beta * 2.0 ** ((beta - 1) / 2)))) ** (1 / beta)
-    normal_1 = rnd.normal(0, sigma, size=dims)
-    normal_2 = rnd.normal(0, 1, size=dims)
-    result = step * normal_1 / (abs(normal_2) ** (1 / beta))
-    return result
-
 
 class HarrisHawksOptimization(Algorithm):
     r"""Implementation of Harris Hawks Optimization algorithm.
@@ -57,6 +40,9 @@ class HarrisHawksOptimization(Algorithm):
             * :class:`NiaPy.algorithms.Algorithm`
     """
     Name = ['HarrisHawksOptimization', 'HHO']
+
+    def __init__(self, **kwargs):
+        super(HarrisHawksOptimization, self).__init__(**kwargs)
 
     @staticmethod
     def algorithmInfo():
@@ -111,7 +97,7 @@ class HarrisHawksOptimization(Algorithm):
         })
         return d
 
-    def initPopulation(self, task):
+    def initPopulation(self, task, rnd=rand):
         r"""Initialize the starting population.
 
         Parameters:
@@ -127,6 +113,23 @@ class HarrisHawksOptimization(Algorithm):
         """
         Sol, Fitness, d = Algorithm.initPopulation(self, task)
         return Sol, Fitness, d
+
+    def levy_function(self, dims, step=0.01, rnd=rand):
+        r"""Calculate levy function.
+    
+        Parameters:
+                dim (int): Number of dimensions
+                step (float): Step of the Levy function
+    
+        Returns:
+                float: The Levy function evaluation
+        """
+        beta = 1.5
+        sigma = (gamma(1 + beta) * sin(pi * beta / 2) / (gamma((1 + beta / 2) * beta * 2.0 ** ((beta - 1) / 2)))) ** (1 / beta)
+        normal_1 = rnd.normal(0, sigma, size=dims)
+        normal_2 = rnd.normal(0, 1, size=dims)
+        result = step * normal_1 / (abs(normal_2) ** (1 / beta))
+        return result
 
     def runIteration(self, task, Sol, Fitness, xb, fxb, **dparams):
         r"""Core function of Harris Hawks Optimization.
@@ -146,25 +149,24 @@ class HarrisHawksOptimization(Algorithm):
                         3. New global best solution
                         4. New global best fitness/objective value
         """
-        rnd = self.Rand
         # Decreasing energy factor
         decreasing_energy_factor = 2 * (1 - task.iters() / task.nGEN)
         mean_sol = mean(Sol)
         # Update population
         for i in range(self.NP):
-            jumping_energy = rnd.uniform(0, 2)
-            decreasing_energy_random = rnd.uniform(-1, 1)
+            jumping_energy = self.Rand.uniform(0, 2)
+            decreasing_energy_random = self.Rand.uniform(-1, 1)
             escaping_energy = decreasing_energy_factor * decreasing_energy_random
             escaping_energy_abs = abs(escaping_energy)
-            random_number = rnd.rand()
+            random_number = self.Rand.rand()
             if escaping_energy >= 1 and random_number >= 0.5:
                 # 0. Exploration: Random tall tree
-                rhi = rnd.randint(0, self.NP)
+                rhi = self.Rand.randint(0, self.NP)
                 random_agent = Sol[rhi]
-                Sol[i] = random_agent - rnd.rand() * abs(random_agent - 2 * rnd.rand() * Sol[i])
+                Sol[i] = random_agent - self.Rand.rand() * abs(random_agent - 2 * self.Rand.rand() * Sol[i])
             elif escaping_energy_abs >= 1 and random_number < 0.5:
                 # 1. Exploration: Family members mean
-                Sol[i] = (xb - mean_sol) - rnd.rand() * rnd.uniform(task.Lower, task.Upper)
+                Sol[i] = (xb - mean_sol) - self.Rand.rand() * self.Rand.uniform(task.Lower, task.Upper)
             elif escaping_energy_abs >= 0.5 and random_number >= 0.5:
                 # 2. Exploitation: Soft besiege
                 Sol[i] = \
@@ -179,24 +181,24 @@ class HarrisHawksOptimization(Algorithm):
                     abs(xb - Sol[i])
             elif escaping_energy_abs >= 0.5 and random_number < 0.5:
                 # 4. Exploitation: Soft besiege with pprogressive rapid dives
-                cand1 = task.repair(xb - escaping_energy * abs(jumping_energy * xb - Sol[i]), rnd=rand)
-                random_vector = rnd.rand(task.D)
-                cand2 = task.repair(cand1 + random_vector * levy_function(task.D, self.levy, rnd=rand), rnd=rand)
+                cand1 = task.repair(xb - escaping_energy * abs(jumping_energy * xb - Sol[i]), rnd=self.Rand)
+                random_vector = self.Rand.rand(task.D)
+                cand2 = task.repair(cand1 + random_vector * self.levy_function(task.D, self.levy, rnd=self.Rand), rnd=self.Rand)
                 if task.eval(cand1) < Fitness[i]:
                     Sol[i] = cand1
                 elif task.eval(cand2) < Fitness[i]:
                     Sol[i] = cand2
             elif escaping_energy_abs < 0.5 and random_number < 0.5:
                 # 5. Exploitation: Hard besiege with progressive rapid dives
-                cand1 = task.repair(xb - escaping_energy * abs(jumping_energy * xb - mean_sol), rnd=rand)
-                random_vector = rnd.rand(task.D)
-                cand2 = task.repair(cand1 + random_vector * levy_function(task.D, self.levy, rnd=rand), rnd=rand)
+                cand1 = task.repair(xb - escaping_energy * abs(jumping_energy * xb - mean_sol), rnd=self.Rand)
+                random_vector = self.Rand.rand(task.D)
+                cand2 = task.repair(cand1 + random_vector * self.levy_function(task.D, self.levy, rnd=self.Rand), rnd=self.Rand)
                 if task.eval(cand1) < Fitness[i]:
                     Sol[i] = cand1
                 elif task.eval(cand2) < Fitness[i]:
                     Sol[i] = cand2
             # Repair agent (from population) values
-            Sol[i] = task.repair(Sol[i], rnd=rand)
+            Sol[i] = task.repair(Sol[i], rnd=self.Rand)
             # Eval population
             Fitness[i] = task.eval(Sol[i])
         # Get best of population
