@@ -1,6 +1,5 @@
 """Implementation of basic nature-inspired algorithms."""
 
-from NiaPy.algorithms.basic.hho import HarrisHawksOptimization
 from NiaPy.algorithms.basic.ba import BatAlgorithm
 from NiaPy.algorithms.basic.fa import FireflyAlgorithm
 from NiaPy.algorithms.basic.de import DifferentialEvolution, MultiStrategyDifferentialEvolution, DynNpDifferentialEvolution, AgingNpDifferentialEvolution, DynNpMultiStrategyDifferentialEvolution, AgingNpMultiMutationDifferentialEvolution, CrowdingDifferentialEvolution, multiMutations
@@ -26,8 +25,8 @@ from NiaPy.algorithms.basic.cro import CoralReefsOptimization
 from NiaPy.algorithms.basic.foa import ForestOptimizationAlgorithm
 from NiaPy.algorithms.basic.mbo import MonarchButterflyOptimization
 from NiaPy.algorithms.basic.bea import BeesAlgorithm
+from NiaPy.algorithms.basic.hho import HarrisHawksOptimization
 __all__ = [
-    'HarrisHawksOptimization',
     'BatAlgorithm',
     'FireflyAlgorithm',
     'DifferentialEvolution',
@@ -84,5 +83,6 @@ __all__ = [
     'MutatedCenterParticleSwarmOptimization',
     'OppositionVelocityClampingParticleSwarmOptimization',
     'ComprehensiveLearningParticleSwarmOptimizer',
-    'CenterParticleSwarmOptimization'
+    'CenterParticleSwarmOptimization',
+    'HarrisHawksOptimization'
 ]
