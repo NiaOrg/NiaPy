@@ -45,6 +45,8 @@ def limit_repair(x, Lower, Upper, **kwargs):
 
     """
 
+    # TODO: Add one-liner np.clip approach
+
     ir = where(x < Lower)
     x[ir] = Lower[ir]
     ir = where(x > Upper)
