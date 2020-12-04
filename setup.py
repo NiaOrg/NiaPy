@@ -93,11 +93,11 @@ setuptools.setup(
     ],
     install_requires=[
         'numpy >= 1.16.2',
-        'scipy >= 1.2.0',
+        'scipy >= 1.2.1',
         'matplotlib >= 2.2.4',
         'pandas >= 0.24.2',
-        'openpyxl == 3.0.3',
-        'xlwt == 1.3.0',
+        'openpyxl >= 3.0.3',
+        'xlwt >= 1.3.0',
         'enum34 >= 1.1.6',
         'future >= 0.18.2'
     ]
