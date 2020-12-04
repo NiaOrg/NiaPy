@@ -1,6 +1,71 @@
 Changelog
 =========
 
+`2.0.0rc12 <https://github.com/NiaOrg/NiaPy/tree/2.0.0rc12>`__ (2020-12-04)
+---------------------------------------------------------------------------
+
+`Full
+Changelog <https://github.com/NiaOrg/NiaPy/compare/2.0.0rc11...2.0.0rc12>`__
+
+**Fixed bugs:**
+
+-  Fixing issues related to tests at infinity benchmark and NPAging DE.
+   `#267 <https://github.com/NiaOrg/NiaPy/pull/267>`__
+   (`sisco0 <https://github.com/sisco0>`__)
+-  Fix build description
+   `#261 <https://github.com/NiaOrg/NiaPy/pull/261>`__
+   (`GregaVrbancic <https://github.com/GregaVrbancic>`__)
+
+**Closed issues:**
+
+-  Fedora rpm build \| two tests are failing
+   `#252 <https://github.com/NiaOrg/NiaPy/issues/252>`__
+
+**Merged pull requests:**
+
+-  Harris Hawks Optimization integration
+   `#280 <https://github.com/NiaOrg/NiaPy/pull/280>`__
+   (`sisco0 <https://github.com/sisco0>`__)
+-  Fixed some LaTeX formulas
+   `#279 <https://github.com/NiaOrg/NiaPy/pull/279>`__
+   (`sisco0 <https://github.com/sisco0>`__)
+-  Implementation of PLBA algorithm
+   `#278 <https://github.com/NiaOrg/NiaPy/pull/278>`__
+   (`firefly-cpp <https://github.com/firefly-cpp>`__)
+-  several TODOs removed
+   `#277 <https://github.com/NiaOrg/NiaPy/pull/277>`__
+   (`firefly-cpp <https://github.com/firefly-cpp>`__)
+-  tests for RS algorithm
+   `#276 <https://github.com/NiaOrg/NiaPy/pull/276>`__
+   (`firefly-cpp <https://github.com/firefly-cpp>`__)
+-  corrections in table
+   `#275 <https://github.com/NiaOrg/NiaPy/pull/275>`__
+   (`firefly-cpp <https://github.com/firefly-cpp>`__)
+-  Exception handling & Random Search implementation
+   `#274 <https://github.com/NiaOrg/NiaPy/pull/274>`__
+   (`firefly-cpp <https://github.com/firefly-cpp>`__)
+-  Table of implemented algorithms added
+   `#273 <https://github.com/NiaOrg/NiaPy/pull/273>`__
+   (`firefly-cpp <https://github.com/firefly-cpp>`__)
+-  removing TabuSearch - immature version
+   `#272 <https://github.com/NiaOrg/NiaPy/pull/272>`__
+   (`firefly-cpp <https://github.com/firefly-cpp>`__)
+-  Update README.md `#271 <https://github.com/NiaOrg/NiaPy/pull/271>`__
+   (`GregaVrbancic <https://github.com/GregaVrbancic>`__)
+-  LaTeX codes `#270 <https://github.com/NiaOrg/NiaPy/pull/270>`__
+   (`sisco0 <https://github.com/sisco0>`__)
+-  Update issue templates
+   `#269 <https://github.com/NiaOrg/NiaPy/pull/269>`__
+   (`GregaVrbancic <https://github.com/GregaVrbancic>`__)
+-  docs: add sisco0 as a contributor
+   `#268 <https://github.com/NiaOrg/NiaPy/pull/268>`__
+   (`allcontributors[bot] <https://github.com/apps/allcontributors>`__)
+-  reference added, small fixes
+   `#265 <https://github.com/NiaOrg/NiaPy/pull/265>`__
+   (`lucijabrezocnik <https://github.com/lucijabrezocnik>`__)
+-  Fixes `#262 <https://github.com/NiaOrg/NiaPy/pull/262>`__
+   (`lucijabrezocnik <https://github.com/lucijabrezocnik>`__)
+
 `2.0.0rc11 <https://github.com/NiaOrg/NiaPy/tree/2.0.0rc11>`__ (2020-07-19)
 ---------------------------------------------------------------------------
 
