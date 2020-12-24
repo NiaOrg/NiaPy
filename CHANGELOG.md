@@ -1,5 +1,36 @@
 # Changelog
 
+## [2.0.0rc12](https://github.com/NiaOrg/NiaPy/tree/2.0.0rc12) (2020-12-04)
+
+[Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2.0.0rc11...2.0.0rc12)
+
+**Fixed bugs:**
+
+- Fixing issues related to tests at infinity benchmark and NPAging DE. [\#267](https://github.com/NiaOrg/NiaPy/pull/267) ([sisco0](https://github.com/sisco0))
+- Fix build description [\#261](https://github.com/NiaOrg/NiaPy/pull/261) ([GregaVrbancic](https://github.com/GregaVrbancic))
+
+**Closed issues:**
+
+- Fedora rpm build | two tests are failing [\#252](https://github.com/NiaOrg/NiaPy/issues/252)
+
+**Merged pull requests:**
+
+- Harris Hawks Optimization integration [\#280](https://github.com/NiaOrg/NiaPy/pull/280) ([sisco0](https://github.com/sisco0))
+- Fixed some LaTeX formulas [\#279](https://github.com/NiaOrg/NiaPy/pull/279) ([sisco0](https://github.com/sisco0))
+- Implementation of PLBA algorithm [\#278](https://github.com/NiaOrg/NiaPy/pull/278) ([firefly-cpp](https://github.com/firefly-cpp))
+- several TODOs removed [\#277](https://github.com/NiaOrg/NiaPy/pull/277) ([firefly-cpp](https://github.com/firefly-cpp))
+- tests for RS algorithm [\#276](https://github.com/NiaOrg/NiaPy/pull/276) ([firefly-cpp](https://github.com/firefly-cpp))
+- corrections in table [\#275](https://github.com/NiaOrg/NiaPy/pull/275) ([firefly-cpp](https://github.com/firefly-cpp))
+- Exception handling & Random Search implementation [\#274](https://github.com/NiaOrg/NiaPy/pull/274) ([firefly-cpp](https://github.com/firefly-cpp))
+- Table of implemented algorithms added [\#273](https://github.com/NiaOrg/NiaPy/pull/273) ([firefly-cpp](https://github.com/firefly-cpp))
+- removing TabuSearch - immature version [\#272](https://github.com/NiaOrg/NiaPy/pull/272) ([firefly-cpp](https://github.com/firefly-cpp))
+- Update README.md [\#271](https://github.com/NiaOrg/NiaPy/pull/271) ([GregaVrbancic](https://github.com/GregaVrbancic))
+- LaTeX codes [\#270](https://github.com/NiaOrg/NiaPy/pull/270) ([sisco0](https://github.com/sisco0))
+- Update issue templates [\#269](https://github.com/NiaOrg/NiaPy/pull/269) ([GregaVrbancic](https://github.com/GregaVrbancic))
+- docs: add sisco0 as a contributor [\#268](https://github.com/NiaOrg/NiaPy/pull/268) ([allcontributors[bot]](https://github.com/apps/allcontributors))
+- reference added, small fixes [\#265](https://github.com/NiaOrg/NiaPy/pull/265) ([lucijabrezocnik](https://github.com/lucijabrezocnik))
+- Fixes [\#262](https://github.com/NiaOrg/NiaPy/pull/262) ([lucijabrezocnik](https://github.com/lucijabrezocnik))
+
 ## [2.0.0rc11](https://github.com/NiaOrg/NiaPy/tree/2.0.0rc11) (2020-07-19)
 
 [Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2.0.0rc10...2.0.0rc11)
