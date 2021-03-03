@@ -328,7 +328,7 @@ class AlgorithmTestCase(TestCase):
 			self.assertAlmostEqual(task1.x_f, x[1], msg='While running the algorithm, algorithm got better individual with fitness: %s' % task1.x_f)
 			self.assertTrue(array_equal(x[0], y[0]), 'Results can not be reproduced, check usages of random number generator')
 			self.assertAlmostEqual(x[1], y[1], msg='Results can not be reproduced or bad function value')
-			self.assertTrue(self.nFES >= task1.Evals), self.assertEqual(task1.Evals, task2.Evals)
-			self.assertTrue(self.nGEN >= task1.Iters), self.assertEqual(task1.Iters, task2.Iters)
+			self.assertTrue(self.nFES if nFES is None else nFES >= task1.Evals), self.assertEqual(task1.Evals, task2.Evals)
+			self.assertTrue(self.nGEN if nGEN is None else nGEN >= task1.Iters), self.assertEqual(task1.Iters, task2.Iters)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
