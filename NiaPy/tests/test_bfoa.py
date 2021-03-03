@@ -31,7 +31,7 @@ class BFOATestCase(AlgorithmTestCase):
 		self.assertFalse(parameters['n_elimination'](10.0))
 		self.assertFalse(parameters['n_elimination'](-10))
 
-		self.assertTrue(parameters['prob elimination'](0.25))
+		self.assertTrue(parameters['prob_elimination'](0.25))
 		self.assertFalse(parameters['prob_elimination'](1))
 		self.assertFalse(parameters['prob_elimination'](-0.25))
 		self.assertFalse(parameters['prob_elimination'](1.25))
