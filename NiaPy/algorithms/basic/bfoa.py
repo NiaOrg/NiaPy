@@ -299,11 +299,6 @@ class BacterialForagingOptimizationAlgorithm(Algorithm):
 						xb = pop[i].x.copy()
 						fxb = pop[i].f
 
-		if self.i == self.n_elimination - 1 and self.j == self.n_reproduction - 1 and self.k == self.n_chemotactic - 1:  # if last iteration, reset counters
-			self.i = 0
-			self.j = 0
-			self.k = 0
-
 		return pop, np.asarray([c.f for c in pop]), xb, fxb, {}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
