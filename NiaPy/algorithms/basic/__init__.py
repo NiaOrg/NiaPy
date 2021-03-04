@@ -26,6 +26,7 @@ from NiaPy.algorithms.basic.foa import ForestOptimizationAlgorithm
 from NiaPy.algorithms.basic.mbo import MonarchButterflyOptimization
 from NiaPy.algorithms.basic.bea import BeesAlgorithm
 from NiaPy.algorithms.basic.hho import HarrisHawksOptimization
+from NiaPy.algorithms.basic.bfoa import BacterialForagingOptimizationAlgorithm
 __all__ = [
     'BatAlgorithm',
     'FireflyAlgorithm',
@@ -84,5 +85,6 @@ __all__ = [
     'OppositionVelocityClampingParticleSwarmOptimization',
     'ComprehensiveLearningParticleSwarmOptimizer',
     'CenterParticleSwarmOptimization',
-    'HarrisHawksOptimization'
+    'HarrisHawksOptimization',
+    'BacterialForagingOptimizationAlgorithm'
 ]

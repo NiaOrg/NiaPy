@@ -81,7 +81,8 @@ class AlgorithmUtility:
             "MultipleTrajectorySearch": other_algorithms.MultipleTrajectorySearch,
             "MultipleTrajectorySearchV1": other_algorithms.MultipleTrajectorySearchV1,
             "AnarchicSocietyOptimization": other_algorithms.AnarchicSocietyOptimization,
-            "RandomSearch": other_algorithms.RandomSearch
+            "RandomSearch": other_algorithms.RandomSearch,
+            "BacterialForagingOptimizationAlgorithm": basic_algorithms.BacterialForagingOptimizationAlgorithm
         }
 
     def get_algorithm(self, algorithm):
