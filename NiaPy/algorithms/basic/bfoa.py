@@ -2,59 +2,14 @@
 import logging
 
 import numpy as np
-from numpy import random as rand
 
-from NiaPy.algorithms.algorithm import Algorithm, Individual, defaultIndividualInit
+from NiaPy.algorithms.algorithm import Algorithm
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.basic')
 logger.setLevel('INFO')
 
 __all__ = ['BacterialForagingOptimizationAlgorithm']
-
-
-class Cell(Individual):
-	r"""Representation of a single bacterium.
-
-	Date:
-		2021
-
-	Author:
-		Žiga Stupan
-
-	License:
-		MIT
-
-	Attributes:
-		x (numpy.ndarray): Coordinates of cell.
-		f (float): Function/fitness value of cell.
-		cost (float): Cost of cell i.e. the sum of the fitness value and cell to cell ineraction J_cc.
-		health (float): Health of cell i.e. the sum of nutrients (cost) the cell got over it's lifetime.
-	"""
-
-	def __init__(self, x=None, task=None, e=True, rnd=rand, **kwargs):
-		r"""Initialize new cell.
-
-		Args:
-			x (Optional[numpy.ndarray]): Coordinates of cell, if None, a random solution will be generated in the search space defined in task.
-			task (Optional[Task]): Optimization task.
-			e (bool): True if cell is to be evaluated at initialization.
-			rand (Optional[mtrand.RandomState]): Random generator.
-		"""
-		super().__init__(x=x, task=task, e=e, rnd=rnd, **kwargs)
-		self.cost = 0.0  # J(i, j, k, l) = J(i, j, k, l) + J_cc
-		self.health = 0.0
-
-	def __lt__(self, other):
-		r"""Less than operator.
-
-		Args:
-			other (Cell): Cell to compare to
-
-		Returns:
-			bool: True if self.health < other.health
-		"""
-		return self.health < other.health
 
 
 class BacterialForagingOptimizationAlgorithm(Algorithm):
@@ -156,7 +111,7 @@ class BacterialForagingOptimizationAlgorithm(Algorithm):
 			**kwargs (Dict[str, Any]): Additional arguments.
 		"""
 
-		super().setParameters(NP=NP, InitPopFunc=defaultIndividualInit, itype=Cell, **kwargs)
+		super().setParameters(NP=NP, **kwargs)
 		self.n_chemotactic = n_chemotactic
 		self.n_swim = n_swim
 		self.n_reproduction = n_reproduction
@@ -193,6 +148,16 @@ class BacterialForagingOptimizationAlgorithm(Algorithm):
 
 		return params
 
+	def initPopulation(self, task):
+		pop, fpop, d = super().initPopulation(task)
+
+		d.update({
+			'cost': np.zeros((self.NP,), dtype=np.float64),
+			'health': np.zeros((self.NP,), dtype=np.float64)
+		})
+
+		return pop, fpop, d
+
 	def interaction(self, cell, population):
 		r"""Compute cell to cell interaction J_cc.
 
@@ -208,7 +173,7 @@ class BacterialForagingOptimizationAlgorithm(Algorithm):
 		repel = 0.0
 
 		for c in population:
-			diff = np.sum(np.square(cell.x - c.x))
+			diff = np.sum(np.square(cell - c))
 			attract += -1.0 * self.d_attract * np.exp(-1.0 * self.w_attract * diff)
 			repel += self.h_repel * np.exp(-1.0 * self.w_repel * diff)
 		return attract + repel
@@ -245,33 +210,38 @@ class BacterialForagingOptimizationAlgorithm(Algorithm):
 				5. Additional arguments.
 		"""
 
+		cost = dparams.pop('cost')
+		health = dparams.pop('health')
+
 		# Chemotaxis
 
 		for i in range(len(pop)):
-			pop[i].cost = pop[i].f + self.interaction(pop[i], pop)
-			j_last = pop[i].cost
+			cost[i] = fpop[i] + self.interaction(pop[i], pop)
+			j_last = cost[i]
 			step_direction = self.random_direction(task.D)
-			pop[i].x = pop[i].x + self.step_size * step_direction
-			pop[i].evaluate(task)
+			pop[i] = task.repair(pop[i] + self.step_size * step_direction)
+			fpop[i] = task.eval(pop[i])
 
-			if pop[i].f < fxb:
-				xb = pop[i].x.copy()
-				fxb = pop[i].f
+			if fpop[i] < fxb:
+				xb = pop[i].copy()
+				fxb = fpop[i]
 
-			pop[i].cost = pop[i].f + self.interaction(pop[i], pop)
-			pop[i].health += pop[i].cost
+			cost[i] = fpop[i] + self.interaction(pop[i], pop)
+			health[i] += cost[i]
 
 			for _ in range(self.n_swim):
-				if pop[i].cost < j_last:
-					pop[i].x = pop[i].x + self.step_size * step_direction
-					pop[i].evaluate(task)
+				if cost[i] < j_last:
+					pop[i] = task.repair(pop[i] + self.step_size * step_direction)
+					fpop[i] = task.eval(pop[i])
 
-					if pop[i].f < fxb:
-						xb = pop[i].x.copy()
-						fxb = pop[i].f
+					if fpop[i] < fxb:
+						xb = pop[i].copy()
+						fxb = fpop[i]
 
-					pop[i].cost = pop[i].f + self.interaction(pop[i], pop)
-					pop[i].health += pop[i].cost
+					cost[i] = fpop[i] + self.interaction(pop[i], pop)
+					health[i] += cost[i]
+				else:
+					break
 
 		self.k += 1
 
@@ -281,10 +251,16 @@ class BacterialForagingOptimizationAlgorithm(Algorithm):
 			self.j += 1
 
 			# Reproduction
-			pop = np.sort(pop)  # sort by health
-			pop = np.tile(pop[:self.NP // 2], 2)  # keep half of the healthiest cells and duplicate them
-			for i in range(len(pop)):
-				pop[i].health = 0.0
+			sorted_ind = np.argsort(health)
+			pop = pop[sorted_ind]
+			fpop = fpop[sorted_ind]
+			cost = cost[sorted_ind]
+
+			pop = np.tile(pop[:self.NP // 2], (2, 1))  # keep half of the healthiest cells and duplicate them
+			fpop = np.tile(fpop[:self.NP // 2], 2)
+			cost = np.tile(cost[:self.NP // 2], 2)
+
+			health = np.zeros(len(pop), dtype=np.float64)
 
 		if self.j >= self.n_reproduction:
 			self.j = 0
@@ -292,13 +268,13 @@ class BacterialForagingOptimizationAlgorithm(Algorithm):
 
 			# Elimination and dispersal
 			for i in range(len(pop)):
-				if self.rand() <= self.prob_elimination:  # Eliminate i-th bacterium with the probability 'prob_elimination' and replace it with a new one at a random location
-					pop[i].generateSolution(task, self.Rand)
-					pop[i].evaluate(task)
-					if pop[i].f < fxb:
-						xb = pop[i].x.copy()
-						fxb = pop[i].f
+				if self.rand() < self.prob_elimination:  # Eliminate i-th bacterium with the probability 'prob_elimination' and replace it with a new one at a random location
+					pop[i] = task.Lower() + self.rand(task.D) * task.bRange()
+					fpop[i] = task.eval(pop[i])
+					if fpop[i] < fxb:
+						xb = pop[i].copy()
+						fxb = fpop[i]
 
-		return pop, np.asarray([c.f for c in pop]), xb, fxb, {}
+		return pop, fpop, xb, fxb, {'cost': cost, 'health': health}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
