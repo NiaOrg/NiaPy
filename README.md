@@ -47,16 +47,16 @@ Our mission is to build a collection of nature-inspired algorithms and create a 
 
 Install NiaPy with pip:
 
-## Latest version (2.0.0rc12)
+## Latest version (2.0.0rc13)
 
 ```sh
-$ pip install NiaPy==2.0.0rc12
+$ pip install NiaPy==2.0.0rc13
 ```
 
 To install NiaPy with conda, use:
 
 ```sh
-$ conda install -c niaorg niapy=2.0.0rc12
+$ conda install -c niaorg niapy=2.0.0rc13
 ```
 
 ## Latest stable version
