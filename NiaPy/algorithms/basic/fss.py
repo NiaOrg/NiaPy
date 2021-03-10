@@ -1,5 +1,5 @@
 # encoding=utf8
-from numpy import nan, asarray, zeros, float, full
+from numpy import nan, asarray, zeros, full
 
 from NiaPy.util.utility import objects2array
 from NiaPy.algorithms.algorithm import Algorithm, Individual
