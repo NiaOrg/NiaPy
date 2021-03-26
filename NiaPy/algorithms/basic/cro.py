@@ -284,7 +284,7 @@ class CoralReefsOptimization(Algorithm):
 		xb, fxb = self.getBest(Reefn_s, Reefn_s_f, xb, fxb)
 		Reefn, Reefn_f, xb, fxb = self.setting(Reef, Reef_f, append(Reefn_s, Reefn_b, 0), append(Reefn_s_f, Reffn_b_f, 0), xb, fxb, task)
 		Reef, Reef_f, xb, fxb = self.asexualReprodution(Reefn, Reefn_f, xb, fxb, task)
-		if task.Iters % self.k == 0: Reef, Reef_f = self.depredation(Reef, Reef_f)
+		if (task.Iters + 1) % self.k == 0: Reef, Reef_f = self.depredation(Reef, Reef_f)
 		return Reef, Reef_f, xb, fxb, {}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

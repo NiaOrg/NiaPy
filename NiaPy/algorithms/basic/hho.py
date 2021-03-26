@@ -149,7 +149,7 @@ class HarrisHawksOptimization(Algorithm):
 								4. New global best fitness/objective value
 		"""
 		# Decreasing energy factor
-		decreasing_energy_factor = 2 * (1 - task.iters() / task.nGEN)
+		decreasing_energy_factor = 2 * (1 - (task.Iters + 1) / task.nGEN)
 		mean_sol = mean(Sol)
 		# Update population
 		for i in range(self.NP):

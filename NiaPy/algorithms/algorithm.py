@@ -291,7 +291,6 @@ class Algorithm:
 		"""
 		pop, fpop, dparams = self.initPopulation(task)
 		xb, fxb = self.getBest(pop, fpop)
-		yield xb, fxb
 		while True:
 			pop, fpop, xb, fxb, dparams = self.runIteration(task, pop, fpop, xb, fxb, **dparams)
 			yield xb, fxb
