@@ -114,7 +114,7 @@ class RandomSearch(Algorithm):
 			4. New global best solutions fitness/objective value
 			5. Additional arguments
 		"""
-		current_candidate = task.Evals if task.Evals else (task.Iters + 1)
+		current_candidate = task.Evals if task.Evals else task.Iters
 		x = self.candidates[current_candidate]
 		xfit = task.eval(x)
 		xb, fxb = self.getBest(x, xfit, xb, fxb)
