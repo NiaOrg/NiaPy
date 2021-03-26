@@ -84,7 +84,7 @@ class BATestCase(TestCase):
         algo = BatAlgorithm(NP=10)
         algo.runTask(task)
         evals = task.evals()
-        self.assertEqual(10000, evals)
+        self.assertEqual(10010, evals)
 
 class FATestCase(TestCase):
 
