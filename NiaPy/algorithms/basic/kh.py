@@ -233,7 +233,7 @@ class KrillHerd(Algorithm):
 		Ni = self.getNeighbours(i, self.sensRange(i, KH), KH)
 		Nx, Nf, f_b, f_w = KH[Ni], KH_f[Ni], KH_f[ikh_b], KH_f[ikh_w]
 		alpha_l = sum(asarray([self.funK(KH_f[i], j, f_b, f_w) for j in Nf]) * asarray([self.funX(KH[i], j) for j in Nx]).T)
-		alpha_t = 2 * (1 + self.rand() * task.Iters / task.nGEN)
+		alpha_t = 2 * (1 + self.rand() * (task.Iters + 1) / task.nGEN)
 		return self.N_max * (alpha_l + alpha_t) + W * n
 
 	def induceForagingMotion(self, i, x, x_f, f, W, KH, KH_f, ikh_b, ikh_w, task):
@@ -254,7 +254,7 @@ class KrillHerd(Algorithm):
 		Returns:
 			numpy.ndarray: Moved krill.
 		"""
-		beta_f = 2 * (1 - task.Iters / task.nGEN) * self.funK(KH_f[i], x_f, KH_f[ikh_b], KH_f[ikh_w]) * self.funX(KH[i], x) if KH_f[ikh_b] < KH_f[i] else 0
+		beta_f = 2 * (1 - (task.Iters + 1) / task.nGEN) * self.funK(KH_f[i], x_f, KH_f[ikh_b], KH_f[ikh_w]) * self.funX(KH[i], x) if KH_f[ikh_b] < KH_f[i] else 0
 		beta_b = self.funK(KH_f[i], KH_f[ikh_b], KH_f[ikh_b], KH_f[ikh_w]) * self.funX(KH[i], KH[ikh_b])
 		return self.V_f * (beta_f + beta_b) + W * f
 
@@ -267,7 +267,7 @@ class KrillHerd(Algorithm):
 		Returns:
 			numpy.ndarray:
 		"""
-		return self.D_max * (1 - task.Iters / task.nGEN) * self.uniform(-1, 1, task.D)
+		return self.D_max * (1 - (task.Iters + 1) / task.nGEN) * self.uniform(-1, 1, task.D)
 
 	def deltaT(self, task):
 		r"""Get new delta for all dimensions.
@@ -755,7 +755,7 @@ class KrillHerdV11(KrillHerd):
 		"""
 		Rgb, RR, Kw_Kgb = KH[ib] - KH[i], KH - KH[i], KH_f[iw] - KH_f[ib]
 		R = sqrt(sum(RR * RR))
-		alpha_b = -2 * (1 + self.rand() * task.Iters / task.nGEN) * (KH_f[ib]) / Kw_Kgb / sqrt(sum(Rgb * Rgb)) * Rgb if KH_f[ib] < KH_f[i] else 0
+		alpha_b = -2 * (1 + self.rand() * (task.Iters + 1) / task.nGEN) * (KH_f[ib]) / Kw_Kgb / sqrt(sum(Rgb * Rgb)) * Rgb if KH_f[ib] < KH_f[i] else 0
 		alpah_n, nn, ds = 0.0, 0, mean(R) / 5
 		for n in range(self.NP):
 			if R < ds and n != i:
@@ -783,7 +783,7 @@ class KrillHerdV11(KrillHerd):
 			numpy.ndarray: --
 		"""
 		Rf, Kw_Kgb = x_food - KH, KH_wf - KH_bf
-		beta_f = -2 * (1 - task.Iters / task.nGEN) * (x_food_f - KH_f) / Kw_Kgb / sqrt(sum(Rf * Rf)) * Rf if x_food_f < KH_f else 0
+		beta_f = -2 * (1 - (task.Iters + 1) / task.nGEN) * (x_food_f - KH_f) / Kw_Kgb / sqrt(sum(Rf * Rf)) * Rf if x_food_f < KH_f else 0
 		Rib = KHo - KH
 		beta_b = -(KHo_f - KH_f) / Kw_Kgb / sqrt(sum(Rib * Rib)) * Rib if KHo_f < KH_f else 0
 		return W_f * F + self.V_f * (beta_b + beta_f)
@@ -850,7 +850,7 @@ class KrillHerdV11(KrillHerd):
 				3. Additional arguments:
 
 		"""
-		w = full(task.D, 0.1 + 0.8 * (1 - task.Iters / task.nGEN))
+		w = full(task.D, 0.1 + 0.8 * (1 - (task.Iters + 1) / task.nGEN))
 		ib, iw = argmin(KH_f), argmax(KH_f)
 		x_food, x_food_f = self.getFoodLocation(KH, KH_f, task)
 		xb, fxb = self.getBest(x_food, x_food_f, xb, fxb)
