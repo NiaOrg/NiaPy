@@ -1,4 +1,4 @@
 for file in ./*.py
 do
-  python "$file"
+  python3 "$file"
 done
