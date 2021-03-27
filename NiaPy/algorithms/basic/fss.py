@@ -1,5 +1,5 @@
 # encoding=utf8
-from numpy import nan, asarray, zeros, float, full
+from numpy import nan, asarray, zeros, full
 
 from NiaPy.util.utility import objects2array
 from NiaPy.algorithms.algorithm import Algorithm, Individual
@@ -228,8 +228,8 @@ class FishSchoolSearch(Algorithm):
 		Returns:
 			Tuple[numpy.ndarray, numpy.ndarray]: TODO.
 		"""
-		curr_step_individual = full(task.D, self.step_individual_init - task.Iters * float(self.step_individual_init - self.step_individual_final) / task.nGEN)
-		curr_step_volitive = full(task.D, self.step_volitive_init - task.Iters * float(self.step_volitive_init - self.step_volitive_final) / task.nGEN)
+		curr_step_individual = full(task.D, self.step_individual_init - (task.Iters + 1) * float(self.step_individual_init - self.step_individual_final) / task.nGEN)
+		curr_step_volitive = full(task.D, self.step_volitive_init - (task.Iters + 1) * float(self.step_volitive_init - self.step_volitive_final) / task.nGEN)
 		return curr_step_individual, curr_step_volitive
 
 	def feeding(self, school):

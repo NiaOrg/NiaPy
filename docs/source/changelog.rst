@@ -1,6 +1,32 @@
 Changelog
 =========
 
+`2.0.0rc13 <https://github.com/NiaOrg/NiaPy/tree/2.0.0rc13>`__ (2021-03-10)
+---------------------------------------------------------------------------
+
+`Full
+Changelog <https://github.com/NiaOrg/NiaPy/compare/2.0.0rc12...2.0.0rc13>`__
+
+**Closed issues:**
+
+-  BFOA implementation
+   `#288 <https://github.com/NiaOrg/NiaPy/issues/288>`__
+-  BAT `#286 <https://github.com/NiaOrg/NiaPy/issues/286>`__
+-  BAT Optimization Algorithm
+   `#285 <https://github.com/NiaOrg/NiaPy/issues/285>`__
+-  NiaPy conda dependecy problem
+   `#284 <https://github.com/NiaOrg/NiaPy/issues/284>`__
+-  xlwt is archived: consider dropping xlwt requirement?
+   `#283 <https://github.com/NiaOrg/NiaPy/issues/283>`__
+-  . `#263 <https://github.com/NiaOrg/NiaPy/issues/263>`__
+
+**Merged pull requests:**
+
+-  BFOA Fix `#289 <https://github.com/NiaOrg/NiaPy/pull/289>`__
+   (`zStupan <https://github.com/zStupan>`__)
+-  BFOA `#287 <https://github.com/NiaOrg/NiaPy/pull/287>`__
+   (`zStupan <https://github.com/zStupan>`__)
+
 `2.0.0rc12 <https://github.com/NiaOrg/NiaPy/tree/2.0.0rc12>`__ (2020-12-04)
 ---------------------------------------------------------------------------
 

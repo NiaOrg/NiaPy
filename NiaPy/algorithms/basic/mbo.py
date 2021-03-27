@@ -258,7 +258,7 @@ class MonarchButterflyOptimization(Algorithm):
 		tmpElite = copy(Butterflies[:self.keep])
 		max_t = task.nGEN if isinf(task.nGEN) is False else task.nFES / self.NP
 		Butterflies = apply_along_axis(self.repair, 1, self.migrationOperator(task.D, self.NP1, self.NP2, Butterflies), task.Lower, task.Upper)
-		Butterflies = apply_along_axis(self.repair, 1, self.adjustingOperator(task.Iters, max_t, task.D, self.NP1, self.NP2, Butterflies, tmp_best), task.Lower, task.Upper)
+		Butterflies = apply_along_axis(self.repair, 1, self.adjustingOperator((task.Iters + 1), max_t, task.D, self.NP1, self.NP2, Butterflies, tmp_best), task.Lower, task.Upper)
 		Fitness, Butterflies = self.evaluateAndSort(task, Butterflies)
 		tmp_best = Butterflies[0]
 		Butterflies[-self.keep:] = tmpElite

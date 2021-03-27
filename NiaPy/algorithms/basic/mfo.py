@@ -133,7 +133,7 @@ class MothFlameOptimizer(Algorithm):
 		indexes = argsort(moth_fitness)
 		sorted_population = moth_pos[indexes]
 		# Some parameters
-		flame_no, a = round(self.NP - task.Iters * ((self.NP - 1) / task.nGEN)), -1 + task.Iters * ((-1) / task.nGEN)
+		flame_no, a = round(self.NP - (task.Iters + 1) * ((self.NP - 1) / task.nGEN)), -1 + (task.Iters + 1) * ((-1) / task.nGEN)
 		for i in range(self.NP):
 			for j in range(task.D):
 				distance_to_flame, b, t = abs(sorted_population[i, j] - moth_pos[i, j]), 1, (a - 1) * self.rand() + 1

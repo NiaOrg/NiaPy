@@ -174,7 +174,7 @@ class EvolutionStrategy1p1(Algorithm):
 				5. Additional arguments:
 					* ki (int): Number of successful rho update.
 		"""
-		if task.Iters % self.k == 0: c.rho, ki = self.updateRho(c.rho, ki), 0
+		if (task.Iters + 1) % self.k == 0: c.rho, ki = self.updateRho(c.rho, ki), 0
 		cn = objects2array([task.repair(self.mutate(c.x, c.rho), self.Rand) for _i in range(self.mu)])
 		cn_f = asarray([task.eval(cn[i]) for i in range(len(cn))])
 		ib = argmin(cn_f)
@@ -383,7 +383,7 @@ class EvolutionStrategyMpL(EvolutionStrategy1p1):
 				5. Additional arguments:
 					* ki (int): Number of successful mutations.
 		"""
-		if task.Iters % self.k == 0: _, ki = self.updateRho(c, ki), 0
+		if (task.Iters + 1) % self.k == 0: _, ki = self.updateRho(c, ki), 0
 		cn = objects2array([IndividualES(x=self.mutateRand(c, task), task=task, rnd=self.Rand) for _ in range(self.lam)])
 		cn = append(cn, c)
 		cn = objects2array([cn[i] for i in argsort([i.f for i in cn])[:self.mu]])
@@ -515,7 +515,7 @@ def CovarianceMaatrixAdaptionEvolutionStrategyF(task, epsilon=1e-20, rnd=rand):
 		sigma *= exp(cs / ds * (norm(ps) / ENN - 1)) ** 0.3
 		ifix = where(sigma == inf)
 		if any(ifix): sigma[ifix] = sigma0
-		if norm(ps) / sqrt(1 - (1 - cs) ** (2 * (task.Iters + 1))) < hth: hs = 1
+		if norm(ps) / sqrt(1 - (1 - cs) ** (2 * ((task.Iters + 1) + 1))) < hth: hs = 1
 		else: hs = 0
 		delta = (1 - hs) * cc * (2 - cc)
 		pc = (1 - cc) * pc + hs * sqrt(cc * (2 - cc) * mueff) * M

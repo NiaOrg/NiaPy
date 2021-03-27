@@ -471,7 +471,7 @@ class OppositionVelocityClampingParticleSwarmOptimization(ParticleSwarmAlgorithm
 			popb[pb_inds], fpopb[pb_inds] = pop[pb_inds], fpop[pb_inds]
 			if fnb < fxb: xb, fxb = nb.copy(), fnb
 		else:
-			w = self.w_max - ((self.w_max - self.w_min) / task.nGEN) * task.Iters
+			w = self.w_max - ((self.w_max - self.w_min) / task.nGEN) * (task.Iters + 1)
 			for i in range(len(pop)):
 				V[i] = self.updateVelocity(V[i], pop[i], popb[i], xb, w, vMin, vMax, task)
 				pop[i] = task.repair(pop[i] + V[i], rnd=self.Rand)
@@ -1000,7 +1000,7 @@ class ComprehensiveLearningParticleSwarmOptimizer(ParticleSwarmAlgorithm):
 		See Also:
 			* :class:`NiaPy.algorithms.basic.ParticleSwarmAlgorithm.runIteration`
 		"""
-		w = self.w0 * (self.w0 - self.w1) * task.Iters / task.nGEN
+		w = self.w0 * (self.w0 - self.w1) * (task.Iters + 1) / task.nGEN
 		for i in range(len(pop)):
 			if flag[i] >= self.m:
 				V[i] = self.updateVelocity(V[i], pop[i], popb[i], xb, 1, vMin, vMax, task)

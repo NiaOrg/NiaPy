@@ -545,7 +545,7 @@ class DynNpDifferentialEvolution(DifferentialEvolution):
 		"""
 		Gr = task.nFES // (self.pmax * len(pop)) + self.rp
 		nNP = len(pop) // 2
-		if task.Iters == Gr and len(pop) > 3: pop = objects2array([pop[i] if pop[i].f < pop[i + nNP].f else pop[i + nNP] for i in range(nNP)])
+		if (task.Iters + 1) == Gr and len(pop) > 3: pop = objects2array([pop[i] if pop[i].f < pop[i + nNP].f else pop[i + nNP] for i in range(nNP)])
 		return pop, xb, fxb
 
 def proportional(Lt_min, Lt_max, mu, x_f, avg, **args):
@@ -756,7 +756,7 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 		Returns:
 			numpy.ndarray[Individual]: Increased population.
 		"""
-		deltapop = int(round(max(1, self.NP * self.deltaPopE(task.Iters))))
+		deltapop = int(round(max(1, self.NP * self.deltaPopE((task.Iters + 1)))))
 		return objects2array([self.itype(task=task, rnd=self.Rand, e=True) for _ in range(deltapop)])
 
 	def popDecrement(self, pop, task):
@@ -769,7 +769,7 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 		Returns:
 			numpy.ndarray[Individual]: Decreased population.
 		"""
-		deltapop = int(round(max(1, self.NP * self.deltaPopC(task.Iters))))
+		deltapop = int(round(max(1, self.NP * self.deltaPopC((task.Iters + 1)))))
 		if len(pop) - deltapop <= 0: return pop
 		ni = self.Rand.choice(len(pop), deltapop, replace=False)
 		npop = []
