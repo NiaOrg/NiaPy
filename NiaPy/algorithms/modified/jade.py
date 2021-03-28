@@ -1,7 +1,7 @@
 # encoding=utf8
 import logging
 
-from numpy import random as rand, concatenate, asarray, argsort
+from numpy import random as rand, concatenate, array, asarray, argsort, vstack
 
 from NiaPy.algorithms.basic.de import DifferentialEvolution
 
@@ -14,7 +14,7 @@ __all__ = [
 	'CrossRandCurr2Pbest'
 ]
 
-def CrossRandCurr2Pbest(pop, ic, x_b, f, cr, p=0.2, arc=None, rnd=rand, *args):
+def CrossRandCurr2Pbest(pop, ic, fpop, f, cr, p=0.2, arc=None, rnd=rand, *args):
 	r"""Mutation strategy with crossover.
 
 	Mutation strategy uses two different random individuals from population to perform mutation.
@@ -25,7 +25,7 @@ def CrossRandCurr2Pbest(pop, ic, x_b, f, cr, p=0.2, arc=None, rnd=rand, *args):
 	Args:
 		pop (numpy.ndarray): Current population.
 		ic (int): Index of current individual.
-		x_b (numpy.ndarray): Global best individual.
+		fpop (numpy.ndarray): Current population scores.
 		f (float): Scale factor.
 		cr (float): Crossover probability.
 		p (float): Procentage of best individuals to use.
@@ -40,7 +40,7 @@ def CrossRandCurr2Pbest(pop, ic, x_b, f, cr, p=0.2, arc=None, rnd=rand, *args):
 	pb = [1.0 / (len(pop) - 1) if i != ic else 0 for i in range(len(pop))] if len(pop) > 1 else None
 	r = rnd.choice(len(pop), 1, replace=not len(pop) >= 3, p=pb)
 	# Get pbest index
-	index, pi = argsort(pop), int(len(pop) * p)
+	index, pi = argsort(fpop), int(len(fpop) * p)
 	ppop = pop[index[:pi]]
 	pb = [1.0 / len(ppop) for i in range(pi)] if len(ppop) > 1 else None
 	rp = rnd.choice(pi, 1, replace=not len(ppop) >= 1, p=pb)
@@ -48,10 +48,10 @@ def CrossRandCurr2Pbest(pop, ic, x_b, f, cr, p=0.2, arc=None, rnd=rand, *args):
 	apop = concatenate((pop, arc)) if arc is not None else pop
 	pb = [1.0 / (len(apop) - 1) if i != ic else 0 for i in range(len(apop))] if len(apop) > 1 else None
 	ra = rnd.choice(len(apop), 1, replace=not len(apop) >= 1, p=pb)
-	# Generate new positoin
+	# Generate new position
 	j = rnd.randint(len(pop[ic]))
-	x = [pop[ic][i] + f * (ppop[rp[0]][i] - pop[ic][i]) + f * (pop[r[0]][i] - apop[ra[0]][i]) if rnd.rand() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
-	return asarray(x)
+	x = [el + f * (ppop[rp[0]][elidx] - el) + f * (pop[r[0]][elidx] - apop[ra[0]][elidx]) if rnd.rand() < cr or elidx == j else el for elidx,el in enumerate(pop[ic])]
+	return vstack(x)
 
 class AdaptiveArchiveDifferentialEvolution(DifferentialEvolution):
 	r"""Implementation of Adaptive Differential Evolution With Optional External Archive algorithm.
