@@ -399,7 +399,7 @@ class AnarchicSocietyOptimization(Algorithm):
 		"""
 		Xin = [self.getBestNeighbors(i, X, X_f, rs) for i in range(len(X))]
 		MP_c, MP_s, MP_p = asarray([self.FI(X_f[i], Xpb_f[i], fxb, alpha[i]) for i in range(len(X))]), asarray([self.EI(X_f[i], X_f[Xin[i]], gamma[i]) for i in range(len(X))]), asarray([self.II(X_f[i], Xpb_f[i], theta[i]) for i in range(len(X))])
-		Xtmp = asarray([self.Combination(X[i], Xpb[i], xb, X[self.randint(len(X), skip=[i])], MP_c[i], MP_s[i], MP_p[i], self.F, self.CR, task, self.Rand) for i in range(len(X))],dtype=object)
+		Xtmp = asarray([self.Combination(X[i], Xpb[i], xb, X[self.randint(len(X), skip=[i])], MP_c[i], MP_s[i], MP_p[i], self.F, self.CR, task, self.Rand) for i in range(len(X))], dtype=object)
 		X, X_f = asarray([Xtmp[i][0] for i in range(len(X))]), asarray([Xtmp[i][1] for i in range(len(X))])
 		Xpb, Xpb_f = self.uBestAndPBest(X, X_f, Xpb, Xpb_f)
 		xb, fxb = self.getBest(X, X_f, xb, fxb)

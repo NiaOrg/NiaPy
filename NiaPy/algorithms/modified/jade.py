@@ -1,7 +1,7 @@
 # encoding=utf8
 import logging
 
-from numpy import random as rand, concatenate, array, asarray, argsort, vstack
+from numpy import random as rand, concatenate, argsort, vstack
 
 from NiaPy.algorithms.basic.de import DifferentialEvolution
 
@@ -50,7 +50,7 @@ def CrossRandCurr2Pbest(pop, ic, fpop, f, cr, p=0.2, arc=None, rnd=rand, *args):
 	ra = rnd.choice(len(apop), 1, replace=not len(apop) >= 1, p=pb)
 	# Generate new position
 	j = rnd.randint(len(pop[ic]))
-	x = [el + f * (ppop[rp[0]][elidx] - el) + f * (pop[r[0]][elidx] - apop[ra[0]][elidx]) if rnd.rand() < cr or elidx == j else el for elidx,el in enumerate(pop[ic])]
+	x = [el + f * (ppop[rp[0]][elidx] - el) + f * (pop[r[0]][elidx] - apop[ra[0]][elidx]) if rnd.rand() < cr or elidx == j else el for elidx, el in enumerate(pop[ic])]
 	return vstack(x)
 
 class AdaptiveArchiveDifferentialEvolution(DifferentialEvolution):
