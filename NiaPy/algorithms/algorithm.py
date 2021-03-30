@@ -1,5 +1,6 @@
 # encoding=utf8
 import logging
+import threading
 
 from numpy import random as rand, inf, ndarray, asarray, array_equal, argmin, apply_along_axis
 
@@ -335,6 +336,8 @@ class Algorithm:
 		except (FesException, GenException, TimeException, RefException):
 			return task.x, task.x_f * task.optType.value
 		except Exception as e:
+			if threading.current_thread() == threading.main_thread():
+				raise e
 			self.exception = e
 			return None, None
 
