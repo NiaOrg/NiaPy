@@ -1,5 +1,7 @@
 # encoding=utf8
 import logging
+import threading
+import multiprocessing
 
 from numpy import random as rand, inf, ndarray, asarray, array_equal, argmin, apply_along_axis
 
@@ -16,6 +18,18 @@ __all__ = [
 	'defaultIndividualInit',
 	'defaultNumPyInit'
 ]
+
+def _is_main_process_or_thread():
+	r"""Check if current process/thread is main.
+
+	Returns:
+		bool: `True` if current process/thread is main, `False` otherwise.
+
+	"""
+	if hasattr(threading, 'main_thread'):  # if python version >= 3.4:
+		return threading.current_thread() == threading.main_thread() or type(multiprocessing.current_process()) == multiprocessing.process._MainProcess
+	else:
+		return isinstance(threading.currentThread(), threading._MainThread) or type(multiprocessing.current_process()) == multiprocessing.process._MainProcess
 
 def defaultNumPyInit(task, NP, rnd=rand, **kwargs):
 	r"""Initialize starting population that is represented with `numpy.ndarray` with shape `{NP, task.D}`.
@@ -330,11 +344,15 @@ class Algorithm:
 			* :func:`NiaPy.algorithms.Algorithm.runTask`
 		"""
 		try:
-			# task.start()
 			r = self.runTask(task)
 			return r[0], r[1] * task.optType.value
-		except (FesException, GenException, TimeException, RefException): return task.x, task.x_f * task.optType.value
-		return None, None
+		except (FesException, GenException, TimeException, RefException):
+			return task.x, task.x_f * task.optType.value
+		except Exception as e:
+			if _is_main_process_or_thread():
+				raise e
+			self.exception = e
+			return None, None
 
 	def bad_run(self):
 		r"""Check if some exeptions where thrown when the algorithm was running.
