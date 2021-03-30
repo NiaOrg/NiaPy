@@ -1,6 +1,7 @@
 # encoding=utf8
 import logging
 import threading
+import multiprocessing
 
 from numpy import random as rand, inf, ndarray, asarray, array_equal, argmin, apply_along_axis
 
@@ -17,6 +18,17 @@ __all__ = [
 	'defaultIndividualInit',
 	'defaultNumPyInit'
 ]
+
+def _is_main_process_or_thread():
+	r"""Check if current process/thread is main
+
+	Returns:
+		bool: `True` if current process/thread is main, `False` otherwise
+	"""
+	if hasattr(threading, 'main_thread'):  # if python version >= 3.4:
+		return threading.current_thread() == threading.main_thread() or type(multiprocessing.current_process()) == multiprocessing.process._MainProcess
+	else:
+		return isinstance(threading.current_thread(), threading._MainThread) or type(multiprocessing.current_process()) == multiprocessing.process._MainProcess
 
 def defaultNumPyInit(task, NP, rnd=rand, **kwargs):
 	r"""Initialize starting population that is represented with `numpy.ndarray` with shape `{NP, task.D}`.
@@ -336,7 +348,7 @@ class Algorithm:
 		except (FesException, GenException, TimeException, RefException):
 			return task.x, task.x_f * task.optType.value
 		except Exception as e:
-			if threading.current_thread() == threading.main_thread():
+			if _is_main_process_or_thread():
 				raise e
 			self.exception = e
 			return None, None
