@@ -326,7 +326,7 @@ class EvolutionStrategyMpL(EvolutionStrategy1p1):
 		"""
 		k = 0
 		for e in cn:
-			if e not in c: k += 1
+			if e not in c.tolist(): k += 1
 		return k
 
 	def mutateRand(self, pop, task):

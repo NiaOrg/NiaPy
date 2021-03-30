@@ -24,6 +24,7 @@ class CrossRandCurr2pbestTestCase(TestCase):
 		xb, fxb = pop[ib].copy(), fpop[ib]
 		for i, x in enumerate(pop):
 			xn = CrossRandCurr2Pbest(pop, i, xb, self.F, self.CR, self.p, apop)
+			# Check that position array is updated
 			self.assertFalse(np.array_equal(x, xn))
 
 class JADETestCase(AlgorithmTestCase):
