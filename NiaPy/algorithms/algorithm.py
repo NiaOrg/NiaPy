@@ -20,10 +20,11 @@ __all__ = [
 ]
 
 def _is_main_process_or_thread():
-	r"""Check if current process/thread is main
+	r"""Check if current process/thread is main.
 
 	Returns:
-		bool: `True` if current process/thread is main, `False` otherwise
+		bool: `True` if current process/thread is main, `False` otherwise.
+
 	"""
 	if hasattr(threading, 'main_thread'):  # if python version >= 3.4:
 		return threading.current_thread() == threading.main_thread() or type(multiprocessing.current_process()) == multiprocessing.process._MainProcess
