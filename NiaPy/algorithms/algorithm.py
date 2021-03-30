@@ -29,7 +29,7 @@ def _is_main_process_or_thread():
 	if hasattr(threading, 'main_thread'):  # if python version >= 3.4:
 		return threading.current_thread() == threading.main_thread() or type(multiprocessing.current_process()) == multiprocessing.process._MainProcess
 	else:
-		return isinstance(threading.current_thread(), threading._MainThread) or type(multiprocessing.current_process()) == multiprocessing.process._MainProcess
+		return isinstance(threading.currentThread(), threading._MainThread) or type(multiprocessing.current_process()) == multiprocessing.process._MainProcess
 
 def defaultNumPyInit(task, NP, rnd=rand, **kwargs):
 	r"""Initialize starting population that is represented with `numpy.ndarray` with shape `{NP, task.D}`.
