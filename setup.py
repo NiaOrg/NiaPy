@@ -21,7 +21,7 @@ import setuptools
 
 
 PACKAGE_NAME = 'NiaPy'
-MINIMUM_PYTHON_VERSION = '2.7'
+MINIMUM_PYTHON_VERSION = '3.6'
 
 
 def check_python_version():
@@ -75,8 +75,6 @@ setuptools.setup(
         'Natural Language :: English',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
@@ -93,13 +91,10 @@ setuptools.setup(
         'coverage-space ~= 1.0.2'
     ],
     install_requires=[
-        'numpy >= 1.16.2',
+        'numpy >= 1.17.0',
         'scipy >= 1.2.1',
         'matplotlib >= 2.2.4',
         'pandas >= 0.24.2',
         'openpyxl >= 3.0.3',
-        'xlwt >= 1.3.0',
-        'enum34 >= 1.1.6',
-        'future >= 0.18.2'
     ]
 )

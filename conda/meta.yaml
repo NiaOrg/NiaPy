@@ -14,24 +14,18 @@ build:
 requirements:
   build:
     - python
-    - numpy>=1.16.2
+    - numpy>=1.17.0
     - scipy
     - matplotlib
     - pandas
     - openpyxl
-    - xlwt
-    - enum34
-    - future
   run:
     - python
-    - numpy>=1.16.2
+    - numpy>=1.17.0
     - scipy
     - matplotlib
     - pandas
     - openpyxl
-    - xlwt
-    - enum34
-    - future
 
 test:
   imports:

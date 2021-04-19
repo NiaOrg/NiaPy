@@ -44,7 +44,7 @@ List of NiaPy's dependencies:
 | Package    | Version | Platform |
 | ---------- |:-------:|:--------:|
 | click      | Any     | All      |
-| numpy      | 1.14.0  | All      |
+| numpy      | 1.17.0  | All      |
 | scipy      | 1.0.0   | All      |
 | xlsxwriter | 1.0.2   | All      |
 | matplotlib | Any     | All      |

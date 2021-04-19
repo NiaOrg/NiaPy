@@ -9,7 +9,7 @@ jobs:
       max-parallel: 9
       matrix:
         os: [ubuntu-latest, windows-latest, macOS-latest]
-        python-version: [2.7, 3.6, 3.7, 3.8]
+        python-version: [3.6, 3.7, 3.8]
     env:
       MPLBACKEND: "agg"
     steps:
@@ -20,7 +20,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install pipenv
       run: |
-        python -m pip install --upgrade pip
+        python3 -m pip install --upgrade pip
         pip install pipenv
     - name: Install dependencies
       run: |
