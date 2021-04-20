@@ -7,7 +7,7 @@ from unittest import TestCase
 
 from numpy import random as rnd, full, inf, array_equal, apply_along_axis, asarray
 
-from NiaPy.util import objects2array
+from NiaPy.util import to_object_array
 from NiaPy.task.task import Task, StoppingTask
 from NiaPy.algorithms.algorithm import Individual, Algorithm
 from NiaPy.benchmarks import Benchmark, Sphere
@@ -109,7 +109,7 @@ def init_pop_individual(task, NP, itype, **kwargs):
 			1. Initialized population.
 			2. Initialized populations fitness/function values.
 	"""
-	pop = objects2array([itype(x=full(task.D, 0.0), task=task) for _ in range(NP)])
+	pop = to_object_array([itype(x=full(task.D, 0.0), task=task) for _ in range(NP)])
 	return pop, asarray([x.f for x in pop])
 
 class AlgorithBaseTestCase(TestCase):

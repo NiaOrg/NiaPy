@@ -1,8 +1,8 @@
 # encoding=utf8
 import logging
 from numpy import apply_along_axis, argsort
-from scipy.stats import levy
 from NiaPy.algorithms.algorithm import Algorithm
+from NiaPy.util import levy_flight
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.basic')
@@ -154,7 +154,7 @@ class CuckooSearch(Algorithm):
 					* pa_v (float): TODO
 		"""
 		i = self.randint(self.NP)
-		Nn = task.repair(pop[i] + self.alpha * levy.rvs(size=[task.D], random_state=self.Rand), rnd=self.Rand)
+		Nn = task.repair(pop[i] + levy_flight(self.alpha, size=task.D, rng=self.Rand), rnd=self.Rand)
 		Nn_f = task.eval(Nn)
 		j = self.randint(self.NP)
 		while i == j: j = self.randint(self.NP)

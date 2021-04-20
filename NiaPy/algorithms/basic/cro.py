@@ -1,8 +1,8 @@
 # encoding=utf8
 import logging
-from scipy.spatial.distance import euclidean
 from numpy import apply_along_axis, argsort, where, random as rand, asarray, delete, sqrt, sum, unique, append
 from NiaPy.algorithms.algorithm import Algorithm
+from NiaPy.util import euclidean
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.basic')

@@ -1,10 +1,10 @@
 # encoding=utf8
 import logging
 
-from scipy.spatial.distance import euclidean
 from numpy import full, apply_along_axis, copy, sum, fmax, pi, where
 
 from NiaPy.algorithms.algorithm import Algorithm
+from NiaPy.util import euclidean
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.basic')

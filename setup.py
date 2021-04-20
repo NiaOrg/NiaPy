@@ -92,7 +92,6 @@ setuptools.setup(
     ],
     install_requires=[
         'numpy >= 1.17.0',
-        'scipy >= 1.2.1',
         'matplotlib >= 2.2.4',
         'pandas >= 0.24.2',
         'openpyxl >= 3.0.3',

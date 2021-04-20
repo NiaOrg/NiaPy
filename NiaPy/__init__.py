@@ -2,9 +2,6 @@
 
 """Python micro framework for building nature-inspired algorithms."""
 
-from __future__ import print_function
-
-
 from NiaPy import util, algorithms, benchmarks, task
 from NiaPy.runner import Runner
 

@@ -15,14 +15,12 @@ requirements:
   build:
     - python
     - numpy>=1.17.0
-    - scipy
     - matplotlib
     - pandas
     - openpyxl
   run:
     - python
     - numpy>=1.17.0
-    - scipy
     - matplotlib
     - pandas
     - openpyxl

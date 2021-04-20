@@ -1,14 +1,9 @@
-"""Module with implementation of utility classess and functions."""
+"""Module with implementation of utility classes and functions."""
 
-from NiaPy.util.utility import (
-    fullArray,
-    objects2array,
-    limit_repair,
-    limitInversRepair,
-    wangRepair,
-    randRepair,
-    reflectRepair
-)
+from NiaPy.util import repair
+from NiaPy.util.random import levy_flight
+from NiaPy.util.distances import euclidean
+from NiaPy.util.array import full_array, to_object_array
 from NiaPy.util.argparser import MakeArgParser, getArgs, getDictArgs
 from NiaPy.util.exception import (
     FesException,
@@ -18,18 +13,16 @@ from NiaPy.util.exception import (
 )
 
 __all__ = [
-    'fullArray',
-    'objects2array',
-    'limit_repair',
-    'limitInversRepair',
-    'wangRepair',
-    'randRepair',
-    'reflectRepair',
     'MakeArgParser',
     'getArgs',
     'getDictArgs',
     'FesException',
     'GenException',
     'TimeException',
-    'RefException'
+    'RefException',
+    'full_array',
+    'to_object_array',
+    'repair',
+    'levy_flight',
+    'euclidean',
 ]

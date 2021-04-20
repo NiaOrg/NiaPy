@@ -2,7 +2,7 @@
 import logging
 from numpy import apply_along_axis, argmin, argmax, sum, sqrt, round, argsort, fabs, asarray, where
 from NiaPy.algorithms.algorithm import Algorithm
-from NiaPy.util import fullArray
+from NiaPy.util import full_array
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.basic')
@@ -185,7 +185,7 @@ class FireworksAlgorithm(Algorithm):
 		Returns:
 			numpy.ndarray[float]: Starting amplitudes.
 		"""
-		return fullArray(self.A, task.D)
+		return full_array(self.A, task.D)
 
 	def SparsksNo(self, x_f, xw_f, Ss):
 		r"""Calculate number of sparks based on function value of individual.
@@ -446,7 +446,7 @@ class EnhancedFireworksAlgorithm(FireworksAlgorithm):
 				2. Final amplitude values over dimensions.
 				3. uAmin.
 		"""
-		Ainit, Afinal = fullArray(self.Ainit, task.D), fullArray(self.Afinal, task.D)
+		Ainit, Afinal = full_array(self.Ainit, task.D), full_array(self.Afinal, task.D)
 		return Ainit, Afinal, self.uAmin(Ainit, Afinal, task)
 
 	def uAmin(self, Ainit, Afinal, task):

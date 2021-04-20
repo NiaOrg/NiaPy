@@ -2,8 +2,6 @@
 
 """Implementation of Runner utility class."""
 
-from __future__ import print_function
-
 import datetime
 import os
 import logging

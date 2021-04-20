@@ -8,10 +8,7 @@ from enum import Enum
 from matplotlib import pyplot as plt
 from numpy import inf, random as rand
 
-from NiaPy.util.utility import (
-    limit_repair,
-    fullArray
-)
+from NiaPy.util import full_array, repair
 from NiaPy.util.exception import (
     FesException,
     GenException,
@@ -64,7 +61,7 @@ class Task:
     Lower, Upper, bRange = inf, inf, inf
     optType = OptimizationType.MINIMIZATION
 
-    def __init__(self, D=0, optType=OptimizationType.MINIMIZATION, benchmark=None, Lower=None, Upper=None, frepair=limit_repair, **kwargs):
+    def __init__(self, D=0, optType=OptimizationType.MINIMIZATION, benchmark=None, Lower=None, Upper=None, frepair=repair.limit, **kwargs):
         r"""Initialize task class for optimization.
 
         Arguments:
@@ -93,19 +90,19 @@ class Task:
 
         # set Lower limits
         if Lower is not None:
-            self.Lower = fullArray(Lower, self.D)
+            self.Lower = full_array(Lower, self.D)
         elif Lower is None and benchmark is not None:
-            self.Lower = fullArray(self.benchmark.Lower, self.D)
+            self.Lower = full_array(self.benchmark.Lower, self.D)
         else:
-            self.Lower = fullArray(0, self.D)
+            self.Lower = full_array(0, self.D)
 
         # set Upper limits
         if Upper is not None:
-            self.Upper = fullArray(Upper, self.D)
+            self.Upper = full_array(Upper, self.D)
         elif Upper is None and benchmark is not None:
-            self.Upper = fullArray(self.benchmark.Upper, self.D)
+            self.Upper = full_array(self.benchmark.Upper, self.D)
         else:
-            self.Upper = fullArray(0, self.D)
+            self.Upper = full_array(0, self.D)
 
         # set range
         self.bRange = self.Upper - self.Lower
@@ -164,7 +161,7 @@ class Task:
 
         See Also:
                 * :func:`NiaPy.util.limitRepair`
-                * :func:`NiaPy.util.limitInversRepair`
+                * :func:`NiaPy.util.limit_inverse`
                 * :func:`NiaPy.util.wangRepair`
                 * :func:`NiaPy.util.randRepair`
                 * :func:`NiaPy.util.reflectRepair`

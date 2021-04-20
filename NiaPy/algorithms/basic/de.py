@@ -3,10 +3,9 @@ import logging
 import math
 
 from numpy import random as rand, argmin, argmax, mean, cos, asarray, append, sin, isfinite
-from scipy.spatial.distance import euclidean
 
 from NiaPy.algorithms.algorithm import Algorithm, Individual, defaultIndividualInit
-from NiaPy.util.utility import objects2array
+from NiaPy.util import to_object_array, euclidean
 
 __all__ = ['DifferentialEvolution', 'DynNpDifferentialEvolution', 'AgingNpDifferentialEvolution', 'CrowdingDifferentialEvolution', 'MultiStrategyDifferentialEvolution', 'DynNpMultiStrategyDifferentialEvolution', 'AgingNpMultiMutationDifferentialEvolution', 'AgingIndividual', 'CrossRand1', 'CrossBest2', 'CrossBest1', 'CrossBest2', 'CrossCurr2Rand1', 'CrossCurr2Best1', 'multiMutations']
 
@@ -317,7 +316,7 @@ class DifferentialEvolution(Algorithm):
 		Returns:
 			numpy.ndarray: New evolved populations.
 		"""
-		return objects2array([self.itype(x=self.CrossMutt(pop, i, xb, self.F, self.CR, self.Rand), task=task, rnd=self.Rand, e=True) for i in range(len(pop))])
+		return to_object_array([self.itype(x=self.CrossMutt(pop, i, xb, self.F, self.CR, self.Rand), task=task, rnd=self.Rand, e=True) for i in range(len(pop))])
 
 	def selection(self, pop, npop, xb, fxb, task, **kwargs):
 		r"""Operator for selection.
@@ -336,7 +335,7 @@ class DifferentialEvolution(Algorithm):
 				2. New global best solution.
 				3. New global best solutions fitness/objective value.
 		"""
-		arr = objects2array([e if e.f < pop[i].f else pop[i] for i, e in enumerate(npop)])
+		arr = to_object_array([e if e.f < pop[i].f else pop[i] for i, e in enumerate(npop)])
 		xb, fxb = self.getBest(arr, asarray([e.f for e in arr]), xb, fxb)
 		return arr, xb, fxb
 
@@ -545,7 +544,7 @@ class DynNpDifferentialEvolution(DifferentialEvolution):
 		"""
 		Gr = task.nFES // (self.pmax * len(pop)) + self.rp
 		nNP = len(pop) // 2
-		if (task.Iters + 1) == Gr and len(pop) > 3: pop = objects2array([pop[i] if pop[i].f < pop[i + nNP].f else pop[i + nNP] for i in range(nNP)])
+		if (task.Iters + 1) == Gr and len(pop) > 3: pop = to_object_array([pop[i] if pop[i].f < pop[i + nNP].f else pop[i + nNP] for i in range(nNP)])
 		return pop, xb, fxb
 
 def proportional(Lt_min, Lt_max, mu, x_f, avg, **args):
@@ -743,7 +742,7 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 			x.age += 1
 			Lt = round(self.age(Lt_min=self.Lt_min, Lt_max=self.Lt_max, mu=self.mu, x_f=x.f, avg=avg, x_gw=x_w.f, x_gb=x_b.f))
 			if x.age <= Lt: npop.append(x)
-		if len(npop) == 0: npop = objects2array([self.itype(task=task, rnd=self.Rand, e=True) for _ in range(self.NP)])
+		if len(npop) == 0: npop = to_object_array([self.itype(task=task, rnd=self.Rand, e=True) for _ in range(self.NP)])
 		return npop
 
 	def popIncrement(self, pop, task):
@@ -757,7 +756,7 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 			numpy.ndarray[Individual]: Increased population.
 		"""
 		deltapop = int(round(max(1, self.NP * self.deltaPopE((task.Iters + 1)))))
-		return objects2array([self.itype(task=task, rnd=self.Rand, e=True) for _ in range(deltapop)])
+		return to_object_array([self.itype(task=task, rnd=self.Rand, e=True) for _ in range(deltapop)])
 
 	def popDecrement(self, pop, task):
 		r"""Decrement population.
@@ -776,7 +775,7 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 		for i, e in enumerate(pop):
 			if i not in ni: npop.append(e)
 			elif self.rand() >= self.omega: npop.append(e)
-		return objects2array(npop)
+		return to_object_array(npop)
 
 	def selection(self, pop, npop, xb, fxb, task, **kwargs):
 		r"""Select operator for individuals with aging.
@@ -929,7 +928,7 @@ class MultiStrategyDifferentialEvolution(DifferentialEvolution):
 		Returns:
 			numpy.ndarray: New population of individuals.
 		"""
-		return objects2array([self.CrossMutt(pop, i, xb, self.F, self.CR, self.Rand, task, self.itype, self.strategies) for i in range(len(pop))])
+		return to_object_array([self.CrossMutt(pop, i, xb, self.F, self.CR, self.Rand, task, self.itype, self.strategies) for i in range(len(pop))])
 
 class DynNpMultiStrategyDifferentialEvolution(MultiStrategyDifferentialEvolution, DynNpDifferentialEvolution):
 	r"""Implementation of Dynamic population size Differential evolution algorithm with dynamic population size that is defined by the quality of population.

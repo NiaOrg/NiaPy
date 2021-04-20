@@ -3,14 +3,14 @@ from unittest import TestCase
 
 import numpy as np
 
-from NiaPy.util import fullArray
+from NiaPy.util import full_array
 from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
 from NiaPy.algorithms.modified import AdaptiveArchiveDifferentialEvolution, CrossRandCurr2Pbest
 
 class CrossRandCurr2pbestTestCase(TestCase):
 	def setUp(self):
 		self.D, self.NP, self.F, self.CR, self.p = 10, 100, 0.5, 0.5, 0.25
-		self.Upper, self.Lower = fullArray(100, self.D), fullArray(-100, self.D)
+		self.Upper, self.Lower = full_array(100, self.D), full_array(-100, self.D)
 		self.evalFun = MyBenchmark().function()
 
 	def init_pop(self):

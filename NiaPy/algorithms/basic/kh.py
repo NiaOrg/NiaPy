@@ -1,8 +1,7 @@
 # encoding=utf8
 import logging
-from scipy.spatial.distance import euclidean as ed
 from numpy import apply_along_axis, argmin, argmax, sum, full, inf, asarray, mean, where, sqrt
-from NiaPy.util import fullArray
+from NiaPy.util import full_array, euclidean
 from NiaPy.algorithms.algorithm import Algorithm
 
 logging.basicConfig()
@@ -157,7 +156,7 @@ class KrillHerd(Algorithm):
 				1. Weights for neighborhood.
 				2. Weights for foraging.
 		"""
-		return fullArray(self.W_n, task.D), fullArray(self.W_f, task.D)
+		return full_array(self.W_n, task.D), full_array(self.W_f, task.D)
 
 	def sensRange(self, ki, KH):
 		r"""Calculate sense range for selected individual.
@@ -169,7 +168,7 @@ class KrillHerd(Algorithm):
 		Returns:
 			float: Sense range for krill.
 		"""
-		return sum([ed(KH[ki], KH[i]) for i in range(self.NP)]) / (self.nn * self.NP)
+		return sum([euclidean(KH[ki], KH[i]) for i in range(self.NP)]) / (self.nn * self.NP)
 
 	def getNeighbours(self, i, ids, KH):
 		r"""Get neighbours.
@@ -184,7 +183,7 @@ class KrillHerd(Algorithm):
 		"""
 		N = list()
 		for j in range(self.NP):
-			if j != i and ids > ed(KH[i], KH[j]): N.append(j)
+			if j != i and ids > euclidean(KH[i], KH[j]): N.append(j)
 		if not N: N.append(self.randint(self.NP))
 		return asarray(N)
 
@@ -198,7 +197,7 @@ class KrillHerd(Algorithm):
 		Returns:
 			numpy.ndarray: --
 		"""
-		return ((y - x) + self.epsilon) / (ed(y, x) + self.epsilon)
+		return ((y - x) + self.epsilon) / (euclidean(y, x) + self.epsilon)
 
 	def funK(self, x, y, b, w):
 		r"""Get k values.

@@ -1,8 +1,8 @@
 # encoding=utf8
 import logging
 
-from numpy import random as rand, sin, pi, argmin, abs, mean
-from scipy.special import gamma
+from numpy import random as rand, argmin, abs, mean
+from NiaPy.util import levy_flight
 
 from NiaPy.algorithms.algorithm import Algorithm
 
@@ -113,23 +113,6 @@ class HarrisHawksOptimization(Algorithm):
 		Sol, Fitness, d = Algorithm.initPopulation(self, task)
 		return Sol, Fitness, d
 
-	def levy_function(self, dims, step=0.01, rnd=rand):
-		r"""Calculate levy function.
-
-		Parameters:
-					dim (int): Number of dimensions
-					step (float): Step of the Levy function
-
-		Returns:
-					float: The Levy function evaluation
-		"""
-		beta = 1.5
-		sigma = (gamma(1 + beta) * sin(pi * beta / 2) / (gamma((1 + beta / 2) * beta * 2.0 ** ((beta - 1) / 2)))) ** (1 / beta)
-		normal_1 = rnd.normal(0, sigma, size=dims)
-		normal_2 = rnd.normal(0, 1, size=dims)
-		result = step * normal_1 / (abs(normal_2) ** (1 / beta))
-		return result
-
 	def runIteration(self, task, Sol, Fitness, xb, fxb, **dparams):
 		r"""Core function of Harris Hawks Optimization.
 
@@ -182,7 +165,7 @@ class HarrisHawksOptimization(Algorithm):
 					# 4. Exploitation: Soft besiege with pprogressive rapid dives
 					cand1 = task.repair(xb - escaping_energy * abs(jumping_energy * xb - Sol[i]), rnd=self.Rand)
 					random_vector = self.Rand.rand(task.D)
-					cand2 = task.repair(cand1 + random_vector * self.levy_function(task.D, self.levy, rnd=self.Rand), rnd=self.Rand)
+					cand2 = task.repair(cand1 + random_vector * levy_flight(self.levy, size=task.D, rng=self.Rand), rnd=self.Rand)
 					if task.eval(cand1) < Fitness[i]:
 						Sol[i] = cand1
 					elif task.eval(cand2) < Fitness[i]:
@@ -191,7 +174,7 @@ class HarrisHawksOptimization(Algorithm):
 					# 5. Exploitation: Hard besiege with progressive rapid dives
 					cand1 = task.repair(xb - escaping_energy * abs(jumping_energy * xb - mean_sol), rnd=self.Rand)
 					random_vector = self.Rand.rand(task.D)
-					cand2 = task.repair(cand1 + random_vector * self.levy_function(task.D, self.levy, rnd=self.Rand), rnd=self.Rand)
+					cand2 = task.repair(cand1 + random_vector * levy_flight(self.levy, size=task.D, rng=self.Rand), rnd=self.Rand)
 					if task.eval(cand1) < Fitness[i]:
 						Sol[i] = cand1
 					elif task.eval(cand2) < Fitness[i]:
