@@ -335,7 +335,7 @@
 - code style fixes [\#110](https://github.com/NiaOrg/NiaPy/pull/110) ([GregaVrbancic](https://github.com/GregaVrbancic))
 - whitespace fix [\#109](https://github.com/NiaOrg/NiaPy/pull/109) ([lucijabrezocnik](https://github.com/lucijabrezocnik))
 - Pso algorithm [\#108](https://github.com/NiaOrg/NiaPy/pull/108) ([GregaVrbancic](https://github.com/GregaVrbancic))
-- CS levy_flight flight fix [\#106](https://github.com/NiaOrg/NiaPy/pull/106) ([mlaky88](https://github.com/mlaky88))
+- CS levy flight fix [\#106](https://github.com/NiaOrg/NiaPy/pull/106) ([mlaky88](https://github.com/mlaky88))
 - fix cs code style [\#105](https://github.com/NiaOrg/NiaPy/pull/105) ([GregaVrbancic](https://github.com/GregaVrbancic))
 - CS fix [\#103](https://github.com/NiaOrg/NiaPy/pull/103) ([mlaky88](https://github.com/mlaky88))
 - Documentation [\#102](https://github.com/NiaOrg/NiaPy/pull/102) ([GregaVrbancic](https://github.com/GregaVrbancic))

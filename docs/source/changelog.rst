@@ -618,7 +618,7 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/0.1.3a2...1.0.0rc1>`__
    (`lucijabrezocnik <https://github.com/lucijabrezocnik>`__)
 -  Pso algorithm `#108 <https://github.com/NiaOrg/NiaPy/pull/108>`__
    (`GregaVrbancic <https://github.com/GregaVrbancic>`__)
--  CS levy_flight flight fix
+-  CS levy flight fix
    `#106 <https://github.com/NiaOrg/NiaPy/pull/106>`__
    (`mlaky88 <https://github.com/mlaky88>`__)
 -  fix cs code style `#105 <https://github.com/NiaOrg/NiaPy/pull/105>`__
