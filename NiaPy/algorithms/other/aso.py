@@ -1,9 +1,8 @@
 # encoding=utf8
 import logging
-from scipy.spatial.distance import euclidean
 from numpy import apply_along_axis, argmin, full, inf, where, asarray, random as rand, sort, exp
 from NiaPy.algorithms.algorithm import Algorithm
-from NiaPy.util import fullArray
+from NiaPy.util import full_array, euclidean
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.other')
@@ -259,7 +258,7 @@ class AnarchicSocietyOptimization(Algorithm):
 				2. Array of `self.gamma` propagated values
 				3. Array of `self.theta` propagated values
 		"""
-		return fullArray(self.alpha, self.NP), fullArray(self.gamma, self.NP), fullArray(self.theta, self.NP)
+		return full_array(self.alpha, self.NP), full_array(self.gamma, self.NP), full_array(self.theta, self.NP)
 
 	def FI(self, x_f, xpb_f, xb_f, alpha):
 		r"""Get fickleness index.

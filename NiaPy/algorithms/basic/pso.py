@@ -4,8 +4,8 @@ import logging
 import numpy as np
 
 from NiaPy.algorithms.algorithm import Algorithm
-from NiaPy.util import fullArray
-from NiaPy.util.utility import reflectRepair
+from NiaPy.util import full_array, repair
+
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.basic')
@@ -80,7 +80,7 @@ class ParticleSwarmAlgorithm(Algorithm):
 		})
 		return d
 
-	def setParameters(self, NP=25, C1=2.0, C2=2.0, w=0.7, vMin=-1.5, vMax=1.5, Repair=reflectRepair, **ukwargs):
+	def setParameters(self, NP=25, C1=2.0, C2=2.0, w=0.7, vMin=-1.5, vMax=1.5, Repair=repair.reflect, **ukwargs):
 		r"""Set Particle Swarm Algorithm main parameters.
 
 		Args:
@@ -132,9 +132,9 @@ class ParticleSwarmAlgorithm(Algorithm):
 				* V (numpy.ndarray): Initial velocity of particle.
 		"""
 		return {
-			'w': fullArray(self.w, task.D),
-			'vMin': fullArray(self.vMin, task.D),
-			'vMax': fullArray(self.vMax, task.D),
+			'w': full_array(self.w, task.D),
+			'vMin': full_array(self.vMin, task.D),
+			'vMax': full_array(self.vMax, task.D),
 			'V': np.full([self.NP, task.D], 0.0)
 		}
 
@@ -923,7 +923,7 @@ class ComprehensiveLearningParticleSwarmOptimizer(ParticleSwarmAlgorithm):
 			* V: Initial velocity of particle.
 			* flag: Refresh gap counter.
 		"""
-		return {'vMin': fullArray(self.vMin, task.D), 'vMax': fullArray(self.vMax, task.D), 'V': np.full([self.NP, task.D], 0.0), 'flag': np.full(self.NP, 0), 'Pc': np.asarray([.05 + .45 * (np.exp(10 * (i - 1) / (self.NP - 1)) - 1) / (np.exp(10) - 1) for i in range(self.NP)])}
+		return {'vMin': full_array(self.vMin, task.D), 'vMax': full_array(self.vMax, task.D), 'V': np.full([self.NP, task.D], 0.0), 'flag': np.full(self.NP, 0), 'Pc': np.asarray([.05 + .45 * (np.exp(10 * (i - 1) / (self.NP - 1)) - 1) / (np.exp(10) - 1) for i in range(self.NP)])}
 
 	def generatePbestCL(self, i, Pc, pbs, fpbs):
 		r"""Generate new personal best position for learning.

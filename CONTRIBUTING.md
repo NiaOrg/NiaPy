@@ -11,14 +11,14 @@ Before creating bug reports, please check existing issues list as you might find
 
 ### Suggesting Enhancements
 - Open new issue
-- Write in details what enhancement whould you like to see in the future
+- Write in details what enhancement would you like to see in the future
 - If you have technical knowledge, propose solution on how to implement enhancement
 
 ### Pull requests
 
 If you are not so familiar with Git or/and GitHub, we suggest you take a look at our [beginner's guide](.github/beginners_guide.md).
 
-- Fill in the [reqired template](.github/pull_request_template.md)
+- Fill in the [required template](.github/pull_request_template.md)
 - Document new code
 - Make sure all the code goes through Flake8 without problems (run ```make check``` command)
 - Make sure PR builds goes through
@@ -43,11 +43,10 @@ List of NiaPy's dependencies:
 
 | Package    | Version | Platform |
 | ---------- |:-------:|:--------:|
-| click      | Any     | All      |
 | numpy      | 1.17.0  | All      |
-| scipy      | 1.0.0   | All      |
-| xlsxwriter | 1.0.2   | All      |
-| matplotlib | Any     | All      |
+| matplotlib | 2.2.4   | All      |
+| pandas     | 0.24.2  | All      |
+| openpyxl   | 3.0.3   | All      |
 
 
 List of development dependencies:
@@ -65,20 +64,11 @@ List of development dependencies:
 |freezegun                      | Any     | Any      |
 |coverage-space                 | Any     | Any      |
 |docutils                       | Any     | Any      |
-|pygments                       | Any     | Any      |
+|Pygments                       | Any     | Any      |
 |wheel                          | Any     | Any      |
-|pyinstaller                    | Any     | Any      |
 |twine                          | Any     | Any      |
 |sniffer                        | Any     | Any      |
-|macfsevents                    | Any     | darwin   |
-|enum34                         | Any     | Any      |
-|singledispatch                 | Any     | Any      |
-|backports.functools-lru-cache  | Any     | Any      |
-|configparser                   | Any     | Any      |
 |sphinx                         | Any     | Any      |
-|sphinx-rtd-theme               | Any     | Any      |
-|funcsigs                       | Any     | Any      |
-|futures                        | Any     | Any      |
 |autopep8                       | Any     | Any      |
 |sphinx-autobuild               | Any     | Any      |
 

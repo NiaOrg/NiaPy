@@ -6,7 +6,7 @@ from numpy import argmin, argsort, log, sum, fmax, sqrt, full, exp, eye, diag, a
 from numpy.linalg import norm, cholesky as chol, eig, solve, lstsq
 
 from NiaPy.algorithms.algorithm import Algorithm, Individual, defaultIndividualInit
-from NiaPy.util.utility import objects2array
+from NiaPy.util import objects_to_array
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.basic')
@@ -175,7 +175,7 @@ class EvolutionStrategy1p1(Algorithm):
 					* ki (int): Number of successful rho update.
 		"""
 		if (task.Iters + 1) % self.k == 0: c.rho, ki = self.updateRho(c.rho, ki), 0
-		cn = objects2array([task.repair(self.mutate(c.x, c.rho), self.Rand) for _i in range(self.mu)])
+		cn = objects_to_array([task.repair(self.mutate(c.x, c.rho), self.Rand) for _i in range(self.mu)])
 		cn_f = asarray([task.eval(cn[i]) for i in range(len(cn))])
 		ib = argmin(cn_f)
 		if cn_f[ib] < c.f:
@@ -384,9 +384,9 @@ class EvolutionStrategyMpL(EvolutionStrategy1p1):
 					* ki (int): Number of successful mutations.
 		"""
 		if (task.Iters + 1) % self.k == 0: _, ki = self.updateRho(c, ki), 0
-		cn = objects2array([IndividualES(x=self.mutateRand(c, task), task=task, rnd=self.Rand) for _ in range(self.lam)])
+		cn = objects_to_array([IndividualES(x=self.mutateRand(c, task), task=task, rnd=self.Rand) for _ in range(self.lam)])
 		cn = append(cn, c)
-		cn = objects2array([cn[i] for i in argsort([i.f for i in cn])[:self.mu]])
+		cn = objects_to_array([cn[i] for i in argsort([i.f for i in cn])[:self.mu]])
 		ki += self.changeCount(c, cn)
 		fcn = asarray([x.f for x in cn])
 		xb, fxb = self.getBest(cn, fcn, xb, fxb)
@@ -441,10 +441,10 @@ class EvolutionStrategyML(EvolutionStrategyMpL):
 			numpy.ndarray: New population.
 		"""
 		pop_s = argsort([i.f for i in pop])
-		if self.mu < self.lam: return objects2array([pop[i] for i in pop_s[:self.mu]])
+		if self.mu < self.lam: return objects_to_array([pop[i] for i in pop_s[:self.mu]])
 		npop = list()
 		for i in range(int(ceil(float(self.mu) / self.lam))): npop.extend(pop[:self.lam if (self.mu - i * self.lam) >= self.lam else self.mu - i * self.lam])
-		return objects2array(npop)
+		return objects_to_array(npop)
 
 	def initPopulation(self, task):
 		r"""Initialize starting population.
@@ -483,7 +483,7 @@ class EvolutionStrategyML(EvolutionStrategyMpL):
 				4. New global best solutions fitness/objective value.
 				5. Additional arguments.
 		"""
-		cn = objects2array([IndividualES(x=self.mutateRand(c, task), task=task, rand=self.Rand) for _ in range(self.lam)])
+		cn = objects_to_array([IndividualES(x=self.mutateRand(c, task), task=task, rand=self.Rand) for _ in range(self.lam)])
 		c = self.newPop(cn)
 		fc = asarray([x.f for x in c])
 		xb, fxb = self.getBest(c, fc, xb, fxb)

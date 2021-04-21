@@ -1,10 +1,10 @@
 # encoding=utf8
 import logging
 
-from scipy.special import gamma as Gamma
-from numpy import where, sin, fabs, pi, zeros
+from numpy import where, zeros
 
 from NiaPy.algorithms.algorithm import Algorithm
+from NiaPy.util import levy_flight
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.basic')
@@ -105,15 +105,6 @@ class FlowerPollinationAlgorithm(Algorithm):
 		x[ir] = task.Lower[ir] + x[ir] % task.bRange[ir]
 		return x
 
-	def levy(self, D):
-		r"""Levy function.
-
-		Returns:
-			float: Next Levy number.
-		"""
-		sigma = (Gamma(1 + self.beta) * sin(pi * self.beta / 2) / (Gamma((1 + self.beta) / 2) * self.beta * 2 ** ((self.beta - 1) / 2))) ** (1 / self.beta)
-		return 0.01 * (self.normal(0, 1, D) * sigma / fabs(self.normal(0, 1, D)) ** (1 / self.beta))
-
 	def initPopulation(self, task):
 		pop, fpop, d = Algorithm.initPopulation(self, task)
 		d.update({'S': zeros((self.NP, task.D))})
@@ -139,7 +130,7 @@ class FlowerPollinationAlgorithm(Algorithm):
 				5. Additional arguments.
 		"""
 		for i in range(self.NP):
-			if self.uniform(0, 1) > self.p: S[i] += self.levy(task.D) * (Sol[i] - xb)
+			if self.uniform(0, 1) > self.p: S[i] += levy_flight(beta=self.beta, size=task.D, rng=self.Rand) * (Sol[i] - xb)
 			else:
 				JK = self.Rand.permutation(self.NP)
 				S[i] += self.uniform(0, 1) * (Sol[JK[0]] - Sol[JK[1]])

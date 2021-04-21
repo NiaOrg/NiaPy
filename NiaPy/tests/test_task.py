@@ -4,7 +4,7 @@ from unittest import TestCase
 from numpy import full, random as rnd, inf, array_equal
 
 from NiaPy.benchmarks import Benchmark
-from NiaPy.util import fullArray, FesException, GenException, RefException
+from NiaPy.util import full_array, FesException, GenException, RefException
 from NiaPy.task import StoppingTask, ThrowingTask
 
 class MyBenchmark(Benchmark):
@@ -40,16 +40,16 @@ class StoppingTaskBaseTestCase(TestCase):
 		self.assertEqual(self.D, self.task.dim())
 
 	def test_lower(self):
-		self.assertTrue(array_equal(fullArray(self.Lower, self.D), self.task.Lower))
-		self.assertTrue(array_equal(fullArray(self.Lower, self.D), self.task.bcLower()))
+		self.assertTrue(array_equal(full_array(self.Lower, self.D), self.task.Lower))
+		self.assertTrue(array_equal(full_array(self.Lower, self.D), self.task.bcLower()))
 
 	def test_upper(self):
-		self.assertTrue(array_equal(fullArray(self.Upper, self.D), self.task.Upper))
-		self.assertTrue(array_equal(fullArray(self.Upper, self.D), self.task.bcUpper()))
+		self.assertTrue(array_equal(full_array(self.Upper, self.D), self.task.Upper))
+		self.assertTrue(array_equal(full_array(self.Upper, self.D), self.task.bcUpper()))
 
 	def test_range(self):
-		self.assertTrue(array_equal(fullArray(self.Upper, self.D) - fullArray(self.Lower, self.D), self.task.bRange))
-		self.assertTrue(array_equal(fullArray(self.Upper, self.D) - fullArray(self.Lower, self.D), self.task.bcRange()))
+		self.assertTrue(array_equal(full_array(self.Upper, self.D) - full_array(self.Lower, self.D), self.task.bRange))
+		self.assertTrue(array_equal(full_array(self.Upper, self.D) - full_array(self.Lower, self.D), self.task.bcRange()))
 
 	def test_ngens(self):
 		self.assertEqual(inf, self.task.nGEN)
@@ -76,7 +76,7 @@ class StoppingTaskBaseTestCase(TestCase):
 		self.assertEqual(None, self.task.nextIter())
 
 	def test_is_feasible(self):
-		self.assertFalse(self.task.isFeasible(fullArray([1, 2, 3], self.D)))
+		self.assertFalse(self.task.isFeasible(full_array([1, 2, 3], self.D)))
 
 class StoppingTaskTestCase(TestCase):
 	r"""Test case for testing `Task`, `StoppingTask` and `CountingTask` classes.

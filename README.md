@@ -30,8 +30,8 @@ Nature-inspired algorithms are a very popular tool for solving optimization prob
 
 * **Free software:** MIT license
 * **Documentation:** https://niapy.readthedocs.io/en/stable/
-* **Python versions:** 3.6.x, 3.7.x or 3.8.x (backward compatibility with 2.7.x)
-* **Dependencies:** [click](CONTRIBUTING.md#development-dependencies)
+* **Python versions:** 3.6.x, 3.7.x, 3.8.x, 3.9.x
+* **Dependencies:** [click here](CONTRIBUTING.md#development-dependencies)
 
 # Mission
 

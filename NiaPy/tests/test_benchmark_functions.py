@@ -436,8 +436,9 @@ class TestBenchmarkFunctions(TestCase):
         fun = self.assertBounds('infinity', -1, 1)
         self.assertTrue(callable(fun))
         sizes = [2, 10, 100]
-        seterr('raise')
+        defaults = seterr('raise')
         for size in sizes:
             with self.assertRaises(FloatingPointError):
                     fun(size, full(size, .0))
             self.assertAlmostEqual(fun(size, full(size, 1.0)), 2.84147098480789650665250232163 * size)
+        seterr(**defaults)

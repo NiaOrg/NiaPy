@@ -2,7 +2,7 @@
 import logging
 from numpy import where, apply_along_axis, zeros, append, ndarray, delete, arange, argmin, absolute, int32
 from NiaPy.algorithms.algorithm import Algorithm
-from NiaPy.util import limit_repair
+from NiaPy.util import repair
 
 __all__ = ['ForestOptimizationAlgorithm']
 
@@ -131,7 +131,7 @@ class ForestOptimizationAlgorithm(Algorithm):
 		perms = self.rand([deltas.shape[0], deltas.shape[1]]).argsort(1)
 		deltas = deltas[arange(deltas.shape[0])[:, None], perms]
 		trees += deltas
-		trees = apply_along_axis(limit_repair, 1, trees, task.Lower, task.Upper)
+		trees = apply_along_axis(repair.limit, 1, trees, task.Lower, task.Upper)
 		return trees
 
 	def globalSeeding(self, task, candidates, size):
