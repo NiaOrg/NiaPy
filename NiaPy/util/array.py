@@ -1,6 +1,6 @@
 import numpy as np
 
-__all__ = ['full_array', 'to_object_array']
+__all__ = ['full_array', 'objects_to_array']
 
 
 def full_array(a, dimension):
@@ -31,7 +31,7 @@ def full_array(a, dimension):
     return out
 
 
-def to_object_array(objs):
+def objects_to_array(objs):
     r"""Convert `Iterable` array or list to `NumPy` array with dtype object.
 
     Args:

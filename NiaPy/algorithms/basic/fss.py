@@ -1,7 +1,7 @@
 # encoding=utf8
 from numpy import nan, asarray, zeros, full
 
-from NiaPy.util import to_object_array
+from NiaPy.util import objects_to_array
 from NiaPy.algorithms.algorithm import Algorithm, Individual
 
 class Fish(Individual):
@@ -170,7 +170,7 @@ class FishSchoolSearch(Algorithm):
 			school.append(fish)
 			curr_weight_school += fish.weight
 		prev_weight_school = curr_weight_school
-		return curr_step_individual, curr_step_volitive, curr_weight_school, prev_weight_school, to_object_array(school)
+		return curr_step_individual, curr_step_volitive, curr_weight_school, prev_weight_school, objects_to_array(school)
 
 	def max_delta_cost(self, school):
 		r"""Find maximum delta cost - return 0 if none of the fishes moved.

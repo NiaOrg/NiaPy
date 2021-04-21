@@ -3,7 +3,7 @@ import logging
 
 from NiaPy.algorithms.algorithm import Individual
 from NiaPy.algorithms.basic.de import DifferentialEvolution, CrossBest1, CrossRand1, CrossCurr2Best1, CrossBest2, CrossCurr2Rand1, proportional, multiMutations, DynNpDifferentialEvolution
-from NiaPy.util import to_object_array
+from NiaPy.util import objects_to_array
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.modified')
@@ -158,7 +158,7 @@ class SelfAdaptiveDifferentialEvolution(DifferentialEvolution):
 		Returns:
 			numpy.ndarray: New population.
 		"""
-		npop = to_object_array([self.AdaptiveGen(e) for e in pop])
+		npop = objects_to_array([self.AdaptiveGen(e) for e in pop])
 		for i, e in enumerate(npop): npop[i].x = self.CrossMutt(npop, i, xb, e.F, e.CR, rnd=self.Rand)
 		for e in npop: e.evaluate(task, rnd=self.rand)
 		return npop
@@ -375,7 +375,7 @@ class MultiStrategySelfAdaptiveDifferentialEvolution(SelfAdaptiveDifferentialEvo
 		Returns:
 			numpy.ndarray[Individual]: New population of individuals.
 		"""
-		return to_object_array([self.CrossMutt(pop, i, xb, self.F, self.CR, self.Rand, task, self.itype, self.strategies) for i in range(len(pop))])
+		return objects_to_array([self.CrossMutt(pop, i, xb, self.F, self.CR, self.Rand, task, self.itype, self.strategies) for i in range(len(pop))])
 
 class DynNpMultiStrategySelfAdaptiveDifferentialEvolution(MultiStrategySelfAdaptiveDifferentialEvolution, DynNpSelfAdaptiveDifferentialEvolutionAlgorithm):
 	r"""Implementation of Dynamic population size self-adaptive differential evolution algorithm with multiple mutation strategies.

@@ -5,7 +5,7 @@ import multiprocessing as mp
 
 from numpy import random as rand, inf, ndarray, asarray, array_equal, argmin, apply_along_axis
 
-from NiaPy.util import FesException, GenException, TimeException, RefException, to_object_array
+from NiaPy.util import FesException, GenException, TimeException, RefException, objects_to_array
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.util.utility')
@@ -52,7 +52,7 @@ def defaultIndividualInit(task, NP, rnd=rand, itype=None, **kwargs):
 			1. Initialized individuals.
 			2. Initialized individuals function/fitness values.
 	"""
-	pop = to_object_array([itype(task=task, rnd=rnd, e=True) for _ in range(NP)])
+	pop = objects_to_array([itype(task=task, rnd=rnd, e=True) for _ in range(NP)])
 	return pop, asarray([x.f for x in pop])
 
 class Algorithm:

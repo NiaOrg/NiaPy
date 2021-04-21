@@ -4,7 +4,7 @@ import logging
 from numpy import exp, random as rand, asarray
 
 from NiaPy.algorithms.algorithm import Algorithm, Individual
-from NiaPy.util import to_object_array
+from NiaPy.util import objects_to_array
 
 logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.basic')
@@ -239,7 +239,7 @@ class CamelAlgorithm(Algorithm):
 				1. Initialize population of camels.
 				2. Initialized populations function/fitness values.
 		"""
-		caravan = to_object_array([itype(E_init=self.E_init, S_init=self.S_init, task=task, rnd=rnd, e=True) for _ in range(NP)])
+		caravan = objects_to_array([itype(E_init=self.E_init, S_init=self.S_init, task=task, rnd=rnd, e=True) for _ in range(NP)])
 		return caravan, asarray([c.f for c in caravan])
 
 	def walk(self, c, cb, task):
@@ -324,9 +324,9 @@ class CamelAlgorithm(Algorithm):
 				4. New global best fitness/objective value
 				5. Additional arguments
 		"""
-		ncaravan = to_object_array([self.walk(c, cb, task) for c in caravan])
-		ncaravan = to_object_array([self.oasis(c, self.rand(), self.alpha) for c in ncaravan])
-		ncaravan = to_object_array([self.lifeCycle(c, self.mu, task) for c in ncaravan])
+		ncaravan = objects_to_array([self.walk(c, cb, task) for c in caravan])
+		ncaravan = objects_to_array([self.oasis(c, self.rand(), self.alpha) for c in ncaravan])
+		ncaravan = objects_to_array([self.lifeCycle(c, self.mu, task) for c in ncaravan])
 		fncaravan = asarray([c.f for c in ncaravan])
 		cb, fcb = self.getBest(ncaravan, fncaravan, cb, fcb)
 		return ncaravan, fncaravan, cb, fcb, {}
