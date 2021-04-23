@@ -1,5 +1,29 @@
 # Changelog
 
+## [2.0.0rc14](https://github.com/NiaOrg/NiaPy/tree/2.0.0rc14) (2021-04-23)
+
+[Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2.0.0rc13...2.0.0rc14)
+
+**Closed issues:**
+
+- scipy dependency [\#303](https://github.com/NiaOrg/NiaPy/issues/303)
+- Python 2.7 support [\#301](https://github.com/NiaOrg/NiaPy/issues/301)
+- Deprecation warnings [\#297](https://github.com/NiaOrg/NiaPy/issues/297)
+- Bug in Algorithm.runYield - runIteration executes nGEN - 1 times [\#293](https://github.com/NiaOrg/NiaPy/issues/293)
+- User defined function [\#292](https://github.com/NiaOrg/NiaPy/issues/292)
+
+**Merged pull requests:**
+
+- Removed scipy dependency [\#304](https://github.com/NiaOrg/NiaPy/pull/304) ([zStupan](https://github.com/zStupan))
+- Dropped Python 2 Support [\#302](https://github.com/NiaOrg/NiaPy/pull/302) ([zStupan](https://github.com/zStupan))
+- Run method fix [\#300](https://github.com/NiaOrg/NiaPy/pull/300) ([zStupan](https://github.com/zStupan))
+- Deprecation warnings and JADE fix [\#299](https://github.com/NiaOrg/NiaPy/pull/299) ([sisco0](https://github.com/sisco0))
+- some nitpicks [\#298](https://github.com/NiaOrg/NiaPy/pull/298) ([firefly-cpp](https://github.com/firefly-cpp))
+- docs: add zStupan as a contributor [\#296](https://github.com/NiaOrg/NiaPy/pull/296) ([allcontributors[bot]](https://github.com/apps/allcontributors))
+- Fixed bug in Algorithm.runYield [\#295](https://github.com/NiaOrg/NiaPy/pull/295) ([zStupan](https://github.com/zStupan))
+- np.float is deprecated [\#291](https://github.com/NiaOrg/NiaPy/pull/291) ([firefly-cpp](https://github.com/firefly-cpp))
+- BFOA quick fix [\#290](https://github.com/NiaOrg/NiaPy/pull/290) ([zStupan](https://github.com/zStupan))
+
 ## [2.0.0rc13](https://github.com/NiaOrg/NiaPy/tree/2.0.0rc13) (2021-03-10)
 
 [Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2.0.0rc12...2.0.0rc13)
@@ -194,7 +218,6 @@
 - New features. [\#183](https://github.com/NiaOrg/NiaPy/pull/183) ([kb2623](https://github.com/kb2623))
 - FOA examples added and README.md update [\#181](https://github.com/NiaOrg/NiaPy/pull/181) ([lukapecnik](https://github.com/lukapecnik))
 - FOA [\#180](https://github.com/NiaOrg/NiaPy/pull/180) ([lukapecnik](https://github.com/lukapecnik))
-- add scandir dev dependency [\#176](https://github.com/NiaOrg/NiaPy/pull/176) ([GregaVrbancic](https://github.com/GregaVrbancic))
 - New algorithms and port of old algorithms [\#175](https://github.com/NiaOrg/NiaPy/pull/175) ([kb2623](https://github.com/kb2623))
 - fix scrutinizer python version [\#174](https://github.com/NiaOrg/NiaPy/pull/174) ([GregaVrbancic](https://github.com/GregaVrbancic))
 - New tests [\#173](https://github.com/NiaOrg/NiaPy/pull/173) ([firefly-cpp](https://github.com/firefly-cpp))
@@ -214,6 +237,7 @@
 
 **Merged pull requests:**
 
+- add scandir dev dependency [\#176](https://github.com/NiaOrg/NiaPy/pull/176) ([GregaVrbancic](https://github.com/GregaVrbancic))
 - Added iterations counter to some of the algorithms [\#171](https://github.com/NiaOrg/NiaPy/pull/171) ([kb2623](https://github.com/kb2623))
 - Added fixes for stopping conditions [\#170](https://github.com/NiaOrg/NiaPy/pull/170) ([kb2623](https://github.com/kb2623))
 - Added stopping conditions [\#169](https://github.com/NiaOrg/NiaPy/pull/169) ([kb2623](https://github.com/kb2623))
@@ -229,7 +253,7 @@
 
 ## [1.0.2](https://github.com/NiaOrg/NiaPy/tree/1.0.2) (2018-10-24)
 
-[Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2.0.0rc2...1.0.2)
+[Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2...1.0.2)
 
 **Fixed bugs:**
 
@@ -239,13 +263,13 @@
 
 - fix Bat Algorithm [\#161](https://github.com/NiaOrg/NiaPy/pull/161) ([GregaVrbancic](https://github.com/GregaVrbancic))
 
-## [2.0.0rc2](https://github.com/NiaOrg/NiaPy/tree/2.0.0rc2) (2018-08-30)
-
-[Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2...2.0.0rc2)
-
 ## [2](https://github.com/NiaOrg/NiaPy/tree/2) (2018-08-30)
 
-[Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2.0.0rc1...2)
+[Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2.0.0rc2...2)
+
+## [2.0.0rc2](https://github.com/NiaOrg/NiaPy/tree/2.0.0rc2) (2018-08-30)
+
+[Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2.0.0rc1...2.0.0rc2)
 
 ## [2.0.0rc1](https://github.com/NiaOrg/NiaPy/tree/2.0.0rc1) (2018-08-30)
 
