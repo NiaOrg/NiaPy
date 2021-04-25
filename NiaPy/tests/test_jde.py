@@ -1,7 +1,6 @@
 # encoding=utf8
 from unittest import TestCase, skip
 
-import numpy as np
 from numpy.random import default_rng
 
 from NiaPy.task.task import Task

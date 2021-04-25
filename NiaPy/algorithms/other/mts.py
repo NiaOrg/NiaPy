@@ -248,8 +248,7 @@ def MTS_LS3v1(Xk, Xk_fit, Xb, Xb_fit, improve, SR, task, rng, phi=3, BONUS1=10, 
 	"""
 	grade, Disp = 0.0, task.bRange / 10
 	while True in (Disp > 1e-3):
-		Xn = np.apply_along_axis(task.repair, 1, np.asarray([rng.permutation(Xk) + Disp * rng.uniform(-1, 1, len(Xk))
-															 for _ in range(phi)]), rng)
+		Xn = np.apply_along_axis(task.repair, 1, np.asarray([rng.permutation(Xk) + Disp * rng.uniform(-1, 1, len(Xk)) for _ in range(phi)]), rng)
 		Xn_f = np.apply_along_axis(task.eval, 1, Xn)
 		iBetter, iBetterBest = np.argwhere(Xn_f < Xk_fit), np.argwhere(Xn_f < Xb_fit)
 		grade += len(iBetterBest) * BONUS1 + (len(iBetter) - len(iBetterBest)) * BONUS2
@@ -487,8 +486,8 @@ class MultipleTrajectorySearch(Algorithm):
 			enable[i], grades[i] = False, 0
 			X[i], X_f[i], xb, xb_f, k = self.GradingRun(X[i], X_f[i], xb, xb_f, improve[i], SR[i], task)
 			X[i], X_f[i], xb, xb_f, improve[i], SR[i], grades[i] = self.LsRun(k, X[i], X_f[i], xb, xb_f, improve[i], SR[i], grades[i], task)
-		for _ in range(self.NoLsBest): _, _, xb, xb_f, _, _, _ = MTS_LS1(xb, xb_f, xb, xb_f, False,
-																		 task.bRange.copy() / 10, task, rng=self.rng)
+		for _ in range(self.NoLsBest):
+			_, _, xb, xb_f, _, _, _ = MTS_LS1(xb, xb_f, xb, xb_f, False, task.bRange.copy() / 10, task, rng=self.rng)
 		enable[np.argsort(grades)[:self.NoEnabled]] = True
 		return X, X_f, xb, xb_f, {'enable': enable, 'improve': improve, 'SR': SR, 'grades': grades}
 

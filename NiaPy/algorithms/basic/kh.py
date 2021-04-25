@@ -318,8 +318,7 @@ class KrillHerd(Algorithm):
 				1. Location of food.
 				2. Foods function/fitness value.
 		"""
-		x_food = task.repair(np.asarray([np.sum(KH[:, i] / KH_f) for i in range(task.D)]) / np.sum(1 / KH_f),
-                             rng=self.rng)
+		x_food = task.repair(np.asarray([np.sum(KH[:, i] / KH_f) for i in range(task.D)]) / np.sum(1 / KH_f), rng=self.rng)
 		x_food_f = task.eval(x_food)
 		return x_food, x_food_f
 
