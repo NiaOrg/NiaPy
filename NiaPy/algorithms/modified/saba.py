@@ -149,7 +149,7 @@ class AdaptiveBatAlgorithm(Algorithm):
 		Returns:
 			numpy.ndarray: New solution based on global best individual.
 		"""
-		return task.repair(best + self.epsilon * A * self.normal(0, 1, task.D), rnd=self.Rand)
+		return task.repair(best + self.epsilon * A * self.normal(0, 1, task.D), rng=self.rng)
 
 	def updateLoudness(self, A):
 		r"""Update loudness when the prey is found.
@@ -190,10 +190,10 @@ class AdaptiveBatAlgorithm(Algorithm):
 		for i in range(self.NP):
 			Q[i] = self.Qmin + (self.Qmax - self.Qmin) * self.uniform(0, 1)
 			v[i] += (Sol[i] - xb) * Q[i]
-			if self.rand() > self.r: S[i] = self.localSearch(best=xb, A=A[i], task=task, i=i, Sol=Sol)
-			else: S[i] = task.repair(Sol[i] + v[i], rnd=self.Rand)
+			if self.random() > self.r: S[i] = self.localSearch(best=xb, A=A[i], task=task, i=i, Sol=Sol)
+			else: S[i] = task.repair(Sol[i] + v[i], rng=self.rng)
 			Fnew = task.eval(S[i])
-			if (Fnew <= Fitness[i]) and (self.rand() < A[i]): Sol[i], Fitness[i] = S[i], Fnew
+			if (Fnew <= Fitness[i]) and (self.random() < A[i]): Sol[i], Fitness[i] = S[i], Fnew
 			if Fnew <= fxb: xb, fxb, A[i] = S[i].copy(), Fnew, self.updateLoudness(A[i])
 		return Sol, Fitness, xb, fxb, {'A': A, 'S': S, 'Q': Q, 'v': v}
 
@@ -318,7 +318,7 @@ class SelfAdaptiveBatAlgorithm(AdaptiveBatAlgorithm):
 				1. New loudness.
 				2. Nwq pulse rate.
 		"""
-		return self.A_l + self.rand() * (self.A_u - self.A_l) if self.rand() < self.tao_1 else A, self.r_l + self.rand() * (self.r_u - self.r_l) if self.rand() < self.tao_2 else r
+		return self.A_l + self.random() * (self.A_u - self.A_l) if self.random() < self.tao_1 else A, self.r_l + self.random() * (self.r_u - self.r_l) if self.random() < self.tao_2 else r
 
 	def runIteration(self, task, Sol, Fitness, xb, fxb, A, r, S, Q, v, **dparams):
 		r"""Core function of Bat Algorithm.
@@ -351,10 +351,10 @@ class SelfAdaptiveBatAlgorithm(AdaptiveBatAlgorithm):
 			A[i], r[i] = self.selfAdaptation(A[i], r[i])
 			Q[i] = self.Qmin + (self.Qmax - self.Qmin) * self.uniform(0, 1)
 			v[i] += (Sol[i] - xb) * Q[i]
-			if self.rand() > r[i]: S[i] = self.localSearch(best=xb, A=A[i], task=task, i=i, Sol=Sol)
-			else: S[i] = task.repair(Sol[i] + v[i], rnd=self.Rand)
+			if self.random() > r[i]: S[i] = self.localSearch(best=xb, A=A[i], task=task, i=i, Sol=Sol)
+			else: S[i] = task.repair(Sol[i] + v[i], rng=self.rng)
 			Fnew = task.eval(S[i])
-			if (Fnew <= Fitness[i]) and (self.rand() < (self.A_l - A[i]) / self.A): Sol[i], Fitness[i] = S[i], Fnew
+			if (Fnew <= Fitness[i]) and (self.random() < (self.A_l - A[i]) / self.A): Sol[i], Fitness[i] = S[i], Fnew
 			if Fnew <= fxb: xb, fxb = S[i].copy(), Fnew
 		return Sol, Fitness, xb, fxb, {'A': A, 'r': r, 'S': S, 'Q': Q, 'v': v}
 

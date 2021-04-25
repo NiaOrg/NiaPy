@@ -142,8 +142,8 @@ class SelfAdaptiveDifferentialEvolution(DifferentialEvolution):
 		Returns:
 			Individual: New individual with new parameters
 		"""
-		f = self.F_l + self.rand() * (self.F_u - self.F_l) if self.rand() < self.Tao1 else x.F
-		cr = self.rand() if self.rand() < self.Tao2 else x.CR
+		f = self.F_l + self.random() * (self.F_u - self.F_l) if self.random() < self.Tao1 else x.F
+		cr = self.random() if self.random() < self.Tao2 else x.CR
 		return self.itype(x=x.x, F=f, CR=cr, e=False)
 
 	def evolve(self, pop, xb, task, **ukwargs):
@@ -159,8 +159,8 @@ class SelfAdaptiveDifferentialEvolution(DifferentialEvolution):
 			numpy.ndarray: New population.
 		"""
 		npop = objects_to_array([self.AdaptiveGen(e) for e in pop])
-		for i, e in enumerate(npop): npop[i].x = self.CrossMutt(npop, i, xb, e.F, e.CR, rnd=self.Rand)
-		for e in npop: e.evaluate(task, rnd=self.rand)
+		for i, e in enumerate(npop): npop[i].x = self.CrossMutt(npop, i, xb, e.F, e.CR, rng=self.rng)
+		for e in npop: e.evaluate(task, rng=self.random)
 		return npop
 
 class AgingIndividualJDE(SolutionjDE):
@@ -375,7 +375,7 @@ class MultiStrategySelfAdaptiveDifferentialEvolution(SelfAdaptiveDifferentialEvo
 		Returns:
 			numpy.ndarray[Individual]: New population of individuals.
 		"""
-		return objects_to_array([self.CrossMutt(pop, i, xb, self.F, self.CR, self.Rand, task, self.itype, self.strategies) for i in range(len(pop))])
+		return objects_to_array([self.CrossMutt(pop, i, xb, self.F, self.CR, self.rng, task, self.itype, self.strategies) for i in range(len(pop))])
 
 class DynNpMultiStrategySelfAdaptiveDifferentialEvolution(MultiStrategySelfAdaptiveDifferentialEvolution, DynNpSelfAdaptiveDifferentialEvolutionAlgorithm):
 	r"""Implementation of Dynamic population size self-adaptive differential evolution algorithm with multiple mutation strategies.

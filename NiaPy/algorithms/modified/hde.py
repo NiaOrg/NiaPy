@@ -1,7 +1,7 @@
 # encoding=utf8
 import logging
 
-from numpy import argsort
+import numpy as np
 
 from NiaPy.algorithms.algorithm import Individual
 from NiaPy.algorithms.basic.de import MultiStrategyDifferentialEvolution, DynNpDifferentialEvolution, DifferentialEvolution
@@ -141,7 +141,7 @@ class DifferentialEvolutionMTS(DifferentialEvolution, MultipleTrajectorySearch):
 			x.enable, x.grades = False, 0
 			x.x, x.f, xb, fxb, k = self.GradingRun(x.x, x.f, xb, fxb, x.improved, x.SR, task)
 			x.x, x.f, xb, fxb, x.improved, x.SR, x.grades = self.LsRun(k, x.x, x.f, xb, fxb, x.improved, x.SR, 0, task)
-		for i in X[argsort([x.grade for x in X])[:self.NoEnabled]]: i.enable = True
+		for i in X[np.argsort([x.grade for x in X])[:self.NoEnabled]]: i.enable = True
 		return X, xb, fxb
 
 class DifferentialEvolutionMTSv1(DifferentialEvolutionMTS):

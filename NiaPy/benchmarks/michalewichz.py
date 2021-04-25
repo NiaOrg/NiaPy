@@ -2,7 +2,7 @@
 
 """Implementations of Michalewichz's function."""
 
-from numpy import sin, pi
+import numpy as np
 from NiaPy.benchmarks.benchmark import Benchmark
 
 __all__ = ['Michalewichz']
@@ -45,7 +45,7 @@ class Michalewichz(Benchmark):
 	"""
 	Name = ['Michalewichz']
 
-	def __init__(self, Lower=0.0, Upper=pi, m=10):
+	def __init__(self, Lower=0.0, Upper=np.pi, m=10):
 		r"""Initialize of Michalewichz benchmark.
 
 		Args:
@@ -85,7 +85,7 @@ class Michalewichz(Benchmark):
 				float: Fitness value for the solution.
 			"""
 			v = 0.0
-			for i in range(D): v += sin(X[i]) * sin(((i + 1) * X[i] ** 2) / pi) ** (2 * cls.m)
+			for i in range(D): v += np.sin(X[i]) * np.sin(((i + 1) * X[i] ** 2) / np.pi) ** (2 * cls.m)
 			return -v
 		return evaluate
 

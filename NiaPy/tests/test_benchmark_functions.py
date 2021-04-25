@@ -2,7 +2,7 @@
 
 from math import pow
 from unittest import TestCase
-from numpy import asarray, pi, full, seterr
+import numpy as np
 from NiaPy.task import Utility
 
 
@@ -13,16 +13,16 @@ class TestBenchmarkFunctions(TestCase):
         """Set up the tests."""
 
         self.D = 5
-        self.array = asarray([0, 0, 0, 0, 0])
-        self.array2 = asarray([1, 1, 1, 1, 1])
-        self.array3 = asarray([420.968746, 420.968746, 420.968746, 420.968746, 420.968746])
-        self.array4 = asarray([-2.903534, -2.903534])
-        self.array5 = asarray([-0.5, -0.5, -0.5, -0.5, -0.5])
-        self.array6 = asarray([-1, -1, -1, -1, -1])
-        self.array7 = asarray([2, 2, 2, 2, 2])
-        self.array8 = asarray([7.9170526982459462172, 7.9170526982459462172, 7.9170526982459462172, 7.9170526982459462172, 7.9170526982459462172])
-        self.array9 = asarray([-5.12, -5.12, -5.12, -5.12, -5.12])
-        self.array10 = asarray([1, 2, 3, 4, 5])
+        self.array = np.asarray([0, 0, 0, 0, 0])
+        self.array2 = np.asarray([1, 1, 1, 1, 1])
+        self.array3 = np.asarray([420.968746, 420.968746, 420.968746, 420.968746, 420.968746])
+        self.array4 = np.asarray([-2.903534, -2.903534])
+        self.array5 = np.asarray([-0.5, -0.5, -0.5, -0.5, -0.5])
+        self.array6 = np.asarray([-1, -1, -1, -1, -1])
+        self.array7 = np.asarray([2, 2, 2, 2, 2])
+        self.array8 = np.asarray([7.9170526982459462172, 7.9170526982459462172, 7.9170526982459462172, 7.9170526982459462172, 7.9170526982459462172])
+        self.array9 = np.asarray([-5.12, -5.12, -5.12, -5.12, -5.12])
+        self.array10 = np.asarray([1, 2, 3, 4, 5])
 
     def assertBounds(self, bench, lower, upper):
         """Checking the bounds.
@@ -229,9 +229,9 @@ class TestBenchmarkFunctions(TestCase):
 
         fun = self.assertBounds('bentcigar', -100, 100)
         self.assertTrue(callable(fun))
-        self.assertAlmostEqual(fun(2, full(2, 0)), 0.0, delta=1e-4)
-        self.assertAlmostEqual(fun(10, full(10, 0)), 0.0, delta=1e-4)
-        self.assertAlmostEqual(fun(100, full(100, 0)), 0.0, delta=1e-4)
+        self.assertAlmostEqual(fun(2, np.zeros(2)), 0.0, delta=1e-4)
+        self.assertAlmostEqual(fun(10, np.zeros(10)), 0.0, delta=1e-4)
+        self.assertAlmostEqual(fun(100, np.zeros(100)), 0.0, delta=1e-4)
 
     def test_discus(self):
         """Test the discus benchmark."""
@@ -326,36 +326,36 @@ class TestBenchmarkFunctions(TestCase):
     def test_michalewicz(self):
         """Test the michalewicz benchmark."""
 
-        fun = self.assertBounds('michalewicz', 0, pi)
+        fun = self.assertBounds('michalewicz', 0, np.pi)
         self.assertTrue(callable(fun))
-        self.assertAlmostEqual(fun(2, asarray([2.20, 1.57])), -1.8013, delta=1e-3)
+        self.assertAlmostEqual(fun(2, np.asarray([2.20, 1.57])), -1.8013, delta=1e-3)
 
     def test_levy(self):
         """Test the levy benchmark."""
 
-        fun = self.assertBounds('levy', 0, pi)
+        fun = self.assertBounds('levy', 0, np.pi)
         self.assertTrue(callable(fun))
-        self.assertAlmostEqual(fun(2, full(2, 1.)), 0.0)
-        self.assertAlmostEqual(fun(10, full(10, 1.)), 0.0)
-        self.assertAlmostEqual(fun(100, full(100, 1.)), 0.0)
+        self.assertAlmostEqual(fun(2, np.ones(2)), 0.0)
+        self.assertAlmostEqual(fun(10, np.ones(10)), 0.0)
+        self.assertAlmostEqual(fun(100, np.ones(100)), 0.0)
 
     def test_sphere2(self):
         """Test the sphere 2 benchmark."""
 
         fun = self.assertBounds('sphere2', -1, 1)
         self.assertTrue(callable(fun))
-        self.assertAlmostEqual(fun(2, full(2, 0.)), 0.0)
-        self.assertAlmostEqual(fun(10, full(10, 0.)), 0.0)
-        self.assertAlmostEqual(fun(100, full(100, 0.)), 0.0)
+        self.assertAlmostEqual(fun(2, np.zeros(2)), 0.0)
+        self.assertAlmostEqual(fun(10, np.zeros(10)), 0.0)
+        self.assertAlmostEqual(fun(100, np.zeros(100)), 0.0)
 
     def test_sphere3(self):
         """Test the sphere 3 benchmark."""
 
         fun = self.assertBounds('sphere3', -65.536, 65.536)
         self.assertTrue(callable(fun))
-        self.assertAlmostEqual(fun(2, full(2, 0.)), 0.0)
-        self.assertAlmostEqual(fun(10, full(10, 0.)), 0.0)
-        self.assertAlmostEqual(fun(100, full(100, 0.)), 0.0)
+        self.assertAlmostEqual(fun(2, np.zeros(2)), 0.0)
+        self.assertAlmostEqual(fun(10, np.zeros(10)), 0.0)
+        self.assertAlmostEqual(fun(100, np.zeros(100)), 0.0)
 
     def __trid_opt(self, d):
         """Trid benchmark optimum."""
@@ -365,7 +365,7 @@ class TestBenchmarkFunctions(TestCase):
     def __trid_opt_sol(self, d):
         """Trid optimal solution."""
 
-        return asarray([i * (d + 1 - i) for i in range(1, d + 1)])
+        return np.asarray([i * (d + 1 - i) for i in range(1, d + 1)])
 
     def test_trid(self):
         """Test the trid benchmark."""
@@ -379,7 +379,7 @@ class TestBenchmarkFunctions(TestCase):
     def __perm_opt_sol(self, d):
         """The perm optimal solution."""
 
-        return asarray([1 / i for i in range(1, d + 1)])
+        return np.asarray([1 / i for i in range(1, d + 1)])
 
     def test_perm(self):
         """Test the perm bencmark."""
@@ -395,13 +395,13 @@ class TestBenchmarkFunctions(TestCase):
 
         fun = self.assertBounds('zakharov', -5, 10)
         self.assertTrue(callable(fun))
-        self.assertAlmostEqual(fun(2, full(2, .0)), .0)
-        self.assertAlmostEqual(fun(10, full(10, .0)), .0)
-        self.assertAlmostEqual(fun(100, full(100, .0)), .0)
+        self.assertAlmostEqual(fun(2, np.zeros(2)), .0)
+        self.assertAlmostEqual(fun(10, np.zeros(10)), .0)
+        self.assertAlmostEqual(fun(100, np.zeros(100)), .0)
 
     def __dixonprice_opt_sol(self, d):
         """The dixon price optimal solution."""
-        return asarray([2 ** (-(2 ** i - 2) / 2 ** i) for i in range(1, d + 1)])
+        return np.asarray([2 ** (-(2 ** i - 2) / 2 ** i) for i in range(1, d + 1)])
 
     def test_dixonprice(self):
         """Test the dixon price benchmark."""
@@ -417,18 +417,18 @@ class TestBenchmarkFunctions(TestCase):
 
         fun = self.assertBounds('powell', -4, 5)
         self.assertTrue(callable(fun))
-        self.assertAlmostEqual(fun(2, full(2, .0)), .0)
-        self.assertAlmostEqual(fun(10, full(10, .0)), .0)
-        self.assertAlmostEqual(fun(100, full(100, .0)), .0)
+        self.assertAlmostEqual(fun(2, np.zeros(2)), .0)
+        self.assertAlmostEqual(fun(10, np.zeros(10)), .0)
+        self.assertAlmostEqual(fun(100, np.zeros(100)), .0)
 
     def test_cosinemixture(self):
         """Test the cosine mixture benchmark."""
 
         fun = self.assertBounds('cosinemixture', -1, 1)
         self.assertTrue(callable(fun))
-        self.assertAlmostEqual(fun(2, full(2, .0)), -.1 * 2)
-        self.assertAlmostEqual(fun(10, full(10, .0)), -.1 * 10)
-        self.assertAlmostEqual(fun(100, full(100, .0)), -.1 * 100)
+        self.assertAlmostEqual(fun(2, np.zeros(2)), -.1 * 2)
+        self.assertAlmostEqual(fun(10, np.zeros(10)), -.1 * 10)
+        self.assertAlmostEqual(fun(100, np.zeros(100)), -.1 * 100)
 
     def test_infinity(self):
         """Test the infinity benchmark."""
@@ -436,9 +436,9 @@ class TestBenchmarkFunctions(TestCase):
         fun = self.assertBounds('infinity', -1, 1)
         self.assertTrue(callable(fun))
         sizes = [2, 10, 100]
-        defaults = seterr('raise')
+        defaults = np.seterr('raise')
         for size in sizes:
             with self.assertRaises(FloatingPointError):
-                    fun(size, full(size, .0))
-            self.assertAlmostEqual(fun(size, full(size, 1.0)), 2.84147098480789650665250232163 * size)
-        seterr(**defaults)
+                fun(size, np.zeros(size))
+            self.assertAlmostEqual(fun(size, np.ones(size)), 2.84147098480789650665250232163 * size)
+        np.seterr(**defaults)

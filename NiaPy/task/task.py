@@ -6,7 +6,7 @@ import logging
 from enum import Enum
 
 from matplotlib import pyplot as plt
-from numpy import inf, random as rand
+import numpy as np
 
 from NiaPy.util import full_array, repair
 from NiaPy.util.exception import (
@@ -58,7 +58,7 @@ class Task:
 
     D = 0
     benchmark = None
-    Lower, Upper, bRange = inf, inf, inf
+    Lower, Upper, bRange = np.inf, np.inf, np.inf
     optType = OptimizationType.MINIMIZATION
 
     def __init__(self, D=0, optType=OptimizationType.MINIMIZATION, benchmark=None, Lower=None, Upper=None, frepair=repair.limit, **kwargs):
@@ -149,12 +149,12 @@ class Task:
 
         return self.Upper - self.Lower
 
-    def repair(self, x, rnd=rand):
+    def repair(self, x, rng=None):
         r"""Repair solution and put the solution in the random position inside of the bounds of problem.
 
         Arguments:
                 x (numpy.ndarray): Solution to check and repair if needed.
-                rnd (mtrand.RandomState): Random number generator.
+                rng (numpy.random.Generator): Random number generator.
 
         Returns:
                 numpy.ndarray: Fixed solution.
@@ -168,7 +168,7 @@ class Task:
 
         """
 
-        return self.frepair(x, self.Lower, self.Upper, rnd=rnd)
+        return self.frepair(x, self.Lower, self.Upper, rng=rng)
 
     def nextIter(self):
         r"""Increments the number of algorithm iterations."""
@@ -304,7 +304,7 @@ class StoppingTask(CountingTask):
 
     """
 
-    def __init__(self, nFES=inf, nGEN=inf, refValue=None, logger=False, **kwargs):
+    def __init__(self, nFES=np.inf, nGEN=np.inf, refValue=None, logger=False, **kwargs):
         r"""Initialize task class for optimization.
 
         Arguments:
@@ -323,9 +323,9 @@ class StoppingTask(CountingTask):
         """
 
         CountingTask.__init__(self, **kwargs)
-        self.refValue = (-inf if refValue is None else refValue)
+        self.refValue = (-np.inf if refValue is None else refValue)
         self.logger = logger
-        self.x, self.x_f = None, inf
+        self.x, self.x_f = None, np.inf
         self.nFES, self.nGEN = nFES, nGEN
         self.n_evals = []
         self.x_f_vals = []
@@ -346,7 +346,7 @@ class StoppingTask(CountingTask):
         """
 
         if self.stopCond():
-            return inf * self.optType.value
+            return np.inf * self.optType.value
 
         x_f = CountingTask.eval(self, A)
 

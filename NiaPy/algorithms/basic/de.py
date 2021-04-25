@@ -2,7 +2,7 @@
 import logging
 import math
 
-from numpy import random as rand, argmin, argmax, mean, cos, asarray, append, sin, isfinite
+import numpy as np
 
 from NiaPy.algorithms.algorithm import Algorithm, Individual, defaultIndividualInit
 from NiaPy.util import objects_to_array, euclidean
@@ -13,7 +13,7 @@ logging.basicConfig()
 logger = logging.getLogger('NiaPy.algorithms.basic')
 logger.setLevel('INFO')
 
-def CrossRand1(pop, ic, x_b, f, cr, rnd=rand, *args):
+def CrossRand1(pop, ic, x_b, f, cr, rng, *args):
 	r"""Mutation strategy with crossover.
 
 	Mutation strategy uses three different random individuals from population to perform mutation.
@@ -35,19 +35,19 @@ def CrossRand1(pop, ic, x_b, f, cr, rnd=rand, *args):
 		x_b (Individual): Current global best individual.
 		f (float): Scale factor.
 		cr (float): Crossover probability.
-		rnd (mtrand.RandomState): Random generator.
+		rng (numpy.random.Generator): Random generator.
 		args (list): Additional arguments.
 
 	Returns:
 		numpy.ndarray: Mutated and mixed individual.
 	"""
-	j = rnd.randint(len(pop[ic]))
+	j = rng.integers(0, len(pop[ic]))
 	p = [1 / (len(pop) - 1.0) if i != ic else 0 for i in range(len(pop))] if len(pop) > 3 else None
-	r = rnd.choice(len(pop), 3, replace=not len(pop) >= 3, p=p)
-	x = [pop[r[0]][i] + f * (pop[r[1]][i] - pop[r[2]][i]) if rnd.rand() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
-	return asarray(x)
+	r = rng.choice(len(pop), 3, replace=not len(pop) >= 3, p=p)
+	x = [pop[r[0]][i] + f * (pop[r[1]][i] - pop[r[2]][i]) if rng.random() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
+	return np.asarray(x)
 
-def CrossBest1(pop, ic, x_b, f, cr, rnd=rand, *args):
+def CrossBest1(pop, ic, x_b, f, cr, rng, *args):
 	r"""Mutation strategy with crossover.
 
 	Mutation strategy uses two different random individuals from population and global best individual.
@@ -69,19 +69,19 @@ def CrossBest1(pop, ic, x_b, f, cr, rnd=rand, *args):
 		x_b (Individual): Current global best individual.
 		f (float): Scale factor.
 		cr (float): Crossover probability.
-		rnd (mtrand.RandomState): Random generator.
+		rng (numpy.random.Generator): Random generator.
 		args (list): Additional arguments.
 
 	returns:
 		numpy.ndarray: Mutated and mixed individual.
 	"""
-	j = rnd.randint(len(pop[ic]))
+	j = rng.integers(len(pop[ic]))
 	p = [1 / (len(pop) - 1.0) if i != ic else 0 for i in range(len(pop))] if len(pop) > 2 else None
-	r = rnd.choice(len(pop), 2, replace=not len(pop) >= 2, p=p)
-	x = [x_b[i] + f * (pop[r[0]][i] - pop[r[1]][i]) if rnd.rand() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
-	return asarray(x)
+	r = rng.choice(len(pop), 2, replace=not len(pop) >= 2, p=p)
+	x = [x_b[i] + f * (pop[r[0]][i] - pop[r[1]][i]) if rng.random() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
+	return np.asarray(x)
 
-def CrossRand2(pop, ic, x_b, f, cr, rnd=rand, *args):
+def CrossRand2(pop, ic, x_b, f, cr, rng, *args):
 	r"""Mutation strategy with crossover.
 
 	Mutation strategy uses five different random individuals from population.
@@ -103,19 +103,19 @@ def CrossRand2(pop, ic, x_b, f, cr, rnd=rand, *args):
 		x_b (Individual): Current global best individual.
 		f (float): Scale factor.
 		cr (float): Crossover probability.
-		rnd (mtrand.RandomState): Random generator.
+		rng (numpy.random.Generator): Random generator.
 		args (list): Additional arguments.
 
 	Returns:
 		numpy.ndarray: mutated and mixed individual.
 	"""
-	j = rnd.randint(len(pop[ic]))
+	j = rng.integers(0, len(pop[ic]))
 	p = [1 / (len(pop) - 1.0) if i != ic else 0 for i in range(len(pop))] if len(pop) > 5 else None
-	r = rnd.choice(len(pop), 5, replace=not len(pop) >= 5, p=p)
-	x = [pop[r[0]][i] + f * (pop[r[1]][i] - pop[r[2]][i]) + f * (pop[r[3]][i] - pop[r[4]][i]) if rnd.rand() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
-	return asarray(x)
+	r = rng.choice(len(pop), 5, replace=not len(pop) >= 5, p=p)
+	x = [pop[r[0]][i] + f * (pop[r[1]][i] - pop[r[2]][i]) + f * (pop[r[3]][i] - pop[r[4]][i]) if rng.random() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
+	return np.asarray(x)
 
-def CrossBest2(pop, ic, x_b, f, cr, rnd=rand, *args):
+def CrossBest2(pop, ic, x_b, f, cr, rng, *args):
 	r"""Mutation strategy with crossover.
 
 	Mutation:
@@ -135,19 +135,19 @@ def CrossBest2(pop, ic, x_b, f, cr, rnd=rand, *args):
 		x_b (Individual): Current global best individual.
 		f (float): Scale factor.
 		cr (float): Crossover probability.
-		rnd (mtrand.RandomState): Random generator.
+		rng (numpy.random.Generator): Random generator.
 		args (list): Additional arguments.
 
 	Returns:
 		numpy.ndarray: mutated and mixed individual.
 	"""
-	j = rnd.randint(len(pop[ic]))
+	j = rng.integers(0, len(pop[ic]))
 	p = [1 / (len(pop) - 1.0) if i != ic else 0 for i in range(len(pop))] if len(pop) > 4 else None
-	r = rnd.choice(len(pop), 4, replace=not len(pop) >= 4, p=p)
-	x = [x_b[i] + f * (pop[r[0]][i] - pop[r[1]][i]) + f * (pop[r[2]][i] - pop[r[3]][i]) if rnd.rand() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
-	return asarray(x)
+	r = rng.choice(len(pop), 4, replace=not len(pop) >= 4, p=p)
+	x = [x_b[i] + f * (pop[r[0]][i] - pop[r[1]][i]) + f * (pop[r[2]][i] - pop[r[3]][i]) if rng.random() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
+	return np.asarray(x)
 
-def CrossCurr2Rand1(pop, ic, x_b, f, cr, rnd=rand, *args):
+def CrossCurr2Rand1(pop, ic, x_b, f, cr, rng, *args):
 	r"""Mutation strategy with crossover.
 
 	Mutation:
@@ -167,19 +167,19 @@ def CrossCurr2Rand1(pop, ic, x_b, f, cr, rnd=rand, *args):
 		x_b (Individual): Current global best individual.
 		f (float): Scale factor.
 		cr (float): Crossover probability.
-		rnd (mtrand.RandomState): Random generator.
+		rng (numpy.random.Generator): Random generator.
 		args (list): Additional arguments.
 
 	Returns:
 		numpy.ndarray: mutated and mixed individual.
 	"""
-	j = rnd.randint(len(pop[ic]))
+	j = rng.integers(0, len(pop[ic]))
 	p = [1 / (len(pop) - 1.0) if i != ic else 0 for i in range(len(pop))] if len(pop) > 4 else None
-	r = rnd.choice(len(pop), 4, replace=not len(pop) >= 4, p=p)
-	x = [pop[ic][i] + f * (pop[r[0]][i] - pop[r[1]][i]) + f * (pop[r[2]][i] - pop[r[3]][i]) if rnd.rand() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
-	return asarray(x)
+	r = rng.choice(len(pop), 4, replace=not len(pop) >= 4, p=p)
+	x = [pop[ic][i] + f * (pop[r[0]][i] - pop[r[1]][i]) + f * (pop[r[2]][i] - pop[r[3]][i]) if rng.random() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
+	return np.asarray(x)
 
-def CrossCurr2Best1(pop, ic, x_b, f, cr, rnd=rand, **kwargs):
+def CrossCurr2Best1(pop, ic, x_b, f, cr, rng, **kwargs):
 	r"""Mutation strategy with crossover.
 
 	Mutation:
@@ -199,17 +199,17 @@ def CrossCurr2Best1(pop, ic, x_b, f, cr, rnd=rand, **kwargs):
 		x_b (Individual): Current global best individual.
 		f (float): Scale factor.
 		cr (float): Crossover probability.
-		rnd (mtrand.RandomState): Random generator.
+		rng (numpy.random.Generator): Random generator.
 		args (list): Additional arguments.
 
 	Returns:
 		numpy.ndarray: mutated and mixed individual.
 	"""
-	j = rnd.randint(len(pop[ic]))
+	j = rng.integers(0, len(pop[ic]))
 	p = [1 / (len(pop) - 1.0) if i != ic else 0 for i in range(len(pop))] if len(pop) > 3 else None
-	r = rnd.choice(len(pop), 3, replace=not len(pop) >= 3, p=p)
-	x = [pop[ic][i] + f * (x_b[i] - pop[r[0]][i]) + f * (pop[r[1]][i] - pop[r[2]][i]) if rnd.rand() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
-	return asarray(x)
+	r = rng.choice(len(pop), 3, replace=not len(pop) >= 3, p=p)
+	x = [pop[ic][i] + f * (x_b[i] - pop[r[0]][i]) + f * (pop[r[1]][i] - pop[r[2]][i]) if rng.random() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
+	return np.asarray(x)
 
 class DifferentialEvolution(Algorithm):
 	r"""Implementation of Differential evolution algorithm.
@@ -233,7 +233,7 @@ class DifferentialEvolution(Algorithm):
 		Name (List[str]): List of string of names for algorithm.
 		F (float): Scale factor.
 		CR (float): Crossover probability.
-		CrossMutt (Callable[numpy.ndarray, int, numpy.ndarray, float, float, mtrand.RandomState, Dict[str, Any]]): crossover and mutation strategy.
+		CrossMutt (Callable[numpy.ndarray, int, numpy.ndarray, float, float, numpy.random.Generator, Dict[str, Any]]): crossover and mutation strategy.
 
 	See Also:
 		* :class:`NiaPy.algorithms.Algorithm`
@@ -278,7 +278,7 @@ class DifferentialEvolution(Algorithm):
 			NP (Optional[int]): Population size.
 			F (Optional[float]): Scaling factor.
 			CR (Optional[float]): Crossover rate.
-			CrossMutt (Optional[Callable[[numpy.ndarray, int, numpy.ndarray, float, float, mtrand.RandomState, list], numpy.ndarray]]): Crossover and mutation strategy.
+			CrossMutt (Optional[Callable[[numpy.ndarray, int, numpy.ndarray, float, float, numpy.random.Generator, list], numpy.ndarray]]): Crossover and mutation strategy.
 			ukwargs (Dict[str, Any]): Additional arguments.
 
 		See Also:
@@ -316,7 +316,7 @@ class DifferentialEvolution(Algorithm):
 		Returns:
 			numpy.ndarray: New evolved populations.
 		"""
-		return objects_to_array([self.itype(x=self.CrossMutt(pop, i, xb, self.F, self.CR, self.Rand), task=task, rnd=self.Rand, e=True) for i in range(len(pop))])
+		return objects_to_array([self.itype(x=self.CrossMutt(pop, i, xb, self.F, self.CR, self.rng), task=task, rng=self.rng, e=True) for i in range(len(pop))])
 
 	def selection(self, pop, npop, xb, fxb, task, **kwargs):
 		r"""Operator for selection.
@@ -336,7 +336,7 @@ class DifferentialEvolution(Algorithm):
 				3. New global best solutions fitness/objective value.
 		"""
 		arr = objects_to_array([e if e.f < pop[i].f else pop[i] for i, e in enumerate(npop)])
-		xb, fxb = self.getBest(arr, asarray([e.f for e in arr]), xb, fxb)
+		xb, fxb = self.getBest(arr, np.asarray([e.f for e in arr]), xb, fxb)
 		return arr, xb, fxb
 
 	def postSelection(self, pop, task, xb, fxb, **kwargs):
@@ -383,7 +383,7 @@ class DifferentialEvolution(Algorithm):
 		npop = self.evolve(pop, xb, task)
 		pop, xb, fxb = self.selection(pop, npop, xb, fxb, task=task)
 		pop, xb, fxb = self.postSelection(pop, task, xb, fxb)
-		fpop = asarray([x.f for x in pop])
+		fpop = np.asarray([x.f for x in pop])
 		xb, fxb = self.getBest(pop, fpop, xb, fxb)
 		return pop, fpop, xb, fxb, {}
 
@@ -455,9 +455,9 @@ class CrowdingDifferentialEvolution(DifferentialEvolution):
 		"""
 		P = []
 		for e in npop:
-			i = argmin([euclidean(e, f) for f in pop])
+			i = np.argmin([euclidean(e, f) for f in pop])
 			P.append(pop[i] if pop[i].f < e.f else e)
-		return asarray(P), xb, fxb
+		return np.asarray(P), xb, fxb
 
 class DynNpDifferentialEvolution(DifferentialEvolution):
 	r"""Implementation of Dynamic poulation size Differential evolution algorithm.
@@ -712,7 +712,7 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 		Returns:
 			int: Number of individuals to dye.
 		"""
-		return int(self.delta_np * abs(sin(t)))
+		return int(self.delta_np * abs(np.sin(t)))
 
 	def deltaPopC(self, t):
 		r"""Calculate how many individuals are going to be created.
@@ -723,7 +723,7 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 		Returns:
 			int: Number of individuals to be born.
 		"""
-		return int(self.delta_np * abs(cos(t)))
+		return int(self.delta_np * abs(np.cos(t)))
 
 	def aging(self, task, pop):
 		r"""Apply aging to individuals.
@@ -735,14 +735,14 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 		Returns:
 			numpy.ndarray[Individual]: New population.
 		"""
-		fpop = asarray([x.f for x in pop])
-		x_b, x_w = pop[argmin(fpop)], pop[argmax(fpop)]
-		avg, npop = mean(fpop[isfinite(fpop)]), []
+		fpop = np.asarray([x.f for x in pop])
+		x_b, x_w = pop[np.argmin(fpop)], pop[np.argmax(fpop)]
+		avg, npop = np.mean(fpop[np.isfinite(fpop)]), []
 		for x in pop:
 			x.age += 1
 			Lt = round(self.age(Lt_min=self.Lt_min, Lt_max=self.Lt_max, mu=self.mu, x_f=x.f, avg=avg, x_gw=x_w.f, x_gb=x_b.f))
 			if x.age <= Lt: npop.append(x)
-		if len(npop) == 0: npop = objects_to_array([self.itype(task=task, rnd=self.Rand, e=True) for _ in range(self.NP)])
+		if len(npop) == 0: npop = objects_to_array([self.itype(task=task, rng=self.rng, e=True) for _ in range(self.NP)])
 		return npop
 
 	def popIncrement(self, pop, task):
@@ -756,7 +756,7 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 			numpy.ndarray[Individual]: Increased population.
 		"""
 		deltapop = int(round(max(1, self.NP * self.deltaPopE((task.Iters + 1)))))
-		return objects_to_array([self.itype(task=task, rnd=self.Rand, e=True) for _ in range(deltapop)])
+		return objects_to_array([self.itype(task=task, rng=self.rng, e=True) for _ in range(deltapop)])
 
 	def popDecrement(self, pop, task):
 		r"""Decrement population.
@@ -770,11 +770,11 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 		"""
 		deltapop = int(round(max(1, self.NP * self.deltaPopC((task.Iters + 1)))))
 		if len(pop) - deltapop <= 0: return pop
-		ni = self.Rand.choice(len(pop), deltapop, replace=False)
+		ni = self.rng.choice(len(pop), deltapop, replace=False)
 		npop = []
 		for i, e in enumerate(pop):
 			if i not in ni: npop.append(e)
-			elif self.rand() >= self.omega: npop.append(e)
+			elif self.random() >= self.omega: npop.append(e)
 		return objects_to_array(npop)
 
 	def selection(self, pop, npop, xb, fxb, task, **kwargs):
@@ -795,8 +795,8 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 				3. New global best solutions fitness/objective value.
 		"""
 		npop, xb, fxb = DifferentialEvolution.selection(self, pop, npop, xb, fxb, task)
-		npop = append(npop, self.popIncrement(pop, task))
-		xb, fxb = self.getBest(npop, asarray([e.f for e in npop]), xb, fxb)
+		npop = np.append(npop, self.popIncrement(pop, task))
+		xb, fxb = self.getBest(npop, np.asarray([e.f for e in npop]), xb, fxb)
 		pop = self.aging(task, npop)
 		return pop, xb, fxb
 
@@ -817,7 +817,7 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 		"""
 		return self.popDecrement(pop, task) if len(pop) > self.NP else pop, xb, fxb
 
-def multiMutations(pop, i, xb, F, CR, rnd, task, itype, strategies, **kwargs):
+def multiMutations(pop, i, xb, F, CR, rng, task, itype, strategies, **kwargs):
 	r"""Mutation strategy that takes more than one strategy and applys them to individual.
 
 	Args:
@@ -826,17 +826,17 @@ def multiMutations(pop, i, xb, F, CR, rnd, task, itype, strategies, **kwargs):
 		xb (Individual): Current best individual.
 		F (float): Scale factor.
 		CR (float): Crossover probability.
-		rnd (mtrand.RandomState): Random generator.
+		rng (numpy.random.Generator): Random generator.
 		task (Task): Optimization task.
 		IndividualType (Individual): Individual type used in algorithm.
-		strategies (Iterable[Callable[[numpy.ndarray[Individual], int, Individual, float, float, mtrand.RandomState], numpy.ndarray[Individual]]]): List of mutation strategies.
+		strategies (Iterable[Callable[[numpy.ndarray[Individual], int, Individual, float, float, numpy.random.Generator], numpy.ndarray[Individual]]]): List of mutation strategies.
 		**kwargs (Dict[str, Any]): Additional arguments.
 
 	Returns:
 		Individual: Best individual from applyed mutations strategies.
 	"""
-	L = [itype(x=strategy(pop, i, xb, F, CR, rnd=rnd), task=task, e=True, rnd=rnd) for strategy in strategies]
-	return L[argmin([x.f for x in L])]
+	L = [itype(x=strategy(pop, i, xb, F, CR, rng=rng), task=task, e=True, rng=rng) for strategy in strategies]
+	return L[np.argmin([x.f for x in L])]
 
 class MultiStrategyDifferentialEvolution(DifferentialEvolution):
 	r"""Implementation of Differential evolution algorithm with multiple mutation strateys.
@@ -855,8 +855,8 @@ class MultiStrategyDifferentialEvolution(DifferentialEvolution):
 
 	Attributes:
 		Name (List[str]): List of strings representing algorithm names.
-		strategies (Iterable[Callable[[numpy.ndarray[Individual], int, Individual, float, float, mtrand.RandomState], numpy.ndarray[Individual]]]): List of mutation strategies.
-		CrossMutt (Callable[[numpy.ndarray[Individual], int, Individual, float, float, Task, Individual, Iterable[Callable[[numpy.ndarray, int, numpy.ndarray, float, float, mtrand.RandomState, Dict[str, Any]], Individual]]], Individual]): Multi crossover and mutation combiner function.
+		strategies (Iterable[Callable[[numpy.ndarray[Individual], int, Individual, float, float, numpy.random.Generator], numpy.ndarray[Individual]]]): List of mutation strategies.
+		CrossMutt (Callable[[numpy.ndarray[Individual], int, Individual, float, float, Task, Individual, Iterable[Callable[[numpy.ndarray, int, numpy.ndarray, float, float, numpy.random.Generator, Dict[str, Any]], Individual]]], Individual]): Multi crossover and mutation combiner function.
 
 	See Also:
 		* :class:`NiaPy.algorithms.basic.DifferentialEvolution`
@@ -894,8 +894,8 @@ class MultiStrategyDifferentialEvolution(DifferentialEvolution):
 		r"""Set the arguments of the algorithm.
 
 		Arguments:
-			strategies (Optional[Iterable[Callable[[numpy.ndarray[Individual], int, Individual, float, float, mtrand.RandomState], numpy.ndarray[Individual]]]]): List of mutation strategyis.
-			CrossMutt (Optional[Callable[[numpy.ndarray[Individual], int, Individual, float, float, Task, Individual, Iterable[Callable[[numpy.ndarray, int, numpy.ndarray, float, float, mtrand.RandomState, Dict[str, Any]], Individual]]], Individual]]): Multi crossover and mutation combiner function.
+			strategies (Optional[Iterable[Callable[[numpy.ndarray[Individual], int, Individual, float, float, numpy.random.Generator], numpy.ndarray[Individual]]]]): List of mutation strategyis.
+			CrossMutt (Optional[Callable[[numpy.ndarray[Individual], int, Individual, float, float, Task, Individual, Iterable[Callable[[numpy.ndarray, int, numpy.ndarray, float, float, numpy.random.Generator, Dict[str, Any]], Individual]]], Individual]]): Multi crossover and mutation combiner function.
 
 		See Also:
 			* :func:`NiaPy.algorithms.basic.DifferentialEvolution.setParameters`
@@ -928,7 +928,7 @@ class MultiStrategyDifferentialEvolution(DifferentialEvolution):
 		Returns:
 			numpy.ndarray: New population of individuals.
 		"""
-		return objects_to_array([self.CrossMutt(pop, i, xb, self.F, self.CR, self.Rand, task, self.itype, self.strategies) for i in range(len(pop))])
+		return objects_to_array([self.CrossMutt(pop, i, xb, self.F, self.CR, self.rng, task, self.itype, self.strategies) for i in range(len(pop))])
 
 class DynNpMultiStrategyDifferentialEvolution(MultiStrategyDifferentialEvolution, DynNpDifferentialEvolution):
 	r"""Implementation of Dynamic population size Differential evolution algorithm with dynamic population size that is defined by the quality of population.

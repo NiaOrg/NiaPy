@@ -1,7 +1,7 @@
 # encoding=utf8
 import logging
 
-from numpy import where, zeros
+import numpy as np
 
 from NiaPy.algorithms.algorithm import Algorithm
 from NiaPy.util import levy_flight
@@ -87,7 +87,7 @@ class FlowerPollinationAlgorithm(Algorithm):
 		"""
 		Algorithm.setParameters(self, NP=NP, **ukwargs)
 		self.p, self.beta = p, beta
-		self.S = zeros((NP, 10))
+		self.S = np.zeros((NP, 10))
 
 	def repair(self, x, task):
 		r"""Repair solution to search space.
@@ -99,15 +99,15 @@ class FlowerPollinationAlgorithm(Algorithm):
 		Returns:
 			numpy.ndarray: fixed solution.
 		"""
-		ir = where(x > task.Upper)
+		ir = np.where(x > task.Upper)
 		x[ir] = task.Lower[ir] + x[ir] % task.bRange[ir]
-		ir = where(x < task.Lower)
+		ir = np.where(x < task.Lower)
 		x[ir] = task.Lower[ir] + x[ir] % task.bRange[ir]
 		return x
 
 	def initPopulation(self, task):
 		pop, fpop, d = Algorithm.initPopulation(self, task)
-		d.update({'S': zeros((self.NP, task.D))})
+		d.update({'S': np.zeros((self.NP, task.D))})
 		return pop, fpop, d
 
 	def runIteration(self, task, Sol, Sol_f, xb, fxb, S, **dparams):
@@ -130,9 +130,9 @@ class FlowerPollinationAlgorithm(Algorithm):
 				5. Additional arguments.
 		"""
 		for i in range(self.NP):
-			if self.uniform(0, 1) > self.p: S[i] += levy_flight(beta=self.beta, size=task.D, rng=self.Rand) * (Sol[i] - xb)
+			if self.uniform(0, 1) > self.p: S[i] += levy_flight(beta=self.beta, size=task.D, rng=self.rng) * (Sol[i] - xb)
 			else:
-				JK = self.Rand.permutation(self.NP)
+				JK = self.rng.permutation(self.NP)
 				S[i] += self.uniform(0, 1) * (Sol[JK[0]] - Sol[JK[1]])
 			S[i] = self.repair(S[i], task)
 			f_i = task.eval(S[i])

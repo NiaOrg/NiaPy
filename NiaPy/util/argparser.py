@@ -5,7 +5,7 @@
 import sys
 import logging
 from argparse import ArgumentParser
-from numpy import inf
+import numpy as np
 from NiaPy.task.task import OptimizationType
 import NiaPy.benchmarks as bencs
 
@@ -72,8 +72,8 @@ def MakeArgParser():
 	parser.add_argument('-a', '--algorithm', dest='algo', default='jDE', type=str)
 	parser.add_argument('-b', '--bech', dest='bech', nargs='*', default=cbechs[0], choices=cbechs, type=str)
 	parser.add_argument('-D', dest='D', default=10, type=int)
-	parser.add_argument('-nFES', dest='nFES', default=inf, type=int)
-	parser.add_argument('-nGEN', dest='nGEN', default=inf, type=int)
+	parser.add_argument('-nFES', dest='nFES', default=np.inf, type=int)
+	parser.add_argument('-nGEN', dest='nGEN', default=np.inf, type=int)
 	parser.add_argument('-NP', dest='NP', default=43, type=int)
 	parser.add_argument('-r', '--runType', dest='runType', choices=['', 'log', 'plot'], default='', type=str)
 	parser.add_argument('-seed', dest='seed', nargs='+', default=[None], type=int)

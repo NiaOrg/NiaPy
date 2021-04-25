@@ -1,7 +1,7 @@
 # encoding=utf8
 import logging
 
-from numpy import apply_along_axis, argsort, sum
+import numpy as np
 
 from NiaPy.algorithms.algorithm import Algorithm
 
@@ -108,7 +108,6 @@ class NelderMeadMethod(Algorithm):
 		Args:
 			NP (int): Number of individuals in population.
 			task (Task): Optimization task.
-			rnd (mtrand.RandomState): Random number generator.
 			kwargs (Dict[str, Any]): Additional arguments.
 
 		Returns:
@@ -117,7 +116,7 @@ class NelderMeadMethod(Algorithm):
 				2. New initialized population fitness/function values.
 		"""
 		X = self.uniform(task.Lower, task.Upper, [task.D if NP is None or NP < task.D else NP, task.D])
-		X_f = apply_along_axis(task.eval, 1, X)
+		X_f = np.apply_along_axis(task.eval, 1, X)
 		return X, X_f
 
 	def method(self, X, X_f, task):
@@ -133,7 +132,7 @@ class NelderMeadMethod(Algorithm):
 				1. New population.
 				2. New population fitness/function values.
 		"""
-		x0 = sum(X[:-1], axis=0) / (len(X) - 1)
+		x0 = np.sum(X[:-1], axis=0) / (len(X) - 1)
 		xr = x0 + self.alpha * (x0 - X[-1])
 		rs = task.eval(xr)
 		if X_f[0] >= rs < X_f[-2]:
@@ -151,7 +150,7 @@ class NelderMeadMethod(Algorithm):
 			X[-1], X_f[-1] = xc, rc
 			return X, X_f
 		Xn = X[0] + self.sigma * (X[1:] - X[0])
-		Xn_f = apply_along_axis(task.eval, 1, Xn)
+		Xn_f = np.apply_along_axis(task.eval, 1, Xn)
 		X[1:], X_f[1:] = Xn, Xn_f
 		return X, X_f
 
@@ -174,7 +173,7 @@ class NelderMeadMethod(Algorithm):
 				4. New global best solutions fitness/objective value
 				5. Additional arguments.
 		"""
-		inds = argsort(X_f)
+		inds = np.argsort(X_f)
 		X, X_f = X[inds], X_f[inds]
 		X, X_f = self.method(X, X_f, task)
 		xb, fxb = self.getBest(X, X_f, xb, fxb)

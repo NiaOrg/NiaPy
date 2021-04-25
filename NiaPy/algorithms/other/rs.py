@@ -87,7 +87,7 @@ class RandomSearch(Algorithm):
 		self.candidates = []
 		for i in range(total_candidates):
 			while True:
-				x = task.Lower + task.bcRange() * self.rand(task.D)
+				x = task.Lower + task.bcRange() * self.random(task.D)
 				if not np.any([np.all(a == x) for a in self.candidates]):
 					self.candidates.append(x)
 					break

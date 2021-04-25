@@ -2,7 +2,7 @@
 
 """Sphere benchmarks."""
 
-from numpy import abs
+import numpy as np
 from NiaPy.benchmarks.benchmark import Benchmark
 
 __all__ = ['Sphere', 'Sphere2', 'Sphere3']
@@ -158,7 +158,7 @@ class Sphere2(Benchmark):
 				float: Fitness value for the solution.
 			"""
 			val = 0.0
-			for i in range(D): val += abs(sol[i]) ** (i + 2)
+			for i in range(D): val += np.abs(sol[i]) ** (i + 2)
 			return val
 		return evaluate
 
@@ -236,7 +236,7 @@ class Sphere3(Benchmark):
 			val = 0.0
 			for i in range(D):
 				v = .0
-				for j in range(i + 1): val += abs(sol[j]) ** 2
+				for j in range(i + 1): val += np.abs(sol[j]) ** 2
 				val += v
 			return val
 		return evaluate

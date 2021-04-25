@@ -1,7 +1,7 @@
 # encoding=utf8
 import logging
 
-from numpy import apply_along_axis, zeros, argsort, concatenate, array, exp, cos, pi
+import numpy as np
 
 from NiaPy.algorithms.algorithm import Algorithm
 
@@ -93,10 +93,10 @@ class MothFlameOptimizer(Algorithm):
 		"""
 		moth_pos, moth_fitness, d = Algorithm.initPopulation(self, task)
 		# Create best population
-		indexes = argsort(moth_fitness)
+		indexes = np.argsort(moth_fitness)
 		best_flames, best_flame_fitness = moth_pos[indexes], moth_fitness[indexes]
 		# Init previous population
-		previous_population, previous_fitness = zeros((self.NP, task.D)), zeros(self.NP)
+		previous_population, previous_fitness = np.zeros((self.NP, task.D)), np.zeros(self.NP)
 		d.update({'best_flames': best_flames, 'best_flame_fitness': best_flame_fitness, 'previous_population': previous_population, 'previous_fitness': previous_fitness})
 		return moth_pos, moth_fitness, d
 
@@ -130,22 +130,22 @@ class MothFlameOptimizer(Algorithm):
 		# Previous positions
 		previous_population, previous_fitness = moth_pos, moth_fitness
 		# Create sorted population
-		indexes = argsort(moth_fitness)
+		indexes = np.argsort(moth_fitness)
 		sorted_population = moth_pos[indexes]
 		# Some parameters
 		flame_no, a = round(self.NP - (task.Iters + 1) * ((self.NP - 1) / task.nGEN)), -1 + (task.Iters + 1) * ((-1) / task.nGEN)
 		for i in range(self.NP):
 			for j in range(task.D):
-				distance_to_flame, b, t = abs(sorted_population[i, j] - moth_pos[i, j]), 1, (a - 1) * self.rand() + 1
-				if i <= flame_no: moth_pos[i, j] = distance_to_flame * exp(b * t) * cos(2 * pi * t) + sorted_population[i, j]
-				else: moth_pos[i, j] = distance_to_flame * exp(b * t) * cos(2 * pi * t) + sorted_population[flame_no, j]
-		moth_pos = apply_along_axis(task.repair, 1, moth_pos, self.Rand)
-		moth_fitness = apply_along_axis(task.eval, 1, moth_pos)
+				distance_to_flame, b, t = abs(sorted_population[i, j] - moth_pos[i, j]), 1, (a - 1) * self.random() + 1
+				if i <= flame_no: moth_pos[i, j] = distance_to_flame * np.exp(b * t) * np.cos(2 * np.pi * t) + sorted_population[i, j]
+				else: moth_pos[i, j] = distance_to_flame * np.exp(b * t) * np.cos(2 * np.pi * t) + sorted_population[flame_no, j]
+		moth_pos = np.apply_along_axis(task.repair, 1, moth_pos, self.rng)
+		moth_fitness = np.apply_along_axis(task.eval, 1, moth_pos)
 		xb, fxb = self.getBest(moth_pos, moth_fitness, xb, fxb)
-		double_population, double_fitness = concatenate((previous_population, best_flames), axis=0), concatenate((previous_fitness, best_flame_fitness), axis=0)
-		indexes = argsort(double_fitness)
+		double_population, double_fitness = np.concatenate((previous_population, best_flames), axis=0), np.concatenate((previous_fitness, best_flame_fitness), axis=0)
+		indexes = np.argsort(double_fitness)
 		double_sorted_fitness, double_sorted_population = double_fitness[indexes], double_population[indexes]
-		for newIdx in range(2 * self.NP): double_sorted_population[newIdx] = array(double_population[indexes[newIdx], :])
+		for newIdx in range(2 * self.NP): double_sorted_population[newIdx] = np.array(double_population[indexes[newIdx], :])
 		best_flame_fitness, best_flames = double_sorted_fitness[:self.NP], double_sorted_population[:self.NP]
 		return moth_pos, moth_fitness, xb, fxb, {'best_flames': best_flames, 'best_flame_fitness': best_flame_fitness, 'previous_population': previous_population, 'previous_fitness': previous_fitness}
 

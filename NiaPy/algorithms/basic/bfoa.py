@@ -268,8 +268,8 @@ class BacterialForagingOptimizationAlgorithm(Algorithm):
 
 			# Elimination and dispersal
 			for i in range(len(pop)):
-				if self.rand() < self.prob_elimination:  # Eliminate i-th bacterium with the probability 'prob_elimination' and replace it with a new one at a random location
-					pop[i] = task.bcLower() + self.rand(task.D) * task.bcRange()
+				if self.random() < self.prob_elimination:  # Eliminate i-th bacterium with the probability 'prob_elimination' and replace it with a new one at a random location
+					pop[i] = task.bcLower() + self.random(task.D) * task.bcRange()
 					fpop[i] = task.eval(pop[i])
 					if fpop[i] < fxb:
 						xb = pop[i].copy()

@@ -2,7 +2,7 @@
 
 """Implementations of Infinity function."""
 
-from numpy import sin
+import numpy as np
 from NiaPy.benchmarks.benchmark import Benchmark
 
 __all__ = ['Infinity']
@@ -81,7 +81,7 @@ class Infinity(Benchmark):
 				float: Fitness value for the solution.
 			"""
 			val = 0.0
-			for i in range(D): val += X[i] ** 6 * (sin(1 / X[i]) + 2)
+			for i in range(D): val += X[i] ** 6 * (np.sin(1 / X[i]) + 2)
 			return val
 		return f
 

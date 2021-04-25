@@ -1,7 +1,8 @@
 # encoding=utf8
 from unittest import TestCase
 
-from numpy import full, random as rnd, inf, array_equal
+import numpy as np
+from numpy.random import default_rng
 
 from NiaPy.benchmarks import Benchmark
 from NiaPy.util import full_array, FesException, GenException, RefException
@@ -9,8 +10,7 @@ from NiaPy.task import StoppingTask, ThrowingTask
 
 class MyBenchmark(Benchmark):
 	def __init__(self):
-		self.Lower = -10.0
-		self.Upper = 10
+		super().__init__(-10, 10)
 
 	def function(self):
 		def evaluate(D, x): return sum(x ** 2)
@@ -40,22 +40,22 @@ class StoppingTaskBaseTestCase(TestCase):
 		self.assertEqual(self.D, self.task.dim())
 
 	def test_lower(self):
-		self.assertTrue(array_equal(full_array(self.Lower, self.D), self.task.Lower))
-		self.assertTrue(array_equal(full_array(self.Lower, self.D), self.task.bcLower()))
+		self.assertTrue(np.array_equal(full_array(self.Lower, self.D), self.task.Lower))
+		self.assertTrue(np.array_equal(full_array(self.Lower, self.D), self.task.bcLower()))
 
 	def test_upper(self):
-		self.assertTrue(array_equal(full_array(self.Upper, self.D), self.task.Upper))
-		self.assertTrue(array_equal(full_array(self.Upper, self.D), self.task.bcUpper()))
+		self.assertTrue(np.array_equal(full_array(self.Upper, self.D), self.task.Upper))
+		self.assertTrue(np.array_equal(full_array(self.Upper, self.D), self.task.bcUpper()))
 
 	def test_range(self):
-		self.assertTrue(array_equal(full_array(self.Upper, self.D) - full_array(self.Lower, self.D), self.task.bRange))
-		self.assertTrue(array_equal(full_array(self.Upper, self.D) - full_array(self.Lower, self.D), self.task.bcRange()))
+		self.assertTrue(np.array_equal(full_array(self.Upper, self.D) - full_array(self.Lower, self.D), self.task.bRange))
+		self.assertTrue(np.array_equal(full_array(self.Upper, self.D) - full_array(self.Lower, self.D), self.task.bcRange()))
 
 	def test_ngens(self):
-		self.assertEqual(inf, self.task.nGEN)
+		self.assertEqual(np.inf, self.task.nGEN)
 
 	def test_nfess(self):
-		self.assertEqual(inf, self.task.nFES)
+		self.assertEqual(np.inf, self.task.nFES)
 
 	def test_stop_cond(self):
 		self.assertFalse(self.task.stopCond())
@@ -97,15 +97,15 @@ class StoppingTaskTestCase(TestCase):
 		self.t = StoppingTask(D=self.D, nFES=self.nFES, nGEN=self.nGEN, refValue=1, benchmark=MyBenchmark())
 
 	def test_isFeasible_fine(self):
-		x = full(self.D, 10)
+		x = np.full(self.D, 10)
 		self.assertTrue(self.t.isFeasible(x))
-		x = full(self.D, -10)
+		x = np.full(self.D, -10)
 		self.assertTrue(self.t.isFeasible(x))
-		x = rnd.uniform(-10, 10, self.D)
+		x = default_rng().uniform(-10, 10, self.D)
 		self.assertTrue(self.t.isFeasible(x))
-		x = full(self.D, -20)
+		x = np.full(self.D, -20)
 		self.assertFalse(self.t.isFeasible(x))
-		x = full(self.D, 20)
+		x = np.full(self.D, 20)
 		self.assertFalse(self.t.isFeasible(x))
 
 	def test_nextIter_fine(self):
@@ -119,36 +119,36 @@ class StoppingTaskTestCase(TestCase):
 		self.assertTrue(self.t.stopCondI())
 
 	def test_eval_fine(self):
-		x = full(self.D, 1.0)
+		x = np.ones(self.D)
 		for i in range(self.nFES): self.assertAlmostEqual(self.t.eval(x), self.D, msg='Error at %s iteration!!!' % (i))
 		self.assertTrue(self.t.stopCond())
 
 	def test_eval_over_nFES_fine(self):
-		x = full(self.D, 1.0)
+		x = np.ones(self.D)
 		for i in range(self.nFES): self.t.eval(x)
-		self.assertEqual(inf, self.t.eval(x))
+		self.assertEqual(np.inf, self.t.eval(x))
 		self.assertTrue(self.t.stopCond())
 
 	def test_eval_over_nGEN_fine(self):
-		x = full(self.D, 1.0)
+		x = np.ones(self.D)
 		for i in range(self.nGEN): self.t.nextIter()
-		self.assertEqual(inf, self.t.eval(x))
+		self.assertEqual(np.inf, self.t.eval(x))
 		self.assertTrue(self.t.stopCond())
 
 	def test_nFES_count_fine(self):
-		x = full(self.D, 1.0)
+		x = np.ones(self.D)
 		for i in range(self.nFES):
 			self.t.eval(x)
 			self.assertEqual(self.t.Evals, i + 1, 'Error at %s. evaluation' % (i + 1))
 
 	def test_nGEN_count_fine(self):
-		x = full(self.D, 1.0)
+		x = np.ones(self.D)
 		for i in range(self.nGEN):
 			self.t.nextIter()
 			self.assertEqual(self.t.Iters, i + 1, 'Error at %s. iteration' % (i + 1))
 
 	def test_stopCond_evals_fine(self):
-		x = full(self.D, 1.0)
+		x = np.ones(self.D)
 		for i in range(self.nFES - 1):
 			self.t.eval(x)
 			self.assertFalse(self.t.stopCond())
@@ -156,7 +156,7 @@ class StoppingTaskTestCase(TestCase):
 		self.assertTrue(self.t.stopCond())
 
 	def test_stopCond_iters_fine(self):
-		x = full(self.D, 1.0)
+		x = np.ones(self.D)
 		for i in range(self.nGEN - 1):
 			self.t.nextIter()
 			self.assertFalse(self.t.stopCond())
@@ -164,12 +164,12 @@ class StoppingTaskTestCase(TestCase):
 		self.assertTrue(self.t.stopCond())
 
 	def test_stopCond_refValue_fine(self):
-		x = full(self.D, 1.0)
+		x = np.ones(self.D)
 		for i in range(self.nGEN - 5):
 			self.assertFalse(self.t.stopCond())
 			self.assertEqual(self.D, self.t.eval(x))
 			self.t.nextIter()
-		x = full(self.D, 0.0)
+		x = np.zeros(self.D)
 		self.assertEqual(0, self.t.eval(x))
 		self.assertTrue(self.t.stopCond())
 		self.assertEqual(self.nGEN - 5, self.t.Iters)
@@ -177,20 +177,20 @@ class StoppingTaskTestCase(TestCase):
 	def test_print_conv_one_fine(self):
 		r1, r2 = [], []
 		for i in range(self.nFES):
-			x = full(self.D, 10 - i)
+			x = np.full(self.D, 10 - i)
 			r1.append(i + 1), r2.append(self.t.eval(x))
 		t_r1, t_r2 = self.t.return_conv()
-		self.assertTrue(array_equal(r1, t_r1))
-		self.assertTrue(array_equal(r2, t_r2))
+		self.assertTrue(np.array_equal(r1, t_r1))
+		self.assertTrue(np.array_equal(r2, t_r2))
 
 	def test_print_conv_two_fine(self):
 		r1, r2 = [], []
 		for i in range(self.nFES):
-			x = full(self.D, 10 - i if i not in (3, 4, 5) else 4)
+			x = np.full(self.D, 10 - i if i not in (3, 4, 5) else 4)
 			r1.append(i + 1), r2.append(self.t.eval(x))
 		t_r1, t_r2 = self.t.return_conv()
-		self.assertTrue(array_equal(r2, t_r2))
-		self.assertTrue(array_equal(r1, t_r1))
+		self.assertTrue(np.array_equal(r2, t_r2))
+		self.assertTrue(np.array_equal(r1, t_r1))
 
 class ThrowingTaskTestCase(TestCase):
 	r"""Test case for testing `ThrowingTask` class.
@@ -209,15 +209,15 @@ class ThrowingTaskTestCase(TestCase):
 		self.t = ThrowingTask(D=self.D, nFES=self.nFES, nGEN=self.nGEN, refValue=0, benchmark=MyBenchmark())
 
 	def test_isFeasible_fine(self):
-		x = full(self.D, 10)
+		x = np.full(self.D, 10)
 		self.assertTrue(self.t.isFeasible(x))
-		x = full(self.D, -10)
+		x = np.full(self.D, -10)
 		self.assertTrue(self.t.isFeasible(x))
-		x = rnd.uniform(-10, 10, self.D)
+		x = default_rng().uniform(-10, 10, self.D)
 		self.assertTrue(self.t.isFeasible(x))
-		x = full(self.D, -20)
+		x = np.full(self.D, -20)
 		self.assertFalse(self.t.isFeasible(x))
-		x = full(self.D, 20)
+		x = np.full(self.D, 20)
 		self.assertFalse(self.t.isFeasible(x))
 
 	def test_nextIter_fine(self):
@@ -231,35 +231,35 @@ class ThrowingTaskTestCase(TestCase):
 		self.assertTrue(self.t.stopCondI())
 
 	def test_eval_fine(self):
-		x = full(self.D, 1.0)
+		x = np.ones(self.D)
 		for i in range(self.nFES): self.assertAlmostEqual(self.t.eval(x), self.D, msg='Error at %s iteration!!!' % (i))
 		self.assertRaises(FesException, lambda: self.t.eval(x))
 
 	def test_eval_over_nFES_fine(self):
-		x = full(self.D, 1.0)
+		x = np.ones(self.D)
 		for i in range(self.nFES):
 			self.t.eval(x)
 		self.assertRaises(FesException, lambda: self.t.eval(x))
 
 	def test_eval_over_nGEN_fine(self):
-		x = full(self.D, 1.0)
+		x = np.ones(self.D)
 		for i in range(self.nGEN): self.t.nextIter()
 		self.assertRaises(GenException, lambda: self.t.eval(x))
 
 	def test_nFES_count_fine(self):
-		x = full(self.D, 1.0)
+		x = np.ones(self.D)
 		for i in range(self.nFES):
 			self.t.eval(x)
 			self.assertEqual(self.t.Evals, i + 1, 'Error at %s. evaluation' % (i + 1))
 
 	def test_nGEN_count_fine(self):
-		x = full(self.D, 1.0)
+		x = np.ones(self.D)
 		for i in range(self.nGEN):
 			self.t.nextIter()
 			self.assertEqual(self.t.Iters, i + 1, 'Error at %s. iteration' % (i + 1))
 
 	def test_stopCond_evals_fine(self):
-		x = full(self.D, 1.0)
+		x = np.ones(self.D)
 		for i in range(self.nFES - 1):
 			self.t.eval(x)
 			self.assertFalse(self.t.stopCond())
@@ -267,7 +267,7 @@ class ThrowingTaskTestCase(TestCase):
 		self.assertTrue(self.t.stopCond())
 
 	def test_stopCond_iters_fine(self):
-		x = full(self.D, 1.0)
+		x = np.ones(self.D)
 		for i in range(self.nGEN - 1):
 			self.t.nextIter()
 			self.assertFalse(self.t.stopCond())
@@ -275,12 +275,12 @@ class ThrowingTaskTestCase(TestCase):
 		self.assertTrue(self.t.stopCond())
 
 	def test_stopCond_refValue_fine(self):
-		x = full(self.D, 1.0)
+		x = np.ones(self.D)
 		for i in range(self.nGEN - 5):
 			self.assertFalse(self.t.stopCond())
 			self.assertEqual(self.D, self.t.eval(x))
 			self.t.nextIter()
-		x = full(self.D, 0.0)
+		x = np.zeros(self.D)
 		self.assertEqual(0, self.t.eval(x))
 		self.assertRaises(RefException, lambda: self.t.eval(x))
 

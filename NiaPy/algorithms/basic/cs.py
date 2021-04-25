@@ -1,6 +1,6 @@
 # encoding=utf8
 import logging
-from numpy import apply_along_axis, argsort
+import numpy as np
 from NiaPy.algorithms.algorithm import Algorithm
 from NiaPy.util import levy_flight
 
@@ -107,9 +107,9 @@ class CuckooSearch(Algorithm):
 				1. New population
 				2. New population fitness/function values
 		"""
-		si = argsort(fpop)[:int(pa_v):-1]
-		pop[si] = task.Lower + self.rand(task.D) * task.bRange
-		fpop[si] = apply_along_axis(task.eval, 1, pop[si])
+		si = np.argsort(fpop)[:int(pa_v):-1]
+		pop[si] = task.Lower + self.random(task.D) * task.bRange
+		fpop[si] = np.apply_along_axis(task.eval, 1, pop[si])
 		return pop, fpop
 
 	def initPopulation(self, task):
@@ -153,11 +153,11 @@ class CuckooSearch(Algorithm):
 				5. Additional arguments:
 					* pa_v (float): TODO
 		"""
-		i = self.randint(self.NP)
-		Nn = task.repair(pop[i] + levy_flight(self.alpha, size=task.D, rng=self.Rand), rnd=self.Rand)
+		i = self.integers(self.NP)
+		Nn = task.repair(pop[i] + levy_flight(alpha=self.alpha, size=task.D, rng=self.rng), rng=self.rng)
 		Nn_f = task.eval(Nn)
-		j = self.randint(self.NP)
-		while i == j: j = self.randint(self.NP)
+		j = self.integers(self.NP)
+		while i == j: j = self.integers(self.NP)
 		if Nn_f <= fpop[j]: pop[j], fpop[j] = Nn, Nn_f
 		pop, fpop = self.emptyNests(pop, fpop, pa_v, task)
 		xb, fxb = self.getBest(pop, fpop, xb, fxb)

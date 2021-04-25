@@ -35,7 +35,7 @@ class HybridSelfAdaptiveBatAlgorithm(SelfAdaptiveBatAlgorithm):
 		Name (List[str]): List of strings representing algorithm name.
 		F (float): Scaling factor for local search.
 		CR (float): Probability of crossover for local search.
-		CrossMutt (Callable[[numpy.ndarray, int, numpy.ndarray, float, float, mtrand.RandomState, Dict[str, Any]): Local search method based of Differential evolution strategy.
+		CrossMutt (Callable[[numpy.ndarray, int, numpy.ndarray, float, float, numpy.random.Generator, Dict[str, Any]): Local search method based of Differential evolution strategy.
 
 	See Also:
 		* :class:`NiaPy.algorithms.basic.BatAlgorithm`
@@ -77,7 +77,7 @@ class HybridSelfAdaptiveBatAlgorithm(SelfAdaptiveBatAlgorithm):
 		Arguments:
 			F (Optional[float]): Scaling factor for local search.
 			CR (Optional[float]): Probability of crossover for local search.
-			CrossMutt (Optional[Callable[[numpy.ndarray, int, numpy.ndarray, float, float, mtrand.RandomState, Dict[str, Any], numpy.ndarray]]): Local search method based of Differential evolution strategy.
+			CrossMutt (Optional[Callable[[numpy.ndarray, int, numpy.ndarray, float, float, numpy.random.Generator, Dict[str, Any], numpy.ndarray]]): Local search method based of Differential evolution strategy.
 			ukwargs (Dict[str, Any]): Additional arguments.
 
 		See Also:
@@ -115,6 +115,6 @@ class HybridSelfAdaptiveBatAlgorithm(SelfAdaptiveBatAlgorithm):
 		Returns:
 			numpy.ndarray: New solution based on global best individual.
 		"""
-		return task.repair(self.CrossMutt(Sol, i, best, self.F, self.CR, rnd=self.Rand), rnd=self.Rand)
+		return task.repair(self.CrossMutt(Sol, i, best, self.F, self.CR, rng=self.rng), rng=self.rng)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

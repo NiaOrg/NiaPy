@@ -2,7 +2,7 @@
 import logging
 from unittest import TestCase
 
-from numpy import inf
+import numpy as np
 
 from NiaPy.benchmarks import Benchmark
 
@@ -25,7 +25,7 @@ class BenchmarkTestCase(TestCase):
 	def test_function_eval_fine(self):
 		f = self.b.function()
 		self.assertTrue(callable(f))
-		self.assertEqual(inf, f(1, self.Upper))
+		self.assertEqual(np.inf, f(1, self.Upper))
 
 	def test_latex_code_fine(self):
 		info = self.bc.latex_code()

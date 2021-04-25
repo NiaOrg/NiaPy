@@ -2,6 +2,7 @@
 from unittest import TestCase
 
 import numpy as np
+from numpy.random import default_rng
 
 from NiaPy.util import full_array
 from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
@@ -14,7 +15,7 @@ class CrossRandCurr2pbestTestCase(TestCase):
 		self.evalFun = MyBenchmark().function()
 
 	def init_pop(self):
-		pop = self.Lower + np.random.rand(self.NP, self.D) * (self.Upper - self.Lower)
+		pop = self.Lower + default_rng().random((self.NP, self.D)) * (self.Upper - self.Lower)
 		return pop, np.asarray([self.evalFun(self.D, x) for x in pop])
 
 	def test_function_fine(self):
@@ -23,7 +24,7 @@ class CrossRandCurr2pbestTestCase(TestCase):
 		ib = np.argmin(fpop)
 		xb, fxb = pop[ib].copy(), fpop[ib]
 		for i, x in enumerate(pop):
-			xn = CrossRandCurr2Pbest(pop, i, xb, self.F, self.CR, self.p, apop)
+			xn = CrossRandCurr2Pbest(pop, i, xb, self.F, self.CR, default_rng(), self.p, apop)
 			# Check that position array is updated
 			self.assertFalse(np.array_equal(x, xn))
 

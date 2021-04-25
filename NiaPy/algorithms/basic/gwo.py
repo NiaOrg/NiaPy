@@ -109,13 +109,13 @@ class GreyWolfOptimizer(Algorithm):
         """
         a = 2 - task.Evals * (2 / task.nFES)
         for i, w in enumerate(pop):
-            A1, C1 = 2 * a * self.rand(task.D) - a, 2 * self.rand(task.D)
+            A1, C1 = 2 * a * self.random(task.D) - a, 2 * self.random(task.D)
             X1 = A - A1 * np.fabs(C1 * A - w)
-            A2, C2 = 2 * a * self.rand(task.D) - a, 2 * self.rand(task.D)
+            A2, C2 = 2 * a * self.random(task.D) - a, 2 * self.random(task.D)
             X2 = B - A2 * np.fabs(C2 * B - w)
-            A3, C3 = 2 * a * self.rand(task.D) - a, 2 * self.rand(task.D)
+            A3, C3 = 2 * a * self.random(task.D) - a, 2 * self.random(task.D)
             X3 = D - A3 * np.fabs(C3 * D - w)
-            pop[i] = task.repair((X1 + X2 + X3) / 3, self.Rand)
+            pop[i] = task.repair((X1 + X2 + X3) / 3, self.rng)
             fpop[i] = task.eval(pop[i])
         for i, f in enumerate(fpop):
             if f < A_f: A, A_f = pop[i].copy(), f

@@ -2,8 +2,8 @@
 import logging
 from math import ceil
 
-from numpy import argmin, argsort, log, sum, fmax, sqrt, full, exp, eye, diag, apply_along_axis, round, any, asarray, dot, random as rand, tile, inf, where, append
-from numpy.linalg import norm, cholesky as chol, eig, solve, lstsq
+import numpy as np
+from numpy.linalg import norm, cholesky, eig, solve, lstsq
 
 from NiaPy.algorithms.algorithm import Algorithm, Individual, defaultIndividualInit
 from NiaPy.util import objects_to_array
@@ -150,7 +150,7 @@ class EvolutionStrategy1p1(Algorithm):
 				3. Additional arguments:
 					* ki (int): Number of successful rho update.
 		"""
-		c, ki = IndividualES(task=task, rnd=self.Rand), 0
+		c, ki = IndividualES(task=task, rng=self.rng), 0
 		return c, c.f, {'ki': ki}
 
 	def runIteration(self, task, c, fpop, xb, fxb, ki, **dparams):
@@ -175,9 +175,9 @@ class EvolutionStrategy1p1(Algorithm):
 					* ki (int): Number of successful rho update.
 		"""
 		if (task.Iters + 1) % self.k == 0: c.rho, ki = self.updateRho(c.rho, ki), 0
-		cn = objects_to_array([task.repair(self.mutate(c.x, c.rho), self.Rand) for _i in range(self.mu)])
-		cn_f = asarray([task.eval(cn[i]) for i in range(len(cn))])
-		ib = argmin(cn_f)
+		cn = objects_to_array([task.repair(self.mutate(c.x, c.rho), self.rng) for _i in range(self.mu)])
+		cn_f = np.asarray([task.eval(cn[i]) for i in range(len(cn))])
+		ib = np.argmin(cn_f)
 		if cn_f[ib] < c.f:
 			c.x, c.f, ki = cn[ib], cn_f[ib], ki + 1
 			if cn_f[ib] < fxb: xb, fxb = self.getBest(cn[ib], cn_f[ib], xb, fxb)
@@ -339,8 +339,8 @@ class EvolutionStrategyMpL(EvolutionStrategy1p1):
 		Returns:
 			numpy.ndarray: Random individual from population that was mutated.
 		"""
-		i = self.randint(self.mu)
-		return task.repair(self.mutate(pop[i].x, pop[i].rho), rnd=self.Rand)
+		i = self.integers(self.mu)
+		return task.repair(self.mutate(pop[i].x, pop[i].rho), rng=self.rng)
 
 	def initPopulation(self, task):
 		r"""Initialize starting population.
@@ -384,11 +384,11 @@ class EvolutionStrategyMpL(EvolutionStrategy1p1):
 					* ki (int): Number of successful mutations.
 		"""
 		if (task.Iters + 1) % self.k == 0: _, ki = self.updateRho(c, ki), 0
-		cn = objects_to_array([IndividualES(x=self.mutateRand(c, task), task=task, rnd=self.Rand) for _ in range(self.lam)])
-		cn = append(cn, c)
-		cn = objects_to_array([cn[i] for i in argsort([i.f for i in cn])[:self.mu]])
+		cn = objects_to_array([IndividualES(x=self.mutateRand(c, task), task=task, rng=self.rng) for _ in range(self.lam)])
+		cn = np.append(cn, c)
+		cn = objects_to_array([cn[i] for i in np.argsort([i.f for i in cn])[:self.mu]])
 		ki += self.changeCount(c, cn)
-		fcn = asarray([x.f for x in cn])
+		fcn = np.asarray([x.f for x in cn])
 		xb, fxb = self.getBest(cn, fcn, xb, fxb)
 		return cn, fcn, xb, fxb, {'ki': ki}
 
@@ -440,7 +440,7 @@ class EvolutionStrategyML(EvolutionStrategyMpL):
 		Returns:
 			numpy.ndarray: New population.
 		"""
-		pop_s = argsort([i.f for i in pop])
+		pop_s = np.argsort([i.f for i in pop])
 		if self.mu < self.lam: return objects_to_array([pop[i] for i in pop_s[:self.mu]])
 		npop = list()
 		for i in range(int(ceil(float(self.mu) / self.lam))): npop.extend(pop[:self.lam if (self.mu - i * self.lam) >= self.lam else self.mu - i * self.lam])
@@ -483,48 +483,48 @@ class EvolutionStrategyML(EvolutionStrategyMpL):
 				4. New global best solutions fitness/objective value.
 				5. Additional arguments.
 		"""
-		cn = objects_to_array([IndividualES(x=self.mutateRand(c, task), task=task, rand=self.Rand) for _ in range(self.lam)])
+		cn = objects_to_array([IndividualES(x=self.mutateRand(c, task), task=task, rand=self.rng) for _ in range(self.lam)])
 		c = self.newPop(cn)
-		fc = asarray([x.f for x in c])
+		fc = np.asarray([x.f for x in c])
 		xb, fxb = self.getBest(c, fc, xb, fxb)
 		return c, fc, xb, fxb, {}
 
-def CovarianceMaatrixAdaptionEvolutionStrategyF(task, epsilon=1e-20, rnd=rand):
-	lam, alpha_mu, hs, sigma0 = (4 + round(3 * log(task.D))) * 10, 2, 0, 0.3 * task.bcRange()
-	mu = int(round(lam / 2))
-	w = log(mu + 0.5) - log(range(1, mu + 1))
-	w = w / sum(w)
-	mueff = 1 / sum(w ** 2)
+def CovarianceMaatrixAdaptionEvolutionStrategyF(task, rng, epsilon=1e-20):
+	lam, alpha_mu, hs, sigma0 = (4 + np.round(3 * np.log(task.D))) * 10, 2, 0, 0.3 * task.bcRange()
+	mu = int(np.round(lam / 2))
+	w = np.log(mu + 0.5) - np.log(range(1, mu + 1))
+	w = w / np.sum(w)
+	mueff = 1 / np.sum(w ** 2)
 	cs = (mueff + 2) / (task.D + mueff + 5)
-	ds = 1 + cs + 2 * max(sqrt((mueff - 1) / (task.D + 1)) - 1, 0)
-	ENN = sqrt(task.D) * (1 - 1 / (4 * task.D) + 1 / (21 * task.D ** 2))
+	ds = 1 + cs + 2 * max(np.sqrt((mueff - 1) / (task.D + 1)) - 1, 0)
+	ENN = np.sqrt(task.D) * (1 - 1 / (4 * task.D) + 1 / (21 * task.D ** 2))
 	cc, c1 = (4 + mueff / task.D) / (4 + task.D + 2 * mueff / task.D), 2 / ((task.D + 1.3) ** 2 + mueff)
 	cmu, hth = min(1 - c1, alpha_mu * (mueff - 2 + 1 / mueff) / ((task.D + 2) ** 2 + alpha_mu * mueff / 2)), (1.4 + 2 / (task.D + 1)) * ENN
-	ps, pc, C, sigma, M = full(task.D, 0.0), full(task.D, 0.0), eye(task.D), sigma0, full(task.D, 0.0)
-	x = rnd.uniform(task.bcLower(), task.bcUpper())
+	ps, pc, C, sigma, M = np.zeros(task.D), np.zeros(task.D), np.eye(task.D), sigma0, np.zeros(task.D)
+	x = rng.uniform(task.bcLower(), task.bcUpper())
 	x_f = task.eval(x)
 	while not task.stopCondI():
-		pop_step = asarray([rnd.multivariate_normal(full(task.D, 0.0), C) for _ in range(int(lam))])
-		pop = asarray([task.repair(x + sigma * ps, rnd) for ps in pop_step])
-		pop_f = apply_along_axis(task.eval, 1, pop)
-		isort = argsort(pop_f)
+		pop_step = np.asarray([rng.multivariate_normal(np.zeros(task.D), C) for _ in range(int(lam))])
+		pop = np.asarray([task.repair(x + sigma * ps, rng=rng) for ps in pop_step])
+		pop_f = np.apply_along_axis(task.eval, 1, pop)
+		isort = np.argsort(pop_f)
 		pop, pop_f, pop_step = pop[isort[:mu]], pop_f[isort[:mu]], pop_step[isort[:mu]]
 		if pop_f[0] < x_f: x, x_f = pop[0], pop_f[0]
-		M = sum(w * pop_step.T, axis=1)
-		ps = solve(chol(C).conj() + epsilon, ((1 - cs) * ps + sqrt(cs * (2 - cs) * mueff) * M + epsilon).T)[0].T
-		sigma *= exp(cs / ds * (norm(ps) / ENN - 1)) ** 0.3
-		ifix = where(sigma == inf)
-		if any(ifix): sigma[ifix] = sigma0
-		if norm(ps) / sqrt(1 - (1 - cs) ** (2 * ((task.Iters + 1) + 1))) < hth: hs = 1
+		M = np.sum(w * pop_step.T, axis=1)
+		ps = solve(cholesky(C).conj() + epsilon, ((1 - cs) * ps + np.sqrt(cs * (2 - cs) * mueff) * M + epsilon).T)[0].T
+		sigma *= np.exp(cs / ds * (norm(ps) / ENN - 1)) ** 0.3
+		ifix = np.where(sigma == np.inf)
+		if np.any(ifix): sigma[ifix] = sigma0
+		if norm(ps) / np.sqrt(1 - (1 - cs) ** (2 * ((task.Iters + 1) + 1))) < hth: hs = 1
 		else: hs = 0
 		delta = (1 - hs) * cc * (2 - cc)
-		pc = (1 - cc) * pc + hs * sqrt(cc * (2 - cc) * mueff) * M
-		C = (1 - c1 - cmu) * C + c1 * (tile(pc, [len(pc), 1]) * tile(pc.reshape([len(pc), 1]), [1, len(pc)]) + delta * C)
-		for i in range(mu): C += cmu * w[i] * tile(pop_step[i], [len(pop_step[i]), 1]) * tile(pop_step[i].reshape([len(pop_step[i]), 1]), [1, len(pop_step[i])])
+		pc = (1 - cc) * pc + hs * np.sqrt(cc * (2 - cc) * mueff) * M
+		C = (1 - c1 - cmu) * C + c1 * (np.tile(pc, [len(pc), 1]) * np.tile(pc.reshape([len(pc), 1]), [1, len(pc)]) + delta * C)
+		for i in range(mu): C += cmu * w[i] * np.tile(pop_step[i], [len(pop_step[i]), 1]) * np.tile(pop_step[i].reshape([len(pop_step[i]), 1]), [1, len(pop_step[i])])
 		E, V = eig(C)
-		if any(E < epsilon):
-			E = fmax(E, 0)
-			C = lstsq(V.T, dot(V, diag(E)).T, rcond=None)[0].T
+		if np.any(E < epsilon):
+			E = np.fmax(E, 0)
+			C = lstsq(V.T, np.dot(V, np.diag(E)).T, rcond=None)[0].T
 	return x, x_f
 
 class CovarianceMatrixAdaptionEvolutionStrategy(Algorithm):
@@ -591,6 +591,6 @@ class CovarianceMatrixAdaptionEvolutionStrategy(Algorithm):
 		Returns:
 			TODO.
 		"""
-		return CovarianceMaatrixAdaptionEvolutionStrategyF(task, self.epsilon, rnd=self.Rand)
+		return CovarianceMaatrixAdaptionEvolutionStrategyF(task, rng=self.rng, epsilon=self.epsilon)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

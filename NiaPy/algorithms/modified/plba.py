@@ -1,7 +1,7 @@
 # encoding=utf8
 import logging
 
-from numpy import full
+import numpy as np
 
 from NiaPy.algorithms.algorithm import Algorithm
 
@@ -81,7 +81,7 @@ class ParameterFreeBatAlgorithm(Algorithm):
 			* :func:`NiaPy.algorithms.Algorithm.initPopulation`
 		"""
 		Sol, Fitness, d = Algorithm.initPopulation(self, task)
-		S, Q, v = full([self.NP, task.D], 0.0), full(self.NP, 0.0), full([self.NP, task.D], 0.0)
+		S, Q, v = np.zeros((self.NP, task.D)), np.zeros(self.NP), np.zeros((self.NP, task.D))
 		d.update({'S': S, 'Q': Q, 'v': v})
 		return Sol, Fitness, d
 
@@ -131,10 +131,10 @@ class ParameterFreeBatAlgorithm(Algorithm):
 		for i in range(self.NP):
 			Q[i] = ((upper[0] - lower[0]) / float(self.NP)) * self.normal(0, 1)
 			v[i] += (Sol[i] - xb) * Q[i]
-			if self.rand() > self.r: S[i] = self.localSearch(best=xb, task=task, i=i, Sol=Sol)
-			else: S[i] = task.repair(Sol[i] + v[i], rnd=self.Rand)
+			if self.random() > self.r: S[i] = self.localSearch(best=xb, task=task, i=i, Sol=Sol)
+			else: S[i] = task.repair(Sol[i] + v[i], rng=self.rng)
 			Fnew = task.eval(S[i])
-			if (Fnew <= Fitness[i]) and (self.rand() < self.A): Sol[i], Fitness[i] = S[i], Fnew
+			if (Fnew <= Fitness[i]) and (self.random() < self.A): Sol[i], Fitness[i] = S[i], Fnew
 			if Fnew <= fxb: xb, fxb = S[i].copy(), Fnew
 		return Sol, Fitness, xb, fxb, {'S': S, 'Q': Q, 'v': v}
 

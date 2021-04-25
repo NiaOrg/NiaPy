@@ -2,7 +2,7 @@
 
 """Implementations of Levy function."""
 
-from numpy import sin, pi
+import numpy as np
 from NiaPy.benchmarks.benchmark import Benchmark
 
 __all__ = ['Levy']
@@ -43,7 +43,7 @@ class Levy(Benchmark):
 	"""
 	Name = ['Levy']
 
-	def __init__(self, Lower=0.0, Upper=pi):
+	def __init__(self, Lower=0.0, Upper=np.pi):
 		r"""Initialize of Levy benchmark.
 
 		Args:
@@ -82,8 +82,8 @@ class Levy(Benchmark):
 				float: Fitness value for the solution.
 			"""
 			v = 0.0
-			for i in range(D - 1): v += (w(X[i]) - 1) ** 2 * (1 + 10 * sin(pi * w(X[i]) + 1) ** 2) + (w(X[-1]) - 1) ** 2 * (1 + sin(2 * pi * w(X[-1]) ** 2))
-			return sin(pi * w(X[0])) ** 2 + v
+			for i in range(D - 1): v += (w(X[i]) - 1) ** 2 * (1 + 10 * np.sin(np.pi * w(X[i]) + 1) ** 2) + (w(X[-1]) - 1) ** 2 * (1 + np.sin(2 * np.pi * w(X[-1]) ** 2))
+			return np.sin(np.pi * w(X[0])) ** 2 + v
 		return f
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

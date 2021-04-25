@@ -113,7 +113,7 @@ class CatSwarmOptimization(Algorithm):
         """
         lista = np.zeros((self.NP,), dtype=int)
         indexes = np.arange(self.NP)
-        self.Rand.shuffle(indexes)
+        self.rng.shuffle(indexes)
         lista[indexes[:int(self.NP * self.MR)]] = 1
         return lista
 
@@ -127,7 +127,7 @@ class CatSwarmOptimization(Algorithm):
             int: index of selected next position.
         """
         cumulative_sum = np.cumsum(weights)
-        return np.argmax(cumulative_sum >= (self.rand() * cumulative_sum[-1]))
+        return np.argmax(cumulative_sum >= (self.random() * cumulative_sum[-1]))
 
     def seekingMode(self, task, cat, fcat, pop, fpop, fxb):
         r"""Seeking mode.
@@ -152,9 +152,9 @@ class CatSwarmOptimization(Algorithm):
         for j in range(self.SMP - 1 if self.SPC else self.SMP):
             cat_copies.append(cat.copy())
             indexes = np.arange(task.D)
-            self.Rand.shuffle(indexes)
+            self.rng.shuffle(indexes)
             to_vary_indexes = indexes[:int(task.D * self.CDC)]
-            if self.randint(2) == 1:
+            if self.integers(2) == 1:
                 cat_copies[j][to_vary_indexes] += cat_copies[j][to_vary_indexes] * self.SRD
             else:
                 cat_copies[j][to_vary_indexes] -= cat_copies[j][to_vary_indexes] * self.SRD
@@ -175,7 +175,7 @@ class CatSwarmOptimization(Algorithm):
                 cat_copies_select_probs = np.abs(cat_copies_fs - fb) / (fmax - fmin)
         if fmin < fxb:
             fxb = fmin
-            ind = self.randint(self.NP, 1, 0)
+            ind = self.integers(self.NP)
             pop[ind] = cat_copies[np.where(cat_copies_fs == fmin)[0][0]]
             fpop[ind] = fmin
         sel_index = self.weightedSelection(cat_copies_select_probs)
