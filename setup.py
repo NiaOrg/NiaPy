@@ -2,16 +2,6 @@
 
 """Setup script for the package."""
 
-from __future__ import (
-    division,
-    absolute_import,
-    with_statement,
-    print_function,
-    unicode_literals,
-    nested_scopes,
-    generators
-)
-
 import io
 import os
 import sys
@@ -83,7 +73,7 @@ setuptools.setup(
         'Topic :: Scientific/Engineering',
         'Topic :: Software Development'
     ],
-    tests_requires=[
+    tests_require=[
         'flake8 ~= 3.7.7',
         'astroid >= 2.0.4',
         'pytest ~= 3.7.1',
