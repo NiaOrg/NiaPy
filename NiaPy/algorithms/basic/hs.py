@@ -13,7 +13,7 @@ __all__ = ["HarmonySearch", "HarmonySearchV1"]
 
 
 class HarmonySearch(Algorithm):
-	r"""Implementation of harmony search algorithm.
+	r"""Implementation of Harmony Search algorithm.
 
 	Algorithm:
 		Harmony Search Algorithm
@@ -28,7 +28,7 @@ class HarmonySearch(Algorithm):
 		MIT
 
 	Reference URL:
-		https://link.springer.com/chapter/10.1007/978-3-642-00185-7_1
+		https://journals.sagepub.com/doi/10.1177/003754970107600201
 
 	Reference paper:
 		Geem, Z. W., Kim, J. H., & Loganathan, G. V. (2001). A new heuristic optimization algorithm: harmony search. Simulation, 76(2), 60-68.
