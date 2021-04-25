@@ -96,23 +96,6 @@ class HarrisHawksOptimization(Algorithm):
 		})
 		return d
 
-	def initPopulation(self, task, rnd=np.random):
-		r"""Initialize the starting population.
-
-		Parameters:
-			task (Task): Optimization task
-
-		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
-				1. New population.
-				2. New population fitness/function values.
-
-		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.initPopulation`
-		"""
-		Sol, Fitness, d = Algorithm.initPopulation(self, task)
-		return Sol, Fitness, d
-
 	def runIteration(self, task, Sol, Fitness, xb, fxb, **dparams):
 		r"""Core function of Harris Hawks Optimization.
 
@@ -136,19 +119,19 @@ class HarrisHawksOptimization(Algorithm):
 		mean_sol = np.mean(Sol)
 		# Update population
 		for i in range(self.NP):
-			jumping_energy = self.Rand.uniform(0, 2)
-			decreasing_energy_random = self.Rand.uniform(-1, 1)
+			jumping_energy = self.rng.uniform(0, 2)
+			decreasing_energy_random = self.rng.uniform(-1, 1)
 			escaping_energy = decreasing_energy_factor * decreasing_energy_random
 			escaping_energy_abs = np.abs(escaping_energy)
-			random_number = self.Rand.rand()
+			random_number = self.rng.random()
 			if escaping_energy >= 1 and random_number >= 0.5:
 				# 0. Exploration: Random tall tree
-				rhi = self.Rand.randint(0, self.NP)
+				rhi = self.rng.integers(self.NP)
 				random_agent = Sol[rhi]
-				Sol[i] = random_agent - self.Rand.rand() * np.abs(random_agent - 2 * self.Rand.rand() * Sol[i])
+				Sol[i] = random_agent - self.rng.random() * np.abs(random_agent - 2 * self.rng.random() * Sol[i])
 			elif escaping_energy_abs >= 1 and random_number < 0.5:
 				# 1. Exploration: Family members mean
-				Sol[i] = (xb - mean_sol) - self.Rand.rand() * self.Rand.uniform(task.Lower, task.Upper)
+				Sol[i] = (xb - mean_sol) - self.rng.random() * self.rng.uniform(task.Lower, task.Upper)
 			elif escaping_energy_abs >= 0.5 and random_number >= 0.5:
 				# 2. Exploitation: Soft besiege
 				Sol[i] = \
@@ -163,24 +146,24 @@ class HarrisHawksOptimization(Algorithm):
 					np.abs(xb - Sol[i])
 			elif escaping_energy_abs >= 0.5 and random_number < 0.5:
 				# 4. Exploitation: Soft besiege with pprogressive rapid dives
-				cand1 = task.repair(xb - escaping_energy * np.abs(jumping_energy * xb - Sol[i]), rnd=self.Rand)
-				random_vector = self.Rand.rand(task.D)
-				cand2 = task.repair(cand1 + random_vector * levy_flight(self.levy, size=task.D, rng=self.Rand), rnd=self.Rand)
+				cand1 = task.repair(xb - escaping_energy * np.abs(jumping_energy * xb - Sol[i]), rng=self.rng)
+				random_vector = self.rng.random(task.D)
+				cand2 = task.repair(cand1 + random_vector * levy_flight(alpha=self.levy, size=task.D, rng=self.rng), rng=self.rng)
 				if task.eval(cand1) < Fitness[i]:
 					Sol[i] = cand1
 				elif task.eval(cand2) < Fitness[i]:
 					Sol[i] = cand2
 			elif escaping_energy_abs < 0.5 and random_number < 0.5:
 				# 5. Exploitation: Hard besiege with progressive rapid dives
-				cand1 = task.repair(xb - escaping_energy * np.abs(jumping_energy * xb - mean_sol), rnd=self.Rand)
-				random_vector = self.Rand.rand(task.D)
-				cand2 = task.repair(cand1 + random_vector * levy_flight(self.levy, size=task.D, rng=self.Rand), rnd=self.Rand)
+				cand1 = task.repair(xb - escaping_energy * np.abs(jumping_energy * xb - mean_sol), rng=self.rng)
+				random_vector = self.rng.random(task.D)
+				cand2 = task.repair(cand1 + random_vector * levy_flight(alpha=self.levy, size=task.D, rng=self.rng), rng=self.rng)
 				if task.eval(cand1) < Fitness[i]:
 					Sol[i] = cand1
 				elif task.eval(cand2) < Fitness[i]:
 					Sol[i] = cand2
 			# Repair agent (from population) values
-			Sol[i] = task.repair(Sol[i], rnd=self.Rand)
+			Sol[i] = task.repair(Sol[i], rng=self.rng)
 			# Eval population
 			Fitness[i] = task.eval(Sol[i])
 		# Get best of population

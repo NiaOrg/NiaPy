@@ -4,6 +4,7 @@ import threading
 import multiprocessing
 
 import numpy as np
+from numpy.random import default_rng
 
 from NiaPy.util import FesException, GenException, TimeException, RefException, objects_to_array
 
@@ -19,31 +20,31 @@ __all__ = [
 ]
 
 
-def defaultNumPyInit(task, NP, rnd=np.random, **kwargs):
+def defaultNumPyInit(task, NP, rng, **kwargs):
 	r"""Initialize starting population that is represented with `numpy.ndarray` with shape `{NP, task.D}`.
 
 	Args:
 		task (Task): Optimization task.
 		NP (int): Number of individuals in population.
-		rnd (Optional[mtrand.RandomState]): Random number generator.
+		rng (numpy.random.Generator): Random number generator.
 		kwargs (Dict[str, Any]): Additional arguments.
 
 	Returns:
 		Tuple[numpy.ndarray, numpy.ndarray[float]]:
-			1. New population with shape `{NP, task.D}`.
+			1. New population with shape `(NP, task.D)`.
 			2. New population function/fitness values.
 	"""
-	pop = task.Lower + rnd.rand(NP, task.D) * task.bRange
+	pop = rng.uniform(task.Lower, task.Upper, (NP, task.D))
 	fpop = np.apply_along_axis(task.eval, 1, pop)
 	return pop, fpop
 
-def defaultIndividualInit(task, NP, rnd=np.random, itype=None, **kwargs):
+def defaultIndividualInit(task, NP, rng, itype=None, **kwargs):
 	r"""Initialize `NP` individuals of type `itype`.
 
 	Args:
 		task (Task): Optimization task.
 		NP (int): Number of individuals in population.
-		rnd (Optional[mtrand.RandomState]): Random number generator.
+		rng (numpy.random.Generator): Random number generator.
 		itype (Optional[Individual]): Class of individual in population.
 		kwargs (Dict[str, Any]): Additional arguments.
 
@@ -52,7 +53,7 @@ def defaultIndividualInit(task, NP, rnd=np.random, itype=None, **kwargs):
 			1. Initialized individuals.
 			2. Initialized individuals function/fitness values.
 	"""
-	pop = objects_to_array([itype(task=task, rnd=rnd, e=True) for _ in range(NP)])
+	pop = objects_to_array([itype(task=task, rng=rng, e=True) for _ in range(NP)])
 	return pop, np.asarray([x.f for x in pop])
 
 class Algorithm:
@@ -69,16 +70,12 @@ class Algorithm:
 
 	Attributes:
 		Name (List[str]): List of names for algorithm.
-		Rand (mtrand.RandomState): Random generator.
+		rng (numpy.random.Generator): Random generator.
 		NP (int): Number of inidividuals in populatin.
-		InitPopFunc (Callable[[int, Task, mtrand.RandomState, Dict[str, Any]], Tuple[numpy.ndarray, numpy.ndarray[float]]]): Idividual initialization function.
+		InitPopFunc (Callable[[int, Task, numpy.random.Generator, Dict[str, Any]], Tuple[numpy.ndarray, numpy.ndarray[float]]]): Idividual initialization function.
 		itype (Individual): Type of individuals used in population, default value is None for Numpy arrays.
 	"""
 	Name = ['Algorithm', 'AAA']
-	Rand = np.random.RandomState(None)
-	NP = 50
-	InitPopFunc = defaultNumPyInit
-	itype = None
 
 	@staticmethod
 	def typeParameters():
@@ -99,7 +96,8 @@ class Algorithm:
 		See Also:
 			* :func:`NiaPy.algorithms.Algorithm.setParameters`
 		"""
-		self.Rand, self.exception = np.random.RandomState(kwargs.pop('seed', None)), None
+		self.rng = default_rng(kwargs.pop('seed', None))
+		self.exception = None
 		self.setParameters(**kwargs)
 
 	@staticmethod
@@ -116,7 +114,7 @@ class Algorithm:
 
 		Args:
 			NP (Optional[int]): Number of individuals in population :math:`\in [1, \infty]`.
-			InitPopFunc (Optional[Callable[[int, Task, mtrand.RandomState, Dict[str, Any]], Tuple[numpy.ndarray, numpy.ndarray[float]]]]): Type of individuals used by algorithm.
+			InitPopFunc (Optional[Callable[[int, Task, numpy.random.Generator, Dict[str, Any]], Tuple[numpy.ndarray, numpy.ndarray[float]]]]): Type of individuals used by algorithm.
 			itype (Optional[Any]): Individual type used in population, default is Numpy array.
 			**kwargs (Dict[str, Any]): Additional arguments.
 
@@ -140,75 +138,69 @@ class Algorithm:
 			'itype': self.itype
 		}
 
-	def rand(self, D=1):
-		r"""Get random distribution of shape D in range from 0 to 1.
+	def random(self, size=None):
+		r"""Get random distribution of shape size in range from 0 to 1.
 
 		Args:
-			D (numpy.ndarray[int]): Shape of returned random distribution.
+			size (Union[None, int, Iterable[int]]): Shape of returned random distribution.
 
 		Returns:
 			Union[numpy.ndarray[float], float]: Random number or numbers :math:`\in [0, 1]`.
 		"""
-		if isinstance(D, (np.ndarray, list)): return self.Rand.rand(*D)
-		elif D > 1: return self.Rand.rand(D)
-		else: return self.Rand.rand()
+		return self.rng.random(size)
 
-	def uniform(self, Lower, Upper, D=None):
-		r"""Get uniform random distribution of shape D in range from "Lower" to "Upper".
+	def uniform(self, low, high, size=None):
+		r"""Get uniform random distribution of shape size in range from "low" to "high".
 
 		Args:
-			Lower (Iterable[float]): Lower bound.
-			Upper (Iterable[float]): Upper bound.
-			D (Union[int, Iterable[int]]): Shape of returned uniform random distribution.
+			low (Union[float, Iterable[float]]): Lower bound.
+			high (Union[float, Iterable[float]]): Upper bound.
+			size (Union[None, int, Iterable[int]]): Shape of returned uniform random distribution.
 
 		Returns:
 			Union[numpy.ndarray[float], float]: Array of numbers :math:`\in [\mathit{Lower}, \mathit{Upper}]`.
 		"""
-		return self.Rand.uniform(Lower, Upper, D) if D is not None else self.Rand.uniform(Lower, Upper)
+		return self.rng.uniform(low, high, size)
 
-	def normal(self, loc, scale, D=None):
-		r"""Get normal random distribution of shape D with mean "loc" and standard deviation "scale".
+	def normal(self, loc, scale, size=None):
+		r"""Get normal random distribution of shape size with mean "loc" and standard deviation "scale".
 
 		Args:
 			loc (float): Mean of the normal random distribution.
 			scale (float): Standard deviation of the normal random distribution.
-			D (Union[int, Iterable[int]]): Shape of returned normal random distribution.
+			size (Union[int, Iterable[int]]): Shape of returned normal random distribution.
 
 		Returns:
 			Union[numpy.ndarray[float], float]: Array of numbers.
 		"""
-		return self.Rand.normal(loc, scale, D) if D is not None else self.Rand.normal(loc, scale)
+		return self.rng.normal(loc, scale, size)
 
-	def randn(self, D=None):
-		r"""Get standard normal distribution of shape D.
+	def standard_normal(self, size=None):
+		r"""Get standard normal distribution of shape size.
 
 		Args:
-			D (Union[int, Iterable[int]]): Shape of returned standard normal distribution.
+			size (Union[int, Iterable[int]]): Shape of returned standard normal distribution.
 
 		Returns:
 			Union[numpy.ndarray[float], float]: Random generated numbers or one random generated number :math:`\in [0, 1]`.
 		"""
-		if D is None: return self.Rand.randn()
-		elif isinstance(D, int): return self.Rand.randn(D)
-		return self.Rand.randn(*D)
+		return self.rng.standard_normal(size)
 
-	def randint(self, Nmax, D=1, Nmin=0, skip=None):
-		r"""Get discrete uniform (integer) random distribution of D shape in range from "Nmin" to "Nmax".
+	def integers(self, low, high=None, size=None, skip=None):
+		r"""Get discrete uniform (integer) random distribution of D shape in range from "low" to "high".
 
 		Args:
-			Nmin (int): Lower integer bound.
-			Nmax (int): One above upper integer bound.
-			D (Union[int, Iterable[int]]): shape of returned discrete uniform random distribution.
-			skip (Union[int, Iterable[int], numpy.ndarray[int]]): numbers to skip.
+			low (Union[int, Iterable[int]]): Lower integer bound.
+				If high = None lwo is 0 and this value is used as high
+			high (Union[int, Iterable[int]]): One above upper integer bound.
+			size (Union[None, int, Iterable[int]]): shape of returned discrete uniform random distribution.
+			skip (Union[None, int, Iterable[int], numpy.ndarray[int]]): numbers to skip.
 
 		Returns:
-			Union[int, numpy.ndarrayj[int]]: Random generated integer number.
+			Union[int, numpy.ndarray[int]]: Random generated integer number.
 		"""
-		r = None
-		if isinstance(D, (list, tuple, np.ndarray)): r = self.Rand.randint(Nmin, Nmax, D)
-		elif D > 1: r = self.Rand.randint(Nmin, Nmax, D)
-		else: r = self.Rand.randint(Nmin, Nmax)
-		return r if skip is None or r not in skip else self.randint(Nmax, D, Nmin, skip)
+		r = self.rng.integers(low, high, size)
+		return r if skip is None or r not in skip else self.integers(low, high, size, skip)
 
 	def getBest(self, X, X_f, xb=None, xb_f=np.inf):
 		r"""Get the best individual for population.
@@ -244,7 +236,7 @@ class Algorithm:
 		See Also:
 			* :func:`NiaPy.algorithms.Algorithm.setParameters`
 		"""
-		pop, fpop = self.InitPopFunc(task=task, NP=self.NP, rnd=self.Rand, itype=self.itype)
+		pop, fpop = self.InitPopFunc(task=task, NP=self.NP, rng=self.rng, itype=self.itype)
 		return pop, fpop, {}
 
 	def runIteration(self, task, pop, fpop, xb, fxb, **dparams):
@@ -369,35 +361,38 @@ class Individual:
 	x = None
 	f = np.inf
 
-	def __init__(self, x=None, task=None, e=True, rnd=np.random, **kwargs):
+	def __init__(self, x=None, task=None, e=True, rng=None, **kwargs):
 		r"""Initialize new individual.
 
 		Parameters:
 			task (Optional[Task]): Optimization task.
-			rand (Optional[mtrand.RandomState]): Random generator.
+			rand (Optional[numpy.random.Generator]): Random generator.
 			x (Optional[numpy.ndarray]): Individuals components.
 			e (Optional[bool]): True to evaluate the individual on initialization. Default value is True.
 			**kwargs (Dict[str, Any]): Additional arguments.
 		"""
 		self.f = task.optType.value * np.inf if task is not None else np.inf
-		if x is not None: self.x = x if isinstance(x, np.ndarray) else np.asarray(x)
-		else: self.generateSolution(task, rnd)
-		if e and task is not None: self.evaluate(task, rnd)
+		if x is not None:
+			self.x = x if isinstance(x, np.ndarray) else np.asarray(x)
+		elif task is not None:
+			self.generateSolution(task, default_rng(rng))
+		if e and task is not None:
+			self.evaluate(task, rng)
 
-	def generateSolution(self, task, rnd=np.random):
+	def generateSolution(self, task, rng):
 		r"""Generate new solution.
 
 		Generate new solution for this individual and set it to ``self.x``.
-		This method uses ``rnd`` for getting random numbers.
-		For generating random components ``rnd`` and ``task`` is used.
+		This method uses ``rng`` for getting random numbers.
+		For generating random components ``rng`` and ``task`` is used.
 
 		Args:
 			task (Task): Optimization task.
-			rnd (Optional[mtrand.RandomState]): Random numbers generator object.
+			rng (numpy.random.Generator): Random numbers generator object.
 		"""
-		if task is not None: self.x = task.Lower + task.bRange * rnd.rand(task.D)
+		self.x = rng.uniform(task.Lower, task.Upper, task.D)
 
-	def evaluate(self, task, rnd=np.random):
+	def evaluate(self, task, rng=None):
 		r"""Evaluate the solution.
 
 		Evaluate solution ``this.x`` with the help of task.
@@ -405,12 +400,12 @@ class Individual:
 
 		Args:
 			task (Task): Objective function object.
-			rnd (Optional[mtrand.RandomState]): Random generator.
+			rng (Optional[numpy.random.Generator]): Random generator.
 
 		See Also:
 			* :func:`NiaPy.util.Task.repair`
 		"""
-		self.x = task.repair(self.x, rnd=rnd)
+		self.x = task.repair(self.x)
 		self.f = task.eval(self.x)
 
 	def copy(self):
@@ -421,7 +416,7 @@ class Individual:
 		Returns:
 			Individual: Copy of self.
 		"""
-		return Individual(x=self.x.copy(), f=self.f, e=False)
+		return Individual(x=self.x.copy(), e=False, f=self.f)
 
 	def __eq__(self, other):
 		r"""Compare the individuals for equalities.

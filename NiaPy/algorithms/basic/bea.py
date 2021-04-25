@@ -131,7 +131,7 @@ class BeesAlgorithm(Algorithm):
 		See Also:
 			* :func:`NiaPy.algorithms.Algorithm.initPopulation`
 		"""
-		ind = self.randint(task.D)
+		ind = self.integers(task.D)
 		y = x.copy()
 		y[ind] = x[ind] + self.uniform(-ngh, ngh)
 		y = self.repair(y, task.Lower, task.Upper)

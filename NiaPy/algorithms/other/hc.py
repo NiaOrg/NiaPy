@@ -1,8 +1,6 @@
 # encoding=utf8
 import logging
 
-import numpy as np
-
 from NiaPy.algorithms.algorithm import Algorithm
 
 logging.basicConfig()
@@ -11,22 +9,22 @@ logger.setLevel('INFO')
 
 __all__ = ['HillClimbAlgorithm']
 
-def Neighborhood(x, delta, task, rnd=np.random):
+def Neighborhood(x, delta, task, rng):
 	r"""Get neighbours of point.
 
 	Args:
 		x numpy.ndarray: Point.
 		delta (float): Standard deviation.
 		task (Task): Optimization task.
-		rnd (Optional[mtrand.RandomState]): Random generator.
+		rng (numpy.random.Generator): Random generator.
 
 	Returns:
 		Tuple[numpy.ndarray, float]:
 			1. New solution.
 			2. New solutions function/fitness value.
 	"""
-	X = x + rnd.normal(0, delta, task.D)
-	X = task.repair(X, rnd)
+	X = x + rng.normal(0, delta, task.D)
+	X = task.repair(X, rng)
 	Xfit = task.eval(X)
 	return X, Xfit
 
@@ -110,7 +108,7 @@ class HillClimbAlgorithm(Algorithm):
 				2. New individual function/fitness value.
 				3. Additional arguments.
 		"""
-		x = task.Lower + self.rand(task.D) * task.bRange
+		x = task.Lower + self.random(task.D) * task.bRange
 		return x, task.eval(x), {}
 
 	def runIteration(self, task, x, fx, xb, fxb, **dparams):
@@ -130,10 +128,10 @@ class HillClimbAlgorithm(Algorithm):
 				2. New solutions function/fitness value.
 				3. Additional arguments.
 		"""
-		lo, xn = False, task.bcLower() + task.bcRange() * self.rand(task.D)
+		lo, xn = False, task.bcLower() + task.bcRange() * self.random(task.D)
 		xn_f = task.eval(xn)
 		while not lo:
-			yn, yn_f = self.Neighborhood(x, self.delta, task, rnd=self.Rand)
+			yn, yn_f = self.Neighborhood(x, self.delta, task, rng=self.rng)
 			if yn_f < xn_f: xn, xn_f = yn, yn_f
 			else: lo = True or task.stopCond()
 		xb, fxb = self.getBest(xn, xn_f, xb, fxb)

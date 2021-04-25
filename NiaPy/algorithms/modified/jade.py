@@ -14,7 +14,7 @@ __all__ = [
 	'CrossRandCurr2Pbest'
 ]
 
-def CrossRandCurr2Pbest(pop, ic, fpop, f, cr, p=0.2, arc=None, rnd=np.random, *args):
+def CrossRandCurr2Pbest(pop, ic, fpop, f, cr, rng, p=0.2, arc=None, *args):
 	r"""Mutation strategy with crossover.
 
 	Mutation strategy uses two different random individuals from population to perform mutation.
@@ -30,7 +30,7 @@ def CrossRandCurr2Pbest(pop, ic, fpop, f, cr, p=0.2, arc=None, rnd=np.random, *a
 		cr (float): Crossover probability.
 		p (float): Procentage of best individuals to use.
 		arc (numpy.ndarray): Achived individuals.
-		rnd (mtrand.RandomState): Random generator.
+		rng (numpy.random.Generator): Random generator.
 		args (Dict[str, Any]): Additional argumets.
 
 	Returns:
@@ -38,19 +38,19 @@ def CrossRandCurr2Pbest(pop, ic, fpop, f, cr, p=0.2, arc=None, rnd=np.random, *a
 	"""
 	# Get random index from current population
 	pb = [1.0 / (len(pop) - 1) if i != ic else 0 for i in range(len(pop))] if len(pop) > 1 else None
-	r = rnd.choice(len(pop), 1, replace=not len(pop) >= 3, p=pb)
+	r = rng.choice(len(pop), 1, replace=not len(pop) >= 3, p=pb)
 	# Get pbest index
 	index, pi = np.argsort(fpop), int(len(fpop) * p)
 	ppop = pop[index[:pi]]
 	pb = [1.0 / len(ppop) for i in range(pi)] if len(ppop) > 1 else None
-	rp = rnd.choice(pi, 1, replace=not len(ppop) >= 1, p=pb)
+	rp = rng.choice(pi, 1, replace=not len(ppop) >= 1, p=pb)
 	# Get union population and archive index
 	apop = np.concatenate((pop, arc)) if arc is not None else pop
 	pb = [1.0 / (len(apop) - 1) if i != ic else 0 for i in range(len(apop))] if len(apop) > 1 else None
-	ra = rnd.choice(len(apop), 1, replace=not len(apop) >= 1, p=pb)
+	ra = rng.choice(len(apop), 1, replace=not len(apop) >= 1, p=pb)
 	# Generate new position
-	j = rnd.randint(len(pop[ic]))
-	x = [el + f * (ppop[rp[0]][elidx] - el) + f * (pop[r[0]][elidx] - apop[ra[0]][elidx]) if rnd.rand() < cr or elidx == j else el for elidx, el in enumerate(pop[ic])]
+	j = rng.integers(0, len(pop[ic]))
+	x = [el + f * (ppop[rp[0]][elidx] - el) + f * (pop[r[0]][elidx] - apop[ra[0]][elidx]) if rng.random() < cr or elidx == j else el for elidx, el in enumerate(pop[ic])]
 	return np.vstack(x)
 
 class AdaptiveArchiveDifferentialEvolution(DifferentialEvolution):

@@ -184,7 +184,7 @@ class KrillHerd(Algorithm):
 		N = list()
 		for j in range(self.NP):
 			if j != i and ids > euclidean(KH[i], KH[j]): N.append(j)
-		if not N: N.append(self.randint(self.NP))
+		if not N: N.append(self.integers(self.NP))
 		return np.asarray(N)
 
 	def funX(self, x, y):
@@ -232,7 +232,7 @@ class KrillHerd(Algorithm):
 		Ni = self.getNeighbours(i, self.sensRange(i, KH), KH)
 		Nx, Nf, f_b, f_w = KH[Ni], KH_f[Ni], KH_f[ikh_b], KH_f[ikh_w]
 		alpha_l = np.sum(np.asarray([self.funK(KH_f[i], j, f_b, f_w) for j in Nf]) * np.asarray([self.funX(KH[i], j) for j in Nx]).T)
-		alpha_t = 2 * (1 + self.rand() * (task.Iters + 1) / task.nGEN)
+		alpha_t = 2 * (1 + self.random() * (task.Iters + 1) / task.nGEN)
 		return self.N_max * (alpha_l + alpha_t) + W * n
 
 	def induceForagingMotion(self, i, x, x_f, f, W, KH, KH_f, ikh_b, ikh_w, task):
@@ -290,7 +290,7 @@ class KrillHerd(Algorithm):
 		Returns:
 			numpy.ndarray: Crossoverd krill/individual.
 		"""
-		return [xo[i] if self.rand() < Cr else x[i] for i in range(len(x))]
+		return [xo[i] if self.random() < Cr else x[i] for i in range(len(x))]
 
 	def mutate(self, x, x_b, Mu):
 		r"""Mutate operator.
@@ -303,7 +303,7 @@ class KrillHerd(Algorithm):
 		Returns:
 			numpy.ndarray: Mutated krill.
 		"""
-		return [x[i] if self.rand() < Mu else (x_b[i] + self.rand()) for i in range(len(x))]
+		return [x[i] if self.random() < Mu else (x_b[i] + self.random()) for i in range(len(x))]
 
 	def getFoodLocation(self, KH, KH_f, task):
 		r"""Get food location for krill heard.
@@ -318,7 +318,8 @@ class KrillHerd(Algorithm):
 				1. Location of food.
 				2. Foods function/fitness value.
 		"""
-		x_food = task.repair(np.asarray([np.sum(KH[:, i] / KH_f) for i in range(task.D)]) / np.sum(1 / KH_f), rnd=self.Rand)
+		x_food = task.repair(np.asarray([np.sum(KH[:, i] / KH_f) for i in range(task.D)]) / np.sum(1 / KH_f),
+                             rng=self.rng)
 		x_food_f = task.eval(x_food)
 		return x_food, x_food_f
 
@@ -413,7 +414,7 @@ class KrillHerd(Algorithm):
 		KH_n = np.asarray([self.crossover(KH_n[i], KH[i], Cr[i]) for i in range(self.NP)])
 		Mu = np.asarray([self.Mu(KH_f[i], KH_f[ikh_b], KH_f[ikh_b], KH_f[ikh_w]) for i in range(self.NP)])
 		KH_n = np.asarray([self.mutate(KH_n[i], KH[ikh_b], Mu[i]) for i in range(self.NP)])
-		KH = np.apply_along_axis(task.repair, 1, KH_n, rnd=self.Rand)
+		KH = np.apply_along_axis(task.repair, 1, KH_n, rng=self.rng)
 		KH_f = np.apply_along_axis(task.eval, 1, KH)
 		xb, fxb = self.getBest(KH, KH_f, xb, fxb)
 		return KH, KH_f, xb, fxb, {'W_n': W_n, 'W_f': W_f, 'N': N, 'F': F}
@@ -754,7 +755,7 @@ class KrillHerdV11(KrillHerd):
 		"""
 		Rgb, RR, Kw_Kgb = KH[ib] - KH[i], KH - KH[i], KH_f[iw] - KH_f[ib]
 		R = np.sqrt(np.sum(RR * RR))
-		alpha_b = -2 * (1 + self.rand() * (task.Iters + 1) / task.nGEN) * (KH_f[ib]) / Kw_Kgb / np.sqrt(np.sum(Rgb * Rgb)) * Rgb if KH_f[ib] < KH_f[i] else 0
+		alpha_b = -2 * (1 + self.random() * (task.Iters + 1) / task.nGEN) * (KH_f[ib]) / Kw_Kgb / np.sqrt(np.sum(Rgb * Rgb)) * Rgb if KH_f[ib] < KH_f[i] else 0
 		alpah_n, nn, ds = 0.0, 0, np.mean(R) / 5
 		for n in range(self.NP):
 			if R < ds and n != i:
@@ -856,9 +857,9 @@ class KrillHerdV11(KrillHerd):
 		N = np.asarray([self.Neighbors(i, KH, KH_f, iw, ib, N[i], w, task) for i in range(self.NP)])
 		F = np.asarray([self.Foraging(KH[i], KH_f[i], KHo[i], KHo_f[i], w, F[i], KH_f[iw], KH_f[ib], x_food, x_food_f, task) for i in range(self.NP)])
 		Cr = np.asarray([self.Cr(KH_f[i], KH_f[ib], KH_f[iw]) for i in range(self.NP)])
-		KH_n = np.asarray([self.crossover(KH[self.randint(self.NP)], KH[i], Cr[i]) for i in range(self.NP)])
+		KH_n = np.asarray([self.crossover(KH[self.integers(self.NP)], KH[i], Cr[i]) for i in range(self.NP)])
 		KH_n = KH + Dt * (F + N)
-		KH = np.apply_along_axis(task.repair, 1, KH_n, self.Rand)
+		KH = np.apply_along_axis(task.repair, 1, KH_n, self.rng)
 		KH_f = np.apply_along_axis(task.eval, 1, KH)
 		KHo, KHo_f = self.ElitistSelection(KH, KH_f, KHo, KHo_f)
 		xb, fxb = self.getBest(KH, KH_f, xb, fxb)

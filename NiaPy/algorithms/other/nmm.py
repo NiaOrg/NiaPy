@@ -108,7 +108,6 @@ class NelderMeadMethod(Algorithm):
 		Args:
 			NP (int): Number of individuals in population.
 			task (Task): Optimization task.
-			rnd (mtrand.RandomState): Random number generator.
 			kwargs (Dict[str, Any]): Additional arguments.
 
 		Returns:

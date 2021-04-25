@@ -130,9 +130,9 @@ class FlowerPollinationAlgorithm(Algorithm):
 				5. Additional arguments.
 		"""
 		for i in range(self.NP):
-			if self.uniform(0, 1) > self.p: S[i] += levy_flight(beta=self.beta, size=task.D, rng=self.Rand) * (Sol[i] - xb)
+			if self.uniform(0, 1) > self.p: S[i] += levy_flight(beta=self.beta, size=task.D, rng=self.rng) * (Sol[i] - xb)
 			else:
-				JK = self.Rand.permutation(self.NP)
+				JK = self.rng.permutation(self.NP)
 				S[i] += self.uniform(0, 1) * (Sol[JK[0]] - Sol[JK[1]])
 			S[i] = self.repair(S[i], task)
 			f_i = task.eval(S[i])

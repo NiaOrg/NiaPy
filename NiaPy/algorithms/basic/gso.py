@@ -161,11 +161,11 @@ class GlowwormSwarmOptimization(Algorithm):
 		Returns:
 
 		"""
-		r, b_l, b_u = self.rand(), 0, 0
+		r, b_l, b_u = self.random(), 0, 0
 		for j in range(self.NP):
 			b_l, b_u = b_u, b_u + pb[i]
 			if b_l < r < b_u: return j
-		return self.randint(self.NP)
+		return self.integers(self.NP)
 
 	def calcLuciferin(self, L, GS_f):
 		r"""TODO.
@@ -243,7 +243,8 @@ class GlowwormSwarmOptimization(Algorithm):
 		N = [self.getNeighbors(i, Ro[i], GSo, L) for i in range(self.NP)]
 		P = [self.probabilityes(i, N[i], L) for i in range(self.NP)]
 		j = [self.moveSelect(P[i], i) for i in range(self.NP)]
-		for i in range(self.NP): GS[i] = task.repair(GSo[i] + self.s * ((GSo[j[i]] - GSo[i]) / (self.Distance(GSo[j[i]], GSo[i]) + 1e-31)), rnd=self.Rand)
+		for i in range(self.NP): GS[i] = task.repair(
+            GSo[i] + self.s * ((GSo[j[i]] - GSo[i]) / (self.Distance(GSo[j[i]], GSo[i]) + 1e-31)), rng=self.rng)
 		for i in range(self.NP): R[i] = max(0, min(rs, self.rangeUpdate(Ro[i], N[i], rs)))
 		GS_f = np.apply_along_axis(task.eval, 1, GS)
 		xb, fxb = self.getBest(GS, GS_f, xb, fxb)

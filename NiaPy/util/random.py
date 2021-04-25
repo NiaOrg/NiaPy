@@ -4,14 +4,14 @@ import numpy as np
 __all__ = ['levy_flight']
 
 
-def levy_flight(alpha=0.01, beta=1.5, size=None, rng=np.random):
+def levy_flight(rng, alpha=0.01, beta=1.5, size=None):
     """Compute levy flight.
 
     Args:
         alpha (float): Scaling factor.
         beta (float): Stability parameter in range (0, 2).
         size (Optional[Union[int, Iterable[int]]]: Output size.
-        rng (mtrand.RandomState): Random number generator.
+        rng (numpy.random.Generator): Random number generator.
 
     Returns:
         Union[float, numpy.ndarray]: Sample(s) from a truncated levy distribution.

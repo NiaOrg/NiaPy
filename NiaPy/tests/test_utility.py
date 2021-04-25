@@ -2,6 +2,7 @@
 from unittest import TestCase
 
 import numpy as np
+from numpy.random import default_rng
 
 from NiaPy.util import full_array, repair, FesException, GenException  # TimeException, RefException
 from NiaPy.task import Utility, StoppingTask, ThrowingTask
@@ -214,7 +215,7 @@ class StoppingTaskTestCase(TestCase):
 		self.assertTrue(self.t.isFeasible(x))
 		x = np.full(self.D, -10)
 		self.assertTrue(self.t.isFeasible(x))
-		x = np.random.uniform(-10, 10, self.D)
+		x = default_rng().uniform(-10, 10, self.D)
 		self.assertTrue(self.t.isFeasible(x))
 		x = np.full(self.D, -20)
 		self.assertFalse(self.t.isFeasible(x))
@@ -286,7 +287,7 @@ class ThrowingTaskTestCase(TestCase):
 		self.assertTrue(self.t.isFeasible(x))
 		x = np.full(self.D, -10)
 		self.assertTrue(self.t.isFeasible(x))
-		x = np.random.uniform(-10, 10, self.D)
+		x = default_rng().uniform(-10, 10, self.D)
 		self.assertTrue(self.t.isFeasible(x))
 		x = np.full(self.D, -20)
 		self.assertFalse(self.t.isFeasible(x))
@@ -355,7 +356,7 @@ class LimitRepairTestCase(TestCase):
 
 	def generateIndividual(self, D, upper, lower):
 		u, l = full_array(upper, D), full_array(lower, D)
-		return l + np.random.rand(D) * (u - l)
+		return default_rng().uniform(l, u, D)
 
 	def test_limit_repair_good_solution_fine(self):
 		x = self.generateIndividual(self.D, self.Upper, self.Lower)
@@ -394,7 +395,7 @@ class WangRepairTestCase(LimitRepairTestCase):
 class RandRepairTestCase(LimitRepairTestCase):
 	def setUp(self):
 		LimitRepairTestCase.setUp(self)
-		self.met = repair.random
+		self.met = repair.rand
 
 class ReflectRepairTestCase(LimitRepairTestCase):
 	def setUp(self):

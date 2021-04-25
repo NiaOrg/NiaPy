@@ -53,7 +53,8 @@ class MonarchButterflyOptimization(Algorithm):
 		Description: Monarch butterfly optimization algorithm is inspired by the migration behaviour of the monarch butterflies in nature.
 		Authors: Wang, Gai-Ge & Deb, Suash & Cui, Zhihua.
 		Year: 2015
-		Main reference: Wang, G. G., Deb, S., & Cui, Z. (2019). Monarch butterfly optimization. Neural computing and applications, 31(7), 1995-2014."""
+		Main reference: Wang, G. G., Deb, S., & Cui, Z. (2019). Monarch butterfly optimization. Neural computing and applications, 31(7), 1995-2014.
+		"""
 
 	@staticmethod
 	def typeParameters():
@@ -115,7 +116,7 @@ class MonarchButterflyOptimization(Algorithm):
 			upper (numpy.ndarray): Upper limits for dimensions.
 
 		Returns:
-			numpy.ndarray: Repaired individual.
+			 numpy.ndarray: Repaired individual.
 		"""
 		ir = np.where(x < lower)
 		x[ir] = lower[ir]
@@ -154,10 +155,10 @@ class MonarchButterflyOptimization(Algorithm):
 			for parnum1 in range(0, D):
 				r1 = self.uniform(0.0, 1.0) * self.PER
 				if r1 <= self.PAR:
-					r2 = self.randint(Nmin=0, Nmax=NP1 - 1)
+					r2 = self.integers(NP1 - 1)
 					Butterflies[k1, parnum1] = pop1[r2, parnum1]
 				else:
-					r3 = self.randint(Nmin=0, Nmax=NP2 - 1)
+					r3 = self.integers(NP2 - 1)
 					Butterflies[k1, parnum1] = pop2[r3, parnum1]
 		return Butterflies
 
@@ -179,13 +180,13 @@ class MonarchButterflyOptimization(Algorithm):
 		pop2 = np.copy(Butterflies[NP1:])
 		for k2 in range(NP1, NP1 + NP2):
 			scale = 1.0 / ((t + 1)**2)
-			step_size = np.ceil(self.Rand.exponential(2 * max_t))
+			step_size = np.ceil(self.rng.exponential(2 * max_t))
 			delataX = self.levy(step_size, D)
 			for parnum2 in range(0, D):
 				if self.uniform(0.0, 1.0) >= self.PAR:
 					Butterflies[k2, parnum2] = best[parnum2]
 				else:
-					r4 = self.randint(Nmin=0, Nmax=NP2 - 1)
+					r4 = self.integers(NP2 - 1)
 					Butterflies[k2, parnum2] = pop2[r4, 1]
 					if self.uniform(0.0, 1.0) > self.BAR:
 						Butterflies[k2, parnum2] += scale * (delataX[parnum2] - 0.5)
@@ -225,7 +226,7 @@ class MonarchButterflyOptimization(Algorithm):
 					* dx (float): A small value used in local seeding stage.
 
 		See Also:
-			* :func:`NiaPy.algorithms.Algorithm.initPopulation`
+			 * :func:`NiaPy.algorithms.Algorithm.initPopulation`
 		"""
 		Butterflies = self.uniform(task.Lower, task.Upper, [self.NP, task.D])
 		Fitness, Butterflies = self.evaluateAndSort(task, Butterflies)
@@ -255,7 +256,7 @@ class MonarchButterflyOptimization(Algorithm):
 		tmpElite = np.copy(Butterflies[:self.keep])
 		max_t = task.nGEN if np.isinf(task.nGEN) is False else task.nFES / self.NP
 		Butterflies = np.apply_along_axis(task.repair, 1, self.migrationOperator(task.D, self.NP1, self.NP2, Butterflies))
-		Butterflies = np.apply_along_axis(task.repair, 1, self.adjustingOperator((task.Iters + 1), max_t, task.D, self.NP1, self.NP2, Butterflies, tmp_best))
+		Butterflies = np.apply_along_axis(task.repair, 1, self.adjustingOperator(task.Iters, max_t, task.D, self.NP1, self.NP2, Butterflies, tmp_best))
 		Fitness, Butterflies = self.evaluateAndSort(task, Butterflies)
 		tmp_best = Butterflies[0]
 		Butterflies[-self.keep:] = tmpElite

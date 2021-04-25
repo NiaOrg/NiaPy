@@ -1,6 +1,7 @@
 import numpy as np
+from numpy.random import default_rng
 
-__all__ = ['limit', 'limit_inverse', 'wang', 'random', 'reflect']
+__all__ = ['limit', 'limit_inverse', 'wang', 'rand', 'reflect']
 
 
 def limit(x, lower, upper, **kwargs):
@@ -59,24 +60,24 @@ def wang(x, lower, upper, **kwargs):
     return x
 
 
-def random(x, lower, upper, rnd=np.random, **kwargs):
+def rand(x, lower, upper, rng=None, **kwargs):
     r"""Repair solution and put the solution in the random position inside of the bounds of problem.
 
     Arguments:
             x (numpy.ndarray): Solution to check and repair if needed.
             lower (numpy.ndarray): Lower bounds of search space.
             upper (numpy.ndarray): Upper bounds of search space.
-            rnd (mtrand.RandomState): Random generator.
+            rng (numpy.random.Generator): Random generator.
             kwargs (Dict[str, Any]): Additional arguments.
 
     Returns:
             numpy.ndarray: Fixed solution.
-
     """
+    rng = default_rng(rng)
     ir = np.where(x < lower)
-    x[ir] = rnd.uniform(lower[ir], upper[ir])
+    x[ir] = rng.uniform(lower[ir], upper[ir])
     ir = np.where(x > upper)
-    x[ir] = rnd.uniform(lower[ir], upper[ir])
+    x[ir] = rng.uniform(lower[ir], upper[ir])
     return x
 
 

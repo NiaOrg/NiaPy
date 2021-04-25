@@ -38,7 +38,7 @@ class ParticleSwarmAlgorithm(Algorithm):
 		w (Union[float, numpy.ndarray[float]]): Inertial weight.
 		vMin (Union[float, numpy.ndarray[float]]): Minimal velocity.
 		vMax (Union[float, numpy.ndarray[float]]): Maximal velocity.
-		Repair (Callable[[numpy.ndarray, numpy.ndarray, numpy.ndarray, mtrnd.RandomState], numpy.ndarray]): Repair method for velocity.
+		Repair (Callable[[numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.random.Generator], numpy.ndarray]): Repair method for velocity.
 
 	See Also:
 		* :class:`NiaPy.algorithms.Algorithm`
@@ -181,7 +181,7 @@ class ParticleSwarmAlgorithm(Algorithm):
 		Returns:
 			numpy.ndarray: Updated velocity of particle.
 		"""
-		return self.Repair(w * V + self.C1 * self.rand(task.D) * (pb - p) + self.C2 * self.rand(task.D) * (gb - p), vMin, vMax)
+		return self.Repair(w * V + self.C1 * self.random(task.D) * (pb - p) + self.C2 * self.random(task.D) * (gb - p), vMin, vMax)
 
 	def runIteration(self, task, pop, fpop, xb, fxb, popb, fpopb, w, vMin, vMax, V, **dparams):
 		r"""Core function of Particle Swarm Optimization algorithm.
@@ -219,7 +219,7 @@ class ParticleSwarmAlgorithm(Algorithm):
 		"""
 		for i in range(len(pop)):
 			V[i] = self.updateVelocity(V[i], pop[i], popb[i], xb, w, vMin, vMax, task)
-			pop[i] = task.repair(pop[i] + V[i], rnd=self.Rand)
+			pop[i] = task.repair(pop[i] + V[i], rng=self.rng)
 			fpop[i] = task.eval(pop[i])
 			if fpop[i] < fpopb[i]:
 				popb[i], fpopb[i] = pop[i].copy(), fpop[i]
@@ -248,7 +248,7 @@ class ParticleSwarmOptimization(ParticleSwarmAlgorithm):
 		Name (List[str]): List of strings representing algorithm names
 		C1 (float): Cognitive component.
 		C2 (float): Social component.
-		Repair (Callable[[numpy.ndarray, numpy.ndarray, numpy.ndarray, mtrnd.RandomState], numpy.ndarray]): Repair method for velocity.
+		Repair (Callable[[numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.random.Generator], numpy.ndarray]): Repair method for velocity.
 
 	See Also:
 		* :class:`NiaPy.algorithms.basic.WeightedVelocityClampingParticleSwarmAlgorithm`
@@ -465,7 +465,7 @@ class OppositionVelocityClampingParticleSwarmOptimization(ParticleSwarmAlgorithm
 				* S_u: Upper bound for opposite learning.
 				* S_l: Lower bound for opposite learning.
 		"""
-		if self.rand() < self.p0:
+		if self.random() < self.p0:
 			pop, fpop, nb, fnb = self.oppositeLearning(S_l, S_h, pop, fpop, task)
 			pb_inds = np.where(fpop < fpopb)
 			popb[pb_inds], fpopb[pb_inds] = pop[pb_inds], fpop[pb_inds]
@@ -474,7 +474,7 @@ class OppositionVelocityClampingParticleSwarmOptimization(ParticleSwarmAlgorithm
 			w = self.w_max - ((self.w_max - self.w_min) / task.nGEN) * (task.Iters + 1)
 			for i in range(len(pop)):
 				V[i] = self.updateVelocity(V[i], pop[i], popb[i], xb, w, vMin, vMax, task)
-				pop[i] = task.repair(pop[i] + V[i], rnd=self.Rand)
+				pop[i] = task.repair(pop[i] + V[i], rng=self.rng)
 				fpop[i] = task.eval(pop[i])
 				if fpop[i] < fpopb[i]:
 					popb[i], fpopb[i] = pop[i].copy(), fpop[i]
@@ -663,7 +663,7 @@ class MutatedParticleSwarmOptimization(ParticleSwarmAlgorithm):
 		v_a = (np.sum(v, axis=0) / len(v))
 		v_a = v_a / np.max(np.abs(v_a))
 		for _ in range(self.nmutt):
-			g = task.repair(xb + v_a * self.uniform(task.Lower, task.Upper), self.Rand)
+			g = task.repair(xb + v_a * self.uniform(task.Lower, task.Upper), self.rng)
 			fg = task.eval(g)
 			if fg <= fxb: xb, fxb = g, fg
 		return pop, fpop, xb, fxb, d
@@ -760,7 +760,7 @@ class MutatedCenterParticleSwarmOptimization(CenterParticleSwarmOptimization):
 		v_a = (np.sum(v, axis=0) / len(v))
 		v_a = v_a / np.max(np.abs(v_a))
 		for _ in range(self.nmutt):
-			g = task.repair(xb + v_a * self.uniform(task.Lower, task.Upper), self.Rand)
+			g = task.repair(xb + v_a * self.uniform(task.Lower, task.Upper), self.rng)
 			fg = task.eval(g)
 			if fg <= fxb: xb, fxb = g, fg
 		return pop, fpop, xb, fxb, d
@@ -832,8 +832,8 @@ class MutatedCenterUnifiedParticleSwarmOptimization(MutatedCenterParticleSwarmOp
 		Returns:
 			numpy.ndarray: Updated velocity of particle.
 		"""
-		r3 = self.rand(task.D)
-		return self.Repair(w * V + self.C1 * self.rand(task.D) * (pb - p) * r3 + self.C2 * self.rand(task.D) * (gb - p) * (1 - r3), vMin, vMax)
+		r3 = self.random(task.D)
+		return self.Repair(w * V + self.C1 * self.random(task.D) * (pb - p) * r3 + self.C2 * self.random(task.D) * (gb - p) * (1 - r3), vMin, vMax)
 
 class ComprehensiveLearningParticleSwarmOptimizer(ParticleSwarmAlgorithm):
 	r"""Implementation of Mutated Particle Swarm Optimization.
@@ -939,9 +939,9 @@ class ComprehensiveLearningParticleSwarmOptimizer(ParticleSwarmAlgorithm):
 		"""
 		pbest = []
 		for j in range(len(pbs[i])):
-			if self.rand() > Pc: pbest.append(pbs[i, j])
+			if self.random() > Pc: pbest.append(pbs[i, j])
 			else:
-				r1, r2 = int(self.rand() * len(pbs)), int(self.rand() * len(pbs))
+				r1, r2 = int(self.random() * len(pbs)), int(self.random() * len(pbs))
 				if fpbs[r1] < fpbs[r2]: pbest.append(pbs[r1, j])
 				else: pbest.append(pbs[r2, j])
 		return np.asarray(pbest)
@@ -962,7 +962,7 @@ class ComprehensiveLearningParticleSwarmOptimizer(ParticleSwarmAlgorithm):
 		Returns:
 			numpy.ndarray: Updated velocity of particle.
 		"""
-		return self.Repair(w * V + self.C * self.rand(task.D) * (pb - p), vMin, vMax)
+		return self.Repair(w * V + self.C * self.random(task.D) * (pb - p), vMin, vMax)
 
 	def runIteration(self, task, pop, fpop, xb, fxb, popb, fpopb, vMin, vMax, V, flag, Pc, **dparams):
 		r"""Core function of algorithm.
@@ -1004,7 +1004,7 @@ class ComprehensiveLearningParticleSwarmOptimizer(ParticleSwarmAlgorithm):
 		for i in range(len(pop)):
 			if flag[i] >= self.m:
 				V[i] = self.updateVelocity(V[i], pop[i], popb[i], xb, 1, vMin, vMax, task)
-				pop[i] = task.repair(pop[i] + V[i], rnd=self.Rand)
+				pop[i] = task.repair(pop[i] + V[i], rng=self.rng)
 				fpop[i] = task.eval(pop[i])
 				if fpop[i] < fpopb[i]:
 					popb[i], fpopb[i] = pop[i].copy(), fpop[i]

@@ -128,7 +128,7 @@ class ForestOptimizationAlgorithm(Algorithm):
 		n = trees.shape[0]
 		deltas = self.uniform(-self.dx, self.dx, (n, self.lsc))
 		deltas = np.append(deltas, np.zeros((n, task.D - self.lsc)), axis=1)
-		perms = self.rand([deltas.shape[0], deltas.shape[1]]).argsort(1)
+		perms = self.random([deltas.shape[0], deltas.shape[1]]).argsort(1)
 		deltas = deltas[np.arange(deltas.shape[0])[:, None], perms]
 		trees += deltas
 		trees = np.apply_along_axis(repair.limit, 1, trees, task.Lower, task.Upper)
@@ -145,10 +145,10 @@ class ForestOptimizationAlgorithm(Algorithm):
 		Returns:
 			numpy.ndarray: Resulting trees.
 		"""
-		seeds = candidates[self.randint(len(candidates), D=size)]
+		seeds = candidates[self.integers(len(candidates), size=size)]
 		deltas = self.uniform(task.benchmark.Lower, task.benchmark.Upper, (size, self.gsc))
 		deltas = np.append(deltas, np.zeros((size, task.D - self.gsc)), axis=1)
-		perms = self.rand([deltas.shape[0], deltas.shape[1]]).argsort(1)
+		perms = self.random([deltas.shape[0], deltas.shape[1]]).argsort(1)
 		deltas = deltas[np.arange(deltas.shape[0])[:, None], perms]
 		deltas = deltas.flatten()
 		seeds = seeds.flatten()

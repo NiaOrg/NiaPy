@@ -6,6 +6,7 @@ from threading import Thread
 from unittest import TestCase
 
 import numpy as np
+from numpy.random import default_rng
 
 from NiaPy.util import objects_to_array
 from NiaPy.task.task import Task, StoppingTask
@@ -48,8 +49,9 @@ class IndividualTestCase(TestCase):
 	"""
 	def setUp(self):
 		self.D = 20
-		self.x, self.task = np.random.uniform(-100, 100, self.D), StoppingTask(D=self.D, nFES=230, nGEN=np.inf, benchmark=MyBenchmark())
-		self.s1, self.s2, self.s3 = Individual(x=self.x, e=False), Individual(task=self.task, rand=np.random), Individual(task=self.task)
+		rng = default_rng()
+		self.x, self.task = default_rng().uniform(-100, 100, self.D), StoppingTask(D=self.D, nFES=230, nGEN=np.inf, benchmark=MyBenchmark())
+		self.s1, self.s2, self.s3 = Individual(x=self.x, e=False), Individual(task=self.task, rng=rng), Individual(task=self.task)
 
 	def test_generateSolutin_fine(self):
 		self.assertTrue(self.task.isFeasible(self.s2))
@@ -123,7 +125,7 @@ class AlgorithBaseTestCase(TestCase):
 
 	Attributes:
 		seed (int): Starting seed of random generator.
-		rnd (mtrand.RandomState): Random generator.
+		rng (numpy.random.Generator): Random generator.
 		a (Algorithm): Algorithm to use for testing.
 
 	See Also:
@@ -131,7 +133,7 @@ class AlgorithBaseTestCase(TestCase):
 	"""
 	def setUp(self):
 		self.seed = 1
-		self.rnd = np.random.RandomState(self.seed)
+		self.rng = default_rng(self.seed)
 		self.a = Algorithm(seed=self.seed)
 
 	def test_algorithm_info_fine(self):
@@ -168,59 +170,59 @@ class AlgorithBaseTestCase(TestCase):
 		self.assertRaises(AttributeError, lambda: self.assertEqual(self.a.a, None))
 
 	def test_randint_fine(self):
-		o = self.a.randint(Nmax=20, Nmin=10, D=[10, 10])
+		o = self.a.integers(low=10, high=20, size=[10, 10])
 		self.assertEqual(o.shape, (10, 10))
-		self.assertTrue(np.array_equal(self.rnd.randint(10, 20, (10, 10)), o))
-		o = self.a.randint(Nmax=20, Nmin=10, D=(10, 5))
+		self.assertTrue(np.array_equal(self.rng.integers(10, 20, (10, 10)), o))
+		o = self.a.integers(low=10, high=20, size=(10, 5))
 		self.assertEqual(o.shape, (10, 5))
-		self.assertTrue(np.array_equal(self.rnd.randint(10, 20, (10, 5)), o))
-		o = self.a.randint(Nmax=20, Nmin=10, D=10)
+		self.assertTrue(np.array_equal(self.rng.integers(10, 20, (10, 5)), o))
+		o = self.a.integers(low=10, high=20, size=10)
 		self.assertEqual(o.shape, (10,))
-		self.assertTrue(np.array_equal(self.rnd.randint(10, 20, 10), o))
+		self.assertTrue(np.array_equal(self.rng.integers(10, 20, 10), o))
 
 	def test_randn_fine(self):
-		a = self.a.randn([1, 2])
+		a = self.a.standard_normal([1, 2])
 		self.assertEqual(a.shape, (1, 2))
-		self.assertTrue(np.array_equal(self.rnd.randn(1, 2), a))
-		a = self.a.randn(1)
+		self.assertTrue(np.array_equal(self.rng.standard_normal((1, 2)), a))
+		a = self.a.standard_normal(1)
 		self.assertEqual(len(a), 1)
-		self.assertTrue(np.array_equal(self.rnd.randn(1), a))
-		a = self.a.randn(2)
+		self.assertTrue(np.array_equal(self.rng.standard_normal(1), a))
+		a = self.a.standard_normal(2)
 		self.assertEqual(len(a), 2)
-		self.assertTrue(np.array_equal(self.rnd.randn(2), a))
-		a = self.a.randn()
+		self.assertTrue(np.array_equal(self.rng.standard_normal(2), a))
+		a = self.a.standard_normal()
 		self.assertIsInstance(a, float)
-		self.assertTrue(np.array_equal(self.rnd.randn(), a))
+		self.assertTrue(np.array_equal(self.rng.standard_normal(), a))
 
 	def test_uniform_fine(self):
 		a = self.a.uniform(-10, 10, [10, 10])
 		self.assertEqual(a.shape, (10, 10))
-		self.assertTrue(np.array_equal(self.rnd.uniform(-10, 10, (10, 10)), a))
+		self.assertTrue(np.array_equal(self.rng.uniform(-10, 10, (10, 10)), a))
 		a = self.a.uniform(4, 10, (4, 10))
 		self.assertEqual(len(a), 4)
 		self.assertEqual(len(a[0]), 10)
-		self.assertTrue(np.array_equal(self.rnd.uniform(4, 10, (4, 10)), a))
+		self.assertTrue(np.array_equal(self.rng.uniform(4, 10, (4, 10)), a))
 		a = self.a.uniform(1, 4, 2)
 		self.assertEqual(len(a), 2)
-		self.assertTrue(np.array_equal(self.rnd.uniform(1, 4, 2), a))
+		self.assertTrue(np.array_equal(self.rng.uniform(1, 4, 2), a))
 		a = self.a.uniform(10, 100)
 		self.assertIsInstance(a, float)
-		self.assertEqual(self.rnd.uniform(10, 100), a)
+		self.assertEqual(self.rng.uniform(10, 100), a)
 
 	def test_normal_fine(self):
 		a = self.a.normal(-10, 10, [10, 10])
 		self.assertEqual(a.shape, (10, 10))
-		self.assertTrue(np.array_equal(self.rnd.normal(-10, 10, (10, 10)), a))
+		self.assertTrue(np.array_equal(self.rng.normal(-10, 10, (10, 10)), a))
 		a = self.a.normal(4, 10, (4, 10))
 		self.assertEqual(len(a), 4)
 		self.assertEqual(len(a[0]), 10)
-		self.assertTrue(np.array_equal(self.rnd.normal(4, 10, (4, 10)), a))
+		self.assertTrue(np.array_equal(self.rng.normal(4, 10, (4, 10)), a))
 		a = self.a.normal(1, 4, 2)
 		self.assertEqual(len(a), 2)
-		self.assertTrue(np.array_equal(self.rnd.normal(1, 4, 2), a))
+		self.assertTrue(np.array_equal(self.rng.normal(1, 4, 2), a))
 		a = self.a.normal(10, 100)
 		self.assertIsInstance(a, float)
-		self.assertEqual(self.rnd.normal(10, 100), a)
+		self.assertEqual(self.rng.normal(10, 100), a)
 
 class TestingTask(StoppingTask, TestCase):
 	r"""Testing task.
@@ -321,6 +323,7 @@ class AlgorithmTestCase(TestCase):
 			thread1.start(), thread2.start()
 			thread1.join(), thread2.join()
 			x, y = q.get(block=True), q.get(block=True)
+			if a.bad_run(): raise a.exception
 			self.assertFalse(a.bad_run() or b.bad_run(), "Something went wrong at runtime of the algorithm --> %s" % a.exception)
 			self.assertIsNotNone(x), self.assertIsNotNone(y)
 			logger.info('%s\n%s -> %s\n%s -> %s' % (task1.names(), x[0], x[1], y[0], y[1]))

@@ -163,24 +163,24 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 		"""
 		for i in range(self.FoodNumber):
 			newSolution = copy.deepcopy(Foods[i])
-			param2change = int(self.rand() * task.D)
-			neighbor = int(self.FoodNumber * self.rand())
-			newSolution.x[param2change] = Foods[i].x[param2change] + (-1 + 2 * self.rand()) * (Foods[i].x[param2change] - Foods[neighbor].x[param2change])
-			newSolution.evaluate(task, rnd=self.Rand)
+			param2change = int(self.random() * task.D)
+			neighbor = int(self.FoodNumber * self.random())
+			newSolution.x[param2change] = Foods[i].x[param2change] + (-1 + 2 * self.random()) * (Foods[i].x[param2change] - Foods[neighbor].x[param2change])
+			newSolution.evaluate(task, rng=self.rng)
 			if newSolution.f < Foods[i].f:
 				Foods[i], Trial[i] = newSolution, 0
 				if newSolution.f < fxb: xb, fxb = newSolution.x.copy(), newSolution.f
 			else: Trial[i] += 1
 		Probs, t, s = self.CalculateProbs(Foods, Probs), 0, 0
 		while t < self.FoodNumber:
-			if self.rand() < Probs[s]:
+			if self.random() < Probs[s]:
 				t += 1
 				Solution = copy.deepcopy(Foods[s])
-				param2change = int(self.rand() * task.D)
-				neighbor = int(self.FoodNumber * self.rand())
-				while neighbor == s: neighbor = int(self.FoodNumber * self.rand())
-				Solution.x[param2change] = Foods[s].x[param2change] + (-1 + 2 * self.rand()) * (Foods[s].x[param2change] - Foods[neighbor].x[param2change])
-				Solution.evaluate(task, rnd=self.Rand)
+				param2change = int(self.random() * task.D)
+				neighbor = int(self.FoodNumber * self.random())
+				while neighbor == s: neighbor = int(self.FoodNumber * self.random())
+				Solution.x[param2change] = Foods[s].x[param2change] + (-1 + 2 * self.random()) * (Foods[s].x[param2change] - Foods[neighbor].x[param2change])
+				Solution.evaluate(task, rng=self.rng)
 				if Solution.f < Foods[s].f:
 					Foods[s], Trial[s] = Solution, 0
 					if Solution.f < fxb: xb, fxb = Solution.x.copy(), Solution.f
@@ -189,7 +189,7 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 			if s == self.FoodNumber: s = 0
 		mi = np.argmax(Trial)
 		if Trial[mi] >= self.Limit:
-			Foods[mi], Trial[mi] = SolutionABC(task=task, rnd=self.Rand), 0
+			Foods[mi], Trial[mi] = SolutionABC(task=task, rng=self.rng), 0
 			if Foods[mi].f < fxb: xb, fxb = Foods[mi].x.copy(), Foods[mi].f
 		return Foods, np.asarray([f.f for f in Foods]), xb, fxb, {'Probs': Probs, 'Trial': Trial}
 

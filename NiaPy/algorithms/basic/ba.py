@@ -174,10 +174,10 @@ class BatAlgorithm(Algorithm):
 		for i in range(self.NP):
 			Q[i] = self.Qmin + (self.Qmax - self.Qmin) * self.uniform(0, 1)
 			v[i] += (Sol[i] - xb) * Q[i]
-			if self.rand() > self.r: S[i] = self.localSearch(best=xb, task=task, i=i, Sol=Sol)
-			else: S[i] = task.repair(Sol[i] + v[i], rnd=self.Rand)
+			if self.random() > self.r: S[i] = self.localSearch(best=xb, task=task, i=i, Sol=Sol)
+			else: S[i] = task.repair(Sol[i] + v[i], rng=self.rng)
 			Fnew = task.eval(S[i])
-			if (Fnew <= Fitness[i]) and (self.rand() < self.A): Sol[i], Fitness[i] = S[i], Fnew
+			if (Fnew <= Fitness[i]) and (self.random() < self.A): Sol[i], Fitness[i] = S[i], Fnew
 			if Fnew <= fxb: xb, fxb = S[i].copy(), Fnew
 		return Sol, Fitness, xb, fxb, {'S': S, 'Q': Q, 'v': v}
 

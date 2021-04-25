@@ -10,7 +10,7 @@ logger.setLevel('INFO')
 
 __all__ = ['AnarchicSocietyOptimization', 'Elitism', 'Sequential', 'Crossover']
 
-def Elitism(x, xpb, xb, xr, MP_c, MP_s, MP_p, F, CR, task, rnd=np.random):
+def Elitism(x, xpb, xb, xr, MP_c, MP_s, MP_p, F, CR, task, rng):
 	r"""Select the best of all three strategies.
 
 	Args:
@@ -24,19 +24,20 @@ def Elitism(x, xpb, xb, xr, MP_c, MP_s, MP_p, F, CR, task, rnd=np.random):
 		F (float): scale factor.
 		CR (float): crossover factor.
 		task (Task): optimization task.
-		rnd (mtrand.randomstate): random number generator.
+		rng (numpy.random.Generator): random number generator.
 
 	Returns:
 		Tuple[numpy.ndarray, float]:
 			1. New position of individual
 			2. New positions fitness/function value
 	"""
-	xn = [task.repair(MP_C(x, F, CR, MP_c, rnd), rnd=rnd), task.repair(MP_S(x, xr, xb, CR, MP_s, rnd), rnd=rnd), task.repair(MP_P(x, xpb, CR, MP_p, rnd), rnd=rnd)]
+	xn = [task.repair(MP_C(x, F, CR, MP_c, rng), rng=rng), task.repair(MP_S(x, xr, xb, CR, MP_s, rng), rng=rng), task.repair(
+		MP_P(x, xpb, CR, MP_p, rng), rng=rng)]
 	xn_f = np.apply_along_axis(task.eval, 1, xn)
 	ib = np.argmin(xn_f)
 	return xn[ib], xn_f[ib]
 
-def Sequential(x, xpb, xb, xr, MP_c, MP_s, MP_p, F, CR, task, rnd=np.random):
+def Sequential(x, xpb, xb, xr, MP_c, MP_s, MP_p, F, CR, task, rng):
 	r"""Sequentialy combines all three strategies.
 
 	Args:
@@ -50,17 +51,17 @@ def Sequential(x, xpb, xb, xr, MP_c, MP_s, MP_p, F, CR, task, rnd=np.random):
 		F (float): scale factor.
 		CR (float): crossover factor.
 		task (Task): optimization task.
-		rnd (mtrand.randomstate): random number generator.
+		rng (numpy.random.Generator): random number generator.
 
 	Returns:
 		tuple[numpy.ndarray, float]:
 			1. new position
 			2. new positions function/fitness value
 	"""
-	xn = task.repair(MP_S(MP_P(MP_C(x, F, CR, MP_c, rnd), xpb, CR, MP_p, rnd), xr, xb, CR, MP_s, rnd), rnd=rnd)
+	xn = task.repair(MP_S(MP_P(MP_C(x, F, CR, MP_c, rng), xpb, CR, MP_p, rng), xr, xb, CR, MP_s, rng), rng=rng)
 	return xn, task.eval(xn)
 
-def Crossover(x, xpb, xb, xr, MP_c, MP_s, MP_p, F, CR, task, rnd=np.random):
+def Crossover(x, xpb, xb, xr, MP_c, MP_s, MP_p, F, CR, task, rng):
 	r"""Create a crossover over all three strategies.
 
 	Args:
@@ -74,18 +75,19 @@ def Crossover(x, xpb, xb, xr, MP_c, MP_s, MP_p, F, CR, task, rnd=np.random):
 		F (float): scale factor.
 		CR (float): crossover factor.
 		task (Task): optimization task.
-		rnd (mtrand.randomstate): random number generator.
+		rng (numpy.random.Generator): random number generator.
 
 	Returns:
 		Tuple[numpy.ndarray, float]:
 			1. new position
 			2. new positions function/fitness value
 	"""
-	xns = [task.repair(MP_C(x, F, CR, MP_c, rnd), rnd=rnd), task.repair(MP_S(x, xr, xb, CR, MP_s, rnd), rnd=rnd), task.repair(MP_P(x, xpb, CR, MP_p, rnd), rnd=rnd)]
-	x = np.asarray([xns[rnd.randint(len(xns))][i] if rnd.rand() < CR else x[i] for i in range(len(x))])
+	xns = [task.repair(MP_C(x, F, CR, MP_c, rng), rng=rng), task.repair(MP_S(x, xr, xb, CR, MP_s, rng), rng=rng), task.repair(
+		MP_P(x, xpb, CR, MP_p, rng), rng=rng)]
+	x = np.asarray([xns[rng.integers(0, len(xns))][i] if rng.random() < CR else x[i] for i in range(len(x))])
 	return x, task.eval(x)
 
-def MP_C(x, F, CR, MP, rnd=np.random):
+def MP_C(x, F, CR, MP, rng):
 	r"""Get bew position based on fickleness.
 
 	Args:
@@ -93,18 +95,18 @@ def MP_C(x, F, CR, MP, rnd=np.random):
 		F (float): Scale factor.
 		CR (float): Crossover probability.
 		MP (float): Fickleness index value
-		rnd (mtrand.RandomState): Random number generator
+		rng (numpy.random.Generator): Random number generator
 
 	Returns:
 		numpy.ndarray: New position
 	"""
 	if MP < 0.5:
-		b = np.sort(rnd.choice(len(x), 2, replace=False))
-		x[b[0]:b[1]] = x[b[0]:b[1]] + F * rnd.normal(0, 1, b[1] - b[0])
+		b = np.sort(rng.choice(len(x), 2, replace=False))
+		x[b[0]:b[1]] = x[b[0]:b[1]] + F * rng.normal(0, 1, b[1] - b[0])
 		return x
-	return np.asarray([x[i] + F * rnd.normal(0, 1) if rnd.rand() < CR else x[i] for i in range(len(x))])
+	return np.asarray([x[i] + F * rng.normal(0, 1) if rng.random() < CR else x[i] for i in range(len(x))])
 
-def MP_S(x, xr, xb, CR, MP, rnd=np.random):
+def MP_S(x, xr, xb, CR, MP, rng):
 	r"""Get new position based on external irregularity.
 
 	Args:
@@ -113,23 +115,23 @@ def MP_S(x, xr, xb, CR, MP, rnd=np.random):
 		xb (numpy.ndarray): Global best individuals position.
 		CR (float): Crossover probability.
 		MP (float): External irregularity index.
-		rnd (mtrand.RandomState): Random number generator.
+		rng (numpy.random.Generator): Random number generator.
 
 	Returns:
 		numpy.ndarray: New position.
 	"""
 	if MP < 0.25:
-		b = np.sort(rnd.choice(len(x), 2, replace=False))
+		b = np.sort(rng.choice(len(x), 2, replace=False))
 		x[b[0]:b[1]] = xb[b[0]:b[1]]
 		return x
-	elif MP < 0.5: return np.asarray([xb[i] if rnd.rand() < CR else x[i] for i in range(len(x))])
+	elif MP < 0.5: return np.asarray([xb[i] if rng.random() < CR else x[i] for i in range(len(x))])
 	elif MP < 0.75:
-		b = np.sort(rnd.choice(len(x), 2, replace=False))
+		b = np.sort(rng.choice(len(x), 2, replace=False))
 		x[b[0]:b[1]] = xr[b[0]:b[1]]
 		return x
-	return np.asarray([xr[i] if rnd.rand() < CR else x[i] for i in range(len(x))])
+	return np.asarray([xr[i] if rng.random() < CR else x[i] for i in range(len(x))])
 
-def MP_P(x, xpb, CR, MP, rnd=np.random):
+def MP_P(x, xpb, CR, MP, rng):
 	r"""Get new position based on internal irregularity.
 
 	Args:
@@ -137,16 +139,16 @@ def MP_P(x, xpb, CR, MP, rnd=np.random):
 		xpb (numpy.ndarray): Current individuals personal best position.
 		CR (float): Crossover probability.
 		MP (float): Internal irregularity index value.
-		rnd (mtrand.RandomState): Random number generator.
+		rng (numpy.random.Generator): Random number generator.
 
 	Returns:
 		numpy.ndarray: Current individuals new position.
 	"""
 	if MP < 0.5:
-		b = np.sort(rnd.choice(len(x), 2, replace=False))
+		b = np.sort(rng.choice(len(x), 2, replace=False))
 		x[b[0]:b[1]] = xpb[b[0]:b[1]]
 		return x
-	return np.asarray([xpb[i] if rnd.rand() < CR else x[i] for i in range(len(x))])
+	return np.asarray([xpb[i] if rng.random() < CR else x[i] for i in range(len(x))])
 
 class AnarchicSocietyOptimization(Algorithm):
 	r"""Implementation of Anarchic Society Optimization algorithm.
@@ -176,7 +178,7 @@ class AnarchicSocietyOptimization(Algorithm):
 		nl (float): Normalized range for neighborhood search :math:`\in (0, 1]`.
 		F (float): Mutation parameter.
 		CR (float): Crossover parameter :math:`\in [0, 1]`.
-		Combination (Callable[numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray, float, float, float, float, float, float, Task, mtrand.RandomState]): Function for combining individuals to get new position/individual.
+		Combination (Callable[numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray, float, float, float, float, float, float, Task, numpy.random.Generator]): Function for combining individuals to get new position/individual.
 
 	See Also:
 		* :class:`NiaPy.algorithms.Algorithm`
@@ -234,7 +236,7 @@ class AnarchicSocietyOptimization(Algorithm):
 			nl (Optional[float]): Normalized range for neighborhood search :math:`\in (0, 1]`.
 			F (Optional[float]): Mutation parameter.
 			CR (Optional[float]): Crossover parameter :math:`\in [0, 1]`.
-			Combination (Optional[Callable[numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray, float, float, float, float, float, float, Task, mtrand.RandomState]]): Function for combining individuals to get new position/individual.
+			Combination (Optional[Callable[numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray, float, float, float, float, float, float, Task, numpy.random.Generator]]): Function for combining individuals to get new position/individual.
 
 		See Also:
 			* :func:`NiaPy.algorithms.Algorithm.setParameters`
@@ -398,7 +400,7 @@ class AnarchicSocietyOptimization(Algorithm):
 		"""
 		Xin = [self.getBestNeighbors(i, X, X_f, rs) for i in range(len(X))]
 		MP_c, MP_s, MP_p = np.asarray([self.FI(X_f[i], Xpb_f[i], fxb, alpha[i]) for i in range(len(X))]), np.asarray([self.EI(X_f[i], X_f[Xin[i]], gamma[i]) for i in range(len(X))]), np.asarray([self.II(X_f[i], Xpb_f[i], theta[i]) for i in range(len(X))])
-		Xtmp = np.asarray([self.Combination(X[i], Xpb[i], xb, X[self.randint(len(X), skip=[i])], MP_c[i], MP_s[i], MP_p[i], self.F, self.CR, task, self.Rand) for i in range(len(X))], dtype=object)
+		Xtmp = np.asarray([self.Combination(X[i], Xpb[i], xb, X[self.integers(len(X), skip=[i])], MP_c[i], MP_s[i], MP_p[i], self.F, self.CR, task, self.rng) for i in range(len(X))], dtype=object)
 		X, X_f = np.asarray([Xtmp[i][0] for i in range(len(X))]), np.asarray([Xtmp[i][1] for i in range(len(X))])
 		Xpb, Xpb_f = self.uBestAndPBest(X, X_f, Xpb, Xpb_f)
 		xb, fxb = self.getBest(X, X_f, xb, fxb)

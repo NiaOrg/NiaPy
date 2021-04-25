@@ -11,7 +11,7 @@ logger.setLevel('INFO')
 
 __all__ = ['GeneticAlgorithm', 'TournamentSelection', 'RouletteSelection', 'TwoPointCrossover', 'MultiPointCrossover', 'UniformCrossover', 'UniformMutation', 'CreepMutation', 'CrossoverUros', 'MutationUros']
 
-def TournamentSelection(pop, ic, ts, x_b, rnd=np.random):
+def TournamentSelection(pop, ic, ts, x_b, rng):
 	r"""Tournament selection method.
 
 	Args:
@@ -19,15 +19,15 @@ def TournamentSelection(pop, ic, ts, x_b, rnd=np.random):
 		ic (int): Index of current individual in population.
 		ts (int): Tournament size.
 		x_b (Individual): Global best individual.
-		rnd (mtrand.RandomState): Random generator.
+		rng (numpy.random.Generator): Random generator.
 
 	Returns:
 		Individual: Winner of the tournament.
 	"""
-	comps = [pop[i] for i in rnd.choice(len(pop), ts, replace=False)]
+	comps = [pop[i] for i in rng.choice(len(pop), ts, replace=False)]
 	return comps[np.argmin([c.f for c in comps])]
 
-def RouletteSelection(pop, ic, ts, x_b, rnd=np.random):
+def RouletteSelection(pop, ic, ts, x_b, rng):
 	r"""Roulette selection method.
 
 	Args:
@@ -35,89 +35,89 @@ def RouletteSelection(pop, ic, ts, x_b, rnd=np.random):
 		ic (int): Index of current individual in population.
 		ts (int): Unused argument.
 		x_b (Individual): Global best individual.
-		rnd (mtrand.RandomState): Random generator.
+		rng (numpy.random.Generator): Random generator.
 
 	Returns:
 		Individual: selected individual.
 	"""
 	f = np.sum([x.f for x in pop])
 	qi = np.sum([pop[i].f / f for i in range(ic + 1)])
-	return pop[ic].x if rnd.rand() < qi else x_b
+	return pop[ic].x if rng.random() < qi else x_b
 
-def TwoPointCrossover(pop, ic, cr, rnd=np.random):
+def TwoPointCrossover(pop, ic, cr, rng):
 	r"""Two point crossover method.
 
 	Args:
 		pop (numpy.ndarray[Individual]): Current population.
 		ic (int): Index of current individual.
 		cr (float): Crossover probability.
-		rnd (mtrand.RandomState): Random generator.
+		rng (numpy.random.Generator): Random generator.
 
 	Returns:
 		numpy.ndarray: New genotype.
 	"""
 	io = ic
-	while io != ic: io = rnd.randint(len(pop))
-	r = np.sort(rnd.choice(len(pop[ic]), 2))
+	while io != ic: io = rng.integers(len(pop))
+	r = np.sort(rng.choice(len(pop[ic]), 2))
 	x = pop[ic].x
 	x[r[0]:r[1]] = pop[io].x[r[0]:r[1]]
 	return np.asarray(x)
 
-def MultiPointCrossover(pop, ic, n, rnd=np.random):
+def MultiPointCrossover(pop, ic, n, rng):
 	r"""Multi point crossover method.
 
 	Args:
 		pop (numpy.ndarray[Individual]): Current population.
 		ic (int): Index of current individual.
 		n (flat): TODO.
-		rnd (mtrand.RandomState): Random generator.
+		rng (numpy.random.Generator): Random generator.
 
 	Returns:
 		numpy.ndarray: New genotype.
 	"""
 	io = ic
-	while io != ic: io = rnd.randint(len(pop))
-	r, x = np.sort(rnd.choice(len(pop[ic]), 2 * n)), pop[ic].x
+	while io != ic: io = rng.integers(len(pop))
+	r, x = np.sort(rng.choice(len(pop[ic]), 2 * n)), pop[ic].x
 	for i in range(n): x[r[2 * i]:r[2 * i + 1]] = pop[io].x[r[2 * i]:r[2 * i + 1]]
 	return np.asarray(x)
 
-def UniformCrossover(pop, ic, cr, rnd=np.random):
+def UniformCrossover(pop, ic, cr, rng):
 	r"""Uniform crossover method.
 
 	Args:
 		pop (numpy.ndarray[Individual]): Current population.
 		ic (int): Index of current individual.
 		cr (float): Crossover probability.
-		rnd (mtrand.RandomState): Random generator.
+		rng (numpy.random.Generator): Random generator.
 
 	Returns:
 		numpy.ndarray: New genotype.
 	"""
 	io = ic
-	while io != ic: io = rnd.randint(len(pop))
-	j = rnd.randint(len(pop[ic]))
-	x = [pop[io][i] if rnd.rand() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
+	while io != ic: io = rng.integers(len(pop))
+	j = rng.integers(len(pop[ic]))
+	x = [pop[io][i] if rng.random() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
 	return np.asarray(x)
 
-def CrossoverUros(pop, ic, cr, rnd=np.random):
+def CrossoverUros(pop, ic, cr, rng):
 	r"""Crossover made by Uros Mlakar.
 
 	Args:
 		pop (numpy.ndarray[Individual]): Current population.
 		ic (int): Index of current individual.
 		cr (float): Crossover probability.
-		rnd (mtrand.RandomState): Random generator.
+		rng (numpy.random.Generator): Random generator.
 
 	Returns:
 		numpy.ndarray: New genotype.
 	"""
 	io = ic
-	while io != ic: io = rnd.randint(len(pop))
-	alpha = cr + (1 + 2 * cr) * rnd.rand(len(pop[ic]))
+	while io != ic: io = rng.integers(len(pop))
+	alpha = cr + (1 + 2 * cr) * rng.random(len(pop[ic]))
 	x = alpha * pop[ic] + (1 - alpha) * pop[io]
 	return x
 
-def UniformMutation(pop, ic, mr, task, rnd=np.random):
+def UniformMutation(pop, ic, mr, task, rng):
 	r"""Uniform mutation method.
 
 	Args:
@@ -125,16 +125,16 @@ def UniformMutation(pop, ic, mr, task, rnd=np.random):
 		ic (int): Index of current individual.
 		mr (float): Mutation probability.
 		task (Task): Optimization task.
-		rnd (mtrand.RandomState): Random generator.
+		rng (numpy.random.Generator): Random generator.
 
 	Returns:
 		numpy.ndarray: New genotype.
 	"""
-	j = rnd.randint(task.D)
-	nx = [rnd.uniform(task.Lower[i], task.Upper[i]) if rnd.rand() < mr or i == j else pop[ic][i] for i in range(task.D)]
+	j = rng.integers(task.D)
+	nx = [rng.uniform(task.Lower[i], task.Upper[i]) if rng.random() < mr or i == j else pop[ic][i] for i in range(task.D)]
 	return np.asarray(nx)
 
-def MutationUros(pop, ic, mr, task, rnd=np.random):
+def MutationUros(pop, ic, mr, task, rng):
 	r"""Mutation method made by Uros Mlakar.
 
 	Args:
@@ -142,14 +142,14 @@ def MutationUros(pop, ic, mr, task, rnd=np.random):
 		ic (int): Index of individual.
 		mr (float): Mutation rate.
 		task (Task): Optimization task.
-		rnd (mtrand.RandomState): Random generator.
+		rng (numpy.random.Generator): Random generator.
 
 	Returns:
 		numpy.ndarray: New genotype.
 	"""
-	return np.fmin(np.fmax(rnd.normal(pop[ic], mr * task.bRange), task.Lower), task.Upper)
+	return np.fmin(np.fmax(rng.normal(pop[ic], mr * task.bRange), task.Lower), task.Upper)
 
-def CreepMutation(pop, ic, mr, task, rnd=np.random):
+def CreepMutation(pop, ic, mr, task, rng):
 	r"""Creep mutation method.
 
 	Args:
@@ -157,13 +157,13 @@ def CreepMutation(pop, ic, mr, task, rnd=np.random):
 		ic (int): Index of current individual.
 		mr (float): Mutation probability.
 		task (Task): Optimization task.
-		rnd (mtrand.RandomState): Random generator.
+		rng (numpy.random.Generator): Random generator.
 
 	Returns:
 		numpy.ndarray: New genotype.
 	"""
-	ic, j = rnd.randint(len(pop)), rnd.randint(task.D)
-	nx = [rnd.uniform(task.Lower[i], task.Upper[i]) if rnd.rand() < mr or i == j else pop[ic][i] for i in range(task.D)]
+	ic, j = rng.integers(len(pop)), rng.integers(task.D)
+	nx = [rng.uniform(task.Lower[i], task.Upper[i]) if rng.random() < mr or i == j else pop[ic][i] for i in range(task.D)]
 	return np.asarray(nx)
 
 class GeneticAlgorithm(Algorithm):
@@ -189,9 +189,9 @@ class GeneticAlgorithm(Algorithm):
 		Ts (int): Tournament size.
 		Mr (float): Mutation rate.
 		Cr (float): Crossover rate.
-		Selection (Callable[[numpy.ndarray[Individual], int, int, Individual, mtrand.RandomState], Individual]): Selection operator.
-		Crossover (Callable[[numpy.ndarray[Individual], int, float, mtrand.RandomState], Individual]): Crossover operator.
-		Mutation (Callable[[numpy.ndarray[Individual], int, float, Task, mtrand.RandomState], Individual]): Mutation operator.
+		Selection (Callable[[numpy.ndarray[Individual], int, int, Individual, numpy.random.Generator], Individual]): Selection operator.
+		Crossover (Callable[[numpy.ndarray[Individual], int, float, numpy.random.Generator], Individual]): Crossover operator.
+		Mutation (Callable[[numpy.ndarray[Individual], int, float, Task, numpy.random.Generator], Individual]): Mutation operator.
 
 	See Also:
 		* :class:`NiaPy.algorithms.Algorithm`
@@ -239,9 +239,9 @@ class GeneticAlgorithm(Algorithm):
 			Ts (Optional[int]): Tournament selection.
 			Mr (Optional[int]): Mutation rate.
 			Cr (Optional[float]): Crossover rate.
-			Selection (Optional[Callable[[numpy.ndarray[Individual], int, int, Individual, mtrand.RandomState], Individual]]): Selection operator.
-			Crossover (Optional[Callable[[numpy.ndarray[Individual], int, float, mtrand.RandomState], Individual]]): Crossover operator.
-			Mutation (Optional[Callable[[numpy.ndarray[Individual], int, float, Task, mtrand.RandomState], Individual]]): Mutation operator.
+			Selection (Optional[Callable[[numpy.ndarray[Individual], int, int, Individual, numpy.random.Generator], Individual]]): Selection operator.
+			Crossover (Optional[Callable[[numpy.ndarray[Individual], int, float, numpy.random.Generator], Individual]]): Crossover operator.
+			Mutation (Optional[Callable[[numpy.ndarray[Individual], int, float, Task, numpy.random.Generator], Individual]]): Mutation operator.
 
 		See Also:
 			* :func:`NiaPy.algorithms.Algorithm.setParameters`
@@ -283,10 +283,10 @@ class GeneticAlgorithm(Algorithm):
 		"""
 		npop = np.empty(self.NP, dtype=object)
 		for i in range(self.NP):
-			ind = self.itype(x=self.Selection(pop, i, self.Ts, xb, self.Rand), e=False)
-			ind.x = self.Crossover(pop, i, self.Cr, self.Rand)
-			ind.x = self.Mutation(pop, i, self.Mr, task, self.Rand)
-			ind.evaluate(task, rnd=self.Rand)
+			ind = self.itype(x=self.Selection(pop, i, self.Ts, xb, self.rng), e=False)
+			ind.x = self.Crossover(pop, i, self.Cr, self.rng)
+			ind.x = self.Mutation(pop, i, self.Mr, task, self.rng)
+			ind.evaluate(task, rng=self.rng)
 			npop[i] = ind
 			if npop[i].f < fxb: xb, fxb = self.getBest(npop[i], npop[i].f, xb, fxb)
 		return npop, np.asarray([i.f for i in npop]), xb, fxb, {}

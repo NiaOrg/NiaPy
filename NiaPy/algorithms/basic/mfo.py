@@ -136,10 +136,10 @@ class MothFlameOptimizer(Algorithm):
 		flame_no, a = round(self.NP - (task.Iters + 1) * ((self.NP - 1) / task.nGEN)), -1 + (task.Iters + 1) * ((-1) / task.nGEN)
 		for i in range(self.NP):
 			for j in range(task.D):
-				distance_to_flame, b, t = abs(sorted_population[i, j] - moth_pos[i, j]), 1, (a - 1) * self.rand() + 1
+				distance_to_flame, b, t = abs(sorted_population[i, j] - moth_pos[i, j]), 1, (a - 1) * self.random() + 1
 				if i <= flame_no: moth_pos[i, j] = distance_to_flame * np.exp(b * t) * np.cos(2 * np.pi * t) + sorted_population[i, j]
 				else: moth_pos[i, j] = distance_to_flame * np.exp(b * t) * np.cos(2 * np.pi * t) + sorted_population[flame_no, j]
-		moth_pos = np.apply_along_axis(task.repair, 1, moth_pos, self.Rand)
+		moth_pos = np.apply_along_axis(task.repair, 1, moth_pos, self.rng)
 		moth_fitness = np.apply_along_axis(task.eval, 1, moth_pos)
 		xb, fxb = self.getBest(moth_pos, moth_fitness, xb, fxb)
 		double_population, double_fitness = np.concatenate((previous_population, best_flames), axis=0), np.concatenate((previous_fitness, best_flame_fitness), axis=0)

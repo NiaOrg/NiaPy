@@ -2,6 +2,7 @@
 from unittest import TestCase
 
 import numpy as np
+from numpy.random import default_rng
 
 from NiaPy.benchmarks import Benchmark
 from NiaPy.util import full_array, FesException, GenException, RefException
@@ -100,7 +101,7 @@ class StoppingTaskTestCase(TestCase):
 		self.assertTrue(self.t.isFeasible(x))
 		x = np.full(self.D, -10)
 		self.assertTrue(self.t.isFeasible(x))
-		x = np.random.uniform(-10, 10, self.D)
+		x = default_rng().uniform(-10, 10, self.D)
 		self.assertTrue(self.t.isFeasible(x))
 		x = np.full(self.D, -20)
 		self.assertFalse(self.t.isFeasible(x))
@@ -212,7 +213,7 @@ class ThrowingTaskTestCase(TestCase):
 		self.assertTrue(self.t.isFeasible(x))
 		x = np.full(self.D, -10)
 		self.assertTrue(self.t.isFeasible(x))
-		x = np.random.uniform(-10, 10, self.D)
+		x = default_rng().uniform(-10, 10, self.D)
 		self.assertTrue(self.t.isFeasible(x))
 		x = np.full(self.D, -20)
 		self.assertFalse(self.t.isFeasible(x))

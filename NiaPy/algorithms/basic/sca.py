@@ -123,7 +123,7 @@ class SineCosineAlgorithm(Algorithm):
 		Returns:
 			numpy.ndarray: New individual that is moved based on individual ``x``.
 		"""
-		return task.repair(x + r1 * (np.sin(r2) if r4 < 0.5 else np.cos(r2)) * np.fabs(r3 * x_b - x), self.Rand)
+		return task.repair(x + r1 * (np.sin(r2) if r4 < 0.5 else np.cos(r2)) * np.fabs(r3 * x_b - x), self.rng)
 
 	def initPopulation(self, task):
 		r"""Initialize the individuals.
@@ -158,7 +158,9 @@ class SineCosineAlgorithm(Algorithm):
 				4. New global best fitness/objective value.
 				5. Additional arguments.
 		"""
-		r1, r2, r3, r4 = self.a - (task.Iters + 1) * (self.a / (task.Iters + 1)), self.uniform(0, 2 * np.pi), self.uniform(self.Rmin, self.Rmax), self.rand()
+		r1, r2, r3, r4 = self.a - (task.Iters + 1) * (self.a / (task.Iters + 1)), self.uniform(0,
+                                                                                               2 * np.pi), self.uniform(
+            self.Rmin, self.Rmax), self.random()
 		P = np.apply_along_axis(self.nextPos, 1, P, xb, r1, r2, r3, r4, task)
 		P_f = np.apply_along_axis(task.eval, 1, P)
 		xb, fxb = self.getBest(P, P_f, xb, fxb)

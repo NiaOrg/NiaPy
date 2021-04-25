@@ -149,12 +149,12 @@ class Task:
 
         return self.Upper - self.Lower
 
-    def repair(self, x, rnd=np.random):
+    def repair(self, x, rng=None):
         r"""Repair solution and put the solution in the random position inside of the bounds of problem.
 
         Arguments:
                 x (numpy.ndarray): Solution to check and repair if needed.
-                rnd (mtrand.RandomState): Random number generator.
+                rng (numpy.random.Generator): Random number generator.
 
         Returns:
                 numpy.ndarray: Fixed solution.
@@ -168,7 +168,7 @@ class Task:
 
         """
 
-        return self.frepair(x, self.Lower, self.Upper, rnd=rnd)
+        return self.frepair(x, self.Lower, self.Upper, rng=rng)
 
     def nextIter(self):
         r"""Increments the number of algorithm iterations."""

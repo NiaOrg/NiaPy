@@ -166,10 +166,10 @@ class GravitationalSearchAlgorithm(Algorithm):
 		m = (X_f - X_f[iw]) / (X_f[ib] - X_f[iw])
 		M = m / np.sum(m)
 		Fi = np.asarray([[self.G((task.Iters + 1)) * ((M[i] * M[j]) / (self.d(X[i], X[j]) + self.epsilon)) * (X[j] - X[i]) for j in range(len(M))] for i in range(len(M))])
-		F = np.sum(self.rand([self.NP, task.D]) * Fi, axis=1)
+		F = np.sum(self.random([self.NP, task.D]) * Fi, axis=1)
 		a = F.T / (M + self.epsilon)
-		v = self.rand([self.NP, task.D]) * v + a.T
-		X = np.apply_along_axis(task.repair, 1, X + v, self.Rand)
+		v = self.random([self.NP, task.D]) * v + a.T
+		X = np.apply_along_axis(task.repair, 1, X + v, self.rng)
 		X_f = np.apply_along_axis(task.eval, 1, X)
 		xb, fxb = self.getBest(X, X_f, xb, fxb)
 		return X, X_f, xb, fxb, {'v': v}

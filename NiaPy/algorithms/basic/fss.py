@@ -262,7 +262,7 @@ class FishSchoolSearch(Algorithm):
 				1. New school of fishes.
 		"""
 		for fish in school:
-			new_pos = task.repair(fish.x + (curr_step_individual * self.uniform(-1, 1, task.D)), rnd=self.Rand)
+			new_pos = task.repair(fish.x + (curr_step_individual * self.uniform(-1, 1, task.D)), rng=self.rng)
 			cost = task.eval(new_pos)
 			if cost < fish.f:
 				xb, fxb = self.getBest(new_pos, cost, xb, fxb)
@@ -291,7 +291,7 @@ class FishSchoolSearch(Algorithm):
 		density = sum([f.delta_cost for f in school])
 		for fish in school: cost_eval_enhanced += (fish.delta_pos * fish.delta_cost)
 		if density != 0: cost_eval_enhanced = cost_eval_enhanced / density
-		for fish in school: fish.x = task.repair(fish.x + cost_eval_enhanced, rnd=self.Rand)
+		for fish in school: fish.x = task.repair(fish.x + cost_eval_enhanced, rng=self.rng)
 		return school
 
 	def collective_volitive_movement(self, school, curr_step_volitive, prev_weight_school, curr_weight_school, xb, fxb, task):
@@ -314,7 +314,7 @@ class FishSchoolSearch(Algorithm):
 		for fish in school:
 			if curr_weight_school > prev_weight_school: fish.x -= (fish.x - barycenter) * curr_step_volitive * self.uniform(0, 1, task.D)
 			else: fish.x += (fish.x - barycenter) * curr_step_volitive * self.uniform(0, 1, task.D)
-			fish.evaluate(task, rnd=self.Rand)
+			fish.evaluate(task, rng=self.rng)
 			xb, fxb = self.getBest(fish.x, fish.f, xb, fxb)
 		return school, xb, fxb
 

@@ -135,8 +135,9 @@ class HarmonySearch(Algorithm):
 		"""
 		H = np.zeros(task.D)
 		for i in range(task.D):
-			r, j = self.rand(), self.randint(self.NP)
-			H[i] = HM[j, i] if r > self.r_accept else self.adjustment(HM[j, i], task) if r > self.r_pa else self.uniform(task.Lower[i], task.Upper[i])
+			r, j = self.random(), self.integers(self.NP)
+			H[i] = HM[j, i] if r > self.r_accept else self.adjustment(HM[j, i], task) if r > self.r_pa else self.uniform(
+                task.Lower[i], task.Upper[i])
 		return H
 
 	def initPopulation(self, task):
@@ -176,7 +177,7 @@ class HarmonySearch(Algorithm):
 				5. Additional arguments.
 		"""
 		H = self.improvize(HM, task)
-		H_f = task.eval(task.repair(H, self.Rand))
+		H_f = task.eval(task.repair(H, self.rng))
 		iw = np.argmax(HM_f)
 		if H_f <= HM_f[iw]: HM[iw], HM_f[iw] = H, H_f
 		xb, fxb = self.getBest(H, H_f, xb, fxb)

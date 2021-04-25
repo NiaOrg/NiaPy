@@ -150,7 +150,7 @@ class EvolutionStrategy1p1(Algorithm):
 				3. Additional arguments:
 					* ki (int): Number of successful rho update.
 		"""
-		c, ki = IndividualES(task=task, rnd=self.Rand), 0
+		c, ki = IndividualES(task=task, rng=self.rng), 0
 		return c, c.f, {'ki': ki}
 
 	def runIteration(self, task, c, fpop, xb, fxb, ki, **dparams):
@@ -175,7 +175,7 @@ class EvolutionStrategy1p1(Algorithm):
 					* ki (int): Number of successful rho update.
 		"""
 		if (task.Iters + 1) % self.k == 0: c.rho, ki = self.updateRho(c.rho, ki), 0
-		cn = objects_to_array([task.repair(self.mutate(c.x, c.rho), self.Rand) for _i in range(self.mu)])
+		cn = objects_to_array([task.repair(self.mutate(c.x, c.rho), self.rng) for _i in range(self.mu)])
 		cn_f = np.asarray([task.eval(cn[i]) for i in range(len(cn))])
 		ib = np.argmin(cn_f)
 		if cn_f[ib] < c.f:
@@ -339,8 +339,8 @@ class EvolutionStrategyMpL(EvolutionStrategy1p1):
 		Returns:
 			numpy.ndarray: Random individual from population that was mutated.
 		"""
-		i = self.randint(self.mu)
-		return task.repair(self.mutate(pop[i].x, pop[i].rho), rnd=self.Rand)
+		i = self.integers(self.mu)
+		return task.repair(self.mutate(pop[i].x, pop[i].rho), rng=self.rng)
 
 	def initPopulation(self, task):
 		r"""Initialize starting population.
@@ -384,7 +384,7 @@ class EvolutionStrategyMpL(EvolutionStrategy1p1):
 					* ki (int): Number of successful mutations.
 		"""
 		if (task.Iters + 1) % self.k == 0: _, ki = self.updateRho(c, ki), 0
-		cn = objects_to_array([IndividualES(x=self.mutateRand(c, task), task=task, rnd=self.Rand) for _ in range(self.lam)])
+		cn = objects_to_array([IndividualES(x=self.mutateRand(c, task), task=task, rng=self.rng) for _ in range(self.lam)])
 		cn = np.append(cn, c)
 		cn = objects_to_array([cn[i] for i in np.argsort([i.f for i in cn])[:self.mu]])
 		ki += self.changeCount(c, cn)
@@ -483,13 +483,13 @@ class EvolutionStrategyML(EvolutionStrategyMpL):
 				4. New global best solutions fitness/objective value.
 				5. Additional arguments.
 		"""
-		cn = objects_to_array([IndividualES(x=self.mutateRand(c, task), task=task, rand=self.Rand) for _ in range(self.lam)])
+		cn = objects_to_array([IndividualES(x=self.mutateRand(c, task), task=task, rand=self.rng) for _ in range(self.lam)])
 		c = self.newPop(cn)
 		fc = np.asarray([x.f for x in c])
 		xb, fxb = self.getBest(c, fc, xb, fxb)
 		return c, fc, xb, fxb, {}
 
-def CovarianceMaatrixAdaptionEvolutionStrategyF(task, epsilon=1e-20, rnd=np.random):
+def CovarianceMaatrixAdaptionEvolutionStrategyF(task, rng, epsilon=1e-20):
 	lam, alpha_mu, hs, sigma0 = (4 + np.round(3 * np.log(task.D))) * 10, 2, 0, 0.3 * task.bcRange()
 	mu = int(np.round(lam / 2))
 	w = np.log(mu + 0.5) - np.log(range(1, mu + 1))
@@ -501,11 +501,11 @@ def CovarianceMaatrixAdaptionEvolutionStrategyF(task, epsilon=1e-20, rnd=np.rand
 	cc, c1 = (4 + mueff / task.D) / (4 + task.D + 2 * mueff / task.D), 2 / ((task.D + 1.3) ** 2 + mueff)
 	cmu, hth = min(1 - c1, alpha_mu * (mueff - 2 + 1 / mueff) / ((task.D + 2) ** 2 + alpha_mu * mueff / 2)), (1.4 + 2 / (task.D + 1)) * ENN
 	ps, pc, C, sigma, M = np.zeros(task.D), np.zeros(task.D), np.eye(task.D), sigma0, np.zeros(task.D)
-	x = rnd.uniform(task.bcLower(), task.bcUpper())
+	x = rng.uniform(task.bcLower(), task.bcUpper())
 	x_f = task.eval(x)
 	while not task.stopCondI():
-		pop_step = np.asarray([rnd.multivariate_normal(np.zeros(task.D), C) for _ in range(int(lam))])
-		pop = np.asarray([task.repair(x + sigma * ps, rnd) for ps in pop_step])
+		pop_step = np.asarray([rng.multivariate_normal(np.zeros(task.D), C) for _ in range(int(lam))])
+		pop = np.asarray([task.repair(x + sigma * ps, rng=rng) for ps in pop_step])
 		pop_f = np.apply_along_axis(task.eval, 1, pop)
 		isort = np.argsort(pop_f)
 		pop, pop_f, pop_step = pop[isort[:mu]], pop_f[isort[:mu]], pop_step[isort[:mu]]
@@ -591,6 +591,6 @@ class CovarianceMatrixAdaptionEvolutionStrategy(Algorithm):
 		Returns:
 			TODO.
 		"""
-		return CovarianceMaatrixAdaptionEvolutionStrategyF(task, self.epsilon, rnd=self.Rand)
+		return CovarianceMaatrixAdaptionEvolutionStrategyF(task, rng=self.rng, epsilon=self.epsilon)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

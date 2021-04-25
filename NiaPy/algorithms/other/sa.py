@@ -145,7 +145,7 @@ class SimulatedAnnealing(Algorithm):
 			2. Initial solutions fitness/objective value
 			3. Additional arguments
 		"""
-		x = task.Lower + task.bcRange() * self.rand(task.D)
+		x = task.Lower + task.bcRange() * self.random(task.D)
 		curT, xfit = self.T, task.eval(x)
 		return x, xfit, {'curT': curT}
 
@@ -169,9 +169,9 @@ class SimulatedAnnealing(Algorithm):
 			4. New global best solutions fitness/objective value
 			5. Additional arguments
 		"""
-		c = task.repair(x - self.delta / 2 + self.rand(task.D) * self.delta, rnd=self.Rand)
+		c = task.repair(x - self.delta / 2 + self.random(task.D) * self.delta, rng=self.rng)
 		cfit = task.eval(c)
-		deltaFit, r = cfit - xfit, self.rand()
+		deltaFit, r = cfit - xfit, self.random()
 		if deltaFit < 0 or r < np.exp(deltaFit / curT): x, xfit = c, cfit
 		curT = self.cool(curT, self.T, deltaT=self.deltaT, nFES=task.nFES)
 		xb, fxb = self.getBest(x, xfit, xb, fxb)
