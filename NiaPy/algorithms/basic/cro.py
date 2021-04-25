@@ -1,6 +1,6 @@
 # encoding=utf8
 import logging
-from numpy import apply_along_axis, argsort, where, random as rand, asarray, delete, sqrt, sum, unique, append
+import numpy as np
 from NiaPy.algorithms.algorithm import Algorithm
 from NiaPy.util import euclidean
 
@@ -10,7 +10,7 @@ logger.setLevel('INFO')
 
 __all__ = ['CoralReefsOptimization']
 
-def SexualCrossoverSimple(pop, p, task, rnd=rand, **kwargs):
+def SexualCrossoverSimple(pop, p, task, rnd=np.random, **kwargs):
 	r"""Sexual reproduction of corals.
 
 	Args:
@@ -25,10 +25,10 @@ def SexualCrossoverSimple(pop, p, task, rnd=rand, **kwargs):
 			1. New population.
 			2. New population function/fitness values.
 	"""
-	for i in range(len(pop) // 2): pop[i] = asarray([pop[i, d] if rnd.rand() < p else pop[i * 2, d] for d in range(task.D)])
-	return pop, apply_along_axis(task.eval, 1, pop)
+	for i in range(len(pop) // 2): pop[i] = np.asarray([pop[i, d] if rnd.rand() < p else pop[i * 2, d] for d in range(task.D)])
+	return pop, np.apply_along_axis(task.eval, 1, pop)
 
-def BroodingSimple(pop, p, task, rnd=rand, **kwargs):
+def BroodingSimple(pop, p, task, rnd=np.random, **kwargs):
 	r"""Brooding or internal sexual reproduction of corals.
 
 	Args:
@@ -43,10 +43,10 @@ def BroodingSimple(pop, p, task, rnd=rand, **kwargs):
 			1. New population.
 			2. New population function/fitness values.
 	"""
-	for i in range(len(pop)): pop[i] = task.repair(asarray([pop[i, d] if rnd.rand() < p else task.Lower[d] + task.bRange[d] * rnd.rand() for d in range(task.D)]), rnd=rnd)
-	return pop, apply_along_axis(task.eval, 1, pop)
+	for i in range(len(pop)): pop[i] = task.repair(np.asarray([pop[i, d] if rnd.rand() < p else task.Lower[d] + task.bRange[d] * rnd.rand() for d in range(task.D)]), rnd=rnd)
+	return pop, np.apply_along_axis(task.eval, 1, pop)
 
-def MoveCorals(pop, p, F, task, rnd=rand, **kwargs):
+def MoveCorals(pop, p, F, task, rnd=np.random, **kwargs):
 	r"""Move corals.
 
 	Args:
@@ -62,8 +62,8 @@ def MoveCorals(pop, p, F, task, rnd=rand, **kwargs):
 			1. New population.
 			2. New population function/fitness values.
 	"""
-	for i in range(len(pop)): pop[i] = task.repair(asarray([pop[i, d] if rnd.rand() < p else pop[i, d] + F * rnd.rand() for d in range(task.D)]), rnd=rnd)
-	return pop, apply_along_axis(task.eval, 1, pop)
+	for i in range(len(pop)): pop[i] = task.repair(np.asarray([pop[i, d] if rnd.rand() < p else pop[i, d] + F * rnd.rand() for d in range(task.D)]), rnd=rnd)
+	return pop, np.apply_along_axis(task.eval, 1, pop)
 
 class CoralReefsOptimization(Algorithm):
 	r"""Implementation of Coral Reefs Optimization Algorithm.
@@ -199,7 +199,7 @@ class CoralReefsOptimization(Algorithm):
 			* :func:`NiaPy.algorithms.basic.CoralReefsOptimization.setting`
 			* :func:`NiaPy.algorithms.basic.BroodingSimple`
 		"""
-		I = argsort(Reef_f)[:self.Fa]
+		I = np.argsort(Reef_f)[:self.Fa]
 		Reefn, Reefn_f = self.Brooding(Reef[I], self.P_F, task, rnd=self.Rand)
 		xb, fxb = self.getBest(Reefn, Reefn_f, xb, fxb)
 		Reef, Reef_f, xb, fxb = self.setting(Reef, Reef_f, Reefn, Reefn_f, xb, fxb, task)
@@ -217,8 +217,8 @@ class CoralReefsOptimization(Algorithm):
 				1. Best individual
 				2. Best individual fitness/function value
 		"""
-		I = argsort(Reef_f)[::-1][:self.Fd]
-		return delete(Reef, I), delete(Reef_f, I)
+		I = np.argsort(Reef_f)[::-1][:self.Fd]
+		return np.delete(Reef, I), np.delete(Reef_f, I)
 
 	def setting(self, X, X_f, Xn, Xn_f, xb, fxb, task):
 		r"""Operator for setting reefs.
@@ -230,7 +230,7 @@ class CoralReefsOptimization(Algorithm):
 			X (numpy.ndarray): Current population of reefs.
 			X_f (numpy.ndarray): Current populations function/fitness values.
 			Xn (numpy.ndarray): New population of reefs.
-			Xn_f (array of float): New populations function/fitness values.
+			Xn_f (numpy.ndarray): New populations function/fitness values.
 			xb (numpy.ndarray): Global best solution.
 			fxb (float): Global best solutions fitness/objective value.
 			task (Task): Optimization task.
@@ -241,8 +241,8 @@ class CoralReefsOptimization(Algorithm):
 				2. New seatled population fitness/function values.
 		"""
 		def update(A, phi, xb, fxb):
-			D = asarray([sqrt(sum((A - e) ** 2, axis=1)) for e in Xn])
-			I = unique(where(D < phi)[0])
+			D = np.asarray([np.sqrt(np.sum((A - e) ** 2, axis=1)) for e in Xn])
+			I = np.unique(np.where(D < phi)[0])
 			if I.any():
 				Xn[I], Xn_f[I] = MoveCorals(Xn[I], self.P_F, self.P_F, task, rnd=self.Rand)
 				xb, fxb = self.getBest(Xn[I], Xn_f[I], xb, fxb)
@@ -250,9 +250,9 @@ class CoralReefsOptimization(Algorithm):
 		for i in range(self.k):
 			xb, fxb = update(X, self.phi, xb, fxb)
 			xb, fxb = update(Xn, self.phi, xb, fxb)
-		D = asarray([sqrt(sum((X - e) ** 2, axis=1)) for e in Xn])
-		I = unique(where(D >= self.phi)[0])
-		return append(X, Xn[I], 0), append(X_f, Xn_f[I], 0), xb, fxb
+		D = np.asarray([np.sqrt(np.sum((X - e) ** 2, axis=1)) for e in Xn])
+		I = np.unique(np.where(D >= self.phi)[0])
+		return np.append(X, Xn[I], 0), np.append(X_f, Xn_f[I], 0), xb, fxb
 
 	def runIteration(self, task, Reef, Reef_f, xb, fxb, **dparams):
 		r"""Core function of Coral Reefs Optimization algorithm.
@@ -280,9 +280,9 @@ class CoralReefsOptimization(Algorithm):
 		I = self.Rand.choice(len(Reef), size=self.Fb, replace=False)
 		Reefn_s, Reefn_s_f = self.SexualCrossover(Reef[I], self.P_Cr, task, rnd=self.Rand)
 		xb, fxb = self.getBest(Reefn_s, Reefn_s_f, xb, fxb)
-		Reefn_b, Reffn_b_f = self.Brooding(delete(Reef, I, 0), self.P_F, task, rnd=self.Rand)
-		xb, fxb = self.getBest(Reefn_s, Reefn_s_f, xb, fxb)
-		Reefn, Reefn_f, xb, fxb = self.setting(Reef, Reef_f, append(Reefn_s, Reefn_b, 0), append(Reefn_s_f, Reffn_b_f, 0), xb, fxb, task)
+		Reefn_b, Reffn_b_f = self.Brooding(np.delete(Reef, I, 0), self.P_F, task, rnd=self.Rand)
+		xb, fxb = self.getBest(Reefn_b, Reffn_b_f, xb, fxb)
+		Reefn, Reefn_f, xb, fxb = self.setting(Reef, Reef_f, np.append(Reefn_s, Reefn_b, 0), np.append(Reefn_s_f, Reffn_b_f, 0), xb, fxb, task)
 		Reef, Reef_f, xb, fxb = self.asexualReprodution(Reefn, Reefn_f, xb, fxb, task)
 		if (task.Iters + 1) % self.k == 0: Reef, Reef_f = self.depredation(Reef, Reef_f)
 		return Reef, Reef_f, xb, fxb, {}

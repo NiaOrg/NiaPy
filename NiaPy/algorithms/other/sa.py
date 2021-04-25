@@ -1,7 +1,7 @@
 # encoding=utf8
 import logging
 
-from numpy import exp
+import numpy as np
 
 from NiaPy.algorithms.algorithm import Algorithm
 
@@ -172,7 +172,7 @@ class SimulatedAnnealing(Algorithm):
 		c = task.repair(x - self.delta / 2 + self.rand(task.D) * self.delta, rnd=self.Rand)
 		cfit = task.eval(c)
 		deltaFit, r = cfit - xfit, self.rand()
-		if deltaFit < 0 or r < exp(deltaFit / curT): x, xfit = c, cfit
+		if deltaFit < 0 or r < np.exp(deltaFit / curT): x, xfit = c, cfit
 		curT = self.cool(curT, self.T, deltaT=self.deltaT, nFES=task.nFES)
 		xb, fxb = self.getBest(x, xfit, xb, fxb)
 		return x, xfit, xb, fxb, {'curT': curT}

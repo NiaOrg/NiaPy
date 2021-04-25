@@ -1,7 +1,7 @@
 # encoding=utf8
 import logging
 
-from numpy import argsort, sum, exp, apply_along_axis, asarray, where
+import numpy as np
 
 from NiaPy.algorithms.algorithm import Algorithm
 
@@ -120,9 +120,9 @@ class FireflyAlgorithm(Algorithm):
 		"""
 		moved = False
 		for j in range(self.NP):
-			r = sum((Fireflies[i] - Fireflies[j]) ** 2) ** (1 / 2)
+			r = np.sum((Fireflies[i] - Fireflies[j]) ** 2) ** (1 / 2)
 			if Intensity[i] <= Intensity[j]: continue
-			beta = (1.0 - self.betamin) * exp(-self.gamma * r ** 2.0) + self.betamin
+			beta = (1.0 - self.betamin) * np.exp(-self.gamma * r ** 2.0) + self.betamin
 			tmpf = alpha * (self.uniform(0, 1, task.D) - 0.5) * task.bRange
 			Fireflies[i] = task.repair(Fireflies[i] * (1.0 - beta) + oFireflies[j] * beta + tmpf, rnd=self.Rand)
 			moved = True
@@ -172,10 +172,10 @@ class FireflyAlgorithm(Algorithm):
 			* :func:`NiaPy.algorithms.basic.FireflyAlgorithm.move_ffa`
 		"""
 		alpha = self.alpha_new(task.nFES / self.NP, alpha)
-		Index = argsort(Intensity)
-		tmp = asarray([self.move_ffa(i, Fireflies[Index], Intensity[Index], Fireflies, alpha, task) for i in range(self.NP)], dtype=object)
-		Fireflies, evalF = asarray([tmp[i][0] for i in range(len(tmp))], dtype=object), asarray([tmp[i][1] for i in range(len(tmp))])
-		Intensity[where(evalF)] = apply_along_axis(task.eval, 1, Fireflies[where(evalF)])
+		Index = np.argsort(Intensity)
+		tmp = np.asarray([self.move_ffa(i, Fireflies[Index], Intensity[Index], Fireflies, alpha, task) for i in range(self.NP)], dtype=object)
+		Fireflies, evalF = np.asarray([tmp[i][0] for i in range(len(tmp))], dtype=object), np.asarray([tmp[i][1] for i in range(len(tmp))])
+		Intensity[np.where(evalF)] = np.apply_along_axis(task.eval, 1, Fireflies[np.where(evalF)])
 		xb, fxb = self.getBest(Fireflies, Intensity, xb, fxb)
 		return Fireflies, Intensity, xb, fxb, {'alpha': alpha}
 

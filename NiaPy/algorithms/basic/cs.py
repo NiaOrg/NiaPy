@@ -1,6 +1,6 @@
 # encoding=utf8
 import logging
-from numpy import apply_along_axis, argsort
+import numpy as np
 from NiaPy.algorithms.algorithm import Algorithm
 from NiaPy.util import levy_flight
 
@@ -107,9 +107,9 @@ class CuckooSearch(Algorithm):
 				1. New population
 				2. New population fitness/function values
 		"""
-		si = argsort(fpop)[:int(pa_v):-1]
+		si = np.argsort(fpop)[:int(pa_v):-1]
 		pop[si] = task.Lower + self.rand(task.D) * task.bRange
-		fpop[si] = apply_along_axis(task.eval, 1, pop[si])
+		fpop[si] = np.apply_along_axis(task.eval, 1, pop[si])
 		return pop, fpop
 
 	def initPopulation(self, task):

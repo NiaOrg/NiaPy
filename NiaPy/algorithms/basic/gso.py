@@ -1,7 +1,7 @@
 # encoding=utf8
 import logging
 
-from numpy import full, apply_along_axis, copy, sum, fmax, pi, where
+import numpy as np
 
 from NiaPy.algorithms.algorithm import Algorithm
 from NiaPy.util import euclidean
@@ -132,7 +132,7 @@ class GlowwormSwarmOptimization(Algorithm):
 		Returns:
 			numpy.ndarray[int]: Indexes of neighborhood glowworms.
 		"""
-		N = full(self.NP, 0)
+		N = np.zeros(self.NP, dtype=np.int32)
 		for j, gw in enumerate(GS): N[j] = 1 if i != j and self.Distance(GS[i], gw) <= r and L[i] >= L[j] else 0
 		return N
 
@@ -147,7 +147,7 @@ class GlowwormSwarmOptimization(Algorithm):
 		Returns:
 			numpy.ndarray[float]: Probabilities for each glowworm in swarm.
 		"""
-		d, P = sum(L[where(N == 1)] - L[i]), full(self.NP, .0)
+		d, P = np.sum(L[np.where(N == 1)] - L[i]), np.zeros(self.NP)
 		for j in range(self.NP): P[i] = ((L[j] - L[i]) / d) if N[j] == 1 else 0
 		return P
 
@@ -190,7 +190,7 @@ class GlowwormSwarmOptimization(Algorithm):
 		Returns:
 
 		"""
-		return R + self.beta * (self.nt - sum(N))
+		return R + self.beta * (self.nt - np.sum(N))
 
 	def initPopulation(self, task):
 		r"""Initialize population.
@@ -208,8 +208,8 @@ class GlowwormSwarmOptimization(Algorithm):
 					* rs (numpy.ndarray): TODO.
 		"""
 		GS, GS_f, d = Algorithm.initPopulation(self, task)
-		rs = euclidean(full(task.D, 0), task.bRange)
-		L, R = full(self.NP, self.l0), full(self.NP, rs)
+		rs = euclidean(np.zeros(task.D), task.bRange)
+		L, R = np.full(self.NP, self.l0), np.full(self.NP, rs)
 		d.update({'L': L, 'R': R, 'rs': rs})
 		return GS, GS_f, d
 
@@ -238,14 +238,14 @@ class GlowwormSwarmOptimization(Algorithm):
 					* R (numpy.ndarray): TODO.
 					* rs (numpy.ndarray): TODO.
 		"""
-		GSo, Ro = copy(GS), copy(R)
+		GSo, Ro = np.copy(GS), np.copy(R)
 		L = self.calcLuciferin(L, GS_f)
 		N = [self.getNeighbors(i, Ro[i], GSo, L) for i in range(self.NP)]
 		P = [self.probabilityes(i, N[i], L) for i in range(self.NP)]
 		j = [self.moveSelect(P[i], i) for i in range(self.NP)]
 		for i in range(self.NP): GS[i] = task.repair(GSo[i] + self.s * ((GSo[j[i]] - GSo[i]) / (self.Distance(GSo[j[i]], GSo[i]) + 1e-31)), rnd=self.Rand)
 		for i in range(self.NP): R[i] = max(0, min(rs, self.rangeUpdate(Ro[i], N[i], rs)))
-		GS_f = apply_along_axis(task.eval, 1, GS)
+		GS_f = np.apply_along_axis(task.eval, 1, GS)
 		xb, fxb = self.getBest(GS, GS_f, xb, fxb)
 		return GS, GS_f, xb, fxb, {'L': L, 'R': R, 'rs': rs}
 
@@ -306,7 +306,7 @@ class GlowwormSwarmOptimizationV1(GlowwormSwarmOptimization):
 		Returns:
 
 		"""
-		return fmax(0, (1 - self.rho) * L + self.gamma * GS_f)
+		return np.fmax(0, (1 - self.rho) * L + self.gamma * GS_f)
 
 	def rangeUpdate(self, R, N, rs):
 		r"""TODO.
@@ -319,7 +319,7 @@ class GlowwormSwarmOptimizationV1(GlowwormSwarmOptimization):
 		Returns:
 
 		"""
-		return rs / (1 + self.beta * (sum(N) / (pi * rs ** 2)))
+		return rs / (1 + self.beta * (np.sum(N) / (np.pi * rs ** 2)))
 
 class GlowwormSwarmOptimizationV2(GlowwormSwarmOptimization):
 	r"""Implementation of glowwarm swarm optimization.
@@ -384,7 +384,7 @@ class GlowwormSwarmOptimizationV2(GlowwormSwarmOptimization):
 		Returns:
 			float: TODO
 		"""
-		return self.alpha + (rs - self.alpha) / (1 + self.beta * sum(N))
+		return self.alpha + (rs - self.alpha) / (1 + self.beta * np.sum(N))
 
 class GlowwormSwarmOptimizationV3(GlowwormSwarmOptimization):
 	r"""Implementation of glowwarm swarm optimization.
@@ -449,6 +449,6 @@ class GlowwormSwarmOptimizationV3(GlowwormSwarmOptimization):
 		Returns:
 
 		"""
-		return R + (self.beta * sum(N)) if sum(N) < self.nt else (-self.beta1 * sum(N))
+		return R + (self.beta * np.sum(N)) if np.sum(N) < self.nt else (-self.beta1 * np.sum(N))
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

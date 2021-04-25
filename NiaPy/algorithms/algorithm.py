@@ -1,9 +1,9 @@
 # encoding=utf8
 import logging
 import threading
-import multiprocessing as mp
+import multiprocessing
 
-from numpy import random as rand, inf, ndarray, asarray, array_equal, argmin, apply_along_axis
+import numpy as np
 
 from NiaPy.util import FesException, GenException, TimeException, RefException, objects_to_array
 
@@ -19,7 +19,7 @@ __all__ = [
 ]
 
 
-def defaultNumPyInit(task, NP, rnd=rand, **kwargs):
+def defaultNumPyInit(task, NP, rnd=np.random, **kwargs):
 	r"""Initialize starting population that is represented with `numpy.ndarray` with shape `{NP, task.D}`.
 
 	Args:
@@ -34,10 +34,10 @@ def defaultNumPyInit(task, NP, rnd=rand, **kwargs):
 			2. New population function/fitness values.
 	"""
 	pop = task.Lower + rnd.rand(NP, task.D) * task.bRange
-	fpop = apply_along_axis(task.eval, 1, pop)
+	fpop = np.apply_along_axis(task.eval, 1, pop)
 	return pop, fpop
 
-def defaultIndividualInit(task, NP, rnd=rand, itype=None, **kwargs):
+def defaultIndividualInit(task, NP, rnd=np.random, itype=None, **kwargs):
 	r"""Initialize `NP` individuals of type `itype`.
 
 	Args:
@@ -53,7 +53,7 @@ def defaultIndividualInit(task, NP, rnd=rand, itype=None, **kwargs):
 			2. Initialized individuals function/fitness values.
 	"""
 	pop = objects_to_array([itype(task=task, rnd=rnd, e=True) for _ in range(NP)])
-	return pop, asarray([x.f for x in pop])
+	return pop, np.asarray([x.f for x in pop])
 
 class Algorithm:
 	r"""Class for implementing algorithms.
@@ -75,7 +75,7 @@ class Algorithm:
 		itype (Individual): Type of individuals used in population, default value is None for Numpy arrays.
 	"""
 	Name = ['Algorithm', 'AAA']
-	Rand = rand.RandomState(None)
+	Rand = np.random.RandomState(None)
 	NP = 50
 	InitPopFunc = defaultNumPyInit
 	itype = None
@@ -99,7 +99,7 @@ class Algorithm:
 		See Also:
 			* :func:`NiaPy.algorithms.Algorithm.setParameters`
 		"""
-		self.Rand, self.exception = rand.RandomState(kwargs.pop('seed', None)), None
+		self.Rand, self.exception = np.random.RandomState(kwargs.pop('seed', None)), None
 		self.setParameters(**kwargs)
 
 	@staticmethod
@@ -149,7 +149,7 @@ class Algorithm:
 		Returns:
 			Union[numpy.ndarray[float], float]: Random number or numbers :math:`\in [0, 1]`.
 		"""
-		if isinstance(D, (ndarray, list)): return self.Rand.rand(*D)
+		if isinstance(D, (np.ndarray, list)): return self.Rand.rand(*D)
 		elif D > 1: return self.Rand.rand(D)
 		else: return self.Rand.rand()
 
@@ -205,12 +205,12 @@ class Algorithm:
 			Union[int, numpy.ndarrayj[int]]: Random generated integer number.
 		"""
 		r = None
-		if isinstance(D, (list, tuple, ndarray)): r = self.Rand.randint(Nmin, Nmax, D)
+		if isinstance(D, (list, tuple, np.ndarray)): r = self.Rand.randint(Nmin, Nmax, D)
 		elif D > 1: r = self.Rand.randint(Nmin, Nmax, D)
 		else: r = self.Rand.randint(Nmin, Nmax)
 		return r if skip is None or r not in skip else self.randint(Nmax, D, Nmin, skip)
 
-	def getBest(self, X, X_f, xb=None, xb_f=inf):
+	def getBest(self, X, X_f, xb=None, xb_f=np.inf):
 		r"""Get the best individual for population.
 
 		Args:
@@ -224,9 +224,9 @@ class Algorithm:
 				1. Coordinates of best solution.
 				2. beset fitness/function value.
 		"""
-		ib = argmin(X_f)
+		ib = np.argmin(X_f)
 		if isinstance(X_f, (float, int)) and xb_f >= X_f: xb, xb_f = X, X_f
-		elif isinstance(X_f, (ndarray, list)) and xb_f >= X_f[ib]: xb, xb_f = X[ib], X_f[ib]
+		elif isinstance(X_f, (np.ndarray, list)) and xb_f >= X_f[ib]: xb, xb_f = X[ib], X_f[ib]
 		return (xb.x.copy() if isinstance(xb, Individual) else xb.copy()), xb_f
 
 	def initPopulation(self, task):
@@ -311,7 +311,7 @@ class Algorithm:
 		See Also:
 			* :func:`NiaPy.algorithms.Algorithm.runYield`
 		"""
-		algo, xb, fxb = self.runYield(task), None, inf
+		algo, xb, fxb = self.runYield(task), None, np.inf
 		while not task.stopCond():
 			xb, fxb = next(algo)
 			task.nextIter()
@@ -337,7 +337,7 @@ class Algorithm:
 		except (FesException, GenException, TimeException, RefException):
 			return task.x, task.x_f * task.optType.value
 		except Exception as e:
-			if threading.current_thread() == threading.main_thread() and mp.current_process().name == 'MainProcess':
+			if threading.current_thread() == threading.main_thread() and multiprocessing.current_process().name == 'MainProcess':
 				raise e
 			self.exception = e
 			return None, None
@@ -367,9 +367,9 @@ class Individual:
 		f (float): Function/fitness value of individual.
 	"""
 	x = None
-	f = inf
+	f = np.inf
 
-	def __init__(self, x=None, task=None, e=True, rnd=rand, **kwargs):
+	def __init__(self, x=None, task=None, e=True, rnd=np.random, **kwargs):
 		r"""Initialize new individual.
 
 		Parameters:
@@ -379,12 +379,12 @@ class Individual:
 			e (Optional[bool]): True to evaluate the individual on initialization. Default value is True.
 			**kwargs (Dict[str, Any]): Additional arguments.
 		"""
-		self.f = task.optType.value * inf if task is not None else inf
-		if x is not None: self.x = x if isinstance(x, ndarray) else asarray(x)
+		self.f = task.optType.value * np.inf if task is not None else np.inf
+		if x is not None: self.x = x if isinstance(x, np.ndarray) else np.asarray(x)
 		else: self.generateSolution(task, rnd)
 		if e and task is not None: self.evaluate(task, rnd)
 
-	def generateSolution(self, task, rnd=rand):
+	def generateSolution(self, task, rnd=np.random):
 		r"""Generate new solution.
 
 		Generate new solution for this individual and set it to ``self.x``.
@@ -397,7 +397,7 @@ class Individual:
 		"""
 		if task is not None: self.x = task.Lower + task.bRange * rnd.rand(task.D)
 
-	def evaluate(self, task, rnd=rand):
+	def evaluate(self, task, rnd=np.random):
 		r"""Evaluate the solution.
 
 		Evaluate solution ``this.x`` with the help of task.
@@ -432,11 +432,11 @@ class Individual:
 		Returns:
 			bool: `True` if equal or `False` if no equal.
 		"""
-		if isinstance(other, ndarray):
+		if isinstance(other, np.ndarray):
 			for e in other:
 				if self == e: return True
 			return False
-		return array_equal(self.x, other.x) and self.f == other.f
+		return np.array_equal(self.x, other.x) and self.f == other.f
 
 	def __str__(self):
 		r"""Print the individual with the solution and objective value.

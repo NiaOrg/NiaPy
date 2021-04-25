@@ -1,7 +1,7 @@
 # encoding=utf8
 import logging
 
-from numpy import exp, random as rand, asarray
+import numpy as np
 
 from NiaPy.algorithms.algorithm import Algorithm, Individual
 from NiaPy.util import objects_to_array
@@ -54,7 +54,7 @@ class Camel(Individual):
 		self.x_past, self.f_past = self.x, self.f
 		self.steps = 0
 
-	def nextT(self, T_min, T_max, rnd=rand):
+	def nextT(self, T_min, T_max, rnd=np.random):
 		r"""Apply nextT function on Camel.
 
 		Args:
@@ -82,7 +82,7 @@ class Camel(Individual):
 		"""
 		self.E = self.E_past * (1 - self.T / T_max) * (1 - self.steps / n_gens)
 
-	def nextX(self, cb, E_init, S_init, task, rnd=rand):
+	def nextX(self, cb, E_init, S_init, task, rnd=np.random):
 		r"""Apply function nextX on Camel.
 
 		This method/function move this Camel to new position in search space.
@@ -95,7 +95,7 @@ class Camel(Individual):
 			rnd (Optional[mtrand.RandomState]): Random number generator.
 		"""
 		delta = -1 + rnd.rand() * 2
-		self.x = self.x_past + delta * (1 - (self.E / E_init)) * exp(1 - self.S / S_init) * (cb - self.x_past)
+		self.x = self.x_past + delta * (1 - (self.E / E_init)) * np.exp(1 - self.S / S_init) * (cb - self.x_past)
 		if not task.isFeasible(self.x): self.x = self.x_past
 		else: self.f = task.eval(self.x)
 
@@ -240,7 +240,7 @@ class CamelAlgorithm(Algorithm):
 				2. Initialized populations function/fitness values.
 		"""
 		caravan = objects_to_array([itype(E_init=self.E_init, S_init=self.S_init, task=task, rnd=rnd, e=True) for _ in range(NP)])
-		return caravan, asarray([c.f for c in caravan])
+		return caravan, np.asarray([c.f for c in caravan])
 
 	def walk(self, c, cb, task):
 		r"""Move the camel in search space.
@@ -327,7 +327,7 @@ class CamelAlgorithm(Algorithm):
 		ncaravan = objects_to_array([self.walk(c, cb, task) for c in caravan])
 		ncaravan = objects_to_array([self.oasis(c, self.rand(), self.alpha) for c in ncaravan])
 		ncaravan = objects_to_array([self.lifeCycle(c, self.mu, task) for c in ncaravan])
-		fncaravan = asarray([c.f for c in ncaravan])
+		fncaravan = np.asarray([c.f for c in ncaravan])
 		cb, fcb = self.getBest(ncaravan, fncaravan, cb, fcb)
 		return ncaravan, fncaravan, cb, fcb, {}
 

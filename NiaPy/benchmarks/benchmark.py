@@ -3,7 +3,7 @@
 """Implementation of benchmarks utility function."""
 
 import logging
-from numpy import inf, arange, meshgrid, vectorize
+import numpy as np
 from matplotlib import pyplot as plt
 from matplotlib import cm
 from mpl_toolkits.mplot3d import Axes3D
@@ -59,7 +59,7 @@ class Benchmark:
 			Retruns:
 				float: Fitness value for the solution
 			"""
-			return inf
+			return np.inf
 		return fun
 
 	def __call__(self):
@@ -96,9 +96,9 @@ class Benchmark:
 		fig = plt.figure()
 		ax = Axes3D(fig)
 		func = self.function()
-		Xr, Yr = arange(self.Lower, self.Upper, scale), arange(self.Lower, self.Upper, scale)
-		X, Y = meshgrid(Xr, Yr)
-		Z = vectorize(self.__2dfun)(X, Y, func)
+		Xr, Yr = np.arange(self.Lower, self.Upper, scale), np.arange(self.Lower, self.Upper, scale)
+		X, Y = np.meshgrid(Xr, Yr)
+		Z = np.vectorize(self.__2dfun)(X, Y, func)
 		ax.plot_surface(X, Y, Z, rstride=8, cstride=8, alpha=0.3)
 		ax.contourf(X, Y, Z, zdir='z', offset=-10, cmap=cm.coolwarm)
 		ax.set_xlabel('X')

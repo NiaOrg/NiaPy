@@ -1,8 +1,6 @@
 # encoding=utf8
 import logging
 
-# from numpy import random as rand, argmin, argmax, mean, asarray, cos
-
 # from NiaPy.algorithms.algorithm import Individual
 from NiaPy.algorithms.basic.de import DifferentialEvolution  # , CrossBest1, CrossRand1, CrossCurr2Best1, CrossBest2, CrossCurr2Rand1, proportional
 

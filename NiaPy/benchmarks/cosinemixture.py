@@ -2,7 +2,7 @@
 
 """Implementations of Cosine mixture functions."""
 
-from numpy import cos, pi
+import numpy as np
 from NiaPy.benchmarks.benchmark import Benchmark
 
 __all__ = ['CosineMixture']
@@ -81,7 +81,7 @@ class CosineMixture(Benchmark):
 				float: Fitness value for the solution.
 			"""
 			v1, v2 = 0.0, 0.0
-			for i in range(D): v1, v2 = v1 + cos(5 * pi * X[i]), v2 + X[i] ** 2
+			for i in range(D): v1, v2 = v1 + np.cos(5 * np.pi * X[i]), v2 + X[i] ** 2
 			return -0.1 * v1 - v2
 		return f
 

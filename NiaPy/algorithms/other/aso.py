@@ -1,6 +1,6 @@
 # encoding=utf8
 import logging
-from numpy import apply_along_axis, argmin, full, inf, where, asarray, random as rand, sort, exp
+import numpy as np
 from NiaPy.algorithms.algorithm import Algorithm
 from NiaPy.util import full_array, euclidean
 
@@ -10,7 +10,7 @@ logger.setLevel('INFO')
 
 __all__ = ['AnarchicSocietyOptimization', 'Elitism', 'Sequential', 'Crossover']
 
-def Elitism(x, xpb, xb, xr, MP_c, MP_s, MP_p, F, CR, task, rnd=rand):
+def Elitism(x, xpb, xb, xr, MP_c, MP_s, MP_p, F, CR, task, rnd=np.random):
 	r"""Select the best of all three strategies.
 
 	Args:
@@ -32,11 +32,11 @@ def Elitism(x, xpb, xb, xr, MP_c, MP_s, MP_p, F, CR, task, rnd=rand):
 			2. New positions fitness/function value
 	"""
 	xn = [task.repair(MP_C(x, F, CR, MP_c, rnd), rnd=rnd), task.repair(MP_S(x, xr, xb, CR, MP_s, rnd), rnd=rnd), task.repair(MP_P(x, xpb, CR, MP_p, rnd), rnd=rnd)]
-	xn_f = apply_along_axis(task.eval, 1, xn)
-	ib = argmin(xn_f)
+	xn_f = np.apply_along_axis(task.eval, 1, xn)
+	ib = np.argmin(xn_f)
 	return xn[ib], xn_f[ib]
 
-def Sequential(x, xpb, xb, xr, MP_c, MP_s, MP_p, F, CR, task, rnd=rand):
+def Sequential(x, xpb, xb, xr, MP_c, MP_s, MP_p, F, CR, task, rnd=np.random):
 	r"""Sequentialy combines all three strategies.
 
 	Args:
@@ -60,7 +60,7 @@ def Sequential(x, xpb, xb, xr, MP_c, MP_s, MP_p, F, CR, task, rnd=rand):
 	xn = task.repair(MP_S(MP_P(MP_C(x, F, CR, MP_c, rnd), xpb, CR, MP_p, rnd), xr, xb, CR, MP_s, rnd), rnd=rnd)
 	return xn, task.eval(xn)
 
-def Crossover(x, xpb, xb, xr, MP_c, MP_s, MP_p, F, CR, task, rnd=rand):
+def Crossover(x, xpb, xb, xr, MP_c, MP_s, MP_p, F, CR, task, rnd=np.random):
 	r"""Create a crossover over all three strategies.
 
 	Args:
@@ -82,10 +82,10 @@ def Crossover(x, xpb, xb, xr, MP_c, MP_s, MP_p, F, CR, task, rnd=rand):
 			2. new positions function/fitness value
 	"""
 	xns = [task.repair(MP_C(x, F, CR, MP_c, rnd), rnd=rnd), task.repair(MP_S(x, xr, xb, CR, MP_s, rnd), rnd=rnd), task.repair(MP_P(x, xpb, CR, MP_p, rnd), rnd=rnd)]
-	x = asarray([xns[rnd.randint(len(xns))][i] if rnd.rand() < CR else x[i] for i in range(len(x))])
+	x = np.asarray([xns[rnd.randint(len(xns))][i] if rnd.rand() < CR else x[i] for i in range(len(x))])
 	return x, task.eval(x)
 
-def MP_C(x, F, CR, MP, rnd=rand):
+def MP_C(x, F, CR, MP, rnd=np.random):
 	r"""Get bew position based on fickleness.
 
 	Args:
@@ -99,12 +99,12 @@ def MP_C(x, F, CR, MP, rnd=rand):
 		numpy.ndarray: New position
 	"""
 	if MP < 0.5:
-		b = sort(rnd.choice(len(x), 2, replace=False))
+		b = np.sort(rnd.choice(len(x), 2, replace=False))
 		x[b[0]:b[1]] = x[b[0]:b[1]] + F * rnd.normal(0, 1, b[1] - b[0])
 		return x
-	return asarray([x[i] + F * rnd.normal(0, 1) if rnd.rand() < CR else x[i] for i in range(len(x))])
+	return np.asarray([x[i] + F * rnd.normal(0, 1) if rnd.rand() < CR else x[i] for i in range(len(x))])
 
-def MP_S(x, xr, xb, CR, MP, rnd=rand):
+def MP_S(x, xr, xb, CR, MP, rnd=np.random):
 	r"""Get new position based on external irregularity.
 
 	Args:
@@ -119,17 +119,17 @@ def MP_S(x, xr, xb, CR, MP, rnd=rand):
 		numpy.ndarray: New position.
 	"""
 	if MP < 0.25:
-		b = sort(rnd.choice(len(x), 2, replace=False))
+		b = np.sort(rnd.choice(len(x), 2, replace=False))
 		x[b[0]:b[1]] = xb[b[0]:b[1]]
 		return x
-	elif MP < 0.5: return asarray([xb[i] if rnd.rand() < CR else x[i] for i in range(len(x))])
+	elif MP < 0.5: return np.asarray([xb[i] if rnd.rand() < CR else x[i] for i in range(len(x))])
 	elif MP < 0.75:
-		b = sort(rnd.choice(len(x), 2, replace=False))
+		b = np.sort(rnd.choice(len(x), 2, replace=False))
 		x[b[0]:b[1]] = xr[b[0]:b[1]]
 		return x
-	return asarray([xr[i] if rnd.rand() < CR else x[i] for i in range(len(x))])
+	return np.asarray([xr[i] if rnd.rand() < CR else x[i] for i in range(len(x))])
 
-def MP_P(x, xpb, CR, MP, rnd=rand):
+def MP_P(x, xpb, CR, MP, rnd=np.random):
 	r"""Get new position based on internal irregularity.
 
 	Args:
@@ -143,10 +143,10 @@ def MP_P(x, xpb, CR, MP, rnd=rand):
 		numpy.ndarray: Current individuals new position.
 	"""
 	if MP < 0.5:
-		b = sort(rnd.choice(len(x), 2, replace=False))
+		b = np.sort(rnd.choice(len(x), 2, replace=False))
 		x[b[0]:b[1]] = xpb[b[0]:b[1]]
 		return x
-	return asarray([xpb[i] if rnd.rand() < CR else x[i] for i in range(len(x))])
+	return np.asarray([xpb[i] if rnd.rand() < CR else x[i] for i in range(len(x))])
 
 class AnarchicSocietyOptimization(Algorithm):
 	r"""Implementation of Anarchic Society Optimization algorithm.
@@ -285,7 +285,7 @@ class AnarchicSocietyOptimization(Algorithm):
 		Returns:
 			float: External irregularity index.
 		"""
-		return 1 - exp(-gamma * self.d(x_f, xnb_f))
+		return 1 - np.exp(-gamma * self.d(x_f, xnb_f))
 
 	def II(self, x_f, xpb_f, theta):
 		r"""Get internal irregularity index.
@@ -298,7 +298,7 @@ class AnarchicSocietyOptimization(Algorithm):
 		Returns:
 			float: Internal irregularity index
 		"""
-		return 1 - exp(-theta * self.d(x_f, xpb_f))
+		return 1 - np.exp(-theta * self.d(x_f, xpb_f))
 
 	def getBestNeighbors(self, i, X, X_f, rs):
 		r"""Get neighbors of individual.
@@ -315,8 +315,8 @@ class AnarchicSocietyOptimization(Algorithm):
 		Returns:
 			numpy.ndarray[int]: Indexes that represent individuals closest to `i`-th individual.
 		"""
-		nn = asarray([self.dn(X[i], X[j]) / rs for j in range(len(X))])
-		return argmin(X_f[where(nn <= self.nl)])
+		nn = np.asarray([self.dn(X[i], X[j]) / rs for j in range(len(X))])
+		return np.argmin(X_f[np.where(nn <= self.nl)])
 
 	def uBestAndPBest(self, X, X_f, Xpb, Xpb_f):
 		r"""Update personal best solution of all individuals in population.
@@ -334,7 +334,7 @@ class AnarchicSocietyOptimization(Algorithm):
 				3. New best individual.
 				4. New best individual fitness/function value.
 		"""
-		ix_pb = where(X_f < Xpb_f)
+		ix_pb = np.where(X_f < Xpb_f)
 		Xpb[ix_pb], Xpb_f[ix_pb] = X[ix_pb], X_f[ix_pb]
 		return Xpb, Xpb_f
 
@@ -362,7 +362,7 @@ class AnarchicSocietyOptimization(Algorithm):
 		"""
 		X, X_f, d = Algorithm.initPopulation(self, task)
 		alpha, gamma, theta = self.init(task)
-		Xpb, Xpb_f = self.uBestAndPBest(X, X_f, full([self.NP, task.D], 0.0), full(self.NP, task.optType.value * inf))
+		Xpb, Xpb_f = self.uBestAndPBest(X, X_f, np.zeros((self.NP, task.D)), np.full(self.NP, task.optType.value * np.inf))
 		d.update({'Xpb': Xpb, 'Xpb_f': Xpb_f, 'alpha': alpha, 'gamma': gamma, 'theta': theta, 'rs': self.d(task.Upper, task.Lower)})
 		return X, X_f, d
 
@@ -397,9 +397,9 @@ class AnarchicSocietyOptimization(Algorithm):
 					* rs (float): Distance of search space.
 		"""
 		Xin = [self.getBestNeighbors(i, X, X_f, rs) for i in range(len(X))]
-		MP_c, MP_s, MP_p = asarray([self.FI(X_f[i], Xpb_f[i], fxb, alpha[i]) for i in range(len(X))]), asarray([self.EI(X_f[i], X_f[Xin[i]], gamma[i]) for i in range(len(X))]), asarray([self.II(X_f[i], Xpb_f[i], theta[i]) for i in range(len(X))])
-		Xtmp = asarray([self.Combination(X[i], Xpb[i], xb, X[self.randint(len(X), skip=[i])], MP_c[i], MP_s[i], MP_p[i], self.F, self.CR, task, self.Rand) for i in range(len(X))], dtype=object)
-		X, X_f = asarray([Xtmp[i][0] for i in range(len(X))]), asarray([Xtmp[i][1] for i in range(len(X))])
+		MP_c, MP_s, MP_p = np.asarray([self.FI(X_f[i], Xpb_f[i], fxb, alpha[i]) for i in range(len(X))]), np.asarray([self.EI(X_f[i], X_f[Xin[i]], gamma[i]) for i in range(len(X))]), np.asarray([self.II(X_f[i], Xpb_f[i], theta[i]) for i in range(len(X))])
+		Xtmp = np.asarray([self.Combination(X[i], Xpb[i], xb, X[self.randint(len(X), skip=[i])], MP_c[i], MP_s[i], MP_p[i], self.F, self.CR, task, self.Rand) for i in range(len(X))], dtype=object)
+		X, X_f = np.asarray([Xtmp[i][0] for i in range(len(X))]), np.asarray([Xtmp[i][1] for i in range(len(X))])
 		Xpb, Xpb_f = self.uBestAndPBest(X, X_f, Xpb, Xpb_f)
 		xb, fxb = self.getBest(X, X_f, xb, fxb)
 		return X, X_f, xb, fxb, {'Xpb': Xpb, 'Xpb_f': Xpb_f, 'alpha': alpha, 'gamma': gamma, 'theta': theta, 'rs': rs}

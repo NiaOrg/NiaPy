@@ -1,7 +1,7 @@
 # encoding=utf8
 import logging
 
-from numpy import random as rand
+import numpy as np
 
 from NiaPy.algorithms.algorithm import Algorithm
 
@@ -11,7 +11,7 @@ logger.setLevel('INFO')
 
 __all__ = ['HillClimbAlgorithm']
 
-def Neighborhood(x, delta, task, rnd=rand):
+def Neighborhood(x, delta, task, rnd=np.random):
 	r"""Get neighbours of point.
 
 	Args:

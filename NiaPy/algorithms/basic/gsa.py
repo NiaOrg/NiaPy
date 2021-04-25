@@ -1,7 +1,7 @@
 # encoding=utf8
 import logging
 
-from numpy import apply_along_axis, asarray, argmin, argmax, sum, full
+import numpy as np
 
 from NiaPy.algorithms.algorithm import Algorithm
 
@@ -119,7 +119,7 @@ class GravitationalSearchAlgorithm(Algorithm):
 		Returns:
 			TODO
 		"""
-		return sum((x - y) ** ln) ** (1 / ln)
+		return np.sum((x - y) ** ln) ** (1 / ln)
 
 	def initPopulation(self, task):
 		r"""Initialize staring population.
@@ -138,7 +138,7 @@ class GravitationalSearchAlgorithm(Algorithm):
 			* :func:`NiaPy.algorithms.algorithm.Algorithm.initPopulation`
 		"""
 		X, X_f, _ = Algorithm.initPopulation(self, task)
-		v = full([self.NP, task.D], 0.0)
+		v = np.zeros((self.NP, task.D))
 		return X, X_f, {'v': v}
 
 	def runIteration(self, task, X, X_f, xb, fxb, v, **dparams):
@@ -162,15 +162,15 @@ class GravitationalSearchAlgorithm(Algorithm):
 				5. Additional arguments:
 					* v (numpy.ndarray): TODO
 		"""
-		ib, iw = argmin(X_f), argmax(X_f)
+		ib, iw = np.argmin(X_f), np.argmax(X_f)
 		m = (X_f - X_f[iw]) / (X_f[ib] - X_f[iw])
-		M = m / sum(m)
-		Fi = asarray([[self.G((task.Iters + 1)) * ((M[i] * M[j]) / (self.d(X[i], X[j]) + self.epsilon)) * (X[j] - X[i]) for j in range(len(M))] for i in range(len(M))])
-		F = sum(self.rand([self.NP, task.D]) * Fi, axis=1)
+		M = m / np.sum(m)
+		Fi = np.asarray([[self.G((task.Iters + 1)) * ((M[i] * M[j]) / (self.d(X[i], X[j]) + self.epsilon)) * (X[j] - X[i]) for j in range(len(M))] for i in range(len(M))])
+		F = np.sum(self.rand([self.NP, task.D]) * Fi, axis=1)
 		a = F.T / (M + self.epsilon)
 		v = self.rand([self.NP, task.D]) * v + a.T
-		X = apply_along_axis(task.repair, 1, X + v, self.Rand)
-		X_f = apply_along_axis(task.eval, 1, X)
+		X = np.apply_along_axis(task.repair, 1, X + v, self.Rand)
+		X_f = np.apply_along_axis(task.eval, 1, X)
 		xb, fxb = self.getBest(X, X_f, xb, fxb)
 		return X, X_f, xb, fxb, {'v': v}
 

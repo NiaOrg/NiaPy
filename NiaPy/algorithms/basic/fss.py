@@ -1,5 +1,5 @@
 # encoding=utf8
-from numpy import nan, asarray, zeros, full
+import numpy as np
 
 from NiaPy.util import objects_to_array
 from NiaPy.algorithms.algorithm import Algorithm, Individual
@@ -28,8 +28,8 @@ class Fish(Individual):
 		"""
 		Individual.__init__(self, **kwargs)
 		self.weight = weight
-		self.delta_pos = nan
-		self.delta_cost = nan
+		self.delta_pos = np.nan
+		self.delta_cost = np.nan
 		self.has_improved = False
 
 class FishSchoolSearch(Algorithm):
@@ -135,7 +135,7 @@ class FishSchoolSearch(Algorithm):
 		Returns:
 			numpy.ndarray: Array with uniform distribution.
 		"""
-		return asarray([self.uniform(task.Lower, task.Upper, task.D) for _ in range(self.NP)])
+		return np.asarray([self.uniform(task.Lower, task.Upper, task.D) for _ in range(self.NP)])
 
 	def gen_weight(self):
 		r"""Get initial weight for fish.
@@ -211,7 +211,7 @@ class FishSchoolSearch(Algorithm):
 		Returns:
 			numpy.ndarray: TODO.
 		"""
-		barycenter = zeros((task.D,), dtype=float)
+		barycenter = np.zeros((task.D,), dtype=float)
 		density = 0.0
 		for fish in school:
 			density += fish.weight
@@ -228,8 +228,8 @@ class FishSchoolSearch(Algorithm):
 		Returns:
 			Tuple[numpy.ndarray, numpy.ndarray]: TODO.
 		"""
-		curr_step_individual = full(task.D, self.step_individual_init - (task.Iters + 1) * float(self.step_individual_init - self.step_individual_final) / task.nGEN)
-		curr_step_volitive = full(task.D, self.step_volitive_init - (task.Iters + 1) * float(self.step_volitive_init - self.step_volitive_final) / task.nGEN)
+		curr_step_individual = np.full(task.D, self.step_individual_init - (task.Iters + 1) * float(self.step_individual_init - self.step_individual_final) / task.nGEN)
+		curr_step_volitive = np.full(task.D, self.step_volitive_init - (task.Iters + 1) * float(self.step_volitive_init - self.step_volitive_final) / task.nGEN)
 		return curr_step_individual, curr_step_volitive
 
 	def feeding(self, school):
@@ -268,12 +268,12 @@ class FishSchoolSearch(Algorithm):
 				xb, fxb = self.getBest(new_pos, cost, xb, fxb)
 				fish.delta_cost = abs(cost - fish.f)
 				fish.f = cost
-				delta_pos = zeros((task.D,), dtype=float)
+				delta_pos = np.zeros((task.D,), dtype=float)
 				for idx in range(task.D): delta_pos[idx] = new_pos[idx] - fish.x[idx]
 				fish.delta_pos = delta_pos
 				fish.x = new_pos
 			else:
-				fish.delta_pos = zeros((task.D,), dtype=float)
+				fish.delta_pos = np.zeros((task.D,), dtype=float)
 				fish.delta_cost = 0
 		return school, xb, fxb
 
@@ -287,7 +287,7 @@ class FishSchoolSearch(Algorithm):
 		Returns:
 			numpy.ndarray: New populaiton
 		"""
-		cost_eval_enhanced = zeros((task.D,), dtype=float)
+		cost_eval_enhanced = np.zeros((task.D,), dtype=float)
 		density = sum([f.delta_cost for f in school])
 		for fish in school: cost_eval_enhanced += (fish.delta_pos * fish.delta_cost)
 		if density != 0: cost_eval_enhanced = cost_eval_enhanced / density
@@ -328,7 +328,7 @@ class FishSchoolSearch(Algorithm):
 			Tuple[numpy.ndarray, numpy.ndarray, dict]: TODO.
 		"""
 		curr_step_individual, curr_step_volitive, curr_weight_school, prev_weight_school, school = self.init_school(task)
-		return school, asarray([f.f for f in school]), {'curr_step_individual': curr_step_individual, 'curr_step_volitive': curr_step_volitive, 'curr_weight_school': curr_weight_school, 'prev_weight_school': prev_weight_school}
+		return school, np.asarray([f.f for f in school]), {'curr_step_individual': curr_step_individual, 'curr_step_volitive': curr_step_volitive, 'curr_weight_school': curr_weight_school, 'prev_weight_school': prev_weight_school}
 
 	def runIteration(self, task, school, fschool, xb, fxb, curr_step_individual, curr_step_volitive, curr_weight_school, prev_weight_school, **dparams):
 		r"""Core function of algorithm.
@@ -353,6 +353,6 @@ class FishSchoolSearch(Algorithm):
 		school = self.collective_instinctive_movement(school, task)
 		school, xb, fxb = self.collective_volitive_movement(school=school, curr_step_volitive=curr_step_volitive, prev_weight_school=prev_weight_school, curr_weight_school=curr_weight_school, xb=xb, fxb=fxb, task=task)
 		curr_step_individual, curr_step_volitive = self.update_steps(task)
-		return school, asarray([f.f for f in school]), xb, fxb, {'curr_step_individual': curr_step_individual, 'curr_step_volitive': curr_step_volitive, 'curr_weight_school': curr_weight_school, 'prev_weight_school': prev_weight_school}
+		return school, np.asarray([f.f for f in school]), xb, fxb, {'curr_step_individual': curr_step_individual, 'curr_step_volitive': curr_step_volitive, 'curr_weight_school': curr_weight_school, 'prev_weight_school': prev_weight_school}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

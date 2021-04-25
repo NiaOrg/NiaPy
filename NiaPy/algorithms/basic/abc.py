@@ -2,7 +2,7 @@
 import copy
 import logging
 
-from numpy import asarray, full, argmax
+import numpy as np
 
 from NiaPy.algorithms.algorithm import Algorithm, Individual, defaultIndividualInit
 
@@ -135,7 +135,7 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 			* :func:`NiaPy.algorithms.Algorithm.initPopulation`
 		"""
 		Foods, fpop, _ = Algorithm.initPopulation(self, task)
-		Probs, Trial = full(self.FoodNumber, 0.0), full(self.FoodNumber, 0.0)
+		Probs, Trial = np.zeros(self.FoodNumber), np.zeros(self.FoodNumber)
 		return Foods, fpop, {'Probs': Probs, 'Trial': Trial}
 
 	def runIteration(self, task, Foods, fpop, xb, fxb, Probs, Trial, **dparams):
@@ -187,10 +187,10 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
 				else: Trial[s] += 1
 			s += 1
 			if s == self.FoodNumber: s = 0
-		mi = argmax(Trial)
+		mi = np.argmax(Trial)
 		if Trial[mi] >= self.Limit:
 			Foods[mi], Trial[mi] = SolutionABC(task=task, rnd=self.Rand), 0
 			if Foods[mi].f < fxb: xb, fxb = Foods[mi].x.copy(), Foods[mi].f
-		return Foods, asarray([f.f for f in Foods]), xb, fxb, {'Probs': Probs, 'Trial': Trial}
+		return Foods, np.asarray([f.f for f in Foods]), xb, fxb, {'Probs': Probs, 'Trial': Trial}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

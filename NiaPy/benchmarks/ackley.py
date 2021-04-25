@@ -2,7 +2,7 @@
 
 """Implementation of Ackley benchmark."""
 
-from numpy import exp, pi, cos, sqrt
+import numpy as np
 
 from NiaPy.benchmarks.benchmark import Benchmark
 
@@ -89,7 +89,7 @@ class Ackley(Benchmark):
             """
             a = 20  # Recommended variable value
             b = 0.2  # Recommended variable value
-            c = 2 * pi  # Recommended variable value
+            c = 2 * np.pi  # Recommended variable value
 
             val = 0.0
             val1 = 0.0
@@ -97,12 +97,12 @@ class Ackley(Benchmark):
 
             for i in range(D):
                 val1 += sol[i] ** 2
-                val2 += cos(c * sol[i])
+                val2 += np.cos(c * sol[i])
 
-            temp1 = -b * sqrt(val1 / D)
+            temp1 = -b * np.sqrt(val1 / D)
             temp2 = val2 / D
 
-            val = -a * exp(temp1) - exp(temp2) + a + exp(1)
+            val = -a * np.exp(temp1) - np.exp(temp2) + a + np.exp(1)
 
             return val
 

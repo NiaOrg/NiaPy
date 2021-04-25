@@ -1,7 +1,7 @@
 # encoding=utf8
 import logging
 
-from numpy import full
+import numpy as np
 
 from NiaPy.algorithms.algorithm import Algorithm
 
@@ -125,7 +125,7 @@ class BatAlgorithm(Algorithm):
 			* :func:`NiaPy.algorithms.Algorithm.initPopulation`
 		"""
 		Sol, Fitness, d = Algorithm.initPopulation(self, task)
-		S, Q, v = full([self.NP, task.D], 0.0), full(self.NP, 0.0), full([self.NP, task.D], 0.0)
+		S, Q, v = np.zeros((self.NP, task.D)), np.zeros(self.NP), np.zeros((self.NP, task.D))
 		d.update({'S': S, 'Q': Q, 'v': v})
 		return Sol, Fitness, d
 

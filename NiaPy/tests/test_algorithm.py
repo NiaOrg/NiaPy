@@ -5,7 +5,7 @@ from queue import Queue
 from threading import Thread
 from unittest import TestCase
 
-from numpy import random as rnd, full, inf, array_equal, apply_along_axis, asarray
+import numpy as np
 
 from NiaPy.util import objects_to_array
 from NiaPy.task.task import Task, StoppingTask
@@ -48,8 +48,8 @@ class IndividualTestCase(TestCase):
 	"""
 	def setUp(self):
 		self.D = 20
-		self.x, self.task = rnd.uniform(-100, 100, self.D), StoppingTask(D=self.D, nFES=230, nGEN=inf, benchmark=MyBenchmark())
-		self.s1, self.s2, self.s3 = Individual(x=self.x, e=False), Individual(task=self.task, rand=rnd), Individual(task=self.task)
+		self.x, self.task = np.random.uniform(-100, 100, self.D), StoppingTask(D=self.D, nFES=230, nGEN=np.inf, benchmark=MyBenchmark())
+		self.s1, self.s2, self.s3 = Individual(x=self.x, e=False), Individual(task=self.task, rand=np.random), Individual(task=self.task)
 
 	def test_generateSolutin_fine(self):
 		self.assertTrue(self.task.isFeasible(self.s2))
@@ -60,7 +60,7 @@ class IndividualTestCase(TestCase):
 		self.assertAlmostEqual(self.s1.f, self.task.eval(self.x))
 
 	def test_repair_fine(self):
-		s = Individual(x=full(self.D, 100))
+		s = Individual(x=np.full(self.D, 100))
 		self.assertFalse(self.task.isFeasible(s.x))
 
 	def test_eq_fine(self):
@@ -70,7 +70,7 @@ class IndividualTestCase(TestCase):
 		self.assertTrue(s == self.s1)
 
 	def test_str_fine(self):
-		self.assertEqual(str(self.s1), '%s -> %s' % (self.x, inf))
+		self.assertEqual(str(self.s1), '%s -> %s' % (self.x, np.inf))
 
 	def test_getitem_fine(self):
 		for i in range(self.D): self.assertEqual(self.s1[i], self.x[i])
@@ -91,8 +91,8 @@ def init_pop_numpy(task, NP, **kwargs):
 			1. Initialized population.
 			2. Initialized populations fitness/function values.
 	"""
-	pop = full((NP, task.D), 0.0)
-	fpop = apply_along_axis(task.eval, 1, pop)
+	pop = np.zeros((NP, task.D))
+	fpop = np.apply_along_axis(task.eval, 1, pop)
 	return pop, fpop
 
 def init_pop_individual(task, NP, itype, **kwargs):
@@ -100,8 +100,8 @@ def init_pop_individual(task, NP, itype, **kwargs):
 
 	Args:
 		task (Task): Optimization task.
-		np (int): Population size.
-		itype (Individual): Type of individual in population.
+		NP (int): Population size.
+		itype (Type[Individual]): Type of individual in population.
 		**kwargs (Dict[str, Any]): Additional arguments.
 
 	Returns:
@@ -109,8 +109,8 @@ def init_pop_individual(task, NP, itype, **kwargs):
 			1. Initialized population.
 			2. Initialized populations fitness/function values.
 	"""
-	pop = objects_to_array([itype(x=full(task.D, 0.0), task=task) for _ in range(NP)])
-	return pop, asarray([x.f for x in pop])
+	pop = objects_to_array([itype(x=np.zeros(task.D), task=task) for _ in range(NP)])
+	return pop, np.asarray([x.f for x in pop])
 
 class AlgorithBaseTestCase(TestCase):
 	r"""Test case for testing Algorithm class.
@@ -131,7 +131,7 @@ class AlgorithBaseTestCase(TestCase):
 	"""
 	def setUp(self):
 		self.seed = 1
-		self.rnd = rnd.RandomState(self.seed)
+		self.rnd = np.random.RandomState(self.seed)
 		self.a = Algorithm(seed=self.seed)
 
 	def test_algorithm_info_fine(self):
@@ -153,13 +153,13 @@ class AlgorithBaseTestCase(TestCase):
 		r"""Test if custome generation initialization works ok."""
 		a = Algorithm(NP=10, InitPopFunc=init_pop_numpy)
 		t = Task(D=20, benchmark=MyBenchmark())
-		self.assertTrue(array_equal(full((10, t.D), 0.0), a.initPopulation(t)[0]))
+		self.assertTrue(np.array_equal(np.zeros((10, t.D)), a.initPopulation(t)[0]))
 
 	def test_init_population_individual_fine(self):
 		r"""Test if custome generation initialization works ok."""
 		a = Algorithm(NP=10, InitPopFunc=init_pop_individual, itype=Individual)
 		t = Task(D=20, benchmark=MyBenchmark())
-		i = Individual(x=full(t.D, 0.0), task=t)
+		i = Individual(x=np.zeros(t.D), task=t)
 		pop, fpop, d = a.initPopulation(t)
 		for e in pop: self.assertEqual(i, e)
 
@@ -170,39 +170,39 @@ class AlgorithBaseTestCase(TestCase):
 	def test_randint_fine(self):
 		o = self.a.randint(Nmax=20, Nmin=10, D=[10, 10])
 		self.assertEqual(o.shape, (10, 10))
-		self.assertTrue(array_equal(self.rnd.randint(10, 20, (10, 10)), o))
+		self.assertTrue(np.array_equal(self.rnd.randint(10, 20, (10, 10)), o))
 		o = self.a.randint(Nmax=20, Nmin=10, D=(10, 5))
 		self.assertEqual(o.shape, (10, 5))
-		self.assertTrue(array_equal(self.rnd.randint(10, 20, (10, 5)), o))
+		self.assertTrue(np.array_equal(self.rnd.randint(10, 20, (10, 5)), o))
 		o = self.a.randint(Nmax=20, Nmin=10, D=10)
 		self.assertEqual(o.shape, (10,))
-		self.assertTrue(array_equal(self.rnd.randint(10, 20, 10), o))
+		self.assertTrue(np.array_equal(self.rnd.randint(10, 20, 10), o))
 
 	def test_randn_fine(self):
 		a = self.a.randn([1, 2])
 		self.assertEqual(a.shape, (1, 2))
-		self.assertTrue(array_equal(self.rnd.randn(1, 2), a))
+		self.assertTrue(np.array_equal(self.rnd.randn(1, 2), a))
 		a = self.a.randn(1)
 		self.assertEqual(len(a), 1)
-		self.assertTrue(array_equal(self.rnd.randn(1), a))
+		self.assertTrue(np.array_equal(self.rnd.randn(1), a))
 		a = self.a.randn(2)
 		self.assertEqual(len(a), 2)
-		self.assertTrue(array_equal(self.rnd.randn(2), a))
+		self.assertTrue(np.array_equal(self.rnd.randn(2), a))
 		a = self.a.randn()
 		self.assertIsInstance(a, float)
-		self.assertTrue(array_equal(self.rnd.randn(), a))
+		self.assertTrue(np.array_equal(self.rnd.randn(), a))
 
 	def test_uniform_fine(self):
 		a = self.a.uniform(-10, 10, [10, 10])
 		self.assertEqual(a.shape, (10, 10))
-		self.assertTrue(array_equal(self.rnd.uniform(-10, 10, (10, 10)), a))
+		self.assertTrue(np.array_equal(self.rnd.uniform(-10, 10, (10, 10)), a))
 		a = self.a.uniform(4, 10, (4, 10))
 		self.assertEqual(len(a), 4)
 		self.assertEqual(len(a[0]), 10)
-		self.assertTrue(array_equal(self.rnd.uniform(4, 10, (4, 10)), a))
+		self.assertTrue(np.array_equal(self.rnd.uniform(4, 10, (4, 10)), a))
 		a = self.a.uniform(1, 4, 2)
 		self.assertEqual(len(a), 2)
-		self.assertTrue(array_equal(self.rnd.uniform(1, 4, 2), a))
+		self.assertTrue(np.array_equal(self.rnd.uniform(1, 4, 2), a))
 		a = self.a.uniform(10, 100)
 		self.assertIsInstance(a, float)
 		self.assertEqual(self.rnd.uniform(10, 100), a)
@@ -210,14 +210,14 @@ class AlgorithBaseTestCase(TestCase):
 	def test_normal_fine(self):
 		a = self.a.normal(-10, 10, [10, 10])
 		self.assertEqual(a.shape, (10, 10))
-		self.assertTrue(array_equal(self.rnd.normal(-10, 10, (10, 10)), a))
+		self.assertTrue(np.array_equal(self.rnd.normal(-10, 10, (10, 10)), a))
 		a = self.a.normal(4, 10, (4, 10))
 		self.assertEqual(len(a), 4)
 		self.assertEqual(len(a[0]), 10)
-		self.assertTrue(array_equal(self.rnd.normal(4, 10, (4, 10)), a))
+		self.assertTrue(np.array_equal(self.rnd.normal(4, 10, (4, 10)), a))
 		a = self.a.normal(1, 4, 2)
 		self.assertEqual(len(a), 2)
-		self.assertTrue(array_equal(self.rnd.normal(1, 4, 2), a))
+		self.assertTrue(np.array_equal(self.rnd.normal(1, 4, 2), a))
 		a = self.a.normal(10, 100)
 		self.assertIsInstance(a, float)
 		self.assertEqual(self.rnd.normal(10, 100), a)
@@ -326,7 +326,7 @@ class AlgorithmTestCase(TestCase):
 			logger.info('%s\n%s -> %s\n%s -> %s' % (task1.names(), x[0], x[1], y[0], y[1]))
 			self.assertAlmostEqual(task1.benchmark.function()(D, x[0].x if isinstance(x[0], Individual) else x[0]), x[1], msg='Best individual fitness values does not mach the given one')
 			self.assertAlmostEqual(task1.x_f, x[1], msg='While running the algorithm, algorithm got better individual with fitness: %s' % task1.x_f)
-			self.assertTrue(array_equal(x[0], y[0]), 'Results can not be reproduced, check usages of random number generator')
+			self.assertTrue(np.array_equal(x[0], y[0]), 'Results can not be reproduced, check usages of random number generator')
 			self.assertAlmostEqual(x[1], y[1], msg='Results can not be reproduced or bad function value')
 			self.assertTrue(self.nFES if nFES is None else nFES >= task1.Evals), self.assertEqual(task1.Evals, task2.Evals)
 			self.assertTrue(self.nGEN if nGEN is None else nGEN >= task1.Iters), self.assertEqual(task1.Iters, task2.Iters)

@@ -1,7 +1,7 @@
 # encoding=utf8
 from unittest import TestCase
 
-from numpy import array_equal, full, inf, random as rnd
+import numpy as np
 
 from NiaPy.task.task import Task
 from NiaPy.algorithms.basic import MonkeyKingEvolutionV1, MonkeyKingEvolutionV2, MonkeyKingEvolutionV3
@@ -11,18 +11,18 @@ from NiaPy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
 class MkeSolutionTestCase(TestCase):
 	def setUp(self):
 		self.D = 20
-		self.x, self.task = rnd.uniform(-2, 2, self.D), Task(self.D, nGEN=230, nFES=inf, benchmark=MyBenchmark())
+		self.x, self.task = np.random.uniform(-2, 2, self.D), Task(self.D, nGEN=230, nFES=np.inf, benchmark=MyBenchmark())
 		self.sol1, self.sol2, self.sol3 = MkeSolution(x=self.x, e=False), MkeSolution(task=self.task), MkeSolution(x=self.x, e=False)
 
 	def test_uPersonalBest_fine(self):
 		self.sol2.uPersonalBest()
-		self.assertTrue(array_equal(self.sol2.x, self.sol2.x_pb))
+		self.assertTrue(np.array_equal(self.sol2.x, self.sol2.x_pb))
 		self.assertEqual(self.sol2.f_pb, self.sol2.f)
 		self.sol3.evaluate(self.task)
-		self.sol3.x = full(self.task.D, -5.11)
+		self.sol3.x = np.full(self.task.D, -5.11)
 		self.sol3.evaluate(self.task)
 		self.sol3.uPersonalBest()
-		self.assertTrue(array_equal(self.sol3.x, self.sol3.x_pb))
+		self.assertTrue(np.array_equal(self.sol3.x, self.sol3.x_pb))
 		self.assertEqual(self.sol3.f_pb, self.sol3.f)
 
 class MKEv1TestCase(AlgorithmTestCase):
