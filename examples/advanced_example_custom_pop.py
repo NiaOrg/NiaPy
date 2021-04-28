@@ -4,9 +4,9 @@
 import sys
 sys.path.append('../')
 
-from NiaPy.task import StoppingTask, OptimizationType
-from NiaPy.benchmarks import Benchmark
-from NiaPy.algorithms.basic import GreyWolfOptimizer
+from niapy.task import StoppingTask, OptimizationType
+from niapy.benchmarks import Benchmark
+from niapy.algorithms.basic import GreyWolfOptimizer
 from numpy import random as rand, apply_along_axis
 
 # our custom benchmark class

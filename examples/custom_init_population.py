@@ -5,9 +5,9 @@ import sys
 sys.path.append('../')
 # End of fix
 
-from NiaPy.algorithms.basic import ParticleSwarmAlgorithm
-from NiaPy.task.task import StoppingTask, OptimizationType
-from NiaPy.benchmarks import Sphere
+from niapy.algorithms.basic import ParticleSwarmAlgorithm
+from niapy.task.task import StoppingTask, OptimizationType
+from niapy.benchmarks import Sphere
 from numpy import random as rand, apply_along_axis
 
 def MyInit(task, NP, rnd=rand, **kwargs):

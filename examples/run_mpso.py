@@ -5,9 +5,9 @@ import sys
 sys.path.append('../')
 # End of fix
 
-from NiaPy.algorithms.basic import MutatedParticleSwarmOptimization
-from NiaPy.task import StoppingTask
-from NiaPy.benchmarks import Sphere
+from niapy.algorithms.basic import MutatedParticleSwarmOptimization
+from niapy.task import StoppingTask
+from niapy.benchmarks import Sphere
 
 # we will run ParticleSwarmAlgorithm for 5 independent runs
 algo = MutatedParticleSwarmOptimization(NP=51, C1=1.3, C2=2.0, w=0.86, vMin=-1, vMax=1)

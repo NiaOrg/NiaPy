@@ -6,9 +6,9 @@ sys.path.append('../')
 # End of fix
 
 import random
-from NiaPy.algorithms.basic import ComprehensiveLearningParticleSwarmOptimizer
-from NiaPy.benchmarks import Sphere
-from NiaPy.task import StoppingTask
+from niapy.algorithms.basic import ComprehensiveLearningParticleSwarmOptimizer
+from niapy.benchmarks import Sphere
+from niapy.task import StoppingTask
 
 # we will run ParticleSwarmAlgorithm for 5 independent runs
 algo = ComprehensiveLearningParticleSwarmOptimizer(NP=50, C1=.3, C2=1.0, m=5, w=0.86, vMin=-2, vMax=2)

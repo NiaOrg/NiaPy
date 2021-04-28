@@ -5,9 +5,9 @@ import sys
 sys.path.append('../')
 # End of fix
 
-from NiaPy.algorithms.basic import HarmonySearchV1
-from NiaPy.task import StoppingTask
-from NiaPy.benchmarks import Sphere
+from niapy.algorithms.basic import HarmonySearchV1
+from niapy.task import StoppingTask
+from niapy.benchmarks import Sphere
 
 # we will run Bat Algorithm for 5 independent runs
 algo = HarmonySearchV1()

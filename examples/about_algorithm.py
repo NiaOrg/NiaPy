@@ -5,7 +5,7 @@ import sys
 sys.path.append('../')
 # End of fix
 
-from NiaPy.algorithms.basic import FireflyAlgorithm
+from niapy.algorithms.basic import FireflyAlgorithm
 
 algo = FireflyAlgorithm()
 print(algo.algorithmInfo())

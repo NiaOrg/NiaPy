@@ -5,10 +5,10 @@ import sys
 sys.path.append('../')
 # End of fix
 
-from NiaPy.algorithms.modified import DifferentialEvolutionMTSv1
-from NiaPy.algorithms.basic.de import CrossBest2
-from NiaPy.task import StoppingTask
-from NiaPy.benchmarks import Sphere
+from niapy.algorithms.modified import DifferentialEvolutionMTSv1
+from niapy.algorithms.basic.de import CrossBest2
+from niapy.task import StoppingTask
+from niapy.benchmarks import Sphere
 
 # we will run Differential Evolution for 5 independent runs
 for i in range(5):

@@ -8,9 +8,9 @@ sys.path.append('../')
 import random
 import logging
 
-from NiaPy.algorithms.basic import BareBonesFireworksAlgorithm
-from NiaPy.benchmarks import Benchmark, Katsuura, Elliptic
-from NiaPy.task import StoppingTask
+from niapy.algorithms.basic import BareBonesFireworksAlgorithm
+from niapy.benchmarks import Benchmark, Katsuura, Elliptic
+from niapy.task import StoppingTask
 
 logging.basicConfig()
 logger = logging.getLogger('examples')

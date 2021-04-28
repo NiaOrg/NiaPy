@@ -6,10 +6,10 @@ sys.path.append('../')
 # End of fix
 
 import numpy as np
-from NiaPy.task import StoppingTask, OptimizationType
-from NiaPy.algorithms import BasicStatistics
-from NiaPy.algorithms.basic import DifferentialEvolution
-from NiaPy.benchmarks import Sphere
+from niapy.task import StoppingTask, OptimizationType
+from niapy.algorithms import BasicStatistics
+from niapy.algorithms.basic import DifferentialEvolution
+from niapy.benchmarks import Sphere
 
 NUM_RUNS = 10  # define number of runs
 stats = np.zeros(NUM_RUNS)

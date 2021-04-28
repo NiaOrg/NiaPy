@@ -5,9 +5,9 @@ import sys
 sys.path.append('../')
 # End of fix
 
-from NiaPy.task import StoppingTask
-from NiaPy.benchmarks import Griewank
-from NiaPy.algorithms.basic import DifferentialEvolution
+from niapy.task import StoppingTask
+from niapy.benchmarks import Griewank
+from niapy.algorithms.basic import DifferentialEvolution
 
 # we will run Differential Evolution for 5 independent runs
 algo = DifferentialEvolution(NP=50, F=0.5, CR=0.9)

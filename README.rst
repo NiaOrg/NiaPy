@@ -85,6 +85,22 @@ After installation, you can import NiaPy as any other Python module:
 .. code:: sh
 
    $ python
+      >>> import niapy
+      >>> NiaPy.__version__
+
+   Let’s go through a basic and advanced example.
+      >>> import niapy
+      >>> NiaPy.__version__
+
+   Let’s go through a basic and advanced example.
+      >>> import niapy
+      >>> niapy.__version__
+
+   Let’s go through a basic and advanced example.
+      >>> import niapy
+      >>> niapy.__version__
+
+   Let’s go through a basic and advanced example.
    >>> import NiaPy
    >>> NiaPy.__version__
 

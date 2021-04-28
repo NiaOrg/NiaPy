@@ -5,9 +5,9 @@ import sys
 sys.path.append('../')
 # End of fix
 
-from NiaPy.task import StoppingTask, OptimizationType
-from NiaPy.benchmarks import Sphere
-from NiaPy.algorithms.basic import DifferentialEvolution
+from niapy.task import StoppingTask, OptimizationType
+from niapy.benchmarks import Sphere
+from niapy.algorithms.basic import DifferentialEvolution
 
 # Storing improvements during the evolutionary cycle
 for i in range(1):

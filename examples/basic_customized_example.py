@@ -4,9 +4,9 @@ import sys
 sys.path.append('../')
 # End of fix
 
-from NiaPy.algorithms.basic import GreyWolfOptimizer
-from NiaPy.task import StoppingTask, OptimizationType
-from NiaPy.benchmarks import Pinter
+from niapy.algorithms.basic import GreyWolfOptimizer
+from niapy.task import StoppingTask, OptimizationType
+from niapy.benchmarks import Pinter
 
 # initialize Pinter benchamrk with custom bound
 pinterCustom = Pinter(-5, 5)

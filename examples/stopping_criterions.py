@@ -7,9 +7,9 @@ sys.path.append('../')
 
 import random
 import logging
-from NiaPy.task import StoppingTask
-from NiaPy.algorithms.basic import DifferentialEvolution
-from NiaPy.benchmarks import Griewank, Sphere
+from niapy.task import StoppingTask
+from niapy.algorithms.basic import DifferentialEvolution
+from niapy.benchmarks import Griewank, Sphere
 
 # 1 Number of function evaluations (nFES) as a stopping criteria
 for i in range(10):

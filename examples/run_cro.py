@@ -6,9 +6,9 @@ sys.path.append('../')
 # End of fix
 
 import random
-from NiaPy.algorithms.basic import CoralReefsOptimization
-from NiaPy.task import StoppingTask
-from NiaPy.benchmarks import Sphere
+from niapy.algorithms.basic import CoralReefsOptimization
+from niapy.task import StoppingTask
+from niapy.benchmarks import Sphere
 
 #we will run Coral Reefs Optimization algorithm for 5 independent runs
 for i in range(5):

@@ -12,7 +12,7 @@ else:
     notify = Notifier.notify
 
 
-watch_paths = ["NiaPy", "tests"]
+watch_paths = ["niapy", "tests"]
 
 
 class Options:

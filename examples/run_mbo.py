@@ -4,9 +4,9 @@
 import sys
 sys.path.append('../')
 
-from NiaPy.algorithms.basic import MonarchButterflyOptimization
-from NiaPy.task import StoppingTask
-from NiaPy.benchmarks import Sphere
+from niapy.algorithms.basic import MonarchButterflyOptimization
+from niapy.task import StoppingTask
+from niapy.benchmarks import Sphere
 
 # we will run Monarch Butterfly Optimization algorithm for 5 independent runs
 for i in range(5):

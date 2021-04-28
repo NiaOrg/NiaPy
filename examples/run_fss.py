@@ -6,9 +6,9 @@ sys.path.append('../')
 # End of fix
 
 import random
-from NiaPy.algorithms.basic import FishSchoolSearch
-from NiaPy.task import StoppingTask
-from NiaPy.benchmarks import Sphere
+from niapy.algorithms.basic import FishSchoolSearch
+from niapy.task import StoppingTask
+from niapy.benchmarks import Sphere
 
 #we will run Fish School Search for 5 independent runs
 for i in range(5):

@@ -5,9 +5,9 @@ import sys
 sys.path.append('../')
 # End of fix
 
-from NiaPy.task import StoppingTask
-from NiaPy.benchmarks import Sphere
-from NiaPy.algorithms.other import RandomSearch
+from niapy.task import StoppingTask
+from niapy.benchmarks import Sphere
+from niapy.algorithms.other import RandomSearch
 
 for i in range(1):
     task = StoppingTask(D=5, nGEN=5000, benchmark=Sphere())

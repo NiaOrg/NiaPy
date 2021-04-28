@@ -5,10 +5,10 @@ import sys
 sys.path.append('../')
 # End of fix
 
-from NiaPy.algorithms.modified import ParameterFreeBatAlgorithm
+from niapy.algorithms.modified import ParameterFreeBatAlgorithm
 
-from NiaPy.task import StoppingTask
-from NiaPy.benchmarks import Sphere
+from niapy.task import StoppingTask
+from niapy.benchmarks import Sphere
 
 algo = ParameterFreeBatAlgorithm()
 

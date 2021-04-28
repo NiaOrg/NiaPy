@@ -6,9 +6,9 @@ sys.path.append('../')
 # End of fix
 
 import random
-from NiaPy.algorithms.other import HillClimbAlgorithm
-from NiaPy.task import StoppingTask
-from NiaPy.benchmarks import Sphere
+from niapy.algorithms.other import HillClimbAlgorithm
+from niapy.task import StoppingTask
+from niapy.benchmarks import Sphere
 
 #we will run Hill Climb algorithm for 5 independent runs
 for i in range(5):

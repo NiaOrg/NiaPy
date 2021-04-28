@@ -6,9 +6,9 @@ sys.path.append('../')
 # End of fix
 
 import random
-from NiaPy.algorithms.modified import HybridBatAlgorithm
-from NiaPy.task import StoppingTask
-from NiaPy.benchmarks import Sphere
+from niapy.algorithms.modified import HybridBatAlgorithm
+from niapy.task import StoppingTask
+from niapy.benchmarks import Sphere
 
 #we will run Hybrid Bat Algorithm for 5 independent runs
 for i in range(5):

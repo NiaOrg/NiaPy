@@ -5,9 +5,9 @@ import sys
 sys.path.append('../')
 # End of fix
 
-from NiaPy.algorithms.basic import BatAlgorithm
-from NiaPy.task import StoppingTask
-from NiaPy.benchmarks import Griewank
+from niapy.algorithms.basic import BatAlgorithm
+from niapy.task import StoppingTask
+from niapy.benchmarks import Griewank
 
 # we will run Bat Algorithm for 5 independent runs
 for i in range(5):

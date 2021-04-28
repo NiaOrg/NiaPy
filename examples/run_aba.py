@@ -5,9 +5,9 @@ import sys
 sys.path.append('../')
 # End of fix
 
-from NiaPy.algorithms.modified import AdaptiveBatAlgorithm
-from NiaPy.task import StoppingTask
-from NiaPy.benchmarks import Griewank
+from niapy.algorithms.modified import AdaptiveBatAlgorithm
+from niapy.task import StoppingTask
+from niapy.benchmarks import Griewank
 
 # we will run Bat Algorithm for 5 independent runs
 algo = AdaptiveBatAlgorithm()

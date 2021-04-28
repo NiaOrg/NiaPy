@@ -5,9 +5,9 @@ import sys
 sys.path.append('../')
 # End of fix
 
-from NiaPy.algorithms.basic import FireflyAlgorithm
-from NiaPy.task import StoppingTask
-from NiaPy.benchmarks import Sphere
+from niapy.algorithms.basic import FireflyAlgorithm
+from niapy.task import StoppingTask
+from niapy.benchmarks import Sphere
 
 # we will run Firefly Algorithm for 5 independent runs
 for i in range(5):

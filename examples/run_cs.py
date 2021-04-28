@@ -5,9 +5,9 @@ import sys
 sys.path.append('../')
 # End of fix
 
-from NiaPy.algorithms.basic import CuckooSearch
-from NiaPy.benchmarks import Sphere
-from NiaPy.task import StoppingTask
+from niapy.algorithms.basic import CuckooSearch
+from niapy.benchmarks import Sphere
+from niapy.task import StoppingTask
 
 # we will run Cuckoo Search for 5 independent runs
 for i in range(5):

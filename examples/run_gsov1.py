@@ -5,9 +5,9 @@ import sys
 sys.path.append('../')
 # End of fix
 
-from NiaPy.algorithms.basic import GlowwormSwarmOptimizationV1
-from NiaPy.task import StoppingTask
-from NiaPy.benchmarks import Sphere
+from niapy.algorithms.basic import GlowwormSwarmOptimizationV1
+from niapy.task import StoppingTask
+from niapy.benchmarks import Sphere
 
 for i in range(5):
     task = StoppingTask(D=10, nFES=10000, benchmark=Sphere())

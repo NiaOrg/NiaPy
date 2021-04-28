@@ -1,9 +1,9 @@
 # encoding=utf8
 # This is temporary fix to import module from parent folder
 # It will be removed when package is published on PyPI
-from NiaPy.algorithms.basic import CovarianceMatrixAdaptionEvolutionStrategy
-from NiaPy.benchmarks import Sphere
-from NiaPy.task import StoppingTask
+from niapy.algorithms.basic import CovarianceMatrixAdaptionEvolutionStrategy
+from niapy.benchmarks import Sphere
+from niapy.task import StoppingTask
 
 import sys
 sys.path.append('../')

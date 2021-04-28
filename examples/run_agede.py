@@ -6,10 +6,10 @@ sys.path.append('../')
 # End of fix
 
 import random
-from NiaPy.algorithms.basic import AgingNpDifferentialEvolution
-from NiaPy.algorithms.basic.de import bilinear
-from NiaPy.task import StoppingTask
-from NiaPy.benchmarks import Sphere
+from niapy.algorithms.basic import AgingNpDifferentialEvolution
+from niapy.algorithms.basic.de import bilinear
+from niapy.task import StoppingTask
+from niapy.benchmarks import Sphere
 
 # we will run Differential Evolution for 5 independent runs
 for i in range(5):

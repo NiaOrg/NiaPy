@@ -10,7 +10,7 @@ import logging
 import setuptools
 
 
-PACKAGE_NAME = 'NiaPy'
+PACKAGE_NAME = 'niapy'
 MINIMUM_PYTHON_VERSION = '3.6'
 
 

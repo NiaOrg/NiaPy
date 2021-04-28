@@ -6,9 +6,9 @@ sys.path.append('../')
 # End of fix
 
 import random
-from NiaPy.algorithms.basic import ParticleSwarmAlgorithm
-from NiaPy.task import StoppingTask
-from NiaPy.benchmarks import Griewank
+from niapy.algorithms.basic import ParticleSwarmAlgorithm
+from niapy.task import StoppingTask
+from niapy.benchmarks import Griewank
 
 # we will run ParticleSwarmAlgorithm for 5 independent runs
 algo = ParticleSwarmAlgorithm(NP=100, vMin=-4.0, vMax=4.0)

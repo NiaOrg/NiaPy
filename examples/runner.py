@@ -5,12 +5,12 @@ import sys
 sys.path.append('../')
 # End of fix
 
-from NiaPy import Runner
-from NiaPy.algorithms.basic import (
+from niapy import Runner
+from niapy.algorithms.basic import (
     GreyWolfOptimizer,
     ParticleSwarmAlgorithm
 )
-from NiaPy.benchmarks import (
+from niapy.benchmarks import (
     Benchmark,
     Ackley,
     Griewank,
@@ -19,7 +19,7 @@ from NiaPy.benchmarks import (
 )
 
 
-"""Example demonstrating the use of NiaPy Runner."""
+"""Example demonstrating the use of niapy Runner."""
 
 class MyBenchmark(Benchmark):
 	def __init__(self):

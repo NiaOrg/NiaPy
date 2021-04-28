@@ -4,9 +4,9 @@
 import sys
 sys.path.append('../')
 
-from NiaPy.task import StoppingTask, OptimizationType
-from NiaPy.benchmarks import Benchmark
-from NiaPy.algorithms.basic import ParticleSwarmAlgorithm
+from niapy.task import StoppingTask, OptimizationType
+from niapy.benchmarks import Benchmark
+from niapy.algorithms.basic import ParticleSwarmAlgorithm
 
 class MyBenchmark(Benchmark):
 	def __init__(self):

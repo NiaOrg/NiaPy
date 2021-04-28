@@ -5,10 +5,10 @@ import sys
 sys.path.append('../')
 # End of fix
 
-from NiaPy.task import StoppingTask
-from NiaPy.benchmarks import Sphere
-from NiaPy.algorithms.other import SimulatedAnnealing
-from NiaPy.algorithms.other.sa import coolLinear
+from niapy.task import StoppingTask
+from niapy.benchmarks import Sphere
+from niapy.algorithms.other import SimulatedAnnealing
+from niapy.algorithms.other.sa import coolLinear
 
 # we will run Simulated Annealing for 5 independent runs
 for i in range(5):

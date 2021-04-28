@@ -27,7 +27,7 @@ requirements:
 
 test:
   imports:
-    - NiaPy
+    - niapy
 
 about:
   home: {{ data['url'] }}

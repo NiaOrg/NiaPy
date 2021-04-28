@@ -5,9 +5,9 @@ import sys
 sys.path.append('../')
 # End of fix
 
-from NiaPy.algorithms.basic import BareBonesFireworksAlgorithm
-from NiaPy.task.task import StoppingTask
-from NiaPy.benchmarks import Sphere
+from niapy.algorithms.basic import BareBonesFireworksAlgorithm
+from niapy.task.task import StoppingTask
+from niapy.benchmarks import Sphere
 
 # we will run Fireworks Algorithm for 5 independent runs
 for i in range(5):

@@ -5,9 +5,9 @@ import sys
 sys.path.append('../')
 # End of fix
 
-from NiaPy.algorithms.modified import SelfAdaptiveDifferentialEvolution
-from NiaPy.task import StoppingTask
-from NiaPy.benchmarks import Griewank
+from niapy.algorithms.modified import SelfAdaptiveDifferentialEvolution
+from niapy.task import StoppingTask
+from niapy.benchmarks import Griewank
 
 # we will run jDE algorithm for 5 independent runs
 algo = SelfAdaptiveDifferentialEvolution(NP=40, F=0.5, F_l=0.0, F_u=2.0, Tao1=0.9, CR=0.5, Tao2=0.45)
