@@ -21,7 +21,7 @@ class DETestCase(TestCase):
     def test_DE_evals(self):
         task = StoppingTask(max_evals=1000, dimension=10, optimization_type=OptimizationType.MINIMIZATION,
                             benchmark=Sphere())
-        algo = DifferentialEvolution(NP=40, CR=0.9, F=0.5)
+        algo = DifferentialEvolution(population_size=40, CR=0.9, F=0.5)
         algo.run_task(task)
         evals = task.evals
         self.assertEqual(1000, evals)
@@ -29,7 +29,7 @@ class DETestCase(TestCase):
     def test_DE_iters(self):
         task = StoppingTask(max_iters=1000, dimension=10, optimization_type=OptimizationType.MINIMIZATION,
                             benchmark=Sphere())
-        algo = DifferentialEvolution(NP=40, CR=0.9, F=0.5)
+        algo = DifferentialEvolution(population_size=40, CR=0.9, F=0.5)
         algo.run_task(task)
         iters = task.iters
         self.assertEqual(1000, iters)
@@ -48,7 +48,7 @@ class BATestCase(TestCase):
     def test_BA_evals(self):
         task = StoppingTask(max_evals=1000, dimension=10, optimization_type=OptimizationType.MINIMIZATION,
                             benchmark=Sphere())
-        algo = BatAlgorithm(NP=25)
+        algo = BatAlgorithm(population_size=25)
         algo.run_task(task)
         evals = task.evals
         self.assertEqual(1000, evals)
@@ -56,7 +56,7 @@ class BATestCase(TestCase):
     def test_BA_iters(self):
         task = StoppingTask(max_iters=1000, dimension=10, optimization_type=OptimizationType.MINIMIZATION,
                             benchmark=Sphere())
-        algo = BatAlgorithm(NP=25)
+        algo = BatAlgorithm(population_size=25)
         algo.run_task(task)
         iters = task.iters
         self.assertEqual(1000, iters)
@@ -76,7 +76,7 @@ class FATestCase(TestCase):
     def test_FA_evals(self):
         task = StoppingTask(max_evals=1000, dimension=10, optimization_type=OptimizationType.MINIMIZATION,
                             benchmark=Sphere())
-        algo = FireflyAlgorithm(NP=25)
+        algo = FireflyAlgorithm(population_size=25)
         algo.run_task(task)
         evals = task.evals
         self.assertEqual(1000, evals)
@@ -84,7 +84,7 @@ class FATestCase(TestCase):
     def test_FA_iters(self):
         task = StoppingTask(max_iters=1000, dimension=10, optimization_type=OptimizationType.MINIMIZATION,
                             benchmark=Sphere())
-        algo = FireflyAlgorithm(NP=25)
+        algo = FireflyAlgorithm(population_size=25)
         algo.run_task(task)
         iters = task.iters
         self.assertEqual(1000, iters)

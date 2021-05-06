@@ -14,7 +14,7 @@ from niapy.benchmarks import Sphere
 algo = ParameterFreeBatAlgorithm()
 
 for i in range(10):
-    task = StoppingTask(max_evals=10000, dimension=10, benchmark=Sphere(Upper=5.12, Lower=-5.12))
+    task = StoppingTask(max_evals=10000, dimension=10, benchmark=Sphere(upper=5.12, lower=-5.12))
     best = algo.run(task)
     print('%s -> %s' % (best[0], best[1]))
 print(algo.get_parameters())

@@ -8,16 +8,6 @@ class ABCTestCase(AlgorithmTestCase):
         AlgorithmTestCase.setUp(self)
         self.algo = ArtificialBeeColonyAlgorithm
 
-    def test_type_parameters(self):
-        d = self.algo.type_parameters()
-        self.assertEqual(len(d), 2)
-        self.assertTrue(d['population_size'](10))
-        self.assertFalse(d['population_size'](0))
-        self.assertFalse(d['population_size'](-10))
-        self.assertTrue(d['limit'](10))
-        self.assertFalse(d['limit'](0))
-        self.assertFalse(d['limit'](-10))
-
     def test_custom(self):
         abc_custom = self.algo(population_size=10, limit=2, seed=self.seed)
         abc_customc = self.algo(population_size=10, limit=2, seed=self.seed)

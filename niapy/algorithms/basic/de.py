@@ -275,26 +275,6 @@ class DifferentialEvolution(Algorithm):
         """
         return r"""Storn, Rainer, and Kenneth Price. "Differential evolution - a simple and efficient heuristic for global optimization over continuous spaces." Journal of global optimization 11.4 (1997): 341-359."""
 
-    @staticmethod
-    def type_parameters():
-        r"""Get dictionary with functions for checking values of parameters.
-
-        Returns:
-            Dict[str, Callable]:
-                * differential_weight (Callable[[Union[float, int]], bool]): Check for correct value of parameter.
-                * crossover_probability (Callable[[float], bool]): Check for correct value of parameter.
-
-        See Also:
-            * :func:`niapy.algorithms.Algorithm.type_parameters`
-
-        """
-        d = Algorithm.type_parameters()
-        d.update({
-            'differential_weight': lambda x: isinstance(x, (float, int)) and 0 < x <= 2,
-            'crossover_probability': lambda x: isinstance(x, float) and 0 <= x <= 1
-        })
-        return d
-
     def __init__(self, population_size=50, differential_weight=1, crossover_probability=0.8, strategy=cross_rand1,
                  *args, **kwargs):
         """Initialize DifferentialEvolution.
@@ -571,24 +551,6 @@ class DynNpDifferentialEvolution(DifferentialEvolution):
         """
         return r"""No info"""
 
-    @staticmethod
-    def type_parameters():
-        r"""Get dictionary with functions for checking values of parameters.
-
-        Returns:
-            Dict[str, Callable]:
-                * rp (Callable[[Union[float, int]], bool])
-                * p_max (Callable[[int], bool])
-
-        See Also:
-            * :func:`niapy.algorithms.basic.DifferentialEvolution.type_parameters`
-
-        """
-        r = DifferentialEvolution.type_parameters()
-        r['rp'] = lambda x: isinstance(x, (float, int)) and x > 0
-        r['p_max'] = lambda x: isinstance(x, int) and x > 0
-        return r
-
     def __init__(self, population_size=10, p_max=50, rp=3, *args, **kwargs):
         """Initialize DynNpDifferentialEvolution.
 
@@ -769,30 +731,6 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
 
         """
         return r"""No info"""
-
-    @staticmethod
-    def type_parameters():
-        r"""Get dictionary with functions for checking values of parameters.
-
-        Returns:
-            Dict[str, Callable]:
-                * min_lifetime (Callable[[int], bool])
-                * max_lifetime (Callable[[int], bool])
-                * delta_np (Callable[[float], bool])
-                * omega (Callable[[float], bool])
-
-        See Also:
-            * :func:`niapy.algorithms.basic.DifferentialEvolution.type_parameters`
-
-        """
-        r = DifferentialEvolution.type_parameters()
-        r.update({
-            'min_lifetime': lambda x: isinstance(x, int) and x >= 0,
-            'max_lifetime': lambda x: isinstance(x, int) and x >= 0,
-            'delta_np': lambda x: isinstance(x, float) and 0 <= x <= 1,
-            'omega': lambda x: isinstance(x, float) and 1 >= x >= 0
-        })
-        return r
 
     def __init__(self, min_lifetime=0, max_lifetime=12, delta_np=0.3, omega=0.3, age=proportional, *args, **kwargs):
         """Initialize AgingNpDifferentialEvolution.
@@ -1029,22 +967,6 @@ class MultiStrategyDifferentialEvolution(DifferentialEvolution):
         """
         return r"""No info"""
 
-    @staticmethod
-    def type_parameters():
-        r"""Get dictionary with functions for checking values of parameters.
-
-        Returns:
-            Dict[str, Callable]: Testing functions for parameters.
-
-        See Also:
-            * :func:`niapy.algorithms.basic.DifferentialEvolution.type_parameters`
-
-        """
-        r = DifferentialEvolution.type_parameters()
-        r.pop('strategy', None)
-        r.update({'strategies': lambda x: callable(x)})
-        return r
-
     def __init__(self, population_size=40, strategies=(cross_rand1, cross_best1, cross_curr2best1, cross_rand2), *args, **kwargs):
         """Initialize MultiStrategyDifferentialEvolution.
 
@@ -1144,24 +1066,6 @@ class DynNpMultiStrategyDifferentialEvolution(MultiStrategyDifferentialEvolution
         """
         return r"""No info"""
 
-    @staticmethod
-    def type_parameters():
-        r"""Get dictionary with functions for checking values of parameters.
-
-        Returns:
-            Dict[str, Callable]:
-                * rp (Callable[[Union[float, int]], bool]): Number of population reductions.
-                * p_max (Callable[[int], bool]): Small non-negative number which is added to value of generations.
-
-        See Also:
-            * :func:`niapy.algorithms.basic.MultiStrategyDifferentialEvolution.type_parameters`
-
-        """
-        r = MultiStrategyDifferentialEvolution.type_parameters()
-        r['rp'] = lambda x: isinstance(x, (float, int)) and x > 0
-        r['p_max'] = lambda x: isinstance(x, int) and x > 0
-        return r
-
     def set_parameters(self, **kwargs):
         r"""Set the arguments of the algorithm.
 
@@ -1249,22 +1153,6 @@ class DynNpMultiStrategyDifferentialEvolution(MultiStrategyDifferentialEvolution
 #
 #         """
 #         return r"""No info"""
-#
-#     @staticmethod
-#     def type_parameters():
-#         r"""Get dictionary with functions for checking values of parameters.
-#
-#         Returns:
-#             Dict[str, Callable]: Mappings form parameter names to test functions.
-#
-#         See Also:
-#             * :func:`niapy.algorithms.basic.MultiStrategyDifferentialEvolution.type_parameters`
-#             * :func:`niapy.algorithms.basic.AgingNpDifferentialEvolution.type_parameters`
-#
-#         """
-#         d = AgingNpDifferentialEvolution.type_parameters()
-#         d.update(MultiStrategyDifferentialEvolution.type_parameters())
-#         return d
 #
 #     def set_parameters(self, **kwargs):
 #         r"""Set core parameter arguments.

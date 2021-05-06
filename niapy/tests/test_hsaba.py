@@ -26,24 +26,6 @@ class HSABATestCase(AlgorithmTestCase):
         i = self.algo.info()
         self.assertIsNotNone(i)
 
-    def test_type_parameters(self):
-        """Test case for type parameters."""
-        d = self.algo.type_parameters()
-        # Test differential_weight parameter check
-        self.assertIsNotNone(d.get('differential_weight', None))
-        self.assertFalse(d['differential_weight'](-30))
-        self.assertFalse(d['differential_weight'](-.3))
-        self.assertTrue(d['differential_weight'](.3))
-        self.assertTrue(d['differential_weight'](.39))
-        # Test CR parameter check
-        self.assertIsNotNone(d.get('crossover_probability', None))
-        self.assertFalse(d['crossover_probability'](10))
-        self.assertFalse(d['crossover_probability'](-10))
-        self.assertFalse(d['crossover_probability'](-1))
-        self.assertTrue(d['crossover_probability'](.3))
-        self.assertTrue(d['crossover_probability'](.0))
-        self.assertTrue(d['crossover_probability'](1.))
-
     def test_custom(self):
         """Test case for running algorithm on costume benchmarks."""
         hsaba_custom = self.algo(population_size=10, Limit=2, seed=self.seed)

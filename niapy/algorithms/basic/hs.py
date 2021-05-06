@@ -56,25 +56,6 @@ class HarmonySearch(Algorithm):
         """
         return r"""Geem, Z. W., Kim, J. H., & Loganathan, G. V. (2001). A new heuristic optimization algorithm: harmony search. Simulation, 76(2), 60-68."""
 
-    @staticmethod
-    def type_parameters():
-        r"""Get dictionary with functions for checking values of parameters.
-
-        Returns:
-            Dict[str, Callable]:
-                * population_size (Callable[[int], bool])
-                * r_accept (Callable[[float], bool])
-                * r_pa (Callable[[float], bool])
-                * b_range (Callable[[float], bool])
-
-        """
-        return {
-            "population_size": lambda x: isinstance(x, int) and x > 0,
-            "r_accept": lambda x: isinstance(x, float) and 0 < x < 1,
-            "r_pa": lambda x: isinstance(x, float) and 0 < x < 1,
-            "b_range": lambda x: isinstance(x, (int, float)) and x > 0
-        }
-
     def __init__(self, population_size=30, r_accept=0.7, r_pa=0.35, b_range=1.42, *args, **kwargs):
         """Initialize HarmonySearch.
 
@@ -231,25 +212,6 @@ class HarmonySearchV1(HarmonySearch):
             str: Basic information.
         """
         return r"""Yang, Xin-She. "Harmony search as a metaheuristic algorithm." Music-inspired harmony search algorithm. Springer, Berlin, Heidelberg, 2009. 1-14."""
-
-    @staticmethod
-    def type_parameters():
-        r"""Get dictionary with functions for checking values of parameters.
-
-        Returns:
-            Dict[str, Callable]: Function for testing correctness of parameters.
-
-        See Also:
-            * :func:`niapy.algorithms.basic.HarmonySearch.type_parameters`
-
-        """
-        d = HarmonySearch.type_parameters()
-        del d["b_range"]
-        d.update({
-            "bw_min": lambda x: isinstance(x, (float, int)) and x >= 1,
-            "bw_max": lambda x: isinstance(x, (float, int)) and x >= 1
-        })
-        return d
 
     def __init__(self, bw_min=1, bw_max=2, *args, **kwargs):
         """Initialize HarmonySearchV1.

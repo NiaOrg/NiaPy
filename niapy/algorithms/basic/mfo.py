@@ -53,19 +53,6 @@ class MothFlameOptimizer(Algorithm):
         """
         return r"""Mirjalili, Seyedali. "Moth-flame optimization algorithm: A novel nature-inspired heuristic paradigm." Knowledge-Based Systems 89 (2015): 228-249."""
 
-    @staticmethod
-    def type_parameters():
-        r"""Get dictionary with functions for checking values of parameters.
-
-        Returns:
-            Dict[str, Callable]: Parameter type checks.
-
-        See Also:
-            * :func:`niapy.algorithms.algorithm.Algorithm.type_parameters`
-
-        """
-        return Algorithm.type_parameters()
-
     def run_iteration(self, task, population, population_fitness, best_x, best_fitness, **params):
         r"""Core function of MothFlameOptimizer algorithm.
 

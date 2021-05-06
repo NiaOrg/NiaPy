@@ -15,7 +15,7 @@ from niapy.benchmarks import Sphere
 for i in range(5):
     task = StoppingTask(max_evals=10000, dimension=10, optimization_type=OptimizationType.MINIMIZATION,
                         benchmark=Sphere())
-    algo = MultiStrategyDifferentialEvolutionMTS(population_size=50, F=0.5, CR=0.9,
+    algo = MultiStrategyDifferentialEvolutionMTS(population_size=50, differential_weight=0.5, crossover_probability=0.9,
                                                  strategies=(cross_best1, cross_curr2best1))
     best = algo.run(task)
     print('%s -> %s' % (best[0], best[1]))

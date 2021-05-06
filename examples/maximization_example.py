@@ -13,6 +13,6 @@ from niapy.benchmarks import Sphere
 # we will run ParticleSwarmAlgorithm for 5 independent runs
 for i in range(5):
     task = StoppingTask(max_evals=1000, dimension=10, benchmark=Sphere())
-    algo = ParticleSwarmAlgorithm(population_size=40, C1=2.0, C2=2.0, w=0.7, vMin=-4, vMax=4)
+    algo = ParticleSwarmAlgorithm(population_size=40, c1=2.0, c2=2.0, w=0.7, min_velocity=-4, max_velocity=4)
     best = algo.run(task=task)
     print(best)

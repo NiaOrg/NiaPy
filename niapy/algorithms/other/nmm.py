@@ -57,30 +57,6 @@ class NelderMeadMethod(Algorithm):
         """
         return r"""No info"""
 
-    @staticmethod
-    def type_parameters():
-        r"""Get dictionary with function for testing correctness of parameters.
-
-        Returns:
-            Dict[str, Callable]:
-                * alpha (Callable[[Union[int, float]], bool])
-                * gamma (Callable[[Union[int, float]], bool])
-                * rho (Callable[[Union[int, float]], bool])
-                * sigma (Callable[[Union[int, float]], bool])
-
-        See Also
-            * :func:`niapy.algorithms.Algorithm.type_parameters`
-
-        """
-        d = Algorithm.type_parameters()
-        d.update({
-            'alpha': lambda x: isinstance(x, (int, float)) and x >= 0,
-            'gamma': lambda x: isinstance(x, (int, float)) and x >= 0,
-            'rho': lambda x: isinstance(x, (int, float)),
-            'sigma': lambda x: isinstance(x, (int, float))
-        })
-        return d
-
     def __init__(self, population_size=None, alpha=0.1, gamma=0.3, rho=-0.2, sigma=-0.2, *args, **kwargs):
         """Initialize NelderMeadMethod.
 

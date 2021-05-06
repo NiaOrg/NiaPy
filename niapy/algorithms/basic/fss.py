@@ -89,11 +89,6 @@ class FishSchoolSearch(Algorithm):
         “A novel search algorithm based on fish school behavior,”
         in 2008 IEEE International Conference on Systems, Man and Cybernetics, Oct 2008, pp. 2646–2651."""
 
-    @staticmethod
-    def type_parameters():
-        """Parameter type checks."""
-        return {'population_size': lambda x: False, 'step_individual_final': lambda x: False}
-
     def __init__(self, population_size=30, step_individual_init=0.1, step_individual_final=0.0001,
                  step_volitive_init=0.01, step_volitive_final=0.001, min_w=1.0, w_scale=500.0, *args, **kwargs):
         """Initialize FishSchoolSearch.

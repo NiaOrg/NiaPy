@@ -82,17 +82,6 @@ class Algorithm:
 
     Name = ['Algorithm', 'AAA']
 
-    @staticmethod
-    def type_parameters():
-        r"""Return functions for checking values of parameters.
-
-        Returns:
-            Dict[str, Callable]:
-                * population_size (Callable[[int], bool]): Check if number of individuals is :math:`\in [0, \infty]`.
-
-        """
-        return {'population_size': lambda x: isinstance(x, int) and x > 0}
-
     def __init__(self, population_size=50, *args, initialization_function=default_numpy_init, individual_type=None,
                  seed=None, **kwargs):
         r"""Initialize algorithm and create name for an algorithm.
@@ -135,8 +124,8 @@ class Algorithm:
             individual_type (Optional[Any]): Individual type used in population, default is Numpy array.
 
         See Also:
-            * :func:`niapy.algorithms.defaultNumPyInit`
-            * :func:`niapy.algorithms.defaultIndividualInit`
+            * :func:`niapy.algorithms.default_numpy_init`
+            * :func:`niapy.algorithms.default_individual_init`
 
         """
         self.population_size = population_size
@@ -441,7 +430,7 @@ class Individual:
             rng (Optional[numpy.random.Generator]): Random generator.
 
         See Also:
-            * :func:`niapy.util.Task.repair`
+            * :func:`niapy.task.Task.repair`
 
         """
         self.x = task.repair(self.x, rng=rng)

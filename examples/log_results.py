@@ -13,7 +13,7 @@ from niapy.algorithms.basic import DifferentialEvolution
 # Storing improvements during the evolutionary cycle
 for i in range(1):
     task = StoppingTask(max_evals=10000, dimension=10, benchmark=Sphere())
-    algo = DifferentialEvolution(population_size=40, CR=0.9, F=0.5)
+    algo = DifferentialEvolution(population_size=40, crossover_probability=0.9, differential_weight=0.5)
     best = algo.run(task)
     evals, x_f = task.return_conv()
     print(evals)  # print function evaluations

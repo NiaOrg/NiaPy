@@ -14,6 +14,6 @@ from niapy.algorithms.other.sa import cool_linear
 # we will run Simulated Annealing for 5 independent runs
 for i in range(5):
     task = StoppingTask(max_iters=1000, dimension=10, benchmark=Sphere())
-    algo = SimulatedAnnealing(coolingMethod=cool_linear)
+    algo = SimulatedAnnealing(cooling_nethod=cool_linear)
     best = algo.run(task=task)
     print(best)

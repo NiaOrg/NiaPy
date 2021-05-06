@@ -62,31 +62,6 @@ class GlowwormSwarmOptimization(Algorithm):
         """
         return r"""Kaipa, Krishnanand N., and Debasish Ghose. Glowworm swarm optimization: theory, algorithms, and applications. Vol. 698. Springer, 2017."""
 
-    @staticmethod
-    def type_parameters():
-        r"""Get dictionary with functions for checking values of parameters.
-
-        Returns:
-            Dict[str, Callable]:
-                * n (Callable[[int], bool])
-                * l0 (Callable[[Union[float, int]], bool])
-                * nt (Callable[[Union[float, int]], bool])
-                * rho (Callable[[Union[float, int]], bool])
-                * gamma (Callable[[float], bool])
-                * beta (Callable[[float], bool])
-                * s (Callable[[float], bool])
-
-        """
-        return {
-            'n': lambda x: isinstance(x, int) and x > 0,
-            'l0': lambda x: isinstance(x, (float, int)) and x > 0,
-            'nt': lambda x: isinstance(x, (float, int)) and x > 0,
-            'rho': lambda x: isinstance(x, float) and 0 < x < 1,
-            'gamma': lambda x: isinstance(x, float) and 0 < x < 1,
-            'beta': lambda x: isinstance(x, float) and x > 0,
-            's': lambda x: isinstance(x, float) and x > 0
-        }
-
     def __init__(self, population_size=25, l0=5, nt=5, rho=0.4, gamma=0.6, beta=0.08, s=0.03, distance=euclidean, *args,
                  **kwargs):
         """Initialize GlowwormSwarmOptimization.

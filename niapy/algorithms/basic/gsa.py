@@ -54,26 +54,6 @@ class GravitationalSearchAlgorithm(Algorithm):
         """
         return r"""Esmat Rashedi, Hossein Nezamabadi-pour, Saeid Saryazdi, GSA: A Gravitational Search Algorithm, Information Sciences, Volume 179, Issue 13, 2009, Pages 2232-2248, ISSN 0020-0255"""
 
-    @staticmethod
-    def type_parameters():
-        r"""Get parameter type checks.
-
-        Returns:
-            Dict[str, Callable]:
-                * g0 (Callable[[Union[int, float]], bool]): Initial gravitational constant.
-                * epsilon (Callable[[float], bool]): Small number.
-
-        See Also:
-            * :func:`niapy.algorithms.algorithm.Algorithm.type_parameters`
-
-        """
-        d = Algorithm.type_parameters()
-        d.update({
-            'g0': lambda x: isinstance(x, (int, float)) and x >= 0,
-            'epsilon': lambda x: isinstance(x, float) and 0 < x < 1
-        })
-        return d
-
     def __init__(self, population_size=40, g0=2.467, epsilon=1e-17, *args, **kwargs):
         """Initialize GravitationalSearchAlgorithm.
 

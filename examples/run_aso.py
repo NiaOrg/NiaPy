@@ -14,6 +14,6 @@ from niapy.benchmarks import Sphere
 # we will run Anarchic Society Optimization for 5 independent runs
 for i in range(5):
     task = StoppingTask(max_evals=6500, dimension=10, benchmark=Sphere())
-    algo = AnarchicSocietyOptimization(population_size=40, Combination=elitism)
+    algo = AnarchicSocietyOptimization(population_size=40, combination=elitism)
     best = algo.run(task)
     print('%s -> %s' % (best[0], best[1]))

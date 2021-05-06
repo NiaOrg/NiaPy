@@ -57,28 +57,6 @@ class FireflyAlgorithm(Algorithm):
         """
         return r"""Fister, I., Fister Jr, I., Yang, X. S., & Brest, J. (2013). A comprehensive review of firefly algorithms. Swarm and Evolutionary Computation, 13, 34-46."""
 
-    @staticmethod
-    def type_parameters():
-        r"""Parameter type checks.
-
-        Returns:
-            Dict[str, Callable]:
-                * alpha (Callable[[Union[float, int]], bool]): Step size.
-                * beta_min (Callable[[Union[float, int]], bool]): Minimum value for beta.
-                * gamma (Callable[[Union[float, int]], bool]): Absorption coefficient.
-
-        See Also:
-            * :func:`niapy.algorithms.Algorithm.type_parameters`
-
-        """
-        d = Algorithm.type_parameters()
-        d.update({
-            'alpha': lambda x: isinstance(x, (float, int)) and x > 0,
-            'beta_min': lambda x: isinstance(x, (float, int)) and x > 0,
-            'gamma': lambda x: isinstance(x, (float, int)) and x > 0,
-        })
-        return d
-
     def __init__(self, population_size=20, alpha=1, beta_min=1, gamma=2, *args, **kwargs):
         """Initialize FireflyAlgorithm.
 

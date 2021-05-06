@@ -12,14 +12,14 @@
 #
 #     @skip('Not implemented yet!')
 #     def test_custom(self):
-#         sade_custom = self.algo(n=10, C_a=2, C_r=0.5, seed=self.seed)
-#         sade_customc = self.algo(n=10, C_a=2, C_r=0.5, seed=self.seed)
+#         sade_custom = self.algo(population_size=10, C_a=2, C_r=0.5, seed=self.seed)
+#         sade_customc = self.algo(population_size=10, C_a=2, C_r=0.5, seed=self.seed)
 #         AlgorithmTestCase.test_algorithm_run(self, sade_custom, sade_customc, MyBenchmark())
 #
 #     @skip('Not implemented yet!')
 #     def test_griewank(self):
-#         sade_griewank = self.algo(n=10, C_a=5, C_r=0.5, seed=self.seed)
-#         sade_griewankc = self.algo(n=10, C_a=5, C_r=0.5, seed=self.seed)
+#         sade_griewank = self.algo(population_size=10, C_a=5, C_r=0.5, seed=self.seed)
+#         sade_griewankc = self.algo(population_size=10, C_a=5, C_r=0.5, seed=self.seed)
 #         AlgorithmTestCase.test_algorithm_run(self, sade_griewank, sade_griewankc)
 #
 #
@@ -30,12 +30,12 @@
 #
 #     @skip('Not implemented yet!')
 #     def test_custom(self):
-#         sadev1_custom = self.algo(n=10, C_a=2, C_r=0.5, seed=self.seed)
-#         sadev1_customc = self.algo(n=10, C_a=2, C_r=0.5, seed=self.seed)
+#         sadev1_custom = self.algo(population_size=10, C_a=2, C_r=0.5, seed=self.seed)
+#         sadev1_customc = self.algo(population_size=10, C_a=2, C_r=0.5, seed=self.seed)
 #         AlgorithmTestCase.test_algorithm_run(self, sadev1_custom, sadev1_customc, MyBenchmark())
 #
 #     @skip('Not implemented yet!')
 #     def test_griewank(self):
-#         sadev1_griewank = self.algo(n=10, C_a=5, C_r=0.5, seed=self.seed)
-#         sadev1_griewankc = self.algo(n=10, C_a=5, C_r=0.5, seed=self.seed)
+#         sadev1_griewank = self.algo(population_size=10, C_a=5, C_r=0.5, seed=self.seed)
+#         sadev1_griewankc = self.algo(population_size=10, C_a=5, C_r=0.5, seed=self.seed)
 #         AlgorithmTestCase.test_algorithm_run(self, sadev1_griewank, sadev1_griewankc)

@@ -59,23 +59,6 @@ class CuckooSearch(Algorithm):
         return r"""Yang, Xin-She, and Suash Deb. "Cuckoo search via Lévy flights."
         Nature & Biologically Inspired Computing, 2009. NaBIC 2009. World Congress on. IEEE, 2009."""
 
-    @staticmethod
-    def type_parameters():
-        r"""Type checks.
-
-        Returns:
-            Dict[str, Callable]:
-                * population_size (Callable[[int], bool]): Population size.
-                * pa (Callable[[float], bool]): Probability of a nest being abandoned.
-                * alpha (Callable[[Union[int, float]], bool]): Levy flight scale factor.
-
-        """
-        return {
-            'population_size': lambda x: isinstance(x, int) and x > 0,
-            'pa': lambda x: isinstance(x, float) and 0 <= x <= 1,
-            'alpha': lambda x: isinstance(x, (float, int)),
-        }
-
     def __init__(self, population_size=50, pa=0.2, alpha=0.5, *args, **kwargs):
         r"""Initialize CuckooSearch.
 

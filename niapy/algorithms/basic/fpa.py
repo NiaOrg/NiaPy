@@ -59,26 +59,6 @@ class FlowerPollinationAlgorithm(Algorithm):
         """
         return r"""Yang, Xin-She. "Flower pollination algorithm for global optimization. International conference on unconventional computing and natural computation. Springer, Berlin, Heidelberg, 2012."""
 
-    @staticmethod
-    def type_parameters():
-        r"""Parameter type checks.
-
-        Returns:
-            Dict[str, Callable]:
-                * p (function): Switch probability
-                * beta (function): Beta parameter of the Levy distribution (Should be between 0.3 and 1.99).
-
-        See Also:
-            * :func:`niapy.algorithms.Algorithm.type_parameters`
-
-        """
-        d = Algorithm.type_parameters()
-        d.update({
-            'p': lambda x: isinstance(x, float) and 0 <= x <= 1,
-            'beta': lambda x: isinstance(x, (float, int)) and x > 0,
-        })
-        return d
-
     def __init__(self, population_size=25, p=0.8, beta=1.5, *args, **kwargs):
         """Initialize FlowerPollinationAlgorithm.
 

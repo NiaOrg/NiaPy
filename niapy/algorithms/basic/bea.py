@@ -58,34 +58,6 @@ class BeesAlgorithm(Algorithm):
         """
         return r"""DT Pham, A Ghanbarzadeh, E Koc, S Otri, S Rahim, and M Zaidi. The bees algorithm-a novel tool for complex optimisation problems. In Proceedings of the 2nd Virtual International Conference on Intelligent Production Machines and Systems (IPROMS 2006), pages 454–459, 2006"""
 
-    @staticmethod
-    def type_parameters():
-        r"""Get dictionary with functions for checking values of parameters.
-
-        Returns:
-            Dict[str, Callable]:
-                * population_size (Callable[[int], bool]): Checks if number of bees parameter has a proper value.
-                * m (Callable[[int], bool]): Checks if number of selected sites parameter has a proper value.
-                * e (Callable[[int], bool]): Checks if number of elite selected sites parameter has a proper value.
-                * nep (Callable[[int], bool]): Checks if number of elite bees parameter has a proper value.
-                * nsp (Callable[[int], bool]): Checks if number of other bees parameter has a proper value.
-                * ngh (Callable[[float], bool]): Checks if size of patches parameter has a proper value.
-
-        See Also:
-            * :func:`niapy.algorithms.algorithm.Algorithm.type_parameters`
-
-        """
-        d = Algorithm.type_parameters()
-        d.update({
-            'population_size': lambda x: isinstance(x, int) and x > 0,
-            'm': lambda x: isinstance(x, int) and x > 0,
-            'e': lambda x: isinstance(x, int) and x > 0,
-            'nep': lambda x: isinstance(x, int) and x > 0,
-            'nsp': lambda x: isinstance(x, int) and x > 0,
-            'ngh': lambda x: isinstance(x, float) and x > 0
-        })
-        return d
-
     def __init__(self, population_size=40, m=5, e=4, ngh=1, nep=4, nsp=2, *args, **kwargs):
         """Initialize BeesAlgorithm.
 

@@ -20,25 +20,14 @@ class KHV1TestCase(AlgorithmTestCase):
         AlgorithmTestCase.setUp(self)
         self.algo = KrillHerdV1
 
-    def test_type_parametes(self):
-        d = self.algo.type_parameters()
-        self.assertIsNotNone(d.get('N_max', None))
-        self.assertIsNotNone(d.get('V_f', None))
-        self.assertIsNotNone(d.get('D_max', None))
-        self.assertIsNotNone(d.get('C_t', None))
-        self.assertIsNotNone(d.get('W_n', None))
-        self.assertIsNotNone(d.get('W_f', None))
-        self.assertIsNotNone(d.get('d_s', None))
-        self.assertIsNotNone(d.get('nn', None))
-
     def test_custom(self):
-        kh_custom = self.algo(n=10, C_a=2, C_r=0.5, seed=self.seed)
-        kh_customc = self.algo(n=10, C_a=2, C_r=0.5, seed=self.seed)
+        kh_custom = self.algo(population_size=10, C_a=2, C_r=0.5, seed=self.seed)
+        kh_customc = self.algo(population_size=10, C_a=2, C_r=0.5, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, kh_custom, kh_customc, MyBenchmark())
 
     def test_griewank(self):
-        kh_griewank = self.algo(n=10, C_a=5, C_r=0.5, seed=self.seed)
-        kh_griewankc = self.algo(n=10, C_a=5, C_r=0.5, seed=self.seed)
+        kh_griewank = self.algo(population_size=10, C_a=5, C_r=0.5, seed=self.seed)
+        kh_griewankc = self.algo(population_size=10, C_a=5, C_r=0.5, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, kh_griewank, kh_griewankc)
 
 
@@ -59,25 +48,14 @@ class KHV2TestCase(AlgorithmTestCase):
         AlgorithmTestCase.setUp(self)
         self.algo = KrillHerdV2
 
-    def test_type_parametes(self):
-        d = self.algo.type_parameters()
-        self.assertIsNotNone(d.get('N_max', None))
-        self.assertIsNotNone(d.get('V_f', None))
-        self.assertIsNotNone(d.get('D_max', None))
-        self.assertIsNotNone(d.get('C_t', None))
-        self.assertIsNotNone(d.get('W_n', None))
-        self.assertIsNotNone(d.get('W_f', None))
-        self.assertIsNotNone(d.get('d_s', None))
-        self.assertIsNotNone(d.get('nn', None))
-
     def test_custom(self):
-        kh_custom = self.algo(n=10, C_a=2, C_r=0.5, seed=self.seed)
-        kh_customc = self.algo(n=10, C_a=2, C_r=0.5, seed=self.seed)
+        kh_custom = self.algo(population_size=10, C_a=2, C_r=0.5, seed=self.seed)
+        kh_customc = self.algo(population_size=10, C_a=2, C_r=0.5, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, kh_custom, kh_customc, MyBenchmark())
 
     def test_griewank(self):
-        kh_griewank = self.algo(n=10, C_a=5, C_r=0.5, seed=self.seed)
-        kh_griewankc = self.algo(n=10, C_a=5, C_r=0.5, seed=self.seed)
+        kh_griewank = self.algo(population_size=10, C_a=5, C_r=0.5, seed=self.seed)
+        kh_griewankc = self.algo(population_size=10, C_a=5, C_r=0.5, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, kh_griewank, kh_griewankc)
 
 
@@ -98,25 +76,14 @@ class KHV3TestCase(AlgorithmTestCase):
         AlgorithmTestCase.setUp(self)
         self.algo = KrillHerdV3
 
-    def test_type_parametes(self):
-        d = self.algo.type_parameters()
-        self.assertIsNotNone(d.get('N_max', None))
-        self.assertIsNotNone(d.get('V_f', None))
-        self.assertIsNotNone(d.get('D_max', None))
-        self.assertIsNotNone(d.get('C_t', None))
-        self.assertIsNotNone(d.get('W_n', None))
-        self.assertIsNotNone(d.get('W_f', None))
-        self.assertIsNotNone(d.get('d_s', None))
-        self.assertIsNotNone(d.get('nn', None))
-
     def test_custom(self):
-        kh_custom = self.algo(n=10, C_a=2, C_r=0.5, seed=self.seed)
-        kh_customc = self.algo(n=10, C_a=2, C_r=0.5, seed=self.seed)
+        kh_custom = self.algo(population_size=10, C_a=2, C_r=0.5, seed=self.seed)
+        kh_customc = self.algo(population_size=10, C_a=2, C_r=0.5, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, kh_custom, kh_customc, MyBenchmark())
 
     def test_griewank(self):
-        kh_griewank = self.algo(n=10, C_a=5, C_r=0.5, seed=self.seed)
-        kh_griewankc = self.algo(n=10, C_a=5, C_r=0.5, seed=self.seed)
+        kh_griewank = self.algo(population_size=10, C_a=5, C_r=0.5, seed=self.seed)
+        kh_griewankc = self.algo(population_size=10, C_a=5, C_r=0.5, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, kh_griewank, kh_griewankc)
 
 
@@ -137,25 +104,14 @@ class KHV4TestCase(AlgorithmTestCase):
         AlgorithmTestCase.setUp(self)
         self.algo = KrillHerdV4
 
-    def test_type_parametes(self):
-        d = self.algo.type_parameters()
-        self.assertIsNotNone(d.get('N_max', None))
-        self.assertIsNotNone(d.get('V_f', None))
-        self.assertIsNotNone(d.get('D_max', None))
-        self.assertIsNotNone(d.get('C_t', None))
-        self.assertIsNotNone(d.get('W_n', None))
-        self.assertIsNotNone(d.get('W_f', None))
-        self.assertIsNotNone(d.get('d_s', None))
-        self.assertIsNotNone(d.get('nn', None))
-
     def test_custom(self):
-        kh_custom = self.algo(n=10, C_a=2, C_r=0.5, seed=self.seed)
-        kh_customc = self.algo(n=10, C_a=2, C_r=0.5, seed=self.seed)
+        kh_custom = self.algo(population_size=10, C_a=2, C_r=0.5, seed=self.seed)
+        kh_customc = self.algo(population_size=10, C_a=2, C_r=0.5, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, kh_custom, kh_customc, MyBenchmark())
 
     def test_griewank(self):
-        kh_griewank = self.algo(n=10, C_a=5, C_r=0.5, seed=self.seed)
-        kh_griewankc = self.algo(n=10, C_a=5, C_r=0.5, seed=self.seed)
+        kh_griewank = self.algo(population_size=10, C_a=5, C_r=0.5, seed=self.seed)
+        kh_griewankc = self.algo(population_size=10, C_a=5, C_r=0.5, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, kh_griewank, kh_griewankc)
 
 
@@ -176,25 +132,14 @@ class KHV11TestCase(AlgorithmTestCase):
         AlgorithmTestCase.setUp(self)
         self.algo = KrillHerdV11
 
-    def test_type_parametes(self):
-        d = self.algo.type_parameters()
-        self.assertIsNotNone(d.get('N_max', None))
-        self.assertIsNotNone(d.get('V_f', None))
-        self.assertIsNotNone(d.get('D_max', None))
-        self.assertIsNotNone(d.get('C_t', None))
-        self.assertIsNotNone(d.get('W_n', None))
-        self.assertIsNotNone(d.get('W_f', None))
-        self.assertIsNotNone(d.get('d_s', None))
-        self.assertIsNotNone(d.get('nn', None))
-
     def test_custom(self):
-        kh_custom = self.algo(n=10, C_a=2, C_r=0.5, seed=self.seed)
-        kh_customc = self.algo(n=10, C_a=2, C_r=0.5, seed=self.seed)
+        kh_custom = self.algo(population_size=10, C_a=2, C_r=0.5, seed=self.seed)
+        kh_customc = self.algo(population_size=10, C_a=2, C_r=0.5, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, kh_custom, kh_customc, MyBenchmark())
 
     def test_griewank(self):
-        kh_griewank = self.algo(n=10, C_a=5, C_r=0.5, seed=self.seed)
-        kh_griewankc = self.algo(n=10, C_a=5, C_r=0.5, seed=self.seed)
+        kh_griewank = self.algo(population_size=10, C_a=5, C_r=0.5, seed=self.seed)
+        kh_griewankc = self.algo(population_size=10, C_a=5, C_r=0.5, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, kh_griewank, kh_griewankc)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

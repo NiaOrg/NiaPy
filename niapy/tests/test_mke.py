@@ -35,13 +35,13 @@ class MKEv1TestCase(AlgorithmTestCase):
         self.algo = MonkeyKingEvolutionV1
 
     def test_custom(self):
-        mke_custom = self.algo(n=10, C_a=2, C_r=0.5, seed=self.seed)
-        mke_customc = self.algo(n=10, C_a=2, C_r=0.5, seed=self.seed)
+        mke_custom = self.algo(population_size=10, C_a=2, C_r=0.5, seed=self.seed)
+        mke_customc = self.algo(population_size=10, C_a=2, C_r=0.5, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, mke_custom, mke_customc, MyBenchmark())
 
     def test_griewank(self):
-        mke_griewank = self.algo(n=10, C_a=5, C_r=0.5, seed=self.seed)
-        mke_griewankc = self.algo(n=10, C_a=5, C_r=0.5, seed=self.seed)
+        mke_griewank = self.algo(population_size=10, C_a=5, C_r=0.5, seed=self.seed)
+        mke_griewankc = self.algo(population_size=10, C_a=5, C_r=0.5, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, mke_griewank, mke_griewankc)
 
 
@@ -51,13 +51,13 @@ class MKEv2TestCase(AlgorithmTestCase):
         self.algo = MonkeyKingEvolutionV2
 
     def test_custom(self):
-        mke_custom = self.algo(n=10, C_a=2, C_r=0.5, seed=self.seed)
-        mke_customc = self.algo(n=10, C_a=2, C_r=0.5, seed=self.seed)
+        mke_custom = self.algo(population_size=10, C_a=2, C_r=0.5, seed=self.seed)
+        mke_customc = self.algo(population_size=10, C_a=2, C_r=0.5, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, mke_custom, mke_customc, MyBenchmark())
 
     def test_griewank(self):
-        mke_griewank = self.algo(n=10, C_a=5, C_r=0.5, seed=self.seed)
-        mke_griewankc = self.algo(n=10, C_a=5, C_r=0.5, seed=self.seed)
+        mke_griewank = self.algo(population_size=10, C_a=5, C_r=0.5, seed=self.seed)
+        mke_griewankc = self.algo(population_size=10, C_a=5, C_r=0.5, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, mke_griewank, mke_griewankc)
 
 
@@ -67,13 +67,13 @@ class MKEv3TestCase(AlgorithmTestCase):
         self.algo = MonkeyKingEvolutionV3
 
     def test_custom(self):
-        mke_custom = self.algo(n=10, C_a=2, C_r=0.5, seed=self.seed)
-        mke_customc = self.algo(n=10, C_a=2, C_r=0.5, seed=self.seed)
+        mke_custom = self.algo(population_size=10, C_a=2, C_r=0.5, seed=self.seed)
+        mke_customc = self.algo(population_size=10, C_a=2, C_r=0.5, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, mke_custom, mke_customc, MyBenchmark())
 
     def test_griewank(self):
-        mke_griewank = self.algo(n=10, C_a=5, C_r=0.5, seed=self.seed)
-        mke_griewankc = self.algo(n=10, C_a=5, C_r=0.5, seed=self.seed)
+        mke_griewank = self.algo(population_size=10, C_a=5, C_r=0.5, seed=self.seed)
+        mke_griewankc = self.algo(population_size=10, C_a=5, C_r=0.5, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, mke_griewank, mke_griewankc)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

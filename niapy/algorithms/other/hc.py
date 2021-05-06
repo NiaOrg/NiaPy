@@ -74,17 +74,6 @@ class HillClimbAlgorithm(Algorithm):
         """
         return r"""TODO"""
 
-    @staticmethod
-    def type_parameters():
-        r"""Parameter type checks.
-
-        Returns:
-            Dict[str, Callable]:
-                * delta (Callable[[Union[int, float]], bool]): Change for searching in neighborhood.
-
-        """
-        return {'delta': lambda x: isinstance(x, (int, float)) and x > 0}
-
     def __init__(self, delta=0.5, neighborhood_function=neighborhood, *args, **kwargs):
         """Initialize HillClimbAlgorithm.
 

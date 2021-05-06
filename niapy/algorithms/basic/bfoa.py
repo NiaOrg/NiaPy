@@ -62,33 +62,6 @@ class BacterialForagingOptimizationAlgorithm(Algorithm):
         """
         return r"""K. M. Passino, "Biomimicry of bacterial foraging for distributed optimization and control," in IEEE Control Systems Magazine, vol. 22, no. 3, pp. 52-67, June 2002, doi: 10.1109/MCS.2002.1004010."""
 
-    @staticmethod
-    def type_parameters():
-        r"""Return functions for checking values of parameters.
-
-        Returns:
-            Dict[str, Callable]:
-
-        See Also:
-            * :func:`niapy.algorithms.Algorithm.type_parameters`
-
-        """
-        d = Algorithm.type_parameters()
-        d.update({
-            'n_chemotactic': lambda x: isinstance(x, int) and x > 0,
-            'n_swim': lambda x: isinstance(x, int) and x > 0,
-            'n_reproduction': lambda x: isinstance(x, int) and x > 0,
-            'n_elimination': lambda x: isinstance(x, int) and x > 0,
-            'prob_elimination': lambda x: isinstance(x, float) and 0 <= x <= 1,
-            'step_size': lambda x: isinstance(x, float) and x > 0,
-            'd_attract': lambda x: isinstance(x, float) and x > 0,
-            'w_attract': lambda x: isinstance(x, float) and x > 0,
-            'h_repel': lambda x: isinstance(x, float) and x > 0,
-            'w_repel': lambda x: isinstance(x, float) and x > 0
-        })
-
-        return d
-
     def __init__(self, population_size=50, n_chemotactic=100, n_swim=4, n_reproduction=4, n_elimination=2,
                  prob_elimination=0.25, step_size=0.1, d_attract=0.1, w_attract=0.2, h_repel=0.1, w_repel=10.0, *args,
                  **kwargs):

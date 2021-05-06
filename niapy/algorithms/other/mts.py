@@ -334,13 +334,13 @@ class MultipleTrajectorySearch(Algorithm):
 
     Attributes:
         Name (List[Str]): List of strings representing algorithm name.
-        LSs (Iterable[Callable[[numpy.ndarray, float, numpy.ndarray, float, bool, numpy.ndarray, Task, Dict[str, Any]], Tuple[numpy.ndarray, float, numpy.ndarray, float, bool, int, numpy.ndarray]]]): Local searches to use.
-        BONUS1 (int): Bonus for improving global best solution.
-        BONUS2 (int): Bonus for improving solution.
-        NoLsTests (int): Number of test runs on local search algorithms.
-        NoLs (int): Number of local search algorithm runs.
-        NoLsBest (int): Number of locals search algorithm runs on best solution.
-        NoEnabled (int): Number of best solution for testing.
+        local_searches (Iterable[Callable[[numpy.ndarray, float, numpy.ndarray, float, bool, numpy.ndarray, Task, Dict[str, Any]], Tuple[numpy.ndarray, float, numpy.ndarray, float, bool, int, numpy.ndarray]]]): Local searches to use.
+        bonus1 (int): Bonus for improving global best solution.
+        bonus2 (int): Bonus for improving solution.
+        num_tests (int): Number of test runs on local search algorithms.
+        num_searches (int): Number of local search algorithm runs.
+        num_searches_best (int): Number of locals search algorithm runs on best solution.
+        num_enabled (int): Number of best solution for testing.
 
     See Also:
         * :class:`niapy.algorithms.Algorithm`
@@ -361,31 +361,6 @@ class MultipleTrajectorySearch(Algorithm):
 
         """
         return r"""Lin-Yu Tseng and Chun Chen, "Multiple trajectory search for Large Scale Global Optimization," 2008 IEEE Congress on Evolutionary Computation (IEEE World Congress on Computational Intelligence), Hong Kong, 2008, pp. 3052-3059. doi: 10.1109/CEC.2008.4631210"""
-
-    @staticmethod
-    def type_parameters():
-        r"""Get dictionary with functions for checking values of parameters.
-
-        Returns:
-            Dict[str, Callable]:
-                * M (Callable[[int], bool])
-                * num_tests (Callable[[int], bool])
-                * num_searches (Callable[[int], bool])
-                * num_searches_best (Callable[[int], bool])
-                * num_enabled (Callable[[int], bool])
-                * bonus1 (Callable([[Union[int, float], bool])
-                * bonus2 (Callable([[Union[int, float], bool])
-
-        """
-        return {
-            'M': lambda x: isinstance(x, int) and x > 0,
-            'num_tests': lambda x: isinstance(x, int) and x >= 0,
-            'num_searches': lambda x: isinstance(x, int) and x >= 0,
-            'num_searches_best': lambda x: isinstance(x, int) and x >= 0,
-            'num_enabled': lambda x: isinstance(x, int) and x > 0,
-            'bonus1': lambda x: isinstance(x, (int, float)) and x > 0,
-            'bonus2': lambda x: isinstance(x, (int, float)) and x > 0,
-        }
 
     def __init__(self, population_size=40, num_tests=5, num_searches=5, num_searches_best=5, num_enabled=17, bonus1=10,
                  bonus2=1, local_searches=(mts_ls1, mts_ls2, mts_ls3), *args, **kwargs):

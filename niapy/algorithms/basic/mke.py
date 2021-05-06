@@ -103,28 +103,6 @@ class MonkeyKingEvolutionV1(Algorithm):
         """
         return r"""Zhenyu Meng, Jeng-Shyang Pan, Monkey King Evolution: A new memetic evolutionary algorithm and its application in vehicle fuel consumption optimization, Knowledge-Based Systems, Volume 97, 2016, Pages 144-157, ISSN 0950-7051, https://doi.org/10.1016/j.knosys.2016.01.009."""
 
-    @staticmethod
-    def type_parameters():
-        r"""Get dictionary with functions for checking values of parameters.
-
-        Returns:
-            Dict[str, Callable]:
-                * fluctuation_coeff (Callable[[int], bool])
-                * population_rate (Callable[[Union[int, float]], bool])
-                * c (Callable[[Union[int, float]], bool])
-                * fc (Callable[[Union[int, float]], bool])
-
-        """
-        d = Algorithm.type_parameters()
-        d.update({
-            'population_size': lambda x: isinstance(x, int) and x > 0,
-            'fluctuation_coeff': lambda x: isinstance(x, (float, int)) and x > 0,
-            'population_rate': lambda x: isinstance(x, (float, int)) and x > 0,
-            'c': lambda x: isinstance(x, int) and x > 0,
-            'fc': lambda x: isinstance(x, (float, int)) and x > 0
-        })
-        return d
-
     def __init__(self, population_size=40, fluctuation_coeff=0.7, population_rate=0.3, c=3, fc=0.5, *args, **kwargs):
         """Initialize MonkeyKingEvolutionV1.
 

@@ -67,68 +67,30 @@ class Runner:
 
     @classmethod
     def __create_export_dir(cls):
-        r"""Create export directory if not already created."""
         if not os.path.exists("export"):
             os.makedirs("export")
 
     @classmethod
     def __generate_export_name(cls, extension):
-        r"""Generate export file name.
-
-        Args:
-            extension (str): File format.
-
-        Returns:
-            str: Export file name.
-
-        """
         Runner.__create_export_dir()
         return "export/" + str(datetime.datetime.now()).replace(":", ".") + "." + extension
 
     def __export_to_dataframe_pickle(self):
-        r"""Export the results in the pandas dataframe pickle.
-
-        See Also:
-            * :func:`niapy.Runner.__createExportDir`
-            * :func:`niapy.Runner.__generateExportName`
-
-        """
         dataframe = pd.DataFrame.from_dict(self.results)
         dataframe.to_pickle(self.__generate_export_name("pkl"))
         logger.info("Export to Pandas DataFrame pickle (pkl) completed!")
 
     def __export_to_json(self):
-        r"""Export the results in the JSON file.
-
-        See Also:
-            * :func:`niapy.Runner.__createExportDir`
-            * :func:`niapy.Runner.__generateExportName`
-
-        """
         dataframe = pd.DataFrame.from_dict(self.results)
         dataframe.to_json(self.__generate_export_name("json"))
         logger.info("Export to JSON file completed!")
 
     def _export_to_xls(self):
-        r"""Export the results in the xls file.
-
-        See Also:
-            * :func:`niapy.Runner.__createExportDir`
-            * :func:`niapy.Runner.__generateExportName`
-
-        """
         dataframe = pd.DataFrame.from_dict(self.results)
         dataframe.to_excel(self.__generate_export_name("xls"))
         logger.info("Export to XLS completed!")
 
     def __export_to_xlsx(self):
-        r"""Export the results in the xlsx file.
-
-        See Also:
-            * :func:`niapy.Runner.__createExportDir`
-            * :func:`niapy.Runner.__generateExportName`
-
-        """
         dataframe = pd.DataFrame.from_dict(self.results)
         dataframe.to_excel(self.__generate_export_name("xslx"))
         logger.info("Export to XLSX file completed!")
@@ -145,11 +107,6 @@ class Runner:
 
         Raises:
             TypeError: Raises TypeError if export type is not supported
-
-        See Also:
-            * :func:`niapy.Runner.useAlgorithms`
-            * :func:`niapy.Runner.useBenchmarks`
-            * :func:`niapy.Runner.__algorithmFactory`
 
         """
         for alg in self.algorithms:

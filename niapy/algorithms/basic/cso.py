@@ -46,19 +46,6 @@ class CatSwarmOptimization(Algorithm):
         In Pacific Rim international conference on artificial intelligence (pp. 854-858).
         Springer, Berlin, Heidelberg."""
 
-    @staticmethod
-    def type_parameters():
-        return {
-            'population_size': lambda x: isinstance(x, int) and x > 0,
-            'mixture_ratio': lambda x: isinstance(x, (int, float)) and 0 <= x <= 1,
-            'c1': lambda x: isinstance(x, (int, float)) and x >= 0,
-            'smp': lambda x: isinstance(x, int) and x > 0,
-            'spc': lambda x: isinstance(x, bool),
-            'cdc': lambda x: isinstance(x, (int, float)) and 0 <= x <= 1,
-            'srd': lambda x: isinstance(x, (int, float)) and 0 <= x <= 1,
-            'max_velocity': lambda x: isinstance(x, (int, float)) and x > 0
-        }
-
     def __init__(self, population_size=30, mixture_ratio=0.1, c1=2.05, smp=3, spc=True, cdc=0.85, srd=0.2,
                  max_velocity=1.9, *args, **kwargs):
         """Initialize CatSwarmOptimization.

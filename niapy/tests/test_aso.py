@@ -9,22 +9,6 @@ class ASOTestCase(AlgorithmTestCase):
         AlgorithmTestCase.setUp(self)
         self.algo = AnarchicSocietyOptimization
 
-    def test_parameter_types(self):
-        d = self.algo.type_parameters()
-        self.assertTrue(d['population_size'](1))
-        self.assertFalse(d['population_size'](0))
-        self.assertFalse(d['population_size'](-1))
-        self.assertTrue(d['mutation_rate'](10))
-        self.assertFalse(d['mutation_rate'](0))
-        self.assertFalse(d['mutation_rate'](-10))
-        self.assertTrue(d['crossover_rate'](0.1))
-        self.assertFalse(d['crossover_rate'](-19))
-        self.assertFalse(d['crossover_rate'](19))
-        self.assertTrue(d['alpha'](10))
-        self.assertTrue(d['gamma'](10))
-        self.assertTrue(d['theta'](10))
-
-
 class ASOElitismTestCase(ASOTestCase):
     def test_custom(self):
         aso_custom = self.algo(population_size=40, combination=elitism, seed=self.seed)

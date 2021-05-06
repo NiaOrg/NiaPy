@@ -58,24 +58,6 @@ class HybridSelfAdaptiveBatAlgorithm(SelfAdaptiveBatAlgorithm):
         """
         return r"""Fister, Iztok, Simon Fong, and Janez Brest. "A novel hybrid self-adaptive bat algorithm." The Scientific World Journal 2014 (2014)."""
 
-    @staticmethod
-    def type_parameters():
-        r"""Get dictionary with functions for checking values of parameters.
-
-        Returns:
-            Dict[str, Callable]: Additional arguments.
-
-        See Also:
-            * :func:`niapy.algorithms.basic.BatAlgorithm.type_parameters`
-
-        """
-        d = SelfAdaptiveBatAlgorithm.type_parameters()
-        d.update({
-            'differential_weight': lambda x: isinstance(x, (int, float)) and x > 0,
-            'crossover_probability': lambda x: isinstance(x, float) and 0 <= x <= 1
-        })
-        return d
-
     def __init__(self, differential_weight=0.9, crossover_probability=0.85, strategy=cross_best1, *args, **kwargs):
         """Initialize HybridSelfAdaptiveBatAlgorithm.
 

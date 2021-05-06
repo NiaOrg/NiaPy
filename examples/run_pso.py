@@ -11,9 +11,9 @@ from niapy.task import StoppingTask
 from niapy.benchmarks import Griewank
 
 # we will run ParticleSwarmAlgorithm for 5 independent runs
-algo = ParticleSwarmAlgorithm(population_size=100, vMin=-4.0, vMax=4.0)
+algo = ParticleSwarmAlgorithm(population_size=100, min_velocity=-4.0, max_velocity=4.0)
 for i in range(5):
-    task = StoppingTask(max_evals=10000, dimension=10, benchmark=Griewank(Lower=-600, Upper=600))
+    task = StoppingTask(max_evals=10000, dimension=10, benchmark=Griewank(lower=-600, upper=600))
     best = algo.run(task=task)
     print('%s -> %f' % (best[0], best[1]))
 print(algo.get_parameters())

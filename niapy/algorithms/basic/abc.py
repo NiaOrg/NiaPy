@@ -72,22 +72,6 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
         """
         return r"""Karaboga, D., and Bahriye B. "A powerful and efficient algorithm for numerical function optimization: artificial bee colony (ABC) algorithm." Journal of global optimization 39.3 (2007): 459-471."""
 
-    @staticmethod
-    def type_parameters():
-        r"""Return functions for checking values of parameters.
-
-        Returns:
-            Dict[str, Callable]:
-                * limit (Callable[[int], bool): Maximum number of cycles without improvement.
-
-        See Also:
-            * :func:`niapy.algorithms.Algorithm.type_parameters`
-
-        """
-        d = Algorithm.type_parameters()
-        d.update({'limit': lambda x: isinstance(x, int) and x > 0})
-        return d
-
     def __init__(self, population_size=10, limit=100, *args, **kwargs):
         """Initialize ArtificialBeeColonyAlgorithm.
 

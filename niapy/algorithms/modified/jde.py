@@ -93,28 +93,6 @@ class SelfAdaptiveDifferentialEvolution(DifferentialEvolution):
         """
         return r"""Brest, J., Greiner, S., Boskovic, B., Mernik, M., Zumer, V. Self-adapting control parameters in differential evolution: A comparative study on numerical benchmark problems. IEEE transactions on evolutionary computation, 10(6), 646-657, 2006."""
 
-    @staticmethod
-    def type_parameters():
-        r"""Get dictionary with functions for checking values of parameters.
-
-        Returns:
-            Dict[str, Callable]:
-                * f_lower (Callable[[Union[float, int]], bool])
-                * f_upper (Callable[[Union[float, int]], bool])
-                * tao1 (Callable[[Union[float, int]], bool])
-                * tao2 (Callable[[Union[float, int]], bool])
-
-        See Also:
-            * :func:`niapy.algorithms.basic.DifferentialEvolution.type_parameters`
-
-        """
-        d = DifferentialEvolution.type_parameters()
-        d['f_lower'] = lambda x: isinstance(x, (float, int)) and x > 0
-        d['f_upper'] = lambda x: isinstance(x, (float, int)) and x > 0
-        d['tao1'] = lambda x: isinstance(x, (float, int)) and 0 <= x <= 1
-        d['tao2'] = lambda x: isinstance(x, (float, int)) and 0 <= x <= 1
-        return d
-
     def __init__(self, f_lower=0.0, f_upper=1.0, tao1=0.4, tao2=0.2, *args, **kwargs):
         """Initialize SelfAdaptiveDifferentialEvolution.
 
@@ -341,11 +319,6 @@ class MultiStrategySelfAdaptiveDifferentialEvolution(SelfAdaptiveDifferentialEvo
 #         """
 #         return r"""Brest, Janez, and Mirjam Sepesy Maučec. Population size reduction for the differential evolution algorithm. Applied Intelligence 29.3 (2008): 228-247."""
 #
-#     @staticmethod
-#     def type_parameters():
-#         d = SelfAdaptiveDifferentialEvolution.type_parameters()
-#         return d
-#
 #     def set_parameters(self, LT_min=1, LT_max=7, age=proportional, **kwargs):
 #         r"""Set core parameters of AgingSelfAdaptiveDifferentialEvolution algorithm.
 #
@@ -405,22 +378,6 @@ class MultiStrategySelfAdaptiveDifferentialEvolution(SelfAdaptiveDifferentialEvo
 #             * :func:`niapy.algorithms.Algorithm.info`
 #         """
 #         return r"""Brest, Janez, and Mirjam Sepesy Maučec. Population size reduction for the differential evolution algorithm. Applied Intelligence 29.3 (2008): 228-247."""
-#
-#     @staticmethod
-#     def type_parameters():
-#         r"""Parameter type checks.
-#
-#         Returns:
-#             Dict[str, Callable]: Basic information of algorithm.
-#
-#         See Also:
-#             * :func:`niapy.algorithms.Algorithm.info`
-#
-#         """
-#         d = SelfAdaptiveDifferentialEvolution.type_parameters()
-#         d['rp'] = lambda x: isinstance(x, (float, int)) and x > 0
-#         d['p_max'] = lambda x: isinstance(x, int) and x > 0
-#         return d
 #
 #     def set_parameters(self, rp=0, p_max=10, **kwargs):
 #         r"""Set the parameters of an algorithm.

@@ -222,34 +222,6 @@ class AnarchicSocietyOptimization(Algorithm):
         """
         return r"""Ahmadi-Javid, Amir. "Anarchic Society Optimization: A human-inspired method." Evolutionary Computation (CEC), 2011 IEEE Congress on. IEEE, 2011."""
 
-    @staticmethod
-    def type_parameters():
-        r"""Get dictionary with functions for checking values of parameters.
-
-        Returns:
-            Dict[str, Callable]:
-                * alpha (Callable):  Factor for fickleness index function :math:`\in [0, 1]`.
-                * gamma (Callable): Factor for external irregularity index function :math:`\in [0, \infty)`
-                * theta (Callable):  Factor for internal irregularity index function :math:`\in [0, \infty)`.
-                * nl (Callable): Normalized range for neighborhood search :math:`\in (0, 1]`.
-                * mutation_rate (Callable[[Union[float, int]], bool]): Mutation rate.
-                * crossover_rate (Callable[[Union[float, int]], bool]): Crossover rate.
-
-        See Also:
-            * :func:`niapy.algorithms.Algorithm.type_parameters`
-
-        """
-        d = Algorithm.type_parameters()
-        d.update({
-            'alpha': lambda x: True,
-            'gamma': lambda x: True,
-            'theta': lambda x: True,
-            'nl': lambda x: True,
-            'mutation_rate': lambda x: isinstance(x, (int, float)) and x > 0,
-            'crossover_rate': lambda x: isinstance(x, float) and 0 <= x <= 1
-        })
-        return d
-
     def __init__(self, population_size=43, alpha=(1, 0.83), gamma=(1.17, 0.56), theta=(0.932, 0.832), d=euclidean,
                  dn=euclidean, nl=1, mutation_rate=1.2, crossover_rate=0.25, combination=elitism, *args, **kwargs):
         r"""Initialize AnarchicSocietyOptimization.

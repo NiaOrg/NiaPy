@@ -58,6 +58,7 @@ class Camel(Individual):
         self.supply_past = supply_init
         self.x_past = self.x
         self.f_past = self.f
+        self.temperature = None
         self.steps = 0
 
     def next_temperature(self, min_temperature, max_temperature, rng):
@@ -187,36 +188,6 @@ class CamelAlgorithm(Algorithm):
         """
         return r'''Ali, Ramzy. (2016). Novel Optimization Algorithm Inspired by Camel Traveling Behavior.
         Iraq J. Electrical and Electronic Engineering. 12. 167-177.'''
-
-    @staticmethod
-    def type_parameters():
-        r"""Get dictionary with functions for checking values of parameters.
-
-        Returns:
-            Dict[str, Callable]:
-                * burden_factor (Callable[[Union[int, float]], bool])
-                * death_rate (Callable[[float], bool])
-                * visibility (Callable[[float], bool])
-                * supply_init (Callable[[Union[float, int]], bool])
-                * endurance_init (Callable[[Union[float, int]], bool])
-                * min_temperature (Callable[[Union[float, int], bool])
-                * max_temperature (Callable[[Union[float, int], bool])
-
-        See Also:
-            * :func:`niapy.algorithms.Algorithm.type_parameters`
-
-        """
-        d = Algorithm.type_parameters()
-        d.update({
-            'burden_factor': lambda x: isinstance(x, (float, int)),
-            'death_rate': lambda x: isinstance(x, float) and 0 <= x <= 1,
-            'visibility': lambda x: isinstance(x, float) and 0 <= x <= 1,
-            'supply_init': lambda x: isinstance(x, (float, int)) and x > 0,
-            'endurance_init': lambda x: isinstance(x, (float, int)) and x > 0,
-            'min_temperature': lambda x: isinstance(x, (float, int)) and x > 0,
-            'max_temperature': lambda x: isinstance(x, (float, int)) and x > 0
-        })
-        return d
 
     def __init__(self, population_size=50, burden_factor=0.25, death_rate=0.5, visibility=0.5, supply_init=10,
                  endurance_init=10, min_temperature=-10, max_temperature=10, *args, **kwargs):

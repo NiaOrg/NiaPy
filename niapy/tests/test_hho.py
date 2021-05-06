@@ -9,14 +9,6 @@ class HHOTestCase(AlgorithmTestCase):
         AlgorithmTestCase.setUp(self)
         self.algo = HarrisHawksOptimization
 
-    def test_parameter_type(self):
-        d = self.algo.type_parameters()
-        self.assertTrue(d['levy'](0.01))
-        self.assertFalse(d['levy'](-0.01))
-        self.assertTrue(d['population_size'](10))
-        self.assertFalse(d['population_size'](-10))
-        self.assertFalse(d['population_size'](0))
-
     def test_custom(self):
         hho_custom = self.algo(population_size=20, levy=0.01, seed=self.seed)
         hho_customc = self.algo(population_size=20, levy=0.01, seed=self.seed)

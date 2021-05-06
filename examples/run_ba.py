@@ -12,7 +12,7 @@ from niapy.benchmarks import Griewank
 
 # we will run Bat Algorithm for 5 independent runs
 for i in range(5):
-    task = StoppingTask(max_iters=10000, enable_logging=True, dimension=10, benchmark=Griewank(Lower=-600, Upper=600))
+    task = StoppingTask(max_iters=10000, enable_logging=True, dimension=10, benchmark=Griewank(lower=-600, upper=600))
     algo = BatAlgorithm()
     best = algo.run(task)
     print('%s -> %s' % (best[0], best[1]))

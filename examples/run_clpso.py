@@ -11,7 +11,7 @@ from niapy.benchmarks import Sphere
 from niapy.task import StoppingTask
 
 # we will run ParticleSwarmAlgorithm for 5 independent runs
-algo = ComprehensiveLearningParticleSwarmOptimizer(population_size=50, C1=.3, C2=1.0, m=5, w=0.86, vMin=-2, vMax=2)
+algo = ComprehensiveLearningParticleSwarmOptimizer(population_size=50, c1=.3, c2=1.0, m=5, w=0.86, min_velocity=-2, max_velocity=2)
 for i in range(5):
     task = StoppingTask(max_evals=20000, dimension=25, benchmark=Sphere())
     best = algo.run(task=task)

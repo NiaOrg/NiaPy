@@ -15,18 +15,6 @@ class PSOTestCase(AlgorithmTestCase):
         al = self.algo.info()
         self.assertIsNotNone(al)
 
-    def test_parameter_type(self):
-        d = self.algo.type_parameters()
-        self.assertTrue(d['c1'](10))
-        self.assertTrue(d['c2'](10))
-        self.assertTrue(d['c1'](0))
-        self.assertTrue(d['c2'](0))
-        self.assertFalse(d['c1'](-10))
-        self.assertFalse(d['c2'](-10))
-        self.assertTrue(d['population_size'](10))
-        self.assertFalse(d['population_size'](-10))
-        self.assertFalse(d['population_size'](0))
-
     def test_custom(self):
         pso_custom = self.algo(population_size=40, c1=2.0, c2=2.0, w=0.7, min_velocity=-4, max_velocity=4, seed=self.seed)
         pso_customc = self.algo(population_size=40, c1=2.0, c2=2.0, w=0.7, min_velocity=-4, max_velocity=4, seed=self.seed)
@@ -47,27 +35,6 @@ class PSATestCase(AlgorithmTestCase):
         al = ParticleSwarmAlgorithm.info()
         self.assertIsNotNone(al)
 
-    def test_parameter_type(self):
-        d = ParticleSwarmAlgorithm.type_parameters()
-        self.assertTrue(d['c1'](10))
-        self.assertTrue(d['c2'](10))
-        self.assertTrue(d['c1'](0))
-        self.assertTrue(d['c2'](0))
-        self.assertFalse(d['c1'](-10))
-        self.assertFalse(d['c2'](-10))
-        self.assertTrue(d['max_velocity'](10))
-        self.assertTrue(d['min_velocity'](10))
-        self.assertTrue(d['population_size'](10))
-        self.assertFalse(d['population_size'](-10))
-        self.assertFalse(d['population_size'](0))
-        self.assertFalse(d['min_velocity'](None))
-        self.assertFalse(d['max_velocity'](None))
-        self.assertFalse(d['w'](None))
-        self.assertFalse(d['w'](-.1))
-        self.assertFalse(d['w'](-10))
-        self.assertTrue(d['w'](.01))
-        self.assertTrue(d['w'](10.01))
-
     def test_custom(self):
         wvcpso_custom = ParticleSwarmAlgorithm(population_size=40, c1=2.0, c2=2.0, w=0.7, min_velocity=-4, max_velocity=4, seed=self.seed)
         wvcpso_customc = ParticleSwarmAlgorithm(population_size=40, c1=2.0, c2=2.0, w=0.7, min_velocity=-4, max_velocity=4, seed=self.seed)
@@ -87,27 +54,6 @@ class OVCPSOTestCase(AlgorithmTestCase):
     def test_algorithm_info(self):
         al = self.algo.info()
         self.assertIsNotNone(al)
-
-    def test_parameter_type(self):
-        d = self.algo.type_parameters()
-        self.assertTrue(d['c1'](10))
-        self.assertTrue(d['c2'](10))
-        self.assertTrue(d['c1'](0))
-        self.assertTrue(d['c2'](0))
-        self.assertFalse(d['c1'](-10))
-        self.assertFalse(d['c2'](-10))
-        self.assertTrue(d['max_velocity'](10))
-        self.assertTrue(d['min_velocity'](10))
-        self.assertTrue(d['population_size'](10))
-        self.assertFalse(d['population_size'](-10))
-        self.assertFalse(d['population_size'](0))
-        self.assertFalse(d['min_velocity'](None))
-        self.assertFalse(d['max_velocity'](None))
-        self.assertFalse(d['w'](None))
-        self.assertFalse(d['w'](-.1))
-        self.assertFalse(d['w'](-10))
-        self.assertTrue(d['w'](.01))
-        self.assertTrue(d['w'](10.01))
 
     def test_custom(self):
         wvcpso_custom = self.algo(population_size=40, c1=2.0, c2=2.0, w=0.7, min_velocity=-4, max_velocity=4, seed=self.seed)
@@ -130,27 +76,6 @@ class CPSOTestCase(AlgorithmTestCase):
         al = self.algo.info()
         self.assertIsNotNone(al)
 
-    def test_parameter_type(self):
-        d = self.algo.type_parameters()
-        self.assertTrue(d['c1'](10))
-        self.assertTrue(d['c2'](10))
-        self.assertTrue(d['c1'](0))
-        self.assertTrue(d['c2'](0))
-        self.assertFalse(d['c1'](-10))
-        self.assertFalse(d['c2'](-10))
-        self.assertTrue(d['max_velocity'](10))
-        self.assertTrue(d['min_velocity'](10))
-        self.assertTrue(d['population_size'](10))
-        self.assertFalse(d['population_size'](-10))
-        self.assertFalse(d['population_size'](0))
-        self.assertFalse(d['min_velocity'](None))
-        self.assertFalse(d['max_velocity'](None))
-        self.assertFalse(d['w'](None))
-        self.assertFalse(d['w'](-.1))
-        self.assertFalse(d['w'](-10))
-        self.assertTrue(d['w'](.01))
-        self.assertTrue(d['w'](10.01))
-
     def test_custom(self):
         cpso_custom = self.algo(population_size=40, c1=2.0, c2=2.0, w=0.7, min_velocity=-4, max_velocity=4, seed=self.seed)
         cpso_customc = self.algo(population_size=40, c1=2.0, c2=2.0, w=0.7, min_velocity=-4, max_velocity=4, seed=self.seed)
@@ -170,27 +95,6 @@ class MPSOTestCase(AlgorithmTestCase):
     def test_algorithm_info(self):
         al = MutatedParticleSwarmOptimization.info()
         self.assertIsNotNone(al)
-
-    def test_parameter_type(self):
-        d = MutatedParticleSwarmOptimization.type_parameters()
-        self.assertTrue(d['c1'](10))
-        self.assertTrue(d['c2'](10))
-        self.assertTrue(d['c1'](0))
-        self.assertTrue(d['c2'](0))
-        self.assertFalse(d['c1'](-10))
-        self.assertFalse(d['c2'](-10))
-        self.assertTrue(d['max_velocity'](10))
-        self.assertTrue(d['min_velocity'](10))
-        self.assertTrue(d['population_size'](10))
-        self.assertFalse(d['population_size'](-10))
-        self.assertFalse(d['population_size'](0))
-        self.assertFalse(d['min_velocity'](None))
-        self.assertFalse(d['max_velocity'](None))
-        self.assertFalse(d['w'](None))
-        self.assertFalse(d['w'](-.1))
-        self.assertFalse(d['w'](-10))
-        self.assertTrue(d['w'](.01))
-        self.assertTrue(d['w'](10.01))
 
     def test_custom(self):
         mpso_custom = MutatedParticleSwarmOptimization(population_size=40, c1=2.0, c2=2.0, w=0.7, min_velocity=-4, max_velocity=4, seed=self.seed)
@@ -212,27 +116,6 @@ class MCPSOTestCase(AlgorithmTestCase):
         al = self.algo.info()
         self.assertIsNotNone(al)
 
-    def test_parameter_type(self):
-        d = self.algo.type_parameters()
-        self.assertTrue(d['c1'](10))
-        self.assertTrue(d['c2'](10))
-        self.assertTrue(d['c1'](0))
-        self.assertTrue(d['c2'](0))
-        self.assertFalse(d['c1'](-10))
-        self.assertFalse(d['c2'](-10))
-        self.assertTrue(d['max_velocity'](10))
-        self.assertTrue(d['min_velocity'](10))
-        self.assertTrue(d['population_size'](10))
-        self.assertFalse(d['population_size'](-10))
-        self.assertFalse(d['population_size'](0))
-        self.assertFalse(d['min_velocity'](None))
-        self.assertFalse(d['max_velocity'](None))
-        self.assertFalse(d['w'](None))
-        self.assertFalse(d['w'](-.1))
-        self.assertFalse(d['w'](-10))
-        self.assertTrue(d['w'](.01))
-        self.assertTrue(d['w'](10.01))
-
     def test_custom(self):
         mcpso_custom = self.algo(population_size=40, c1=2.0, c2=2.0, w=0.7, min_velocity=-4, max_velocity=4, seed=self.seed)
         mcpso_customc = self.algo(population_size=40, c1=2.0, c2=2.0, w=0.7, min_velocity=-4, max_velocity=4, seed=self.seed)
@@ -253,27 +136,6 @@ class MCUPSOTestCase(AlgorithmTestCase):
         al = self.algo.info()
         self.assertIsNotNone(al)
 
-    def test_parameter_type(self):
-        d = self.algo.type_parameters()
-        self.assertTrue(d['c1'](10))
-        self.assertTrue(d['c2'](10))
-        self.assertTrue(d['c1'](0))
-        self.assertTrue(d['c2'](0))
-        self.assertFalse(d['c1'](-10))
-        self.assertFalse(d['c2'](-10))
-        self.assertTrue(d['max_velocity'](10))
-        self.assertTrue(d['min_velocity'](10))
-        self.assertTrue(d['population_size'](10))
-        self.assertFalse(d['population_size'](-10))
-        self.assertFalse(d['population_size'](0))
-        self.assertFalse(d['min_velocity'](None))
-        self.assertFalse(d['max_velocity'](None))
-        self.assertFalse(d['w'](None))
-        self.assertFalse(d['w'](-.1))
-        self.assertFalse(d['w'](-10))
-        self.assertTrue(d['w'](.01))
-        self.assertTrue(d['w'](10.01))
-
     def test_custom(self):
         mcupso_custom = self.algo(population_size=40, c1=2.0, c2=2.0, w=0.7, min_velocity=-4, max_velocity=4, seed=self.seed)
         mcupso_customc = self.algo(population_size=40, c1=2.0, c2=2.0, w=0.7, min_velocity=-4, max_velocity=4, seed=self.seed)
@@ -293,20 +155,6 @@ class CLPSOTestCase(AlgorithmTestCase):
     def test_algorithm_info(self):
         al = self.algo.info()
         self.assertIsNotNone(al)
-
-    def test_parameter_type(self):
-        d = self.algo.type_parameters()
-        self.assertTrue(d['c1'](10))
-        self.assertTrue(d['c2'](10))
-        self.assertTrue(d['c1'](0))
-        self.assertTrue(d['c2'](0))
-        self.assertFalse(d['c1'](-10))
-        self.assertFalse(d['c2'](-10))
-        self.assertTrue(d['max_velocity'](10))
-        self.assertTrue(d['min_velocity'](10))
-        self.assertTrue(d['population_size'](10))
-        self.assertFalse(d['population_size'](-10))
-        self.assertFalse(d['population_size'](0))
 
     def test_custom(self):
         clpso_custom = self.algo(population_size=40, c1=2.0, c2=2.0, w=0.7, min_velocity=-4, max_velocity=4, seed=self.seed)

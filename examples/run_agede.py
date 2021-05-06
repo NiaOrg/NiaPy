@@ -14,7 +14,7 @@ from niapy.benchmarks import Sphere
 # we will run Differential Evolution for 5 independent runs
 for i in range(5):
     task = StoppingTask(max_evals=10000, dimension=10, benchmark=Sphere())
-    algo = AgingNpDifferentialEvolution(population_size=40, F=0.63, CR=0.9, Lt_min=3, Lt_max=7, omega=0.2, delta_np=0.1,
+    algo = AgingNpDifferentialEvolution(population_size=40, differential_weight=0.63, crossover_probability=0.9, min_lifetime=3, max_lifetime=7, omega=0.2, delta_np=0.1,
                                         age=bilinear)
     best = algo.run(task)
     print('%s -> %s' % (best[0], best[1]))

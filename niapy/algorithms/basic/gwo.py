@@ -49,12 +49,6 @@ class GreyWolfOptimizer(Algorithm):
         """
         return r"""Mirjalili, Seyedali, Seyed Mohammad Mirjalili, and Andrew Lewis. "Grey wolf optimizer." Advances in engineering software 69 (2014): 46-61."""
 
-    @staticmethod
-    def type_parameters():
-        return {
-            'population_size': lambda x: isinstance(x, int) and x > 0
-        }
-
     def init_population(self, task):
         r"""Initialize population.
 

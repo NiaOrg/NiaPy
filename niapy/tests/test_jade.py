@@ -36,13 +36,13 @@
 #         self.algo = AdaptiveArchiveDifferentialEvolution
 #
 #     def test_custom(self):
-#         jade_custom = self.algo(n=10, C_a=2, C_r=0.5, seed=self.seed)
-#         jade_customc = self.algo(n=10, C_a=2, C_r=0.5, seed=self.seed)
+#         jade_custom = self.algo(population_size=10, C_a=2, C_r=0.5, seed=self.seed)
+#         jade_customc = self.algo(population_size=10, C_a=2, C_r=0.5, seed=self.seed)
 #         AlgorithmTestCase.test_algorithm_run(self, jade_custom, jade_customc, MyBenchmark())
 #
 #     def test_griewank(self):
-#         jade_griewank = self.algo(n=10, C_a=5, C_r=0.5, seed=self.seed)
-#         jade_griewankc = self.algo(n=10, C_a=5, C_r=0.5, seed=self.seed)
+#         jade_griewank = self.algo(population_size=10, C_a=5, C_r=0.5, seed=self.seed)
+#         jade_griewankc = self.algo(population_size=10, C_a=5, C_r=0.5, seed=self.seed)
 #         AlgorithmTestCase.test_algorithm_run(self, jade_griewank, jade_griewankc)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

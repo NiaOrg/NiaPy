@@ -159,10 +159,6 @@ class AlgorithmBaseTestCase(TestCase):
         params = algo.get_parameters()
         self.assertIsNotNone(params)
 
-    def test_type_parameters(self):
-        d = Algorithm.type_parameters()
-        self.assertIsNotNone(d)
-
     def test_init_population_numpy(self):
         r"""Test if custom generation initialization works ok."""
         a = Algorithm(population_size=10, initialization_function=init_pop_numpy)
@@ -291,11 +287,6 @@ class AlgorithmTestCase(TestCase):
         self.max_evals = 1000
         self.seed = 1
         self.algo = Algorithm
-
-    def test_algorithm_type_parameters(self):
-        r"""Test if type parameters for algorithm work fine."""
-        type_params = self.algo.type_parameters()
-        self.assertIsNotNone(type_params)
 
     def test_algorithm_info(self):
         r"""Test if algorithm info works fine."""

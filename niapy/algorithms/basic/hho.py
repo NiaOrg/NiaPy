@@ -66,24 +66,6 @@ class HarrisHawksOptimization(Algorithm):
         """
         return r"""Heidari et al. "Harris hawks optimization: Algorithm and applications". Future Generation Computer Systems. 2019. Vol. 97. 849-872."""
 
-    @staticmethod
-    def type_parameters():
-        r"""Return dict with where key of dict represents parameter name and values represent checking functions for selected parameter.
-
-        Returns:
-            Dict[str, Callable]:
-                * levy (Callable[[Union[float, int]], bool]): Levy factor.
-
-        See Also:
-            * :func:`niapy.algorithms.Algorithm.type_parameters`
-
-        """
-        d = Algorithm.type_parameters()
-        d.update({
-            'levy': lambda x: isinstance(x, (float, int)) and x > 0,
-        })
-        return d
-
     def set_parameters(self, population_size=40, levy=0.01, **kwargs):
         r"""Set the parameters of the algorithm.
 

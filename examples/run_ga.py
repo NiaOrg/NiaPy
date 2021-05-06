@@ -14,6 +14,6 @@ from niapy.benchmarks import Sphere
 # we will run Genetic Algorithm for 5 independent runs
 for i in range(5):
     task = StoppingTask(max_evals=10000, dimension=10, benchmark=Sphere())
-    algo = GeneticAlgorithm(population_size=100, Crossover=uniform_crossover, Mutation=uniform_mutation, Cr=0.45, Mr=0.9)
+    algo = GeneticAlgorithm(population_size=100, crossover=uniform_crossover, mutation=uniform_mutation, crossover_rate=0.45, mutation_rate=0.9)
     best = algo.run(task=task)
     print('%s -> %s' % (best[0], best[1]))

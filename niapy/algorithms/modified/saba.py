@@ -55,32 +55,6 @@ class AdaptiveBatAlgorithm(Algorithm):
         """
         return r"""TODO"""
 
-    @staticmethod
-    def type_parameters():
-        r"""Return dict with where key of dict represents parameter name and values represent checking functions for selected parameter.
-
-        Returns:
-            Dict[str, Callable]:
-                * epsilon (Callable[[Union[float, int]], bool]): Scale factor.
-                * alpha (Callable[[Union[float, int]], bool]): Constant for updating loudness.
-                * pulse_rate (Callable[[Union[float, int]], bool]): Pulse rate.
-                * min_frequency (Callable[[Union[float, int]], bool]): Minimum frequency.
-                * max_frequency (Callable[[Union[float, int]], bool]): Maximum frequency.
-
-        See Also:
-            * :func:`niapy.algorithms.Algorithm.type_parameters`
-
-        """
-        d = Algorithm.type_parameters()
-        d.update({
-            'epsilon': lambda x: isinstance(x, (float, int)) and x > 0,
-            'alpha': lambda x: isinstance(x, (float, int)) and x > 0,
-            'pulse_rate': lambda x: isinstance(x, (float, int)) and x > 0,
-            'min_frequency': lambda x: isinstance(x, (float, int)),
-            'max_frequency': lambda x: isinstance(x, (float, int))
-        })
-        return d
-
     def __init__(self, population_size=100, starting_loudness=0.5, epsilon=0.001, alpha=1.0, pulse_rate=0.5,
                  min_frequency=0.0, max_frequency=2.0, *args, **kwargs):
         """Initialize AdaptiveBatAlgorithm.
@@ -287,29 +261,6 @@ class SelfAdaptiveBatAlgorithm(AdaptiveBatAlgorithm):
 
         """
         return r"""Fister Jr., Iztok and Fister, Dusan and Yang, Xin-She. "A Hybrid Bat Algorithm". Elektrotehniški vestnik, 2013. 1-7."""
-
-    @staticmethod
-    def type_parameters():
-        r"""Get dictionary with functions for checking values of parameters.
-
-        Returns:
-            Dict[str, Callable]: Parameter type checks.
-
-        See Also:
-            * :func:`niapy.algorithms.basic.BatAlgorithm.type_parameters`
-
-        """
-        d = AdaptiveBatAlgorithm.type_parameters()
-        d.pop('A', None), d.pop('r', None)
-        d.update({
-            'min_loudness': lambda x: isinstance(x, (float, int)) and x >= 0,
-            'max_loudness': lambda x: isinstance(x, (float, int)) and x >= 0,
-            'min_pulse_rate': lambda x: isinstance(x, (float, int)) and x >= 0,
-            'max_pulse_rate': lambda x: isinstance(x, (float, int)) and x >= 0,
-            'tao_1': lambda x: isinstance(x, (float, int)) and 0 <= x <= 1,
-            'tao_2': lambda x: isinstance(x, (float, int)) and 0 <= x <= 1
-        })
-        return d
 
     def __init__(self, min_loudness=0.9, max_loudness=1.0, min_pulse_rate=0.001, max_pulse_rate=0.1, tao_1=0.1,
                  tao_2=0.1, *args, **kwargs):

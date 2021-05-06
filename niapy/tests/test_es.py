@@ -54,13 +54,6 @@ class ESMpLTestCase(AlgorithmTestCase):
         AlgorithmTestCase.setUp(self)
         self.algo = EvolutionStrategyMpL
 
-    def test_typeParametes(self):
-        d = self.algo.type_parameters()
-        self.assertTrue(d['lam'](10))
-        self.assertFalse(d['lam'](10.10))
-        self.assertFalse(d['lam'](0))
-        self.assertFalse(d['lam'](-10))
-
     def test_custom(self):
         es_custom = self.algo(mu=45, lam=55, k=50, c_a=1.1, c_r=0.5, seed=self.seed)
         es_customc = self.algo(mu=45, lam=55, k=50, c_a=1.1, c_r=0.5, seed=self.seed)
@@ -112,13 +105,6 @@ class CMAESTestCase(AlgorithmTestCase):
     def setUp(self):
         AlgorithmTestCase.setUp(self)
         self.algo = CovarianceMatrixAdaptionEvolutionStrategy
-
-    def test_typeParametes(self):
-        d = self.algo.type_parameters()
-        self.assertTrue(d['epsilon'](0.234))
-        self.assertFalse(d['epsilon'](-0.234))
-        self.assertFalse(d['epsilon'](10000.234))
-        self.assertFalse(d['epsilon'](10))
 
     def test_custom(self):
         es_custom = self.algo(seed=self.seed)

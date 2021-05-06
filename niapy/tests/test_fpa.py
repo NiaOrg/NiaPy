@@ -8,18 +8,6 @@ class FPATestCase(AlgorithmTestCase):
         AlgorithmTestCase.setUp(self)
         self.algo = FlowerPollinationAlgorithm
 
-    def test_type_parameters(self):
-        d = self.algo.type_parameters()
-        self.assertTrue(d['population_size'](10))
-        self.assertFalse(d['population_size'](-10))
-        self.assertFalse(d['population_size'](0))
-        self.assertTrue(d['beta'](10))
-        self.assertFalse(d['beta'](0))
-        self.assertFalse(d['beta'](-10))
-        self.assertTrue(d['p'](0.5))
-        self.assertFalse(d['p'](-0.5))
-        self.assertFalse(d['p'](1.5))
-
     def test_custom(self):
         fpa_custom = self.algo(population_size=10, p=0.5, seed=self.seed)
         fpa_customc = self.algo(population_size=10, p=0.5, seed=self.seed)

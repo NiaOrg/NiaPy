@@ -92,21 +92,6 @@ class DifferentialEvolutionMTS(DifferentialEvolution, MultipleTrajectorySearch):
         """
         return r"""TODO"""
 
-    @staticmethod
-    def type_parameters():
-        r"""Get dictionary with functions for checking values of parameters.
-
-        Returns:
-            Dict[str, Callable]: Parameter type checking functions.
-
-        See Also:
-            :func:`niapy.algorithms.basic.de.DifferentialEvolution.type_parameters`
-
-        """
-        d = DifferentialEvolution.type_parameters()
-        d.update(MultipleTrajectorySearch.type_parameters())
-        return d
-
     def __init__(self, population_size=40, *args, **kwargs):
         """Initialize DifferentialEvolutionMTS."""
         super().__init__(population_size, individual_type=kwargs.pop('individual_type', MtsIndividual), *args, **kwargs)

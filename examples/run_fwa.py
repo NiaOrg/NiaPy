@@ -13,7 +13,7 @@ from niapy.benchmarks import Sphere
 # we will run Fireworks Algorithm for 5 independent runs
 for i in range(5):
     task = StoppingTask(max_evals=10000, dimension=10, benchmark=Sphere())
-    algo = FireworksAlgorithm(N=40)
+    algo = FireworksAlgorithm(population_size=40)
     best = algo.run(task=task)
     print('%s -> %s' % (best[0], best[1]))
 

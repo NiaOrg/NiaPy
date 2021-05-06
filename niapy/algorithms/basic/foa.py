@@ -62,32 +62,6 @@ class ForestOptimizationAlgorithm(Algorithm):
         """
         return r"""Manizheh Ghaemi, Mohammad-Reza Feizi-Derakhshi, Forest Optimization Algorithm, Expert Systems with Applications, Volume 41, Issue 15, 2014, Pages 6676-6687, ISSN 0957-4174, https://doi.org/10.1016/j.eswa.2014.05.009."""
 
-    @staticmethod
-    def type_parameters():
-        r"""Get dictionary with functions for checking values of parameters.
-
-        Returns:
-            Dict[str, Callable]:
-                * lifetime (Callable[[int], bool]): Checks if life time parameter has a proper value.
-                * area_limit (Callable[[int], bool]): Checks if area limit parameter has a proper value.
-                * local_seeding_changes (Callable[[int], bool]): Checks if local seeding changes parameter has a proper value.
-                * global_seeding_changes (Callable[[int], bool]): Checks if global seeding changes parameter has a proper value.
-                * transfer_rate (Callable[[float], bool]): Checks if transfer rate parameter has a proper value.
-
-        See Also:
-            * :func:`niapy.algorithms.algorithm.Algorithm.type_parameters`
-
-        """
-        d = Algorithm.type_parameters()
-        d.update({
-            'lifetime': lambda x: isinstance(x, int) and x > 0,
-            'area_limit': lambda x: isinstance(x, int) and x > 0,
-            'local_seeding_changes': lambda x: isinstance(x, int) and x > 0,
-            'global_seeding_changes': lambda x: isinstance(x, int) and x > 0,
-            'transfer_rate': lambda x: isinstance(x, float) and 0 <= x <= 1,
-        })
-        return d
-
     def __init__(self, population_size=10, lifetime=3, area_limit=10, local_seeding_changes=1, global_seeding_changes=1,
                  transfer_rate=0.3, *args, **kwargs):
         """Initialize ForestOptimizationAlgorithm.

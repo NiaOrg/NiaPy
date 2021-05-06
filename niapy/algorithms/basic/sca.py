@@ -59,27 +59,6 @@ class SineCosineAlgorithm(Algorithm):
         """
         return r"""Seyedali Mirjalili, SCA: A Sine Cosine Algorithm for solving optimization problems, Knowledge-Based Systems, Volume 96, 2016, Pages 120-133, ISSN 0950-7051, https://doi.org/10.1016/j.knosys.2015.12.022."""
 
-    @staticmethod
-    def type_parameters():
-        r"""Get dictionary with functions for checking values of parameters.
-
-        Returns:
-            Dict[str, Callable]:
-                * a (Callable[[Union[float, int]], bool]): Parameter for control in :math:`r_1` value
-                * r_min (Callable[[Union[float, int]], bool]): Minimum value for :math:`r_3` value
-                * r_max (Callable[[Union[float, int]], bool]): Maximum value for :math:`r_3` value
-
-        See Also:
-            * :func:`niapy.algorithms.Algorithm.type_parameters`
-        """
-        d = Algorithm.type_parameters()
-        d.update({
-            'a': lambda x: isinstance(x, (float, int)) and x > 0,
-            'r_min': lambda x: isinstance(x, (float, int)),
-            'r_max': lambda x: isinstance(x, (float, int))
-        })
-        return d
-
     def __init__(self, population_size=25, a=3, r_min=0, r_max=2, *args, **kwargs):
         """Initialize SineCosineAlgorithm.
 

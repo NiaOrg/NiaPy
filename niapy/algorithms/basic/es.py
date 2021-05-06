@@ -84,27 +84,6 @@ class EvolutionStrategy1p1(Algorithm):
         """
         return r"""KALYANMOY, Deb. "Multi-Objective optimization using evolutionary algorithms". John Wiley & Sons, Ltd. Kanpur, India. 2001."""
 
-    @staticmethod
-    def type_parameters():
-        r"""Get dictionary with functions for checking values of parameters.
-
-        Returns:
-            Dict[str, Callable]:
-                * mu (Callable[[int], bool])
-                * k (Callable[[int], bool])
-                * c_a (Callable[[Union[float, int]], bool])
-                * c_r (Callable[[Union[float, int]], bool])
-                * epsilon (Callable[[float], bool])
-
-        """
-        return {
-            'mu': lambda x: isinstance(x, int) and x > 0,
-            'k': lambda x: isinstance(x, int) and x > 0,
-            'c_a': lambda x: isinstance(x, (float, int)) and x > 1,
-            'c_r': lambda x: isinstance(x, (float, int)) and 0 < x < 1,
-            'epsilon': lambda x: isinstance(x, float) and 0 < x < 1
-        }
-
     def __init__(self, mu=1, k=10, c_a=1.1, c_r=0.5, epsilon=1e-20, *args, **kwargs):
         """Initialize EvolutionStrategy1p1.
 
@@ -334,22 +313,6 @@ class EvolutionStrategyMpL(EvolutionStrategy1p1):
 
         """
         return r"""TODO"""
-
-    @staticmethod
-    def type_parameters():
-        r"""Parameter type checks.
-
-        Returns:
-            Dict[str, Any]:
-                * lam (Callable[[int], bool]): Lambda.
-
-        See Also:
-            * :func:`niapy.algorithms.basic.EvolutionStrategy1p1`
-
-        """
-        d = EvolutionStrategy1p1.type_parameters()
-        d['lam'] = lambda x: isinstance(x, int) and x > 0
-        return d
 
     def __init__(self, lam=45, *args, **kwargs):
         """Initialize EvolutionStrategyMpL.
@@ -676,12 +639,6 @@ class CovarianceMatrixAdaptionEvolutionStrategy(Algorithm):
 
         """
         return r"""Hansen, Nikolaus. "The CMA evolution strategy: A tutorial." arXiv preprint arXiv:1604.00772 (2016)."""
-
-    @staticmethod
-    def type_parameters():
-        return {
-            'epsilon': lambda x: isinstance(x, (float, int)) and 0 < x < 1
-        }
 
     def __init__(self, epsilon=1e-20, *args, **kwargs):
         """Initialize CovarianceMatrixAdaptionEvolutionStrategy.

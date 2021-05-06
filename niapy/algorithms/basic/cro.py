@@ -137,28 +137,6 @@ class CoralReefsOptimization(Algorithm):
         “The Coral Reefs Optimization Algorithm: A Novel Metaheuristic for Efficiently Solving Optimization Problems,”
         The Scientific World Journal, vol. 2014, Article ID 739768, 15 pages, 2014."""
 
-    @staticmethod
-    def type_parameters():
-        r"""Get dictionary with functions for checking values of parameters.
-
-        Returns:
-            Dict[str, Callable]:
-                * phi (func): Distance
-                * num_asexual_reproduction (func): Number of corals selected for asexual reproduction.
-                * num_broadcast (func): Number of corals selected for broadcasting/brooding.
-                * num_depredation (func): Number of corals removed each iteration.
-                * k (func): Maximum number of opportunities for corals to settle.
-
-        """
-        return {
-            'N': False,
-            'phi': False,
-            'num_asexual_reproduction': False,
-            'num_broadcast': False,
-            'num_depredation': False,
-            'k': False
-        }
-
     def __init__(self, population_size=25, phi=0.4, asexual_reproduction_prob=0.5, broadcast_prob=0.5,
                  depredation_prob=0.3, k=25, crossover_rate=0.5, mutation_rate=0.36,
                  sexual_crossover=default_sexual_crossover, brooding=default_brooding, *args, **kwargs):

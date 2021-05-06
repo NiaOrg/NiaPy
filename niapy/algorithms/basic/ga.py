@@ -241,28 +241,6 @@ class GeneticAlgorithm(Algorithm):
         """
         return r"""On info"""
 
-    @staticmethod
-    def type_parameters():
-        r"""Get dictionary with functions for checking values of parameters.
-
-        Returns:
-            Dict[str, Callable]:
-                * tournament_size (Callable[[int], bool]): Tournament size.
-                * mutation_rate (Callable[[float], bool]): Probability of mutation.
-                * crossover_rate (Callable[[float], bool]): Probability of crossover.
-
-        See Also:
-            * :func:`niapy.algorithms.Algorithm.type_parameters`
-
-        """
-        d = Algorithm.type_parameters()
-        d.update({
-            'tournament_size': lambda x: isinstance(x, int) and x > 1,
-            'mutation_rate': lambda x: isinstance(x, float) and 0 <= x <= 1,
-            'crossover_rate': lambda x: isinstance(x, float) and 0 <= x <= 1
-        })
-        return d
-
     def __init__(self, population_size=25, tournament_size=5, mutation_rate=0.25, crossover_rate=0.25,
                  selection=tournament_selection, crossover=uniform_crossover, mutation=uniform_mutation, *args, **kwargs):
         """Initialize GeneticAlgorithm.

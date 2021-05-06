@@ -89,22 +89,6 @@ class SimulatedAnnealing(Algorithm):
         """
         return r"""None"""
 
-    @staticmethod
-    def type_parameters():
-        r"""Get dictionary with functions for checking values of parameters.
-
-        Returns:
-            Dict[str, Callable]:
-                * delta (Callable[[Union[float, int], bool]): Movement for neighbour search.
-
-        """
-        return {
-            'delta': lambda x: isinstance(x, (int, float)) and x > 0,
-            'starting_temperature': lambda x: isinstance(x, (int, float)) and x > 0,
-            'delta_temperature': lambda x: isinstance(x, (int, float)) and x > 0,
-            'epsilon': lambda x: isinstance(x, float) and 0 < x < 1
-        }
-
     def __init__(self, delta=0.5, starting_temperature=2000, delta_temperature=0.8, cooling_method=cool_delta,
                  epsilon=1e-23, *args, **kwargs):
         """Initialize SimulatedAnnealing.
@@ -120,6 +104,7 @@ class SimulatedAnnealing(Algorithm):
             * :func:`niapy.algorithms.Algorithm.__init__`
 
         """
+        kwargs.pop('population_size', None)
         super().__init__(1, *args, **kwargs)
         self.delta = delta
         self.starting_temperature = starting_temperature

@@ -54,26 +54,6 @@ class HybridBatAlgorithm(BatAlgorithm):
         """
         return r"""Fister Jr., Iztok and Fister, Dusan and Yang, Xin-She. "A Hybrid Bat Algorithm". Elektrotehniški vestnik, 2013. 1-7."""
 
-    @staticmethod
-    def type_parameters():
-        r"""Get dictionary with functions for checking values of parameters.
-
-        Returns:
-            Dict[str, Callable]:
-                * differential_weight (Callable[[Union[int, float]], bool]): Scaling factor.
-                * crossover_probability (Callable[[float], bool]): Crossover probability.
-
-        See Also:
-            * :func:`niapy.algorithms.basic.BatAlgorithm.type_parameters`
-
-        """
-        d = BatAlgorithm.type_parameters()
-        d.update({
-            'differential_weight': lambda x: isinstance(x, (int, float)) and x > 0,
-            'crossover_probability': lambda x: isinstance(x, float) and 0 <= x <= 1
-        })
-        return d
-
     def __init__(self, differential_weight=0.50, crossover_probability=0.90, strategy=cross_best1, *args, **kwargs):
         """Initialize HybridBatAlgorithm.
 

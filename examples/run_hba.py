@@ -13,6 +13,6 @@ from niapy.benchmarks import Sphere
 # we will run Hybrid Bat Algorithm for 5 independent runs
 for i in range(5):
     task = StoppingTask(max_evals=10000, dimension=10, benchmark=Sphere())
-    algo = HybridBatAlgorithm(population_size=40, A=0.5, r=0.5, F=0.5, CR=0.9, Qmin=0.0, Qmax=2.0)
+    algo = HybridBatAlgorithm(population_size=40, loudness=0.5, pulse_rate=0.5, differential_weight=0.5, crossover_probability=0.9, min_frequency=0.0, max_frequency=2.0)
     best = algo.run(task)
     print(best)

@@ -54,6 +54,7 @@ class RandomSearch(Algorithm):
 
     def __init__(self, *args, **kwargs):
         """Initialize RandomSearch."""
+        kwargs.pop('population_size', None)
         super().__init__(1, *args, **kwargs)
         self.candidates = None
 

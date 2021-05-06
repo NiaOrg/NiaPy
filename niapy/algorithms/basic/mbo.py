@@ -58,25 +58,6 @@ class MonarchButterflyOptimization(Algorithm):
         Year: 2015
         Main reference: Wang, G. G., Deb, S., & Cui, Z. (2019). Monarch butterfly optimization. Neural computing and applications, 31(7), 1995-2014."""
 
-    @staticmethod
-    def type_parameters():
-        r"""Get dictionary with functions for checking values of parameters.
-
-        Returns:
-            Dict[str, Callable]:
-                * partition (Callable[[float], bool]): Checks if partition parameter has a proper value.
-                * period (Callable[[float], bool]): Checks if period parameter has a proper value.
-        See Also:
-            * :func:`niapy.algorithms.algorithm.Algorithm.type_parameters`
-
-        """
-        d = Algorithm.type_parameters()
-        d.update({
-            'partition': lambda x: isinstance(x, float) and x > 0,
-            'period': lambda x: isinstance(x, float) and x > 0
-        })
-        return d
-
     def __init__(self, population_size=20, partition=5.0 / 12.0, period=1.2, *args, **kwargs):
         """Initialize MonarchButterflyOptimization.
 

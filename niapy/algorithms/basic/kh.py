@@ -67,39 +67,6 @@ class KrillHerd(Algorithm):
         """
         return r"""Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010."""
 
-    @staticmethod
-    def type_parameters():
-        r"""Get dictionary with functions for checking values of parameters.
-
-        Returns:
-            Dict[str, Callable]:
-                * N_max (Callable[[Union[int, float]], bool])
-                * V_f (Callable[[Union[int, float]], bool])
-                * D_max (Callable[[Union[int, float]], bool])
-                * C_t (Callable[[Union[int, float]], bool])
-                * W_n (Callable[[Union[int, float]], bool])
-                * W_f (Callable[[Union[int, float]], bool])
-                * d_s (Callable[[Union[int, float]], bool])
-                * nn (Callable[[int], bool])
-                * epsilon (Callable[[float], bool])
-
-        See Also:
-            * :func:`niapy.algorithms.algorithm.Algorithm`
-
-        """
-        d = Algorithm.type_parameters()
-        d.update({
-            'N_max': lambda x: isinstance(x, (int, float)) and x > 0,
-            'V_f': lambda x: isinstance(x, (int, float)) and x > 0,
-            'D_max': lambda x: isinstance(x, (int, float)) and x > 0,
-            'C_t': lambda x: isinstance(x, (int, float)) and x > 0,
-            'W_n': lambda x: isinstance(x, (int, float)) and x > 0,
-            'W_f': lambda x: isinstance(x, (int, float)) and x > 0,
-            'd_s': lambda x: isinstance(x, (int, float)) and x > 0,
-            'nn': lambda x: isinstance(x, int) and x > 0,
-        })
-        return d
-
     def __init__(self, population_size=50, n_max=0.01, foraging_speed=0.02, diffusion_speed=0.002, c_t=0.93,
                  w_neighbor=0.42, w_foraging=0.38, d_s=2.63, max_neighbors=5, crossover_rate=0.2, mutation_rate=0.05,
                  *args, **kwargs):
@@ -524,20 +491,6 @@ class KrillHerdV4(KrillHerd):
         """
         return r"""Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010."""
 
-    @staticmethod
-    def type_parameters():
-        r"""Get dictionary with functions for checking values of parameters.
-
-        Returns:
-            Dict[str, Callable]: Dictionary with testing functions for parameters.
-
-        See Also:
-            * :func:niapy.algorithms.basic.kh.KrillHerd.type_parameters`
-
-        """
-        d = KrillHerd.type_parameters()
-        return d
-
     def __init__(self, *args, **kwargs):
         """Initialize KrillHerdV4."""
         super().__init__(max_neighbors=4, crossover_rate=0.2, mutation_rate=0.05, *args, **kwargs)
@@ -609,19 +562,6 @@ class KrillHerdV1(KrillHerd):
         """
         return r"""Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010."""
 
-    @staticmethod
-    def type_parameters():
-        r"""Get dictionary with functions for checking values of parameters.
-
-        Returns:
-            Dict[str, Callable]: Dictionary with testing functions for parameters.
-
-        See Also:
-            * :func:niapy.algorithms.basic.kh.KrillHerd.type_parameters`
-
-        """
-        return KrillHerd.type_parameters()
-
     def crossover(self, x, xo, crossover_rate):
         r"""Preform a crossover operation on individual.
 
@@ -692,21 +632,6 @@ class KrillHerdV2(KrillHerd):
         """
         return r"""Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010."""
 
-    @staticmethod
-    def type_parameters():
-        r"""Get dictionary with functions for checking values of parameters.
-
-        Returns:
-            Dict[str, Callable]: Dictionary with testing functions for algorithms parameters.
-
-        See Also:
-            * :func:niapy.algorithms.basic.kh.KrillHerd.type_parameters`
-
-        """
-        d = KrillHerd.type_parameters()
-        d.pop('Mu', None)
-        return d
-
     def mutate(self, x, x_b, mutation_rate):
         r"""Mutate individual.
 
@@ -759,20 +684,6 @@ class KrillHerdV3(KrillHerd):
 
         """
         return r"""Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010."""
-
-    @staticmethod
-    def type_parameters():
-        r"""Get dictionary with functions for checking values of parameters.
-
-        Returns:
-            Dict[str, Callable]: Dictionary with testing functions for algorithms parameters.
-
-        See Also:
-            * :func:niapy.algorithms.basic.kh.KrillHerd.type_parameters`
-
-        """
-        d = KrillHerd.type_parameters()
-        return d
 
     def crossover(self, x, xo, crossover_rate):
         r"""Crossover operator.

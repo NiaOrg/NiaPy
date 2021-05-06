@@ -13,7 +13,7 @@ from niapy.benchmarks import Sphere
 # we will run Differential Evolution for 5 independent runs
 for i in range(5):
     task = StoppingTask(max_evals=10000, dimension=10, benchmark=Sphere())
-    algo = DynNpDifferentialEvolutionMTSv1(population_size=50, F=0.8, CR=0.4, pmax=20)
+    algo = DynNpDifferentialEvolutionMTSv1(population_size=50, differential_weight=0.8, crossover_probability=0.4, p_max=20)
     best = algo.run(task)
     print('%s -> %s' % (best[0], best[1]))
 

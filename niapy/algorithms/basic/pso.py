@@ -67,29 +67,6 @@ class ParticleSwarmAlgorithm(Algorithm):
         """
         return r"""Kennedy, J. and Eberhart, R. "Particle Swarm Optimization". Proceedings of IEEE International Conference on Neural Networks. IV. pp. 1942--1948, 1995."""
 
-    @staticmethod
-    def type_parameters():
-        r"""Get dictionary with functions for checking values of parameters.
-
-        Returns:
-            Dict[str, Callable[[Union[int, float]], bool]]:
-                * c1 (Callable[[Union[int, float]], bool])
-                * c2 (Callable[[Union[int, float]], bool])
-                * w (Callable[[float], bool])
-                * min_velocity (Callable[[Union[int, float]], bool])
-                * nax_velocity (Callable[[Union[int, float], bool])
-
-        """
-        d = Algorithm.type_parameters()
-        d.update({
-            'c1': lambda x: isinstance(x, (int, float)) and x >= 0,
-            'c2': lambda x: isinstance(x, (int, float)) and x >= 0,
-            'w': lambda x: isinstance(x, float) and x >= 0,
-            'min_velocity': lambda x: isinstance(x, (int, float)),
-            'max_velocity': lambda x: isinstance(x, (int, float))
-        })
-        return d
-
     def __init__(self, population_size=25, c1=2.0, c2=2.0, w=0.7, min_velocity=-1.5, max_velocity=1.5, repair=reflect,
                  *args, **kwargs):
         """Initialize ParticleSwarmAlgorithm.
@@ -320,20 +297,6 @@ class ParticleSwarmOptimization(ParticleSwarmAlgorithm):
 
         """
         return r"""Kennedy, J. and Eberhart, R. "Particle Swarm Optimization". Proceedings of IEEE International Conference on Neural Networks. IV. pp. 1942--1948, 1995."""
-
-    @staticmethod
-    def type_parameters():
-        r"""Get dictionary with functions for checking values of parameters.
-
-        Returns:
-            Dict[str, Callable[[Union[int, float]], bool]]:
-            * population_size: Population size.
-            * c1: Cognitive component.
-            * c2: Social component.
-
-        """
-        d = ParticleSwarmAlgorithm.type_parameters()
-        return d
 
     def __init__(self, *args, **kwargs):
         """Initialize ParticleSwarmOptimization."""

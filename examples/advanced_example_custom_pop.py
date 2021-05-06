@@ -39,7 +39,7 @@ for i in range(10):
                         benchmark=MyBenchmark())
 
     # parameter is population size
-    algo = GreyWolfOptimizer(NP=20, initialization_function=MyInit)
+    algo = GreyWolfOptimizer(population_size=20, initialization_function=MyInit)
 
     # running algorithm returns best found minimum
     best = algo.run(task)

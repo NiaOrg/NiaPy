@@ -27,20 +27,6 @@ class SolutionJDETestCase(TestCase):
 
 
 class JDETestCase(AlgorithmTestCase):
-    def test_typeParameters(self):
-        d = SelfAdaptiveDifferentialEvolution.type_parameters()
-        self.assertTrue(d['f_lower'](10))
-        self.assertFalse(d['f_lower'](-10))
-        self.assertFalse(d['f_lower'](-0))
-        self.assertTrue(d['f_upper'](10))
-        self.assertFalse(d['f_upper'](-10))
-        self.assertFalse(d['f_upper'](-0))
-        self.assertTrue(d['tao1'](0.32))
-        self.assertFalse(d['tao1'](-1.123))
-        self.assertFalse(d['tao1'](1.123))
-        self.assertTrue(d['tao2'](0.32))
-        self.assertFalse(d['tao2'](-1.123))
-        self.assertFalse(d['tao2'](1.123))
 
     def test_custom(self):
         jde_custom = SelfAdaptiveDifferentialEvolution(f_lower=0.0, f_upper=2.0, tao1=0.9, tao2=0.45,
@@ -85,17 +71,6 @@ class MsjDETestCase(AlgorithmTestCase):
         AlgorithmTestCase.test_algorithm_run(self, jde_griewank, jde_griewankc)
 
 # class DynNPjDETestCase(AlgorithmTestCase):
-#     def test_typeParameters(self):
-#         d = DynNpSelfAdaptiveDifferentialEvolutionAlgorithm.type_parameters()
-#         self.assertTrue(d['rp'](10))
-#         self.assertTrue(d['rp'](10.10))
-#         self.assertFalse(d['rp'](0))
-#         self.assertFalse(d['rp'](-10))
-#         self.assertTrue(d['p_max'](10))
-#         self.assertFalse(d['p_max'](0))
-#         self.assertFalse(d['p_max'](-10))
-#         self.assertFalse(d['p_max'](10.12))
-#
 #     @skip("Not working")
 #     def test_custom(self):
 #         dynnpjde_custom = DynNpSelfAdaptiveDifferentialEvolutionAlgorithm(population_size=40, differential_weight=0.5, f_lower=0.0, f_upper=2.0, tao1=0.9,

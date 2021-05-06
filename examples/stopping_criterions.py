@@ -13,7 +13,7 @@ from niapy.benchmarks import Sphere
 # 1 Number of function evaluations (nFES) as a stopping criteria
 for i in range(10):
     task = StoppingTask(max_evals=10000, dimension=10, benchmark=Sphere())
-    algo = DifferentialEvolution(population_size=40, CR=0.9, F=0.5)
+    algo = DifferentialEvolution(population_size=40, crossover_probability=0.9, differential_weight=0.5)
     best = algo.run(task)
     print('%s -> %s' % (best[0], best[1]))
 
@@ -22,7 +22,7 @@ print('---------------------------------------')
 # 2 Number of generations (iterations) as a stopping criteria
 for i in range(10):
     task = StoppingTask(max_iters=1000, dimension=10, benchmark=Sphere())
-    algo = DifferentialEvolution(population_size=40, CR=0.9, F=0.5)
+    algo = DifferentialEvolution(population_size=40, crossover_probability=0.9, differential_weight=0.5)
     best = algo.run(task)
     print('%s -> %s' % (best[0], best[1]))
 
@@ -31,6 +31,6 @@ print('---------------------------------------')
 # 3 Reference value as a stopping criteria
 for i in range(10):
     task = StoppingTask(cutoff_value=50.0, dimension=10, benchmark=Sphere())
-    algo = DifferentialEvolution(population_size=40, CR=0.9, F=0.5)
+    algo = DifferentialEvolution(population_size=40, crossover_probability=0.9, differential_weight=0.5)
     best = algo.run(task)
     print('%s -> %s' % (best[0], best[1]))

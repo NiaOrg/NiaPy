@@ -59,14 +59,6 @@ class BareBonesFireworksAlgorithm(Algorithm):
         """
         return r"""Junzhi Li, Ying Tan, The bare bones fireworks algorithm: A minimalist global optimizer, Applied Soft Computing, Volume 62, 2018, Pages 454-462, ISSN 1568-4946, https://doi.org/10.1016/j.asoc.2017.10.046."""
 
-    @staticmethod
-    def type_parameters():
-        return {
-            'num_sparks': lambda x: isinstance(x, int) and x > 0,
-            'amplification_coefficient': lambda x: isinstance(x, (float, int)) and x > 1,
-            'reduction_coefficient': lambda x: isinstance(x, (float, int)) and 0 < x < 1
-        }
-
     def __init__(self, num_sparks=10, amplification_coefficient=1.5, reduction_coefficient=0.5, *args, **kwargs):
         r"""Initialize BareBonesFireworksAlgorithm.
 
@@ -190,16 +182,6 @@ class FireworksAlgorithm(Algorithm):
 
         """
         return r"""Tan, Ying. "Fireworks algorithm." Heidelberg, Germany: Springer 10 (2015): 978-3."""
-
-    @staticmethod
-    def type_parameters():
-        return {
-            'N': lambda x: isinstance(x, int) and x > 0,
-            'm': lambda x: isinstance(x, int) and x > 0,
-            'a': lambda x: isinstance(x, (int, float)) and x > 0,
-            'b': lambda x: isinstance(x, (int, float)) and x > 0,
-            'epsilon': lambda x: isinstance(x, float) and 0 < x < 1
-        }
 
     def __init__(self, population_size=5, num_sparks=50, a=0.04, b=0.8, max_amplitude=40, num_gaussian=5, *args, **kwargs):
         """Initialize FWA.
@@ -456,24 +438,6 @@ class EnhancedFireworksAlgorithm(FireworksAlgorithm):
         """
         return r"""S. Zheng, A. Janecek and Y. Tan, "Enhanced Fireworks Algorithm," 2013 IEEE Congress on Evolutionary Computation, Cancun, 2013, pp. 2069-2077. doi: 10.1109/CEC.2013.6557813"""
 
-    @staticmethod
-    def type_parameters():
-        r"""Get dictionary with functions for checking values of parameters.
-
-        Returns:
-            Dict[str, Callable]:
-                * amplitude_init (Callable[[Union[int, float]], bool]): Initial amplitude.
-                * amplitude_final (Callable[[Union[int, float]], bool]): Final amplitude.
-
-        See Also:
-            * :func:`FireworksAlgorithm.type_parameters`
-
-        """
-        d = FireworksAlgorithm.type_parameters()
-        d['amplitude_init'] = lambda x: isinstance(x, (float, int)) and x > 0
-        d['amplitude_final'] = lambda x: isinstance(x, (float, int)) and x > 0
-        return d
-
     def __init__(self, amplitude_init=0.2, amplitude_final=0.01, *args, **kwargs):
         """Initialize EFWA.
 
@@ -644,24 +608,6 @@ class DynamicFireworksAlgorithmGauss(EnhancedFireworksAlgorithm):
 
         """
         return r"""S. Zheng, A. Janecek, J. Li and Y. Tan, "Dynamic search in fireworks algorithm," 2014 IEEE Congress on Evolutionary Computation (CEC), Beijing, 2014, pp. 3222-3229. doi: 10.1109/CEC.2014.6900485"""
-
-    @staticmethod
-    def type_parameters():
-        r"""Get dictionary with functions for checking values of parameters.
-
-        Returns:
-            Dict[str, Callable]:
-                * amplitude_cf (Callable[[Union[float, int], bool]): Amplitude of the core firework.
-
-        See Also:
-            * :func:`FireworksAlgorithm.type_parameters`
-
-        """
-        d = FireworksAlgorithm.type_parameters()
-        d['amplitude_cf'] = lambda x: isinstance(x, (float, int)) and x > 0
-        d['amplification_coeff'] = lambda x: isinstance(x, (float, int)) and x > 1
-        d['reduction_coeff'] = lambda x: isinstance(x, (float, int)) and 0 < x < 1
-        return d
 
     def __init__(self, amplification_coeff=1.2, reduction_coeff=0.9, *args, **kwargs):
         """Initialize dynFWAG.

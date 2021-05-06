@@ -57,30 +57,6 @@ class BatAlgorithm(Algorithm):
         """
         return r"""Yang, Xin-She. "A new metaheuristic bat-inspired algorithm." Nature inspired cooperative strategies for optimization (NICSO 2010). Springer, Berlin, Heidelberg, 2010. 65-74."""
 
-    @staticmethod
-    def type_parameters():
-        r"""Return dict with where key of dict represents parameter name and values represent checking functions for selected parameter.
-
-        Returns:
-            Dict[str, Callable]:
-                * loudness (Callable[[Union[float, int]], bool]): Loudness.
-                * pulse_rate (Callable[[Union[float, int]], bool]): Pulse rate.
-                * min_frequency (Callable[[Union[float, int]], bool]): Minimum frequency.
-                * max_frequency (Callable[[Union[float, int]], bool]): Maximum frequency.
-
-        See Also:
-            * :func:`niapy.algorithms.Algorithm.type_parameters`
-
-        """
-        d = Algorithm.type_parameters()
-        d.update({
-            'loudness': lambda x: isinstance(x, (float, int)) and x > 0,
-            'pulse_rate': lambda x: isinstance(x, (float, int)) and x > 0,
-            'min_frequency': lambda x: isinstance(x, (float, int)),
-            'max_frequency': lambda x: isinstance(x, (float, int))
-        })
-        return d
-
     def __init__(self, population_size=40, loudness=0.5, pulse_rate=0.5, min_frequency=0.0, max_frequency=2.0, *args,
                  **kwargs):
         """Initialize BatAlgorithm.
