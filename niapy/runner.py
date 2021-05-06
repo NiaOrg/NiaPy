@@ -8,8 +8,8 @@ import os
 
 import pandas as pd
 
-from niapy.algorithms import AlgorithmUtility
 from niapy.task import StoppingTask, OptimizationType
+from niapy.util.factory import get_algorithm
 
 logging.basicConfig()
 logger = logging.getLogger('niapy.runner.Runner')
@@ -131,7 +131,7 @@ class Runner:
 
                 self.results[alg_name][bench_name] = []
                 for _ in range(self.runs):
-                    algorithm = AlgorithmUtility().get_algorithm(alg)
+                    algorithm = get_algorithm(alg)
                     benchmark_stopping_task = self.task_factory(bench)
                     self.results[alg_name][bench_name].append(algorithm.run(benchmark_stopping_task))
             if verbose:

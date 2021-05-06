@@ -4,10 +4,8 @@ from unittest import TestCase
 import numpy as np
 from numpy.random import default_rng
 
-from niapy.algorithms import Algorithm, AlgorithmUtility
-from niapy.algorithms.basic import GreyWolfOptimizer
+from niapy.algorithms import Algorithm
 from niapy.benchmarks import Benchmark
-from niapy.task import Utility
 from niapy.util import full_array, repair
 
 
@@ -133,16 +131,6 @@ class MyBenchmark(Benchmark):
         return evaluate
 
 
-class UtilityTestCase(TestCase):
-    def setUp(self):
-        self.u = Utility()
-
-    def test_get_bad_benchmark(self):
-        self.assertRaises(TypeError, lambda: self.u.get_benchmark('hihihihihihihihihi'))
-        self.assertRaises(TypeError, lambda: self.u.get_benchmark(MyBenchmark))
-        self.assertRaises(TypeError, lambda: self.u.get_benchmark(NoLimits))
-
-
 class MyFakeAlgorithm:
     def __init__(self):
         pass
@@ -150,22 +138,6 @@ class MyFakeAlgorithm:
 
 class MyCustomAlgorithm(Algorithm):
     pass
-
-
-class AlgorithmUtilityTestCase(TestCase):
-    def setUp(self):
-        self.algorithm_utility = AlgorithmUtility()
-
-    def test_get_bad_algorithm(self):
-        self.assertRaises(TypeError, lambda: self.algorithm_utility.get_algorithm('hihihihihihihihihi'))
-        self.assertRaises(TypeError, lambda: self.algorithm_utility.get_algorithm(MyFakeAlgorithm()))
-
-    def test_get_algorithm(self):
-        algorithm = MyCustomAlgorithm()
-        gwo = GreyWolfOptimizer()
-        self.assertEqual(algorithm, self.algorithm_utility.get_algorithm(algorithm))
-        self.assertEqual(gwo, self.algorithm_utility.get_algorithm(gwo))
-        self.assertTrue(isinstance(self.algorithm_utility.get_algorithm("GreyWolfOptimizer"), GreyWolfOptimizer))
 
 
 class LimitRepairTestCase(TestCase):

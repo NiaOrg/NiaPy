@@ -7,10 +7,10 @@ from enum import Enum
 
 import numpy as np
 from matplotlib import pyplot as plt
-
-from niapy.task.utility import Utility
+from niapy.benchmarks import Benchmark
 from niapy.util.array import full_array
 import niapy.util.repair as repair
+from niapy.util.factory import get_benchmark
 from niapy.util.exception import FesException, GenException, RefException
 
 logging.basicConfig()
@@ -70,7 +70,11 @@ class Task:
         # set optimization type
         self.optimization_type = optimization_type
         # set optimization function
-        self.benchmark = Utility().get_benchmark(benchmark) if benchmark is not None else None
+        self.benchmark = None
+        if isinstance(benchmark, str):
+            self.benchmark = get_benchmark(benchmark)
+        elif isinstance(benchmark, Benchmark):
+            self.benchmark = benchmark
 
         if self.benchmark is not None:
             self.function = self.benchmark.function() if self.benchmark is not None else None

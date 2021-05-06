@@ -29,13 +29,13 @@ class RunnerTestCase(TestCase):
         self.assertTrue(niapy.Runner(7, 100, 2, self.algorithms, self.benchmarks).run())
 
     def test_runner_bad_algorithm_throws(self):
-        self.assertRaises(TypeError, lambda: niapy.Runner(4, 10, 3, 'EvolutionStrategy', self.benchmarks).run())
+        self.assertRaises(KeyError, lambda: niapy.Runner(4, 10, 3, ['EvolutionStrategy'], self.benchmarks).run())
 
     def test_runner_bad_benchmark_throws(self):
-        self.assertRaises(TypeError, lambda: niapy.Runner(4, 10, 3, 'EvolutionStrategy1p1', 'TesterMan').run())
+        self.assertRaises(KeyError, lambda: niapy.Runner(4, 10, 3, ['EvolutionStrategy1p1'], ['TesterMan']).run())
 
     def test_runner_bad_export_throws(self):
         self.assertRaises(TypeError,
-                          lambda: niapy.Runner(4, 10, 3, 'GreyWolfOptimizer', self.benchmarks).run(export="pandas"))
+                          lambda: niapy.Runner(4, 10, 3, ['GreyWolfOptimizer'], self.benchmarks).run(export="pandas"))
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
