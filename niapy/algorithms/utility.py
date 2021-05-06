@@ -1,21 +1,20 @@
 # encoding=utf8
-from niapy.algorithms.algorithm import Algorithm
 from niapy.algorithms import basic as basic_algorithms
 from niapy.algorithms import modified as modified_algorithms
 from niapy.algorithms import other as other_algorithms
+from niapy.algorithms.algorithm import Algorithm
 
 
 class AlgorithmUtility:
     r"""Base class with string mappings to algorithms.
 
     Attributes:
-        classes (Dict[str, Algorithm]): Mapping from stings to algorithms.
+        algorithm_classes (Dict[str, Algorithm]): Mapping from stings to algorithms.
 
     """
 
     def __init__(self):
         r"""Initialize the algorithms."""
-
         self.algorithm_classes = {
             "BatAlgorithm": basic_algorithms.BatAlgorithm,
             "FireflyAlgorithm": basic_algorithms.FireflyAlgorithm,
@@ -25,7 +24,7 @@ class AlgorithmUtility:
             "DynNpDifferentialEvolution": basic_algorithms.DynNpDifferentialEvolution,
             "MultiStrategyDifferentialEvolution": basic_algorithms.MultiStrategyDifferentialEvolution,
             "DynNpMultiStrategyDifferentialEvolution": basic_algorithms.DynNpMultiStrategyDifferentialEvolution,
-            "AgingNpMultiMutationDifferentialEvolution": basic_algorithms.AgingNpMultiMutationDifferentialEvolution,
+            # "AgingNpMultiMutationDifferentialEvolution": basic_algorithms.AgingNpMultiMutationDifferentialEvolution,
             "FlowerPollinationAlgorithm": basic_algorithms.FlowerPollinationAlgorithm,
             "GreyWolfOptimizer": basic_algorithms.GreyWolfOptimizer,
             "GeneticAlgorithm": basic_algorithms.GeneticAlgorithm,
@@ -72,9 +71,9 @@ class AlgorithmUtility:
             "MultiStrategyDifferentialEvolutionMTS": modified_algorithms.MultiStrategyDifferentialEvolutionMTS,
             "MultiStrategyDifferentialEvolutionMTSv1": modified_algorithms.MultiStrategyDifferentialEvolutionMTSv1,
             "SelfAdaptiveDifferentialEvolution": modified_algorithms.SelfAdaptiveDifferentialEvolution,
-            "DynNpSelfAdaptiveDifferentialEvolutionAlgorithm": modified_algorithms.DynNpSelfAdaptiveDifferentialEvolutionAlgorithm,
+            # "DynNpSelfAdaptiveDifferentialEvolutionAlgorithm": modified_algorithms.DynNpSelfAdaptiveDifferentialEvolutionAlgorithm,
             "MultiStrategySelfAdaptiveDifferentialEvolution": modified_algorithms.MultiStrategySelfAdaptiveDifferentialEvolution,
-            "AgingSelfAdaptiveDifferentialEvolution": modified_algorithms.AgingSelfAdaptiveDifferentialEvolution,
+            # "AgingSelfAdaptiveDifferentialEvolution": modified_algorithms.AgingSelfAdaptiveDifferentialEvolution,
             "NelderMeadMethod": other_algorithms.NelderMeadMethod,
             "HillClimbAlgorithm": other_algorithms.HillClimbAlgorithm,
             "SimulatedAnnealing": other_algorithms.SimulatedAnnealing,
@@ -88,13 +87,13 @@ class AlgorithmUtility:
     def get_algorithm(self, algorithm):
         r"""Get the algorithm.
 
-        Arguments:
+        Args:
             algorithm (Union[str, Algorithm]): String or class that represents the algorithm.
 
         Returns:
             Algorithm: Instance of an Algorithm.
-        """
 
+        """
         if issubclass(type(algorithm), Algorithm) or isinstance(algorithm, Algorithm):
             return algorithm
         elif algorithm in self.algorithm_classes:

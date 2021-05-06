@@ -11,142 +11,103 @@ logger.setLevel('INFO')
 
 __all__ = ['MothFlameOptimizer']
 
+
 class MothFlameOptimizer(Algorithm):
-	r"""MothFlameOptimizer of Moth flame optimizer.
+    r"""MothFlameOptimizer of Moth flame optimizer.
 
-	Algorithm:
-		Moth flame optimizer
+    Algorithm:
+        Moth flame optimizer
 
-	Date:
-		2018
+    Date:
+        2018
 
-	Author:
-		Kivanc Guckiran and Klemen Berkovič
+    Author:
+        Kivanc Guckiran and Klemen Berkovič
 
-	License:
-		MIT
+    License:
+        MIT
 
-	Reference paper:
-		Mirjalili, Seyedali. "Moth-flame optimization algorithm: A novel nature-inspired heuristic paradigm." Knowledge-Based Systems 89 (2015): 228-249.
+    Reference paper:
+        Mirjalili, Seyedali. "Moth-flame optimization algorithm: A novel nature-inspired heuristic paradigm." Knowledge-Based Systems 89 (2015): 228-249.
 
-	Attributes:
-		Name (List[str]): List of strings representing algorithm name.
+    Attributes:
+        Name (List[str]): List of strings representing algorithm name.
 
-	See Also:
-		* :class:`niapy.algorithms.algorithm.Algorithm`
-	"""
-	Name = ['MothFlameOptimizer', 'MFO']
+    See Also:
+        * :class:`niapy.algorithms.algorithm.Algorithm`
 
-	@staticmethod
-	def algorithmInfo():
-		r"""Get basic information of algorithm.
+    """
 
-		Returns:
-			str: Basic information.
+    Name = ['MothFlameOptimizer', 'MFO']
 
-		See Also:
-			* :func:`niapy.algorithms.Algorithm.algorithmInfo`
-		"""
-		return r"""Mirjalili, Seyedali. "Moth-flame optimization algorithm: A novel nature-inspired heuristic paradigm." Knowledge-Based Systems 89 (2015): 228-249."""
+    @staticmethod
+    def info():
+        r"""Get basic information of algorithm.
 
-	@staticmethod
-	def typeParameters():
-		r"""Get dictionary with functions for checking values of parameters.
+        Returns:
+            str: Basic information.
 
-		Returns:
-			Dict[str, Callable]: TODO
+        See Also:
+            * :func:`niapy.algorithms.Algorithm.info`
 
-		See Also:
-			* :func:`niapy.algorithms.algorithm.Algorithm.typeParameters`
-		"""
-		return Algorithm.typeParameters()
+        """
+        return r"""Mirjalili, Seyedali. "Moth-flame optimization algorithm: A novel nature-inspired heuristic paradigm." Knowledge-Based Systems 89 (2015): 228-249."""
 
-	def setParameters(self, NP=25, **ukwargs):
-		r"""Set the algorithm parameters.
+    @staticmethod
+    def type_parameters():
+        r"""Get dictionary with functions for checking values of parameters.
 
-		Arguments:
-			NP (int): Number of individuals in population
+        Returns:
+            Dict[str, Callable]: Parameter type checks.
 
-		See Also:
-			* :func:`niapy.algorithms.algorithm.Algorithm.setParameters`
-		"""
-		Algorithm.setParameters(self, NP=NP, **ukwargs)
+        See Also:
+            * :func:`niapy.algorithms.algorithm.Algorithm.type_parameters`
 
-	def initPopulation(self, task):
-		r"""Initialize starting population.
+        """
+        return Algorithm.type_parameters()
 
-		Args:
-			task (Task): Optimization task
+    def run_iteration(self, task, population, population_fitness, best_x, best_fitness, **params):
+        r"""Core function of MothFlameOptimizer algorithm.
 
-		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
-				1. Initialized population
-				2. Initialized population function/fitness values
-				3. Additional arguments:
-					* best_flames (numpy.ndarray): Best individuals
-					* best_flame_fitness (numpy.ndarray): Best individuals fitness/function values
-					* previous_population (numpy.ndarray): Previous population
-					* previous_fitness (numpy.ndarray[float]): Previous population fitness/function values
+        Args:
+            task (Task): Optimization task.
+            population (numpy.ndarray): Current population.
+            population_fitness (numpy.ndarray): Current population fitness/function values.
+            best_x (numpy.ndarray): Current population best individual.
+            best_fitness (float): Current best individual.
+            **params (Dict[str, Any]): Additional parameters
 
-		See Also:
-			* :func:`niapy.algorithms.algorithm.Algorithm.initPopulation`
-		"""
-		moth_pos, moth_fitness, d = Algorithm.initPopulation(self, task)
-		# Create best population
-		indexes = np.argsort(moth_fitness)
-		best_flames, best_flame_fitness = moth_pos[indexes], moth_fitness[indexes]
-		# Init previous population
-		previous_population, previous_fitness = np.zeros((self.NP, task.D)), np.zeros(self.NP)
-		d.update({'best_flames': best_flames, 'best_flame_fitness': best_flame_fitness, 'previous_population': previous_population, 'previous_fitness': previous_fitness})
-		return moth_pos, moth_fitness, d
+        Returns:
+            Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, float, Dict[str, Any]]:
+                1. New population.
+                2. New population fitness/function values.
+                3. New global best solution.
+                4. New global best fitness/objective value.
+                5. Additional arguments:
+                    * best_flames (numpy.ndarray): Best individuals.
+                    * best_flame_fitness (numpy.ndarray): Best individuals fitness/function values.
+                    * previous_population (numpy.ndarray): Previous population.
+                    * previous_fitness (numpy.ndarray): Previous population fitness/function values.
 
-	def runIteration(self, task, moth_pos, moth_fitness, xb, fxb, best_flames, best_flame_fitness, previous_population, previous_fitness, **dparams):
-		r"""Core function of MothFlameOptimizer algorithm.
-
-		Args:
-			task (Task): Optimization task.
-			moth_pos (numpy.ndarray): Current population.
-			moth_fitness (numpy.ndarray): Current population fitness/function values.
-			xb (numpy.ndarray): Current population best individual.
-			fxb (float): Current best individual.
-			best_flames (numpy.ndarray): Best found individuals.
-			best_flame_fitness (numpy.ndarray): Best found individuals fitness/function values.
-			previous_population (numpy.ndarray): Previous population.
-			previous_fitness (numpy.ndarray): Previous population fitness/function values.
-			**dparams (Dict[str, Any]): Additional parameters
-
-		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, float, Dict[str, Any]]:
-				1. New population.
-				2. New population fitness/function values.
-				3. New global best solution.
-				4. New global best fitness/objective value.
-				5. Additional arguments:
-					* best_flames (numpy.ndarray): Best individuals.
-					* best_flame_fitness (numpy.ndarray): Best individuals fitness/function values.
-					* previous_population (numpy.ndarray): Previous population.
-					* previous_fitness (numpy.ndarray): Previous population fitness/function values.
-		"""
-		# Previous positions
-		previous_population, previous_fitness = moth_pos, moth_fitness
-		# Create sorted population
-		indexes = np.argsort(moth_fitness)
-		sorted_population = moth_pos[indexes]
-		# Some parameters
-		flame_no, a = round(self.NP - (task.Iters + 1) * ((self.NP - 1) / task.nGEN)), -1 + (task.Iters + 1) * ((-1) / task.nGEN)
-		for i in range(self.NP):
-			for j in range(task.D):
-				distance_to_flame, b, t = abs(sorted_population[i, j] - moth_pos[i, j]), 1, (a - 1) * self.random() + 1
-				if i <= flame_no: moth_pos[i, j] = distance_to_flame * np.exp(b * t) * np.cos(2 * np.pi * t) + sorted_population[i, j]
-				else: moth_pos[i, j] = distance_to_flame * np.exp(b * t) * np.cos(2 * np.pi * t) + sorted_population[flame_no, j]
-		moth_pos = np.apply_along_axis(task.repair, 1, moth_pos, self.rng)
-		moth_fitness = np.apply_along_axis(task.eval, 1, moth_pos)
-		xb, fxb = self.getBest(moth_pos, moth_fitness, xb, fxb)
-		double_population, double_fitness = np.concatenate((previous_population, best_flames), axis=0), np.concatenate((previous_fitness, best_flame_fitness), axis=0)
-		indexes = np.argsort(double_fitness)
-		double_sorted_fitness, double_sorted_population = double_fitness[indexes], double_population[indexes]
-		for newIdx in range(2 * self.NP): double_sorted_population[newIdx] = np.array(double_population[indexes[newIdx], :])
-		best_flame_fitness, best_flames = double_sorted_fitness[:self.NP], double_sorted_population[:self.NP]
-		return moth_pos, moth_fitness, xb, fxb, {'best_flames': best_flames, 'best_flame_fitness': best_flame_fitness, 'previous_population': previous_population, 'previous_fitness': previous_fitness}
+        """
+        # Previous positions
+        # Create sorted population
+        indexes = np.argsort(population_fitness)
+        sorted_population = population[indexes]
+        # Some parameters
+        flame_no, a = round(self.population_size - (task.iters + 1) * ((self.population_size - 1) / task.max_iters)), -1 + (task.iters + 1) * (
+                    (-1) / task.max_iters)
+        for i in range(self.population_size):
+            for j in range(task.dimension):
+                distance_to_flame, b, t = abs(sorted_population[i, j] - population[i, j]), 1, (a - 1) * self.random() + 1
+                if i <= flame_no:
+                    population[i, j] = distance_to_flame * np.exp(b * t) * np.cos(2 * np.pi * t) + sorted_population[i, j]
+                else:
+                    population[i, j] = distance_to_flame * np.exp(b * t) * np.cos(2 * np.pi * t) + sorted_population[
+                        flame_no, j]
+        population = np.apply_along_axis(task.repair, 1, population, self.rng)
+        population_fitness = np.apply_along_axis(task.eval, 1, population)
+        best_x, best_fitness = self.get_best(population, population_fitness, best_x, best_fitness)
+        return population, population_fitness, best_x, best_fitness, {}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

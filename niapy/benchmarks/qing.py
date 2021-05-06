@@ -1,12 +1,13 @@
 # encoding=utf8
 
 
-"""Implementaiton of Qing funcion."""
+"""Implementation of Qing funcion."""
 
 import math
 from niapy.benchmarks.benchmark import Benchmark
 
 __all__ = ['Qing']
+
 
 class Qing(Benchmark):
     r"""Implementation of Qing function.
@@ -29,41 +30,45 @@ class Qing(Benchmark):
 
     LaTeX formats:
         Inline:
-                $f(\mathbf{x}) = \sum_{i=1}^D \left (x_i^2 - i\right)^2$
+            $f(\mathbf{x}) = \sum_{i=1}^D \left (x_i^2 - i\right)^2$
 
         Equation:
-                \begin{equation} f(\mathbf{x}) =
-                \sum_{i=1}^D \left{(x_i^2 - i\right)}^2 \end{equation}
+            \begin{equation} f(\mathbf{x}) =
+            \sum_{i=1}^D \left{(x_i^2 - i\right)}^2 \end{equation}
 
         Domain:
-                $-500 \leq x_i \leq 500$
+            $-500 \leq x_i \leq 500$
 
     Reference paper:
         Jamil, M., and Yang, X. S. (2013).
         A literature survey of benchmark functions for global optimisation problems.
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
+
     """
+
     Name = ['Qing']
 
-    def __init__(self, Lower=-500.0, Upper=500.0):
+    def __init__(self, lower=-500.0, upper=500.0):
         r"""Initialize of Qing benchmark.
 
         Args:
-            Lower (Optional[float]): Lower bound of problem.
-            Upper (Optional[float]): Upper bound of problem.
+            lower (Optional[float]): Lower bound of problem.
+            upper (Optional[float]): Upper bound of problem.
 
         See Also:
             :func:`niapy.benchmarks.Benchmark.__init__`
+
         """
-        Benchmark.__init__(self, Lower, Upper)
+        super().__init__(lower, upper)
 
     @staticmethod
     def latex_code():
         r"""Return the latex code of the problem.
 
         Returns:
-            str: Latex code
+            str: Latex code.
+
         """
         return r'''$f(\mathbf{x}) = \sum_{i=1}^D \left (x_i^2 - i\right)^2$'''
 
@@ -71,22 +76,25 @@ class Qing(Benchmark):
         r"""Return benchmark evaluation function.
 
         Returns:
-            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function
+            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
+
         """
-        def evaluate(D, sol):
+
+        def evaluate(dimension, x):
             r"""Fitness function.
 
             Args:
-                D (int): Dimensionality of the problem
-                sol (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
+                dimension (int): Dimensionality of the problem
+                x (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
 
             Returns:
                 float: Fitness value for the solution.
+
             """
             val = 0.0
 
-            for i in range(D):
-                val += math.pow(math.pow(sol[i], 2) - i, 2)
+            for i in range(dimension):
+                val += math.pow(math.pow(x[i], 2) - i, 2)
 
             return val
 

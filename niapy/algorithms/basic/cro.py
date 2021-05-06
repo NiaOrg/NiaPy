@@ -1,8 +1,9 @@
 # encoding=utf8
 import logging
+
 import numpy as np
+
 from niapy.algorithms.algorithm import Algorithm
-from niapy.util import euclidean
 
 logging.basicConfig()
 logger = logging.getLogger('niapy.algorithms.basic')
@@ -10,284 +11,374 @@ logger.setLevel('INFO')
 
 __all__ = ['CoralReefsOptimization']
 
-def SexualCrossoverSimple(pop, p, task, rng, **kwargs):
-	r"""Sexual reproduction of corals.
 
-	Args:
-		pop (numpy.ndarray): Current population.
-		p (float): Probability in range [0, 1].
-		task (Task): Optimization task.
-		rng (numpy.random.Generator): Random generator.
-		**kwargs (Dict[str, Any]): Additional arguments.
+def default_sexual_crossover(pop, p, task, rng, **_kwargs):
+    r"""Sexual reproduction of corals.
 
-	Returns:
-		Tuple[numpy.ndarray, numpy.ndarray]:
-			1. New population.
-			2. New population function/fitness values.
-	"""
-	for i in range(len(pop) // 2):
-		pop[i] = np.asarray([pop[i, d] if rng.random() < p else pop[i * 2, d] for d in range(task.D)])
-	return pop, np.apply_along_axis(task.eval, 1, pop)
+    Args:
+        pop (numpy.ndarray): Current population.
+        p (float): Probability in range [0, 1].
+        task (Task): Optimization task.
+        rng (numpy.random.Generator): Random generator.
 
-def BroodingSimple(pop, p, task, rng, **kwargs):
-	r"""Brooding or internal sexual reproduction of corals.
+    Returns:
+        Tuple[numpy.ndarray, numpy.ndarray]:
+            1. New population.
+            2. New population function/fitness values.
 
-	Args:
-		pop (numpy.ndarray): Current population.
-		p (float): Probability in range [0, 1].
-		task (Task): Optimization task.
-		rng (numpy.random.Generator): Random generator.
-		**kwargs (Dict[str, Any]): Additional arguments.
+    """
+    for i in range(len(pop) // 2):
+        pop[i] = np.asarray([pop[i, d] if rng.random() < p else pop[i * 2, d] for d in range(task.dimension)])
+    return pop, np.apply_along_axis(task.eval, 1, pop)
 
-	Returns:
-		Tuple[numpy.ndarray, numpy.ndarray]:
-			1. New population.
-			2. New population function/fitness values.
-	"""
-	for i in range(len(pop)):
-		pop[i] = task.repair(np.asarray([pop[i, d] if rng.random() < p else task.Lower[d] + task.bRange[d] * rng.random() for d in range(task.D)]), rng=rng)
-	return pop, np.apply_along_axis(task.eval, 1, pop)
 
-def MoveCorals(pop, p, F, task, rng, **kwargs):
-	r"""Move corals.
+def default_brooding(pop, p, task, rng, **_kwargs):
+    r"""Brooding or internal sexual reproduction of corals.
 
-	Args:
-		pop (numpy.ndarray): Current population.
-		p (float): Probability in range [0, 1].
-		F (float): Factor.
-		task (Task): Optimization task.
-		rng (numpy.random.Generator): Random generator.
-		**kwargs (Dict[str, Any]): Additional arguments.
+    Args:
+        pop (numpy.ndarray): Current population.
+        p (float): Probability in range [0, 1].
+        task (Task): Optimization task.
+        rng (numpy.random.Generator): Random generator.
 
-	Returns:
-		Tuple[numpy.ndarray, numpy.ndarray]:
-			1. New population.
-			2. New population function/fitness values.
-	"""
-	for i in range(len(pop)):
-		pop[i] = task.repair(np.asarray([pop[i, d] if rng.random() < p else pop[i, d] + F * rng.random() for d in range(task.D)]), rng=rng)
-	return pop, np.apply_along_axis(task.eval, 1, pop)
+    Returns:
+        Tuple[numpy.ndarray, numpy.ndarray]:
+            1. New population.
+            2. New population function/fitness values.
+
+    """
+    for i in range(len(pop)):
+        pop[i] = task.repair(np.asarray(
+            [pop[i, d] if rng.random() < p else task.lower[d] + task.range[d] * rng.random() for d in
+             range(task.dimension)]), rng=rng)
+    return pop, np.apply_along_axis(task.eval, 1, pop)
+
+
+def move_corals(pop, p, f, task, rng, **_kwargs):
+    r"""Move corals.
+
+    Args:
+        pop (numpy.ndarray): Current population.
+        p (float): Probability in range [0, 1].
+        f (float): Factor.
+        task (Task): Optimization task.
+        rng (numpy.random.Generator): Random generator.
+
+    Returns:
+        Tuple[numpy.ndarray, numpy.ndarray]:
+            1. New population.
+            2. New population function/fitness values.
+
+    """
+    for i in range(len(pop)):
+        pop[i] = task.repair(
+            np.asarray(
+                [pop[i, d] if rng.random() < p else pop[i, d] + f * rng.random() for d in range(task.dimension)]),
+            rng=rng)
+    return pop, np.apply_along_axis(task.eval, 1, pop)
+
 
 class CoralReefsOptimization(Algorithm):
-	r"""Implementation of Coral Reefs Optimization Algorithm.
+    r"""Implementation of Coral Reefs Optimization Algorithm.
 
-	Algorithm:
-		Coral Reefs Optimization Algorithm
+    Algorithm:
+        Coral Reefs Optimization Algorithm
 
-	Date:
-		2018
+    Date:
+        2018
 
-	Authors:
-		Klemen Berkovič
+    Authors:
+        Klemen Berkovič
 
-	License:
-		MIT
+    License:
+        MIT
 
-	Reference Paper:
-		S. Salcedo-Sanz, J. Del Ser, I. Landa-Torres, S. Gil-López, and J. A. Portilla-Figueras, “The Coral Reefs Optimization Algorithm: A Novel Metaheuristic for Efficiently Solving Optimization Problems,” The Scientific World Journal, vol. 2014, Article ID 739768, 15 pages, 2014.
+    Reference Paper:
+        S. Salcedo-Sanz, J. Del Ser, I. Landa-Torres, S. Gil-López, and J. A. Portilla-Figueras,
+        “The Coral Reefs Optimization Algorithm: A Novel Metaheuristic for Efficiently Solving Optimization Problems,”
+        The Scientific World Journal, vol. 2014, Article ID 739768, 15 pages, 2014.
 
-	Reference URL:
-		https://doi.org/10.1155/2014/739768.
+    Reference URL:
+        https://doi.org/10.1155/2014/739768.
 
-	Attributes:
-		Name (List[str]): List of strings representing algorithm name.
-		phi (float): Range of neighborhood.
-		Fa (int): Number of corals used in asexsual reproduction.
-		Fb (int): Number of corals used in brooding.
-		Fd (int): Number of corals used in depredation.
-		k (int): Nomber of trys for larva setting.
-		P_F (float): Mutation variable :math:`\in [0, \infty]`.
-		P_Cr(float): Crossover rate in [0, 1].
-		Distance (Callable[[numpy.ndarray, numpy.ndarray], float]): Funciton for calculating distance between corals.
-		SexualCrossover (Callable[[numpy.ndarray, float, Task, numpy.random.Generator, Dict[str, Any]], Tuple[numpy.ndarray, numpy.ndarray[float]]]): Crossover function.
-		Brooding (Callable[[numpy.ndarray, float, Task, numpy.random.Generator, Dict[str, Any]], Tuple[numpy.ndarray, numpy.ndarray]]): Brooding function.
+    Attributes:
+        Name (List[str]): List of strings representing algorithm name.
+        phi (float): Range of neighborhood.
+        num_asexual_reproduction (int): Number of corals used in asexual reproduction.
+        num_broadcast (int): Number of corals used in brooding.
+        num_depredation (int): Number of corals used in depredation.
+        k (int): Number of tries for larva setting.
+        mutation_rate (float): Mutation variable :math:`\in [0, \infty]`.
+        crossover_rate(float): Crossover rate in [0, 1].
+        sexual_crossover (Callable[[numpy.ndarray, float, Task, numpy.random.Generator, Dict[str, Any]], Tuple[numpy.ndarray, numpy.ndarray[float]]]):
+            Crossover function.
+        brooding (Callable[[numpy.ndarray, float, Task, numpy.random.Generator, Dict[str, Any]], Tuple[numpy.ndarray, numpy.ndarray]]):
+            Brooding function.
 
-	See Also:
-		* :class:`niapy.algorithms.Algorithm`
-	"""
-	Name = ['CoralReefsOptimization', 'CRO']
+    See Also:
+        * :class:`niapy.algorithms.Algorithm`
 
-	@staticmethod
-	def algorithmInfo():
-		r"""Get algorithms information.
+    """
 
-		Returns:
-			str: Algorithm information.
+    Name = ['CoralReefsOptimization', 'CRO']
 
-		See Also:
-			* :func:`niapy.algorithms.Algorithm.algorithmInfo`
-		"""
-		return r"""S. Salcedo-Sanz, J. Del Ser, I. Landa-Torres, S. Gil-López, and J. A. Portilla-Figueras, “The Coral Reefs Optimization Algorithm: A Novel Metaheuristic for Efficiently Solving Optimization Problems,” The Scientific World Journal, vol. 2014, Article ID 739768, 15 pages, 2014."""
+    @staticmethod
+    def info():
+        r"""Get algorithms information.
 
-	@staticmethod
-	def typeParameters():
-		r"""Get dictionary with functions for checking values of parameters.
+        Returns:
+            str: Algorithm information.
 
-		Returns:
-			Dict[str, Callable]:
-				* N (func): TODO
-				* phi (func): TODO
-				* Fa (func): TODO
-				* Fb (func): TODO
-				* Fd (func): TODO
-				* k (func): TODO
-		"""
-		return {
-			# TODO funkcije za testiranje
-			'N': False,
-			'phi': False,
-			'Fa': False,
-			'Fb': False,
-			'Fd': False,
-			'k': False
-		}
+        See Also:
+            * :func:`niapy.algorithms.Algorithm.info`
 
-	def setParameters(self, N=25, phi=0.4, Fa=0.5, Fb=0.5, Fd=0.3, k=25, P_Cr=0.5, P_F=0.36, SexualCrossover=SexualCrossoverSimple, Brooding=BroodingSimple, Distance=euclidean, **ukwargs):
-		r"""Set the parameters of the algorithm.
+        """
+        return r"""S. Salcedo-Sanz, J. Del Ser, I. Landa-Torres, S. Gil-López, and J. A. Portilla-Figueras,
+        “The Coral Reefs Optimization Algorithm: A Novel Metaheuristic for Efficiently Solving Optimization Problems,”
+        The Scientific World Journal, vol. 2014, Article ID 739768, 15 pages, 2014."""
 
-		Arguments:
-			N (int): population size for population initialization.
-			phi (int): TODO.
-			Fa (float): Value $\in [0, 1]$ for Asexual reproduction size.
-			Fb (float): Value $\in [0, 1]$ for Brooding size.
-			Fd (float): Value $\in [0, 1]$ for Depredation size.
-			k (int): Trys for larvae setting.
-			SexualCrossover (Callable[[numpy.ndarray, float, Task, numpy.random.Generator, Dict[str, Any]], Tuple[numpy.ndarray, numpy.ndarray]]): Crossover function.
-			P_Cr (float): Crossover rate $\in [0, 1]$.
-			Brooding (Callable[[numpy.ndarray, float, Task, numpy.random.Generator, Dict[str, Any]], Tuple[numpy.ndarray, numpy.ndarray]]): Brooding function.
-			P_F (float): Crossover rate $\in [0, 1]$.
-			Distance (Callable[[numpy.ndarray, numpy.ndarray], float]): Funciton for calculating distance between corals.
+    @staticmethod
+    def type_parameters():
+        r"""Get dictionary with functions for checking values of parameters.
 
-		See Also:
-			* :func:`niapy.algorithms.Algorithm.setParameters`
-		"""
-		ukwargs.pop('NP', None)
-		Algorithm.setParameters(self, NP=N, **ukwargs)
-		self.phi, self.k, self.P_Cr, self.P_F = phi, k, P_Cr, P_F
-		self.Fa, self.Fb, self.Fd = int(self.NP * Fa), int(self.NP * Fb), int(self.NP * Fd)
-		self.SexualCrossover, self.Brooding, self.Distance = SexualCrossover, Brooding, Distance
+        Returns:
+            Dict[str, Callable]:
+                * phi (func): Distance
+                * num_asexual_reproduction (func): Number of corals selected for asexual reproduction.
+                * num_broadcast (func): Number of corals selected for broadcasting/brooding.
+                * num_depredation (func): Number of corals removed each iteration.
+                * k (func): Maximum number of opportunities for corals to settle.
 
-	def getParameters(self):
-		r"""Get parameters values of the algorithm.
+        """
+        return {
+            'N': False,
+            'phi': False,
+            'num_asexual_reproduction': False,
+            'num_broadcast': False,
+            'num_depredation': False,
+            'k': False
+        }
 
-		Returns:
-			Dict[str, Any]: TODO.
-		"""
-		d = Algorithm.getParameters(self)
-		d.update({
-			'phi': self.phi,
-			'k': self.k,
-			'P_Cr': self.P_Cr,
-			'P_F': self.P_F,
-			'Fa': self.Fa,
-			'Fd': self.Fd,
-			'Fb': self.Fb
-		})
-		return d
+    def __init__(self, population_size=25, phi=0.4, asexual_reproduction_prob=0.5, broadcast_prob=0.5,
+                 depredation_prob=0.3, k=25, crossover_rate=0.5, mutation_rate=0.36,
+                 sexual_crossover=default_sexual_crossover, brooding=default_brooding, *args, **kwargs):
+        r"""Initialize CoralReefsOptimization.
 
-	def asexualReprodution(self, Reef, Reef_f, xb, fxb, task):
-		r"""Asexual reproduction of corals.
+        Args:
+            population_size (int): population size for population initialization.
+            phi (int): distance.
+            asexual_reproduction_prob (float): Value $\in [0, 1]$ for Asexual reproduction size.
+            broadcast_prob (float): Value $\in [0, 1]$ for brooding size.
+            depredation_prob (float): Value $\in [0, 1]$ for Depredation size.
+            k (int): Tries for larvae setting.
+            sexual_crossover (Callable[[numpy.ndarray, float, Task, numpy.random.Generator, Dict[str, Any]], Tuple[numpy.ndarray, numpy.ndarray]]):
+                Crossover function.
+            crossover_rate (float): Crossover rate $\in [0, 1]$.
+            brooding (Callable[[numpy.ndarray, float, Task, numpy.random.Generator, Dict[str, Any]], Tuple[numpy.ndarray, numpy.ndarray]]):
+                brooding function.
+            mutation_rate (float): Crossover rate $\in [0, 1]$.
 
-		Args:
-			Reef (numpy.ndarray): Current population of reefs.
-			Reef_f (numpy.ndarray): Current populations function/fitness values.
-			task (Task): Optimization task.
+        See Also:
+            * :func:`niapy.algorithms.Algorithm.__init__`
 
-		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray]:
-				1. New population.
-				2. New population fitness/funciton values.
+        """
+        super().__init__(population_size, *args, **kwargs)
+        self.phi = phi
+        self.k = k
+        self.crossover_rate = crossover_rate
+        self.mutation_rate = mutation_rate
+        self.num_asexual_reproduction = int(self.population_size * asexual_reproduction_prob)
+        self.num_broadcast = int(self.population_size * broadcast_prob)
+        self.num_depredation = int(self.population_size * depredation_prob)
+        self.sexual_crossover = sexual_crossover
+        self.brooding = brooding
 
-		See Also:
-			* :func:`niapy.algorithms.basic.CoralReefsOptimization.setting`
-			* :func:`niapy.algorithms.basic.BroodingSimple`
-		"""
-		I = np.argsort(Reef_f)[:self.Fa]
-		Reefn, Reefn_f = self.Brooding(Reef[I], self.P_F, task, rng=self.rng)
-		xb, fxb = self.getBest(Reefn, Reefn_f, xb, fxb)
-		Reef, Reef_f, xb, fxb = self.setting(Reef, Reef_f, Reefn, Reefn_f, xb, fxb, task)
-		return Reef, Reef_f, xb, fxb
+    def set_parameters(self, population_size=25, phi=0.4, asexual_reproduction_prob=0.5, broadcast_prob=0.5,
+                       depredation_prob=0.3, k=25, crossover_rate=0.5, mutation_rate=0.36,
+                       sexual_crossover=default_sexual_crossover, brooding=default_brooding, **kwargs):
+        r"""Set the parameters of the algorithm.
 
-	def depredation(self, Reef, Reef_f):
-		r"""Depredation operator for reefs.
+        Args:
+            population_size (int): population size for population initialization.
+            phi (int): distance.
+            asexual_reproduction_prob (float): Value $\in [0, 1]$ for Asexual reproduction size.
+            broadcast_prob (float): Value $\in [0, 1]$ for brooding size.
+            depredation_prob (float): Value $\in [0, 1]$ for Depredation size.
+            k (int): Tries for larvae setting.
+            sexual_crossover (Callable[[numpy.ndarray, float, Task, numpy.random.Generator, Dict[str, Any]], Tuple[numpy.ndarray, numpy.ndarray]]):
+                Crossover function.
+            crossover_rate (float): Crossover rate $\in [0, 1]$.
+            brooding (Callable[[numpy.ndarray, float, Task, numpy.random.Generator, Dict[str, Any]], Tuple[numpy.ndarray, numpy.ndarray]]):
+                brooding function.
+            mutation_rate (float): Crossover rate $\in [0, 1]$.
 
-		Args:
-			Reef (numpy.ndarray): Current reefs.
-			Reef_f (numpy.ndarray): Current reefs function/fitness values.
+        See Also:
+            * :func:`niapy.algorithms.Algorithm.set_parameters`
 
-		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray]:
-				1. Best individual
-				2. Best individual fitness/function value
-		"""
-		I = np.argsort(Reef_f)[::-1][:self.Fd]
-		return np.delete(Reef, I), np.delete(Reef_f, I)
+        """
+        super().set_parameters(self, population_size=population_size, **kwargs)
+        self.phi = phi
+        self.k = k
+        self.crossover_rate = crossover_rate
+        self.mutation_rate = mutation_rate
+        self.num_asexual_reproduction = int(self.population_size * asexual_reproduction_prob)
+        self.num_broadcast = int(self.population_size * broadcast_prob)
+        self.num_depredation = int(self.population_size * depredation_prob)
+        self.sexual_crossover = sexual_crossover
+        self.brooding = brooding
 
-	def setting(self, X, X_f, Xn, Xn_f, xb, fxb, task):
-		r"""Operator for setting reefs.
+    def get_parameters(self):
+        r"""Get parameters values of the algorithm.
 
-		New reefs try to seatle to selected position in search space.
-		New reefs are successful if theyr fitness values is better or if they have no reef ocupying same search space.
+        Returns:
+            Dict[str, Any]: Algorithm parameters.
 
-		Args:
-			X (numpy.ndarray): Current population of reefs.
-			X_f (numpy.ndarray): Current populations function/fitness values.
-			Xn (numpy.ndarray): New population of reefs.
-			Xn_f (numpy.ndarray): New populations function/fitness values.
-			xb (numpy.ndarray): Global best solution.
-			fxb (float): Global best solutions fitness/objective value.
-			task (Task): Optimization task.
+        """
+        d = super().get_parameters()
+        d.update({
+            'phi': self.phi,
+            'k': self.k,
+            'crossover_rate': self.crossover_rate,
+            'mutation_rate': self.mutation_rate,
+            'num_asexual_reproduction': self.num_asexual_reproduction,
+            'num_depredation': self.num_depredation,
+            'num_broadcast': self.num_broadcast
+        })
+        return d
 
-		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, float]:
-				1. New seatled population.
-				2. New seatled population fitness/function values.
-		"""
-		def update(A, phi, xb, fxb):
-			D = np.asarray([np.sqrt(np.sum((A - e) ** 2, axis=1)) for e in Xn])
-			I = np.unique(np.where(D < phi)[0])
-			if I.any():
-				Xn[I], Xn_f[I] = MoveCorals(Xn[I], self.P_F, self.P_F, task, rng=self.rng)
-				xb, fxb = self.getBest(Xn[I], Xn_f[I], xb, fxb)
-			return xb, fxb
-		for i in range(self.k):
-			xb, fxb = update(X, self.phi, xb, fxb)
-			xb, fxb = update(Xn, self.phi, xb, fxb)
-		D = np.asarray([np.sqrt(np.sum((X - e) ** 2, axis=1)) for e in Xn])
-		I = np.unique(np.where(D >= self.phi)[0])
-		return np.append(X, Xn[I], 0), np.append(X_f, Xn_f[I], 0), xb, fxb
+    def asexual_reproduction(self, reef, reef_fitness, best_x, best_fitness, task):
+        r"""Asexual reproduction of corals.
 
-	def runIteration(self, task, Reef, Reef_f, xb, fxb, **dparams):
-		r"""Core function of Coral Reefs Optimization algorithm.
+        Args:
+            reef (numpy.ndarray): Current population of reefs.
+            reef_fitness (numpy.ndarray): Current populations function/fitness values.
+            best_x (numpy.ndarray): Global best coordinates.
+            best_fitness (float): Global best fitness.
+            task (Task): Optimization task.
 
-		Args:
-			task (Task): Optimization task.
-			Reef (numpy.ndarray): Current population.
-			Reef_f (numpy.ndarray): Current population fitness/function value.
-			xb (numpy.ndarray): Global best solution.
-			fxb (float): Global best solution fitness/function value.
-			**dparams: Additional arguments
+        Returns:
+            Tuple[numpy.ndarray, numpy.ndarray]:
+                1. New population.
+                2. New population fitness/function values.
 
-		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, float, Dict[str, Any]]:
-				1. New population.
-				2. New population fitness/function values.
-				3. New global bset solution
-				4. New global best solutions fitness/objective value
-				5. Additional arguments:
+        See Also:
+            * :func:`niapy.algorithms.basic.CoralReefsOptimization.setting`
+            * :func:`niapy.algorithms.basic.default_brooding`
 
-		See Also:
-			* :func:`niapy.algorithms.basic.CoralReefsOptimization.SexualCrossover`
-			* :func:`niapy.algorithms.basic.CoralReefsOptimization.Brooding`
-		"""
-		I = self.rng.choice(len(Reef), size=self.Fb, replace=False)
-		Reefn_s, Reefn_s_f = self.SexualCrossover(Reef[I], self.P_Cr, task, rng=self.rng)
-		xb, fxb = self.getBest(Reefn_s, Reefn_s_f, xb, fxb)
-		Reefn_b, Reffn_b_f = self.Brooding(np.delete(Reef, I, 0), self.P_F, task, rng=self.rng)
-		xb, fxb = self.getBest(Reefn_b, Reffn_b_f, xb, fxb)
-		Reefn, Reefn_f, xb, fxb = self.setting(Reef, Reef_f, np.append(Reefn_s, Reefn_b, 0), np.append(Reefn_s_f, Reffn_b_f, 0), xb, fxb, task)
-		Reef, Reef_f, xb, fxb = self.asexualReprodution(Reefn, Reefn_f, xb, fxb, task)
-		if (task.Iters + 1) % self.k == 0: Reef, Reef_f = self.depredation(Reef, Reef_f)
-		return Reef, Reef_f, xb, fxb, {}
+        """
+        brooding_indices = np.argsort(reef_fitness)[:self.num_asexual_reproduction]
+        new_reef, new_reef_fitness = self.brooding(reef[brooding_indices], self.mutation_rate, task, rng=self.rng)
+        best_x, best_fitness = self.get_best(new_reef, new_reef_fitness, best_x, best_fitness)
+        reef, reef_fitness, best_x, best_fitness = self.settling(reef, reef_fitness, new_reef, new_reef_fitness, best_x,
+                                                                 best_fitness, task)
+        return reef, reef_fitness, best_x, best_fitness
+
+    def depredation(self, reef, reef_fitness):
+        r"""Depredation operator for reefs.
+
+        Args:
+            reef (numpy.ndarray): Current reefs.
+            reef_fitness (numpy.ndarray): Current reefs function/fitness values.
+
+        Returns:
+            Tuple[numpy.ndarray, numpy.ndarray]:
+                1. Best individual
+                2. Best individual fitness/function value
+
+        """
+        depredation_index = np.argsort(reef_fitness)[::-1][:self.num_depredation]
+        return np.delete(reef, depredation_index), np.delete(reef_fitness, depredation_index)
+
+    def settling(self, reef, reef_fitness, new_reef, new_reef_fitness, best_x, best_fitness, task):
+        r"""Operator for setting reefs.
+
+        New reefs try to settle to selected position in search space.
+        New reefs are successful if their fitness values is better or if they have no reef occupying same search space.
+
+        Args:
+            reef (numpy.ndarray): Current population of reefs.
+            reef_fitness (numpy.ndarray): Current populations function/fitness values.
+            new_reef (numpy.ndarray): New population of reefs.
+            new_reef_fitness (numpy.ndarray): New populations function/fitness values.
+            best_x (numpy.ndarray): Global best solution.
+            best_fitness (float): Global best solutions fitness/objective value.
+            task (Task): Optimization task.
+
+        Returns:
+            Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, float]:
+                1. New settled population.
+                2. New settled population fitness/function values.
+
+        """
+
+        def update(arr, phi, xb, fxb):
+            dist = np.asarray([np.sqrt(np.sum((arr - e) ** 2, axis=1)) for e in new_reef])
+            ind = np.unique(np.where(dist < phi)[0])
+            if ind.any():
+                new_reef[ind], new_reef_fitness[ind] = move_corals(new_reef[ind],
+                                                                   self.mutation_rate,
+                                                                   self.mutation_rate,
+                                                                   task,
+                                                                   rng=self.rng)
+                xb, fxb = self.get_best(new_reef[ind], new_reef_fitness[ind], xb, fxb)
+            return xb, fxb
+
+        for i in range(self.k):
+            best_x, best_fitness = update(reef, self.phi, best_x, best_fitness)
+            best_x, best_fitness = update(new_reef, self.phi, best_x, best_fitness)
+        distances = np.asarray([np.sqrt(np.sum((reef - e) ** 2, axis=1)) for e in new_reef])
+        indices = np.unique(np.where(distances >= self.phi)[0])
+        return np.append(reef, new_reef[indices], 0), np.append(reef_fitness, new_reef_fitness[indices], 0), best_x, best_fitness
+
+    def run_iteration(self, task, population, population_fitness, best_x, best_fitness, **params):
+        r"""Core function of Coral Reefs Optimization algorithm.
+
+        Args:
+            task (Task): Optimization task.
+            population (numpy.ndarray): Current population.
+            population_fitness (numpy.ndarray): Current population fitness/function value.
+            best_x (numpy.ndarray): Global best solution.
+            best_fitness (float): Global best solution fitness/function value.
+            **params: Additional arguments
+
+        Returns:
+            Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, float, Dict[str, Any]]:
+                1. New population.
+                2. New population fitness/function values.
+                3. New global best solution
+                4. New global best solutions fitness/objective value
+                5. Additional arguments:
+
+        See Also:
+            * :func:`niapy.algorithms.basic.CoralReefsOptimization.sexual_crossover`
+            * :func:`niapy.algorithms.basic.CoralReefsOptimization.brooding`
+
+        """
+        broadcast_index = self.rng.choice(len(population), size=self.num_broadcast, replace=False)
+        reef_broadcast, reef_broadcast_fitness = self.sexual_crossover(population[broadcast_index],
+                                                                       self.crossover_rate,
+                                                                       task,
+                                                                       rng=self.rng)
+        best_x, best_fitness = self.get_best(reef_broadcast, reef_broadcast_fitness, best_x, best_fitness)
+        reef_brooding, reef_brooding_fitness = self.brooding(np.delete(population, broadcast_index, 0),
+                                                             self.mutation_rate,
+                                                             task,
+                                                             rng=self.rng)
+        best_x, best_fitness = self.get_best(reef_brooding, reef_brooding_fitness, best_x, best_fitness)
+        new_reef, new_reef_fitness, best_x, best_fitness = self.settling(population,
+                                                                         population_fitness,
+                                                                         np.append(reef_broadcast, reef_brooding, 0),
+                                                                         np.append(reef_broadcast_fitness,
+                                                                                   reef_brooding_fitness, 0), best_x,
+                                                                         best_fitness,
+                                                                         task)
+        population, population_fitness, best_x, best_fitness = self.asexual_reproduction(new_reef,
+                                                                                         new_reef_fitness,
+                                                                                         best_x,
+                                                                                         best_fitness,
+                                                                                         task)
+        if (task.iters + 1) % self.k == 0:
+            population, population_fitness = self.depredation(population, population_fitness)
+        return population, population_fitness, best_x, best_fitness, {}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

@@ -1,6 +1,7 @@
 # This is temporary fix to import module from parent folder
 # It will be removed when package is published on PyPI
 import sys
+
 sys.path.append('../')
 # End of fix
 
@@ -17,10 +18,11 @@ for i in range(10):
     # second parameter takes the number of function evaluations
     # third parameter is benchmark optimization type
     # forth parameter is benchmark function
-    task = StoppingTask(D=20, nGEN=100, optType=OptimizationType.MINIMIZATION, benchmark=pinterCustom)
+    task = StoppingTask(max_iters=100, dimension=20, optimization_type=OptimizationType.MINIMIZATION,
+                        benchmark=pinterCustom)
 
     # parameter is population size
-    algo = GreyWolfOptimizer(NP=20)
+    algo = GreyWolfOptimizer(population_size=20)
 
     # running algorithm returns best found minimum
     best = algo.run(task)

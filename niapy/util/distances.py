@@ -14,4 +14,4 @@ def euclidean(u, v):
         float: Euclidean distance between u and v.
 
     """
-    return np.sqrt(np.sum(np.square(u - v)))
+    return np.sqrt(np.sum(np.square(u - v), axis=-1))

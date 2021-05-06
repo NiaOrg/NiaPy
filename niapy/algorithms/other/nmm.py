@@ -11,172 +11,203 @@ logger.setLevel('INFO')
 
 __all__ = ['NelderMeadMethod']
 
+
 class NelderMeadMethod(Algorithm):
-	r"""Implementation of Nelder Mead method or downhill simplex method or amoeba method.
+    r"""Implementation of Nelder Mead method or downhill simplex method or amoeba method.
 
-	Algorithm:
-		Nelder Mead Method
+    Algorithm:
+        Nelder Mead Method
 
-	Date:
-		2018
+    Date:
+        2018
 
-	Authors:
-		Klemen Berkovič
+    Authors:
+        Klemen Berkovič
 
-	License:
-		MIT
+    License:
+        MIT
 
-	Reference URL:
-		https://en.wikipedia.org/wiki/Nelder%E2%80%93Mead_method
+    Reference URL:
+        https://en.wikipedia.org/wiki/Nelder%E2%80%93Mead_method
 
-	Attributes:
-		Name (List[str]): list of strings represeing algorithm name
-		alpha (float): Reflection coefficient parameter
-		gamma (float): Expansion coefficient parameter
-		rho (float): Contraction coefficient parameter
-		sigma (float): Shrink coefficient parameter
+    Attributes:
+        Name (List[str]): list of strings representing algorithm name
+        alpha (float): Reflection coefficient parameter
+        gamma (float): Expansion coefficient parameter
+        rho (float): Contraction coefficient parameter
+        sigma (float): Shrink coefficient parameter
 
-	See Also:
-		* :class:`niapy.algorithms.Algorithm`
-	"""
-	Name = ['NelderMeadMethod', 'NMM']
+    See Also:
+        * :class:`niapy.algorithms.Algorithm`
 
-	@staticmethod
-	def algorithmInfo():
-		r"""Get basic information of algorithm.
+    """
 
-		Returns:
-			str: Basic information of algorithm.
+    Name = ['NelderMeadMethod', 'NMM']
 
-		See Also:
-			* :func:`niapy.algorithms.Algorithm.algorithmInfo`
-		"""
-		return r"""No info"""
+    @staticmethod
+    def info():
+        r"""Get basic information of algorithm.
 
-	@staticmethod
-	def typeParameters():
-		r"""Get dictionary with function for testing correctness of parameters.
+        Returns:
+            str: Basic information of algorithm.
 
-		Returns:
-			Dict[str, Callable]:
-				* alpha (Callable[[Union[int, float]], bool])
-				* gamma (Callable[[Union[int, float]], bool])
-				* rho (Callable[[Union[int, float]], bool])
-				* sigma (Callable[[Union[int, float]], bool])
+        See Also:
+            * :func:`niapy.algorithms.Algorithm.info`
 
-		See Also
-			* :func:`niapy.algorithms.Algorithm.typeParameters`
-		"""
-		d = Algorithm.typeParameters()
-		d.update({
-			'alpha': lambda x: isinstance(x, (int, float)) and x >= 0,
-			'gamma': lambda x: isinstance(x, (int, float)) and x >= 0,
-			'rho': lambda x: isinstance(x, (int, float)),
-			'sigma': lambda x: isinstance(x, (int, float))
-		})
-		return d
+        """
+        return r"""No info"""
 
-	def setParameters(self, NP=None, alpha=0.1, gamma=0.3, rho=-0.2, sigma=-0.2, **ukwargs):
-		r"""Set the arguments of an algorithm.
+    @staticmethod
+    def type_parameters():
+        r"""Get dictionary with function for testing correctness of parameters.
 
-		Arguments:
-			NP (Optional[int]): Number of individuals.
-			alpha (Optional[float]): Reflection coefficient parameter
-			gamma (Optional[float]): Expansion coefficient parameter
-			rho (Optional[float]): Contraction coefficient parameter
-			sigma (Optional[float]): Shrink coefficient parameter
+        Returns:
+            Dict[str, Callable]:
+                * alpha (Callable[[Union[int, float]], bool])
+                * gamma (Callable[[Union[int, float]], bool])
+                * rho (Callable[[Union[int, float]], bool])
+                * sigma (Callable[[Union[int, float]], bool])
 
-		See Also:
-			* :func:`niapy.algorithms.Algorithm.setParameters`
-		"""
-		Algorithm.setParameters(self, NP=NP, InitPopFunc=ukwargs.pop('InitPopFunc', self.initPop), **ukwargs)
-		self.alpha, self.gamma, self.rho, self.sigma = alpha, gamma, rho, sigma
+        See Also
+            * :func:`niapy.algorithms.Algorithm.type_parameters`
 
-	def getParameters(self):
-		d = Algorithm.getParameters(self)
-		d.update({
-			'alpha': self.alpha,
-			'gamma': self.gamma,
-			'rho': self.rho,
-			'sigma': self.sigma
-		})
-		return d
+        """
+        d = Algorithm.type_parameters()
+        d.update({
+            'alpha': lambda x: isinstance(x, (int, float)) and x >= 0,
+            'gamma': lambda x: isinstance(x, (int, float)) and x >= 0,
+            'rho': lambda x: isinstance(x, (int, float)),
+            'sigma': lambda x: isinstance(x, (int, float))
+        })
+        return d
 
-	def initPop(self, task, NP, **kwargs):
-		r"""Init starting population.
+    def __init__(self, population_size=None, alpha=0.1, gamma=0.3, rho=-0.2, sigma=-0.2, *args, **kwargs):
+        """Initialize NelderMeadMethod.
 
-		Args:
-			NP (int): Number of individuals in population.
-			task (Task): Optimization task.
-			kwargs (Dict[str, Any]): Additional arguments.
+        Args:
+            population_size (Optional[int]): Number of individuals.
+            alpha (Optional[float]): Reflection coefficient parameter
+            gamma (Optional[float]): Expansion coefficient parameter
+            rho (Optional[float]): Contraction coefficient parameter
+            sigma (Optional[float]): Shrink coefficient parameter
 
-		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray[float]]:
-				1. New initialized population.
-				2. New initialized population fitness/function values.
-		"""
-		X = self.uniform(task.Lower, task.Upper, [task.D if NP is None or NP < task.D else NP, task.D])
-		X_f = np.apply_along_axis(task.eval, 1, X)
-		return X, X_f
+        See Also:
+            * :func:`niapy.algorithms.Algorithm.__init__`
 
-	def method(self, X, X_f, task):
-		r"""Run the main function.
+        """
+        super().__init__(population_size, initialization_function=kwargs.pop('initialization_function', self.init_pop), *args, **kwargs)
+        self.alpha = alpha
+        self.gamma = gamma
+        self.rho = rho
+        self.sigma = sigma
 
-		Args:
-			X (numpy.ndarray): Current population.
-			X_f (numpy.ndarray[float]): Current population function/fitness values.
-			task (Task): Optimization task.
+    def set_parameters(self, population_size=None, alpha=0.1, gamma=0.3, rho=-0.2, sigma=-0.2, **kwargs):
+        r"""Set the arguments of an algorithm.
 
-		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray[float]]:
-				1. New population.
-				2. New population fitness/function values.
-		"""
-		x0 = np.sum(X[:-1], axis=0) / (len(X) - 1)
-		xr = x0 + self.alpha * (x0 - X[-1])
-		rs = task.eval(xr)
-		if X_f[0] >= rs < X_f[-2]:
-			X[-1], X_f[-1] = xr, rs
-			return X, X_f
-		if rs < X_f[0]:
-			xe = x0 + self.gamma * (x0 - X[-1])
-			re = task.eval(xe)
-			if re < rs: X[-1], X_f[-1] = xe, re
-			else: X[-1], X_f[-1] = xr, rs
-			return X, X_f
-		xc = x0 + self.rho * (x0 - X[-1])
-		rc = task.eval(xc)
-		if rc < X_f[-1]:
-			X[-1], X_f[-1] = xc, rc
-			return X, X_f
-		Xn = X[0] + self.sigma * (X[1:] - X[0])
-		Xn_f = np.apply_along_axis(task.eval, 1, Xn)
-		X[1:], X_f[1:] = Xn, Xn_f
-		return X, X_f
+        Args:
+            population_size (Optional[int]): Number of individuals.
+            alpha (Optional[float]): Reflection coefficient parameter
+            gamma (Optional[float]): Expansion coefficient parameter
+            rho (Optional[float]): Contraction coefficient parameter
+            sigma (Optional[float]): Shrink coefficient parameter
 
-	def runIteration(self, task, X, X_f, xb, fxb, **dparams):
-		r"""Core iteration function of NelderMeadMethod algorithm.
+        See Also:
+            * :func:`niapy.algorithms.Algorithm.set_parameters`
 
-		Args:
-			task (Task): Optimization task.
-			X (numpy.ndarray): Current population.
-			X_f (numpy.ndarray): Current populations fitness/function values.
-			xb (numpy.ndarray): Global best individual.
-			fxb (float): Global best function/fitness value.
-			**dparams (Dict[str, Any]): Additional arguments.
+        """
+        super().set_parameters(population_size=population_size, initialization_function=kwargs.pop('initialization_function', self.init_pop), **kwargs)
+        self.alpha = alpha
+        self.gamma = gamma
+        self.rho = rho
+        self.sigma = sigma
 
-		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, float, Dict[str, Any]]:
-				1. New population.
-				2. New population fitness/function values.
-				3. New global best solution
-				4. New global best solutions fitness/objective value
-				5. Additional arguments.
-		"""
-		inds = np.argsort(X_f)
-		X, X_f = X[inds], X_f[inds]
-		X, X_f = self.method(X, X_f, task)
-		xb, fxb = self.getBest(X, X_f, xb, fxb)
-		return X, X_f, xb, fxb, {}
+    def get_parameters(self):
+        d = Algorithm.get_parameters(self)
+        d.update({
+            'alpha': self.alpha,
+            'gamma': self.gamma,
+            'rho': self.rho,
+            'sigma': self.sigma
+        })
+        return d
+
+    def init_pop(self, task, population_size, **_kwargs):
+        r"""Init starting population.
+
+        Args:
+            population_size (int): Number of individuals in population.
+            task (Task): Optimization task.
+
+        Returns:
+            Tuple[numpy.ndarray, numpy.ndarray[float]]:
+                1. New initialized population.
+                2. New initialized population fitness/function values.
+        """
+        population_size = task.dimension if population_size is None or population_size < task.dimension else population_size
+        population = self.uniform(task.lower, task.upper, (population_size, task.dimension))
+        population_fitness = np.apply_along_axis(task.eval, 1, population)
+        return population, population_fitness
+
+    def method(self, population, population_fitness, task):
+        r"""Run the main function.
+
+        Args:
+            population (numpy.ndarray): Current population.
+            population_fitness (numpy.ndarray[float]): Current population function/fitness values.
+            task (Task): Optimization task.
+
+        Returns:
+            Tuple[numpy.ndarray, numpy.ndarray[float]]:
+                1. New population.
+                2. New population fitness/function values.
+        """
+        x0 = np.sum(population[:-1], axis=0) / (len(population) - 1)
+        xr = x0 + self.alpha * (x0 - population[-1])
+        rs = task.eval(xr)
+        if population_fitness[0] >= rs < population_fitness[-2]:
+            population[-1], population_fitness[-1] = xr, rs
+            return population, population_fitness
+        if rs < population_fitness[0]:
+            xe = x0 + self.gamma * (x0 - population[-1])
+            re = task.eval(xe)
+            if re < rs:
+                population[-1], population_fitness[-1] = xe, re
+            else:
+                population[-1], population_fitness[-1] = xr, rs
+            return population, population_fitness
+        xc = x0 + self.rho * (x0 - population[-1])
+        rc = task.eval(xc)
+        if rc < population_fitness[-1]:
+            population[-1], population_fitness[-1] = xc, rc
+            return population, population_fitness
+        new_population = population[0] + self.sigma * (population[1:] - population[0])
+        new_population_fitness = np.apply_along_axis(task.eval, 1, new_population)
+        population[1:], population_fitness[1:] = new_population, new_population_fitness
+        return population, population_fitness
+
+    def run_iteration(self, task, population, population_fitness, best_x, best_fitness, **params):
+        r"""Core iteration function of NelderMeadMethod algorithm.
+
+        Args:
+            task (Task): Optimization task.
+            population (numpy.ndarray): Current population.
+            population_fitness (numpy.ndarray): Current populations fitness/function values.
+            best_x (numpy.ndarray): Global best individual.
+            best_fitness (float): Global best function/fitness value.
+            **params (Dict[str, Any]): Additional arguments.
+
+        Returns:
+            Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, float, Dict[str, Any]]:
+                1. New population.
+                2. New population fitness/function values.
+                3. New global best solution
+                4. New global best solutions fitness/objective value
+                5. Additional arguments.
+        """
+        sorted_indices = np.argsort(population_fitness)
+        population, population_fitness = population[sorted_indices], population_fitness[sorted_indices]
+        population, population_fitness = self.method(population, population_fitness, task)
+        best_x, best_fitness = self.get_best(population, population_fitness, best_x, best_fitness)
+        return population, population_fitness, best_x, best_fitness, {}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

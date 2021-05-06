@@ -1,7 +1,7 @@
 # encoding=utf8
 
-from niapy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
 from niapy.algorithms.basic import CatSwarmOptimization
+from niapy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
 
 
 class CSOTestCase(AlgorithmTestCase):
@@ -9,12 +9,12 @@ class CSOTestCase(AlgorithmTestCase):
         AlgorithmTestCase.setUp(self)
         self.algo = CatSwarmOptimization
 
-    def test_custom_works_fine(self):
-        cso_custom = self.algo(NP=20, seed=self.seed)
-        cso_customc = self.algo(NP=20, seed=self.seed)
+    def test_custom(self):
+        cso_custom = self.algo(population_size=20, seed=self.seed)
+        cso_customc = self.algo(population_size=20, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, cso_custom, cso_customc, MyBenchmark())
 
-    def test_griewank_works_fine(self):
-        cso_griewank = self.algo(NP=10, seed=self.seed)
-        cso_griewankc = self.algo(NP=10, seed=self.seed)
+    def test_griewank(self):
+        cso_griewank = self.algo(population_size=10, seed=self.seed)
+        cso_griewankc = self.algo(population_size=10, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, cso_griewank, cso_griewankc)

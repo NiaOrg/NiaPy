@@ -3,15 +3,18 @@ import logging
 import math
 
 import numpy as np
+
 from niapy.algorithms.algorithm import Algorithm
+
 logging.basicConfig()
 logger = logging.getLogger('niapy.algorithms.basic')
 logger.setLevel('INFO')
 
 __all__ = ['CatSwarmOptimization']
 
+
 class CatSwarmOptimization(Algorithm):
-    r"""Implementation of Cat swarm optimiization algorithm.
+    r"""Implementation of Cat swarm optimization algorithm.
 
     **Algorithm:** Cat swarm optimization
 
@@ -21,54 +24,96 @@ class CatSwarmOptimization(Algorithm):
 
     **License:** MIT
 
-    **Reference paper:** Chu, S. C., Tsai, P. W., & Pan, J. S. (2006). Cat swarm optimization. In Pacific Rim international conference on artificial intelligence (pp. 854-858). Springer, Berlin, Heidelberg..
+    **Reference paper:** Chu, S. C., Tsai, P. W., & Pan, J. S. (2006). Cat swarm optimization.
+    In Pacific Rim international conference on artificial intelligence (pp. 854-858). Springer, Berlin, Heidelberg.
+
     """
+
     Name = ['CatSwarmOptimization', 'CSO']
 
     @staticmethod
-    def algorithmInfo():
-    	r"""Get algorithm information.
+    def info():
+        r"""Get algorithm information.
 
-    	Returns:
-    		str: Algorithm information.
+        Returns:
+            str: Algorithm information.
 
-    	See Also:
-    		* :func:`niapy.algorithms.Algorithm.algorithmInfo`
-    	"""
-    	return r"""Chu, S. C., Tsai, P. W., & Pan, J. S. (2006). Cat swarm optimization. In Pacific Rim international conference on artificial intelligence (pp. 854-858). Springer, Berlin, Heidelberg."""
+        See Also:
+            * :func:`niapy.algorithms.Algorithm.info`
+
+        """
+        return r"""Chu, S. C., Tsai, P. W., & Pan, J. S. (2006). Cat swarm optimization.
+        In Pacific Rim international conference on artificial intelligence (pp. 854-858).
+        Springer, Berlin, Heidelberg."""
 
     @staticmethod
-    def typeParameters(): return {
-        'NP': lambda x: isinstance(x, int) and x > 0,
-        'MR': lambda x: isinstance(x, (int, float)) and 0 <= x <= 1,
-        'C1': lambda x: isinstance(x, (int, float)) and x >= 0,
-        'SMP': lambda x: isinstance(x, int) and x > 0,
-        'SPC': lambda x: isinstance(x, bool),
-        'CDC': lambda x: isinstance(x, (int, float)) and 0 <= x <= 1,
-        'SRD': lambda x: isinstance(x, (int, float)) and 0 <= x <= 1,
-        'vMax': lambda x: isinstance(x, (int, float)) and x > 0
-    }
+    def type_parameters():
+        return {
+            'population_size': lambda x: isinstance(x, int) and x > 0,
+            'mixture_ratio': lambda x: isinstance(x, (int, float)) and 0 <= x <= 1,
+            'c1': lambda x: isinstance(x, (int, float)) and x >= 0,
+            'smp': lambda x: isinstance(x, int) and x > 0,
+            'spc': lambda x: isinstance(x, bool),
+            'cdc': lambda x: isinstance(x, (int, float)) and 0 <= x <= 1,
+            'srd': lambda x: isinstance(x, (int, float)) and 0 <= x <= 1,
+            'max_velocity': lambda x: isinstance(x, (int, float)) and x > 0
+        }
 
-    def setParameters(self, NP=30, MR=0.1, C1=2.05, SMP=3, SPC=True, CDC=0.85, SRD=0.2, vMax=1.9, **ukwargs):
-        r"""Set the algorithm parameters.
+    def __init__(self, population_size=30, mixture_ratio=0.1, c1=2.05, smp=3, spc=True, cdc=0.85, srd=0.2,
+                 max_velocity=1.9, *args, **kwargs):
+        """Initialize CatSwarmOptimization.
 
-        Arguments:
-            NP (int): Number of individuals in population.
-            MR (float): Mixture ratio.
-            C1 (float): Constant in tracing mode.
-            SMP (int): Seeking memory pool.
-            SPC (bool): Self-position considering.
-            CDC (float): Decides how many dimensions will be varied.
-            SRD (float): Seeking range of the selected dimension.
-            vMax (float): Maximal velocity.
+        Args:
+            population_size (int): Number of individuals in population.
+            mixture_ratio (float): Mixture ratio.
+            c1 (float): Constant in tracing mode.
+            smp (int): Seeking memory pool.
+            spc (bool): Self-position considering.
+            cdc (float): Decides how many dimensions will be varied.
+            srd (float): Seeking range of the selected dimension.
+            max_velocity (float): Maximal velocity.
 
             See Also:
-                * :func:`niapy.algorithms.Algorithm.setParameters`
-        """
-        Algorithm.setParameters(self, NP=NP, **ukwargs)
-        self.MR, self.C1, self.SMP, self.SPC, self.CDC, self.SRD, self.vMax = MR, C1, SMP, SPC, CDC, SRD, vMax
+                * :func:`niapy.algorithms.Algorithm.__init__`
 
-    def initPopulation(self, task):
+        """
+        super().__init__(population_size, *args, **kwargs)
+        self.mixture_ratio = mixture_ratio
+        self.c1 = c1
+        self.smp = smp
+        self.spc = spc
+        self.cdc = cdc
+        self.srd = srd
+        self.max_velocity = max_velocity
+
+    def set_parameters(self, population_size=30, mixture_ratio=0.1, c1=2.05, smp=3, spc=True, cdc=0.85, srd=0.2,
+                       max_velocity=1.9, **kwargs):
+        r"""Set the algorithm parameters.
+
+        Args:
+            population_size (int): Number of individuals in population.
+            mixture_ratio (float): Mixture ratio.
+            c1 (float): Constant in tracing mode.
+            smp (int): Seeking memory pool.
+            spc (bool): Self-position considering.
+            cdc (float): Decides how many dimensions will be varied.
+            srd (float): Seeking range of the selected dimension.
+            max_velocity (float): Maximal velocity.
+
+            See Also:
+                * :func:`niapy.algorithms.Algorithm.set_parameters`
+
+        """
+        super().set_parameters(population_size, **kwargs)
+        self.mixture_ratio = mixture_ratio
+        self.c1 = c1
+        self.smp = smp
+        self.spc = spc
+        self.cdc = cdc
+        self.srd = srd
+        self.max_velocity = max_velocity
+
+    def init_population(self, task):
         r"""Initialize population.
 
         Args:
@@ -81,43 +126,26 @@ class CatSwarmOptimization(Algorithm):
                 3. Additional arguments:
                     * Dictionary of modes (seek or trace) and velocities for each cat
         See Also:
-            * :func:`niapy.algorithms.Algorithm.initPopulation`
+            * :func:`niapy.algorithms.Algorithm.init_population`
+
         """
-        pop, fpop, d = Algorithm.initPopulation(self, task)
-        d['modes'] = self.randomSeekTrace()
-        d['velocities'] = self.uniform(-self.vMax, self.vMax, [len(pop), task.D])
+        pop, fpop, d = super().init_population(task)
+        d['velocities'] = self.uniform(-self.max_velocity, self.max_velocity, (self.population_size, task.dimension))
         return pop, fpop, d
 
-    def repair(self, x, l, u):
-        r"""Repair array to range.
-
-        Args:
-            x (numpy.ndarray): Array to repair.
-            l (numpy.ndarray): Lower limit of allowed range.
-            u (numpy.ndarray): Upper limit of allowed range.
+    def random_seek_trace(self):
+        r"""Set cats into seeking/tracing mode randomly.
 
         Returns:
-            numpy.ndarray: Repaired array.
+            numpy.ndarray: One or zero. One means tracing mode. Zero means seeking mode. Length of list is equal to population_size.
+
         """
-        ir = np.where(x < l)
-        x[ir] = l[ir]
-        ir = np.where(x > u)
-        x[ir] = u[ir]
-        return x
+        modes = np.zeros(self.population_size, dtype=np.int32)
+        indices = self.rng.choice(self.population_size, int(self.population_size * self.mixture_ratio), replace=False)
+        modes[indices] = 1
+        return modes
 
-    def randomSeekTrace(self):
-        r"""Set cats into seeking/tracing mode.
-
-        Returns:
-            numpy.ndarray: One or zero. One means tracing mode. Zero means seeking mode. Length of list is equal to NP.
-        """
-        lista = np.zeros((self.NP,), dtype=int)
-        indexes = np.arange(self.NP)
-        self.rng.shuffle(indexes)
-        lista[indexes[:int(self.NP * self.MR)]] = 1
-        return lista
-
-    def weightedSelection(self, weights):
+    def weighted_selection(self, weights):
         r"""Random selection considering the weights.
 
         Args:
@@ -125,17 +153,18 @@ class CatSwarmOptimization(Algorithm):
 
         Returns:
             int: index of selected next position.
+
         """
         cumulative_sum = np.cumsum(weights)
         return np.argmax(cumulative_sum >= (self.random() * cumulative_sum[-1]))
 
-    def seekingMode(self, task, cat, fcat, pop, fpop, fxb):
+    def seeking_mode(self, task, cat, cat_fitness, pop, fpop, fxb):
         r"""Seeking mode.
 
         Args:
             task (Task): Optimization task.
             cat (numpy.ndarray): Individual from population.
-            fcat (float): Current individual's fitness/function value.
+            cat_fitness (float): Current individual's fitness/function value.
             pop (numpy.ndarray): Current population.
             fpop (numpy.ndarray): Current population fitness/function values.
             fxb (float): Current best cat fitness/function value.
@@ -146,42 +175,42 @@ class CatSwarmOptimization(Algorithm):
                 2. Updated individual's fitness/function value
                 3. Updated global best position
                 4. Updated global best fitness/function value
+
         """
         cat_copies = []
         cat_copies_fs = []
-        for j in range(self.SMP - 1 if self.SPC else self.SMP):
+        for j in range(self.smp - 1 if self.spc else self.smp):
             cat_copies.append(cat.copy())
-            indexes = np.arange(task.D)
+            indexes = np.arange(task.dimension)
             self.rng.shuffle(indexes)
-            to_vary_indexes = indexes[:int(task.D * self.CDC)]
+            to_vary_indexes = indexes[:int(task.dimension * self.cdc)]
             if self.integers(2) == 1:
-                cat_copies[j][to_vary_indexes] += cat_copies[j][to_vary_indexes] * self.SRD
+                cat_copies[j][to_vary_indexes] += cat_copies[j][to_vary_indexes] * self.srd
             else:
-                cat_copies[j][to_vary_indexes] -= cat_copies[j][to_vary_indexes] * self.SRD
+                cat_copies[j][to_vary_indexes] -= cat_copies[j][to_vary_indexes] * self.srd
             cat_copies[j] = task.repair(cat_copies[j])
             cat_copies_fs.append(task.eval(cat_copies[j]))
-        if self.SPC:
+        if self.spc:
             cat_copies.append(cat.copy())
-            cat_copies_fs.append(fcat)
+            cat_copies_fs.append(cat_fitness)
 
         cat_copies_select_probs = np.ones(len(cat_copies))
-        fmax = np.max(cat_copies_fs)
-        fmin = np.min(cat_copies_fs)
+        worst_fitness = np.max(cat_copies_fs)
+        best_fitness = np.min(cat_copies_fs)
         if any(x != cat_copies_fs[0] for x in cat_copies_fs):
-            fb = fmax
+            fb = worst_fitness
             if math.isinf(fb):
                 cat_copies_select_probs = np.full(len(cat_copies), fb)
             else:
-                cat_copies_select_probs = np.abs(cat_copies_fs - fb) / (fmax - fmin)
-        if fmin < fxb:
-            fxb = fmin
-            ind = self.integers(self.NP)
-            pop[ind] = cat_copies[np.where(cat_copies_fs == fmin)[0][0]]
-            fpop[ind] = fmin
-        sel_index = self.weightedSelection(cat_copies_select_probs)
+                cat_copies_select_probs = np.abs(cat_copies_fs - fb) / (worst_fitness - best_fitness)
+        if best_fitness < fxb:
+            ind = self.integers(self.population_size)
+            pop[ind] = cat_copies[np.where(cat_copies_fs == best_fitness)[0][0]]
+            fpop[ind] = best_fitness
+        sel_index = self.weighted_selection(cat_copies_select_probs)
         return cat_copies[sel_index], cat_copies_fs[sel_index], pop, fpop
 
-    def tracingMode(self, task, cat, velocity, xb):
+    def tracing_mode(self, task, cat, velocity, xb):
         r"""Tracing mode.
 
         Args:
@@ -194,23 +223,23 @@ class CatSwarmOptimization(Algorithm):
                 1. Updated individual's position
                 2. Updated individual's fitness/function value
                 3. Updated individual's velocity vector
-        """
-        Vnew = self.repair(velocity + (self.uniform(0, 1, len(velocity)) * self.C1 * (xb - cat)), np.full(task.D, -self.vMax), np.full(task.D, self.vMax))
-        cat_new = task.repair(cat + Vnew)
-        return cat_new, task.eval(cat_new), Vnew
 
-    def runIteration(self, task, pop, fpop, xb, fxb, velocities, modes, **dparams):
+        """
+        new_velocity = np.clip(velocity + (self.random(len(velocity)) * self.c1 * (xb - cat)),
+                               -self.max_velocity, self.max_velocity)
+        cat_new = task.repair(cat + new_velocity)
+        return cat_new, task.eval(cat_new), new_velocity
+
+    def run_iteration(self, task, population, population_fitness, best_x, best_fitness, **params):
         r"""Core function of Cat Swarm Optimization algorithm.
 
         Args:
             task (Task): Optimization task.
-            pop (numpy.ndarray): Current population.
-            fpop (numpy.ndarray): Current population fitness/function values.
-            xb (numpy.ndarray): Current best individual.
-            fxb (float): Current best cat fitness/function value.
-            velocities (numpy.ndarray): Velocities of individuals.
-            modes (numpy.ndarray): Flag of each individual.
-            **dparams (Dict[str, Any]): Additional function arguments.
+            population (numpy.ndarray): Current population.
+            population_fitness (numpy.ndarray): Current population fitness/function values.
+            best_x (numpy.ndarray): Current best individual.
+            best_fitness (float): Current best cat fitness/function value.
+            **params (Dict[str, Any]): Additional function arguments.
 
         Returns:
             Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, float, Dict[str, Any]]:
@@ -219,16 +248,29 @@ class CatSwarmOptimization(Algorithm):
                 3. New global best solution.
                 4. New global best solutions fitness/objective value.
                 5. Additional arguments:
-                    * Dictionary of modes (seek or trace) and velocities for each cat.
+                    * velocities (numpy.ndarray): velocities of cats.
+
         """
-        pop_copies = pop.copy()
+        modes = self.random_seek_trace()
+        velocities = params.pop('velocities')
+
+        pop_copies = population.copy()
         for k in range(len(pop_copies)):
             if modes[k] == 0:
-                pop_copies[k], fpop[k], pop_copies[:], fpop[:] = self.seekingMode(task, pop_copies[k], fpop[k], pop_copies, fpop, fxb)
+                pop_copies[k], population_fitness[k], pop_copies, population_fitness = self.seeking_mode(task,
+                                                                                                         pop_copies[k],
+                                                                                                         population_fitness[k],
+                                                                                                         pop_copies,
+                                                                                                         population_fitness,
+                                                                                                         best_fitness)
             else:  # if cat in tracing mode
-                pop_copies[k], fpop[k], velocities[k] = self.tracingMode(task, pop_copies[k], velocities[k], xb)
-        ib = np.argmin(fpop)
-        if fpop[ib] < fxb: xb, fxb = pop_copies[ib].copy(), fpop[ib]
-        return pop_copies, fpop, xb, fxb, {'velocities': velocities, 'modes': self.randomSeekTrace()}
+                pop_copies[k], population_fitness[k], velocities[k] = self.tracing_mode(task,
+                                                                                        pop_copies[k],
+                                                                                        velocities[k],
+                                                                                        best_x)
+        best_index = np.argmin(population_fitness)
+        if population_fitness[best_index] < best_fitness:
+            best_x, best_fitness = pop_copies[best_index].copy(), population_fitness[best_index]
+        return pop_copies, population_fitness, best_x, best_fitness, {'velocities': velocities}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

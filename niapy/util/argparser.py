@@ -2,118 +2,131 @@
 
 """Argparser class."""
 
-import sys
 import logging
+import sys
 from argparse import ArgumentParser
+
 import numpy as np
+
+import niapy.benchmarks as benchmarks
 from niapy.task.task import OptimizationType
-import niapy.benchmarks as bencs
 
 logging.basicConfig()
 logger = logging.getLogger('niapy.util.argparse')
 logger.setLevel('INFO')
 
-__all__ = ['MakeArgParser', 'getArgs', 'getDictArgs']
+__all__ = ['get_argparser', 'get_args', 'get_args_dict']
 
-def makeCbechs():
-	r"""Make benchmarks."""
-	return bencs.__all__
 
-def optimizationType(x):
-	r"""Map function for optimization type.
+def get_benchmark_names():
+    r"""Get benchmark names."""
+    return benchmarks.__all__
 
-	Args:
-		x (str): String representing optimization type.
 
-	Returns:
-		OptimizationType: Optimization type based on type that is defined as enum.
-	"""
-	if x not in ['min', 'max']: logger.info('You can use only [min, max], using min')
-	return OptimizationType.MAXIMIZATION if x == 'max' else OptimizationType.MINIMIZATION
+def optimization_type(x):
+    r"""Get OptimizationType from string.
 
-def MakeArgParser():
-	r"""Create/Make pareser for parsing string.
+    Args:
+        x (str): String representing optimization type.
 
-	Parser:
-		* `-a` or `--algorithm` (str):
-			Name of algorithm to use. Default value is `jDE`.
-		* `-b` or `--bech` (str):
-			Name of benchmark to use. Default values is `Benchmark`.
-		* `-D` (int):
-			Number of dimensions/components usd by benchmark. Default values is `10`.
-		* `-nFES` (int):
-			Number of maximum funciton evaluations. Default values is `inf`.
-		* `-nGEN` (int):
-			Number of maximum algorithm iterations/generations. Default values is `inf`.
-		* `-NP` (int):
-			Number of inidividuals in population. Default values is `43`.
-		* `-r` or `--runType` (str);
-			Run type of run. Value can be:
-				* '': No output durning the run. Ouput is shown only at the end of algorithm run.
-				* `log`: Output is shown every time new global best solution is found
-				* `plot`: Output is shown only at the end of run. Output is shown as graph ploted in mathplotlib. Graph represents convegance of algorithm over run time of algorithm.
-			Default value is `''`.
-		* `-seed` (list of int or int):
-			Set the starting seed of algorithm run. If mutiple runs, user can provide list of ints, where each int usd use at new run. Default values is `None`.
-		* `-optType` (str):
-			Optimization type of the run. Values can be:
-				* `min`: For minimaization problems
-				* `max`: For maximization problems
-			Default value is `min`.
+    Returns:
+        OptimizationType: Optimization type based on type that is defined as enum.
 
-	Returns:
-		ArgumentParser: Parser for parsing arguments from string.
+    """
+    if x not in ['min', 'max']:
+        logger.info('You can use only [min, max], using min')
+    return OptimizationType.MAXIMIZATION if x == 'max' else OptimizationType.MINIMIZATION
 
-	See Also:
-		* :class:`ArgumentParser`
-		* :func:`ArgumentParser.add_argument`
-	"""
-	parser, cbechs = ArgumentParser(description='Runer example.'), makeCbechs()
-	parser.add_argument('-a', '--algorithm', dest='algo', default='jDE', type=str)
-	parser.add_argument('-b', '--bech', dest='bech', nargs='*', default=cbechs[0], choices=cbechs, type=str)
-	parser.add_argument('-D', dest='D', default=10, type=int)
-	parser.add_argument('-nFES', dest='nFES', default=np.inf, type=int)
-	parser.add_argument('-nGEN', dest='nGEN', default=np.inf, type=int)
-	parser.add_argument('-NP', dest='NP', default=43, type=int)
-	parser.add_argument('-r', '--runType', dest='runType', choices=['', 'log', 'plot'], default='', type=str)
-	parser.add_argument('-seed', dest='seed', nargs='+', default=[None], type=int)
-	parser.add_argument('-optType', dest='optType', default=optimizationType('min'), type=optimizationType)
-	return parser
 
-def getArgs(av):
-	r"""Parse arguments form inputed string.
+def get_argparser():
+    r"""Create/Make parser for parsing string.
 
-	Args:
-		av (str): String to parse.
+    Parser:
+        * `-a` or `--algorithm` (str):
+            Name of algorithm to use. Default value is `jDE`.
+        * `-b` or `--benchmark` (str):
+            Name of benchmark to use. Default values is `Benchmark`.
+        * `-d` or `--dimension` (int):
+            Number of dimensions/components usd by benchmark. Default values is `10`.
+        * `--max-evals` (int):
+            Number of maximum function evaluations. Default values is `inf`.
+        * `--max-iters` (int):
+            Number of maximum algorithm iterations/generations. Default values is `inf`.
+        * `-n` or  `--population-size` (int):
+            Number of individuals in population. Default values is `43`.
+        * `-r` or `--run-type` (str);
+            Run type of run. Value can be:
+                * '': No output during the run. Output is shown only at the end of algorithm run.
+                * `log`: Output is shown every time new global best solution is found
+                * `plot`: Output is shown only at the end of run. Output is shown as graph plotted in matplotlib. Graph represents convergence of algorithm over run time of algorithm.
+            Default value is `''`.
+        * `--seed` (list of int or int):
+            Set the starting seed of algorithm run. If multiple runs, user can provide list of ints, where each int usd use at new run. Default values is `None`.
+        * `--opt-type` (str):
+            Optimization type of the run. Values can be:
+                * `min`: For minimization problems
+                * `max`: For maximization problems
+            Default value is `min`.
 
-	Returns:
-		Dict[str, Union[float, int, str, OptimizationType]]: Where key represents argument name and values it's value.
+    Returns:
+        ArgumentParser: Parser for parsing arguments from string.
 
-	See Also:
-		* :func:`niapy.util.argparser.MakeArgParser`.
-		* :func:`ArgumentParser.parse_args`
-	"""
-	parser = MakeArgParser()
-	a = parser.parse_args(av)
-	return a
+    See Also:
+        * :class:`ArgumentParser`
+        * :func:`ArgumentParser.add_argument`
 
-def getDictArgs(argv):
-	r"""Pasre input string.
+    """
+    parser, benchmark_names = ArgumentParser(description='Runner example.'), get_benchmark_names()
+    parser.add_argument('-a', '--algorithm', dest='algo', default='jDE', type=str)
+    parser.add_argument('-b', '--benchmark', dest='benchmark', nargs='*', default=benchmark_names[0], choices=benchmark_names, type=str)
+    parser.add_argument('-d', '--dimension', dest='dimension', default=10, type=int)
+    parser.add_argument('--max-evals', dest='max_evals', default=np.inf, type=int)
+    parser.add_argument('--max-iters', dest='max_iters', default=np.inf, type=int)
+    parser.add_argument('-n', '--population-size', dest='population_size', default=43, type=int)
+    parser.add_argument('-r', '--run-type', dest='run_type', choices=['', 'log', 'plot'], default='', type=str)
+    parser.add_argument('--seed', dest='seed', nargs='+', default=[None], type=int)
+    parser.add_argument('--opt-type', dest='opt_type', default=optimization_type('min'), type=optimization_type)
+    return parser
 
-	Args:
-		argv (str): Input string to parse for argumets
 
-	Returns:
-		dict: Parsed input string
+def get_args(argv):
+    r"""Parse arguments form input string.
 
-	See Also:
-		* :func:`niapy.utils.getArgs`
-	"""
-	return vars(getArgs(argv))
+    Args:
+        argv (List[str]): List to parse.
+
+    Returns:
+        Dict[str, Union[float, int, str, OptimizationType]]: Where key represents argument name and values it's value.
+
+    See Also:
+        * :func:`niapy.util.argparser.get_argparser`.
+        * :func:`ArgumentParser.parse_args`
+
+    """
+    parser = get_argparser()
+    a = parser.parse_args(argv)
+    return a
+
+
+def get_args_dict(argv):
+    r"""Parse input string.
+
+    Args:
+        argv (List[str]): Input string to parse for arguments
+
+    Returns:
+        dict: Parsed input string
+
+    See Also:
+        * :func:`niapy.utils.get_args`
+
+    """
+    return vars(get_args(argv))
+
 
 if __name__ == '__main__':
-	r"""Run the algorithms based on parameters from the command line interface."""
-	args = getArgs(sys.argv[1:])
-	logger.info(str(args))
+    r"""Run the algorithms based on parameters from the command line interface."""
+    args = get_args(sys.argv[1:])
+    logger.info(str(args))
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

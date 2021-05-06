@@ -1,6 +1,8 @@
 # coding=utf-8
 import logging
+
 import numpy as np
+
 from niapy.algorithms.algorithm import Algorithm
 
 __all__ = ['BeesAlgorithm']
@@ -11,220 +13,236 @@ logger.setLevel('INFO')
 
 
 class BeesAlgorithm(Algorithm):
-	r"""Implementation of Bees algorithm.
+    r"""Implementation of Bees algorithm.
 
-	Algorithm:
-		The Bees algorithm
+    Algorithm:
+        The Bees algorithm
 
-	Date:
-		2019
+    Date:
+        2019
 
-	Authors:
-		Rok Potočnik
+    Authors:
+        Rok Potočnik
 
-	License:
-		MIT
+    License:
+        MIT
 
-	Reference paper:
-		DT Pham, A Ghanbarzadeh, E Koc, S Otri, S Rahim, and M Zaidi. The bees algorithm-a novel tool for complex optimisation problems. In Proceedings of the 2nd Virtual International Conference on Intelligent Production Machines and Systems (IPROMS 2006), pages 454–459, 2006
+    Reference paper:
+        DT Pham, A Ghanbarzadeh, E Koc, S Otri, S Rahim, and M Zaidi. The bees algorithm-a novel tool for complex optimisation problems. In Proceedings of the 2nd Virtual International Conference on Intelligent Production Machines and Systems (IPROMS 2006), pages 454–459, 2006
 
-	Attributes:
-		NP (Optional[int]): Number of scout bees parameter.
-		m (Optional[int]): Number of sites selected out of n visited sites parameter.
-		e (Optional[int]): Number of best sites out of m selected sitest parameter.
-		nep (Optional[int]): Number of bees recruited for best e sites parameter.
-		nsp (Optional[int]): Number of bees recruited for the other selected sites parameter.
-		ngh (Optional[float]): Initial size of patches parameter.
+    Attributes:
+        population_size (Optional[int]): Number of scout bees parameter.
+        m (Optional[int]): Number of sites selected out of n visited sites parameter.
+        e (Optional[int]): Number of best sites out of m selected sites parameter.
+        nep (Optional[int]): Number of bees recruited for best e sites parameter.
+        nsp (Optional[int]): Number of bees recruited for the other selected sites parameter.
+        ngh (Optional[float]): Initial size of patches parameter.
 
-	See Also:
-		* :func:`niapy.algorithms.Algorithm.setParameters`
+    See Also:
+        * :func:`niapy.algorithms.Algorithm.set_parameters`
 
-	"""
-	Name = ['BeesAlgorithm', 'BEA']
+    """
 
-	@staticmethod
-	def algorithmInfo():
-		r"""Get information about algorithm.
+    Name = ['BeesAlgorithm', 'BEA']
 
-		Returns:
-			str: Algorithm information
+    @staticmethod
+    def info():
+        r"""Get information about algorithm.
 
-		See Also:
-			* :func:`niapy.algorithms.Algorithm.algorithmInfo`
-		"""
-		return r"""DT Pham, A Ghanbarzadeh, E Koc, S Otri, S Rahim, and M Zaidi. The bees algorithm-a novel tool for complex optimisation problems. In Proceedings of the 2nd Virtual International Conference on Intelligent Production Machines and Systems (IPROMS 2006), pages 454–459, 2006"""
+        Returns:
+            str: Algorithm information
 
-	@staticmethod
-	def typeParameters():
-		r"""Get dictionary with functions for checking values of parameters.
+        See Also:
+            * :func:`niapy.algorithms.Algorithm.info`
 
-		Returns:
-			Dict[str, Callable]:
-				* NP (Callable[[int], bool]): Checks if number of bees parameter has a proper value.
-				* m (Callable[[int], bool]): Checks if number of selected sites parameter has a proper value.
-				* e (Callable[[int], bool]): Checks if number of elite selected sites parameter has a proper value.
-				* nep (Callable[[int], bool]): Checks if number of elite bees parameter has a proper value.
-				* nsp (Callable[[int], bool]): Checks if number of other bees parameter has a proper value.
-				* ngh (Callable[[float], bool]): Checks if size of patches parameter has a proper value.
+        """
+        return r"""DT Pham, A Ghanbarzadeh, E Koc, S Otri, S Rahim, and M Zaidi. The bees algorithm-a novel tool for complex optimisation problems. In Proceedings of the 2nd Virtual International Conference on Intelligent Production Machines and Systems (IPROMS 2006), pages 454–459, 2006"""
 
-		See Also:
-			* :func:`niapy.algorithms.algorithm.Algorithm.typeParameters`
-		"""
-		d = Algorithm.typeParameters()
-		d.update({
-			'NP': lambda x: isinstance(x, int) and x > 0,
-			'm': lambda x: isinstance(x, int) and x > 0,
-			'e': lambda x: isinstance(x, int) and x > 0,
-			'nep': lambda x: isinstance(x, int) and x > 0,
-			'nsp': lambda x: isinstance(x, int) and x > 0,
-			'ngh': lambda x: isinstance(x, float) and x > 0
-		})
-		return d
+    @staticmethod
+    def type_parameters():
+        r"""Get dictionary with functions for checking values of parameters.
 
-	def setParameters(self, NP=40, m=5, e=4, ngh=1, nep=4, nsp=2, **ukwargs):
-		r"""Set the parameters of the algorithm.
+        Returns:
+            Dict[str, Callable]:
+                * population_size (Callable[[int], bool]): Checks if number of bees parameter has a proper value.
+                * m (Callable[[int], bool]): Checks if number of selected sites parameter has a proper value.
+                * e (Callable[[int], bool]): Checks if number of elite selected sites parameter has a proper value.
+                * nep (Callable[[int], bool]): Checks if number of elite bees parameter has a proper value.
+                * nsp (Callable[[int], bool]): Checks if number of other bees parameter has a proper value.
+                * ngh (Callable[[float], bool]): Checks if size of patches parameter has a proper value.
 
-		Args:
-			NP (Optional[int]): Number of scout bees parameter.
-			m (Optional[int]): Number of sites selected out of n visited sites parameter.
-			e (Optional[int]): Number of best sites out of m selected sitest parameter.
-			nep (Optional[int]): Number of bees recruited for best e sites parameter.
-			nsp (Optional[int]): Number of bees recruited for the other selected sites parameter.
-			ngh (Optional[float]): Initial size of patches parameter.
-			ukwargs (Dict[str, Any]): Additional arguments.
+        See Also:
+            * :func:`niapy.algorithms.algorithm.Algorithm.type_parameters`
 
-		See Also:
-			* :func:`niapy.algorithms.Algorithm.setParameters`
-		"""
-		Algorithm.setParameters(self, NP=NP, **ukwargs)
-		self.n, self.m, self.e, self.nep, self.nsp, self.ngh = NP, m, e, nep, nsp, ngh
+        """
+        d = Algorithm.type_parameters()
+        d.update({
+            'population_size': lambda x: isinstance(x, int) and x > 0,
+            'm': lambda x: isinstance(x, int) and x > 0,
+            'e': lambda x: isinstance(x, int) and x > 0,
+            'nep': lambda x: isinstance(x, int) and x > 0,
+            'nsp': lambda x: isinstance(x, int) and x > 0,
+            'ngh': lambda x: isinstance(x, float) and x > 0
+        })
+        return d
 
-	def getParameters(self):
-		r"""Get parameters of the algorithm.
+    def __init__(self, population_size=40, m=5, e=4, ngh=1, nep=4, nsp=2, *args, **kwargs):
+        """Initialize BeesAlgorithm.
 
-		Returns:
-			Dict[str, Any]:
-		"""
-		d = Algorithm.getParameters(self)
-		d.update({
-			'm': self.m,
-			'e': self.e,
-			'ngh': self.ngh,
-			'nep': self.nep,
-			'nsp': self.nsp
-		})
-		return d
+        Args:
+            population_size (Optional[int]): Number of scout bees parameter.
+            m (Optional[int]): Number of sites selected out of n visited sites parameter.
+            e (Optional[int]): Number of best sites out of m selected sites parameter.
+            nep (Optional[int]): Number of bees recruited for best e sites parameter.
+            nsp (Optional[int]): Number of bees recruited for the other selected sites parameter.
+            ngh (Optional[float]): Initial size of patches parameter.
 
-	def beeDance(self, x, task, ngh):
-		r"""Bees Dance. Search for new positions.
+        See Also:
+            * :func:`niapy.algorithms.Algorithm.__init__`
 
-		Args:
-			x (numpy.ndarray): One instance from the population.
-			task (Task): Optimization task.
-			ngh (float): A small value for patch search.
+        """
+        super().__init__(population_size, *args, **kwargs)
+        self.m = m
+        self.e = e
+        self.ngh = ngh
+        self.nep = nep
+        self.nsp = nsp
 
-		Returns:
-			Tuple[numpy.ndarray, float]:
-				1. New population.
-				2. New population fitness/function values.
+    def set_parameters(self, population_size=40, m=5, e=4, ngh=1, nep=4, nsp=2, **kwargs):
+        r"""Set the parameters of the algorithm.
 
-		See Also:
-			* :func:`niapy.algorithms.Algorithm.initPopulation`
-		"""
-		ind = self.integers(task.D)
-		y = x.copy()
-		y[ind] = x[ind] + self.uniform(-ngh, ngh)
-		y = self.repair(y, task.Lower, task.Upper)
-		res = task.eval(y)
-		return y, res
+        Args:
+            population_size (Optional[int]): Number of scout bees parameter.
+            m (Optional[int]): Number of sites selected out of n visited sites parameter.
+            e (Optional[int]): Number of best sites out of m selected sites parameter.
+            nep (Optional[int]): Number of bees recruited for best e sites parameter.
+            nsp (Optional[int]): Number of bees recruited for the other selected sites parameter.
+            ngh (Optional[float]): Initial size of patches parameter.
 
-	def initPopulation(self, task):
-		r"""Initialize the starting population.
+        See Also:
+            * :func:`niapy.algorithms.Algorithm.set_parameters`
 
-		Args:
-			task (Task): Optimization task
+        """
+        super().set_parameters(population_size=population_size, **kwargs)
+        self.m = m
+        self.e = e
+        self.ngh = ngh
+        self.nep = nep
+        self.nsp = nsp
 
-		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray, Dict[str, Any]]:
-				1. New population.
-				2. New population fitness/function values.
+    def get_parameters(self):
+        r"""Get parameters of the algorithm.
 
-		See Also:
-			* :func:`niapy.algorithms.Algorithm.initPopulation`
-		"""
-		BeesPosition, BeesCost, _ = Algorithm.initPopulation(self, task)
+        Returns:
+            Dict[str, Any]: Algorithm Parameters.
 
-		idxs = np.argsort(BeesCost)
-		BeesCost = BeesCost[idxs]
-		BeesPosition = BeesPosition[idxs, :]
+        """
+        d = super().get_parameters()
+        d.update({
+            'm': self.m,
+            'e': self.e,
+            'ngh': self.ngh,
+            'nep': self.nep,
+            'nsp': self.nsp
+        })
+        return d
 
-		return BeesPosition, BeesCost, {'ngh': self.ngh}
+    def bee_dance(self, x, task, ngh):
+        r"""Bees Dance. Search for new positions.
 
-	def repair(self, x, lower, upper):
-		r"""Truncate exceeded dimensions to the limits.
+        Args:
+            x (numpy.ndarray): One individual from the population.
+            task (Task): Optimization task.
+            ngh (float): A small value for patch search.
 
-		Args:
-			x (numpy.ndarray): Individual to repair.
-			lower (numpy.ndarray): Lower limits for dimensions.
-			upper (numpy.ndarray): Upper limits for dimensions.
+        Returns:
+            Tuple[numpy.ndarray, float]:
+                1. New individual.
+                2. New individual fitness/function values.
 
-		Returns:
-			numpy.ndarray: Repaired individual.
-		"""
-		ir = np.where(x < lower)
-		x[ir] = lower[ir]
-		ir = np.where(x > upper)
-		x[ir] = upper[ir]
-		return x
+        """
+        ind = self.integers(task.dimension)
+        y = x.copy()
+        y[ind] = x[ind] + self.uniform(-ngh, ngh)
+        y = task.repair(y)
+        y_fitness = task.eval(y)
+        return y, y_fitness
 
-	def runIteration(self, task, BeesPosition, BeesCost, xb, fxb, ngh, **dparams):
-		r"""Core function of Forest Optimization Algorithm.
+    def init_population(self, task):
+        r"""Initialize the starting population.
 
-		Args:
-			task (Task): Optimization task.
-			BeesPosition (numpy.ndarray[float]): Current population.
-			BeesCost (numpy.ndarray[float]): Current population function/fitness values.
-			xb (numpy.ndarray): Global best individual.
-			fxb (float): Global best individual fitness/function value.
-			ngh (float): A small value used for patches.
-			**dparams (Dict[str, Any]): Additional arguments.
+        Args:
+            task (Task): Optimization task
 
-		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, float, Dict[str, Any]]:
-				1. New population.
-				2. New population fitness/function values.
-				3. New global best solution.
-				4. New global best fitness/objective value.
-				5. Additional arguments:
-					* ngh (float): A small value used for patches.
-		"""
-		for ies in range(self.e):
-			BestBeeCost = float('inf')
-			for ieb in range(self.nep):
-				NewBeePos, NewBeeCost = self.beeDance(BeesPosition[ies, :], task, ngh)
-				if NewBeeCost < BestBeeCost:
-					BestBeeCost = NewBeeCost
-					BestBeePos = NewBeePos
-			if BestBeeCost < BeesCost[ies]:
-				BeesPosition[ies, :] = BestBeePos
-				BeesCost[ies] = BestBeeCost
-		for ies in range(self.e, self.m):
-			BestBeeCost = float('inf')
-			for ieb in range(self.nsp):
-				NewBeePos, NewBeeCost = self.beeDance(BeesPosition[ies, :], task, ngh)
-				if NewBeeCost < BestBeeCost:
-					BestBeeCost = NewBeeCost
-					BestBeePos = NewBeePos
-			if BestBeeCost < BeesCost[ies]:
-				BeesPosition[ies, :] = BestBeePos
-				BeesCost[ies] = BestBeeCost
-		for ies in range(self.m, self.n):
-			BeesPosition[ies, :] = self.uniform(task.Lower, task.Upper, task.D)
-			BeesCost[ies] = task.eval(BeesPosition[ies, :])
-		idxs = np.argsort(BeesCost)
-		BeesCost = BeesCost[idxs]
-		BeesPosition = BeesPosition[idxs, :]
-		ngh = ngh * 0.95
-		return BeesPosition, BeesCost, BeesPosition[0].copy(), BeesCost[0], {'ngh': ngh}
+        Returns:
+            Tuple[numpy.ndarray, numpy.ndarray, Dict[str, Any]]:
+                1. New population.
+                2. New population fitness/function values.
+
+        See Also:
+            * :func:`niapy.algorithms.Algorithm.init_population`
+
+        """
+        population, population_fitness, _ = super().init_population(task)
+
+        sorted_indices = np.argsort(population_fitness)
+        population_fitness = population_fitness[sorted_indices]
+        population = population[sorted_indices, :]
+
+        return population, population_fitness, {'ngh': self.ngh}
+
+    def run_iteration(self, task, population, population_fitness, best_x, best_fitness, **params):
+        r"""Core function of Forest Optimization Algorithm.
+
+        Args:
+            task (Task): Optimization task.
+            population (numpy.ndarray[float]): Current population.
+            population_fitness (numpy.ndarray[float]): Current population function/fitness values.
+            best_x (numpy.ndarray): Global best individual.
+            best_fitness (float): Global best individual fitness/function value.
+            **params (Dict[str, Any]): Additional arguments.
+
+        Returns:
+            Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, float, Dict[str, Any]]:
+                1. New population.
+                2. New population fitness/function values.
+                3. New global best solution.
+                4. New global best fitness/objective value.
+                5. Additional arguments:
+                    * ngh (float): A small value used for patches.
+
+        """
+        ngh = params.pop('ngh')
+
+        for ies in range(self.e):
+            best_bee_pos = None
+            best_bee_cost = np.inf
+            for ieb in range(self.nep):
+                new_bee_pos, new_bee_cost = self.bee_dance(population[ies, :], task, ngh)
+                if new_bee_cost < best_bee_cost:
+                    best_bee_cost = new_bee_cost
+                    best_bee_pos = new_bee_pos
+            if best_bee_cost < population_fitness[ies]:
+                population[ies, :] = best_bee_pos
+                population_fitness[ies] = best_bee_cost
+        for ies in range(self.e, self.m):
+            best_bee_pos = None
+            best_bee_cost = np.inf
+            for ieb in range(self.nsp):
+                new_bee_pos, new_bee_cost = self.bee_dance(population[ies, :], task, ngh)
+                if new_bee_cost < best_bee_cost:
+                    best_bee_cost = new_bee_cost
+                    best_bee_pos = new_bee_pos
+            if best_bee_cost < population_fitness[ies]:
+                population[ies, :] = best_bee_pos
+                population_fitness[ies] = best_bee_cost
+        for ies in range(self.m, self.population_size):
+            population[ies, :] = self.uniform(task.lower, task.upper, task.dimension)
+            population_fitness[ies] = task.eval(population[ies, :])
+        sorted_indices = np.argsort(population_fitness)
+        population_fitness = population_fitness[sorted_indices]
+        population = population[sorted_indices, :]
+        ngh = ngh * 0.95
+        return population, population_fitness, population[0].copy(), population_fitness[0], {'ngh': ngh}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

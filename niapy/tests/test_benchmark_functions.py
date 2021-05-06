@@ -2,7 +2,9 @@
 
 from math import pow
 from unittest import TestCase
+
 import numpy as np
+
 from niapy.task import Utility
 
 
@@ -20,25 +22,27 @@ class TestBenchmarkFunctions(TestCase):
         self.array5 = np.asarray([-0.5, -0.5, -0.5, -0.5, -0.5])
         self.array6 = np.asarray([-1, -1, -1, -1, -1])
         self.array7 = np.asarray([2, 2, 2, 2, 2])
-        self.array8 = np.asarray([7.9170526982459462172, 7.9170526982459462172, 7.9170526982459462172, 7.9170526982459462172, 7.9170526982459462172])
+        self.array8 = np.asarray(
+            [7.9170526982459462172, 7.9170526982459462172, 7.9170526982459462172, 7.9170526982459462172,
+             7.9170526982459462172])
         self.array9 = np.asarray([-5.12, -5.12, -5.12, -5.12, -5.12])
         self.array10 = np.asarray([1, 2, 3, 4, 5])
 
     def assertBounds(self, bench, lower, upper):
         """Checking the bounds.
 
-        Arguments:
+        Args:
             bench [Benchmark]: Benchmark to test.
             lower [float]: Lower bound.
             upper [type]: Upper bound.
 
         Returns:
-            [fun]: Returns benchmarks evaluation function.
+            Callable: Returns benchmarks evaluation function.
         """
 
         b = Utility().get_benchmark(bench)
-        self.assertEqual(b.Lower, lower)
-        self.assertEqual(b.Upper, upper)
+        self.assertEqual(b.lower, lower)
+        self.assertEqual(b.upper, upper)
         return b.function()
 
     def test_rastrigin(self):
@@ -116,7 +120,7 @@ class TestBenchmarkFunctions(TestCase):
     def test_styblinskiTang(self):
         """Test the styblinski tang benchmark."""
 
-        styblinskiTang = Utility().get_benchmark('styblinskiTang')
+        styblinskiTang = Utility().get_benchmark('styblinski_tang')
         fun = styblinskiTang.function()
         self.assertTrue(callable(fun))
         self.assertAlmostEqual(fun(2, self.array4), -78.332, places=3)
@@ -164,7 +168,7 @@ class TestBenchmarkFunctions(TestCase):
     def test_schumerSteiglitz(self):
         """Test the schumer steiglitz benchmark."""
 
-        fun = self.assertBounds('schumerSteiglitz', -100, 100)
+        fun = self.assertBounds('schumer_steiglitz', -100, 100)
         self.assertTrue(callable(fun))
         self.assertEqual(fun(self.D, self.array), 0.0)
 
@@ -213,7 +217,7 @@ class TestBenchmarkFunctions(TestCase):
     def test_chungReynolds(self):
         """Test the chung reynolds benchmark."""
 
-        fun = self.assertBounds('chungReynolds', -100, 100)
+        fun = self.assertBounds('chung_reynolds', -100, 100)
         self.assertTrue(callable(fun))
         self.assertEqual(fun(self.D, self.array), 0.0)
 
@@ -227,7 +231,7 @@ class TestBenchmarkFunctions(TestCase):
     def test_bentcigar(self):
         """Test the bent cigar benchmark."""
 
-        fun = self.assertBounds('bentcigar', -100, 100)
+        fun = self.assertBounds('bent_cigar', -100, 100)
         self.assertTrue(callable(fun))
         self.assertAlmostEqual(fun(2, np.zeros(2)), 0.0, delta=1e-4)
         self.assertAlmostEqual(fun(10, np.zeros(10)), 0.0, delta=1e-4)
@@ -250,14 +254,14 @@ class TestBenchmarkFunctions(TestCase):
     def test_expanded_griewank_plus_rosenbrock(self):
         """Test the expanded griewank plus rosenbrock benchmark."""
 
-        fun = self.assertBounds('expandedgriewankplusrosenbrock', -100, 100)
+        fun = self.assertBounds('expanded_griewank_plus_rosenbrock', -100, 100)
         self.assertTrue(callable(fun))
         self.assertAlmostEqual(fun(self.D, self.array), 2.2997, delta=1e2)
 
     def test_expanded_schaffer(self):
         """Test the expanded schaffer benchmark."""
 
-        fun = self.assertBounds('expandedschaffer', -100, 100)
+        fun = self.assertBounds('expanded_schaffer', -100, 100)
         self.assertTrue(callable(fun))
         self.assertAlmostEqual(fun(self.D, self.array10), 2.616740208857464, delta=1e-4)
 
@@ -291,7 +295,7 @@ class TestBenchmarkFunctions(TestCase):
     def test_modifiedscwefel(self):
         """Test the modified scwefel benchmark."""
 
-        fun = self.assertBounds('modifiedscwefel', -100, 100)
+        fun = self.assertBounds('modified_schwefel', -100, 100)
         self.assertTrue(callable(fun))
         self.assertAlmostEqual(fun(self.D, self.array10), 6.9448853328785844, delta=350)
 
@@ -305,7 +309,7 @@ class TestBenchmarkFunctions(TestCase):
     def test_happyCat(self):
         """Test the happy cat benchmark."""
 
-        fun = self.assertBounds('happyCat', -100, 100)
+        fun = self.assertBounds('happy_cat', -100, 100)
         self.assertTrue(callable(fun))
         self.assertAlmostEqual(fun(self.D, self.array10), 15.1821333, delta=1e-4)
 
@@ -406,7 +410,7 @@ class TestBenchmarkFunctions(TestCase):
     def test_dixonprice(self):
         """Test the dixon price benchmark."""
 
-        fun = self.assertBounds('dixonprice', -10, 10)
+        fun = self.assertBounds('dixon_price', -10, 10)
         self.assertTrue(callable(fun))
         self.assertAlmostEqual(fun(2, self.__dixonprice_opt_sol(2)), .0)
         self.assertAlmostEqual(fun(10, self.__dixonprice_opt_sol(10)), .0)
@@ -424,7 +428,7 @@ class TestBenchmarkFunctions(TestCase):
     def test_cosinemixture(self):
         """Test the cosine mixture benchmark."""
 
-        fun = self.assertBounds('cosinemixture', -1, 1)
+        fun = self.assertBounds('cosine_mixture', -1, 1)
         self.assertTrue(callable(fun))
         self.assertAlmostEqual(fun(2, np.zeros(2)), -.1 * 2)
         self.assertAlmostEqual(fun(10, np.zeros(10)), -.1 * 10)

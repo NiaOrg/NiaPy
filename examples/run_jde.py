@@ -2,6 +2,7 @@
 # This is temporary fix to import module from parent folder
 # It will be removed when package is published on PyPI
 import sys
+
 sys.path.append('../')
 # End of fix
 
@@ -10,12 +11,12 @@ from niapy.task import StoppingTask
 from niapy.benchmarks import Griewank
 
 # we will run jDE algorithm for 5 independent runs
-algo = SelfAdaptiveDifferentialEvolution(NP=40, F=0.5, F_l=0.0, F_u=2.0, Tao1=0.9, CR=0.5, Tao2=0.45)
+algo = SelfAdaptiveDifferentialEvolution(f_lower=0.0, f_upper=2.0, tao1=0.9, tao2=0.45, population_size=40,
+                                         differential_weight=0.5, crossover_probability=0.5)
 for i in range(5):
-	task = StoppingTask(D=10, nFES=10000, benchmark=Griewank(Lower=-600, Upper=600), logger=True)
-	best = algo.run(task)
-	print('%s -> %s' % (best[0], best[1]))
-print(algo.getParameters())
+    task = StoppingTask(max_evals=10000, enable_logging=True, dimension=10, benchmark=Griewank(lower=-600, upper=600))
+    best = algo.run(task)
+    print('%s -> %s' % (best[0], best[1]))
+print(algo.get_parameters())
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
-

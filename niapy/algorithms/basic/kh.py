@@ -1,8 +1,10 @@
 # encoding=utf8
 import logging
+
 import numpy as np
-from niapy.util import full_array, euclidean
+
 from niapy.algorithms.algorithm import Algorithm
+from niapy.util import full_array, euclidean
 
 logging.basicConfig()
 logger = logging.getLogger('niapy.algorithms.basic')
@@ -10,858 +12,964 @@ logger.setLevel('INFO')
 
 __all__ = ['KrillHerdV1', 'KrillHerdV2', 'KrillHerdV3', 'KrillHerdV4', 'KrillHerdV11']
 
+
 class KrillHerd(Algorithm):
-	r"""Implementation of krill herd algorithm.
-
-	Algorithm:
-		Krill Herd Algorithm
-
-	Date:
-		2018
-
-	Authors:
-		Klemen Berkovič
-
-	License:
-		MIT
-
-	Reference URL:
-		http://www.sciencedirect.com/science/article/pii/S1007570412002171
-
-	Reference paper:
-		Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010.
-
-	Attributes:
-		Name (List[str]): List of strings representing algorithm names.
-		NP (int): Number of krill herds in population.
-		N_max (float): Maximum induced speed.
-		V_f (float): Foraging speed.
-		D_max (float): Maximum diffusion speed.
-		C_t (float): Constant :math:`\in [0, 2]`
-		W_n (Union[int, float, numpy.ndarray]): Interta weights of the motion induced from neighbors :math:`\in [0, 1]`.
-		W_f (Union[int, float, numpy.ndarray]): Interta weights of the motion induced from foraging :math`\in [0, 1]`.
-		d_s (float): Maximum euclidean distance for neighbors.
-		nn (int): Maximum neighbors for neighbors effect.
-		Cr (float): Crossover probability.
-		Mu (float): Mutation probability.
-		epsilon (float): Small numbers for division.
-
-	See Also:
-		* :class:`niapy.algorithms.algorithm.Algorithm`
-	"""
-	Name = ['KrillHerd', 'KH']
-
-	@staticmethod
-	def algorithmInfo():
-		r"""Get basic information of algorithm.
-
-		Returns:
-			str: Basic information of algorithm.
-
-		See Also:
-			* :func:`niapy.algorithms.Algorithm.algorithmInfo`
-		"""
-		return r"""Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010."""
-
-	@staticmethod
-	def typeParameters():
-		r"""Get dictionary with functions for checking values of parameters.
-
-		Returns:
-			Dict[str, Callable]:
-				* N_max (Callable[[Union[int, float]], bool])
-				* V_f (Callable[[Union[int, float]], bool])
-				* D_max (Callable[[Union[int, float]], bool])
-				* C_t (Callable[[Union[int, float]], bool])
-				* W_n (Callable[[Union[int, float]], bool])
-				* W_f (Callable[[Union[int, float]], bool])
-				* d_s (Callable[[Union[int, float]], boool])
-				* nn (Callable[[int], bool])
-				* Cr (Callable[[float], bool])
-				* Mu (Callable[[float], bool])
-				* epsilon (Callable[[float], bool])
-
-		See Also:
-			* :func:`niapy.algorithms.algorithm.Algorithm`
-		"""
-		d = Algorithm.typeParameters()
-		d.update({
-			'N_max': lambda x: isinstance(x, (int, float)) and x > 0,
-			'V_f': lambda x: isinstance(x, (int, float)) and x > 0,
-			'D_max': lambda x: isinstance(x, (int, float)) and x > 0,
-			'C_t': lambda x: isinstance(x, (int, float)) and x > 0,
-			'W_n': lambda x: isinstance(x, (int, float)) and x > 0,
-			'W_f': lambda x: isinstance(x, (int, float)) and x > 0,
-			'd_s': lambda x: isinstance(x, (int, float)) and x > 0,
-			'nn': lambda x: isinstance(x, int) and x > 0,
-			'Cr': lambda x: isinstance(x, float) and 0 <= x <= 1,
-			'Mu': lambda x: isinstance(x, float) and 0 <= x <= 1,
-			'epsilon': lambda x: isinstance(x, float) and 0 < x < 1
-		})
-		return d
-
-	def setParameters(self, NP=50, N_max=0.01, V_f=0.02, D_max=0.002, C_t=0.93, W_n=0.42, W_f=0.38, d_s=2.63, nn=5, Cr=0.2, Mu=0.05, epsilon=1e-31, **ukwargs):
-		r"""Set the arguments of an algorithm.
-
-		Arguments:
-			NP (Optional[int]): Number of krill herds in population.
-			N_max (Optional[float]): Maximum induced speed.
-			V_f (Optional[float]): Foraging speed.
-			D_max (Optional[float]): Maximum diffusion speed.
-			C_t (Optional[float]): Constant $\in [0, 2]$.
-			W_n (Optional[Union[int, float, numpy.ndarray]]): Intera weights of the motion induced from neighbors :math:`\in [0, 1]`.
-			W_f (Optional[Union[int, float, numpy.ndarray]]): Intera weights of the motion induced from foraging :math:`\in [0, 1]`.
-			d_s (Optional[float]): Maximum euclidean distance for neighbors.
-			nn (Optional[int]): Maximum neighbors for neighbors effect.
-			Cr (Optional[float]): Crossover probability.
-			Mu (Optional[float]): Mutation probability.
-			epsilon (Optional[float]): Small numbers for division.
-
-		See Also:
-			* :func:`niapy.algorithms.algorithm.Algorithm.setParameters`
-		"""
-		Algorithm.setParameters(self, NP=NP, **ukwargs)
-		self.N_max, self.V_f, self.D_max, self.C_t, self.W_n, self.W_f, self.d_s, self.nn, self._Cr, self._Mu, self.epsilon = N_max, V_f, D_max, C_t, W_n, W_f, d_s, nn, Cr, Mu, epsilon
-
-	def getParameters(self):
-		r"""Get parameter values for the algorithm.
-
-		Returns:
-			Dict[str, Any]: TODO.
-		"""
-		d = Algorithm.getParameters(self)
-		d.update({
-			'N_max': self.N_max,
-			'V_f': self.V_f,
-			'D_max': self.D_max,
-			'C_t': self.C_t,
-			'W_n': self.W_n,
-			'W_f': self.W_f,
-			'd_s': self.d_s,
-			'nn': self.nn,
-			'Cr': self.Cr,
-			'Mu': self.Mu,
-			'epsilon': self.epsilon
-		})
-		return d
-
-	def initWeights(self, task):
-		r"""Initialize weights.
-
-		Args:
-			task (Task): Optimization task.
-
-		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray]:
-				1. Weights for neighborhood.
-				2. Weights for foraging.
-		"""
-		return full_array(self.W_n, task.D), full_array(self.W_f, task.D)
-
-	def sensRange(self, ki, KH):
-		r"""Calculate sense range for selected individual.
-
-		Args:
-			ki (int): Selected individual.
-			KH (numpy.ndarray): Krill heard population.
-
-		Returns:
-			float: Sense range for krill.
-		"""
-		return np.sum([euclidean(KH[ki], KH[i]) for i in range(self.NP)]) / (self.nn * self.NP)
-
-	def getNeighbours(self, i, ids, KH):
-		r"""Get neighbours.
-
-		Args:
-			i (int): Individual looking for neighbours.
-			ids (float): Maximal distance for being a neighbour.
-			KH (numpy.ndarray): Current population.
-
-		Returns:
-			numpy.ndarray: Neighbours of krill heard.
-		"""
-		N = list()
-		for j in range(self.NP):
-			if j != i and ids > euclidean(KH[i], KH[j]): N.append(j)
-		if not N: N.append(self.integers(self.NP))
-		return np.asarray(N)
-
-	def funX(self, x, y):
-		r"""Get x values.
-
-		Args:
-			x (numpy.ndarray): First krill/individual.
-			y (numpy.ndarray): Second krill/individual.
-
-		Returns:
-			numpy.ndarray: --
-		"""
-		return ((y - x) + self.epsilon) / (euclidean(y, x) + self.epsilon)
-
-	def funK(self, x, y, b, w):
-		r"""Get k values.
-
-		Args:
-			x (numpy.ndarray): First krill/individual.
-			y (numpy.ndarray): Second krill/individual.
-			b (numpy.ndarray): Best krill/individual.
-			w (numpy.ndarray): Worst krill/individual.
-
-		Returns:
-			numpy.ndarray: --
-		"""
-		return ((x - y) + self.epsilon) / ((w - b) + self.epsilon)
-
-	def induceNeighborsMotion(self, i, n, W, KH, KH_f, ikh_b, ikh_w, task):
-		r"""Induced neighbours motion operator.
-
-		Args:
-			i (int): Index of individual being applied with operator.
-			n:
-			W (numpy.ndarray[float]): Wights for this operator.
-			KH (numpy.ndarray): Current heard/population.
-			KH_f (numpy.ndarray[float]): Current populations/heard function/fitness values.
-			ikh_b (int): Current best krill in heard/population.
-			ikh_w (int): Current worst krill in heard/population.
-			task (Task): Optimization task.
-
-		Returns:
-			numpy.ndarray: Moved krill.
-		"""
-		Ni = self.getNeighbours(i, self.sensRange(i, KH), KH)
-		Nx, Nf, f_b, f_w = KH[Ni], KH_f[Ni], KH_f[ikh_b], KH_f[ikh_w]
-		alpha_l = np.sum(np.asarray([self.funK(KH_f[i], j, f_b, f_w) for j in Nf]) * np.asarray([self.funX(KH[i], j) for j in Nx]).T)
-		alpha_t = 2 * (1 + self.random() * (task.Iters + 1) / task.nGEN)
-		return self.N_max * (alpha_l + alpha_t) + W * n
-
-	def induceForagingMotion(self, i, x, x_f, f, W, KH, KH_f, ikh_b, ikh_w, task):
-		r"""Induced foraging motion operator.
-
-		Args:
-			i (int): Index of current krill being operated.
-			x (numpy.ndarray): Position of food.
-			x_f (float): Fitness/function values of food.
-			f:
-			W (numpy.ndarray[float]): Weights for this operator.
-			KH (numpy.ndarray):  Current population/heard.
-			KH_f (numpy.ndarray[float]): Current heard/populations function/fitness values.
-			ikh_b (int): Index of current best krill in heard.
-			ikh_w (int): Index of current worst krill in heard.
-			task (Task): Optimization task.
-
-		Returns:
-			numpy.ndarray: Moved krill.
-		"""
-		beta_f = 2 * (1 - (task.Iters + 1) / task.nGEN) * self.funK(KH_f[i], x_f, KH_f[ikh_b], KH_f[ikh_w]) * self.funX(KH[i], x) if KH_f[ikh_b] < KH_f[i] else 0
-		beta_b = self.funK(KH_f[i], KH_f[ikh_b], KH_f[ikh_b], KH_f[ikh_w]) * self.funX(KH[i], KH[ikh_b])
-		return self.V_f * (beta_f + beta_b) + W * f
-
-	def inducePhysicalDiffusion(self, task):
-		r"""Induced physical diffusion operator.
-
-		Args:
-			task (Task): Optimization task.
-
-		Returns:
-			numpy.ndarray:
-		"""
-		return self.D_max * (1 - (task.Iters + 1) / task.nGEN) * self.uniform(-1, 1, task.D)
-
-	def deltaT(self, task):
-		r"""Get new delta for all dimensions.
-
-		Args:
-			task (Task): Optimization task.
-
-		Returns:
-			numpy.ndarray: --
-		"""
-		return self.C_t * np.sum(task.bRange)
-
-	def crossover(self, x, xo, Cr):
-		r"""Crossover operator.
-
-		Args:
-			x (numpy.ndarray): Krill/individual being applied with operator.
-			xo (numpy.ndarray): Krill/individual being used in conjunction within operator.
-			Cr (float): Crossover probability.
-
-		Returns:
-			numpy.ndarray: Crossoverd krill/individual.
-		"""
-		return [xo[i] if self.random() < Cr else x[i] for i in range(len(x))]
-
-	def mutate(self, x, x_b, Mu):
-		r"""Mutate operator.
-
-		Args:
-			x (numpy.ndarray): Individual being mutated.
-			x_b (numpy.ndarray): Global best individual.
-			Mu (float): Probability of mutations.
-
-		Returns:
-			numpy.ndarray: Mutated krill.
-		"""
-		return [x[i] if self.random() < Mu else (x_b[i] + self.random()) for i in range(len(x))]
-
-	def getFoodLocation(self, KH, KH_f, task):
-		r"""Get food location for krill heard.
-
-		Args:
-			KH (numpy.ndarray): Current heard/population.
-			KH_f (numpy.ndarray[float]): Current heard/populations function/fitness values.
-			task (Task): Optimization task.
-
-		Returns:
-			Tuple[numpy.ndarray, float]:
-				1. Location of food.
-				2. Foods function/fitness value.
-		"""
-		x_food = task.repair(np.asarray([np.sum(KH[:, i] / KH_f) for i in range(task.D)]) / np.sum(1 / KH_f), rng=self.rng)
-		x_food_f = task.eval(x_food)
-		return x_food, x_food_f
-
-	def Mu(self, xf, yf, xf_best, xf_worst):
-		r"""Get mutation probability.
-
-		Args:
-			xf (float):
-			yf (float):
-			xf_best (float):
-			xf_worst (float):
-
-		Returns:
-			float: New mutation probability.
-		"""
-		return self._Mu / (self.funK(xf, yf, xf_best, xf_worst) + 1e-31)
-
-	def Cr(self, xf, yf, xf_best, xf_worst):
-		r"""Get crossover probability.
-
-		Args:
-			xf (float):
-			yf (float):
-			xf_best (float):
-			xf_worst (flaot):
-
-		Returns:
-			float: New crossover probability.
-		"""
-		return self._Cr * self.funK(xf, yf, xf_best, xf_worst)
-
-	def initPopulation(self, task):
-		r"""Initialize stating population.
-
-		Args:
-			task (Task): Optimization task.
-
-		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray, Dict[str, Any]]:
-				1. Initialized population.
-				2. Initialized populations function/fitness values.
-				3. Additional arguments:
-					* W_n (numpy.ndarray): Weights neighborhood.
-					* W_f (numpy.ndarray): Weights foraging.
-					* N (numpy.ndarray): TODO
-					* F (numpy.ndarray): TODO
-
-		See Also:
-			* :func:`niapy.algorithms.algorithm.Algorithm.initPopulation`
-		"""
-		KH, KH_f, d = Algorithm.initPopulation(self, task)
-		W_n, W_f = self.initWeights(task)
-		N, F = np.zeros(self.NP), np.zeros(self.NP)
-		d.update({'W_n': W_n, 'W_f': W_f, 'N': N, 'F': F})
-		return KH, KH_f, d
-
-	def runIteration(self, task, KH, KH_f, xb, fxb, W_n, W_f, N, F, **dparams):
-		r"""Core function of KrillHerd algorithm.
-
-		Args:
-			task (Task): Optimization task.
-			KH (numpy.ndarray): Current heard/population.
-			KH_f (numpy.ndarray[float]): Current heard/populations function/fitness values.
-			xb (numpy.ndarray): Global best individual.
-			fxb (float): Global best individuals function fitness values.
-			W_n (numpy.ndarray):
-			W_f (numpy.ndarray):
-			N ():
-			F ():
-			**dparams (Dict[str, Any]): Additional arguments.
-
-		Returns:
-			Tuple [numpy.ndarray, numpy.ndarray, numpy.ndarray, float Dict[str, Any]]:
-				1. New herd/population
-				2. New herd/populations function/fitness values.
-				3. New global best solution.
-				4. New global best solutoins fitness/objective value.
-				5. Additional arguments:
-					* W_n (numpy.ndarray): --
-					* W_f (numpy.ndarray): --
-					* N (numpy.ndarray): --
-					* F (numpy.ndarray): --
-		"""
-		ikh_b, ikh_w = np.argmin(KH_f), np.argmax(KH_f)
-		x_food, x_food_f = self.getFoodLocation(KH, KH_f, task)
-		if x_food_f < fxb: xb, fxb = x_food, x_food_f  # noqa: F841
-		N = np.asarray([self.induceNeighborsMotion(i, N[i], W_n, KH, KH_f, ikh_b, ikh_w, task) for i in range(self.NP)])
-		F = np.asarray([self.induceForagingMotion(i, x_food, x_food_f, F[i], W_f, KH, KH_f, ikh_b, ikh_w, task) for i in range(self.NP)])
-		D = np.asarray([self.inducePhysicalDiffusion(task) for i in range(self.NP)])
-		KH_n = KH + (self.deltaT(task) * (N + F + D))
-		Cr = np.asarray([self.Cr(KH_f[i], KH_f[ikh_b], KH_f[ikh_b], KH_f[ikh_w]) for i in range(self.NP)])
-		KH_n = np.asarray([self.crossover(KH_n[i], KH[i], Cr[i]) for i in range(self.NP)])
-		Mu = np.asarray([self.Mu(KH_f[i], KH_f[ikh_b], KH_f[ikh_b], KH_f[ikh_w]) for i in range(self.NP)])
-		KH_n = np.asarray([self.mutate(KH_n[i], KH[ikh_b], Mu[i]) for i in range(self.NP)])
-		KH = np.apply_along_axis(task.repair, 1, KH_n, rng=self.rng)
-		KH_f = np.apply_along_axis(task.eval, 1, KH)
-		xb, fxb = self.getBest(KH, KH_f, xb, fxb)
-		return KH, KH_f, xb, fxb, {'W_n': W_n, 'W_f': W_f, 'N': N, 'F': F}
+    r"""Implementation of krill herd algorithm.
+
+    Algorithm:
+        Krill Herd Algorithm
+
+    Date:
+        2018
+
+    Authors:
+        Klemen Berkovič
+
+    License:
+        MIT
+
+    Reference URL:
+        http://www.sciencedirect.com/science/article/pii/S1007570412002171
+
+    Reference paper:
+        Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010.
+
+    Attributes:
+        Name (List[str]): List of strings representing algorithm names.
+        population_size (int): Number of krill herds in population.
+        N_max (float): Maximum induced speed.
+        V_f (float): Foraging speed.
+        D_max (float): Maximum diffusion speed.
+        C_t (float): Constant :math:`\in [0, 2]`
+        W_n (Union[int, float, numpy.ndarray]): Inertia weights of the motion induced from neighbors :math:`\in [0, 1]`.
+        W_f (Union[int, float, numpy.ndarray]): Inertia weights of the motion induced from foraging :math`\in [0, 1]`.
+        d_s (float): Maximum euclidean distance for neighbors.
+        nn (int): Maximum neighbors for neighbors effect.
+        epsilon (float): Small numbers for division.
+
+    See Also:
+        * :class:`niapy.algorithms.algorithm.Algorithm`
+
+    """
+
+    Name = ['KrillHerd', 'KH']
+
+    @staticmethod
+    def info():
+        r"""Get basic information of algorithm.
+
+        Returns:
+            str: Basic information of algorithm.
+
+        See Also:
+            * :func:`niapy.algorithms.Algorithm.info`
+
+        """
+        return r"""Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010."""
+
+    @staticmethod
+    def type_parameters():
+        r"""Get dictionary with functions for checking values of parameters.
+
+        Returns:
+            Dict[str, Callable]:
+                * N_max (Callable[[Union[int, float]], bool])
+                * V_f (Callable[[Union[int, float]], bool])
+                * D_max (Callable[[Union[int, float]], bool])
+                * C_t (Callable[[Union[int, float]], bool])
+                * W_n (Callable[[Union[int, float]], bool])
+                * W_f (Callable[[Union[int, float]], bool])
+                * d_s (Callable[[Union[int, float]], bool])
+                * nn (Callable[[int], bool])
+                * epsilon (Callable[[float], bool])
+
+        See Also:
+            * :func:`niapy.algorithms.algorithm.Algorithm`
+
+        """
+        d = Algorithm.type_parameters()
+        d.update({
+            'N_max': lambda x: isinstance(x, (int, float)) and x > 0,
+            'V_f': lambda x: isinstance(x, (int, float)) and x > 0,
+            'D_max': lambda x: isinstance(x, (int, float)) and x > 0,
+            'C_t': lambda x: isinstance(x, (int, float)) and x > 0,
+            'W_n': lambda x: isinstance(x, (int, float)) and x > 0,
+            'W_f': lambda x: isinstance(x, (int, float)) and x > 0,
+            'd_s': lambda x: isinstance(x, (int, float)) and x > 0,
+            'nn': lambda x: isinstance(x, int) and x > 0,
+        })
+        return d
+
+    def __init__(self, population_size=50, n_max=0.01, foraging_speed=0.02, diffusion_speed=0.002, c_t=0.93,
+                 w_neighbor=0.42, w_foraging=0.38, d_s=2.63, max_neighbors=5, crossover_rate=0.2, mutation_rate=0.05,
+                 *args, **kwargs):
+        r"""Initialize KrillHerd.
+
+        Args:
+            population_size (Optional[int]): Number of krill herds in population.
+            n_max (Optional[float]): Maximum induced speed.
+            foraging_speed (Optional[float]): Foraging speed.
+            diffusion_speed (Optional[float]): Maximum diffusion speed.
+            c_t (Optional[float]): Constant $\in [0, 2]$.
+            w_neighbor (Optional[Union[int, float, numpy.ndarray]]): Inertia weights of the motion induced from neighbors :math:`\in [0, 1]`.
+            w_foraging (Optional[Union[int, float, numpy.ndarray]]): Inertia weights of the motion induced from foraging :math:`\in [0, 1]`.
+            d_s (Optional[float]): Maximum euclidean distance for neighbors.
+            max_neighbors (Optional[int]): Maximum neighbors for neighbors effect.
+            crossover_rate (Optional[float]): Crossover probability.
+            mutation_rate (Optional[float]): Mutation probability.
+
+        See Also:
+            * :func:`niapy.algorithms.algorithm.Algorithm.__init__`
+
+        """
+        super().__init__(population_size, *args, **kwargs)
+        self.N_max = n_max
+        self.V_f = foraging_speed
+        self.D_max = diffusion_speed
+        self.C_t = c_t
+        self.W_n = w_neighbor
+        self.W_f = w_foraging
+        self.d_s = d_s
+        self.nn = max_neighbors
+        self._Cr = crossover_rate
+        self._Mu = mutation_rate
+        self.epsilon = np.finfo(float).eps
+
+    def set_parameters(self, population_size=50, n_max=0.01, foraging_speed=0.02, diffusion_speed=0.002, c_t=0.93,
+                       w_neighbor=0.42, w_foraging=0.38, d_s=2.63, max_neighbors=5, crossover_rate=0.2,
+                       mutation_rate=0.05, **kwargs):
+        r"""Set the arguments of an algorithm.
+
+        Args:
+            population_size (Optional[int]): Number of krill herds in population.
+            n_max (Optional[float]): Maximum induced speed.
+            foraging_speed (Optional[float]): Foraging speed.
+            diffusion_speed (Optional[float]): Maximum diffusion speed.
+            c_t (Optional[float]): Constant $\in [0, 2]$.
+            w_neighbor (Optional[Union[int, float, numpy.ndarray]]): Inertia weights of the motion induced from neighbors :math:`\in [0, 1]`.
+            w_foraging (Optional[Union[int, float, numpy.ndarray]]): Inertia weights of the motion induced from foraging :math:`\in [0, 1]`.
+            d_s (Optional[float]): Maximum euclidean distance for neighbors.
+            max_neighbors (Optional[int]): Maximum neighbors for neighbors effect.
+            crossover_rate (Optional[float]): Crossover probability.
+            mutation_rate (Optional[float]): Mutation probability.
+
+        See Also:
+            * :func:`niapy.algorithms.algorithm.Algorithm.set_parameters`
+
+        """
+        super().set_parameters(population_size=population_size, **kwargs)
+        self.N_max = n_max
+        self.V_f = foraging_speed
+        self.D_max = diffusion_speed
+        self.C_t = c_t
+        self.W_n = w_neighbor
+        self.W_f = w_foraging
+        self.d_s = d_s
+        self.nn = max_neighbors
+        self._Cr = crossover_rate
+        self._Mu = mutation_rate
+        self.epsilon = np.finfo(float).eps
+
+    def get_parameters(self):
+        r"""Get parameter values for the algorithm.
+
+        Returns:
+            Dict[str, Any]: Algorithm parameters.
+
+        """
+        d = Algorithm.get_parameters(self)
+        d.update({
+            'N_max': self.N_max,
+            'V_f': self.V_f,
+            'D_max': self.D_max,
+            'C_t': self.C_t,
+            'W_n': self.W_n,
+            'W_f': self.W_f,
+            'd_s': self.d_s,
+            'nn': self.nn,
+        })
+        return d
+
+    def init_weights(self, task):
+        r"""Initialize weights.
+
+        Args:
+            task (Task): Optimization task.
+
+        Returns:
+            Tuple[numpy.ndarray, numpy.ndarray]:
+                1. Weights for neighborhood.
+                2. Weights for foraging.
+
+        """
+        return full_array(self.W_n, task.dimension), full_array(self.W_f, task.dimension)
+
+    def sense_range(self, ki, population):
+        r"""Calculate sense range for selected individual.
+
+        Args:
+            ki (int): Selected individual.
+            population (numpy.ndarray): Krill heard population.
+
+        Returns:
+            float: Sense range for krill.
+
+        """
+        return np.sum([euclidean(population[ki], population[i]) for i in range(self.population_size)]) / (self.nn * self.population_size)
+
+    def get_neighbours(self, i, ids, population):
+        r"""Get neighbours.
+
+        Args:
+            i (int): Individual looking for neighbours.
+            ids (float): Maximal distance for being a neighbour.
+            population (numpy.ndarray): Current population.
+
+        Returns:
+            numpy.ndarray: Neighbours of krill heard.
+
+        """
+        neighbors = list()
+        for j in range(self.population_size):
+            if j != i and ids > euclidean(population[i], population[j]):
+                neighbors.append(j)
+        if not neighbors:
+            neighbors.append(self.integers(self.population_size))
+        return np.asarray(neighbors)
+
+    def get_x(self, x, y):
+        r"""Get x values.
+
+        Args:
+            x (numpy.ndarray): First krill/individual.
+            y (numpy.ndarray): Second krill/individual.
+
+        Returns:
+            numpy.ndarray: --
+
+        """
+        return ((y - x) + self.epsilon) / (euclidean(y, x) + self.epsilon)
+
+    def get_k(self, x, y, b, w):
+        r"""Get k values.
+
+        Args:
+            x (float): First krill/individual.
+            y (float): Second krill/individual.
+            b (float): Best krill/individual.
+            w (float): Worst krill/individual.
+
+        Returns:
+            numpy.ndarray: K.
+
+        """
+        return ((x - y) + self.epsilon) / ((w - b) + self.epsilon)
+
+    def induce_neighbors_motion(self, i, n, weights, population, population_fitness, best_index, worst_index, task):
+        r"""Induced neighbours motion operator.
+
+        Args:
+            i (int): Index of individual being applied with operator.
+            n:
+            weights (numpy.ndarray[float]): Weights for this operator.
+            population (numpy.ndarray): Current heard/population.
+            population_fitness (numpy.ndarray[float]): Current populations/heard function/fitness values.
+            best_index (numpy.ndarray): Current best krill in heard/population.
+            worst_index (numpy.ndarray): Current worst krill in heard/population.
+            task (Task): Optimization task.
+
+        Returns:
+            numpy.ndarray: Moved krill.
+
+        """
+        neighbor_i = self.get_neighbours(i, self.sense_range(i, population), population)
+        neighbor_x, neighbor_f, f_b, f_w = population[neighbor_i], population_fitness[neighbor_i], population_fitness[best_index], population_fitness[worst_index]
+        alpha_l = np.sum(
+            np.asarray([self.get_k(population_fitness[i], j, f_b, f_w) for j in neighbor_f]) * np.asarray([self.get_x(population[i], j) for j in neighbor_x]).T)
+        alpha_t = 2 * (1 + self.random() * (task.iters + 1) / task.max_iters)
+        return self.N_max * (alpha_l + alpha_t) + weights * n
+
+    def induce_foraging_motion(self, i, x, x_f, f, weights, population, population_fitness, best_index, worst_index, task):
+        r"""Induced foraging motion operator.
+
+        Args:
+            i (int): Index of current krill being operated.
+            x (numpy.ndarray): Position of food.
+            x_f (float): Fitness/function values of food.
+            f:
+            weights (numpy.ndarray[float]): Weights for this operator.
+            population (numpy.ndarray):  Current population/heard.
+            population_fitness (numpy.ndarray[float]): Current heard/populations function/fitness values.
+            best_index (numpy.ndarray): Index of current best krill in heard.
+            worst_index (numpy.ndarray): Index of current worst krill in heard.
+            task (Task): Optimization task.
+
+        Returns:
+            numpy.ndarray: Moved krill.
+
+        """
+        beta_f = 2 * (1 - (task.iters + 1) / task.max_iters) * self.get_k(population_fitness[i], x_f, population_fitness[best_index], population_fitness[worst_index]) * self.get_x(
+            population[i], x) if population_fitness[best_index] < population_fitness[i] else 0
+        beta_b = self.get_k(population_fitness[i], population_fitness[best_index], population_fitness[best_index], population_fitness[worst_index]) * self.get_x(population[i], population[best_index])
+        return self.V_f * (beta_f + beta_b) + weights * f
+
+    def induce_physical_diffusion(self, task):
+        r"""Induced physical diffusion operator.
+
+        Args:
+            task (Task): Optimization task.
+
+        Returns:
+            numpy.ndarray:
+
+        """
+        return self.D_max * (1 - (task.iters + 1) / task.max_iters) * self.uniform(-1, 1, task.dimension)
+
+    def delta_t(self, task):
+        r"""Get new delta for all dimensions.
+
+        Args:
+            task (Task): Optimization task.
+
+        Returns:
+            numpy.ndarray: --
+
+        """
+        return self.C_t * np.sum(task.range)
+
+    def crossover(self, x, xo, crossover_rate):
+        r"""Crossover operator.
+
+        Args:
+            x (numpy.ndarray): Krill/individual being applied with operator.
+            xo (numpy.ndarray): Krill/individual being used in conjunction within operator.
+            crossover_rate (float): Crossover probability.
+
+        Returns:
+            numpy.ndarray: New krill/individual.
+
+        """
+        return [xo[i] if self.random() < crossover_rate else x[i] for i in range(len(x))]
+
+    def mutate(self, x, x_b, mutation_rate):
+        r"""Mutate operator.
+
+        Args:
+            x (numpy.ndarray): Individual being mutated.
+            x_b (numpy.ndarray): Global best individual.
+            mutation_rate (float): Probability of mutations.
+
+        Returns:
+            numpy.ndarray: Mutated krill.
+        """
+        return [x[i] if self.random() < mutation_rate else (x_b[i] + self.random()) for i in range(len(x))]
+
+    def get_food_location(self, population, population_fitness, task):
+        r"""Get food location for krill heard.
+
+        Args:
+            population (numpy.ndarray): Current heard/population.
+            population_fitness (numpy.ndarray[float]): Current heard/populations function/fitness values.
+            task (Task): Optimization task.
+
+        Returns:
+            Tuple[numpy.ndarray, float]:
+                1. Location of food.
+                2. Foods function/fitness value.
+        """
+        x_food = task.repair(np.asarray([np.sum(population[:, i] / population_fitness) for i in range(task.dimension)]) / np.sum(1 / population_fitness),
+                             rng=self.rng)
+        x_food_f = task.eval(x_food)
+        return x_food, x_food_f
+
+    def mutation_rate(self, xf, yf, xf_best, xf_worst):
+        r"""Get mutation probability.
+
+        Args:
+            xf (float):
+            yf (float):
+            xf_best (float):
+            xf_worst (float):
+
+        Returns:
+            float: New mutation probability.
+        """
+        return self._Mu / (self.get_k(xf, yf, xf_best, xf_worst) + 1e-31)
+
+    def crossover_rate(self, xf, yf, xf_best, xf_worst):
+        r"""Get crossover probability.
+
+        Args:
+            xf (float):
+            yf (float):
+            xf_best (float):
+            xf_worst (float):
+
+        Returns:
+            float: New crossover probability.
+        """
+        return self._Cr * self.get_k(xf, yf, xf_best, xf_worst)
+
+    def init_population(self, task):
+        r"""Initialize stating population.
+
+        Args:
+            task (Task): Optimization task.
+
+        Returns:
+            Tuple[numpy.ndarray, numpy.ndarray, Dict[str, Any]]:
+                1. Initialized population.
+                2. Initialized populations function/fitness values.
+                3. Additional arguments:
+                    * w_neighbor (numpy.ndarray): Weights neighborhood.
+                    * w_foraging (numpy.ndarray): Weights foraging.
+                    * induced_speed (numpy.ndarray): Induced speed.
+                    * foraging_speed (numpy.ndarray): Foraging speed.
+
+        See Also:
+            * :func:`niapy.algorithms.algorithm.Algorithm.init_population`
+
+        """
+        krill_herd, krill_herd_fitness, d = Algorithm.init_population(self, task)
+        w_neighbor, w_foraging = self.init_weights(task)
+        induced_speed, foraging_speed = np.zeros(self.population_size), np.zeros(self.population_size)
+        d.update({'w_neighbor': w_neighbor, 'w_foraging': w_foraging, 'induced_speed': induced_speed, 'foraging_speed': foraging_speed})
+        return krill_herd, krill_herd_fitness, d
+
+    def run_iteration(self, task, population, population_fitness, best_x, best_fitness, **params):
+        r"""Core function of KrillHerd algorithm.
+
+        Args:
+            task (Task): Optimization task.
+            population (numpy.ndarray): Current heard/population.
+            population_fitness (numpy.ndarray[float]): Current heard/populations function/fitness values.
+            best_x (numpy.ndarray): Global best individual.
+            best_fitness (float): Global best individuals function fitness values.
+            **params (Dict[str, Any]): Additional arguments.
+
+        Returns:
+            Tuple [numpy.ndarray, numpy.ndarray, numpy.ndarray, float Dict[str, Any]]:
+                1. New herd/population
+                2. New herd/populations function/fitness values.
+                3. New global best solution.
+                4. New global best solutions fitness/objective value.
+                5. Additional arguments:
+                    * w_neighbor (numpy.ndarray): --
+                    * w_foraging (numpy.ndarray): --
+                    * induced_speed (numpy.ndarray): --
+                    * foraging_speed (numpy.ndarray): --
+
+        """
+        w_neighbor = params.pop('w_neighbor')
+        w_foraging = params.pop('w_foraging')
+        induced_speed = params.pop('induced_speed')
+        foraging_speed = params.pop('foraging_speed')
+
+        ikh_b, ikh_w = np.argmin(population_fitness), np.argmax(population_fitness)
+        x_food, x_food_f = self.get_food_location(population, population_fitness, task)
+        if x_food_f < best_fitness:
+            best_x, best_fitness = x_food, x_food_f  # noqa: F841
+        induced_speed = np.asarray([self.induce_neighbors_motion(i, induced_speed[i], w_neighbor, population, population_fitness, ikh_b, ikh_w, task) for i in range(self.population_size)])
+        foraging_speed = np.asarray([self.induce_foraging_motion(i, x_food, x_food_f, foraging_speed[i], w_foraging, population, population_fitness, ikh_b, ikh_w, task) for i in range(self.population_size)])
+        diffusion = np.asarray([self.induce_physical_diffusion(task) for _ in range(self.population_size)])
+        new_herd = population + (self.delta_t(task) * (induced_speed + foraging_speed + diffusion))
+        crossover_rates = np.asarray([self.crossover_rate(population_fitness[i], population_fitness[ikh_b], population_fitness[ikh_b], population_fitness[ikh_w]) for i in range(self.population_size)])
+        new_herd = np.asarray([self.crossover(new_herd[i], population[i], crossover_rates[i]) for i in range(self.population_size)])
+        mutation_rates = np.asarray([self.mutation_rate(population_fitness[i], population_fitness[ikh_b], population_fitness[ikh_b], population_fitness[ikh_w]) for i in range(self.population_size)])
+        new_herd = np.asarray([self.mutate(new_herd[i], population[ikh_b], mutation_rates[i]) for i in range(self.population_size)])
+        population = np.apply_along_axis(task.repair, 1, new_herd, rng=self.rng)
+        population_fitness = np.apply_along_axis(task.eval, 1, population)
+        best_x, best_fitness = self.get_best(population, population_fitness, best_x, best_fitness)
+        return population, population_fitness, best_x, best_fitness, {'w_neighbor': w_neighbor, 'w_foraging': w_foraging, 'induced_speed': induced_speed, 'foraging_speed': foraging_speed}
+
 
 class KrillHerdV4(KrillHerd):
-	r"""Implementation of krill herd algorithm.
+    r"""Implementation of krill herd algorithm.
 
-	Algorithm:
-		Krill Herd Algorithm
+    Algorithm:
+        Krill Herd Algorithm
 
-	Date:
-		2018
+    Date:
+        2018
 
-	Authors:
-		Klemen Berkovič
+    Authors:
+        Klemen Berkovič
 
-	License:
-		MIT
+    License:
+        MIT
 
-	Reference URL:
-		http://www.sciencedirect.com/science/article/pii/S1007570412002171
+    Reference URL:
+        http://www.sciencedirect.com/science/article/pii/S1007570412002171
 
-	Reference paper:
-		Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010.
+    Reference paper:
+        Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010.
 
-	Attributes:
-		Name (List[str]): List of strings representing algorithm name.
-	"""
-	Name = ['KrillHerdV4', 'KHv4']
+    Attributes:
+        Name (List[str]): List of strings representing algorithm name.
 
-	@staticmethod
-	def algorithmInfo():
-		r"""Get basic information of algorithm.
+    """
 
-		Returns:
-			str: Basic information of algorithm.
+    Name = ['KrillHerdV4', 'KHv4']
 
-		See Also:
-			* :func:`niapy.algorithms.Algorithm.algorithmInfo`
-		"""
-		return r"""Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010."""
+    @staticmethod
+    def info():
+        r"""Get basic information of algorithm.
 
-	@staticmethod
-	def typeParameters():
-		r"""Get dictionary with functions for checking values of parameters.
+        Returns:
+            str: Basic information of algorithm.
 
-		Returns:
-			Dict[str, Callable]: Dictionary with testing functions for parameters.
+        See Also:
+            * :func:`niapy.algorithms.Algorithm.info`
 
-		See Also:
-			* :func:niapy.algorithms.basic.kh.KrillHerd.typeParameters`
-		"""
-		d = KrillHerd.typeParameters()
-		d.pop('Cr', None)
-		d.pop('Mu', None)
-		d.pop('epsilon', None)
-		return d
+        """
+        return r"""Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010."""
 
-	def setParameters(self, NP=50, N_max=0.01, V_f=0.02, D_max=0.002, C_t=0.93, W_n=0.42, W_f=0.38, d_s=2.63, **ukwargs):
-		r"""Set algorithm core parameters.
+    @staticmethod
+    def type_parameters():
+        r"""Get dictionary with functions for checking values of parameters.
 
-		Args:
-			NP (int): Number of kills in herd.
-			N_max (Optional[float]): TODO
-			V_f (Optional[float]): TODO
-			D_max (Optional[float]): TODO
-			C_t (Optional[float]): TODO
-			W_n (Optional[Union[int, float, numpy.ndarray, list]]): Weights for neighborhood.
-			W_f (Optional[Union[int, float, numpy.ndarray, list]]): Weights for foraging.
-			d_s (Optional[float]): TODO
-			**ukwargs (Dict[str, Any]): Additional arguments.
+        Returns:
+            Dict[str, Callable]: Dictionary with testing functions for parameters.
 
-		See Also:
-			* :func:niapy.algorithms.basic.kh.KrillHerd.KrillHerd.setParameters`
-		"""
-		KrillHerd.setParameters(self, NP=NP, N_max=N_max, V_f=V_f, D_max=D_max, C_t=C_t, W_n=W_n, W_f=W_f, d_s=d_s, nn=4, Cr=0.2, Mu=0.05, epsilon=1e-31, **ukwargs)
+        See Also:
+            * :func:niapy.algorithms.basic.kh.KrillHerd.type_parameters`
+
+        """
+        d = KrillHerd.type_parameters()
+        return d
+
+    def __init__(self, *args, **kwargs):
+        """Initialize KrillHerdV4."""
+        super().__init__(max_neighbors=4, crossover_rate=0.2, mutation_rate=0.05, *args, **kwargs)
+
+    def set_parameters(self, population_size=50, n_max=0.01, foraging_speed=0.02, diffusion_speed=0.002, c_t=0.93,
+                       w_neighbor=0.42, w_foraging=0.38, d_s=2.63, **kwargs):
+        r"""Set algorithm core parameters.
+
+        Args:
+            population_size (int): Number of kills in herd.
+            n_max (Optional[float]): Maximum induced speed.
+            foraging_speed (Optional[float]): Foraging speed.
+            diffusion_speed (Optional[float]): Diffusion speed.
+            c_t (Optional[float]): Constant.
+            w_neighbor (Optional[Union[int, float, numpy.ndarray, list]]): Weights for neighborhood.
+            w_foraging (Optional[Union[int, float, numpy.ndarray, list]]): Weights for foraging.
+            d_s (Optional[float]): Maximum euclidean distance for neighbors.
+
+        See Also:
+            * :func:niapy.algorithms.basic.kh.KrillHerd.KrillHerd.set_parameters`
+
+        """
+        KrillHerd.set_parameters(self, population_size=population_size, n_max=n_max, foraging_speed=foraging_speed,
+                                 diffusion_speed=diffusion_speed, c_t=c_t, w_neighbor=w_neighbor, w_foraging=w_foraging,
+                                 d_s=d_s, max_neighbors=4, crossover_rate=0.2, mutation_rate=0.05, **kwargs)
+
 
 class KrillHerdV1(KrillHerd):
-	r"""Implementation of krill herd algorithm.
+    r"""Implementation of krill herd algorithm.
 
-	Algorithm:
-		Krill Herd Algorithm
+    Algorithm:
+        Krill Herd Algorithm
 
-	Date:
-		2018
+    Date:
+        2018
 
-	Authors:
-		Klemen Berkovič
+    Authors:
+        Klemen Berkovič
 
-	License:
-		MIT
+    License:
+        MIT
 
-	Reference URL:
-		http://www.sciencedirect.com/science/article/pii/S1007570412002171
+    Reference URL:
+        http://www.sciencedirect.com/science/article/pii/S1007570412002171
 
-	Reference paper:
-		Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010.
+    Reference paper:
+        Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010.
 
-	Attributes:
-		Name (List[str]): List of strings representing algorithm name.
+    Attributes:
+        Name (List[str]): List of strings representing algorithm name.
 
-	See Also:
-		* :func:niapy.algorithms.basic.kh.KrillHerd.KrillHerd`
-	"""
-	Name = ['KrillHerdV1', 'KHv1']
+    See Also:
+        * :func:niapy.algorithms.basic.kh.KrillHerd.KrillHerd`
 
-	@staticmethod
-	def algorithmInfo():
-		r"""Get basic information of algorithm.
+    """
 
-		Returns:
-			str: Basic information of algorithm.
+    Name = ['KrillHerdV1', 'KHv1']
 
-		See Also:
-			* :func:`niapy.algorithms.Algorithm.algorithmInfo`
-		"""
-		return r"""Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010."""
+    @staticmethod
+    def info():
+        r"""Get basic information of algorithm.
 
-	@staticmethod
-	def typeParameters():
-		r"""Get dictionary with functions for checking values of parameters.
+        Returns:
+            str: Basic information of algorithm.
 
-		Returns:
-			Dict[str, Callable]: Dictionary with testing functions for parameters.
+        See Also:
+            * :func:`niapy.algorithms.Algorithm.info`
 
-		See Also:
-			* :func:niapy.algorithms.basic.kh.KrillHerd.typeParameters`
-		"""
-		return KrillHerd.typeParameters()
+        """
+        return r"""Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010."""
 
-	def crossover(self, x, xo, Cr):
-		r"""Preform a crossover operation on individual.
+    @staticmethod
+    def type_parameters():
+        r"""Get dictionary with functions for checking values of parameters.
 
-		Args:
-			x (numpy.ndarray): Current individual.
-			xo (numpy.ndarray): New individual.
-			Cr (float): Crossover probability.
+        Returns:
+            Dict[str, Callable]: Dictionary with testing functions for parameters.
 
-		Returns:
-			numpy.ndarray: Crossover individual.
-		"""
-		return x
+        See Also:
+            * :func:niapy.algorithms.basic.kh.KrillHerd.type_parameters`
 
-	def mutate(self, x, x_b, Mu):
-		r"""Mutate individual.
+        """
+        return KrillHerd.type_parameters()
 
-		Args:
-			x (numpy.ndarray): Current individual.
-			x_b (numpy.ndarray): Global best individual.
-			Mu (float): Mutation probability.
+    def crossover(self, x, xo, crossover_rate):
+        r"""Preform a crossover operation on individual.
 
-		Returns:
-			numpy.ndarray: Mutated krill.
-		"""
-		return x
+        Args:
+            x (numpy.ndarray): Current individual.
+            xo (numpy.ndarray): New individual.
+            crossover_rate (float): Crossover probability.
+
+        Returns:
+            numpy.ndarray: Crossover individual.
+
+        """
+        return x
+
+    def mutate(self, x, x_b, mutation_rate):
+        r"""Mutate individual.
+
+        Args:
+            x (numpy.ndarray): Current individual.
+            x_b (numpy.ndarray): Global best individual.
+            mutation_rate (float): Mutation probability.
+
+        Returns:
+            numpy.ndarray: Mutated krill.
+
+        """
+        return x
+
 
 class KrillHerdV2(KrillHerd):
-	r"""Implementation of krill herd algorithm.
+    r"""Implementation of krill herd algorithm.
 
-	Algorithm:
-		Krill Herd Algorithm
+    Algorithm:
+        Krill Herd Algorithm
 
-	Date:
-		2018
+    Date:
+        2018
 
-	Authors:
-		Klemen Berkovič
+    Authors:
+        Klemen Berkovič
 
-	License:
-		MIT
+    License:
+        MIT
 
-	Reference URL:
-		http://www.sciencedirect.com/science/article/pii/S1007570412002171
+    Reference URL:
+        http://www.sciencedirect.com/science/article/pii/S1007570412002171
 
-	Reference paper:
-		Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010.
+    Reference paper:
+        Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010.
 
-	Attributes:
-		Name (List[str]): List of strings representing algorithm name.
-	"""
-	Name = ['KrillHerdV2', 'KHv2']
+    Attributes:
+        Name (List[str]): List of strings representing algorithm name.
 
-	@staticmethod
-	def algorithmInfo():
-		r"""Get basic information of algorithm.
+    """
 
-		Returns:
-			str: Basic information of algorithm.
+    Name = ['KrillHerdV2', 'KHv2']
 
-		See Also:
-			* :func:`niapy.algorithms.Algorithm.algorithmInfo`
-		"""
-		return r"""Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010."""
+    @staticmethod
+    def info():
+        r"""Get basic information of algorithm.
 
-	@staticmethod
-	def typeParameters():
-		r"""Get dictionary with functions for checking values of parameters.
+        Returns:
+            str: Basic information of algorithm.
 
-		Returns:
-			Dict[str, Callable]: Dictionary with testing functions for algorithms parameters.
+        See Also:
+            * :func:`niapy.algorithms.Algorithm.info`
 
-		See Also:
-			* :func:niapy.algorithms.basic.kh.KrillHerd.typeParameters`
-		"""
-		d = KrillHerd.typeParameters()
-		d.pop('Mu', None)
-		return d
+        """
+        return r"""Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010."""
 
-	def mutate(self, x, x_b, Mu):
-		r"""Mutate individual.
+    @staticmethod
+    def type_parameters():
+        r"""Get dictionary with functions for checking values of parameters.
 
-		Args:
-			x (numpy.ndarray): Individual to mutate.
-			x_b (numpy.ndarray): Global best individual.
-			Mu (float): Mutation probability.
+        Returns:
+            Dict[str, Callable]: Dictionary with testing functions for algorithms parameters.
 
-		Returns:
-			numpy.ndarray: Mutated individual.
-		"""
-		return x
+        See Also:
+            * :func:niapy.algorithms.basic.kh.KrillHerd.type_parameters`
+
+        """
+        d = KrillHerd.type_parameters()
+        d.pop('Mu', None)
+        return d
+
+    def mutate(self, x, x_b, mutation_rate):
+        r"""Mutate individual.
+
+        Args:
+            x (numpy.ndarray): Individual to mutate.
+            x_b (numpy.ndarray): Global best individual.
+            mutation_rate (float): Mutation probability.
+
+        Returns:
+            numpy.ndarray: Mutated individual.
+
+        """
+        return x
+
 
 class KrillHerdV3(KrillHerd):
-	r"""Implementation of krill herd algorithm.
+    r"""Implementation of krill herd algorithm.
 
-	Algorithm:
-		Krill Herd Algorithm
+    Algorithm:
+        Krill Herd Algorithm
 
-	Date:
-		2018
+    Date:
+        2018
 
-	Authors:
-		Klemen Berkovič
+    Authors:
+        Klemen Berkovič
 
-	License:
-		MIT
+    License:
+        MIT
 
-	Reference URL:
-		http://www.sciencedirect.com/science/article/pii/S1007570412002171
+    Reference URL:
+        http://www.sciencedirect.com/science/article/pii/S1007570412002171
 
-	Reference paper:
-		Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010.
-	"""
-	Name = ['KrillHerdV3', 'KHv3']
+    Reference paper:
+        Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010.
 
-	@staticmethod
-	def algorithmInfo():
-		r"""Get basic information of algorithm.
+    """
 
-		Returns:
-			str: Basic information of algorithm.
+    Name = ['KrillHerdV3', 'KHv3']
 
-		See Also:
-			* :func:`niapy.algorithms.Algorithm.algorithmInfo`
-		"""
-		return r"""Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010."""
+    @staticmethod
+    def info():
+        r"""Get basic information of algorithm.
 
-	@staticmethod
-	def typeParameters():
-		r"""Get dictionary with functions for checking values of parameters.
+        Returns:
+            str: Basic information of algorithm.
 
-		Returns:
-			Dict[str, Callable]: Dictionary with testing functions for algorithms parameters.
+        See Also:
+            * :func:`niapy.algorithms.Algorithm.info`
 
-		See Also:
-			* :func:niapy.algorithms.basic.kh.KrillHerd.typeParameters`
-		"""
-		d = KrillHerd.typeParameters()
-		d.pop('Cr', None)
-		return d
+        """
+        return r"""Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012, Pages 4831-4845, ISSN 1007-5704, https://doi.org/10.1016/j.cnsns.2012.05.010."""
 
-	def crossover(self, x, xo, Cr):
-		r"""Crossover operator.
+    @staticmethod
+    def type_parameters():
+        r"""Get dictionary with functions for checking values of parameters.
 
-		Args:
-			x (numpy.ndarray): Krill/individual being applied with operator.
-			xo (numpy.ndarray): Krill/individual being used in operator.
-			Cr (float): Crossover probability.
+        Returns:
+            Dict[str, Callable]: Dictionary with testing functions for algorithms parameters.
 
-		Returns:
-			numpy.ndarray: Crossover krill/individual.
-		"""
-		return x
+        See Also:
+            * :func:niapy.algorithms.basic.kh.KrillHerd.type_parameters`
+
+        """
+        d = KrillHerd.type_parameters()
+        return d
+
+    def crossover(self, x, xo, crossover_rate):
+        r"""Crossover operator.
+
+        Args:
+            x (numpy.ndarray): Krill/individual being applied with operator.
+            xo (numpy.ndarray): Krill/individual being used in operator.
+            crossover_rate (float): Crossover probability.
+
+        Returns:
+            numpy.ndarray: Crossover krill/individual.
+
+        """
+        return x
+
 
 class KrillHerdV11(KrillHerd):
-	r"""Implementation of krill herd algorithm.
+    r"""Implementation of krill herd algorithm.
 
-	Algorithm:
-		Krill Herd Algorithm
+    Algorithm:
+        Krill Herd Algorithm
 
-	Date:
-		2018
+    Date:
+        2018
 
-	Authors:
-		Klemen Berkovič
+    Authors:
+        Klemen Berkovič
 
-	License:
-		MIT
+    License:
+        MIT
 
-	Reference URL:
+    Reference URL:
 
-	Reference paper:
-	"""
-	Name = ['KrillHerdV11', 'KHv11']
+    Reference paper:
 
-	def ElitistSelection(self, KH, KH_f, KHo, KHo_f):
-		r"""Select krills/individuals that are better than odl krills.
+    """
 
-		Args:
-			KH (numpy.ndarray): Current herd/population.
-			KH_f (numpy.ndarray[float]): Current herd/populations function/fitness values
-			KHo (numpy.ndarray): New herd/population.
-			KHo_f (numpy.ndarray[float]): New herd/populations function/fitness vales.
+    Name = ['KrillHerdV11', 'KHv11']
 
-		Returns:
-			Tuple[numpy.ndarray, numpy.numpy[float]]:
-				1. New herd/population.
-				2. New herd/populations function/fitness values.
-		"""
-		ipb = np.where(KHo_f >= KH_f)
-		KHo[ipb], KHo_f[ipb] = KH[ipb], KH_f[ipb]
-		return KHo, KHo_f
+    @staticmethod
+    def elitist_selection(population, population_fitness, new_population, new_fitness):
+        r"""Select krills/individuals that are better than odl krills.
 
-	def Neighbors(self, i, KH, KH_f, iw, ib, N, W_n, task):
-		r"""Neighbors operator.
+        Args:
+            population (numpy.ndarray): Current herd/population.
+            population_fitness (numpy.ndarray[float]): Current herd/populations function/fitness values
+            new_population (numpy.ndarray): New herd/population.
+            new_fitness (numpy.ndarray[float]): New herd/populations function/fitness vales.
 
-		Args:
-			i (int): Index of krill being applied with operator.
-			KH (numpy.ndarray): Current herd/population.
-			KH_f (numpy.ndarray[float]): Current herd/populations function/fitness values.
-			iw (int): Index of worst krill/individual.
-			ib (int): Index of best krill/individual.
-			N (): --
-			W_n (numpy.ndarray): Weights for neighbors operator.
-			task (Task): Optimization task.
+        Returns:
+            Tuple[numpy.ndarray, numpy.numpy[float]]:
+                1. New herd/population.
+                2. New herd/populations function/fitness values.
 
-		Returns:
-			numpy.ndarray: --
-		"""
-		Rgb, RR, Kw_Kgb = KH[ib] - KH[i], KH - KH[i], KH_f[iw] - KH_f[ib]
-		R = np.sqrt(np.sum(RR * RR))
-		alpha_b = -2 * (1 + self.random() * (task.Iters + 1) / task.nGEN) * (KH_f[ib]) / Kw_Kgb / np.sqrt(np.sum(Rgb * Rgb)) * Rgb if KH_f[ib] < KH_f[i] else 0
-		alpah_n, nn, ds = 0.0, 0, np.mean(R) / 5
-		for n in range(self.NP):
-			if R < ds and n != i:
-				nn += 1
-				if nn <= 4 and KH_f[i] != KH[n]: alpah_n -= (KH(n) - KH[i]) / Kw_Kgb / R[n] * RR[n]
-		return W_n * N * self.N_max * (alpha_b + alpah_n)
+        """
+        ipb = np.where(new_fitness >= population_fitness)
+        new_population[ipb], new_fitness[ipb] = population[ipb], population_fitness[ipb]
+        return new_population, new_fitness
 
-	def Foraging(self, KH, KH_f, KHo, KHo_f, W_f, F, KH_wf, KH_bf, x_food, x_food_f, task):
-		r"""Foraging operator.
+    def neighbors(self, i, population, population_fitness, iw, ib, induced_speed, w_neighbor, task):
+        r"""Neighbors operator.
 
-		Args:
-			KH (numpy.ndarray): Current heard/population.
-			KH_f (numpy.ndarray[float]): Current herd/populations function/fitness values.
-			KHo (numpy.ndarray): New heard/population.
-			KHo_f (numpy.ndarray[float]): New heard/population function/fitness values.
-			W_f (numpy.ndarray): Weights for foraging.
-			F (): --
-			KH_wf (numpy.ndarray): Worst krill in herd/population.
-			KH_bf (numpy.ndarray): Best krill in herd/population.
-			x_food (numpy.ndarray): Foods position.
-			x_food_f (float): Foods function/fitness value.
-			task (Task): Optimization task.
+        Args:
+            i (int): Index of krill being applied with operator.
+            population (numpy.ndarray): Current herd/population.
+            population_fitness (numpy.ndarray[float]): Current herd/populations function/fitness values.
+            iw (numpy.ndarray): Index of worst krill/individual.
+            ib (numpy.ndarray): Index of best krill/individual.
+            induced_speed (): --
+            w_neighbor (numpy.ndarray): Weights for neighbors operator.
+            task (Task): Optimization task.
 
-		Returns:
-			numpy.ndarray: --
-		"""
-		Rf, Kw_Kgb = x_food - KH, KH_wf - KH_bf
-		beta_f = -2 * (1 - (task.Iters + 1) / task.nGEN) * (x_food_f - KH_f) / Kw_Kgb / np.sqrt(np.sum(Rf * Rf)) * Rf if x_food_f < KH_f else 0
-		Rib = KHo - KH
-		beta_b = -(KHo_f - KH_f) / Kw_Kgb / np.sqrt(np.sum(Rib * Rib)) * Rib if KHo_f < KH_f else 0
-		return W_f * F + self.V_f * (beta_b + beta_f)
+        Returns:
+            numpy.ndarray: --
 
-	def Cr(self, KH_f, KHb_f, KHw_f):
-		r"""Calculate crossover probability.
+        """
+        r_gb, rr, kw_kgb = population[ib] - population[i], population - population[i], population_fitness[iw] - population_fitness[ib]
+        r = np.sqrt(np.sum(rr * rr))
+        alpha_b = -2 * (1 + self.random() * (task.iters + 1) / task.max_iters) * (population_fitness[ib]) / kw_kgb / np.sqrt(
+            np.sum(r_gb * r_gb)) * r_gb if population_fitness[ib] < population_fitness[i] else 0
+        alpha_n, nn, ds = 0.0, 0, np.mean(r) / 5
+        for n in range(self.population_size):
+            if r < ds and n != i:
+                nn += 1
+                if nn <= 4 and population_fitness[i] != population[n]:
+                    alpha_n -= (population[n] - population[i]) / kw_kgb / r[n] * rr[n]
+        return w_neighbor * induced_speed * self.N_max * (alpha_b + alpha_n)
 
-		Args:
-			KH_f (float): Krill/individuals function/fitness value.
-			KHb_f (float): Best krill/individual function/fitness value.
-			KHw_f (float): Worst krill/individual function/fitness value.
+    def foraging(self, population, population_fitness, new_herd, new_fitness, w_foraging, f, kh_best, kh_best_fitness,
+                 x_food, x_food_f, task):
+        r"""Foraging operator.
 
-		Returns:
-			float: Crossover probability.
-		"""
-		return 0.8 + 0.2 * (KH_f - KHb_f) / (KHw_f - KHb_f)
+        Args:
+            population (numpy.ndarray): Current heard/population.
+            population_fitness (numpy.ndarray[float]): Current herd/populations function/fitness values.
+            new_herd (numpy.ndarray): New heard/population.
+            new_fitness (numpy.ndarray[float]): New heard/population function/fitness values.
+            w_foraging (numpy.ndarray): Weights for foraging.
+            f (): --
+            kh_best (numpy.ndarray): Worst krill in herd/population.
+            kh_best_fitness (numpy.ndarray): Best krill in herd/population.
+            x_food (numpy.ndarray): Foods position.
+            x_food_f (float): Foods function/fitness value.
+            task (Task): Optimization task.
 
-	def initPopulation(self, task):
-		r"""Initialize firt herd/population.
+        Returns:
+            numpy.ndarray: --
 
-		Args:
-			task (Task): Optimization task.
+        """
+        rf, kw_kgb = x_food - population, kh_best - kh_best_fitness
+        beta_f = -2 * (1 - (task.iters + 1) / task.max_iters) * (x_food_f - population_fitness) / kw_kgb / np.sqrt(
+            np.sum(rf * rf)) * rf if x_food_f < population_fitness else 0
+        rib = new_herd - population
+        beta_b = -(new_fitness - population_fitness) / kw_kgb / np.sqrt(np.sum(rib * rib)) * rib if new_fitness < population_fitness else 0
+        return w_foraging * f + self.V_f * (beta_b + beta_f)
 
-		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
-				1. Initialized herd/population.
-				2. Initialized herd/populations function/fitness values.
-				3. Additional arguments:
-					* KHo (): --
-					* KHo_f (): --
-					* N (): --
-					* F (): --
-					* Dt (): --
+    def crossover_rate(self, kh_fitness, kh_best_fitness, kh_worst_fitness, **_kwargs):
+        r"""Calculate crossover probability.
 
-		See Also:
-			* :func:`niapy.algorithms.Algorithm.initPopulation`
-		"""
-		KH, KH_f, d = Algorithm.initPopulation(self, task)
-		KHo, KHo_f = np.full((self.NP, task.D), task.optType.value * np.inf), np.full(self.NP, task.optType.value * np.inf)
-		N, F, Dt = np.zeros(self.NP), np.zeros(self.NP), np.mean(task.bcRange()) / 2
-		d.update({'KHo': KHo, 'KHo_f': KHo_f, 'N': N, 'F': F, 'Dt': Dt})
-		return KH, KH_f, d
+        Args:
+            kh_fitness (float): Krill/individuals function/fitness value.
+            kh_best_fitness (float): Best krill/individual function/fitness value.
+            kh_worst_fitness (float): Worst krill/individual function/fitness value.
 
-	def runIteration(self, task, KH, KH_f, xb, fxb, KHo, KHo_f, N, F, Dt, **dparams):
-		r"""Core function of KrillHerdV11 algorithm.
+        Returns:
+            float: Crossover probability.
 
-		Args:
-			task (Task): Optimization task.
-			KH (numpy.ndarray): Current herd/population.
-			KH_f (numpy.ndarray[float]): Current herd/populations function/fitness values.
-			xb (numpy.ndarray): Global best krill.
-			fxb (float): Global best krill function/fitness value.
-			KHo ():
-			KHo_f ():
-			N ():
-			F ():
-			Dt ():
-			**dparams (Dict[str, Any]): Additional arguments.
+        """
+        return 0.8 + 0.2 * (kh_fitness - kh_best_fitness) / (kh_worst_fitness - kh_best_fitness)
 
-		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
-				1. New herd/population.
-				2. New herd/populations function/fitness values.
-				3. Additional arguments:
+    def init_population(self, task):
+        r"""Initialize first herd/population.
 
-		"""
-		w = np.full(task.D, 0.1 + 0.8 * (1 - (task.Iters + 1) / task.nGEN))
-		ib, iw = np.argmin(KH_f), np.argmax(KH_f)
-		x_food, x_food_f = self.getFoodLocation(KH, KH_f, task)
-		xb, fxb = self.getBest(x_food, x_food_f, xb, fxb)
-		N = np.asarray([self.Neighbors(i, KH, KH_f, iw, ib, N[i], w, task) for i in range(self.NP)])
-		F = np.asarray([self.Foraging(KH[i], KH_f[i], KHo[i], KHo_f[i], w, F[i], KH_f[iw], KH_f[ib], x_food, x_food_f, task) for i in range(self.NP)])
-		Cr = np.asarray([self.Cr(KH_f[i], KH_f[ib], KH_f[iw]) for i in range(self.NP)])
-		KH_n = np.asarray([self.crossover(KH[self.integers(self.NP)], KH[i], Cr[i]) for i in range(self.NP)])
-		KH_n = KH + Dt * (F + N)
-		KH = np.apply_along_axis(task.repair, 1, KH_n, self.rng)
-		KH_f = np.apply_along_axis(task.eval, 1, KH)
-		KHo, KHo_f = self.ElitistSelection(KH, KH_f, KHo, KHo_f)
-		xb, fxb = self.getBest(KH, KH_f, xb, fxb)
-		return KH, KH_f, xb, fxb, {'KHo': KHo, 'KHo_f': KHo_f, 'N': N, 'F': F, 'Dt': Dt}
+        Args:
+            task (Task): Optimization task.
+
+        Returns:
+            Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+                1. Initialized herd/population.
+                2. Initialized herd/populations function/fitness values.
+                3. Additional arguments:
+                    * KHo (): --
+                    * KHo_f (): --
+                    * N (): --
+                    * F (): --
+                    * Dt (): --
+
+        See Also:
+            * :func:`niapy.algorithms.Algorithm.init_population`
+
+        """
+        kh, kh_f, d = Algorithm.init_population(self, task)
+        kh_o, kho_f = np.full((self.population_size, task.dimension), task.optimization_type.value * np.inf), np.full(self.population_size, task.optimization_type.value * np.inf)
+        n, f, dt = np.zeros(self.population_size), np.zeros(self.population_size), np.mean(task.range) / 2
+        d.update({'KHo': kh_o, 'KHo_f': kho_f, 'N': n, 'F': f, 'Dt': dt})
+        return kh, kh_f, d
+
+    def run_iteration(self, task, population, population_fitness, best_x, best_fitness, **params):
+        r"""Core function of KrillHerdV11 algorithm.
+
+        Args:
+            task (Task): Optimization task.
+            population (numpy.ndarray): Current herd/population.
+            population_fitness (numpy.ndarray[float]): Current herd/populations function/fitness values.
+            best_x (numpy.ndarray): Global best krill.
+            best_fitness (float): Global best krill function/fitness value.
+            **params (Dict[str, Any]): Additional arguments.
+
+        Returns:
+            Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+                1. New herd/population.
+                2. New herd/populations function/fitness values.
+                3. Additional arguments:
+
+        """
+        kh_o = params.pop('KHo')
+        kh_o_f = params.pop('KHo_f')
+        n = params.pop('N')
+        f = params.pop('F')
+        dt = params.pop('Dt')
+
+        w = np.full(task.dimension, 0.1 + 0.8 * (1 - (task.iters + 1) / task.max_iters))
+        ib, iw = np.argmin(population_fitness), np.argmax(population_fitness)
+        x_food, x_food_f = self.get_food_location(population, population_fitness, task)
+        best_x, best_fitness = self.get_best(x_food, x_food_f, best_x, best_fitness)
+        n = np.asarray([self.neighbors(i, population, population_fitness, iw, ib, n[i], w, task) for i in range(self.population_size)])
+        f = np.asarray(
+            [self.foraging(population[i], population_fitness[i], kh_o[i], kh_o_f[i], w, f[i], population_fitness[iw],
+                           population_fitness[ib], x_food, x_food_f, task) for i
+             in range(self.population_size)])
+        cr = np.asarray([self.crossover_rate(population_fitness[i], population_fitness[ib], population_fitness[iw]) for i in range(self.population_size)])
+        new_kh = np.asarray([self.crossover(population[self.integers(self.population_size)], population[i], cr[i]) for i in range(self.population_size)])
+        new_kh = new_kh + dt * (f + n)
+        population = np.apply_along_axis(task.repair, 1, new_kh, self.rng)
+        population_fitness = np.apply_along_axis(task.eval, 1, population)
+        kh_o, kh_o_f = self.elitist_selection(population, population_fitness, kh_o, kh_o_f)
+        best_x, best_fitness = self.get_best(population, population_fitness, best_x, best_fitness)
+        return population, population_fitness, best_x, best_fitness, {'KHo': kh_o, 'KHo_f': kh_o_f, 'N': n, 'F': f, 'Dt': dt}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

@@ -3,13 +3,13 @@
 """Implementation of Runner utility class."""
 
 import datetime
-import os
 import logging
+import os
 
 import pandas as pd
 
-from niapy.task import StoppingTask, OptimizationType
 from niapy.algorithms import AlgorithmUtility
+from niapy.task import StoppingTask, OptimizationType
 
 logging.basicConfig()
 logger = logging.getLogger('niapy.runner.Runner')
@@ -25,52 +25,49 @@ class Runner:
     It also support exporting results in various formats (e.g. Pandas DataFrame, JSON, Excel)
 
     Attributes:
-            D (int): Dimension of problem
-            NP (int): Population size
-            nFES (int): Number of function evaluations
-            nRuns (int): Number of repetitions
-            useAlgorithms (Union[List[str], List[Algorithm]]): List of algorithms to run
-            useBenchmarks (Union[List[str], List[Benchmark]]): List of benchmarks to run
-
-    Returns:
-            results (Dict[str, Dict]): Returns the results.
+        dimension (int): Dimension of problem
+        max_evals (int): Number of function evaluations
+        runs (int): Number of repetitions
+        algorithms (Union[List[str], List[Algorithm]]): List of algorithms to run
+        benchmarks (Union[List[str], List[Benchmark]]): List of benchmarks to run
 
     """
 
-    def __init__(self, D=10, nFES=1000000, nRuns=1, useAlgorithms='ArtificialBeeColonyAlgorithm', useBenchmarks='Ackley', **kwargs):
+    def __init__(self, dimension=10, max_evals=1000000, runs=1, algorithms='ArtificialBeeColonyAlgorithm',
+                 benchmarks='Ackley'):
         r"""Initialize Runner.
 
         Args:
-                D (int): Dimension of problem
-                nFES (int): Number of function evaluations
-                nRuns (int): Number of repetitions
-                useAlgorithms (List[Algorithm]): List of algorithms to run
-                useBenchmarks (List[Benchmarks]): List of benchmarks to run
+            dimension (int): Dimension of problem
+            max_evals (int): Number of function evaluations
+            runs (int): Number of repetitions
+            algorithms (List[Algorithm]): List of algorithms to run
+            benchmarks (List[Benchmark]): List of benchmarks to run
 
         """
-
-        self.D = D
-        self.nFES = nFES
-        self.nRuns = nRuns
-        self.useAlgorithms = useAlgorithms
-        self.useBenchmarks = useBenchmarks
+        self.dimension = dimension
+        self.max_evals = max_evals
+        self.runs = runs
+        self.algorithms = algorithms
+        self.benchmarks = benchmarks
         self.results = {}
 
-    def benchmark_factory(self, name):
+    def task_factory(self, name):
         r"""Create optimization task.
 
         Args:
-                name (str): Benchmark name.
+            name (str): Benchmark name.
 
         Returns:
-                Task: Optimization task to use.
+            Task: Optimization task to use.
 
         """
-        return StoppingTask(D=self.D, nFES=self.nFES, optType=OptimizationType.MINIMIZATION, benchmark=name)
+        return StoppingTask(max_evals=self.max_evals, dimension=self.dimension,
+                            optimization_type=OptimizationType.MINIMIZATION, benchmark=name)
 
     @classmethod
     def __create_export_dir(cls):
-        r"""Create export directory if not already createed."""
+        r"""Create export directory if not already created."""
         if not os.path.exists("export"):
             os.makedirs("export")
 
@@ -79,12 +76,12 @@ class Runner:
         r"""Generate export file name.
 
         Args:
-                extension (str): File format.
+            extension (str): File format.
 
         Returns:
+            str: Export file name.
 
         """
-
         Runner.__create_export_dir()
         return "export/" + str(datetime.datetime.now()).replace(":", ".") + "." + extension
 
@@ -92,11 +89,10 @@ class Runner:
         r"""Export the results in the pandas dataframe pickle.
 
         See Also:
-                * :func:`niapy.Runner.__createExportDir`
-                * :func:`niapy.Runner.__generateExportName`
+            * :func:`niapy.Runner.__createExportDir`
+            * :func:`niapy.Runner.__generateExportName`
 
         """
-
         dataframe = pd.DataFrame.from_dict(self.results)
         dataframe.to_pickle(self.__generate_export_name("pkl"))
         logger.info("Export to Pandas DataFrame pickle (pkl) completed!")
@@ -105,11 +101,10 @@ class Runner:
         r"""Export the results in the JSON file.
 
         See Also:
-                * :func:`niapy.Runner.__createExportDir`
-                * :func:`niapy.Runner.__generateExportName`
+            * :func:`niapy.Runner.__createExportDir`
+            * :func:`niapy.Runner.__generateExportName`
 
         """
-
         dataframe = pd.DataFrame.from_dict(self.results)
         dataframe.to_json(self.__generate_export_name("json"))
         logger.info("Export to JSON file completed!")
@@ -118,11 +113,10 @@ class Runner:
         r"""Export the results in the xls file.
 
         See Also:
-                * :func:`niapy.Runner.__createExportDir`
-                * :func:`niapy.Runner.__generateExportName`
+            * :func:`niapy.Runner.__createExportDir`
+            * :func:`niapy.Runner.__generateExportName`
 
         """
-
         dataframe = pd.DataFrame.from_dict(self.results)
         dataframe.to_excel(self.__generate_export_name("xls"))
         logger.info("Export to XLS completed!")
@@ -131,11 +125,10 @@ class Runner:
         r"""Export the results in the xlsx file.
 
         See Also:
-                * :func:`niapy.Runner.__createExportDir`
-                * :func:`niapy.Runner.__generateExportName`
+            * :func:`niapy.Runner.__createExportDir`
+            * :func:`niapy.Runner.__generateExportName`
 
         """
-
         dataframe = pd.DataFrame.from_dict(self.results)
         dataframe.to_excel(self.__generate_export_name("xslx"))
         logger.info("Export to XLSX file completed!")
@@ -143,24 +136,23 @@ class Runner:
     def run(self, export="dataframe", verbose=False):
         """Execute runner.
 
-        Arguments:
-                export (str): Takes export type (e.g. dataframe, json, xls, xlsx) (default: "dataframe")
-                verbose (bool): Switch for verbose logging (default: {False})
-
-        Raises:
-                TypeError: Raises TypeError if export type is not supported
+        Args:
+            export (str): Takes export type (e.g. dataframe, json, xls, xlsx) (default: "dataframe")
+            verbose (bool): Switch for verbose logging (default: {False})
 
         Returns:
-                dict: Returns dictionary of results
+            dict: Returns dictionary of results
+
+        Raises:
+            TypeError: Raises TypeError if export type is not supported
 
         See Also:
-                * :func:`niapy.Runner.useAlgorithms`
-                * :func:`niapy.Runner.useBenchmarks`
-                * :func:`niapy.Runner.__algorithmFactory`
+            * :func:`niapy.Runner.useAlgorithms`
+            * :func:`niapy.Runner.useBenchmarks`
+            * :func:`niapy.Runner.__algorithmFactory`
 
         """
-
-        for alg in self.useAlgorithms:
+        for alg in self.algorithms:
             if not isinstance(alg, "".__class__):
                 alg_name = str(type(alg).__name__)
             else:
@@ -171,7 +163,7 @@ class Runner:
             if verbose:
                 logger.info("Running %s...", alg_name)
 
-            for bench in self.useBenchmarks:
+            for bench in self.benchmarks:
                 if not isinstance(bench, "".__class__):
                     bench_name = str(type(bench).__name__)
                 else:
@@ -181,9 +173,9 @@ class Runner:
                     logger.info("Running %s algorithm on %s benchmark...", alg_name, bench_name)
 
                 self.results[alg_name][bench_name] = []
-                for _ in range(self.nRuns):
+                for _ in range(self.runs):
                     algorithm = AlgorithmUtility().get_algorithm(alg)
-                    benchmark_stopping_task = self.benchmark_factory(bench)
+                    benchmark_stopping_task = self.task_factory(bench)
                     self.results[alg_name][bench_name].append(algorithm.run(benchmark_stopping_task))
             if verbose:
                 logger.info("---------------------------------------------------")

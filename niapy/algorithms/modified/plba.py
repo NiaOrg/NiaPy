@@ -11,131 +11,134 @@ logger.setLevel('INFO')
 
 __all__ = ['ParameterFreeBatAlgorithm']
 
+
 class ParameterFreeBatAlgorithm(Algorithm):
-	r"""Implementation of Parameter-free Bat algorithm.
+    r"""Implementation of Parameter-free Bat algorithm.
 
-	Algorithm:
-		Parameter-free Bat algorithm
+    Algorithm:
+        Parameter-free Bat algorithm
 
-	Date:
-		2020
+    Date:
+        2020
 
-	Authors:
-		Iztok Fister Jr.
-		This implementation is based on the implementation of basic BA from niapy
+    Authors:
+        Iztok Fister Jr.
+        This implementation is based on the implementation of basic BA from niapy
 
-	License:
-		MIT
+    License:
+        MIT
 
-	Reference paper:
-		Iztok Fister Jr., Iztok Fister, Xin-She Yang. Towards the development of a parameter-free bat algorithm . In: FISTER Jr., Iztok (Ed.), BRODNIK, Andrej (Ed.). StuCoSReC : proceedings of the 2015 2nd Student Computer Science Research Conference. Koper: University of Primorska, 2015, pp. 31-34.
+    Reference paper:
+        Iztok Fister Jr., Iztok Fister, Xin-She Yang. Towards the development of a parameter-free bat algorithm . In: FISTER Jr., Iztok (Ed.), BRODNIK, Andrej (Ed.). StuCoSReC : proceedings of the 2015 2nd Student Computer Science Research Conference. Koper: University of Primorska, 2015, pp. 31-34.
 
-	Attributes:
-		Name (List[str]): List of strings representing algorithm name.
+    Attributes:
+        Name (List[str]): List of strings representing algorithm name.
 
-	See Also:
-		* :class:`niapy.algorithms.Algorithm`
-	"""
-	Name = ['ParameterFreeBatAlgorithm', 'PLBA']
+    See Also:
+        * :class:`niapy.algorithms.Algorithm`
 
-	@staticmethod
-	def algorithmInfo():
-		r"""Get algorithms information.
+    """
 
-		Returns:
-			str: Algorithm information.
+    Name = ['ParameterFreeBatAlgorithm', 'PLBA']
 
-		See Also:
-			* :func:`niapy.algorithms.Algorithm.algorithmInfo`
-		"""
-		return r"""Iztok Fister Jr., Iztok Fister, Xin-She Yang. Towards the development of a parameter-free bat algorithm . In: FISTER, Iztok (Ed.), BRODNIK, Andrej (Ed.). StuCoSReC : proceedings of the 2015 2nd Student Computer Science Research Conference. Koper: University of Primorska, 2015, pp. 31-34."""
+    @staticmethod
+    def info():
+        r"""Get algorithms information.
 
-	def setParameters(self, **ukwargs):
-		r"""Set the parameters of the algorithm.
+        Returns:
+            str: Algorithm information.
 
-		Args:
-			A (Optional[float]): Loudness.
-			r (Optional[float]): Pulse rate.
-		See Also:
-			* :func:`niapy.algorithms.Algorithm.setParameters`
-		"""
-		Algorithm.setParameters(self, NP=80, **ukwargs)
-		self.A, self.r = 0.9, 0.1
+        See Also:
+            * :func:`niapy.algorithms.Algorithm.info`
 
-	def initPopulation(self, task):
-		r"""Initialize the initial population.
+        """
+        return r"""Iztok Fister Jr., Iztok Fister, Xin-She Yang. Towards the development of a parameter-free bat algorithm . In: FISTER, Iztok (Ed.), BRODNIK, Andrej (Ed.). StuCoSReC : proceedings of the 2015 2nd Student Computer Science Research Conference. Koper: University of Primorska, 2015, pp. 31-34."""
 
-		Parameters:
-			task (Task): Optimization task
+    def __init__(self, *args, **kwargs):
+        """Initialize ParameterFreeBatAlgorithm."""
+        super().__init__(80, *args, **kwargs)
+        self.loudness = 0.9
+        self.pulse_rate = 0.1
 
-		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
-				1. New population.
-				2. New population fitness/function values.
-				3. Additional arguments:
-					* S (numpy.ndarray): Solutions
-					* Q (numpy.ndarray[float]): Frequencies
-					* v (numpy.ndarray[float]): Velocities
+    def set_parameters(self, **kwargs):
+        r"""Set the parameters of the algorithm.
 
-		See Also:
-			* :func:`niapy.algorithms.Algorithm.initPopulation`
-		"""
-		Sol, Fitness, d = Algorithm.initPopulation(self, task)
-		S, Q, v = np.zeros((self.NP, task.D)), np.zeros(self.NP), np.zeros((self.NP, task.D))
-		d.update({'S': S, 'Q': Q, 'v': v})
-		return Sol, Fitness, d
+        See Also:
+            * :func:`niapy.algorithms.Algorithm.set_parameters`
 
-	def localSearch(self, best, task, **kwargs):
-		r"""Improve the best solution according to the Yang (2010).
+        """
+        super().set_parameters(population_size=80, **kwargs)
+        self.loudness = 0.9
+        self.pulse_rate = 0.1
 
-		Args:
-			best (numpy.ndarray): Global best individual.
-			task (Task): Optimization task.
-			**kwargs (Dict[str, Any]): Additional arguments.
+    def init_population(self, task):
+        r"""Initialize the initial population.
 
-		Returns:
-			numpy.ndarray: New solution based on global best individual.
-		"""
-		return task.repair(best + 0.001 * self.normal(0, 1, task.D))
+        Args:
+            task (Task): Optimization task
 
-	def runIteration(self, task, Sol, Fitness, xb, fxb, S, Q, v, **dparams):
-		r"""Core function of Parameter-free Bat Algorithm.
+        Returns:
+            Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+                1. New population.
+                2. New population fitness/function values.
+                3. Additional arguments:
+                    * velocities (numpy.ndarray[float]): Velocities
 
-		Parameters:
-			task (Task): Optimization task.
-			Sol (numpy.ndarray): Current population
-			Fitness (numpy.ndarray[float]): Current population fitness/funciton values
-			best (numpy.ndarray): Current best individual
-			f_min (float): Current best individual function/fitness value
-			S (numpy.ndarray): Solutions
-			Q (numpy.ndarray): Frequencies
-			v (numpy.ndarray): Velocities
-			best (numpy.ndarray): Global best used by the algorithm
-			f_min (float): Global best fitness value used by the algorithm
-			dparams (Dict[str, Any]): Additional algorithm arguments
+        See Also:
+            * :func:`niapy.algorithms.Algorithm.init_population`
+        """
+        population, fitness, d = Algorithm.init_population(self, task)
+        velocities = np.zeros((self.population_size, task.dimension))
+        d.update({'velocities': velocities})
+        return population, fitness, d
 
-		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, float, Dict[str, Any]]:
-				1. New population
-				2. New population fitness/function vlues
-				3. New global best solution
-				4. New global best fitness/objective value
-				5. Additional arguments:
-					* S (numpy.ndarray): Solutions
-					* Q (numpy.ndarray): Frequencies
-					* v (numpy.ndarray): Velocities
-					* best (numpy.ndarray): Global best
-					* f_min (float): Global best fitness
-		"""
-		upper, lower = task.bcUpper(), task.bcLower()
-		for i in range(self.NP):
-			Q[i] = ((upper[0] - lower[0]) / float(self.NP)) * self.normal(0, 1)
-			v[i] += (Sol[i] - xb) * Q[i]
-			if self.random() > self.r: S[i] = self.localSearch(best=xb, task=task, i=i, Sol=Sol)
-			else: S[i] = task.repair(Sol[i] + v[i], rng=self.rng)
-			Fnew = task.eval(S[i])
-			if (Fnew <= Fitness[i]) and (self.random() < self.A): Sol[i], Fitness[i] = S[i], Fnew
-			if Fnew <= fxb: xb, fxb = S[i].copy(), Fnew
-		return Sol, Fitness, xb, fxb, {'S': S, 'Q': Q, 'v': v}
+    def local_search(self, best, task, **_kwargs):
+        r"""Improve the best solution according to the Yang (2010).
+
+        Args:
+            best (numpy.ndarray): Global best individual.
+            task (Task): Optimization task.
+
+        Returns:
+            numpy.ndarray: New solution based on global best individual.
+        """
+        return task.repair(best + 0.001 * self.normal(0, 1, task.dimension))
+
+    def run_iteration(self, task, population, population_fitness, best_x, best_fitness, **params):
+        r"""Core function of Parameter-free Bat Algorithm.
+
+        Args:
+            task (Task): Optimization task.
+            population (numpy.ndarray): Current population
+            population_fitness (numpy.ndarray[float]): Current population fitness/function values
+            best_x (numpy.ndarray): Current best individual
+            best_fitness(float): Current best individual function/fitness value
+            params (Dict[str, Any]): Additional algorithm arguments
+
+        Returns:
+            Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, float, Dict[str, Any]]:
+                1. New population
+                2. New population fitness/function values
+                3. New global best solution
+                4. New global best fitness/objective value
+                5. Additional arguments:
+                    * velocities (numpy.ndarray): Velocities
+
+        """
+        velocities = params.pop('velocities')
+        upper, lower = task.upper, task.lower
+        for i in range(self.population_size):
+            frequency = ((upper[0] - lower[0]) / float(self.population_size)) * self.normal(0, 1)
+            velocities[i] += (population[i] - best_x) * frequency
+            if self.random() > self.pulse_rate:
+                solution = self.local_search(best=best_x, task=task, i=i, Sol=population)
+            else:
+                solution = task.repair(population[i] + velocities[i], rng=self.rng)
+            new_fitness = task.eval(solution)
+            if (new_fitness <= population_fitness[i]) and (self.random() < self.loudness):
+                population[i], population_fitness[i] = solution, new_fitness
+            if new_fitness <= best_fitness:
+                best_x, best_fitness = solution.copy(), new_fitness
+        return population, population_fitness, best_x, best_fitness, {'velocities': velocities}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

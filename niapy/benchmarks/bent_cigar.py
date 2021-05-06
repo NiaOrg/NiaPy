@@ -1,14 +1,14 @@
 # encoding=utf8
 
-"""Implementations of High Conditioned Elliptic functions."""
+"""Implementations of Bent Cigar functions."""
 
 from niapy.benchmarks.benchmark import Benchmark
 
-__all__ = ['Elliptic']
+__all__ = ['BentCigar']
 
 
-class Elliptic(Benchmark):
-    r"""Implementations of High Conditioned Elliptic functions.
+class BentCigar(Benchmark):
+    r"""Implementations of Bent Cigar functions.
 
     Date: 2018
 
@@ -17,9 +17,9 @@ class Elliptic(Benchmark):
     License: MIT
 
     Function:
-    **High Conditioned Elliptic Function**
+    **Bent Cigar Function**
 
-        :math:`f(\textbf{x}) = \sum_{i=1}^D \left( 10^6 \right)^{ \frac{i - 1}{D - 1} } x_i^2`
+        :math:`f(\textbf{x}) = x_1^2 + 10^6 \sum_{i=2}^D x_i^2`
 
         **Input domain:**
         The function can be defined on any input domain but it is usually
@@ -30,10 +30,10 @@ class Elliptic(Benchmark):
 
     LaTeX formats:
         Inline:
-            $f(\textbf{x}) = \sum_{i=1}^D \left( 10^6 \right)^{ \frac{i - 1}{D - 1} } x_i^2$
+            $f(\textbf{x}) = x_1^2 + 10^6 \sum_{i=2}^D x_i^2$
 
         Equation:
-            \begin{equation} f(\textbf{x}) = \sum_{i=1}^D \left( 10^6 \right)^{ \frac{i - 1}{D - 1} } x_i^2 \end{equation}
+            \begin{equation} f(\textbf{x}) = x_1^2 + 10^6 \sum_{i=2}^D x_i^2 \end{equation}
 
         Domain:
             $-100 \leq x_i \leq 100$
@@ -43,10 +43,10 @@ class Elliptic(Benchmark):
 
     """
 
-    Name = ['Elliptic']
+    Name = ['BentCigar']
 
     def __init__(self, lower=-100.0, upper=100.0):
-        r"""Initialize of High Conditioned Elliptic benchmark.
+        r"""Initialize of Bent Cigar benchmark.
 
         Args:
             lower (Optional[float]): Lower bound of problem.
@@ -66,17 +66,17 @@ class Elliptic(Benchmark):
             str: Latex code.
 
         """
-        return r'''$f(\textbf{x}) = \sum_{i=1}^D \left( 10^6 \right)^{ \frac{i - 1}{D - 1} } x_i^2$'''
+        return r'''$f(\textbf{x}) = x_1^2 + 10^6 \sum_{i=2}^D x_i^2$'''
 
     def function(self):
         r"""Return benchmark evaluation function.
 
         Returns:
-            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
+            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function
 
         """
 
-        def evaluate(dimension, x):
+        def f(dimension, x):
             r"""Fitness function.
 
             Args:
@@ -88,10 +88,10 @@ class Elliptic(Benchmark):
 
             """
             val = 0.0
-            for i in range(dimension):
-                val += (10 ** 6) ** (i / (dimension - 1)) * x[i]
-            return val
+            for i in range(1, dimension):
+                val += x[i] ** 2
+            return x[0] ** 2 + 10 ** 6 * val
 
-        return evaluate
+        return f
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

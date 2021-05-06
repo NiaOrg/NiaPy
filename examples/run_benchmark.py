@@ -2,36 +2,37 @@
 # This is temporary fix to import module from parent folder
 # It will be removed when package is published on PyPI
 import sys
+
 sys.path.append('../')
 # End of fix
 
-import random
 import logging
 
-from niapy.algorithms.basic import BareBonesFireworksAlgorithm
 from niapy.benchmarks import Benchmark, Katsuura, Elliptic
-from niapy.task import StoppingTask
 
 logging.basicConfig()
 logger = logging.getLogger('examples')
 logger.setLevel('INFO')
 
+
 class MyBenchmark(Benchmark):
-	Name = ['MyBenchmark']
+    Name = ['MyBenchmark']
 
-	def __init__(self):
-		self.Lower = -11
-		self.Upper = 11
+    def __init__(self):
+        super().__init__(-11, 11)
 
-	def function(self):
-		def evaluate(D, sol):
-			val = 0.0
-			for i in range(D): val += sol[i] ** 2
-			return val
-		return evaluate
+    def function(self):
+        def evaluate(d, x):
+            val = 0.0
+            for i in range(d):
+                val += x[i] ** 2
+            return val
 
-benc = MyBenchmark()
-benc.plot3d()
+        return evaluate
+
+
+benchmark = MyBenchmark()
+benchmark.plot3d()
 
 benc = Katsuura(-1, 1)
 benc.plot3d(0.06)

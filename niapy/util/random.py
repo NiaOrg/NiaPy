@@ -1,4 +1,5 @@
 import math
+
 import numpy as np
 
 __all__ = ['levy_flight']

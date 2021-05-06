@@ -6,7 +6,7 @@ __all__ = ['full_array', 'objects_to_array']
 def full_array(a, dimension):
     r"""Fill or create array of length dimension, from value or value form a.
 
-    Arguments:
+    Args:
         a (Union[int, float, numpy.ndarray], Iterable[Any]): Input values for fill.
         dimension (int): Length of new array.
 
@@ -14,7 +14,6 @@ def full_array(a, dimension):
         numpy.ndarray: Array filled with passed values or value.
 
     """
-
     out = []
 
     if isinstance(a, (int, float)):
@@ -41,7 +40,6 @@ def objects_to_array(objs):
         numpy.ndarray: Array of objects.
 
     """
-
     a = np.empty(len(objs), dtype=object)
     for i, e in enumerate(objs):
         a[i] = e

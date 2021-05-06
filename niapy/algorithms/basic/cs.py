@@ -1,6 +1,8 @@
 # encoding=utf8
 import logging
+
 import numpy as np
+
 from niapy.algorithms.algorithm import Algorithm
 from niapy.util import levy_flight
 
@@ -10,157 +12,164 @@ logger.setLevel('INFO')
 
 __all__ = ['CuckooSearch']
 
+
 class CuckooSearch(Algorithm):
-	r"""Implementation of Cuckoo behaviour and levy flights.
+    r"""Implementation of Cuckoo behaviour and levy flights.
 
-	Algorithm:
-		Cuckoo Search
+    Algorithm:
+        Cuckoo Search
 
-	Date:
-		2018
+    Date:
+        2018
 
-	Authors:
-		Klemen Berkovič
+    Authors:
+        Klemen Berkovič
 
-	License:
-		MIT
+    License:
+        MIT
 
-	Reference:
-		Yang, Xin-She, and Suash Deb. "Cuckoo search via Lévy flights." Nature & Biologically Inspired Computing, 2009. NaBIC 2009. World Congress on. IEEE, 2009.
+    Reference:
+        Yang, Xin-She, and Suash Deb. "Cuckoo search via Lévy flights."
+        Nature & Biologically Inspired Computing, 2009. NaBIC 2009. World Congress on. IEEE, 2009.
 
-	Attributes:
-		Name (List[str]): list of strings representing algorithm names.
-		N (int): Population size.
-		pa (float): Proportion of worst nests.
-		alpha (float): Scale factor for levy flight.
+    Attributes:
+        Name (List[str]): list of strings representing algorithm names.
+        population_size (int): Population size.
+        pa (float): Proportion of worst nests.
+        alpha (float): Scale factor for levy flight.
 
-	See Also:
-		* :class:`niapy.algorithms.Algorithm`
-	"""
-	Name = ['CuckooSearch', 'CS']
+    See Also:
+        * :class:`niapy.algorithms.Algorithm`
 
-	@staticmethod
-	def algorithmInfo():
-		r"""Get algorithms information.
+    """
 
-		Returns:
-			str: Algorithm information.
+    Name = ['CuckooSearch', 'CS']
 
-		See Also:
-			* :func:`niapy.algorithms.Algorithm.algorithmInfo`
-		"""
-		return r"""Yang, Xin-She, and Suash Deb. "Cuckoo search via Lévy flights." Nature & Biologically Inspired Computing, 2009. NaBIC 2009. World Congress on. IEEE, 2009."""
+    @staticmethod
+    def info():
+        r"""Get algorithms information.
 
-	@staticmethod
-	def typeParameters():
-		r"""TODO.
+        Returns:
+            str: Algorithm information.
 
-		Returns:
-			Dict[str, Callable]:
-				* N (Callable[[int], bool]): TODO
-				* pa (Callable[[float], bool]): TODO
-				* alpha (Callable[[Union[int, float]], bool]): TODO
-		"""
-		return {
-			'N': lambda x: isinstance(x, int) and x > 0,
-			'pa': lambda x: isinstance(x, float) and 0 <= x <= 1,
-			'alpha': lambda x: isinstance(x, (float, int)),
-		}
+        See Also:
+            * :func:`niapy.algorithms.Algorithm.info`
 
-	def setParameters(self, N=50, pa=0.2, alpha=0.5, **ukwargs):
-		r"""Set the arguments of an algorithm.
+        """
+        return r"""Yang, Xin-She, and Suash Deb. "Cuckoo search via Lévy flights."
+        Nature & Biologically Inspired Computing, 2009. NaBIC 2009. World Congress on. IEEE, 2009."""
 
-		Arguments:
-			N (int): Population size :math:`\in [1, \infty)`
-			pa (float): factor :math:`\in [0, 1]`
-			alpah (float): TODO
-			**ukwargs (Dict[str, Any]): Additional arguments
+    @staticmethod
+    def type_parameters():
+        r"""Type checks.
 
-		See Also:
-			* :func:`niapy.algorithms.Algorithm.setParameters`
-		"""
-		ukwargs.pop('NP', None)
-		Algorithm.setParameters(self, NP=N, **ukwargs)
-		self.pa, self.alpha = pa, alpha
+        Returns:
+            Dict[str, Callable]:
+                * population_size (Callable[[int], bool]): Population size.
+                * pa (Callable[[float], bool]): Probability of a nest being abandoned.
+                * alpha (Callable[[Union[int, float]], bool]): Levy flight scale factor.
 
-	def getParameters(self):
-		d = Algorithm.getParameters(self)
-		d.pop('NP', None)
-		d.update({
-			'N': self.NP,
-			'pa': self.pa,
-			'alpha': self.alpha
-		})
-		return d
+        """
+        return {
+            'population_size': lambda x: isinstance(x, int) and x > 0,
+            'pa': lambda x: isinstance(x, float) and 0 <= x <= 1,
+            'alpha': lambda x: isinstance(x, (float, int)),
+        }
 
-	def emptyNests(self, pop, fpop, pa_v, task):
-		r"""Empty ensts.
+    def __init__(self, population_size=50, pa=0.2, alpha=0.5, *args, **kwargs):
+        r"""Initialize CuckooSearch.
 
-		Args:
-			pop (numpy.ndarray): Current population
-			fpop (numpy.ndarray[float]): Current population fitness/funcion values
-			pa_v (): TODO.
-			task (Task): Optimization task
+        Args:
+            population_size (int): Population size :math:`\in [1, \infty)`
+            pa (float): factor :math:`\in [0, 1]`
+            alpha (float): Levy flight scale factor.
 
-		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray[float]]:
-				1. New population
-				2. New population fitness/function values
-		"""
-		si = np.argsort(fpop)[:int(pa_v):-1]
-		pop[si] = task.Lower + self.random(task.D) * task.bRange
-		fpop[si] = np.apply_along_axis(task.eval, 1, pop[si])
-		return pop, fpop
+        See Also:
+            * :func:`niapy.algorithms.Algorithm.__init__`
 
-	def initPopulation(self, task):
-		r"""Initialize starting population.
+        """
+        super().__init__(population_size, *args, **kwargs)
+        self.pa = pa
+        self.num_abandoned = int(pa * self.population_size)
+        self.alpha = alpha
 
-		Args:
-			task (Task): Optimization task.
+    def set_parameters(self, population_size=50, pa=0.2, alpha=0.5, **kwargs):
+        r"""Set the arguments of an algorithm.
 
-		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
-				1. Initialized population.
-				2. Initialized populations fitness/function values.
-				3. Additional arguments:
-					* pa_v (float): TODO
+        Args:
+            population_size (int): Population size :math:`\in [1, \infty)`
+            pa (float): factor :math:`\in [0, 1]`
+            alpha (float): Levy flight scale factor.
 
-		See Also:
-			* :func:`niapy.algorithms.Algorithm.initPopulation`
-		"""
-		N, N_f, d = Algorithm.initPopulation(self, task)
-		d.update({'pa_v': self.NP * self.pa})
-		return N, N_f, d
+        See Also:
+            * :func:`niapy.algorithms.Algorithm.set_parameters`
 
-	def runIteration(self, task, pop, fpop, xb, fxb, pa_v, **dparams):
-		r"""Core function of CuckooSearch algorithm.
+        """
+        super().set_parameters(population_size=population_size, **kwargs)
+        self.pa = pa
+        self.num_abandoned = int(pa * self.population_size)
+        self.alpha = alpha
 
-		Args:
-			task (Task): Optimization task.
-			pop (numpy.ndarray): Current population.
-			fpop (numpy.ndarray): Current populations fitness/function values.
-			xb (numpy.ndarray): Global best individual.
-			fxb (float): Global best individual function/fitness values.
-			pa_v (float): TODO
-			**dparams (Dict[str, Any]): Additional arguments.
+    def get_parameters(self):
+        """Get parameters of the algorithm."""
+        d = super().get_parameters()
+        d.update({
+            'pa': self.pa,
+            'alpha': self.alpha
+        })
+        return d
 
-		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, float, Dict[str, Any]]:
-				1. Initialized population.
-				2. Initialized populations fitness/function values.
-				3. New global best solution
-				4. New global best solutions fitness/objective value
-				5. Additional arguments:
-					* pa_v (float): TODO
-		"""
-		i = self.integers(self.NP)
-		Nn = task.repair(pop[i] + levy_flight(alpha=self.alpha, size=task.D, rng=self.rng), rng=self.rng)
-		Nn_f = task.eval(Nn)
-		j = self.integers(self.NP)
-		while i == j: j = self.integers(self.NP)
-		if Nn_f <= fpop[j]: pop[j], fpop[j] = Nn, Nn_f
-		pop, fpop = self.emptyNests(pop, fpop, pa_v, task)
-		xb, fxb = self.getBest(pop, fpop, xb, fxb)
-		return pop, fpop, xb, fxb, {'pa_v': pa_v}
+    def abandon_nests(self, pop, fpop, task):
+        r"""Abandon nests.
+
+        Args:
+            pop (numpy.ndarray): Current population
+            fpop (numpy.ndarray[float]): Current population fitness/funcion values
+            task (Task): Optimization task
+
+        Returns:
+            Tuple[numpy.ndarray, numpy.ndarray[float]]:
+                1. New population
+                2. New population fitness/function values
+
+        """
+        si = np.argsort(fpop)[:int(self.num_abandoned):-1]
+        pop[si] = task.lower + self.random(task.dimension) * task.range
+        fpop[si] = np.apply_along_axis(task.eval, 1, pop[si])
+        return pop, fpop
+
+    def run_iteration(self, task, population, population_fitness, best_x, best_fitness, **params):
+        r"""Core function of CuckooSearch algorithm.
+
+        Args:
+            task (Task): Optimization task.
+            population (numpy.ndarray): Current population.
+            population_fitness (numpy.ndarray): Current populations fitness/function values.
+            best_x (numpy.ndarray): Global best individual.
+            best_fitness (float): Global best individual function/fitness values.
+            **params (Dict[str, Any]): Additional arguments.
+
+        Returns:
+            Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, float, Dict[str, Any]]:
+                1. Initialized population.
+                2. Initialized populations fitness/function values.
+                3. New global best solution.
+                4. New global best solutions fitness/objective value.
+                5. Additional arguments.
+
+        """
+        i = self.integers(self.population_size)
+        new_nests = task.repair(population[i] + levy_flight(alpha=self.alpha, size=task.dimension, rng=self.rng),
+                                rng=self.rng)
+        new_nests_fitness = task.eval(new_nests)
+        j = self.integers(self.population_size)
+        while i == j:
+            j = self.integers(self.population_size)
+        if new_nests_fitness <= population_fitness[j]:
+            population[j] = new_nests
+            population_fitness[j] = new_nests_fitness
+        population, population_fitness = self.abandon_nests(population, population_fitness, task)
+        best_x, best_fitness = self.get_best(population, population_fitness, best_x, best_fitness)
+        return population, population_fitness, best_x, best_fitness, {}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

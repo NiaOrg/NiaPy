@@ -2,7 +2,7 @@
 import logging
 
 from niapy.algorithms.basic import BatAlgorithm
-from niapy.algorithms.basic.de import CrossBest1
+from niapy.algorithms.basic.de import cross_best1
 
 logging.basicConfig()
 logger = logging.getLogger('niapy.algorithms.modified')
@@ -10,91 +10,118 @@ logger.setLevel('INFO')
 
 __all__ = ['HybridBatAlgorithm']
 
+
 class HybridBatAlgorithm(BatAlgorithm):
-	r"""Implementation of Hybrid bat algorithm.
+    r"""Implementation of Hybrid bat algorithm.
 
-	Algorithm:
-		Hybrid bat algorithm
+    Algorithm:
+        Hybrid bat algorithm
 
-	Date:
-		2018
+    Date:
+        2018
 
-	Author:
-		Grega Vrbancic and Klemen Berkovič
+    Author:
+        Grega Vrbančič and Klemen Berkovič
 
-	License:
-		MIT
+    License:
+        MIT
 
-	Reference paper:
-		Fister Jr., Iztok and Fister, Dusan and Yang, Xin-She. "A Hybrid Bat Algorithm". Elektrotehniski vestnik, 2013. 1-7.
+    Reference paper:
+        Fister Jr., Iztok and Fister, Dusan and Yang, Xin-She. "A Hybrid Bat Algorithm". Elektrotehniški vestnik, 2013. 1-7.
 
-	Attributes:
-		Name (List[str]): List of strings representing algorithm name.
-		F (float): Scaling factor.
-		CR (float): Crossover.
+    Attributes:
+        Name (List[str]): List of strings representing algorithm name.
+        F (float): Scaling factor.
+        CR (float): Crossover.
 
-	See Also:
-		* :class:`niapy.algorithms.basic.BatAlgorithm`
-	"""
-	Name = ['HybridBatAlgorithm', 'HBA']
+    See Also:
+        * :class:`niapy.algorithms.basic.BatAlgorithm`
 
-	@staticmethod
-	def algorithmInfo():
-		r"""Get basic information about the algorithm.
+    """
 
-		Returns:
-			str: Basic information.
+    Name = ['HybridBatAlgorithm', 'HBA']
 
-		See Also:
-			* :func:`niapy.algorithms.Algorithm.algorithmInfo`
-		"""
-		return r"""Fister Jr., Iztok and Fister, Dusan and Yang, Xin-She. "A Hybrid Bat Algorithm". Elektrotehniski vestnik, 2013. 1-7."""
+    @staticmethod
+    def info():
+        r"""Get basic information about the algorithm.
 
-	@staticmethod
-	def typeParameters():
-		r"""Get dictionary with functions for checking values of parameters.
+        Returns:
+            str: Basic information.
 
-		Returns:
-			Dict[str, Callable]:
-				* F (Callable[[Union[int, float]], bool]): Scaling factor.
-				* CR (Callable[[float], bool]): Crossover probability.
+        See Also:
+            * :func:`niapy.algorithms.Algorithm.info`
 
-		See Also:
-			* :func:`niapy.algorithms.basic.BatAlgorithm.typeParameters`
-		"""
-		d = BatAlgorithm.typeParameters()
-		d.update({
-			'F': lambda x: isinstance(x, (int, float)) and x > 0,
-			'CR': lambda x: isinstance(x, float) and 0 <= x <= 1
-		})
-		return d
+        """
+        return r"""Fister Jr., Iztok and Fister, Dusan and Yang, Xin-She. "A Hybrid Bat Algorithm". Elektrotehniški vestnik, 2013. 1-7."""
 
-	def setParameters(self, F=0.50, CR=0.90, CrossMutt=CrossBest1, **ukwargs):
-		r"""Set core parameters of HybridBatAlgorithm algorithm.
+    @staticmethod
+    def type_parameters():
+        r"""Get dictionary with functions for checking values of parameters.
 
-		Arguments:
-			F (Optional[float]): Scaling factor.
-			CR (Optional[float]): Crossover.
+        Returns:
+            Dict[str, Callable]:
+                * differential_weight (Callable[[Union[int, float]], bool]): Scaling factor.
+                * crossover_probability (Callable[[float], bool]): Crossover probability.
 
-		See Also:
-			* :func:`niapy.algorithms.basic.BatAlgorithm.setParameters`
-		"""
-		BatAlgorithm.setParameters(self, **ukwargs)
-		self.F, self.CR, self.CrossMutt = F, CR, CrossMutt
+        See Also:
+            * :func:`niapy.algorithms.basic.BatAlgorithm.type_parameters`
 
-	def localSearch(self, best, task, i, Sol, **kwargs):
-		r"""Improve the best solution.
+        """
+        d = BatAlgorithm.type_parameters()
+        d.update({
+            'differential_weight': lambda x: isinstance(x, (int, float)) and x > 0,
+            'crossover_probability': lambda x: isinstance(x, float) and 0 <= x <= 1
+        })
+        return d
 
-		Args:
-			best (numpy.ndarray): Global best individual.
-			task (Task): Optimization task.
-			i (int): Index of current individual.
-			Sol (numpy.ndarray): Current best population.
-			**kwargs (Dict[str, Any]):
+    def __init__(self, differential_weight=0.50, crossover_probability=0.90, strategy=cross_best1, *args, **kwargs):
+        """Initialize HybridBatAlgorithm.
 
-		Returns:
-			numpy.ndarray: New solution based on global best individual.
-		"""
-		return task.repair(self.CrossMutt(Sol, i, best, self.F, self.CR, rng=self.rng), rng=self.rng)
+        Args:
+            differential_weight (Optional[float]): Differential weight.
+            crossover_probability (Optional[float]): Crossover rate.
+            strategy (Optional[Callable]): DE Crossover and mutation strategy.
+
+        See Also:
+            * :func:`niapy.algorithms.basic.BatAlgorithm.set_parameters`
+
+        """
+        super().__init__(*args, **kwargs)
+        self.differential_weight = differential_weight
+        self.crossover_probability = crossover_probability
+        self.strategy = strategy
+
+    def set_parameters(self, differential_weight=0.50, crossover_probability=0.90, strategy=cross_best1, **kwargs):
+        r"""Set core parameters of HybridBatAlgorithm algorithm.
+
+        Args:
+            differential_weight (Optional[float]): Differential weight.
+            crossover_probability (Optional[float]): Crossover rate.
+            strategy (Callable): DE Crossover and mutation strategy.
+
+        See Also:
+            * :func:`niapy.algorithms.basic.BatAlgorithm.set_parameters`
+
+        """
+        super().set_parameters(**kwargs)
+        self.differential_weight = differential_weight
+        self.crossover_probability = crossover_probability
+        self.strategy = strategy
+
+    def local_search(self, best, task, i=None, population=None, **kwargs):
+        r"""Improve the best solution.
+
+        Args:
+            best (numpy.ndarray): Global best individual.
+            task (Task): Optimization task.
+            i (int): Index of current individual.
+            population (numpy.ndarray): Current best population.
+            **kwargs (Dict[str, Any]):
+
+        Returns:
+            numpy.ndarray: New solution based on global best individual.
+
+        """
+        return task.repair(self.strategy(population, i, self.differential_weight, self.crossover_probability, self.rng, best), rng=self.rng)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

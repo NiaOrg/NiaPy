@@ -114,7 +114,7 @@ from niapy.task import StoppingTask
 # we will run 10 repetitions of Grey Wolf Optimizer against Pinter benchmark function
 for i in range(10):
     task = StoppingTask(D=10, nFES=1000, benchmark='pinter')
-    algorithm = GreyWolfOptimizer(NP=20)
+    algorithm = GreyWolfOptimizer(population_size=20)
     best = algorithm.run(task)
     print(best[-1])
 ```
@@ -165,7 +165,7 @@ for i in range(10):
     task = StoppingTask(D=20, nGEN=100, optType=OptimizationType.MINIMIZATION, benchmark=MyBenchmark())
 
     # parameter is population size
-    algo = GreyWolfOptimizer(NP=20)
+    algo = GreyWolfOptimizer(population_size=20)
 
     # running algorithm returns best found minimum
     best = algo.run(task)

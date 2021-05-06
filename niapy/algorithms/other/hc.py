@@ -9,132 +9,157 @@ logger.setLevel('INFO')
 
 __all__ = ['HillClimbAlgorithm']
 
-def Neighborhood(x, delta, task, rng):
-	r"""Get neighbours of point.
 
-	Args:
-		x numpy.ndarray: Point.
-		delta (float): Standard deviation.
-		task (Task): Optimization task.
-		rng (numpy.random.Generator): Random generator.
+def neighborhood(x, delta, task, rng):
+    r"""Get neighbours of point.
 
-	Returns:
-		Tuple[numpy.ndarray, float]:
-			1. New solution.
-			2. New solutions function/fitness value.
-	"""
-	X = x + rng.normal(0, delta, task.D)
-	X = task.repair(X, rng)
-	Xfit = task.eval(X)
-	return X, Xfit
+    Args:
+        x (numpy.ndarray): Point.
+        delta (float): Standard deviation.
+        task (Task): Optimization task.
+        rng (numpy.random.Generator): Random generator.
+
+    Returns:
+        Tuple[numpy.ndarray, float]:
+            1. New solution.
+            2. New solutions function/fitness value.
+
+    """
+    new_x = x + rng.normal(0, delta, task.dimension)
+    new_x = task.repair(new_x, rng)
+    new_x_fitness = task.eval(new_x)
+    return new_x, new_x_fitness
+
 
 class HillClimbAlgorithm(Algorithm):
-	r"""Implementation of iterative hill climbing algorithm.
+    r"""Implementation of iterative hill climbing algorithm.
 
-	Algorithm:
-		Hill Climbing Algorithm
+    Algorithm:
+        Hill Climbing Algorithm
 
-	Date:
-		2018
+    Date:
+        2018
 
-	Authors:
-		Jan Popič
+    Authors:
+        Jan Popič
 
-	License:
-		MIT
+    License:
+        MIT
 
-	Reference URL:
+    Reference URL:
 
-	Reference paper:
+    Reference paper:
 
-	See Also:
-		* :class:`niapy.algorithms.Algorithm`
+    See Also:
+        * :class:`niapy.algorithms.Algorithm`
 
-	Attributes:
-		delta (float): Change for searching in neighborhood.
-		Neighborhood (Callable[numpy.ndarray, float, Task], Tuple[numpy.ndarray, float]]): Function for getting neighbours.
-	"""
-	Name = ['HillClimbAlgorithm', 'BBFA']
+    Attributes:
+        delta (float): Change for searching in neighborhood.
+        neighborhood_function (Callable[numpy.ndarray, float, Task], Tuple[numpy.ndarray, float]]): Function for getting neighbours.
 
-	@staticmethod
-	def algorithmInfo():
-		r"""Get basic information about the algorithm.
+    """
 
-		Returns:
-			str: Basic information.
+    Name = ['HillClimbAlgorithm', 'HC']
 
-		See Also:
-			:func:`niapy.algorithms.algorithm.Algorithm.algorithmInfo`
-		"""
-		return r"""TODO"""
+    @staticmethod
+    def info():
+        r"""Get basic information about the algorithm.
 
-	@staticmethod
-	def typeParameters():
-		r"""TODO.
+        Returns:
+            str: Basic information.
 
-		Returns:
-			Dict[str, Callable]:
-				* delta (Callable[[Union[int, float]], bool]): TODO
-		"""
-		return {'delta': lambda x: isinstance(x, (int, float)) and x > 0}
+        See Also:
+            :func:`niapy.algorithms.algorithm.Algorithm.info`
 
-	def setParameters(self, delta=0.5, Neighborhood=Neighborhood, **ukwargs):
-		r"""Set the algorithm parameters/arguments.
+        """
+        return r"""TODO"""
 
-		Args:
-			* delta (Optional[float]): Change for searching in neighborhood.
-			* Neighborhood (Optional[Callable[numpy.ndarray, float, Task], Tuple[numpy.ndarray, float]]]): Function for getting neighbours.
-		"""
-		Algorithm.setParameters(self, NP=1, **ukwargs)
-		self.delta, self.Neighborhood = delta, Neighborhood
+    @staticmethod
+    def type_parameters():
+        r"""Parameter type checks.
 
-	def getParameters(self):
-		d = Algorithm.getParameters(self)
-		d.update({
-			'delta': self.delta,
-			'Neighborhood': self.Neighborhood
-		})
-		return d
+        Returns:
+            Dict[str, Callable]:
+                * delta (Callable[[Union[int, float]], bool]): Change for searching in neighborhood.
 
-	def initPopulation(self, task):
-		r"""Initialize stating point.
+        """
+        return {'delta': lambda x: isinstance(x, (int, float)) and x > 0}
 
-		Args:
-			task (Task): Optimization task.
+    def __init__(self, delta=0.5, neighborhood_function=neighborhood, *args, **kwargs):
+        """Initialize HillClimbAlgorithm.
 
-		Returns:
-			Tuple[numpy.ndarray, float, Dict[str, Any]]:
-				1. New individual.
-				2. New individual function/fitness value.
-				3. Additional arguments.
-		"""
-		x = task.Lower + self.random(task.D) * task.bRange
-		return x, task.eval(x), {}
+        Args:
+            * delta (Optional[float]): Change for searching in neighborhood.
+            * neighborhood_function (Optional[Callable[numpy.ndarray, float, Task], Tuple[numpy.ndarray, float]]]): Function for getting neighbours.
 
-	def runIteration(self, task, x, fx, xb, fxb, **dparams):
-		r"""Core function of HillClimbAlgorithm algorithm.
+        """
+        super().__init__(1, *args, **kwargs)
+        self.delta = delta
+        self.neighborhood_function = neighborhood_function
 
-		Args:
-			task (Task): Optimization task.
-			x (numpy.ndarray): Current solution.
-			fx (float): Current solutions fitness/function value.
-			xb (numpy.ndarray): Global best solution.
-			fxb (float): Global best solutions function/fitness value.
-			**dparams (Dict[str, Any]): Additional arguments.
+    def set_parameters(self, delta=0.5, neighborhood_function=neighborhood, **kwargs):
+        r"""Set the algorithm parameters/arguments.
 
-		Returns:
-			Tuple[numpy.ndarray, float, numpy.ndarray, float, Dict[str, Any]]:
-				1. New solution.
-				2. New solutions function/fitness value.
-				3. Additional arguments.
-		"""
-		lo, xn = False, task.bcLower() + task.bcRange() * self.random(task.D)
-		xn_f = task.eval(xn)
-		while not lo:
-			yn, yn_f = self.Neighborhood(x, self.delta, task, rng=self.rng)
-			if yn_f < xn_f: xn, xn_f = yn, yn_f
-			else: lo = True or task.stopCond()
-		xb, fxb = self.getBest(xn, xn_f, xb, fxb)
-		return xn, xn_f, xb, fxb, {}
+        Args:
+            * delta (Optional[float]): Change for searching in neighborhood.
+            * neighborhood_function (Optional[Callable[numpy.ndarray, float, Task], Tuple[numpy.ndarray, float]]]): Function for getting neighbours.
+
+        """
+        super().set_parameters(population_size=1, **kwargs)
+        self.delta = delta
+        self.neighborhood_function = neighborhood_function
+
+    def get_parameters(self):
+        d = Algorithm.get_parameters(self)
+        d.update({
+            'delta': self.delta,
+            'neighborhood_function': self.neighborhood_function
+        })
+        return d
+
+    def init_population(self, task):
+        r"""Initialize stating point.
+
+        Args:
+            task (Task): Optimization task.
+
+        Returns:
+            Tuple[numpy.ndarray, float, Dict[str, Any]]:
+                1. New individual.
+                2. New individual function/fitness value.
+                3. Additional arguments.
+
+        """
+        x = task.lower + self.random(task.dimension) * task.range
+        return x, task.eval(x), {}
+
+    def run_iteration(self, task, x, fx, best_x, best_fitness, **params):
+        r"""Core function of HillClimbAlgorithm algorithm.
+
+        Args:
+            task (Task): Optimization task.
+            x (numpy.ndarray): Current solution.
+            fx (float): Current solutions fitness/function value.
+            best_x (numpy.ndarray): Global best solution.
+            best_fitness (float): Global best solutions function/fitness value.
+            **params (Dict[str, Any]): Additional arguments.
+
+        Returns:
+            Tuple[numpy.ndarray, float, numpy.ndarray, float, Dict[str, Any]]:
+                1. New solution.
+                2. New solutions function/fitness value.
+                3. Additional arguments.
+
+        """
+        lo, xn = False, task.lower + task.range * self.random(task.dimension)
+        xn_f = task.eval(xn)
+        while not lo:
+            yn, yn_f = self.neighborhood_function(x, self.delta, task, rng=self.rng)
+            if yn_f < xn_f:
+                xn, xn_f = yn, yn_f
+            else:
+                lo = True or task.stopping_condition()
+        best_x, best_fitness = self.get_best(xn, xn_f, best_x, best_fitness)
+        return xn, xn_f, best_x, best_fitness, {}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

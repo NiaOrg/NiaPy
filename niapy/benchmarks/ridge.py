@@ -29,37 +29,42 @@ class Ridge(Benchmark):
 
     LaTeX formats:
         Inline:
-                $f(\mathbf{x}) = \sum_{i=1}^D (\sum_{j=1}^i x_j)^2 $
+            $f(\mathbf{x}) = \sum_{i=1}^D (\sum_{j=1}^i x_j)^2 $
 
         Equation:
-                \begin{equation} f(\mathbf{x}) =
-                \sum_{i=1}^D (\sum_{j=1}^i x_j)^2 \end{equation}
+            \begin{equation} f(\mathbf{x}) =
+            \sum_{i=1}^D (\sum_{j=1}^i x_j)^2 \end{equation}
 
         Domain:
-                $-64 \leq x_i \leq 64$
+            $-64 \leq x_i \leq 64$
 
-    Reference: http://www.cs.unm.edu/~neal.holts/dga/benchmarkFunction/ridge.html
+    Reference:
+        http://www.cs.unm.edu/~neal.holts/dga/benchmarkFunction/ridge.html
+
     """
+
     Name = ['Ridge']
 
-    def __init__(self, Lower=-64.0, Upper=64.0):
+    def __init__(self, lower=-64.0, upper=64.0):
         r"""Initialize of Ridge benchmark.
 
         Args:
-            Lower (Optional[float]): Lower bound of problem.
-            Upper (Optional[float]): Upper bound of problem.
+            lower (Optional[float]): Lower bound of problem.
+            upper (Optional[float]): Upper bound of problem.
 
         See Also:
             :func:`niapy.benchmarks.Benchmark.__init__`
+
         """
-        Benchmark.__init__(self, Lower, Upper)
+        super().__init__(lower, upper)
 
     @staticmethod
     def latex_code():
         r"""Return the latex code of the problem.
 
         Returns:
-            str: Latex code
+            str: Latex code.
+
         """
         return r'''$f(\mathbf{x}) = \sum_{i=1}^D (\sum_{j=1}^i x_j)^2 $'''
 
@@ -67,24 +72,27 @@ class Ridge(Benchmark):
         r"""Return benchmark evaluation function.
 
         Returns:
-            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function
+            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
+
         """
-        def evaluate(D, sol):
+
+        def evaluate(dimension, x):
             r"""Fitness function.
 
             Args:
-                D (int): Dimensionality of the problem
-                sol (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
+                dimension (int): Dimensionality of the problem
+                x (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
 
             Returns:
                 float: Fitness value for the solution.
+
             """
             val = 0.0
 
-            for i in range(D):
+            for i in range(dimension):
                 val1 = 0.0
                 for j in range(i + 1):
-                    val1 += sol[j]
+                    val1 += x[j]
                 val += math.pow(val1, 2)
 
             return val

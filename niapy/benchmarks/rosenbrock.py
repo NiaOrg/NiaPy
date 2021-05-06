@@ -29,42 +29,46 @@ class Rosenbrock(Benchmark):
 
     LaTeX formats:
         Inline:
-                $f(\mathbf{x}) = \sum_{i=1}^{D-1} (100 (x_{i+1} - x_i^2)^2 + (x_i - 1)^2)$
+            $f(\mathbf{x}) = \sum_{i=1}^{D-1} (100 (x_{i+1} - x_i^2)^2 + (x_i - 1)^2)$
 
         Equation:
-                \begin{equation}
-                f(\mathbf{x}) = \sum_{i=1}^{D-1} (100 (x_{i+1} - x_i^2)^2 + (x_i - 1)^2)
-                \end{equation}
+            \begin{equation}
+            f(\mathbf{x}) = \sum_{i=1}^{D-1} (100 (x_{i+1} - x_i^2)^2 + (x_i - 1)^2)
+            \end{equation}
 
         Domain:
-                $-30 \leq x_i \leq 30$
+            $-30 \leq x_i \leq 30$
 
     Reference paper:
         Jamil, M., and Yang, X. S. (2013).
         A literature survey of benchmark functions for global optimisation problems.
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
+
     """
+
     Name = ['Rosenbrock']
 
-    def __init__(self, Lower=-30.0, Upper=30.0):
+    def __init__(self, lower=-30.0, upper=30.0):
         r"""Initialize of Rosenbrock benchmark.
 
         Args:
-            Lower (Optional[float]): Lower bound of problem.
-            Upper (Optional[float]): Upper bound of problem.
+            lower (Optional[float]): Lower bound of problem.
+            upper (Optional[float]): Upper bound of problem.
 
         See Also:
             :func:`niapy.benchmarks.Benchmark.__init__`
+
         """
-        Benchmark.__init__(self, Lower, Upper)
+        super().__init__(lower, upper)
 
     @staticmethod
     def latex_code():
         r"""Return the latex code of the problem.
 
         Returns:
-            str: Latex code
+            str: Latex code.
+
         """
         return r'''$f(\mathbf{x}) = \sum_{i=1}^{D-1} (100 (x_{i+1} - x_i^2)^2 + (x_i - 1)^2)$'''
 
@@ -72,23 +76,25 @@ class Rosenbrock(Benchmark):
         r"""Return benchmark evaluation function.
 
         Returns:
-            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function
+            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
+
         """
-        def evaluate(D, sol):
+
+        def evaluate(dimension, x):
             r"""Fitness function.
 
             Args:
-                D (int): Dimensionality of the problem
-                sol (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
+                dimension (int): Dimensionality of the problem
+                x (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
 
             Returns:
                 float: Fitness value for the solution.
+
             """
             val = 0.0
 
-            for i in range(D - 1):
-                val += 100.0 * math.pow(sol[i + 1] - math.pow((sol[i]), 2),
-                                        2) + math.pow((sol[i] - 1), 2)
+            for i in range(dimension - 1):
+                val += 100.0 * math.pow(x[i + 1] - math.pow((x[i]), 2), 2) + math.pow((x[i] - 1), 2)
 
             return val
 

@@ -1,6 +1,6 @@
 # encoding=utf8
 
-"""Implementaion of Rastrigin function."""
+"""Implementation of Rastrigin function."""
 
 import math
 from niapy.benchmarks.benchmark import Benchmark
@@ -29,38 +29,43 @@ class Rastrigin(Benchmark):
 
     LaTeX formats:
         Inline:
-                $f(\mathbf{x}) = 10D + \sum_{i=1}^D \left(x_i^2 -10\cos(2\pi x_i)\right)$
+            $f(\mathbf{x}) = 10D + \sum_{i=1}^D \left(x_i^2 -10\cos(2\pi x_i)\right)$
 
         Equation:
-                \begin{equation} f(\mathbf{x}) =
-                10D + \sum_{i=1}^D \left(x_i^2 -10\cos(2\pi x_i)\right)
-                \end{equation}
+            \begin{equation} f(\mathbf{x}) =
+            10D + \sum_{i=1}^D \left(x_i^2 -10\cos(2\pi x_i)\right)
+            \end{equation}
 
         Domain:
-                $-5.12 \leq x_i \leq 5.12$
+            $-5.12 \leq x_i \leq 5.12$
 
-    Reference: https://www.sfu.ca/~ssurjano/rastr.html
+    Reference:
+        https://www.sfu.ca/~ssurjano/rastr.html
+
     """
+
     Name = ['Rastrigin']
 
-    def __init__(self, Lower=-5.12, Upper=5.12):
-        r"""Initialize of Rastrigni benchmark.
+    def __init__(self, lower=-5.12, upper=5.12):
+        r"""Initialize of Rastrigin benchmark.
 
         Args:
-            Lower (Optional[float]): Lower bound of problem.
-            Upper (Optional[float]): Upper bound of problem.
+            lower (Optional[float]): Lower bound of problem.
+            upper (Optional[float]): Upper bound of problem.
 
         See Also:
             :func:`niapy.benchmarks.Benchmark.__init__`
+
         """
-        Benchmark.__init__(self, Lower, Upper)
+        super().__init__(lower, upper)
 
     @staticmethod
     def latex_code():
         r"""Return the latex code of the problem.
 
         Returns:
-            str: Latex code
+            str: Latex code.
+
         """
         return r'''$f(\mathbf{x}) = 10D + \sum_{i=1}^D \left(x_i^2 -10\cos(2\pi x_i)\right)$'''
 
@@ -68,23 +73,26 @@ class Rastrigin(Benchmark):
         r"""Return benchmark evaluation function.
 
         Returns:
-            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function
+            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
+
         """
-        def evaluate(D, sol):
+
+        def evaluate(dimension, x):
             r"""Fitness function.
 
             Args:
-                D (int): Dimensionality of the problem
-                sol (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
+                dimension (int): Dimensionality of the problem
+                x (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
 
             Returns:
                 float: Fitness value for the solution.
+
             """
             val = 0.0
 
-            for i in range(D):
-                val += math.pow(sol[i], 2) - (10.0 * math.cos(2 * math.pi * sol[i]))
+            for i in range(dimension):
+                val += math.pow(x[i], 2) - (10.0 * math.cos(2 * math.pi * x[i]))
 
-            return 10 * D + val
+            return 10 * dimension + val
 
         return evaluate

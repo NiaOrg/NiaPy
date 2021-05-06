@@ -4,33 +4,31 @@ from numpy.random import default_rng
 __all__ = ['limit', 'limit_inverse', 'wang', 'rand', 'reflect']
 
 
-def limit(x, lower, upper, **kwargs):
+def limit(x, lower, upper, **_kwargs):
     r"""Repair solution and put the solution in the random position inside of the bounds of problem.
 
-    Arguments:
-            x (numpy.ndarray): Solution to check and repair if needed.
-            lower (numpy.ndarray): Lower bounds of search space.
-            upper (numpy.ndarray): Upper bounds of search space.
-            kwargs (Dict[str, Any]): Additional arguments.
+    Args:
+        x (numpy.ndarray): Solution to check and repair if needed.
+        lower (numpy.ndarray): Lower bounds of search space.
+        upper (numpy.ndarray): Upper bounds of search space.
 
     Returns:
-            numpy.ndarray: Solution in search space.
+        numpy.ndarray: Solution in search space.
 
     """
     return np.clip(x, lower, upper, out=x)
 
 
-def limit_inverse(x, lower, upper, **kwargs):
+def limit_inverse(x, lower, upper, **_kwargs):
     r"""Repair solution and put the solution in the random position inside of the bounds of problem.
 
-    Arguments:
-            x (numpy.ndarray): Solution to check and repair if needed.
-            lower (numpy.ndarray): Lower bounds of search space.
-            upper (numpy.ndarray): Upper bounds of search space.
-            kwargs (Dict[str, Any]): Additional arguments.
+    Args:
+        x (numpy.ndarray): Solution to check and repair if needed.
+        lower (numpy.ndarray): Lower bounds of search space.
+        upper (numpy.ndarray): Upper bounds of search space.
 
     Returns:
-            numpy.ndarray: Solution in search space.
+        numpy.ndarray: Solution in search space.
 
     """
     ir = np.where(x < lower)
@@ -40,17 +38,16 @@ def limit_inverse(x, lower, upper, **kwargs):
     return x
 
 
-def wang(x, lower, upper, **kwargs):
+def wang(x, lower, upper, **_kwargs):
     r"""Repair solution and put the solution in the random position inside of the bounds of problem.
 
-    Arguments:
-            x (numpy.ndarray): Solution to check and repair if needed.
-            lower (numpy.ndarray): Lower bounds of search space.
-            upper (numpy.ndarray): Upper bounds of search space.
-            kwargs (Dict[str, Any]): Additional arguments.
+    Args:
+        x (numpy.ndarray): Solution to check and repair if needed.
+        lower (numpy.ndarray): Lower bounds of search space.
+        upper (numpy.ndarray): Upper bounds of search space.
 
     Returns:
-            numpy.ndarray: Solution in search space.
+        numpy.ndarray: Solution in search space.
 
     """
     ir = np.where(x < lower)
@@ -60,18 +57,18 @@ def wang(x, lower, upper, **kwargs):
     return x
 
 
-def rand(x, lower, upper, rng=None, **kwargs):
+def rand(x, lower, upper, rng=None, **_kwargs):
     r"""Repair solution and put the solution in the random position inside of the bounds of problem.
 
-    Arguments:
-            x (numpy.ndarray): Solution to check and repair if needed.
-            lower (numpy.ndarray): Lower bounds of search space.
-            upper (numpy.ndarray): Upper bounds of search space.
-            rng (numpy.random.Generator): Random generator.
-            kwargs (Dict[str, Any]): Additional arguments.
+    Args:
+        x (numpy.ndarray): Solution to check and repair if needed.
+        lower (numpy.ndarray): Lower bounds of search space.
+        upper (numpy.ndarray): Upper bounds of search space.
+        rng (numpy.random.Generator): Random generator.
 
     Returns:
-            numpy.ndarray: Fixed solution.
+        numpy.ndarray: Fixed solution.
+
     """
     rng = default_rng(rng)
     ir = np.where(x < lower)
@@ -81,17 +78,16 @@ def rand(x, lower, upper, rng=None, **kwargs):
     return x
 
 
-def reflect(x, lower, upper, **kwargs):
+def reflect(x, lower, upper, **_kwargs):
     r"""Repair solution and put the solution in search space with reflection of how much the solution violates a bound.
 
     Args:
-            x (numpy.ndarray): Solution to be fixed.
-            lower (numpy.ndarray): Lower bounds of search space.
-            upper (numpy.ndarray): Upper bounds of search space.
-            kwargs (Dict[str, Any]): Additional arguments.
+        x (numpy.ndarray): Solution to be fixed.
+        lower (numpy.ndarray): Lower bounds of search space.
+        upper (numpy.ndarray): Upper bounds of search space.
 
     Returns:
-            numpy.ndarray: Fix solution.
+        numpy.ndarray: Fix solution.
 
     """
     ir = np.where(x > upper)

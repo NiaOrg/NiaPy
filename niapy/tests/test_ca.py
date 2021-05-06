@@ -1,43 +1,44 @@
 # encoding=utf8
-from niapy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
 from niapy.algorithms.basic import CamelAlgorithm
+from niapy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
+
 
 class CATestCase(AlgorithmTestCase):
-	def setUp(self):
-		AlgorithmTestCase.setUp(self)
-		self.algo = CamelAlgorithm
+    def setUp(self):
+        AlgorithmTestCase.setUp(self)
+        self.algo = CamelAlgorithm
 
-	def test_type_parameters(self):
-		d = self.algo.typeParameters()
-		self.assertTrue(d['NP'](1))
-		self.assertFalse(d['NP'](0))
-		self.assertFalse(d['NP'](-1))
-		self.assertTrue(d['omega'](.1))
-		self.assertTrue(d['omega'](10))
-		self.assertFalse(d['omega'](None))
-		self.assertTrue(d['alpha'](.342))
-		self.assertTrue(d['mu'](.342))
-		self.assertTrue(d['omega'](3))
-		self.assertTrue(d['omega'](-3))
-		self.assertFalse(d['mu'](3))
-		self.assertFalse(d['mu'](-3))
-		self.assertFalse(d['S_init'](-1))
-		self.assertFalse(d['E_init'](-1))
-		self.assertFalse(d['T_min'](-1))
-		self.assertFalse(d['T_max'](-1))
-		self.assertTrue(d['S_init'](10))
-		self.assertTrue(d['E_init'](10))
-		self.assertTrue(d['T_min'](10))
-		self.assertTrue(d['T_max'](10))
+    def test_type_parameters(self):
+        d = self.algo.type_parameters()
+        self.assertTrue(d['population_size'](1))
+        self.assertFalse(d['population_size'](0))
+        self.assertFalse(d['population_size'](-1))
+        self.assertTrue(d['burden_factor'](.1))
+        self.assertTrue(d['burden_factor'](10))
+        self.assertFalse(d['burden_factor'](None))
+        self.assertTrue(d['visibility'](.342))
+        self.assertTrue(d['death_rate'](.342))
+        self.assertTrue(d['burden_factor'](3))
+        self.assertTrue(d['burden_factor'](-3))
+        self.assertFalse(d['death_rate'](3))
+        self.assertFalse(d['death_rate'](-3))
+        self.assertFalse(d['supply_init'](-1))
+        self.assertFalse(d['endurance_init'](-1))
+        self.assertFalse(d['min_temperature'](-1))
+        self.assertFalse(d['max_temperature'](-1))
+        self.assertTrue(d['supply_init'](10))
+        self.assertTrue(d['endurance_init'](10))
+        self.assertTrue(d['min_temperature'](10))
+        self.assertTrue(d['max_temperature'](10))
 
-	def test_custom_works_fine(self):
-		ca_custom = self.algo(NP=40, seed=self.seed)
-		ca_customc = self.algo(NP=40, seed=self.seed)
-		AlgorithmTestCase.test_algorithm_run(self, ca_custom, ca_customc, MyBenchmark())
+    def test_custom(self):
+        ca_custom = self.algo(population_size=40, seed=self.seed)
+        ca_customc = self.algo(population_size=40, seed=self.seed)
+        AlgorithmTestCase.test_algorithm_run(self, ca_custom, ca_customc, MyBenchmark())
 
-	def test_griewank_works_fine(self):
-		ca_griewank = self.algo(NP=40, seed=self.seed)
-		ca_griewankc = self.algo(NP=40, seed=self.seed)
-		AlgorithmTestCase.test_algorithm_run(self, ca_griewank, ca_griewankc)
+    def test_griewank(self):
+        ca_griewank = self.algo(population_size=40, seed=self.seed)
+        ca_griewankc = self.algo(population_size=40, seed=self.seed)
+        AlgorithmTestCase.test_algorithm_run(self, ca_griewank, ca_griewankc)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

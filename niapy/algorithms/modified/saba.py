@@ -11,351 +11,435 @@ logger.setLevel('INFO')
 
 __all__ = ['AdaptiveBatAlgorithm', 'SelfAdaptiveBatAlgorithm']
 
+
 class AdaptiveBatAlgorithm(Algorithm):
-	r"""Implementation of Adaptive bat algorithm.
+    r"""Implementation of Adaptive bat algorithm.
 
-	Algorithm:
-		Adaptive bat algorithm
+    Algorithm:
+        Adaptive bat algorithm
 
-	Date:
-		April 2019
+    Date:
+        April 2019
 
-	Authors:
-		Klemen Berkovič
+    Authors:
+        Klemen Berkovič
 
-	License:
-		MIT
+    License:
+        MIT
 
-	Attributes:
-		Name (List[str]): List of strings representing algorithm name.
-		epsilon (float): Scaling factor.
-		alpha (float): Constant for updating loudness.
-		r (float): Pulse rate.
-		Qmin (float): Minimum frequency.
-		Qmax (float): Maximum frequency.
+    Attributes:
+        Name (List[str]): List of strings representing algorithm name.
+        epsilon (float): Scaling factor.
+        alpha (float): Constant for updating loudness.
+        pulse_rate (float): Pulse rate.
+        min_frequency (float): Minimum frequency.
+        max_frequency (float): Maximum frequency.
 
-	See Also:
-		* :class:`niapy.algorithms.Algorithm`
-	"""
-	Name = ['AdaptiveBatAlgorithm', 'ABA']
+    See Also:
+        * :class:`niapy.algorithms.Algorithm`
 
-	@staticmethod
-	def algorithmInfo():
-		r"""Get basic information about the algorithm.
+    """
 
-		Returns:
-			str: Basic information.
+    Name = ['AdaptiveBatAlgorithm', 'ABA']
 
-		See Also:
-			* :func:`niapy.algorithms.Algorithm.algorithmInfo`
-		"""
-		return r"""TODO"""
+    @staticmethod
+    def info():
+        r"""Get basic information about the algorithm.
 
-	@staticmethod
-	def typeParameters():
-		r"""Return dict with where key of dict represents parameter name and values represent checking functions for selected parameter.
+        Returns:
+            str: Basic information.
 
-		Returns:
-			Dict[str, Callable]:
-				* epsilon (Callable[[Union[float, int]], bool]): Scale factor.
-				* alpha (Callable[[Union[float, int]], bool]): Constant for updating loudness.
-				* r (Callable[[Union[float, int]], bool]): Pulse rate.
-				* Qmin (Callable[[Union[float, int]], bool]): Minimum frequency.
-				* Qmax (Callable[[Union[float, int]], bool]): Maximum frequency.
+        See Also:
+            * :func:`niapy.algorithms.Algorithm.info`
 
-		See Also:
-			* :func:`niapy.algorithms.Algorithm.typeParameters`
-		"""
-		d = Algorithm.typeParameters()
-		d.update({
-			'epsilon': lambda x: isinstance(x, (float, int)) and x > 0,
-			'alpha': lambda x: isinstance(x, (float, int)) and x > 0,
-			'r': lambda x: isinstance(x, (float, int)) and x > 0,
-			'Qmin': lambda x: isinstance(x, (float, int)),
-			'Qmax': lambda x: isinstance(x, (float, int))
-		})
-		return d
+        """
+        return r"""TODO"""
 
-	def setParameters(self, NP=100, A=0.5, epsilon=0.001, alpha=1.0, r=0.5, Qmin=0.0, Qmax=2.0, **ukwargs):
-		r"""Set the parameters of the algorithm.
+    @staticmethod
+    def type_parameters():
+        r"""Return dict with where key of dict represents parameter name and values represent checking functions for selected parameter.
 
-		Args:
-			A (Optional[float]): Starting loudness.
-			epsilon (Optional[float]): Scaling factor.
-			alpha (Optional[float]): Constant for updating loudness.
-			r (Optional[float]): Pulse rate.
-			Qmin (Optional[float]): Minimum frequency.
-			Qmax (Optional[float]): Maximum frequency.
+        Returns:
+            Dict[str, Callable]:
+                * epsilon (Callable[[Union[float, int]], bool]): Scale factor.
+                * alpha (Callable[[Union[float, int]], bool]): Constant for updating loudness.
+                * pulse_rate (Callable[[Union[float, int]], bool]): Pulse rate.
+                * min_frequency (Callable[[Union[float, int]], bool]): Minimum frequency.
+                * max_frequency (Callable[[Union[float, int]], bool]): Maximum frequency.
 
-		See Also:
-			* :func:`niapy.algorithms.Algorithm.setParameters`
-		"""
-		Algorithm.setParameters(self, NP=NP, **ukwargs)
-		self.A, self.epsilon, self.alpha, self.r, self.Qmin, self.Qmax = A, epsilon, alpha, r, Qmin, Qmax
+        See Also:
+            * :func:`niapy.algorithms.Algorithm.type_parameters`
 
-	def getParameters(self):
-		r"""Get algorithm parameters.
+        """
+        d = Algorithm.type_parameters()
+        d.update({
+            'epsilon': lambda x: isinstance(x, (float, int)) and x > 0,
+            'alpha': lambda x: isinstance(x, (float, int)) and x > 0,
+            'pulse_rate': lambda x: isinstance(x, (float, int)) and x > 0,
+            'min_frequency': lambda x: isinstance(x, (float, int)),
+            'max_frequency': lambda x: isinstance(x, (float, int))
+        })
+        return d
 
-		Returns:
-			Dict[str, Any]: Arguments values.
+    def __init__(self, population_size=100, starting_loudness=0.5, epsilon=0.001, alpha=1.0, pulse_rate=0.5,
+                 min_frequency=0.0, max_frequency=2.0, *args, **kwargs):
+        """Initialize AdaptiveBatAlgorithm.
 
-		See Also:
-			* :func:`niapy.algorithms.algorithm.Algorithm.getParameters`
-		"""
-		d = Algorithm.getParameters(self)
-		d.update({
-			'A': self.A,
-			'epsilon': self.epsilon,
-			'alpha': self.alpha,
-			'r': self.r,
-			'Qmin': self.Qmin,
-			'Qmax': self.Qmax
-		})
-		return d
+        Args:
+            population_size (Optional[int]): Population size.
+            starting_loudness (Optional[float]): Starting loudness.
+            epsilon (Optional[float]): Scaling factor.
+            alpha (Optional[float]): Constant for updating loudness.
+            pulse_rate (Optional[float]): Pulse rate.
+            min_frequency (Optional[float]): Minimum frequency.
+            max_frequency (Optional[float]): Maximum frequency.
 
-	def initPopulation(self, task):
-		r"""Initialize the starting population.
+        See Also:
+            * :func:`niapy.algorithms.Algorithm.__init__`
 
-		Parameters:
-			task (Task): Optimization task
+        """
+        super().__init__(population_size, *args, **kwargs)
+        self.starting_loudness = starting_loudness
+        self.epsilon = epsilon
+        self.alpha = alpha
+        self.pulse_rate = pulse_rate
+        self.min_frequency = min_frequency
+        self.max_frequency = max_frequency
 
-		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
-				1. New population.
-				2. New population fitness/function values.
-				3. Additional arguments:
-					* A (float): Loudness.
-					* S (numpy.ndarray): TODO
-					* Q (numpy.ndarray[float]): 	TODO
-					* v (numpy.ndarray[float]): TODO
+    def set_parameters(self, population_size=100, starting_loudness=0.5, epsilon=0.001, alpha=1.0, pulse_rate=0.5,
+                       min_frequency=0.0, max_frequency=2.0, **kwargs):
+        r"""Set the parameters of the algorithm.
 
-		See Also:
-			* :func:`niapy.algorithms.Algorithm.initPopulation`
-		"""
-		Sol, Fitness, d = Algorithm.initPopulation(self, task)
-		A, S, Q, v = np.full(self.NP, self.A), np.full([self.NP, task.D], 0.0), np.full(self.NP, 0.0), np.full([self.NP, task.D], 0.0)
-		d.update({'A': A, 'S': S, 'Q': Q, 'v': v})
-		return Sol, Fitness, d
+        Args:
+            population_size (Optional[int]): Population size.
+            starting_loudness (Optional[float]): Starting loudness.
+            epsilon (Optional[float]): Scaling factor.
+            alpha (Optional[float]): Constant for updating loudness.
+            pulse_rate (Optional[float]): Pulse rate.
+            min_frequency (Optional[float]): Minimum frequency.
+            max_frequency (Optional[float]): Maximum frequency.
 
-	def localSearch(self, best, A, task, **kwargs):
-		r"""Improve the best solution according to the Yang (2010).
+        See Also:
+            * :func:`niapy.algorithms.Algorithm.set_parameters`
 
-		Args:
-			best (numpy.ndarray): Global best individual.
-			A (float): Loudness.
-			task (Task): Optimization task.
-			**kwargs (Dict[str, Any]): Additional arguments.
+        """
+        super().set_parameters(population_size=population_size, **kwargs)
+        self.starting_loudness = starting_loudness
+        self.epsilon = epsilon
+        self.alpha = alpha
+        self.pulse_rate = pulse_rate
+        self.min_frequency = min_frequency
+        self.max_frequency = max_frequency
 
-		Returns:
-			numpy.ndarray: New solution based on global best individual.
-		"""
-		return task.repair(best + self.epsilon * A * self.normal(0, 1, task.D), rng=self.rng)
+    def get_parameters(self):
+        r"""Get algorithm parameters.
 
-	def updateLoudness(self, A):
-		r"""Update loudness when the prey is found.
+        Returns:
+            Dict[str, Any]: Arguments values.
 
-		Args:
-			A (float): Loudness.
+        See Also:
+            * :func:`niapy.algorithms.algorithm.Algorithm.get_parameters`
 
-		Returns:
-			float: New loudness.
-		"""
-		nA = A * self.alpha
-		return nA if nA > 1e-13 else self.A
+        """
+        d = super().get_parameters()
+        d.update({
+            'starting_loudness': self.starting_loudness,
+            'epsilon': self.epsilon,
+            'alpha': self.alpha,
+            'pulse_rate': self.pulse_rate,
+            'min_frequency': self.min_frequency,
+            'max_frequency': self.max_frequency
+        })
+        return d
 
-	def runIteration(self, task, Sol, Fitness, xb, fxb, A, S, Q, v, **dparams):
-		r"""Core function of Bat Algorithm.
+    def init_population(self, task):
+        r"""Initialize the starting population.
 
-		Parameters:
-			task (Task): Optimization task.
-			Sol (numpy.ndarray): Current population
-			Fitness (numpy.ndarray[float]): Current population fitness/funciton values
-			best (numpy.ndarray): Current best individual
-			f_min (float): Current best individual function/fitness value
-			S (numpy.ndarray): TODO
-			Q (numpy.ndarray[float]): TODO
-			v (numpy.ndarray[float]): TODO
-			dparams (Dict[str, Any]): Additional algorithm arguments
+        Args:
+            task (Task): Optimization task
 
-		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
-				1. New population
-				2. New population fitness/function vlues
-				3. Additional arguments:
-					* A (numpy.ndarray[float]): Loudness.
-					* S (numpy.ndarray): TODO
-					* Q (numpy.ndarray[float]): TODO
-					* v (numpy.ndarray[float]): TODO
-		"""
-		for i in range(self.NP):
-			Q[i] = self.Qmin + (self.Qmax - self.Qmin) * self.uniform(0, 1)
-			v[i] += (Sol[i] - xb) * Q[i]
-			if self.random() > self.r: S[i] = self.localSearch(best=xb, A=A[i], task=task, i=i, Sol=Sol)
-			else: S[i] = task.repair(Sol[i] + v[i], rng=self.rng)
-			Fnew = task.eval(S[i])
-			if (Fnew <= Fitness[i]) and (self.random() < A[i]): Sol[i], Fitness[i] = S[i], Fnew
-			if Fnew <= fxb: xb, fxb, A[i] = S[i].copy(), Fnew, self.updateLoudness(A[i])
-		return Sol, Fitness, xb, fxb, {'A': A, 'S': S, 'Q': Q, 'v': v}
+        Returns:
+            Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+                1. New population.
+                2. New population fitness/function values.
+                3. Additional arguments:
+                    * loudness (float): Loudness.
+                    * velocities (numpy.ndarray[float]): Velocity.
+
+        See Also:
+            * :func:`niapy.algorithms.Algorithm.init_population`
+
+        """
+        population, fitness, d = super().init_population(task)
+        loudness = np.full(self.population_size, self.starting_loudness)
+        velocities = np.zeros((self.population_size, task.dimension))
+        d.update({'loudness': loudness, 'velocities': velocities})
+        return population, fitness, d
+
+    def local_search(self, best, loudness, task, **kwargs):
+        r"""Improve the best solution according to the Yang (2010).
+
+        Args:
+            best (numpy.ndarray): Global best individual.
+            loudness (float): Loudness.
+            task (Task): Optimization task.
+
+        Returns:
+            numpy.ndarray: New solution based on global best individual.
+
+        """
+        return task.repair(best + self.epsilon * loudness * self.normal(0, 1, task.dimension), rng=self.rng)
+
+    def update_loudness(self, loudness):
+        r"""Update loudness when the prey is found.
+
+        Args:
+            loudness (float): Loudness.
+
+        Returns:
+            float: New loudness.
+
+        """
+        new_loudness = loudness * self.alpha
+        return new_loudness if new_loudness > 1e-13 else self.starting_loudness
+
+    def run_iteration(self, task, population, population_fitness, best_x, best_fitness, **params):
+        r"""Core function of Bat Algorithm.
+
+        Args:
+            task (Task): Optimization task.
+            population (numpy.ndarray): Current population
+            population_fitness (numpy.ndarray[float]): Current population fitness/function values
+            best_x (numpy.ndarray): Current best individual
+            best_fitness (float): Current best individual function/fitness value
+            params (Dict[str, Any]): Additional algorithm arguments
+
+        Returns:
+            Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+                1. New population
+                2. New population fitness/function values
+                3. Additional arguments:
+                    * loudness (numpy.ndarray[float]): Loudness.
+                    * velocities (numpy.ndarray[float]): Velocities.
+
+        """
+        loudness = params.pop('loudness')
+        velocities = params.pop('velocities')
+
+        for i in range(self.population_size):
+            frequency = self.min_frequency + (self.max_frequency - self.min_frequency) * self.random()
+            velocities[i] += (population[i] - best_x) * frequency
+            if self.random() > self.pulse_rate:
+                solution = self.local_search(best=best_x, loudness=loudness[i], task=task, i=i, Sol=population)
+            else:
+                solution = task.repair(population[i] + velocities[i], rng=self.rng)
+            new_fitness = task.eval(solution)
+            if (new_fitness <= population_fitness[i]) and (self.random() < loudness[i]):
+                population[i], population_fitness[i] = solution, new_fitness
+            if new_fitness <= best_fitness:
+                best_x, best_fitness, loudness[i] = solution.copy(), new_fitness, self.update_loudness(loudness[i])
+        return population, population_fitness, best_x, best_fitness, {'loudness': loudness, 'velocities': velocities}
+
 
 class SelfAdaptiveBatAlgorithm(AdaptiveBatAlgorithm):
-	r"""Implementation of Hybrid bat algorithm.
+    r"""Implementation of Hybrid bat algorithm.
 
-	Algorithm:
-		Hybrid bat algorithm
+    Algorithm:
+        Self Adaptive Bat Algorithm
 
-	Date:
-		April 2019
+    Date:
+        April 2019
 
-	Author:
-		Klemen Berkovič
+    Author:
+        Klemen Berkovič
 
-	License:
-		MIT
+    License:
+        MIT
 
-	Reference paper:
-		Fister Jr., Iztok and Fister, Dusan and Yang, Xin-She. "A Hybrid Bat Algorithm". Elektrotehniski vestnik, 2013. 1-7.
+    Reference paper:
+        Fister Jr., Iztok and Fister, Dusan and Yang, Xin-She. "A Hybrid Bat Algorithm". Elektrotehniški vestnik, 2013. 1-7.
 
-	Attributes:
-		Name (List[str]): List of strings representing algorithm name.
-		A_l (Optional[float]): Lower limit of loudness.
-		A_u (Optional[float]): Upper limit of loudness.
-		r_l (Optional[float]): Lower limit of pulse rate.
-		r_u (Optional[float]): Upper limit of pulse rate.
-		tao_1 (Optional[float]): Learning rate for loudness.
-		tao_2 (Optional[float]): Learning rate for pulse rate.
+    Attributes:
+        Name (List[str]): List of strings representing algorithm name.
+        A_l (Optional[float]): Lower limit of loudness.
+        A_u (Optional[float]): Upper limit of loudness.
+        r_l (Optional[float]): Lower limit of pulse rate.
+        r_u (Optional[float]): Upper limit of pulse rate.
+        tao_1 (Optional[float]): Learning rate for loudness.
+        tao_2 (Optional[float]): Learning rate for pulse rate.
 
-	See Also:
-		* :class:`niapy.algorithms.basic.BatAlgorithm`
-	"""
-	Name = ['SelfAdaptiveBatAlgorithm', 'SABA']
+    See Also:
+        * :class:`niapy.algorithms.basic.BatAlgorithm`
 
-	@staticmethod
-	def algorithmInfo():
-		r"""Get basic information about the algorithm.
+    """
 
-		Returns:
-			str: Basic information.
+    Name = ['SelfAdaptiveBatAlgorithm', 'SABA']
 
-		See Also:
-			* :func:`niapy.algorithms.Algorithm.algorithmInfo`
-		"""
-		return r"""Fister Jr., Iztok and Fister, Dusan and Yang, Xin-She. "A Hybrid Bat Algorithm". Elektrotehniski vestnik, 2013. 1-7."""
+    @staticmethod
+    def info():
+        r"""Get basic information about the algorithm.
 
-	@staticmethod
-	def typeParameters():
-		r"""Get dictionary with functions for checking values of parameters.
+        Returns:
+            str: Basic information.
 
-		Returns:
-			Dict[str, Callable]: TODO
+        See Also:
+            * :func:`niapy.algorithms.Algorithm.info`
 
-		See Also:
-			* :func:`niapy.algorithms.basic.BatAlgorithm.typeParameters`
-		"""
-		d = AdaptiveBatAlgorithm.typeParameters()
-		d.pop('A', None), d.pop('r', None)
-		d.update({
-			'A_l': lambda x: isinstance(x, (float, int)) and x >= 0,
-			'A_u': lambda x: isinstance(x, (float, int)) and x >= 0,
-			'r_l': lambda x: isinstance(x, (float, int)) and x >= 0,
-			'r_u': lambda x: isinstance(x, (float, int)) and x >= 0,
-			'tao_1': lambda x: isinstance(x, (float, int)) and 0 <= x <= 1,
-			'tao_2': lambda x: isinstance(x, (float, int)) and 0 <= x <= 1
-		})
-		return d
+        """
+        return r"""Fister Jr., Iztok and Fister, Dusan and Yang, Xin-She. "A Hybrid Bat Algorithm". Elektrotehniški vestnik, 2013. 1-7."""
 
-	def setParameters(self, A_l=0.9, A_u=1.0, r_l=0.001, r_u=0.1, tao_1=0.1, tao_2=0.1, **ukwargs):
-		r"""Set core parameters of HybridBatAlgorithm algorithm.
+    @staticmethod
+    def type_parameters():
+        r"""Get dictionary with functions for checking values of parameters.
 
-		Arguments:
-			A_l (Optional[float]): Lower limit of loudness.
-			A_u (Optional[float]): Upper limit of loudness.
-			r_l (Optional[float]): Lower limit of pulse rate.
-			r_u (Optional[float]): Upper limit of pulse rate.
-			tao_1 (Optional[float]): Learning rate for loudness.
-			tao_2 (Optional[float]): Learning rate for pulse rate.
+        Returns:
+            Dict[str, Callable]: Parameter type checks.
 
-		See Also:
-			* :func:`niapy.algorithms.modified.AdaptiveBatAlgorithm.setParameters`
-		"""
-		AdaptiveBatAlgorithm.setParameters(self, **ukwargs)
-		self.A_l, self.A_u, self.r_l, self.r_u, self.tao_1, self.tao_2 = A_l, A_u, r_l, r_u, tao_1, tao_2
+        See Also:
+            * :func:`niapy.algorithms.basic.BatAlgorithm.type_parameters`
 
-	def getParameters(self):
-		r"""Get parameters of the algorithm.
+        """
+        d = AdaptiveBatAlgorithm.type_parameters()
+        d.pop('A', None), d.pop('r', None)
+        d.update({
+            'min_loudness': lambda x: isinstance(x, (float, int)) and x >= 0,
+            'max_loudness': lambda x: isinstance(x, (float, int)) and x >= 0,
+            'min_pulse_rate': lambda x: isinstance(x, (float, int)) and x >= 0,
+            'max_pulse_rate': lambda x: isinstance(x, (float, int)) and x >= 0,
+            'tao_1': lambda x: isinstance(x, (float, int)) and 0 <= x <= 1,
+            'tao_2': lambda x: isinstance(x, (float, int)) and 0 <= x <= 1
+        })
+        return d
 
-		Returns:
-			Dict[str, Any]: Parameters of the algorithm.
+    def __init__(self, min_loudness=0.9, max_loudness=1.0, min_pulse_rate=0.001, max_pulse_rate=0.1, tao_1=0.1,
+                 tao_2=0.1, *args, **kwargs):
+        """Initialize SelfAdaptiveBatAlgorithm.
 
-		See Also:
-			* :func:`niapy.algorithms.modified.AdaptiveBatAlgorithm.getParameters`
-		"""
-		d = AdaptiveBatAlgorithm.getParameters(self)
-		d.update({
-			'A_l': self.A_l,
-			'A_u': self.A_u,
-			'r_l': self.r_l,
-			'r_u': self.r_u,
-			'tao_1': self.tao_1,
-			'tao_2': self.tao_2
-		})
-		return d
+        Args:
+            min_loudness (Optional[float]): Lower limit of loudness.
+            max_loudness (Optional[float]): Upper limit of loudness.
+            min_pulse_rate (Optional[float]): Lower limit of pulse rate.
+            max_pulse_rate (Optional[float]): Upper limit of pulse rate.
+            tao_1 (Optional[float]): Learning rate for loudness.
+            tao_2 (Optional[float]): Learning rate for pulse rate.
 
-	def initPopulation(self, task):
-		Sol, Fitness, d = AdaptiveBatAlgorithm.initPopulation(self, task)
-		A, r = np.full(self.NP, self.A), np.full(self.NP, self.r)
-		d.update({'A': A, 'r': r})
-		return Sol, Fitness, d
+        See Also:
+            * :func:`niapy.algorithms.modified.AdaptiveBatAlgorithm.__init__`
 
-	def selfAdaptation(self, A, r):
-		r"""Adaptation step.
+        """
+        super().__init__(*args, **kwargs)
+        self.min_loudness = min_loudness
+        self.max_loudness = max_loudness
+        self.min_pulse_rate = min_pulse_rate
+        self.max_pulse_rate = max_pulse_rate
+        self.tao_1 = tao_1
+        self.tao_2 = tao_2
 
-		Args:
-			A (float): Current loudness.
-			r (float): Current pulse rate.
+    def set_parameters(self, min_loudness=0.9, max_loudness=1.0, min_pulse_rate=0.001, max_pulse_rate=0.1, tao_1=0.1, tao_2=0.1, **kwargs):
+        r"""Set core parameters of HybridBatAlgorithm algorithm.
 
-		Returns:
-			Tuple[float, float]:
-				1. New loudness.
-				2. Nwq pulse rate.
-		"""
-		return self.A_l + self.random() * (self.A_u - self.A_l) if self.random() < self.tao_1 else A, self.r_l + self.random() * (self.r_u - self.r_l) if self.random() < self.tao_2 else r
+        Args:
+            min_loudness (Optional[float]): Lower limit of loudness.
+            max_loudness (Optional[float]): Upper limit of loudness.
+            min_pulse_rate (Optional[float]): Lower limit of pulse rate.
+            max_pulse_rate (Optional[float]): Upper limit of pulse rate.
+            tao_1 (Optional[float]): Learning rate for loudness.
+            tao_2 (Optional[float]): Learning rate for pulse rate.
 
-	def runIteration(self, task, Sol, Fitness, xb, fxb, A, r, S, Q, v, **dparams):
-		r"""Core function of Bat Algorithm.
+        See Also:
+            * :func:`niapy.algorithms.modified.AdaptiveBatAlgorithm.set_parameters`
 
-		Parameters:
-			task (Task): Optimization task.
-			Sol (numpy.ndarray): Current population
-			Fitness (numpy.ndarray[float]): Current population fitness/funciton values
-			xb (numpy.ndarray): Current best individual
-			fxb (float): Current best individual function/fitness value
-			A (numpy.ndarray[flaot]): Loudness of individuals.
-			r (numpy.ndarray[float[): Pulse rate of individuals.
-			S (numpy.ndarray): TODO
-			Q (numpy.ndarray[float]): TODO
-			v (numpy.ndarray[float]): TODO
-			dparams (Dict[str, Any]): Additional algorithm arguments
+        """
+        super().set_parameters(**kwargs)
+        self.min_loudness = min_loudness
+        self.max_loudness = max_loudness
+        self.min_pulse_rate = min_pulse_rate
+        self.max_pulse_rate = max_pulse_rate
+        self.tao_1 = tao_1
+        self.tao_2 = tao_2
 
-		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
-				1. New population
-				2. New population fitness/function vlues
-				3. Additional arguments:
-					* A (numpy.ndarray[float]): Loudness.
-					* r (numpy.ndarray[float]): Pulse rate.
-					* S (numpy.ndarray): TODO
-					* Q (numpy.ndarray[float]): TODO
-					* v (numpy.ndarray[float]): TODO
-		"""
-		for i in range(self.NP):
-			A[i], r[i] = self.selfAdaptation(A[i], r[i])
-			Q[i] = self.Qmin + (self.Qmax - self.Qmin) * self.uniform(0, 1)
-			v[i] += (Sol[i] - xb) * Q[i]
-			if self.random() > r[i]: S[i] = self.localSearch(best=xb, A=A[i], task=task, i=i, Sol=Sol)
-			else: S[i] = task.repair(Sol[i] + v[i], rng=self.rng)
-			Fnew = task.eval(S[i])
-			if (Fnew <= Fitness[i]) and (self.random() < (self.A_l - A[i]) / self.A): Sol[i], Fitness[i] = S[i], Fnew
-			if Fnew <= fxb: xb, fxb = S[i].copy(), Fnew
-		return Sol, Fitness, xb, fxb, {'A': A, 'r': r, 'S': S, 'Q': Q, 'v': v}
+    def get_parameters(self):
+        r"""Get parameters of the algorithm.
+
+        Returns:
+            Dict[str, Any]: Parameters of the algorithm.
+
+        See Also:
+            * :func:`niapy.algorithms.modified.AdaptiveBatAlgorithm.get_parameters`
+
+        """
+        d = AdaptiveBatAlgorithm.get_parameters(self)
+        d.update({
+            'min_loudness': self.min_loudness,
+            'max_loudness': self.max_loudness,
+            'min_pulse_rate': self.min_pulse_rate,
+            'max_pulse_rate': self.max_pulse_rate,
+            'tao_1': self.tao_1,
+            'tao_2': self.tao_2
+        })
+        return d
+
+    def init_population(self, task):
+        population, fitness, d = super().init_population(task)
+        pulse_rates = np.full(self.population_size, self.pulse_rate)
+        d.update({'pulse_rates': pulse_rates})
+        return population, fitness, d
+
+    def self_adaptation(self, loudness, pulse_rate):
+        r"""Adaptation step.
+
+        Args:
+            loudness (float): Current loudness.
+            pulse_rate (float): Current pulse rate.
+
+        Returns:
+            Tuple[float, float]:
+                1. New loudness.
+                2. Nwq pulse rate.
+
+        """
+        return self.min_loudness + self.random() * (
+                self.max_loudness - self.min_loudness) if self.random() < self.tao_1 else loudness, self.min_pulse_rate + self.random() * (
+                self.max_pulse_rate - self.min_pulse_rate) if self.random() < self.tao_2 else pulse_rate
+
+    def run_iteration(self, task, population, population_fitness, best_x, best_fitness, **params):
+        r"""Core function of Bat Algorithm.
+
+        Args:
+            task (Task): Optimization task.
+            population (numpy.ndarray): Current population
+            population_fitness (numpy.ndarray[float]): Current population fitness/function values
+            best_x (numpy.ndarray): Current best individual
+            best_fitness (float): Current best individual function/fitness value
+            params (Dict[str, Any]): Additional algorithm arguments
+
+        Returns:
+            Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+                1. New population
+                2. New population fitness/function values
+                3. Additional arguments:
+                    * loudness (numpy.ndarray[float]): Loudness.
+                    * pulse_rates (numpy.ndarray[float]): Pulse rate.
+                    * velocities (numpy.ndarray[float]): Velocities.
+
+        """
+        loudness = params.pop('loudness')
+        pulse_rates = params.pop('pulse_rates')
+        velocities = params.pop('velocities')
+
+        for i in range(self.population_size):
+            loudness[i], pulse_rates[i] = self.self_adaptation(loudness[i], pulse_rates[i])
+            frequency = self.min_frequency + (self.max_frequency - self.min_frequency) * self.random()
+            velocities[i] += (population[i] - best_x) * frequency
+            if self.random() > pulse_rates[i]:
+                solution = self.local_search(best=best_x, loudness=loudness[i], task=task, i=i, population=population)
+            else:
+                solution = task.repair(population[i] + velocities[i], rng=self.rng)
+            new_fitness = task.eval(solution)
+            if (new_fitness <= population_fitness[i]) and (self.random() < (self.min_loudness - loudness[i]) / self.starting_loudness):
+                population[i], population_fitness[i] = solution, new_fitness
+            if new_fitness <= best_fitness:
+                best_x, best_fitness = solution.copy(), new_fitness
+        return population, population_fitness, best_x, best_fitness, {'loudness': loudness, 'pulse_rates': pulse_rates, 'velocities': velocities}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

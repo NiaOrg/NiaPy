@@ -6,7 +6,6 @@ __all__ = ['BasicStatistics']
 
 
 class BasicStatistics:
-
     Name = ['BasicStatistics']
 
     def __init__(self, array):

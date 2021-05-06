@@ -11,257 +11,281 @@ logging.basicConfig()
 logger = logging.getLogger('niapy.algorithms.basic')
 logger.setLevel('INFO')
 
+
 class MonarchButterflyOptimization(Algorithm):
-	r"""Implementation of Monarch Butterfly Optimization.
+    r"""Implementation of Monarch Butterfly Optimization.
 
-	Algorithm:
-		Monarch Butterfly Optimization
+    Algorithm:
+        Monarch Butterfly Optimization
 
-	Date:
-		2019
+    Date:
+        2019
 
-	Authors:
-		Jan Banko
+    Authors:
+        Jan Banko
 
-	License:
-		MIT
+    License:
+        MIT
 
-	Reference paper:
-		Wang, G. G., Deb, S., & Cui, Z. (2019). Monarch butterfly optimization. Neural computing and applications, 31(7), 1995-2014.
+    Reference paper:
+        Wang, G. G., Deb, S., & Cui, Z. (2019). Monarch butterfly optimization. Neural computing and applications, 31(7), 1995-2014.
 
-	Attributes:
-		Name (List[str]): List of strings representing algorithm name.
-		PAR (float): Partition.
-		PER (float): Period.
+    Attributes:
+        Name (List[str]): List of strings representing algorithm name.
+        PAR (float): Partition.
+        PER (float): Period.
 
-	See Also:
-		* :class:`niapy.algorithms.Algorithm`
-	"""
-	Name = ['MonarchButterflyOptimization', 'MBO']
+    See Also:
+        * :class:`niapy.algorithms.Algorithm`
 
-	@staticmethod
-	def algorithmInfo():
-		r"""Get information of the algorithm.
+    """
 
-		Returns:
-			str: Algorithm information.
+    Name = ['MonarchButterflyOptimization', 'MBO']
 
-		See Also:
-			* :func:`niapy.algorithms.algorithm.Algorithm.algorithmInfo`
-		"""
-		return r"""
-		Description: Monarch butterfly optimization algorithm is inspired by the migration behaviour of the monarch butterflies in nature.
-		Authors: Wang, Gai-Ge & Deb, Suash & Cui, Zhihua.
-		Year: 2015
-		Main reference: Wang, G. G., Deb, S., & Cui, Z. (2019). Monarch butterfly optimization. Neural computing and applications, 31(7), 1995-2014.
-		"""
+    @staticmethod
+    def info():
+        r"""Get information of the algorithm.
 
-	@staticmethod
-	def typeParameters():
-		r"""Get dictionary with functions for checking values of parameters.
+        Returns:
+            str: Algorithm information.
 
-		Returns:
-			Dict[str, Callable]:
-				* PAR (Callable[[float], bool]): Checks if partition parameter has a proper value.
-				* PER (Callable[[float], bool]): Checks if period parameter has a proper value.
-		See Also:
-			* :func:`niapy.algorithms.algorithm.Algorithm.typeParameters`
-		"""
-		d = Algorithm.typeParameters()
-		d.update({
-			'PAR': lambda x: isinstance(x, float) and x > 0,
-			'PER': lambda x: isinstance(x, float) and x > 0
-		})
-		return d
+        See Also:
+            * :func:`niapy.algorithms.algorithm.Algorithm.info`
 
-	def setParameters(self, NP=20, PAR=5.0 / 12.0, PER=1.2, **ukwargs):
-		r"""Set the parameters of the algorithm.
+        """
+        return r"""Description: Monarch butterfly optimization algorithm is inspired by the migration behaviour of the monarch butterflies in nature.
+        Authors: Wang, Gai-Ge & Deb, Suash & Cui, Zhihua.
+        Year: 2015
+        Main reference: Wang, G. G., Deb, S., & Cui, Z. (2019). Monarch butterfly optimization. Neural computing and applications, 31(7), 1995-2014."""
 
-		Args:
-			NP (Optional[int]): Population size.
-			PAR (Optional[int]): Partition.
-			PER (Optional[int]): Period.
-			ukwargs (Dict[str, Any]): Additional arguments.
+    @staticmethod
+    def type_parameters():
+        r"""Get dictionary with functions for checking values of parameters.
 
-		See Also:
-			* :func:`niapy.algorithms.Algorithm.setParameters`
-		"""
-		Algorithm.setParameters(self, NP=NP, **ukwargs)
-		self.NP, self.PAR, self.PER, self.keep, self.BAR, self.NP1 = NP, PAR, PER, 2, PAR, int(np.ceil(PAR * NP))
-		self.NP2 = int(NP - self.NP1)
+        Returns:
+            Dict[str, Callable]:
+                * partition (Callable[[float], bool]): Checks if partition parameter has a proper value.
+                * period (Callable[[float], bool]): Checks if period parameter has a proper value.
+        See Also:
+            * :func:`niapy.algorithms.algorithm.Algorithm.type_parameters`
 
-	def getParameters(self):
-		r"""Get parameters values for the algorithm.
+        """
+        d = Algorithm.type_parameters()
+        d.update({
+            'partition': lambda x: isinstance(x, float) and x > 0,
+            'period': lambda x: isinstance(x, float) and x > 0
+        })
+        return d
 
-		Returns:
-			Dict[str, Any]: TODO.
-		"""
-		d = Algorithm.getParameters(self)
-		d.update({
-			'PAR': self.PAR,
-			'PER': self.PER,
-			'keep': self.keep,
-			'BAR': self.BAR,
-			'NP1': self.NP1,
-			'NP2': self.NP2
-		})
-		return d
+    def __init__(self, population_size=20, partition=5.0 / 12.0, period=1.2, *args, **kwargs):
+        """Initialize MonarchButterflyOptimization.
 
-	def repair(self, x, lower, upper):
-		r"""Truncate exceeded dimensions to the limits.
+        Args:
+            population_size (Optional[int]): Population size.
+            partition (Optional[int]): Partition.
+            period (Optional[int]): Period.
 
-		Args:
-			x (numpy.ndarray): Individual to repair.
-			lower (numpy.ndarray): Lower limits for dimensions.
-			upper (numpy.ndarray): Upper limits for dimensions.
+        See Also:
+            * :func:`niapy.algorithms.Algorithm.__init__`
 
-		Returns:
-			 numpy.ndarray: Repaired individual.
-		"""
-		ir = np.where(x < lower)
-		x[ir] = lower[ir]
-		ir = np.where(x > upper)
-		x[ir] = upper[ir]
-		return x
+        """
+        super().__init__(population_size, *args, **kwargs)
+        self.partition = partition
+        self.period = period
+        self.keep = 2
+        self.bar = partition
+        self.np1 = int(np.ceil(partition * population_size))
+        self.np2 = population_size - self.np1
 
-	def levy(self, step_size, D):
-		r"""Calculate levy flight.
+    def set_parameters(self, population_size=20, partition=5.0 / 12.0, period=1.2, **kwargs):
+        r"""Set the parameters of the algorithm.
 
-		Args:
-			step_size (float): Size of the walk step.
-			D (int): Number of dimensions.
+        Args:
+            population_size (Optional[int]): Population size.
+            partition (Optional[int]): Partition.
+            period (Optional[int]): Period.
 
-		Returns:
-			numpy.ndarray: Calculated values for levy flight.
-		"""
-		delataX = np.array([np.sum(np.tan(np.pi * self.uniform(0.0, 1.0, 10))) for _ in range(0, D)])
-		return delataX
+        See Also:
+            * :func:`niapy.algorithms.Algorithm.set_parameters`
 
-	def migrationOperator(self, D, NP1, NP2, Butterflies):
-		r"""Apply the migration operator.
+        """
+        super().set_parameters(population_size=population_size, **kwargs)
+        self.partition = partition
+        self.period = period
+        self.keep = 2
+        self.bar = partition
+        self.np1 = int(np.ceil(partition * population_size))
+        self.np2 = population_size - self.np1
 
-		Args:
-			D (int): Number of dimensions.
-			NP1 (int): Number of butterflies in Land 1.
-			NP2 (int): Number of butterflies in Land 2.
-			Butterflies (numpy.ndarray): Current butterfly population.
+    def get_parameters(self):
+        r"""Get parameters values for the algorithm.
 
-		Returns:
-			numpy.ndarray: Adjusted butterfly population.
-		"""
-		pop1 = np.copy(Butterflies[:NP1])
-		pop2 = np.copy(Butterflies[NP1:])
-		for k1 in range(0, NP1):
-			for parnum1 in range(0, D):
-				r1 = self.uniform(0.0, 1.0) * self.PER
-				if r1 <= self.PAR:
-					r2 = self.integers(NP1 - 1)
-					Butterflies[k1, parnum1] = pop1[r2, parnum1]
-				else:
-					r3 = self.integers(NP2 - 1)
-					Butterflies[k1, parnum1] = pop2[r3, parnum1]
-		return Butterflies
+        Returns:
+            Dict[str, Any]: Algorithm parameters.
 
-	def adjustingOperator(self, t, max_t, D, NP1, NP2, Butterflies, best):
-		r"""Apply the adjusting operator.
+        """
+        d = Algorithm.get_parameters(self)
+        d.update({
+            'partition': self.partition,
+            'period': self.period,
+            'keep': self.keep,
+            'bar': self.bar,
+            'np1': self.np1,
+            'np2': self.np2
+        })
+        return d
 
-		Args:
-			t (int): Current generation.
-			max_t (int): Maximum generation.
-			D (int): Number of dimensions.
-			NP1 (int): Number of butterflies in Land 1.
-			NP2 (int): Number of butterflies in Land 2.
-			Butterflies (numpy.ndarray): Current butterfly population.
-			best (numpy.ndarray): The best butterfly currently.
+    def levy(self, _step_size, dimension):
+        r"""Calculate levy flight.
 
-		Returns:
-			numpy.ndarray: Adjusted butterfly population.
-		"""
-		pop2 = np.copy(Butterflies[NP1:])
-		for k2 in range(NP1, NP1 + NP2):
-			scale = 1.0 / ((t + 1)**2)
-			step_size = np.ceil(self.rng.exponential(2 * max_t))
-			delataX = self.levy(step_size, D)
-			for parnum2 in range(0, D):
-				if self.uniform(0.0, 1.0) >= self.PAR:
-					Butterflies[k2, parnum2] = best[parnum2]
-				else:
-					r4 = self.integers(NP2 - 1)
-					Butterflies[k2, parnum2] = pop2[r4, 1]
-					if self.uniform(0.0, 1.0) > self.BAR:
-						Butterflies[k2, parnum2] += scale * (delataX[parnum2] - 0.5)
-		return Butterflies
+        Args:
+            _step_size (float): Size of the walk step.
+            dimension (int): Number of dimensions.
 
-	def evaluateAndSort(self, task, Butterflies):
-		r"""Evaluate and sort the butterfly population.
+        Returns:
+            numpy.ndarray: Calculated values for levy flight.
 
-		Args:
-			task (Task): Optimization task
-			Butterflies (numpy.ndarray): Current butterfly population.
+        """
+        delta_x = np.array([np.sum(np.tan(np.pi * self.uniform(0.0, 1.0, 10))) for _ in range(dimension)])
+        return delta_x
 
-		Returns:
-			numpy.ndarray: Tuple[numpy.ndarray, float, numpy.ndarray]:
-				1. Best butterfly according to the evaluation.
-				2. The best fitness value.
-				3. Butterfly population.
-		"""
-		Fitness = np.apply_along_axis(task.eval, 1, Butterflies)
-		indices = np.argsort(Fitness)
-		Butterflies = Butterflies[indices]
-		Fitness = Fitness[indices]
+    def migration_operator(self, dimension, np1, np2, butterflies):
+        r"""Apply the migration operator.
 
-		return Fitness, Butterflies
+        Args:
+            dimension (int): Number of dimensions.
+            np1 (int): Number of butterflies in Land 1.
+            np2 (int): Number of butterflies in Land 2.
+            butterflies (numpy.ndarray): Current butterfly population.
 
-	def initPopulation(self, task):
-		r"""Initialize the starting population.
+        Returns:
+            numpy.ndarray: Adjusted butterfly population.
 
-		Args:
-			task (Task): Optimization task
+        """
+        pop1 = np.copy(butterflies[:np1])
+        pop2 = np.copy(butterflies[np1:])
+        for k1 in range(np1):
+            for i in range(dimension):
+                r1 = self.random() * self.period
+                if r1 <= self.partition:
+                    r2 = self.integers(np1 - 1)
+                    butterflies[k1, i] = pop1[r2, i]
+                else:
+                    r3 = self.integers(np2 - 1)
+                    butterflies[k1, i] = pop2[r3, i]
+        return butterflies
 
-		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
-				1. New population.
-				2. New population fitness/function values.
-				3. Additional arguments:
-					* dx (float): A small value used in local seeding stage.
+    def adjusting_operator(self, t, max_t, dimension, np1, np2, butterflies, best):
+        r"""Apply the adjusting operator.
 
-		See Also:
-			 * :func:`niapy.algorithms.Algorithm.initPopulation`
-		"""
-		Butterflies = self.uniform(task.Lower, task.Upper, [self.NP, task.D])
-		Fitness, Butterflies = self.evaluateAndSort(task, Butterflies)
-		return Butterflies, Fitness, {'tmp_best': Butterflies[0]}
+        Args:
+            t (int): Current generation.
+            max_t (int): Maximum generation.
+            dimension (int): Number of dimensions.
+            np1 (int): Number of butterflies in Land 1.
+            np2 (int): Number of butterflies in Land 2.
+            butterflies (numpy.ndarray): Current butterfly population.
+            best (numpy.ndarray): The best butterfly currently.
 
-	def runIteration(self, task, Butterflies, Evaluations, xb, fxb, tmp_best, **dparams):
-		r"""Core function of Forest Optimization Algorithm.
+        Returns:
+            numpy.ndarray: Adjusted butterfly population.
 
-		Args:
-			task (Task): Optimization task.
-			Butterflies (numpy.ndarray): Current population.
-			Evaluations (numpy.ndarray[float]): Current population function/fitness values.
-			xb (numpy.ndarray): Global best individual.
-			fxb (float): Global best individual fitness/function value.
-			tmp_best (numpy.ndarray): Best individual currently.
-			**dparams (Dict[str, Any]): Additional arguments.
+        """
+        pop2 = np.copy(butterflies[np1:])
+        for k2 in range(np1, np1 + np2):
+            scale = 1.0 / ((t + 1) ** 2)
+            step_size = np.ceil(self.rng.exponential(2 * max_t))
+            delta_x = self.levy(step_size, dimension)
+            for i in range(dimension):
+                if self.uniform(0.0, 1.0) >= self.partition:
+                    butterflies[k2, i] = best[i]
+                else:
+                    r4 = self.integers(np2 - 1)
+                    butterflies[k2, i] = pop2[r4, 1]
+                    if self.uniform(0.0, 1.0) > self.bar:
+                        butterflies[k2, i] += scale * (delta_x[i] - 0.5)
+        return butterflies
 
-		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, float, Dict[str, Any]]:
-				1. New population.
-				2. New population fitness/function values.
-				3. New global best solution.
-				4. New global best solutions fitness/objective value.
-				5. Additional arguments:
-					* dx (float): A small value used in local seeding stage.
-		"""
-		tmpElite = np.copy(Butterflies[:self.keep])
-		max_t = task.nGEN if np.isinf(task.nGEN) is False else task.nFES / self.NP
-		Butterflies = np.apply_along_axis(task.repair, 1, self.migrationOperator(task.D, self.NP1, self.NP2, Butterflies))
-		Butterflies = np.apply_along_axis(task.repair, 1, self.adjustingOperator(task.Iters, max_t, task.D, self.NP1, self.NP2, Butterflies, tmp_best))
-		Fitness, Butterflies = self.evaluateAndSort(task, Butterflies)
-		tmp_best = Butterflies[0]
-		Butterflies[-self.keep:] = tmpElite
-		Fitness, Butterflies = self.evaluateAndSort(task, Butterflies)
-		xb, fxb = self.getBest(Butterflies, Fitness, xb, fxb)
-		return Butterflies, Fitness, xb, fxb, {'tmp_best': tmp_best}
+    @staticmethod
+    def evaluate_and_sort(task, butterflies):
+        r"""Evaluate and sort the butterfly population.
+
+        Args:
+            task (Task): Optimization task
+            butterflies (numpy.ndarray): Current butterfly population.
+
+        Returns:
+            numpy.ndarray: Tuple[numpy.ndarray, float, numpy.ndarray]:
+                1. Best butterfly according to the evaluation.
+                2. The best fitness value.
+                3. Butterfly population.
+
+        """
+        fitness = np.apply_along_axis(task.eval, 1, butterflies)
+        indices = np.argsort(fitness)
+        butterflies = butterflies[indices]
+        fitness = fitness[indices]
+
+        return fitness, butterflies
+
+    def init_population(self, task):
+        r"""Initialize the starting population.
+
+        Args:
+            task (Task): Optimization task
+
+        Returns:
+            Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+                1. New population.
+                2. New population fitness/function values.
+                3. Additional arguments:
+                    * current_best (numpy.ndarray): Current generation's best individual.
+
+        See Also:
+             * :func:`niapy.algorithms.Algorithm.init_population`
+
+        """
+        population, fitness, _ = super().init_population(task)
+        sorted_indices = np.argsort(fitness)
+        population = population[sorted_indices]
+        fitness = fitness[sorted_indices]
+        return population, fitness, {'current_best': population[0]}
+
+    def run_iteration(self, task, population, population_fitness, best_x, best_fitness, **params):
+        r"""Core function of Forest Optimization Algorithm.
+
+        Args:
+            task (Task): Optimization task.
+            population (numpy.ndarray): Current population.
+            population_fitness (numpy.ndarray[float]): Current population function/fitness values.
+            best_x (numpy.ndarray): Global best individual.
+            best_fitness (float): Global best individual fitness/function value.
+            **params (Dict[str, Any]): Additional arguments.
+
+        Returns:
+            Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, float, Dict[str, Any]]:
+                1. New population.
+                2. New population fitness/function values.
+                3. New global best solution.
+                4. New global best solutions fitness/objective value.
+                5. Additional arguments:
+                    * current_best (numpy.ndarray): Current generation's best individual.
+
+        """
+        current_best = params.pop('current_best')
+
+        elite = np.copy(population[:self.keep])
+        max_t = task.max_iters if not np.isinf(task.max_iters) else task.max_evals / self.population_size
+        population = np.apply_along_axis(task.repair, 1,
+                                         self.migration_operator(task.dimension, self.np1, self.np2, population))
+        population = np.apply_along_axis(task.repair, 1,
+                                         self.adjusting_operator(task.iters, max_t, task.dimension, self.np1, self.np2,
+                                                                 population, current_best))
+        population_fitness, population = self.evaluate_and_sort(task, population)
+        current_best = population[0]
+        population[-self.keep:] = elite
+        population_fitness, population = self.evaluate_and_sort(task, population)
+        best_x, best_fitness = self.get_best(population, population_fitness, best_x, best_fitness)
+        return population, population_fitness, best_x, best_fitness, {'current_best': current_best}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

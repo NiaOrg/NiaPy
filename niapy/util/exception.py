@@ -27,8 +27,7 @@ class FesException(Exception):
                 message (Optional[str]): Message show when this exception is thrown
 
         """
-
-        Exception.__init__(self, message)
+        super().__init__(message)
 
 
 class GenException(Exception):
@@ -48,15 +47,14 @@ class GenException(Exception):
 
     """
 
-    def __init__(self, message='Reached the allowd number of the algorithm evaluations!!!'):
+    def __init__(self, message='Reached the allowed number of the algorithm evaluations!!!'):
         r"""Initialize the exception.
 
         Args:
                 message (Optional[str]): Message that is shown when this exceptions is thrown
 
         """
-
-        Exception.__init__(self, message)
+        super().__init__(message)
 
 
 class TimeException(Exception):
@@ -76,15 +74,14 @@ class TimeException(Exception):
 
     """
 
-    def __init__(self, message='Reached the allowd run time of the algorithm'):
+    def __init__(self, message='Reached the allowed run time of the algorithm'):
         r"""Initialize the exception.
 
         Args:
                 message (Optional[str]): Message that is show when this exception is thrown.
 
         """
-
-        Exception.__init__(self, message)
+        super().__init__(message)
 
 
 class RefException(Exception):
@@ -111,5 +108,4 @@ class RefException(Exception):
                 message (Optional[str]): Message that is show when this exception is thrown.
 
         """
-
-        Exception.__init__(self, message)
+        super().__init__(message)

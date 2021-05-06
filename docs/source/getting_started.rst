@@ -213,7 +213,7 @@ The complete example would look something like this.
         task = StoppingTask(D=20, nGEN=100, optType=OptimizationType.MINIMIZATION, benchmark=MyBenchmark())
 
         # parameter is population size
-        algo = GreyWolfOptimizer(NP=20, InitPopFunc=MyInit)
+        algo = GreyWolfOptimizer(NP=20, initialization_function=MyInit)
 
         # running algorithm returns best found minimum
         best = algo.run(task)

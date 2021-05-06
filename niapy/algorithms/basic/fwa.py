@@ -1,872 +1,923 @@
 # encoding=utf8
 import logging
+
 import numpy as np
+
 from niapy.algorithms.algorithm import Algorithm
-from niapy.util import full_array
+from niapy.util.distances import euclidean
+import niapy.util.repair as repair
 
 logging.basicConfig()
 logger = logging.getLogger('niapy.algorithms.basic')
 logger.setLevel('INFO')
 
-__all__ = ['FireworksAlgorithm', 'EnhancedFireworksAlgorithm', 'DynamicFireworksAlgorithm', 'DynamicFireworksAlgorithmGauss', 'BareBonesFireworksAlgorithm']
+__all__ = ['FireworksAlgorithm', 'EnhancedFireworksAlgorithm', 'DynamicFireworksAlgorithm',
+           'DynamicFireworksAlgorithmGauss', 'BareBonesFireworksAlgorithm']
+
 
 class BareBonesFireworksAlgorithm(Algorithm):
-	r"""Implementation of Bare Bones Fireworks Algorithm.
+    r"""Implementation of Bare Bones Fireworks Algorithm.
 
-	Algorithm:
-		Bare Bones Fireworks Algorithm
+    Algorithm:
+        Bare Bones Fireworks Algorithm
 
-	Date:
-		2018
+    Date:
+        2018
 
-	Authors:
-		Klemen Berkovič
+    Authors:
+        Klemen Berkovič
 
-	License:
-		MIT
+    License:
+        MIT
 
-	Reference URL:
-		https://www.sciencedirect.com/science/article/pii/S1568494617306609
+    Reference URL:
+        https://www.sciencedirect.com/science/article/pii/S1568494617306609
 
-	Reference paper:
-		Junzhi Li, Ying Tan, The bare bones fireworks algorithm: A minimalist global optimizer, Applied Soft Computing, Volume 62, 2018, Pages 454-462, ISSN 1568-4946, https://doi.org/10.1016/j.asoc.2017.10.046.
+    Reference paper:
+        Junzhi Li, Ying Tan, The bare bones fireworks algorithm: A minimalist global optimizer, Applied Soft Computing, Volume 62, 2018, Pages 454-462, ISSN 1568-4946, https://doi.org/10.1016/j.asoc.2017.10.046.
 
-	Attributes:
-		Name (lsit of str): List of strings representing algorithm names
-		n (int): Number of spraks
-		C_a (float): amplification coefficient
-		C_r (float): reduction coefficient
-	"""
-	Name = ['BareBonesFireworksAlgorithm', 'BBFWA']
+    Attributes:
+        Name (List[str]): List of strings representing algorithm names
+        num_sparks (int): Number of sparks
+        amplification_coefficient (float): amplification coefficient
+        reduction_coefficient (float): reduction coefficient
 
-	@staticmethod
-	def algorithmInfo():
-		r"""Get default information of algorithm.
+    """
 
-		Returns:
-			str: Basic information.
+    Name = ['BareBonesFireworksAlgorithm', 'BBFWA']
 
-		See Also:
-			* :func:`niapy.algorithms.Algorithm.algorithmInfo`
-		"""
-		return r"""Junzhi Li, Ying Tan, The bare bones fireworks algorithm: A minimalist global optimizer, Applied Soft Computing, Volume 62, 2018, Pages 454-462, ISSN 1568-4946, https://doi.org/10.1016/j.asoc.2017.10.046."""
+    @staticmethod
+    def info():
+        r"""Get default information of algorithm.
 
-	@staticmethod
-	def typeParameters(): return {
-			'n': lambda x: isinstance(x, int) and x > 0,
-			'C_a': lambda x: isinstance(x, (float, int)) and x > 1,
-			'C_r': lambda x: isinstance(x, (float, int)) and 0 < x < 1
-	}
+        Returns:
+            str: Basic information.
 
-	def setParameters(self, n=10, C_a=1.5, C_r=0.5, **ukwargs):
-		r"""Set the arguments of an algorithm.
+        See Also:
+            * :func:`niapy.algorithms.Algorithm.info`
 
-		Arguments:
-			n (int): Number of sparks :math:`\in [1, \infty)`.
-			C_a (float): Amplification coefficient :math:`\in [1, \infty)`.
-			C_r (float): Reduction coefficient :math:`\in (0, 1)`.
-		"""
-		ukwargs.pop('NP', None)
-		Algorithm.setParameters(self, NP=1, **ukwargs)
-		self.n, self.C_a, self.C_r = n, C_a, C_r
+        """
+        return r"""Junzhi Li, Ying Tan, The bare bones fireworks algorithm: A minimalist global optimizer, Applied Soft Computing, Volume 62, 2018, Pages 454-462, ISSN 1568-4946, https://doi.org/10.1016/j.asoc.2017.10.046."""
 
-	def initPopulation(self, task):
-		r"""Initialize starting population.
+    @staticmethod
+    def type_parameters():
+        return {
+            'num_sparks': lambda x: isinstance(x, int) and x > 0,
+            'amplification_coefficient': lambda x: isinstance(x, (float, int)) and x > 1,
+            'reduction_coefficient': lambda x: isinstance(x, (float, int)) and 0 < x < 1
+        }
 
-		Args:
-			task (Task): Optimization task.
+    def __init__(self, num_sparks=10, amplification_coefficient=1.5, reduction_coefficient=0.5, *args, **kwargs):
+        r"""Initialize BareBonesFireworksAlgorithm.
 
-		Returns:
-			Tuple[numpy.ndarray, float, Dict[str, Any]]:
-				1. Initial solution.
-				2. Initial solution function/fitness value.
-				3. Additional arguments:
-					* A (numpy.ndarray): Starting aplitude or search range.
-		"""
-		x, x_fit, d = Algorithm.initPopulation(self, task)
-		d.update({'A': task.bRange})
-		return x, x_fit, d
+        Args:
+            num_sparks (int): Number of sparks :math:`\in[1, \infty)`.
+            amplification_coefficient (float): Amplification coefficient :math:`\in [1, \infty)`.
+            reduction_coefficient (float): Reduction coefficient :math:`\in (0, 1)`.
 
-	def runIteration(self, task, x, x_fit, xb, fxb, A, **dparams):
-		r"""Core function of Bare Bones Fireworks Algorithm.
+        """
+        super().__init__(1, *args, **kwargs)
+        self.num_sparks = num_sparks
+        self.amplification_coefficient = amplification_coefficient
+        self.reduction_coefficient = reduction_coefficient
 
-		Args:
-			task (Task): Optimization task.
-			x (numpy.ndarray): Current solution.
-			x_fit (float): Current solution fitness/function value.
-			xb (numpy.ndarray): Current best solution.
-			fxb (float): Current best solution fitness/function value.
-			A (numpy.ndarray): Serach range.
-			dparams (Dict[str, Any]): Additional parameters.
+    def set_parameters(self, num_sparks=10, amplification_coefficient=1.5, reduction_coefficient=0.5, **kwargs):
+        r"""Set the arguments of an algorithm.
 
-		Returns:
-			Tuple[numpy.ndarray, float, numpy.ndarray, float, Dict[str, Any]]:
-				1. New solution.
-				2. New solution fitness/function value.
-				3. New global best solution.
-				4. New global best solutions fitness/objective value.
-				5. Additional arguments:
-					* A (numpy.ndarray): Serach range.
-		"""
-		S = np.apply_along_axis(task.repair, 1, self.uniform(x - A, x + A, [self.n, task.D]), self.rng)
-		S_fit = np.apply_along_axis(task.eval, 1, S)
-		iS = np.argmin(S_fit)
-		if S_fit[iS] < x_fit: x, x_fit, A = S[iS], S_fit[iS], self.C_a * A
-		else: A = self.C_r * A
-		return x, x_fit, x.copy(), x_fit, {'A': A}
+        Args:
+            num_sparks (int): Number of sparks :math:`\in [1, \infty)`.
+            amplification_coefficient (float): Amplification coefficient :math:`\in [1, \infty)`.
+            reduction_coefficient (float): Reduction coefficient :math:`\in (0, 1)`.
+
+        """
+        kwargs.pop('population_size', None)
+        super().set_parameters(population_size=1, **kwargs)
+        self.num_sparks = num_sparks
+        self.amplification_coefficient = amplification_coefficient
+        self.reduction_coefficient = reduction_coefficient
+
+    def init_population(self, task):
+        r"""Initialize starting population.
+
+        Args:
+            task (Task): Optimization task.
+
+        Returns:
+            Tuple[numpy.ndarray, float, Dict[str, Any]]:
+                1. Initial solution.
+                2. Initial solution function/fitness value.
+                3. Additional arguments:
+                    * A (numpy.ndarray): Starting amplitude or search range.
+
+        """
+        x, x_fit, d = super().init_population(task)
+        d.update({'amplitude': task.range})
+        return x, x_fit, d
+
+    def run_iteration(self, task, population, population_fitness, best_x, best_fitness, **params):
+        r"""Core function of Bare Bones Fireworks Algorithm.
+
+        Args:
+            task (Task): Optimization task.
+            population (numpy.ndarray): Current solution.
+            population_fitness (float): Current solution fitness/function value.
+            best_x (numpy.ndarray): Current best solution.
+            best_fitness (float): Current best solution fitness/function value.
+            params (Dict[str, Any]): Additional parameters.
+
+        Returns:
+            Tuple[numpy.ndarray, float, numpy.ndarray, float, Dict[str, Any]]:
+                1. New solution.
+                2. New solution fitness/function value.
+                3. New global best solution.
+                4. New global best solutions fitness/objective value.
+                5. Additional arguments:
+                    * amplitude (numpy.ndarray): Search range.
+
+        """
+        amplitude = params.pop('amplitude')
+
+        sparks = self.uniform(population - amplitude, population + amplitude, (self.num_sparks, task.dimension))
+        sparks = np.apply_along_axis(task.repair, 1, sparks, self.rng)
+        sparks_fitness = np.apply_along_axis(task.eval, 1, sparks)
+        best_index = np.argmin(sparks_fitness)
+        if sparks_fitness[best_index] < population_fitness:
+            population = sparks[best_index]
+            population_fitness = sparks_fitness[best_index]
+            amplitude = self.amplification_coefficient * amplitude
+        else:
+            amplitude = self.reduction_coefficient * amplitude
+        return population, population_fitness, population.copy(), population_fitness, {'amplitude': amplitude}
+
 
 class FireworksAlgorithm(Algorithm):
-	r"""Implementation of fireworks algorithm.
+    r"""Implementation of fireworks algorithm.
 
-	Algorithm:
-		Fireworks Algorithm
+    Algorithm:
+        Fireworks Algorithm
 
-	Date:
-		2018
+    Date:
+        2018
 
-	Authors:
-		Klemen Berkovič
+    Authors:
+        Klemen Berkovič
 
-	License:
-		MIT
+    License:
+        MIT
 
-	Reference URL:
-		https://www.springer.com/gp/book/9783662463529
+    Reference URL:
+        https://www.springer.com/gp/book/9783662463529
 
-	Reference paper:
-		Tan, Ying. "Fireworks algorithm." Heidelberg, Germany: Springer 10 (2015): 978-3
+    Reference paper:
+        Tan, Ying. "Fireworks algorithm." Heidelberg, Germany: Springer 10 (2015): 978-3
 
-	Attributes:
-		Name (List[str]): List of stirngs representing algorithm names.
-	"""
-	Name = ['FireworksAlgorithm', 'FWA']
+    Attributes:
+        Name (List[str]): List of strings representing algorithm names.
 
-	@staticmethod
-	def algorithmInfo():
-		r"""Get default information of algorithm.
+    """
 
-		Returns:
-			str: Basic information.
+    Name = ['FireworksAlgorithm', 'FWA']
 
-		See Also:
-			* :func:`niapy.algorithms.Algorithm.algorithmInfo`
-		"""
-		return r"""Tan, Ying. "Fireworks algorithm." Heidelberg, Germany: Springer 10 (2015): 978-3."""
+    @staticmethod
+    def info():
+        r"""Get default information of algorithm.
 
-	@staticmethod
-	def typeParameters(): return {
-			'N': lambda x: isinstance(x, int) and x > 0,
-			'm': lambda x: isinstance(x, int) and x > 0,
-			'a': lambda x: isinstance(x, (int, float)) and x > 0,
-			'b': lambda x: isinstance(x, (int, float)) and x > 0,
-			'epsilon': lambda x: isinstance(x, float) and 0 < x < 1
-	}
+        Returns:
+            str: Basic information.
 
-	def setParameters(self, N=40, m=40, a=1, b=2, A=40, epsilon=1e-31, **ukwargs):
-		r"""Set the arguments of an algorithm.
+        See Also:
+            * :func:`niapy.algorithms.Algorithm.info`
 
-		Arguments:
-			N (int): Number of Fireworks
-			m (int): Number of sparks
-			a (int): Limitation of sparks
-			b (int): Limitation of sparks
-			A (float): --
-			epsilon (float): Small number for non 0 devision
-		"""
-		Algorithm.setParameters(self, NP=N, **ukwargs)
-		self.m, self.a, self.b, self.A, self.epsilon = m, a, b, A, epsilon
+        """
+        return r"""Tan, Ying. "Fireworks algorithm." Heidelberg, Germany: Springer 10 (2015): 978-3."""
 
-	def initAmplitude(self, task):
-		r"""Initialize amplitudes for dimensions.
+    @staticmethod
+    def type_parameters():
+        return {
+            'N': lambda x: isinstance(x, int) and x > 0,
+            'm': lambda x: isinstance(x, int) and x > 0,
+            'a': lambda x: isinstance(x, (int, float)) and x > 0,
+            'b': lambda x: isinstance(x, (int, float)) and x > 0,
+            'epsilon': lambda x: isinstance(x, float) and 0 < x < 1
+        }
 
-		Args:
-			task (Task): Optimization task.
+    def __init__(self, population_size=5, num_sparks=50, a=0.04, b=0.8, max_amplitude=40, num_gaussian=5, *args, **kwargs):
+        """Initialize FWA.
 
-		Returns:
-			numpy.ndarray[float]: Starting amplitudes.
-		"""
-		return full_array(self.A, task.D)
+        Args:
+            population_size (int): Number of Fireworks
+            num_sparks (int): Number of sparks
+            a (float): Limitation of sparks
+            b (float): Limitation of sparks
+            max_amplitude (float): Initial amplitude.
+            num_gaussian (int): Number of sparks to apply gaussian mutation to.
 
-	def SparsksNo(self, x_f, xw_f, Ss):
-		r"""Calculate number of sparks based on function value of individual.
+        """
+        super().__init__(population_size, *args, **kwargs)
+        self.num_sparks = num_sparks
+        self.a = a
+        self.b = b
+        self.max_amplitude = max_amplitude
+        self.num_gaussian = num_gaussian
+        self.epsilon = np.finfo(float).eps
 
-		Args:
-			x_f (float): Individuals function/fitness value.
-			xw_f (float): Worst individual function/fitness value.
-			Ss (): TODO
+    def set_parameters(self, population_size=5, num_sparks=50, a=0.04, b=0.8, max_amplitude=40, num_gaussian=5,
+                       **kwargs):
+        r"""Set the arguments of an algorithm.
 
-		Returns:
-			int: Number of sparks that individual will create.
-		"""
-		s = self.m * (xw_f - x_f + self.epsilon) / (Ss + self.epsilon)
-		return np.round(self.b * self.m) if s > self.b * self.m and self.a < self.b < 1 else np.round(self.a * self.m)
+        Args:
+            population_size (int): Number of Fireworks
+            num_sparks (int): Number of sparks
+            a (float): Limitation of sparks
+            b (float): Limitation of sparks
+            max_amplitude (float): Initial amplitude.
+            num_gaussian (int): Number of sparks to apply gaussian mutation to.
 
-	def ExplosionAmplitude(self, x_f, xb_f, A, As):
-		r"""Calculate explosion amplitude.
+        """
+        super().set_parameters(population_size=population_size, **kwargs)
+        self.num_sparks = num_sparks
+        self.a = a
+        self.b = b
+        self.max_amplitude = max_amplitude
+        self.num_gaussian = num_gaussian
+        self.epsilon = np.finfo(float).eps
 
-		Args:
-			x_f (float): Individuals function/fitness value.
-			xb_f (float): Best individuals function/fitness value.
-			A (numpy.ndarray): Amplitudes.
-			As ():
+    def sparks_num(self, population_fitness):
+        r"""Calculate number of sparks.
 
-		Returns:
-			numpy.ndarray: TODO.
-		"""
-		return A * (x_f - xb_f - self.epsilon) / (As + self.epsilon)
+        Args:
+            population_fitness (numpy.ndarray): Population fitness values.
 
-	def ExplodeSpark(self, x, A, task):
-		r"""Explode a spark.
+        Returns:
+            numpy.ndarray: Number of sparks that for all fireworks.
 
-		Args:
-			x (numpy.ndarray): Individuals creating spark.
-			A (numpy.ndarray): Amplitude of spark.
-			task (Task): Optimization task.
+        """
+        worst_fitness = np.amax(population_fitness)
+        sparks_num = self.num_sparks * (worst_fitness - population_fitness + self.epsilon)
+        sparks_num /= np.sum(worst_fitness - population_fitness) + self.epsilon
 
-		Returns:
-			numpy.ndarray: Sparks exploded in with specified amplitude.
-		"""
-		return self.Mapping(x + self.random(task.D) * self.uniform(-A, A, task.D), task)
+        cond = [sparks_num < self.a * self.num_sparks, (sparks_num > self.b * self.num_sparks) * (self.a < self.b < 1)]
+        choices = [round(self.a * self.num_sparks), round(self.b * self.num_sparks)]
+        return np.select(cond, choices, default=np.round(sparks_num)).astype(int)
 
-	def GaussianSpark(self, x, task):
-		r"""Create gaussian spark.
+    def explosion_amplitudes(self, population_fitness, task=None):
+        r"""Calculate explosion amplitude.
 
-		Args:
-			x (numpy.ndarray): Individual creating a spark.
-			task (Task): Optimization task.
+        Args:
+            population_fitness (numpy.ndarray): Population fitness values.
+            task (Optional[Task]): Optimization task (Unused in this version of the algorithm).
 
-		Returns:
-			numpy.ndarray: Spark exploded based on gaussian amplitude.
-		"""
-		return self.Mapping(x + self.random(task.D) * self.normal(1, 1, task.D), task)
+        Returns:
+            numpy.ndarray: Explosion amplitude of sparks.
 
-	def Mapping(self, x, task):
-		r"""Fix value to bounds..
+        """
+        best_fitness = np.amin(population_fitness)
+        amplitudes = self.max_amplitude * (population_fitness - best_fitness + self.epsilon)
+        amplitudes /= np.sum(population_fitness - best_fitness) + self.epsilon
+        return amplitudes
 
-		Args:
-			x (numpy.ndarray): Individual to fix.
-			task (Task): Optimization task.
+    def explosion_spark(self, x, amplitude, task):
+        r"""Explode a spark.
 
-		Returns:
-			numpy.ndarray: Individual in search range.
-		"""
-		ir = np.where(x > task.Upper)
-		x[ir] = task.Lower[ir] + x[ir] % task.bRange[ir]
-		ir = np.where(x < task.Lower)
-		x[ir] = task.Lower[ir] + x[ir] % task.bRange[ir]
-		return x
+        Args:
+            x (numpy.ndarray): Individuals creating spark.
+            amplitude (float): Amplitude of spark.
+            task (Task): Optimization task.
 
-	def R(self, x, FW):
-		r"""Calculate ranges.
+        Returns:
+            numpy.ndarray: Sparks exploded in with specified amplitude.
 
-		Args:
-			x (numpy.ndarray): Individual in population.
-			FW (numpy.ndarray): Current population.
+        """
+        z = self.rng.choice(task.dimension, self.rng.integers(task.dimension), replace=False)
+        x[z] = x[z] + amplitude * self.uniform(-1, 1)
+        return self.mapping(x, task)
 
-		Returns:
-			numpy,ndarray[float]: Ranges values.
-		"""
-		return np.sqrt(np.sum(np.fabs(x - FW)))
+    def gaussian_spark(self, x, task, best_x=None):
+        r"""Create gaussian spark.
 
-	def p(self, r, Rs):
-		r"""Calculate p.
+        Args:
+            x (numpy.ndarray): Individual creating a spark.
+            task (Task): Optimization task.
+            best_x (numpy.ndarray): Current best individual. Unused in this version of the algorithm.
 
-		Args:
-			r (float): Range of individual.
-			Rs (float): Sum of ranges.
+        Returns:
+            numpy.ndarray: Spark exploded based on gaussian amplitude.
 
-		Returns:
-			float: p value.
-		"""
-		return r / Rs
+        """
+        z = self.rng.choice(task.dimension, self.rng.integers(task.dimension), replace=False)
+        x[z] = x[z] * self.normal(1, 1)
+        return self.mapping(x, task)
 
-	def NextGeneration(self, FW, FW_f, FWn, task):
-		r"""Generate new generation of individuals.
+    def mapping(self, x, task):
+        r"""Fix value to bounds.
 
-		Args:
-			FW (numpy.ndarray): Current population.
-			FW_f (numpy.ndarray[float]): Currents population fitness/function values.
-			FWn (numpy.ndarray): New population.
-			task (Task): Optimization task.
+        Args:
+            x (numpy.ndarray): Individual to fix.
+            task (Task): Optimization task.
 
-		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray[float]]:
-				1. New population.
-				2. New populations fitness/function values.
-		"""
-		FWn_f = np.apply_along_axis(task.eval, 1, FWn)
-		ib = np.argmin(FWn_f)
-		if FWn_f[ib] < FW_f[0]: FW[0], FW_f[0] = FWn[ib], FWn_f[ib]
-		R = np.asarray([self.R(FWn[i], FWn) for i in range(len(FWn))])
-		Rs = np.sum(R)
-		P = np.asarray([self.p(R[i], Rs) for i in range(len(FWn))])
-		isort = np.argsort(P)[-(self.NP - 1):]
-		FW[1:], FW_f[1:] = np.asarray(FWn)[isort], FWn_f[isort]
-		return FW, FW_f
+        Returns:
+            numpy.ndarray: Individual in search range.
 
-	def initPopulation(self, task):
-		r"""Initialize starting population.
+        """
+        return repair.reflect(x, task.lower, task.upper)
 
-		Args:
-			task (Task): Optimization task.
+    def selection(self, population, population_fitness, sparks, task):
+        r"""Generate new generation of individuals.
 
-		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
-				1. Initialized population.
-				2. Initialized populations function/fitness values.
-				3. Additional arguments:
-					* Ah (numpy.ndarray): Initialized amplitudes.
+        Args:
+            population (numpy.ndarray): Current population.
+            population_fitness (numpy.ndarray[float]): Currents population fitness/function values.
+            sparks (numpy.ndarray): New population.
+            task (Task): Optimization task.
 
-		See Also:
-			* :func:`niapy.algorithms.algorithm.Algorithm.initPopulation`
-		"""
-		FW, FW_f, d = Algorithm.initPopulation(self, task)
-		Ah = self.initAmplitude(task)
-		d.update({'Ah': Ah})
-		return FW, FW_f, d
+        Returns:
+            Tuple[numpy.ndarray, numpy.ndarray[float], numpy.ndarray, float]:
+                1. New population.
+                2. New populations fitness/function values.
+                3. New global best individual.
+                4. New global best fitness.
 
-	def runIteration(self, task, FW, FW_f, xb, fxb, Ah, **dparams):
-		r"""Core function of Fireworks algorithm.
+        """
+        sparks_fitness = np.apply_along_axis(task.eval, 1, sparks)
+        best_index = np.argmin(sparks_fitness)
+        best_x = sparks[best_index].copy()
+        best_fitness = sparks_fitness[best_index]
 
-		Args:
-			task (Task): Optimization task.
-			FW (numpy.ndarray): Current population.
-			FW_f (numpy.ndarray[float]): Current populations function/fitness values.
-			xb (numpy.ndarray): Global best individual.
-			fxb (float): Global best individuals fitness/function value.
-			Ah (numpy.ndarray): Current amplitudes.
-			**dparams (Dict[str, Any)]: Additional arguments
+        all_sparks = np.delete(sparks, best_index, axis=0)
+        fitness = np.delete(sparks_fitness, best_index)
 
-		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, float, Dict[str, Any]]:
-				1. Initialized population.
-				2. Initialized populations function/fitness values.
-				3. New global best solution.
-				4. New global best solutions fitness/objective value.
-				5. Additional arguments:
-					* Ah (numpy.ndarray): Initialized amplitudes.
+        distances = np.sum(euclidean(all_sparks[:, np.newaxis, :], all_sparks[np.newaxis, :, :]), axis=0)
+        probabilities = distances / np.sum(distances)
 
-		See Also:
-			* :func:`FireworksAlgorithm.SparsksNo`.
-			* :func:`FireworksAlgorithm.ExplosionAmplitude`
-			* :func:`FireworksAlgorithm.ExplodeSpark`
-			* :func:`FireworksAlgorithm.GaussianSpark`
-			* :func:`FireworksAlgorithm.NextGeneration`
-		"""
-		iw, ib = np.argmax(FW_f), 0
-		Ss, As = np.sum(FW_f[iw] - FW_f), np.sum(FW_f - FW_f[ib])
-		S = [self.SparsksNo(FW_f[i], FW_f[iw], Ss) for i in range(self.NP)]
-		A = [self.ExplosionAmplitude(FW_f[i], FW_f[ib], Ah, As) for i in range(self.NP)]
-		FWn = [self.ExplodeSpark(FW[i], A[i], task) for i in range(self.NP) for _ in range(S[i])]
-		for i in range(self.m): FWn.append(self.GaussianSpark(self.integers(self.NP), task))
-		FW, FW_f = self.NextGeneration(FW, FW_f, FWn, task)
-		xb, fxb = self.getBest(FW, FW_f, xb, fxb)
-		return FW, FW_f, xb, fxb, {'Ah': Ah}
+        selected_indices = self.rng.choice(len(all_sparks), self.population_size - 1, replace=False, p=probabilities)
+
+        population[0] = best_x
+        population[1:] = all_sparks[selected_indices]
+        population_fitness[0] = best_fitness
+        population_fitness[1:] = fitness[selected_indices]
+        return population, population_fitness, best_x, best_fitness
+
+    def run_iteration(self, task, population, population_fitness, best_x, best_fitness, **params):
+        r"""Core function of Fireworks algorithm.
+
+        Args:
+            task (Task): Optimization task.
+            population (numpy.ndarray): Current population.
+            population_fitness (numpy.ndarray[float]): Current populations function/fitness values.
+            best_x (numpy.ndarray): Global best individual.
+            best_fitness (float): Global best individuals fitness/function value.
+            **params (Dict[str, Any)]: Additional arguments
+
+        Returns:
+            Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, float, Dict[str, Any]]:
+                1. Initialized population.
+                2. Initialized populations function/fitness values.
+                3. New global best solution.
+                4. New global best solutions fitness/objective value.
+                5. Additional arguments:
+                    * Ah (numpy.ndarray): Initialized amplitudes.
+
+        See Also:
+            * :func:`FireworksAlgorithm.sparks_num`.
+            * :func:`FireworksAlgorithm.explosion_amplitudes`
+            * :func:`FireworksAlgorithm.explosion_spark`
+            * :func:`FireworksAlgorithm.gaussian_spark`
+            * :func:`FireworksAlgorithm.selection`
+
+        """
+        sparks_num = self.sparks_num(population_fitness)
+        amplitudes = self.explosion_amplitudes(population_fitness, task=task)
+
+        all_sparks = population.copy()
+        for i in range(self.population_size):
+            si = sparks_num[i]
+            ai = amplitudes[i]
+
+            sparks_i = np.empty((si, task.dimension))
+            for s in range(si):
+                sparks_i[s] = population[i]
+                sparks_i[s] = self.explosion_spark(sparks_i[s], ai, task)
+            all_sparks = np.concatenate((all_sparks, sparks_i), axis=0)
+
+        gaussian_idx = self.rng.choice(len(all_sparks), self.num_gaussian, replace=False)
+        gaussian_sparks = np.array(all_sparks[gaussian_idx])
+
+        for i in range(self.num_gaussian):
+            gaussian_sparks[i] = self.gaussian_spark(gaussian_sparks[i], task, best_x=best_x)
+
+        all_sparks = np.concatenate((all_sparks, gaussian_sparks), axis=0)
+
+        population, population_fitness, best_x, best_fitness = self.selection(population, population_fitness,
+                                                                              all_sparks, task)
+
+        return population, population_fitness, best_x, best_fitness, {}
+
 
 class EnhancedFireworksAlgorithm(FireworksAlgorithm):
-	r"""Implementation of enganced fireworks algorithm.
+    r"""Implementation of enhanced fireworks algorithm.
 
-	Algorithm:
-		Enhanced Fireworks Algorithm
+    Algorithm:
+        Enhanced Fireworks Algorithm
 
-	Date:
-		2018
+    Date:
+        2018
 
-	Authors:
-		Klemen Berkovič
+    Authors:
+        Klemen Berkovič
 
-	License:
-		MIT
+    License:
+        MIT
 
-	Reference URL:
-		https://ieeexplore.ieee.org/document/6557813/
+    Reference URL:
+        https://ieeexplore.ieee.org/document/6557813/
 
-	Reference paper:
-		S. Zheng, A. Janecek and Y. Tan, "Enhanced Fireworks Algorithm," 2013 IEEE Congress on Evolutionary Computation, Cancun, 2013, pp. 2069-2077. doi: 10.1109/CEC.2013.6557813
+    Reference paper:
+        S. Zheng, A. Janecek and Y. Tan, "Enhanced Fireworks Algorithm," 2013 IEEE Congress on Evolutionary Computation, Cancun, 2013, pp. 2069-2077. doi: 10.1109/CEC.2013.6557813
 
-	Attributes:
-		Name (List[str]): List of strings representing algorithm names.
-		Ainit (float): Initial amplitude of sparks.
-		Afinal (float): Maximal amplitude of sparks.
-	"""
-	Name = ['EnhancedFireworksAlgorithm', 'EFWA']
+    Attributes:
+        Name (List[str]): List of strings representing algorithm names.
+        amplitude_init (float): Initial amplitude of sparks.
+        amplitude_final (float): Maximal amplitude of sparks.
 
-	@staticmethod
-	def algorithmInfo():
-		r"""Get default information of algorithm.
+    """
 
-		Returns:
-			str: Basic information.
+    Name = ['EnhancedFireworksAlgorithm', 'EFWA']
 
-		See Also:
-			* :func:`niapy.algorithms.Algorithm.algorithmInfo`
-		"""
-		return r"""S. Zheng, A. Janecek and Y. Tan, "Enhanced Fireworks Algorithm," 2013 IEEE Congress on Evolutionary Computation, Cancun, 2013, pp. 2069-2077. doi: 10.1109/CEC.2013.6557813"""
+    @staticmethod
+    def info():
+        r"""Get default information of algorithm.
 
-	@staticmethod
-	def typeParameters():
-		r"""Get dictionary with functions for checking values of parameters.
+        Returns:
+            str: Basic information.
 
-		Returns:
-			Dict[str, Callable]:
-				* Ainit (Callable[[Union[int, float]], bool]): TODO
-				* Afinal (Callable[[Union[int, float]], bool]): TODO
+        See Also:
+            * :func:`niapy.algorithms.Algorithm.info`
 
-		See Also:
-			* :func:`FireworksAlgorithm.typeParameters`
-		"""
-		d = FireworksAlgorithm.typeParameters()
-		d['Ainit'] = lambda x: isinstance(x, (float, int)) and x > 0
-		d['Afinal'] = lambda x: isinstance(x, (float, int)) and x > 0
-		return d
+        """
+        return r"""S. Zheng, A. Janecek and Y. Tan, "Enhanced Fireworks Algorithm," 2013 IEEE Congress on Evolutionary Computation, Cancun, 2013, pp. 2069-2077. doi: 10.1109/CEC.2013.6557813"""
 
-	def setParameters(self, Ainit=20, Afinal=5, **ukwargs):
-		r"""Set EnhancedFireworksAlgorithm algorithms core parameters.
+    @staticmethod
+    def type_parameters():
+        r"""Get dictionary with functions for checking values of parameters.
 
-		Args:
-			Ainit (float): TODO
-			Afinal (float): TODO
-			**ukwargs (Dict[str, Any]): Additional arguments.
+        Returns:
+            Dict[str, Callable]:
+                * amplitude_init (Callable[[Union[int, float]], bool]): Initial amplitude.
+                * amplitude_final (Callable[[Union[int, float]], bool]): Final amplitude.
 
-		See Also:
-			* :func:`FireworksAlgorithm.setParameters`
-		"""
-		FireworksAlgorithm.setParameters(self, **ukwargs)
-		self.Ainit, self.Afinal = Ainit, Afinal
+        See Also:
+            * :func:`FireworksAlgorithm.type_parameters`
 
-	def initRanges(self, task):
-		r"""Initialize ranges.
+        """
+        d = FireworksAlgorithm.type_parameters()
+        d['amplitude_init'] = lambda x: isinstance(x, (float, int)) and x > 0
+        d['amplitude_final'] = lambda x: isinstance(x, (float, int)) and x > 0
+        return d
 
-		Args:
-			task (Task): Optimization task.
+    def __init__(self, amplitude_init=0.2, amplitude_final=0.01, *args, **kwargs):
+        """Initialize EFWA.
 
-		Returns:
-			Tuple[numpy.ndarray[float], numpy.ndarray[float], numpy.ndarray[float]]:
-				1. Initial amplitude values over dimensions.
-				2. Final amplitude values over dimensions.
-				3. uAmin.
-		"""
-		Ainit, Afinal = full_array(self.Ainit, task.D), full_array(self.Afinal, task.D)
-		return Ainit, Afinal, self.uAmin(Ainit, Afinal, task)
+        Args:
+            amplitude_init (float): Initial amplitude.
+            amplitude_final (float): Final amplitude.
+            **kwargs (Dict[str, Any]): Additional arguments.
 
-	def uAmin(self, Ainit, Afinal, task):
-		r"""Calculate the value of `uAmin`.
+        See Also:
+            * :func:`FireworksAlgorithm.__init__`
 
-		Args:
-			Ainit (numpy.ndarray[float]): Initial amplitude values over dimensions.
-			Afinal (numpy.ndarray[float]): Final amplitude values over dimensions.
-			task (Task): Optimization task.
+        """
+        super().__init__(*args, **kwargs)
+        self.amplitude_init = amplitude_init
+        self.amplitude_final = amplitude_final
 
-		Returns:
-			numpy.ndarray[float]: uAmin.
-		"""
-		return Ainit - np.sqrt(task.Evals * (2 * task.nFES - task.Evals)) * (Ainit - Afinal) / task.nFES
+    def set_parameters(self, amplitude_init=0.2, amplitude_final=0.01, **kwargs):
+        r"""Set EnhancedFireworksAlgorithm algorithms core parameters.
 
-	def ExplosionAmplitude(self, x_f, xb_f, Ah, As, A_min=None):
-		r"""Calculate explosion amplitude.
+        Args:
+            amplitude_init (float): Initial amplitude.
+            amplitude_final (float): Final amplitude.
+            **kwargs (Dict[str, Any]): Additional arguments.
 
-		Args:
-			x_f (float): Individuals function/fitness value.
-			xb_f (float): Best individual function/fitness value.
-			Ah (numpy.ndarray):
-			As (): TODO.
-			A_min (Optional[numpy.ndarray]): Minimal amplitude values.
-			task (Task): Optimization task.
+        See Also:
+            * :func:`FireworksAlgorithm.set_parameters`
 
-		Returns:
-			numpy.ndarray: New amplitude.
-		"""
-		A = FireworksAlgorithm.ExplosionAmplitude(self, x_f, xb_f, Ah, As)
-		ifix = np.where(A < A_min)
-		A[ifix] = A_min[ifix]
-		return A
+        """
+        super().set_parameters(**kwargs)
+        self.amplitude_init = amplitude_init
+        self.amplitude_final = amplitude_final
 
-	def GaussianSpark(self, x, xb, task):
-		r"""Create new individual.
+    def explosion_amplitudes(self, population_fitness, task=None):
+        r"""Calculate explosion amplitude.
 
-		Args:
-			x (numpy.ndarray):
-			xb (numpy.ndarray):
-			task (Task): Optimization task.
+        Args:
+            population_fitness (numpy.ndarray):
+            task (Task): Optimization task.
 
-		Returns:
-			numpy.ndarray: New individual generated by gaussian noise.
-		"""
-		return self.Mapping(x + self.random(task.D) * (xb - x) * self.normal(1, 1, task.D), task)
+        Returns:
+            numpy.ndarray: New amplitude.
 
-	def NextGeneration(self, FW, FW_f, FWn, task):
-		r"""Generate new population.
+        """
+        amplitudes = super().explosion_amplitudes(population_fitness, task)
+        a_min = self.amplitude_init - np.sqrt(task.evals * (2 * task.max_evals - task.evals)) * (self.amplitude_init - self.amplitude_final) / task.max_evals
+        amplitudes[amplitudes < a_min] = a_min
+        return amplitudes
 
-		Args:
-			FW (numpy.ndarray): Current population.
-			FW_f (numpy.ndarray[float]): Current populations fitness/function values.
-			FWn (numpy.ndarray): New population.
-			task (Task): Optimization task.
+    def mapping(self, x, task):
+        r"""Fix value to bounds.
 
-		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray[float]]:
-				1. New population.
-				2. New populations fitness/function values.
-		"""
-		FWn_f = np.apply_along_axis(task.eval, 1, FWn)
-		ib = np.argmin(FWn_f)
-		if FWn_f[ib] < FW_f[0]: FW[0], FW_f[0] = FWn[ib], FWn_f[ib]
-		for i in range(1, self.NP):
-			r = self.integers(len(FWn))
-			if FWn_f[r] < FW_f[i]: FW[i], FW_f[i] = FWn[r], FWn_f[r]
-		return FW, FW_f
+        Args:
+            x (numpy.ndarray): Individual to fix.
+            task (Task): Optimization task.
 
-	def initPopulation(self, task):
-		r"""Initialize population.
+        Returns:
+            numpy.ndarray: Individual in search range.
 
-		Args:
-			task (Task): Optimization task.
+        """
+        return repair.rand(x, task.lower, task.upper, rng=self.rng)
 
-		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
-				1. Initial population.
-				2. Initial populations fitness/function values.
-				3. Additional arguments:
-					* Ainit (numpy.ndarray): Initial amplitude values.
-					* Afinal (numpy.ndarray): Final amplitude values.
-					* A_min (numpy.ndarray): Minimal amplitude values.
+    def explosion_spark(self, x, amplitude, task):
+        r"""Explode a spark.
 
-		See Also:
-			* :func:`FireworksAlgorithm.initPopulation`
-		"""
-		FW, FW_f, d = FireworksAlgorithm.initPopulation(self, task)
-		Ainit, Afinal, A_min = self.initRanges(task)
-		d.update({'Ainit': Ainit, 'Afinal': Afinal, 'A_min': A_min})
-		return FW, FW_f, d
+        Args:
+            x (numpy.ndarray): Individuals creating spark.
+            amplitude (float): Amplitude of spark.
+            task (Task): Optimization task.
 
-	def runIteration(self, task, FW, FW_f, xb, fxb, Ah, Ainit, Afinal, A_min, **dparams):
-		r"""Core function of EnhancedFireworksAlgorithm algorithm.
+        Returns:
+            numpy.ndarray: Sparks exploded in with specified amplitude.
 
-		Args:
-			task (Task): Optimization task.
-			FW (numpy.ndarray): Current population.
-			FW_f (numpy.ndarray[float]): Current populations fitness/function values.
-			xb (numpy.ndarray): Global best individual.
-			fxb (float): Global best individuals function/fitness value.
-			Ah (numpy.ndarray[float]): Current amplitude.
-			Ainit (numpy.ndarray[float]): Initial amplitude.
-			Afinal (numpy.ndarray[float]): Final amplitude values.
-			A_min (numpy.ndarray[float]): Minial amplitude values.
-			**dparams (Dict[str, Any]): Additional arguments.
+        """
+        z = self.rng.choice(task.dimension, self.rng.integers(task.dimension), replace=False)
+        if isinstance(amplitude, np.ndarray):
+            x[z] = x[z] + amplitude[z] * self.uniform(-1, 1, len(z))
+        else:
+            x[z] = x[z] + amplitude * self.uniform(-1, 1, len(z))
+        return self.mapping(x, task)
 
-		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, float, Dict[str, Any]]:
-				1. Initial population.
-				2. Initial populations fitness/function values.
-				3. New global best solution.
-				4. New global best solutions fitness/objective value.
-				5. Additional arguments:
-					* Ainit (numpy.ndarray): Initial amplitude values.
-					* Afinal (numpy.ndarray): Final amplitude values.
-					* A_min (numpy.ndarray): Minimal amplitude values.
-		"""
-		iw, ib = np.argmax(FW_f), 0
-		Ss, As = np.sum(FW_f[iw] - FW_f), np.sum(FW_f - FW_f[ib])
-		S = [self.SparsksNo(FW_f[i], FW_f[iw], Ss) for i in range(self.NP)]
-		A = [self.ExplosionAmplitude(FW_f[i], FW_f[ib], Ah, As, A_min) for i in range(self.NP)]
-		A_min = self.uAmin(Ainit, Afinal, task)
-		FWn = [self.ExplodeSpark(FW[i], A[i], task) for i in range(self.NP) for _ in range(S[i])]
-		for i in range(self.m): FWn.append(self.GaussianSpark(self.integers(self.NP), FW[ib], task))
-		FW, FW_f = self.NextGeneration(FW, FW_f, FWn, task)
-		xb, fxb = self.getBest(FW, FW_f, xb, fxb)
-		return FW, FW_f, xb, fxb, {'Ah': Ah, 'Ainit': Ainit, 'Afinal': Afinal, 'A_min': A_min}
+    def gaussian_spark(self, x, task, best_x=None):
+        r"""Create new individual.
+
+        Args:
+            x (numpy.ndarray):
+            task (Task): Optimization task.
+            best_x (numpy.ndarray): Current global best individual.
+
+        Returns:
+            numpy.ndarray: New individual generated by gaussian noise.
+
+        """
+        z = self.rng.choice(task.dimension, self.rng.integers(task.dimension), replace=False)
+        e = self.standard_normal()
+        x[z] = x[z] + (best_x[z] - x[z]) * e
+        return self.mapping(x, task)
+
+    def selection(self, population, population_fitness, sparks, task):
+        r"""Generate new population.
+
+        Args:
+            population (numpy.ndarray): Current population.
+            population_fitness (numpy.ndarray[float]): Current populations fitness/function values.
+            sparks (numpy.ndarray): New population.
+            task (Task): Optimization task.
+
+        Returns:
+            Tuple[numpy.ndarray, numpy.ndarray[float], numpy.ndarray, float]:
+                1. New population.
+                2. New populations fitness/function values.
+                3. New global best individual.
+                4. New global best fitness.
+
+        """
+        sparks_fitness = np.apply_along_axis(task.eval, 1, sparks)
+        ib = np.argmin(sparks_fitness)
+        best_x = sparks[ib].copy()
+        best_fitness = sparks_fitness[ib]
+        if sparks_fitness[ib] < population_fitness[0]:
+            population[0], population_fitness[0] = best_x, best_fitness
+        for i in range(1, self.population_size):
+            r = self.integers(len(sparks))
+            if sparks_fitness[r] < population_fitness[i]:
+                population[i], population_fitness[i] = sparks[r], sparks_fitness[r]
+        return population, population_fitness, best_x, best_fitness
+
 
 class DynamicFireworksAlgorithmGauss(EnhancedFireworksAlgorithm):
-	r"""Implementation of dynamic fireworks algorithm.
+    r"""Implementation of dynamic fireworks algorithm.
 
-	Algorithm:
-		Dynamic Fireworks Algorithm
+    Algorithm:
+        Dynamic Fireworks Algorithm
 
-	Date:
-		2018
+    Date:
+        2018
 
-	Authors:
-		Klemen Berkovič
+    Authors:
+        Klemen Berkovič
 
-	License:
-		MIT
+    License:
+        MIT
 
-	Reference URL:
-		http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6900485&isnumber=6900223
+    Reference URL:
+        http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6900485&isnumber=6900223
 
-	Reference paper:
-		S. Zheng, A. Janecek, J. Li and Y. Tan, "Dynamic search in fireworks algorithm," 2014 IEEE Congress on Evolutionary Computation (CEC), Beijing, 2014, pp. 3222-3229. doi: 10.1109/CEC.2014.6900485
+    Reference paper:
+        S. Zheng, A. Janecek, J. Li and Y. Tan, "Dynamic search in fireworks algorithm," 2014 IEEE Congress on Evolutionary Computation (CEC), Beijing, 2014, pp. 3222-3229. doi: 10.1109/CEC.2014.6900485
 
-	Attributes:
-		Name (List[str]): List of strings representing algorithm names.
-		A_cf (Union[float, int]): TODO
-		C_a (Union[float, int]): Amplification factor.
-		C_r (Union[float, int]): Reduction factor.
-		epsilon (Union[float, int]): Small value.
-	"""
-	Name = ['DynamicFireworksAlgorithmGauss', 'dynFWAG']
+    Attributes:
+        Name (List[str]): List of strings representing algorithm names.
+        amplitude_cf (Union[float, int]): Amplitude of the core firework.
+        amplification_coeff (Union[float, int]): Amplification coefficient.
+        reduction_coeff (Union[float, int]): Reduction coefficient.
 
-	@staticmethod
-	def algorithmInfo():
-		r"""Get default information of algorithm.
+    """
 
-		Returns:
-			str: Basic information.
+    Name = ['DynamicFireworksAlgorithmGauss', 'dynFWAG']
 
-		See Also:
-			* :func:`niapy.algorithms.Algorithm.algorithmInfo`
-		"""
-		return r"""S. Zheng, A. Janecek, J. Li and Y. Tan, "Dynamic search in fireworks algorithm," 2014 IEEE Congress on Evolutionary Computation (CEC), Beijing, 2014, pp. 3222-3229. doi: 10.1109/CEC.2014.6900485"""
+    @staticmethod
+    def info():
+        r"""Get default information of algorithm.
 
-	@staticmethod
-	def typeParameters():
-		r"""Get dictionary with functions for checking values of parameters.
+        Returns:
+            str: Basic information.
 
-		Returns:
-			Dict[str, Callable]:
-				* A_cr (Callable[[Union[float, int], bool]): TODo
+        See Also:
+            * :func:`niapy.algorithms.Algorithm.info`
 
-		See Also:
-			* :func:`FireworksAlgorithm.typeParameters`
-		"""
-		d = FireworksAlgorithm.typeParameters()
-		d['A_cf'] = lambda x: isinstance(x, (float, int)) and x > 0
-		d['C_a'] = lambda x: isinstance(x, (float, int)) and x > 1
-		d['C_r'] = lambda x: isinstance(x, (float, int)) and 0 < x < 1
-		d['epsilon'] = lambda x: isinstance(x, (float, int)) and 0 < x < 1
-		return d
+        """
+        return r"""S. Zheng, A. Janecek, J. Li and Y. Tan, "Dynamic search in fireworks algorithm," 2014 IEEE Congress on Evolutionary Computation (CEC), Beijing, 2014, pp. 3222-3229. doi: 10.1109/CEC.2014.6900485"""
 
-	def setParameters(self, A_cf=20, C_a=1.2, C_r=0.9, epsilon=1e-8, **ukwargs):
-		r"""Set core arguments of DynamicFireworksAlgorithmGauss.
+    @staticmethod
+    def type_parameters():
+        r"""Get dictionary with functions for checking values of parameters.
 
-		Args:
-			A_cf (Union[int, float]):
-			C_a (Union[int, float]):
-			C_r (Union[int, float]):
-			epsilon (Union[int, float]):
-			**ukwargs (Dict[str, Any]): Additional arguments.
+        Returns:
+            Dict[str, Callable]:
+                * amplitude_cf (Callable[[Union[float, int], bool]): Amplitude of the core firework.
 
-		See Also:
-			* :func:`FireworksAlgorithm.setParameters`
-		"""
-		FireworksAlgorithm.setParameters(self, **ukwargs)
-		self.A_cf, self.C_a, self.C_r, self.epsilon = A_cf, C_a, C_r, epsilon
+        See Also:
+            * :func:`FireworksAlgorithm.type_parameters`
 
-	def initAmplitude(self, task):
-		r"""Initialize amplitude.
+        """
+        d = FireworksAlgorithm.type_parameters()
+        d['amplitude_cf'] = lambda x: isinstance(x, (float, int)) and x > 0
+        d['amplification_coeff'] = lambda x: isinstance(x, (float, int)) and x > 1
+        d['reduction_coeff'] = lambda x: isinstance(x, (float, int)) and 0 < x < 1
+        return d
 
-		Args:
-			task (Task): Optimization task.
+    def __init__(self, amplification_coeff=1.2, reduction_coeff=0.9, *args, **kwargs):
+        """Initialize dynFWAG.
 
-		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray]:
-				1. Initial amplitudes.
-				2. Amplitude for best spark.
-		"""
-		return FireworksAlgorithm.initAmplitude(self, task), task.bRange
+        Args:
+            amplification_coeff (Union[int, float]): Amplification coefficient.
+            reduction_coeff (Union[int, float]): Reduction coefficient.
 
-	def Mapping(self, x, task):
-		r"""Fix out of bound solution/individual.
+        See Also:
+            * :func:`FireworksAlgorithm.__init__`
 
-		Args:
-			x (numpy.ndarray): Individual.
-			task (Task): Optimization task.
+        """
+        super().__init__(*args, **kwargs)
+        self.amplification_coeff = amplification_coeff
+        self.reduction_coeff = reduction_coeff
 
-		Returns:
-			numpy.ndarray: Fixed individual.
-		"""
-		ir = np.where(x > task.Upper)
-		x[ir] = self.uniform(task.Lower[ir], task.Upper[ir])
-		ir = np.where(x < task.Lower)
-		x[ir] = self.uniform(task.Lower[ir], task.Upper[ir])
-		return x
+    def set_parameters(self, amplification_coeff=1.2, reduction_coeff=0.9, **kwargs):
+        r"""Set core arguments of DynamicFireworksAlgorithmGauss.
 
-	def repair(self, x, d, epsilon):
-		r"""Repair solution.
+        Args:
+            amplification_coeff (Union[int, float]): Amplification coefficient.
+            reduction_coeff (Union[int, float]): Reduction coefficient.
 
-		Args:
-			x (numpy.ndarray): Individual.
-			d (numpy.ndarray): Default value.
-			epsilon (float): Limiting value.
+        See Also:
+            * :func:`FireworksAlgorithm.set_parameters`
 
-		Returns:
-			numpy.ndarray: Fixed solution.
-		"""
-		ir = np.where(x <= epsilon)
-		x[ir] = d[ir]
-		return x
+        """
+        super().set_parameters(**kwargs)
+        self.amplification_coeff = amplification_coeff
+        self.reduction_coeff = reduction_coeff
 
-	def NextGeneration(self, FW, FW_f, FWn, task):
-		r"""TODO.
+    def update_cf(self, xnb, xcb, xcb_f, xb, xb_f, amplitude_cf, task):
+        r"""Update the core firework.
 
-		Args:
-			FW (numpy.ndarray): Current population.
-			FW_f (numpy.ndarray[float]): Current populations function/fitness values.
-			FWn (numpy.ndarray): New population.
-			task (Task): Optimization task.
+        Args:
+            xnb: Sparks generated by core fireworks.
+            xcb: Current generations best spark.
+            xcb_f: Current generations best fitness.
+            xb: Global best individual.
+            xb_f: Global best fitness.
+            amplitude_cf: Amplitude of the core firework.
+            task (Task): Optimization task.
 
-		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray[float]]:
-				1. New population.
-				2. New populations function/fitness values.
-		"""
-		FWn_f = np.apply_along_axis(task.eval, 1, FWn)
-		ib = np.argmin(FWn_f)
-		for i, f in enumerate(FW_f):
-			r = self.integers(len(FWn))
-			if FWn_f[r] < f: FW[i], FW_f[i] = FWn[r], FWn_f[r]
-		FW[0], FW_f[0] = FWn[ib], FWn_f[ib]
-		return FW, FW_f
+        Returns:
+            Tuple[numpy.ndarray, float, numpy.ndarray]:
+                1. New core firework.
+                2. New core firework's fitness.
+                3. New core firework amplitude.
 
-	def uCF(self, xnb, xcb, xcb_f, xb, xb_f, Acf, task):
-		r"""TODO.
+        """
+        xnb_f = np.apply_along_axis(task.eval, 1, xnb)
+        ib_f = np.argmin(xnb_f)
+        if xnb_f[ib_f] <= xb_f:
+            xb, xb_f = xnb[ib_f], xnb_f[ib_f]
+        if xb_f >= xcb_f:
+            xb, xb_f, amplitude_cf = xcb, xcb_f, amplitude_cf * self.amplification_coeff
+        else:
+            amplitude_cf = amplitude_cf * self.reduction_coeff
+        return xb, xb_f, amplitude_cf
 
-		Args:
-			xnb:
-			xcb:
-			xcb_f:
-			xb:
-			xb_f:
-			Acf:
-			task (Task): Optimization task.
+    def explosion_amplitudes(self, population_fitness, task=None):
+        """Calculate explosion amplitude for other fireworks."""
+        return FireworksAlgorithm.explosion_amplitudes(self, population_fitness)
 
-		Returns:
-			Tuple[numpy.ndarray, float, numpy.ndarray]:
-				1. TODO
-		"""
-		xnb_f = np.apply_along_axis(task.eval, 1, xnb)
-		ib_f = np.argmin(xnb_f)
-		if xnb_f[ib_f] <= xb_f: xb, xb_f = xnb[ib_f], xnb_f[ib_f]
-		Acf = self.repair(Acf, task.bRange, self.epsilon)
-		if xb_f >= xcb_f: xb, xb_f, Acf = xcb, xcb_f, Acf * self.C_a
-		else: Acf = Acf * self.C_r
-		return xb, xb_f, Acf
+    def init_population(self, task):
+        r"""Initialize population.
 
-	def ExplosionAmplitude(self, x_f, xb_f, Ah, As, A_min=None):
-		return FireworksAlgorithm.ExplosionAmplitude(self, x_f, xb_f, Ah, As)
+        Args:
+            task (Task): Optimization task.
 
-	def initPopulation(self, task):
-		r"""Initialize population.
+        Returns:
+            Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+                1. Initialized population.
+                2. Initialized population function/fitness values.
+                3. Additional arguments:
+                    * amplitude_cf (numpy.ndarray): Initial amplitude of the core firework.
 
-		Args:
-			task (Task): Optimization task.
+        """
+        fireworks, fitnesses, _ = super().init_population(task)
+        amplitude_cf = task.range
+        return fireworks, fitnesses, {'amplitude_cf': amplitude_cf}
 
-		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
-				1. Initialized population.
-				2. Initialized population function/fitness values.
-				3. Additional arguments:
-					* Ah (): TODO
-					* Ab (): TODO
-		"""
-		FW, FW_f, _ = Algorithm.initPopulation(self, task)
-		Ah, Ab = self.initAmplitude(task)
-		return FW, FW_f, {'Ah': Ah, 'Ab': Ab}
+    def selection(self, population, population_fitness, sparks, task):
+        """Select fireworks for the next generation."""
+        sparks_fitness = np.apply_along_axis(task.eval, 1, sparks)
+        ib = np.argmin(sparks_fitness)
+        for i, f in enumerate(population_fitness):
+            r = self.integers(len(sparks))
+            if sparks_fitness[r] < f:
+                population[i], population_fitness[i] = sparks[r], sparks_fitness[r]
+        population[0], population_fitness[0] = sparks[ib], sparks_fitness[ib]
+        return population, population_fitness
 
-	def runIteration(self, task, FW, FW_f, xb, fxb, Ah, Ab, **dparams):
-		r"""Core function of DynamicFireworksAlgorithmGauss algorithm.
+    def run_iteration(self, task, population, population_fitness, best_x, best_fitness, **params):
+        r"""Core function of DynamicFireworksAlgorithmGauss algorithm.
 
-		Args:
-			task (Task): Optimization task.
-			FW (numpy.ndarray): Current population.
-			FW_f (numpy.ndarray): Current populations function/fitness values.
-			xb (numpy.ndarray): Global best individual.
-			fxb (float): Global best fitness/function value.
-			Ah (Union[numpy.ndarray, float]): TODO
-			Ab (Union[numpy.ndarray, float]): TODO
-			**dparams (Dict[str, Any]): Additional arguments.
+        Args:
+            task (Task): Optimization task.
+            population (numpy.ndarray): Current population.
+            population_fitness (numpy.ndarray): Current populations function/fitness values.
+            best_x (numpy.ndarray): Global best individual.
+            best_fitness (float): Global best fitness/function value.
+            **params (Dict[str, Any]): Additional arguments.
 
-		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, float, Dict[str, Any]]:
-				1. New population.
-				2. New populations fitness/function values.
-				3. New global best solution.
-				4. New global best solutions fitness/objective value.
-				5. Additional arguments:
-					* Ah (Union[numpy.ndarray, float]): TODO
-					* Ab (Union[numpy.ndarray, float]): TODO
-		"""
-		iw, ib = np.argmax(FW_f), np.argmin(FW_f)
-		Ss, As = np.sum(FW_f[iw] - FW_f), np.sum(FW_f - FW_f[ib])
-		S, sb = [self.SparsksNo(FW_f[i], FW_f[iw], Ss) for i in range(len(FW))], self.SparsksNo(fxb, FW_f[iw], Ss)
-		A = [self.ExplosionAmplitude(FW_f[i], FW_f[ib], Ah, As) for i in range(len(FW))]
-		FWn, xnb = [self.ExplodeSpark(FW[i], A[i], task) for i in range(self.NP) for _ in range(S[i])], [self.ExplodeSpark(xb, Ab, task) for _ in range(sb)]
-		for i in range(self.m): FWn.append(self.GaussianSpark(self.integers(self.NP), FW[ib], task))
-		FW, FW_f = self.NextGeneration(FW, FW_f, FWn, task)
-		iw, ib = np.argmax(FW_f), 0
-		xb, fxb, Ab = self.uCF(xnb, FW[ib], FW_f[ib], xb, fxb, Ab, task)
-		return FW, FW_f, xb, fxb, {'Ah': Ah, 'Ab': Ab}
+        Returns:
+            Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, float, Dict[str, Any]]:
+                1. New population.
+                2. New populations fitness/function values.
+                3. New global best solution.
+                4. New global best solutions fitness/objective value.
+                5. Additional arguments:
+                    * amplitude_cf (numpy.ndarray): Amplitude of the core firework.
+
+        """
+        amplitude_cf = params.pop('amplitude_cf')
+
+        sparks_num = self.sparks_num(population_fitness)
+        amplitudes = self.explosion_amplitudes(population_fitness)
+
+        cf_sparks_num = self.num_sparks * (np.amax(population_fitness) - best_fitness + self.epsilon) /\
+            (np.sum(np.amax(population_fitness - best_fitness)) + self.epsilon)
+
+        if cf_sparks_num < self.a * self.num_sparks:
+            cf_sparks_num = round(self.a * self.num_sparks)
+        elif cf_sparks_num > self.b * self.num_sparks and self.a < self.b < 1:
+            cf_sparks_num = round(self.b * self.num_sparks)
+        else:
+            cf_sparks_num = round(cf_sparks_num)
+
+        all_sparks = population.copy()
+        for i in range(self.population_size):
+            si = sparks_num[i]
+            ai = amplitudes[i]
+
+            sparks_i = np.empty((si, task.dimension))
+            for s in range(si):
+                sparks_i[s] = population[i]
+                sparks_i[s] = self.explosion_spark(sparks_i[s], ai, task)
+            all_sparks = np.concatenate((all_sparks, sparks_i), axis=0)
+
+        gaussian_idx = self.rng.choice(len(all_sparks), self.num_gaussian, replace=False)
+        gaussian_sparks = np.array(all_sparks[gaussian_idx])
+
+        for i in range(self.num_gaussian):
+            gaussian_sparks[i] = self.gaussian_spark(gaussian_sparks[i], task, best_x=best_x)
+
+        all_sparks = np.concatenate((all_sparks, gaussian_sparks), axis=0)
+
+        cf_sparks = np.empty((cf_sparks_num, task.dimension))
+        for s in range(cf_sparks_num):
+            cf_sparks[s] = best_x
+            cf_sparks[s] = self.explosion_spark(cf_sparks[s], amplitude_cf, task)
+
+        population, population_fitness = self.selection(population, population_fitness, all_sparks, task)
+        best_x, best_fitness, amplitude_cf = self.update_cf(cf_sparks, population[0], population_fitness[0], best_x, best_fitness, amplitude_cf, task)
+        return population, population_fitness, best_x, best_fitness, {'amplitude_cf': amplitude_cf}
+
 
 class DynamicFireworksAlgorithm(DynamicFireworksAlgorithmGauss):
-	r"""Implementation of dynamic fireworks algorithm.
+    r"""Implementation of dynamic fireworks algorithm.
 
-	Algorithm:
-		Dynamic Fireworks Algorithm
+    Algorithm:
+        Dynamic Fireworks Algorithm
 
-	Date:
-		2018
+    Date:
+        2018
 
-	Authors:
-		Klemen Berkovič
+    Authors:
+        Klemen Berkovič
 
-	License:
-		MIT
+    License:
+        MIT
 
-	Reference URL:
-		http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6900485&isnumber=6900223
+    Reference URL:
+        http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6900485&isnumber=6900223
 
-	Reference paper:
-		S. Zheng, A. Janecek, J. Li and Y. Tan, "Dynamic search in fireworks algorithm," 2014 IEEE Congress on Evolutionary Computation (CEC), Beijing, 2014, pp. 3222-3229. doi: 10.1109/CEC.2014.6900485
+    Reference paper:
+        S. Zheng, A. Janecek, J. Li and Y. Tan, "Dynamic search in fireworks algorithm," 2014 IEEE Congress on Evolutionary Computation (CEC), Beijing, 2014, pp. 3222-3229. doi: 10.1109/CEC.2014.6900485
 
-	Attributes:
-		Name (List[str]): List of strings representing algorithm name.
+    Attributes:
+        Name (List[str]): List of strings representing algorithm name.
 
-	See Also:
-		* :class:`niapy.algorithms.basic.DynamicFireworksAlgorithmGauss`
-	"""
-	Name = ['DynamicFireworksAlgorithm', 'dynFWA']
+    See Also:
+        * :class:`niapy.algorithms.basic.DynamicFireworksAlgorithmGauss`
 
-	@staticmethod
-	def algorithmInfo():
-		r"""Get default information of algorithm.
+    """
 
-		Returns:
-			str: Basic information.
+    Name = ['DynamicFireworksAlgorithm', 'dynFWA']
 
-		See Also:
-			* :func:`niapy.algorithms.Algorithm.algorithmInfo`
-		"""
-		return r"""S. Zheng, A. Janecek, J. Li and Y. Tan, "Dynamic search in fireworks algorithm," 2014 IEEE Congress on Evolutionary Computation (CEC), Beijing, 2014, pp. 3222-3229. doi: 10.1109/CEC.2014.6900485"""
+    @staticmethod
+    def info():
+        r"""Get default information of algorithm.
 
-	def runIteration(self, task, FW, FW_f, xb, fxb, Ah, Ab, **dparams):
-		r"""Core function of Dynamic Fireworks Algorithm.
+        Returns:
+            str: Basic information.
 
-		Args:
-			task (Task): Optimization task
-			FW (numpy.ndarray): Current population
-			FW_f (numpy.ndarray[float]): Current population fitness/function values
-			xb (numpy.ndarray): Current best solution
-			fxb (float): Current best solution's fitness/function value
-			Ah (): TODO
-			Ab (): TODO
-			**dparams:
+        See Also:
+            * :func:`niapy.algorithms.Algorithm.info`
 
-		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
-				1. New population.
-				2. New population function/fitness values.
-				3. Additional arguments:
-					* Ah (): TODO
-					* Ab (): TODO
-		"""
-		iw, ib = np.argmax(FW_f), np.argmin(FW_f)
-		Ss, As = np.sum(FW_f[iw] - FW_f), np.sum(FW_f - FW_f[ib])
-		S, sb = [self.SparsksNo(FW_f[i], FW_f[iw], Ss) for i in range(len(FW))], self.SparsksNo(fxb, FW_f[iw], Ss)
-		A = [self.ExplosionAmplitude(FW_f[i], FW_f[ib], Ah, As) for i in range(len(FW))]
-		FWn, xnb = [self.ExplodeSpark(FW[i], A[i], task) for i in range(self.NP) for _ in range(S[i])], [self.ExplodeSpark(xb, Ab, task) for _ in range(sb)]
-		FW, FW_f = self.NextGeneration(FW, FW_f, FWn, task)
-		iw, ib = np.argmax(FW_f), 0
-		xb, fxb, Ab = self.uCF(xnb, FW[ib], FW_f[ib], xb, fxb, Ab, task)
-		return FW, FW_f, xb, fxb, {'Ah': Ah, 'Ab': Ab}
+        """
+        return r"""S. Zheng, A. Janecek, J. Li and Y. Tan, "Dynamic search in fireworks algorithm," 2014 IEEE Congress on Evolutionary Computation (CEC), Beijing, 2014, pp. 3222-3229. doi: 10.1109/CEC.2014.6900485"""
+
+    def run_iteration(self, task, population, population_fitness, best_x, best_fitness, **params):
+        r"""Co50re function of Dynamic Fireworks Algorithm.
+
+        Args:
+            task (Task): Optimization task
+            population (numpy.ndarray): Current population
+            population_fitness (numpy.ndarray[float]): Current population fitness/function values
+            best_x (numpy.ndarray): Current best solution
+            best_fitness (float): Current best solution's fitness/function value
+            **params:
+
+        Returns:
+            Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
+                1. New population.
+                2. New population function/fitness values.
+                3. New global best solution.
+                4. New global best fitness.
+                5. Additional arguments.
+
+        """
+        amplitude_cf = params.pop('amplitude_cf')
+
+        sparks_num = self.sparks_num(population_fitness)
+        amplitudes = self.explosion_amplitudes(population_fitness)
+
+        cf_sparks_num = self.num_sparks * (np.amax(population_fitness) - best_fitness + self.epsilon) / \
+            (np.sum(np.amax(population_fitness - best_fitness)) + self.epsilon)
+
+        if cf_sparks_num < self.a * self.num_sparks:
+            cf_sparks_num = round(self.a * self.num_sparks)
+        elif cf_sparks_num > self.b * self.num_sparks and self.a < self.b < 1:
+            cf_sparks_num = round(self.b * self.num_sparks)
+        else:
+            cf_sparks_num = round(cf_sparks_num)
+
+        all_sparks = population.copy()
+        for i in range(self.population_size):
+            si = sparks_num[i]
+            ai = amplitudes[i]
+
+            sparks_i = np.empty((si, task.dimension))
+            for s in range(si):
+                sparks_i[s] = population[i]
+                sparks_i[s] = self.explosion_spark(sparks_i[s], ai, task)
+            all_sparks = np.concatenate((all_sparks, sparks_i), axis=0)
+
+        cf_sparks = np.empty((cf_sparks_num, task.dimension))
+        for s in range(cf_sparks_num):
+            cf_sparks[s] = best_x
+            cf_sparks[s] = self.explosion_spark(cf_sparks[s], amplitude_cf, task)
+
+        population, population_fitness = self.selection(population, population_fitness, all_sparks, task)
+        best_x, best_fitness, amplitude_cf = self.update_cf(cf_sparks, population[0], population_fitness[0], best_x,
+                                                            best_fitness, amplitude_cf, task)
+        return population, population_fitness, best_x, best_fitness, {'amplitude_cf': amplitude_cf}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

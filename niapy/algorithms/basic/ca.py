@@ -12,323 +12,381 @@ logger.setLevel('INFO')
 
 __all__ = ['CamelAlgorithm']
 
+
 class Camel(Individual):
-	r"""Implementation of population individual that is a camel for Camel algorithm.
+    r"""Implementation of population individual that is a camel for Camel algorithm.
 
-	Algorithm:
-		Camel algorithm
+    Algorithm:
+        Camel algorithm
 
-	Date:
-		2018
+    Date:
+        2018
 
-	Authors:
-		Klemen Berkovič
+    Authors:
+        Klemen Berkovič
 
-	License:
-		MIT
+    License:
+        MIT
 
-	Attributes:
-		E (float): Camel endurance.
-		S (float): Camel supply.
-		x_past (numpy.ndarray): Camel's past position.
-		f_past (float): Camel's past funciton/fitness value.
-		steps (int): Age of camel.
+    Attributes:
+        endurance (float): Camel endurance.
+        supply (float): Camel supply.
+        x_past (numpy.ndarray): Camel's past position.
+        f_past (float): Camel's past function/fitness value.
+        steps (int): Age of camel.
 
-	See Also:
-		* :class:`niapy.algorithms.Individual`
-	"""
-	def __init__(self, E_init=None, S_init=None, **kwargs):
-		r"""Initialize the Camel.
+    See Also:
+        * :class:`niapy.algorithms.Individual`
 
-		Args:
-			E_init (Optional[float]): Starting endurance of Camel.
-			S_init (Optional[float]): Stating supply of Camel.
-			**kwargs (Dict[str, Any]): Additional arguments.
+    """
 
-		See Also:
-			* :func:`niapy.algorithms.Individual.__init__`
-		"""
-		Individual.__init__(self, **kwargs)
-		self.E, self.E_past = E_init, E_init
-		self.S, self.S_past = S_init, S_init
-		self.x_past, self.f_past = self.x, self.f
-		self.steps = 0
+    def __init__(self, endurance_init=None, supply_init=None, **kwargs):
+        r"""Initialize the Camel.
 
-	def nextT(self, T_min, T_max, rng):
-		r"""Apply nextT function on Camel.
+        Args:
+            endurance_init (Optional[float]): Starting endurance of Camel.
+            supply_init (Optional[float]): Stating supply of Camel.
 
-		Args:
-			T_min (float): TODO
-			T_max (float): TODO
-			rng (numpy.random.Generator): Random number generator.
-		"""
-		self.T = rng.uniform(T_min, T_max)
+        See Also:
+            * :func:`niapy.algorithms.Individual.__init__`
 
-	def nextS(self, omega, n_gens):
-		r"""Apply nextS on Camel.
+        """
+        super().__init__(**kwargs)
+        self.endurance = endurance_init
+        self.endurance_past = endurance_init
+        self.supply = supply_init
+        self.supply_past = supply_init
+        self.x_past = self.x
+        self.f_past = self.f
+        self.steps = 0
 
-		Args:
-			omega (float): TODO.
-			n_gens (int): Number of Camel Algorithm iterations/generations.
-		"""
-		self.S = self.S_past * (1 - omega * self.steps / n_gens)
+    def next_temperature(self, min_temperature, max_temperature, rng):
+        r"""Apply nextT function on Camel.
 
-	def nextE(self, n_gens, T_max):
-		r"""Apply function nextE on function on Camel.
+        Args:
+            min_temperature (float): Minimum temperature.
+            max_temperature (float): Maximum temperature.
+            rng (numpy.random.Generator): Random number generator.
 
-		Args:
-			n_gens (int): Number of Camel Algorithm iterations/generations
-			T_max (float): Maximum temperature of environment
-		"""
-		self.E = self.E_past * (1 - self.T / T_max) * (1 - self.steps / n_gens)
+        """
+        self.temperature = rng.uniform(min_temperature, max_temperature)
 
-	def nextX(self, cb, E_init, S_init, task, rng):
-		r"""Apply function nextX on Camel.
+    def next_supply(self, burden_factor, max_iters):
+        r"""Apply nextS on Camel.
 
-		This method/function move this Camel to new position in search space.
+        Args:
+            burden_factor (float): Burden factor.
+            max_iters (int): Number of Camel Algorithm iterations/generations.
 
-		Args:
-			cb (Camel): Best Camel in population.
-			E_init (float): Starting endurance of camel.
-			S_init (float): Starting supply of camel.
-			task (Task): Optimization task.
-			rng (numpy.random.Generator): Random number generator.
-		"""
-		delta = rng.uniform(-1, 1)
-		self.x = self.x_past + delta * (1 - (self.E / E_init)) * np.exp(1 - self.S / S_init) * (cb - self.x_past)
-		if not task.isFeasible(self.x): self.x = self.x_past
-		else: self.f = task.eval(self.x)
+        """
+        self.supply = self.supply_past * (1 - burden_factor * self.steps / max_iters)
 
-	def next(self):
-		r"""Save new position of Camel to old position."""
-		self.x_past, self.f_past, self.E_past, self.S_past = self.x.copy(), self.f, self.E, self.S
-		self.steps += 1
-		return self
+    def next_endurance(self, max_temperature, max_iters):
+        r"""Apply function nextE on function on Camel.
 
-	def refill(self, S=None, E=None):
-		r"""Apply this function to Camel.
+        Args:
+            max_iters (int): Number of Camel Algorithm iterations/generations
+            max_temperature (float): Maximum temperature of environment
 
-		Args:
-			S (float): New value of Camel supply.
-			E (float): New value of Camel endurance.
-		"""
-		self.S, self.E = S, E
+        """
+        self.endurance = self.endurance_past * (1 - self.temperature / max_temperature) * (1 - self.steps / max_iters)
+
+    def next_x(self, cb, endurance_init, supply_init, task, rng):
+        r"""Apply function next_x on Camel.
+
+        This method/function move this Camel to new position in search space.
+
+        Args:
+            cb (numpy.ndarray): Best Camel in population.
+            endurance_init (float): Starting endurance of camel.
+            supply_init (float): Starting supply of camel.
+            task (Task): Optimization task.
+            rng (numpy.random.Generator): Random number generator.
+
+        """
+        delta = rng.uniform(-1, 1)
+        self.x = self.x_past + delta * (1 - (self.endurance / endurance_init)) * np.exp(
+            1 - self.supply / supply_init) * (
+                         cb - self.x_past)
+        if not task.is_feasible(self.x):
+            self.x = self.x_past
+        else:
+            self.f = task.eval(self.x)
+
+    def next(self):
+        r"""Save new position of Camel to old position."""
+        self.x_past = self.x.copy()
+        self.f_past = self.f
+        self.endurance_past = self.endurance
+        self.supply_past = self.supply
+        self.steps += 1
+        return self
+
+    def refill(self, supply=None, endurance=None):
+        r"""Apply this function to Camel.
+
+        Args:
+            supply (float): New value of Camel supply.
+            endurance (float): New value of Camel endurance.
+
+        """
+        self.supply = supply
+        self.endurance = endurance
+
 
 class CamelAlgorithm(Algorithm):
-	r"""Implementation of Camel traveling behavior.
+    r"""Implementation of Camel traveling behavior.
 
-	Algorithm:
-		Camel algorithm
+    Algorithm:
+        Camel algorithm
 
-	Date:
-		2018
+    Date:
+        2018
 
-	Authors:
-		Klemen Berkovič
+    Authors:
+        Klemen Berkovič
 
-	License:
-		MIT
+    License:
+        MIT
 
-	Reference URL:
-		https://www.iasj.net/iasj?func=fulltext&aId=118375
+    Reference URL:
+        https://www.iasj.net/iasj?func=fulltext&aId=118375
 
-	Reference paper:
-		Ali, Ramzy. (2016). Novel Optimization Algorithm Inspired by Camel Traveling Behavior. Iraq J. Electrical and Electronic Engineering. 12. 167-177.
+    Reference paper:
+        Ali, Ramzy. (2016). Novel Optimization Algorithm Inspired by Camel Traveling Behavior.
+        Iraq J. Electrical and Electronic Engineering. 12. 167-177.
 
-	Attributes:
-		Name (List[str]): List of strings representing name of the algorithm.
-		T_min (float): Minimal temperature of environment.
-		T_max (float): Maximal temperature of environment.
-		E_init (float): Starting value of energy.
-		S_init (float): Starting value of supplys.
+    Attributes:
+        Name (List[str]): List of strings representing name of the algorithm.
+        population_size (Optional[int]): Population size :math:`\in [1, \infty)`.
+        burden_factor (Optional[float]): Burden factor :math:`\in [0, 1]`.
+        death_rate (Optional[float]): Dying rate :math:`\in [0, 1]`.
+        visibility (Optional[float]): View range of camel.
+        supply_init (Optional[float]): Initial supply :math:`\in (0, \infty)`.
+        endurance_init (Optional[float]): Initial endurance :math:`\in (0, \infty)`.
+        min_temperature (Optional[float]): Minimum temperature, must be true :math:`$T_{min} < T_{max}`.
+        max_temperature (Optional[float]): Maximum temperature, must be true :math:`T_{min} < T_{max}`.
 
-	See Also:
-		* :class:`niapy.algorithms.Algorithm`
-	"""
-	Name = ['CamelAlgorithm', 'CA']
+    See Also:
+        * :class:`niapy.algorithms.Algorithm`
 
-	@staticmethod
-	def algorithmInfo():
-		r"""Get information about algorithm.
+    """
 
-		Returns:
-			str: Algorithm information
+    Name = ['CamelAlgorithm', 'CA']
 
-		See Also:
-			* :func:`niapy.algorithms.Algorithm.algorithmInfo`
-		"""
-		return r'''Ali, Ramzy. (2016). Novel Optimization Algorithm Inspired by Camel Traveling Behavior. Iraq J. Electrical and Electronic Engineering. 12. 167-177.'''
+    @staticmethod
+    def info():
+        r"""Get information about algorithm.
 
-	@staticmethod
-	def typeParameters():
-		r"""Get dictionary with functions for checking values of parameters.
+        Returns:
+            str: Algorithm information
 
-		Returns:
-			Dict[str, Callable]:
-				* omega (Callable[[Union[int, float]], bool])
-				* mu (Callable[[float], bool])
-				* alpha (Callable[[float], bool])
-				* S_init (Callable[[Union[float, int]], bool])
-				* E_init (Callable[[Union[float, int]], bool])
-				* T_min (Callable[[Union[float, int], bool])
-				* T_max (Callable[[Union[float, int], bool])
+        See Also:
+            * :func:`niapy.algorithms.Algorithm.info`
 
-		See Also:
-			* :func:`niapy.algorithms.Algorithm.typeParameters`
-		"""
-		d = Algorithm.typeParameters()
-		d.update({
-			'omega': lambda x: isinstance(x, (float, int)),
-			'mu': lambda x: isinstance(x, float) and 0 <= x <= 1,
-			'alpha': lambda x: isinstance(x, float) and 0 <= x <= 1,
-			'S_init': lambda x: isinstance(x, (float, int)) and x > 0,
-			'E_init': lambda x: isinstance(x, (float, int)) and x > 0,
-			'T_min': lambda x: isinstance(x, (float, int)) and x > 0,
-			'T_max': lambda x: isinstance(x, (float, int)) and x > 0
-		})
-		return d
+        """
+        return r'''Ali, Ramzy. (2016). Novel Optimization Algorithm Inspired by Camel Traveling Behavior.
+        Iraq J. Electrical and Electronic Engineering. 12. 167-177.'''
 
-	def setParameters(self, NP=50, omega=0.25, mu=0.5, alpha=0.5, S_init=10, E_init=10, T_min=-10, T_max=10, **ukwargs):
-		r"""Set the arguments of an algorithm.
+    @staticmethod
+    def type_parameters():
+        r"""Get dictionary with functions for checking values of parameters.
 
-		Arguments:
-			NP (Optional[int]): Population size :math:`\in [1, \infty)`.
-			T_min (Optional[float]): Minimum temperature, must be true :math:`$T_{min} < T_{max}`.
-			T_max (Optional[float]): Maximum temperature, must be true :math:`T_{min} < T_{max}`.
-			omega (Optional[float]): Burden factor :math:`\in [0, 1]`.
-			mu (Optional[float]): Dying rate :math:`\in [0, 1]`.
-			S_init (Optional[float]): Initial supply :math:`\in (0, \infty)`.
-			E_init (Optional[float]): Initial endurance :math:`\in (0, \infty)`.
+        Returns:
+            Dict[str, Callable]:
+                * burden_factor (Callable[[Union[int, float]], bool])
+                * death_rate (Callable[[float], bool])
+                * visibility (Callable[[float], bool])
+                * supply_init (Callable[[Union[float, int]], bool])
+                * endurance_init (Callable[[Union[float, int]], bool])
+                * min_temperature (Callable[[Union[float, int], bool])
+                * max_temperature (Callable[[Union[float, int], bool])
 
-		See Also:
-			* :func:`niapy.algorithms.Algorithm.setParameters`
-		"""
-		Algorithm.setParameters(self, NP=NP, itype=Camel, InitPopFunc=ukwargs.pop('InitPopFunc', self.initPop), **ukwargs)
-		self.omega, self.mu, self.alpha, self.S_init, self.E_init, self.T_min, self.T_max = omega, mu, alpha, S_init, E_init, T_min, T_max
+        See Also:
+            * :func:`niapy.algorithms.Algorithm.type_parameters`
 
-	def getParameters(self):
-		r"""Get parameters of the algorithm.
+        """
+        d = Algorithm.type_parameters()
+        d.update({
+            'burden_factor': lambda x: isinstance(x, (float, int)),
+            'death_rate': lambda x: isinstance(x, float) and 0 <= x <= 1,
+            'visibility': lambda x: isinstance(x, float) and 0 <= x <= 1,
+            'supply_init': lambda x: isinstance(x, (float, int)) and x > 0,
+            'endurance_init': lambda x: isinstance(x, (float, int)) and x > 0,
+            'min_temperature': lambda x: isinstance(x, (float, int)) and x > 0,
+            'max_temperature': lambda x: isinstance(x, (float, int)) and x > 0
+        })
+        return d
 
-		Returns:
-			Dict[str, Any]:
-		"""
-		d = Algorithm.getParameters(self)
-		d.update({
-			'omega': self.omega,
-			'mu': self.mu,
-			'alpha': self.alpha,
-			'S_init': self.S_init,
-			'E_init': self.E_init,
-			'T_min': self.T_min,
-			'T_max': self.T_max
-		})
-		return d
+    def __init__(self, population_size=50, burden_factor=0.25, death_rate=0.5, visibility=0.5, supply_init=10,
+                 endurance_init=10, min_temperature=-10, max_temperature=10, *args, **kwargs):
+        r"""Initialize CamelAlgorithm.
 
-	def initPop(self, task, NP, rng, itype, **kwargs):
-		r"""Initialize starting population.
+        Args:
+            population_size (Optional[int]): Population size :math:`\in [1, \infty)`.
+            burden_factor (Optional[float]): Burden factor :math:`\in [0, 1]`.
+            death_rate (Optional[float]): Dying rate :math:`\in [0, 1]`.
+            visibility (Optional[float]): View range of camel.
+            supply_init (Optional[float]): Initial supply :math:`\in (0, \infty)`.
+            endurance_init (Optional[float]): Initial endurance :math:`\in (0, \infty)`.
+            min_temperature (Optional[float]): Minimum temperature, must be true :math:`$T_{min} < T_{max}`.
+            max_temperature (Optional[float]): Maximum temperature, must be true :math:`T_{min} < T_{max}`.
 
-		Args:
-			task (Task): Optimization task.
-			NP (int): Number of camels in population.
-			rng (numpy.random.Generator): Random number generator.
-			itype (Individual): Individual type.
-			**kwargs (Dict[str, Any]): Additional arguments.
 
-		Returns:
-			Tuple[numpy.ndarray[Camel], numpy.ndarray[float]]:
-				1. Initialize population of camels.
-				2. Initialized populations function/fitness values.
-		"""
-		caravan = objects_to_array([itype(E_init=self.E_init, S_init=self.S_init, task=task, rng=rng, e=True) for _ in range(NP)])
-		return caravan, np.asarray([c.f for c in caravan])
+        See Also:
+            * :func:`niapy.algorithms.Algorithm.__init__`
 
-	def walk(self, c, cb, task):
-		r"""Move the camel in search space.
+        """
+        super().__init__(population_size, individual_type=kwargs.pop('individual_type', Camel),
+                         initialization_function=kwargs.pop('initialization_function', self.init_pop), *args, **kwargs)
+        self.burden_factor = burden_factor
+        self.death_rate = death_rate
+        self.visibility = visibility
+        self.supply_init = supply_init
+        self.endurance_init = endurance_init
+        self.min_temperature = min_temperature
+        self.max_temperature = max_temperature
 
-		Args:
-			c (Camel): Camel that we want to move.
-			cb (Camel): Best know camel.
-			task (Task): Optimization task.
+    def set_parameters(self, population_size=50, burden_factor=0.25, death_rate=0.5, visibility=0.5, supply_init=10,
+                       endurance_init=10, min_temperature=-10, max_temperature=10, **kwargs):
+        r"""Set the arguments of an algorithm.
 
-		Returns:
-			Camel: Camel that moved in the search space.
-		"""
-		c.nextT(self.T_min, self.T_max, self.rng)
-		c.nextS(self.omega, task.nGEN)
-		c.nextE(task.nGEN, self.T_max)
-		c.nextX(cb, self.E_init, self.S_init, task, self.rng)
-		return c
+        Args:
+            population_size (Optional[int]): Population size :math:`\in [1, \infty)`.
+            burden_factor (Optional[float]): Burden factor :math:`\in [0, 1]`.
+            death_rate (Optional[float]): Dying rate :math:`\in [0, 1]`.
+            visibility (Optional[float]): View range of camel.
+            supply_init (Optional[float]): Initial supply :math:`\in (0, \infty)`.
+            endurance_init (Optional[float]): Initial endurance :math:`\in (0, \infty)`.
+            min_temperature (Optional[float]): Minimum temperature, must be true :math:`$T_{min} < T_{max}`.
+            max_temperature (Optional[float]): Maximum temperature, must be true :math:`T_{min} < T_{max}`.
 
-	def oasis(self, c, rn, alpha):
-		r"""Apply oasis function to camel.
+        See Also:
+            * :func:`niapy.algorithms.Algorithm.set_parameters`
 
-		Args:
-			c (Camel): Camel to apply oasis on.
-			rn (float): Random number.
-			alpha (float): View range of Camel.
+        """
+        super().set_parameters(population_size=population_size, individual_type=Camel,
+                               initialization_function=kwargs.pop('initialization_function', self.init_pop), **kwargs)
+        self.burden_factor = burden_factor
+        self.death_rate = death_rate
+        self.visibility = visibility
+        self.supply_init = supply_init
+        self.endurance_init = endurance_init
+        self.min_temperature = min_temperature
+        self.max_temperature = max_temperature
 
-		Returns:
-			Camel: Camel with appliyed oasis on.
-		"""
-		if rn > 1 - alpha and c.f < c.f_past: c.refill(self.S_init, self.E_init)
-		return c
+    def get_parameters(self):
+        r"""Get parameters of the algorithm.
 
-	def lifeCycle(self, c, mu, task):
-		r"""Apply life cycle to Camel.
+        Returns:
+            Dict[str, Any]: Algorithm Parameters.
 
-		Args:
-			c (Camel): Camel to apply life cycle.
-			mu (float): Vision range of camel.
-			task (Task): Optimization task.
+        """
+        d = super().get_parameters()
+        d.update({
+            'burden_factor': self.burden_factor,
+            'death_rate': self.death_rate,
+            'visibility': self.visibility,
+            'supply_init': self.supply_init,
+            'endurance_init': self.endurance_init,
+            'min_temperature': self.min_temperature,
+            'max_temperature': self.max_temperature
+        })
+        return d
 
-		Returns:
-			Camel: Camel with life cycle applyed to it.
-		"""
-		if c.f_past < mu * c.f: return Camel(self.E_init, self.S_init, rng=self.rng, task=task)
-		else: return c.next()
+    def init_pop(self, task, population_size, rng, individual_type, **_kwargs):
+        r"""Initialize starting population.
 
-	def initPopulation(self, task):
-		r"""Initialize population.
+        Args:
+            task (Task): Optimization task.
+            population_size (int): Number of camels in population.
+            rng (numpy.random.Generator): Random number generator.
+            individual_type (Type[Individual]): Individual type.
 
-		Args:
-			task (Task): Optimization taks.
+        Returns:
+            Tuple[numpy.ndarray[Camel], numpy.ndarray[float]]:
+                1. Initialize population of camels.
+                2. Initialized populations function/fitness values.
 
-		Returns:
-			Tuple[numpy.ndarray[Camel], numpy.ndarray[float], dict]:
-				1. New population of Camels.
-				2. New population fitness/function values.
-				3. Additional arguments.
+        """
+        caravan = objects_to_array(
+            [individual_type(endurance_init=self.endurance_init, supply_init=self.supply_init, task=task, rng=rng,
+                             e=True) for _ in range(population_size)])
+        return caravan, np.asarray([c.f for c in caravan])
 
-		See Also:
-			* :func:`niapy.algorithms.Algorithm.initPopulation`
-		"""
-		caravan, fcaravan, _ = Algorithm.initPopulation(self, task)
-		return caravan, fcaravan, {}
+    def walk(self, camel, best_x, task):
+        r"""Move the camel in search space.
 
-	def runIteration(self, task, caravan, fcaravan, cb, fcb, **dparams):
-		r"""Core function of Camel Algorithm.
+        Args:
+            camel (Camel): Camel that we want to move.
+            best_x (numpy.ndarray): Global best coordinates.
+            task (Task): Optimization task.
 
-		Args:
-			task (Task): Optimization task.
-			caravan (numpy.ndarray[Camel]): Current population of Camels.
-			fcaravan (numpy.ndarray[float]): Current population fitness/function values.
-			cb (Camel): Current best Camel.
-			fcb (float): Current best Camel fitness/function value.
-			**dparams (Dict[str, Any]): Additional arguments.
+        Returns:
+            Camel: Camel that moved in the search space.
 
-		Returns:
-			Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, folat, dict]:
-				1. New population
-				2. New population function/fitness value
-				3. New global best solution
-				4. New global best fitness/objective value
-				5. Additional arguments
-		"""
-		ncaravan = objects_to_array([self.walk(c, cb, task) for c in caravan])
-		ncaravan = objects_to_array([self.oasis(c, self.random(), self.alpha) for c in ncaravan])
-		ncaravan = objects_to_array([self.lifeCycle(c, self.mu, task) for c in ncaravan])
-		fncaravan = np.asarray([c.f for c in ncaravan])
-		cb, fcb = self.getBest(ncaravan, fncaravan, cb, fcb)
-		return ncaravan, fncaravan, cb, fcb, {}
+        """
+        camel.next_temperature(self.min_temperature, self.max_temperature, self.rng)
+        camel.next_supply(self.burden_factor, task.max_iters)
+        camel.next_endurance(self.max_temperature, task.max_iters)
+        camel.next_x(best_x, self.endurance_init, self.supply_init, task, self.rng)
+        return camel
+
+    def oasis(self, c):
+        r"""Apply oasis function to camel.
+
+        Args:
+            c (Camel): Camel to apply oasis on.
+
+        Returns:
+            Camel: Camel with applied oasis on.
+
+        """
+        if self.random() > (1 - self.visibility) and c.f < c.f_past:
+            c.refill(self.supply_init, self.endurance_init)
+        return c
+
+    def life_cycle(self, camel, task):
+        r"""Apply life cycle to Camel.
+
+        Args:
+            camel (Camel): Camel to apply life cycle.
+            task (Task): Optimization task.
+
+        Returns:
+            Camel: Camel with life cycle applied to it.
+
+        """
+        if camel.f_past < self.death_rate * camel.f:
+            return Camel(self.endurance_init, self.supply_init, rng=self.rng, task=task)
+        else:
+            return camel.next()
+
+    def run_iteration(self, task, population, population_fitness, best_x, best_fitness, **params):
+        r"""Core function of Camel Algorithm.
+
+        Args:
+            task (Task): Optimization task.
+            population (numpy.ndarray[Camel]): Current population of Camels.
+            population_fitness (numpy.ndarray[float]): Current population fitness/function values.
+            best_x (numpy.ndarray): Current best Camel.
+            best_fitness (float): Current best Camel fitness/function value.
+            **params (Dict[str, Any]): Additional arguments.
+
+        Returns:
+            Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, float, dict]:
+                1. New population
+                2. New population function/fitness value
+                3. New global best solution
+                4. New global best fitness/objective value
+                5. Additional arguments
+
+        """
+        new_caravan = objects_to_array([self.walk(c, best_x, task) for c in population])
+        new_caravan = objects_to_array([self.oasis(c) for c in new_caravan])
+        new_caravan = objects_to_array([self.life_cycle(c, task) for c in new_caravan])
+        new_caravan_fitness = np.asarray([c.f for c in new_caravan])
+        best_x, best_fitness = self.get_best(new_caravan, new_caravan_fitness, best_x, best_fitness)
+        return new_caravan, new_caravan_fitness, best_x, best_fitness, {}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

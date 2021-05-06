@@ -1,14 +1,15 @@
 # encoding=utf8
 
-"""Implementations of High Conditioned Elliptic functions."""
+"""Implementations of Cosine mixture functions."""
 
+import numpy as np
 from niapy.benchmarks.benchmark import Benchmark
 
-__all__ = ['Elliptic']
+__all__ = ['CosineMixture']
 
 
-class Elliptic(Benchmark):
-    r"""Implementations of High Conditioned Elliptic functions.
+class CosineMixture(Benchmark):
+    r"""Implementations of Cosine mixture function.
 
     Date: 2018
 
@@ -17,36 +18,36 @@ class Elliptic(Benchmark):
     License: MIT
 
     Function:
-    **High Conditioned Elliptic Function**
+    **Cosine Mixture Function**
 
-        :math:`f(\textbf{x}) = \sum_{i=1}^D \left( 10^6 \right)^{ \frac{i - 1}{D - 1} } x_i^2`
+        :math:`f(\textbf{x}) = - 0.1 \sum_{i = 1}^D \cos (5 \pi x_i) - \sum_{i = 1}^D x_i^2`
 
         **Input domain:**
         The function can be defined on any input domain but it is usually
-        evaluated on the hypercube :math:`x_i ∈ [-100, 100]`, for all :math:`i = 1, 2,..., D`.
+        evaluated on the hypercube :math:`x_i ∈ [-1, 1]`, for all :math:`i = 1, 2,..., D`.
 
-        **Global minimum:**
-        :math:`f(x^*) = 0`, at :math:`x^* = (420.968746,...,420.968746)`
+        **Global maximum:**
+        :math:`f(x^*) = -0.1 D`, at :math:`x^* = (0.0,...,0.0)`
 
     LaTeX formats:
         Inline:
-            $f(\textbf{x}) = \sum_{i=1}^D \left( 10^6 \right)^{ \frac{i - 1}{D - 1} } x_i^2$
+            $f(\textbf{x}) = - 0.1 \sum_{i = 1}^D \cos (5 \pi x_i) - \sum_{i = 1}^D x_i^2$
 
         Equation:
-            \begin{equation} f(\textbf{x}) = \sum_{i=1}^D \left( 10^6 \right)^{ \frac{i - 1}{D - 1} } x_i^2 \end{equation}
+            \begin{equation} f(\textbf{x}) = - 0.1 \sum_{i = 1}^D \cos (5 \pi x_i) - \sum_{i = 1}^D x_i^2 \end{equation}
 
         Domain:
-            $-100 \leq x_i \leq 100$
+            $-1 \leq x_i \leq 1$
 
     Reference:
-        http://www5.zzu.edu.cn/__local/A/69/BC/D3B5DFE94CD2574B38AD7CD1D12_C802DAFE_BC0C0.pdf
+        http://infinity77.net/global_optimization/test_functions_nd_C.html#go_benchmark.CosineMixture
 
     """
 
-    Name = ['Elliptic']
+    Name = ['CosineMixture']
 
-    def __init__(self, lower=-100.0, upper=100.0):
-        r"""Initialize of High Conditioned Elliptic benchmark.
+    def __init__(self, lower=-1.0, upper=1.0):
+        r"""Initialize of Cosine mixture benchmark.
 
         Args:
             lower (Optional[float]): Lower bound of problem.
@@ -66,7 +67,7 @@ class Elliptic(Benchmark):
             str: Latex code.
 
         """
-        return r'''$f(\textbf{x}) = \sum_{i=1}^D \left( 10^6 \right)^{ \frac{i - 1}{D - 1} } x_i^2$'''
+        return r'''$f(\textbf{x}) = - 0.1 \sum_{i = 1}^D \cos (5 \pi x_i) - \sum_{i = 1}^D x_i^2$'''
 
     def function(self):
         r"""Return benchmark evaluation function.
@@ -76,7 +77,7 @@ class Elliptic(Benchmark):
 
         """
 
-        def evaluate(dimension, x):
+        def f(dimension, x):
             r"""Fitness function.
 
             Args:
@@ -87,11 +88,11 @@ class Elliptic(Benchmark):
                 float: Fitness value for the solution.
 
             """
-            val = 0.0
+            v1, v2 = 0.0, 0.0
             for i in range(dimension):
-                val += (10 ** 6) ** (i / (dimension - 1)) * x[i]
-            return val
+                v1, v2 = v1 + np.cos(5 * np.pi * x[i]), v2 + x[i] ** 2
+            return -0.1 * v1 - v2
 
-        return evaluate
+        return f
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

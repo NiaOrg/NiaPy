@@ -1,6 +1,6 @@
 # encoding=utf8
 
-"""Implementaion of Chung Reynolds function."""
+"""Implementation of Chung Reynolds function."""
 
 import math
 from niapy.benchmarks.benchmark import Benchmark
@@ -29,40 +29,44 @@ class ChungReynolds(Benchmark):
 
     LaTeX formats:
         Inline:
-                $f(\mathbf{x}) = \left(\sum_{i=1}^D x_i^2\right)^2$
+            $f(\mathbf{x}) = \left(\sum_{i=1}^D x_i^2\right)^2$
 
         Equation:
-                \begin{equation} f(\mathbf{x}) = \left(\sum_{i=1}^D x_i^2\right)^2 \end{equation}
+            \begin{equation} f(\mathbf{x}) = \left(\sum_{i=1}^D x_i^2\right)^2 \end{equation}
 
         Domain:
-                $-100 \leq x_i \leq 100$
+            $-100 \leq x_i \leq 100$
 
     Reference paper:
         Jamil, M., and Yang, X. S. (2013).
         A literature survey of benchmark functions for global optimisation problems.
         International Journal of Mathematical Modelling and Numerical Optimisation,
         4(2), 150-194.
+
     """
+
     Name = ['ChungReynolds']
 
-    def __init__(self, Lower=-100.0, Upper=100.0):
+    def __init__(self, lower=-100.0, upper=100.0):
         r"""Initialize of Chung Reynolds benchmark.
 
         Args:
-            Lower (Optional[float]): Lower bound of problem.
-            Upper (Optional[float]): Upper bound of problem.
+            lower (Optional[float]): Lower bound of problem.
+            upper (Optional[float]): Upper bound of problem.
 
         See Also:
             :func:`niapy.benchmarks.Benchmark.__init__`
+
         """
-        Benchmark.__init__(self, Lower, Upper)
+        super().__init__(lower, upper)
 
     @staticmethod
     def latex_code():
         r"""Return the latex code of the problem.
 
         Returns:
-            str: Latex code
+            str: Latex code.
+
         """
         return r'''$f(\mathbf{x}) = \left(\sum_{i=1}^D x_i^2\right)^2$'''
 
@@ -70,22 +74,25 @@ class ChungReynolds(Benchmark):
         r"""Return benchmark evaluation function.
 
         Returns:
-            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function
+            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
+
         """
-        def evaluate(D, sol):
+
+        def evaluate(dimension, x):
             r"""Fitness function.
 
             Args:
-                D (int): Dimensionality of the problem
-                sol (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
+                dimension (int): Dimensionality of the problem
+                x (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
 
             Returns:
                 float: Fitness value for the solution.
+
             """
             val = 0.0
 
-            for i in range(D):
-                val += math.pow(sol[i], 2)
+            for i in range(dimension):
+                val += math.pow(x[i], 2)
 
             return math.pow(val, 2)
 

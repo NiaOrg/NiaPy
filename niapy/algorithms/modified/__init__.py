@@ -2,10 +2,6 @@
 """Implementation of modified nature-inspired algorithms."""
 
 from niapy.algorithms.modified.hba import HybridBatAlgorithm
-from niapy.algorithms.modified.jade import (
-    AdaptiveArchiveDifferentialEvolution,
-    CrossRandCurr2Pbest
-)
 from niapy.algorithms.modified.hde import (
     DifferentialEvolutionMTS,
     DifferentialEvolutionMTSv1,
@@ -16,23 +12,29 @@ from niapy.algorithms.modified.hde import (
     DynNpMultiStrategyDifferentialEvolutionMTSv1,
     MultiStrategyDifferentialEvolutionMTSv1
 )
+from niapy.algorithms.modified.hsaba import HybridSelfAdaptiveBatAlgorithm
+# from niapy.algorithms.modified.jade import (
+#     AdaptiveArchiveDifferentialEvolution,
+#     cross_curr2p_best
+# )
 from niapy.algorithms.modified.jde import (
     SelfAdaptiveDifferentialEvolution,
-    DynNpSelfAdaptiveDifferentialEvolutionAlgorithm,
     MultiStrategySelfAdaptiveDifferentialEvolution,
-    DynNpMultiStrategySelfAdaptiveDifferentialEvolution,
-    AgingSelfAdaptiveDifferentialEvolution
+    # DynNpSelfAdaptiveDifferentialEvolutionAlgorithm,
+    # DynNpMultiStrategySelfAdaptiveDifferentialEvolution,
+    # AgingSelfAdaptiveDifferentialEvolution
 )
-from niapy.algorithms.modified.sade import (
-    StrategyAdaptationDifferentialEvolution,
-    StrategyAdaptationDifferentialEvolutionV1
-)
+from niapy.algorithms.modified.plba import ParameterFreeBatAlgorithm
 from niapy.algorithms.modified.saba import (
     AdaptiveBatAlgorithm,
     SelfAdaptiveBatAlgorithm
 )
-from niapy.algorithms.modified.hsaba import HybridSelfAdaptiveBatAlgorithm
-from niapy.algorithms.modified.plba import ParameterFreeBatAlgorithm
+
+# from niapy.algorithms.modified.sade import (
+#     StrategyAdaptationDifferentialEvolution,
+#     StrategyAdaptationDifferentialEvolutionV1
+# )
+
 __all__ = [
     'HybridBatAlgorithm',
     'DifferentialEvolutionMTS',
@@ -44,14 +46,14 @@ __all__ = [
     'DynNpMultiStrategyDifferentialEvolutionMTS',
     'DynNpMultiStrategyDifferentialEvolutionMTSv1',
     'SelfAdaptiveDifferentialEvolution',
-    'DynNpSelfAdaptiveDifferentialEvolutionAlgorithm',
+    # 'DynNpSelfAdaptiveDifferentialEvolutionAlgorithm',
     'MultiStrategySelfAdaptiveDifferentialEvolution',
-    'DynNpMultiStrategySelfAdaptiveDifferentialEvolution',
-    'AgingSelfAdaptiveDifferentialEvolution',
-    'AdaptiveArchiveDifferentialEvolution',
-    'CrossRandCurr2Pbest',
-    'StrategyAdaptationDifferentialEvolution',
-    'StrategyAdaptationDifferentialEvolutionV1',
+    # 'DynNpMultiStrategySelfAdaptiveDifferentialEvolution',
+    # 'AgingSelfAdaptiveDifferentialEvolution',
+    # 'AdaptiveArchiveDifferentialEvolution',
+    # 'cross_curr2p_best',
+    # 'StrategyAdaptationDifferentialEvolution',
+    # 'StrategyAdaptationDifferentialEvolutionV1',
     'AdaptiveBatAlgorithm',
     'SelfAdaptiveBatAlgorithm',
     'HybridSelfAdaptiveBatAlgorithm',
