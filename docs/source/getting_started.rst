@@ -166,7 +166,7 @@ similar to those bellow.
     7.426212520156997e-09
 
 Advanced example with custom population initialization
-----------------
+------------------------------------------------------
 In this examples we will showcase how to define our own population initialization function for previous advanced example.
 We extend previous example by adding another function, lets name it MyInit which would receive the task, population number NP,
 and optional parameters. Such initialization population function is presented bellow.

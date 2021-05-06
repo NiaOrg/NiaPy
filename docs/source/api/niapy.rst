@@ -1,9 +1,7 @@
-:mod:`NiaPy`
+:mod:`niapy`
 ============
 
-.. automodule:: NiaPy
+.. automodule:: niapy
     :members:
     :undoc-members:
     :show-inheritance:
-
-.. autoclass:: NiaPy.Runner

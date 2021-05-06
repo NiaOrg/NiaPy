@@ -15,7 +15,7 @@ NiaPy's documentation
         :target: https://doi.org/10.21105/joss.00613
         :alt: Citation
 
-.. automodule:: NiaPy
+.. automodule:: niapy
 
 Nature-inspired algorithms are a very popular tool for solving optimization problems.
 Since the beginning of their era, numerous variants of nature-inspired algorithms were

@@ -96,7 +96,7 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
             limit (Optional[int]): Maximum number of cycles without improvement.
 
         See Also:
-            :func: `niapy.algorithms.Algorithm.__init__`
+            :func:`niapy.algorithms.Algorithm.__init__`
 
         """
         super().__init__(population_size, initialization_function=default_individual_init, individual_type=SolutionABC,

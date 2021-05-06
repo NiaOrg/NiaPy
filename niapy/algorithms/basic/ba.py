@@ -93,7 +93,7 @@ class BatAlgorithm(Algorithm):
             max_frequency (Optional[float]): Maximum frequency.
 
         See Also:
-            :func: `niapy.algorithms.Algorithm.__init__`
+            :func:`niapy.algorithms.Algorithm.__init__`
 
         """
         super().__init__(population_size, *args, **kwargs)

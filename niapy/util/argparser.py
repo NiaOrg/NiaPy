@@ -59,6 +59,7 @@ def get_argparser():
                 * '': No output during the run. Output is shown only at the end of algorithm run.
                 * `log`: Output is shown every time new global best solution is found
                 * `plot`: Output is shown only at the end of run. Output is shown as graph plotted in matplotlib. Graph represents convergence of algorithm over run time of algorithm.
+
             Default value is `''`.
         * `--seed` (list of int or int):
             Set the starting seed of algorithm run. If multiple runs, user can provide list of ints, where each int usd use at new run. Default values is `None`.
@@ -66,6 +67,7 @@ def get_argparser():
             Optimization type of the run. Values can be:
                 * `min`: For minimization problems
                 * `max`: For maximization problems
+
             Default value is `min`.
 
     Returns:

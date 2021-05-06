@@ -187,8 +187,8 @@ class EvolutionStrategy1p1(Algorithm):
 
         Returns:
             Tuple[Individual, float, Dict[str, Any]]:
-                1, Initialized individual.
-                2, Initialized individual fitness/function value.
+                1. Initialized individual.
+                2. Initialized individual fitness/function value.
                 3. Additional arguments:
                     * ki (int): Number of successful rho update.
 
@@ -210,8 +210,8 @@ class EvolutionStrategy1p1(Algorithm):
 
         Returns:
             Tuple[Individual, float, Individual, float, Dict[str, Any]]:
-                1, Initialized individual.
-                2, Initialized individual fitness/function value.
+                1. Initialized individual.
+                2. Initialized individual fitness/function value.
                 3. New global best solution.
                 4. New global best solutions fitness/objective value.
                 5. Additional arguments:
@@ -548,7 +548,7 @@ class EvolutionStrategyML(EvolutionStrategyMpL):
             Tuple[numpy.ndarray[Individual], numpy.ndarray[float], Dict[str, Any]]:
                 1. Initialized population.
                 2. Initialized populations fitness/function values.
-                2. Additional arguments.
+                3. Additional arguments.
 
         See Also:
             * :func:`niapy.algorithm.basic.es.EvolutionStrategyMpL.init_population`

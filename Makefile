@@ -133,7 +133,7 @@ PYREVERSE := pipenv run pyreverse
 
 SPHINXOPTS    =
 SPHINXBUILD   = sphinx-build
-SPHINXPROJ    = NiaPy
+SPHINXPROJ    = niapy
 SOURCEDIR     = docs/source
 BUILDDIR      = docs/build
 

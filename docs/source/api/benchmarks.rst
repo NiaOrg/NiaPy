@@ -1,6 +1,6 @@
-:mod:`NiaPy.benchmarks`
+:mod:`niapy.benchmarks`
 ============================
-.. automodule:: NiaPy.benchmarks
+.. automodule:: niapy.benchmarks
     :members:
     :undoc-members:
     :show-inheritance:
