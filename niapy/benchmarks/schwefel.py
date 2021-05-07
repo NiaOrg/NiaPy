@@ -84,6 +84,7 @@ class Schwefel(Benchmark):
 
             Returns:
                 float: Fitness value for the solution.
+
             """
             val = 0.0
             for i in range(dimension):
