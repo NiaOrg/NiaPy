@@ -1,16 +1,16 @@
-"""Factory functions for getting algorithms and benchmarks by name"""
+"""Factory functions for getting algorithms and benchmarks by name."""
 
 __all__ = ['get_algorithm', 'get_benchmark']
 
 
 def get_benchmark(name, *args, **kwargs):
-    """Gets benchmark by name.
+    r"""Get benchmark by name.
 
     Args:
         name (str): Name of the benchmark.
 
     Returns:
-        Benchmark: An instance of benchmark instantiated with *args and **kwargs.
+        Benchmark: An instance of benchmark instantiated with \*args and \*\*kwargs.
 
     Raises:
         KeyError: If an invalid name is provided.
@@ -21,13 +21,13 @@ def get_benchmark(name, *args, **kwargs):
 
 
 def get_algorithm(name, *args, **kwargs):
-    """Gets algorithm by name.
+    r"""Get algorithm by name.
 
     Args:
         name (str): Name of the algorithm.
 
     Returns:
-        Algorithm: An instance of the algorithm instantiated **kwargs.
+        Algorithm: An instance of the algorithm instantiated \*args and \*\*kwargs.
 
     Raises:
         KeyError: If an invalid name is provided.
@@ -52,7 +52,7 @@ def _benchmark_options():
         "dixon_price": benchmarks.DixonPrice,
         "elliptic": benchmarks.Elliptic,
         "conditioned_elliptic": benchmarks.Elliptic,
-        "expanded_griewank_plus_rosenbrock": benchmarks.ExpandedGriewankPlusRosenbrock,
+        "expanded_griewank_rosenbrock": benchmarks.ExpandedGriewankPlusRosenbrock,
         "expanded_schaffer": benchmarks.ExpandedSchaffer,
         "griewank": benchmarks.Griewank,
         "happy_cat": benchmarks.HappyCat,

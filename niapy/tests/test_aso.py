@@ -9,6 +9,7 @@ class ASOTestCase(AlgorithmTestCase):
         AlgorithmTestCase.setUp(self)
         self.algo = AnarchicSocietyOptimization
 
+
 class ASOElitismTestCase(ASOTestCase):
     def test_custom(self):
         aso_custom = self.algo(population_size=40, combination=elitism, seed=self.seed)
