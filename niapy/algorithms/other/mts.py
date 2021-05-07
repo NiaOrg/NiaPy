@@ -147,6 +147,7 @@ def move_x(x, r, d, search_range, op):
 
     Returns:
         numpy.ndarray: Moved solution based on operator.
+
     """
     return op(x, search_range * d) if r == 0 else x
 

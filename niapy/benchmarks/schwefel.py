@@ -75,7 +75,6 @@ class Schwefel(Benchmark):
             Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
 
         """
-
         def evaluate(dimension, x):
             r"""Fitness function.
 
@@ -163,7 +162,6 @@ class Schwefel221(Benchmark):
             Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
 
         """
-
         def evaluate(dimension, x):
             r"""Fitness function.
 
@@ -253,7 +251,6 @@ class Schwefel222(Benchmark):
             Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
 
         """
-
         def evaluate(dimension, x):
             r"""Fitness function.
 
@@ -342,7 +339,6 @@ class ModifiedSchwefel(Benchmark):
             Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
 
         """
-
         def g(z, dimension):
             if z > 500:
                 return (500 - fmod(z, 500)) * sin(sqrt(fabs(500 - fmod(z, 500)))) - (z - 500) ** 2 / (10000 * dimension)

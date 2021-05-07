@@ -288,7 +288,6 @@ class CoralReefsOptimization(Algorithm):
                 2. New settled population fitness/function values.
 
         """
-
         def update(arr, phi, xb, fxb):
             dist = np.asarray([np.sqrt(np.sum((arr - e) ** 2, axis=1)) for e in new_reef])
             ind = np.unique(np.where(dist < phi)[0])

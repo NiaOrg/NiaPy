@@ -118,6 +118,7 @@ class NelderMeadMethod(Algorithm):
             Tuple[numpy.ndarray, numpy.ndarray[float]]:
                 1. New initialized population.
                 2. New initialized population fitness/function values.
+
         """
         population_size = task.dimension if population_size is None or population_size < task.dimension else population_size
         population = self.uniform(task.lower, task.upper, (population_size, task.dimension))
@@ -136,6 +137,7 @@ class NelderMeadMethod(Algorithm):
             Tuple[numpy.ndarray, numpy.ndarray[float]]:
                 1. New population.
                 2. New population fitness/function values.
+
         """
         x0 = np.sum(population[:-1], axis=0) / (len(population) - 1)
         xr = x0 + self.alpha * (x0 - population[-1])
@@ -179,6 +181,7 @@ class NelderMeadMethod(Algorithm):
                 3. New global best solution
                 4. New global best solutions fitness/objective value
                 5. Additional arguments.
+
         """
         sorted_indices = np.argsort(population_fitness)
         population, population_fitness = population[sorted_indices], population_fitness[sorted_indices]

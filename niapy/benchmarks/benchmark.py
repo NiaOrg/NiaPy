@@ -55,7 +55,6 @@ class Benchmark:
             Callable[[int, Union[list, numpy.ndarray]], float]: Fitness function.
 
         """
-
         def fun(dimension, x):
             r"""Initialize benchmark.
 

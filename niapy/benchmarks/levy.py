@@ -76,7 +76,6 @@ class Levy(Benchmark):
             Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
 
         """
-
         def w(x):
             return 1 + (x - 1) / 4
 

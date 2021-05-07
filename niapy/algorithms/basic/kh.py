@@ -328,6 +328,7 @@ class KrillHerd(Algorithm):
 
         Returns:
             numpy.ndarray: Mutated krill.
+
         """
         return [x[i] if self.random() < mutation_rate else (x_b[i] + self.random()) for i in range(len(x))]
 
@@ -343,6 +344,7 @@ class KrillHerd(Algorithm):
             Tuple[numpy.ndarray, float]:
                 1. Location of food.
                 2. Foods function/fitness value.
+
         """
         x_food = task.repair(np.asarray([np.sum(population[:, i] / population_fitness) for i in range(task.dimension)]) / np.sum(1 / population_fitness),
                              rng=self.rng)
@@ -360,6 +362,7 @@ class KrillHerd(Algorithm):
 
         Returns:
             float: New mutation probability.
+
         """
         return self._Mu / (self.get_k(xf, yf, xf_best, xf_worst) + 1e-31)
 
@@ -374,6 +377,7 @@ class KrillHerd(Algorithm):
 
         Returns:
             float: New crossover probability.
+
         """
         return self._Cr * self.get_k(xf, yf, xf_best, xf_worst)
 

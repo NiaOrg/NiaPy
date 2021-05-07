@@ -81,7 +81,6 @@ class Step(Benchmark):
             Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function,
 
         """
-
         def evaluate(dimension, x):
             r"""Fitness function.
 
@@ -173,7 +172,6 @@ class Step2(Benchmark):
             Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
 
         """
-
         def evaluate(dimension, x):
             r"""Fitness function.
 
@@ -265,7 +263,6 @@ class Step3(Benchmark):
             Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
 
         """
-
         def evaluate(dimension, x):
             r"""Fitness function.
 

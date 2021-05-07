@@ -210,6 +210,7 @@ class HarmonySearchV1(HarmonySearch):
 
         Returns:
             str: Basic information.
+
         """
         return r"""Yang, Xin-She. "Harmony search as a metaheuristic algorithm." Music-inspired harmony search algorithm. Springer, Berlin, Heidelberg, 2009. 1-14."""
 

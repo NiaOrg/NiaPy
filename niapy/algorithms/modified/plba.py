@@ -86,6 +86,7 @@ class ParameterFreeBatAlgorithm(Algorithm):
 
         See Also:
             * :func:`niapy.algorithms.Algorithm.init_population`
+
         """
         population, fitness, d = Algorithm.init_population(self, task)
         velocities = np.zeros((self.population_size, task.dimension))
@@ -101,6 +102,7 @@ class ParameterFreeBatAlgorithm(Algorithm):
 
         Returns:
             numpy.ndarray: New solution based on global best individual.
+
         """
         return task.repair(best + 0.001 * self.normal(0, 1, task.dimension))
 

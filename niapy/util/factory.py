@@ -52,7 +52,7 @@ def _benchmark_options():
         "dixon_price": benchmarks.DixonPrice,
         "elliptic": benchmarks.Elliptic,
         "conditioned_elliptic": benchmarks.Elliptic,
-        "expanded_griewank_rosenbrock": benchmarks.ExpandedGriewankPlusRosenbrock,
+        "expanded_griewank_plus_rosenbrock": benchmarks.ExpandedGriewankPlusRosenbrock,
         "expanded_schaffer": benchmarks.ExpandedSchaffer,
         "griewank": benchmarks.Griewank,
         "happy_cat": benchmarks.HappyCat,

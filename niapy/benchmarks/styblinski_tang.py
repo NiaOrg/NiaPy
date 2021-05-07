@@ -81,7 +81,6 @@ class StyblinskiTang(Benchmark):
             Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
 
         """
-
         def evaluate(dimension, x):
             r"""Fitness function.
 

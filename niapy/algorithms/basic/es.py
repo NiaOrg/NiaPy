@@ -21,6 +21,7 @@ class IndividualES(Individual):
 
     See Also:
         * :class:`niapy.algorithms.Individual`
+
     """
 
     def __init__(self, rho=1, **kwargs):
@@ -31,6 +32,7 @@ class IndividualES(Individual):
 
         See Also:
             * :func:`niapy.algorithms.Individual.__init__`
+
         """
         super().__init__(**kwargs)
         self.rho = rho

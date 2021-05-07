@@ -28,6 +28,7 @@ class Fish(Individual):
 
         See Also:
             * :func:`niapy.algorithms.algorithm.Individual`
+
         """
         super().__init__(**kwargs)
         self.weight = weight

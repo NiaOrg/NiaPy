@@ -74,7 +74,6 @@ class Katsuura(Benchmark):
             Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
 
         """
-
         def f(dimension, x):
             r"""Fitness function.
 

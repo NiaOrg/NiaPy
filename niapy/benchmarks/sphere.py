@@ -77,7 +77,6 @@ class Sphere(Benchmark):
             Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
 
         """
-
         def evaluate(dimension, x):
             r"""Fitness function.
 
@@ -163,7 +162,6 @@ class Sphere2(Benchmark):
             Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
 
         """
-
         def evaluate(dimension, x):
             r"""Fitness function.
 
@@ -249,7 +247,6 @@ class Sphere3(Benchmark):
             Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
 
         """
-
         def evaluate(dimension, x):
             r"""Fitness function.
 

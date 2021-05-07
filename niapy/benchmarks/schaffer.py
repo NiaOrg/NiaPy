@@ -74,7 +74,6 @@ class SchafferN2(Benchmark):
             Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
 
         """
-
         def f(dimension, x):
             r"""Fitness function.
 
@@ -157,7 +156,6 @@ class SchafferN4(Benchmark):
             Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
 
         """
-
         def f(dimension, x):
             r"""Fitness function.
 
@@ -240,7 +238,6 @@ class ExpandedSchaffer(Benchmark):
             Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
 
         """
-
         def g(x, y):
             return 0.5 + (sin(sqrt(x ** 2 + y ** 2)) ** 2 - 0.5) / (1 + 0.001 * (x ** 2 + y ** 2)) ** 2
 

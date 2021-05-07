@@ -77,7 +77,6 @@ class Alpine1(Benchmark):
             Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function
 
         """
-
         def evaluate(dimension, x):
             r"""Fitness function.
 
@@ -167,8 +166,8 @@ class Alpine2(Benchmark):
 
         Returns:
             Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
-        """
 
+        """
         def evaluate(dimension, x):
             r"""Fitness function.
 

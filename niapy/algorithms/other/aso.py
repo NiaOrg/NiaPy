@@ -219,6 +219,7 @@ class AnarchicSocietyOptimization(Algorithm):
 
         See Also:
             :func:`niapy.algorithms.algorithm.Algorithm.info`
+
         """
         return r"""Ahmadi-Javid, Amir. "Anarchic Society Optimization: A human-inspired method." Evolutionary Computation (CEC), 2011 IEEE Congress on. IEEE, 2011."""
 
