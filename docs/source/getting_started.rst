@@ -30,7 +30,7 @@ Given bellow is complete source code of basic example.
 
     # we will run 10 repetitions of Grey Wolf Optimizer against Pinter benchmark function
     for i in range(10):
-        task = StoppingTask(D=10, nFES=1000, benchmark='pinter')
+        task = StoppingTask(dimension=10, max_evals=1000, benchmark='pinter')
         algorithm = GreyWolfOptimizer(population_size=20)
         best = algorithm.run(task)
         print(best[-1])
@@ -75,7 +75,7 @@ basic example.
         # second parameter takes the number of function evaluations
         # third parameter is benchmark optimization type
         # forth parameter is benchmark function
-        task = StoppingTask(D=20, nGEN=100, optType=OptimizationType.MINIMIZATION, benchmark=pinterCustom)
+        task = StoppingTask(dimension=20, max_iters=100, optimization_type=OptimizationType.MINIMIZATION, benchmark=pinterCustom)
 
         # parameter is population size
         algo = GreyWolfOptimizer(population_size=20)
@@ -138,7 +138,7 @@ instance of our *MyBenchmark* class.
 .. code:: python
 
     for i in range(10):
-        task = StoppingTask(D=20, nGEN=100, optType=OptimizationType.MINIMIZATION, benchmark=MyBenchmark())
+        task = StoppingTask(dimension=20, max_iters=100, optimization_type=OptimizationType.MINIMIZATION, benchmark=MyBenchmark())
 
         # parameter is population size
         algo = GreyWolfOptimizer(population_size=20)
@@ -210,7 +210,7 @@ The complete example would look something like this.
 
     # we will run 10 repetitions of Grey Wolf Optimizer against our custom MyBenchmark benchmark function
     for i in range(10):
-        task = StoppingTask(D=20, nGEN=100, optType=OptimizationType.MINIMIZATION, benchmark=MyBenchmark())
+        task = StoppingTask(dimension=20, max_iters=100, optimization_type=OptimizationType.MINIMIZATION, benchmark=MyBenchmark())
 
         # parameter is population size
         algo = GreyWolfOptimizer(population_size=20, initialization_function=MyInit)
@@ -273,17 +273,17 @@ functions. Results will be exported as JSON.
             return evaluate
 
     runner = Runner(
-        D=40,
-        nFES=100,
-        nRuns=2,
-        useAlgorithms=[
+        dimension=40,
+        max_evals=100,
+        runs=2,
+        algorithms=[
             GreyWolfOptimizer(),
             "FlowerPollinationAlgorithm",
             ParticleSwarmAlgorithm(),
             "HybridBatAlgorithm",
             "SimulatedAnnealing",
             "CuckooSearch"],
-        useBenchmarks=[
+        benchmarks=[
             Ackley(),
             Griewank(),
             Sphere(),
