@@ -5,7 +5,7 @@ from unittest import TestCase
 from niapy.algorithms.basic import BatAlgorithm, FireflyAlgorithm
 from niapy.algorithms.basic import DifferentialEvolution
 from niapy.benchmarks import Sphere
-from niapy.task.task import StoppingTask, OptimizationType
+from niapy.task import StoppingTask, OptimizationType
 
 
 class DETestCase(TestCase):

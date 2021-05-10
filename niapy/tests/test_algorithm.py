@@ -10,7 +10,7 @@ from numpy.random import default_rng
 
 from niapy.algorithms.algorithm import Individual, Algorithm
 from niapy.benchmarks import Benchmark, Sphere
-from niapy.task.task import Task, StoppingTask
+from niapy.task import Task, StoppingTask
 from niapy.util import objects_to_array
 
 logging.basicConfig()

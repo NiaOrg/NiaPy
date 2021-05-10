@@ -9,7 +9,7 @@ from argparse import ArgumentParser
 import numpy as np
 
 import niapy.benchmarks as benchmarks
-from niapy.task.task import OptimizationType
+from niapy.task import OptimizationType
 
 logging.basicConfig()
 logger = logging.getLogger('niapy.util.argparse')

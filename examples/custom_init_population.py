@@ -7,7 +7,7 @@ sys.path.append('../')
 # End of fix
 
 from niapy.algorithms.basic import ParticleSwarmAlgorithm
-from niapy.task.task import StoppingTask
+from niapy.task import StoppingTask
 from niapy.benchmarks import Sphere
 from numpy import random as rand, apply_along_axis
 

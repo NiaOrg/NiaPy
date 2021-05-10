@@ -6,7 +6,7 @@ from numpy.random import default_rng
 
 from niapy.algorithms.basic import MonkeyKingEvolutionV1, MonkeyKingEvolutionV2, MonkeyKingEvolutionV3
 from niapy.algorithms.basic.mke import MkeSolution
-from niapy.task.task import Task
+from niapy.task import Task
 from niapy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
 
 

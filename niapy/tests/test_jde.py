@@ -6,7 +6,7 @@ from numpy.random import default_rng
 from niapy.algorithms.modified import SelfAdaptiveDifferentialEvolution, \
     MultiStrategySelfAdaptiveDifferentialEvolution
 from niapy.algorithms.modified.jde import SolutionJDE
-from niapy.task.task import Task
+from niapy.task import Task
 from niapy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
 
 
