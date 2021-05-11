@@ -85,6 +85,22 @@ After installation, you can import NiaPy as any other Python module:
 .. code:: sh
 
    $ python
+      >>> import niapy
+      >>> NiaPy.__version__
+
+   Let’s go through a basic and advanced example.
+      >>> import niapy
+      >>> NiaPy.__version__
+
+   Let’s go through a basic and advanced example.
+      >>> import niapy
+      >>> niapy.__version__
+
+   Let’s go through a basic and advanced example.
+      >>> import niapy
+      >>> niapy.__version__
+
+   Let’s go through a basic and advanced example.
    >>> import NiaPy
    >>> NiaPy.__version__
 
@@ -107,8 +123,8 @@ complete source code of basic example.
 
    # we will run 10 repetitions of Grey Wolf Optimizer against Pinter benchmark function
    for i in range(10):
-       task = StoppingTask(D=10, nFES=1000, benchmark='pinter')
-       algorithm = GreyWolfOptimizer(NP=20)
+       task = StoppingTask(dimension=10, max_evals=1000, benchmark='pinter')
+       algorithm = GreyWolfOptimizer(population_size=20)
        best = algorithm.run(task)
        print(best[-1])
 
@@ -169,10 +185,10 @@ class.
 .. code:: sh
 
    for i in range(10):
-       task = StoppingTask(D=20, nGEN=100, optType=OptimizationType.MINIMIZATION, benchmark=MyBenchmark())
+       task = StoppingTask(dimension=20, max_iters=100, optType=OptimizationType.MINIMIZATION, benchmark=MyBenchmark())
 
        # parameter is population size
-       algo = GreyWolfOptimizer(NP=20)
+       algo = GreyWolfOptimizer(population_size=20)
 
        # running algorithm returns best found minimum
        best = algo.run(task)

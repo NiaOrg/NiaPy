@@ -619,7 +619,7 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/1.0.0...1.0.1>`__
    (`GregaVrbancic <https://github.com/GregaVrbancic>`__)
 -  Fix paper `#115 <https://github.com/NiaOrg/NiaPy/pull/115>`__
    (`GregaVrbancic <https://github.com/GregaVrbancic>`__)
--  arguments: Ts->integer; TournamentSelection: use shuffled indices in
+-  arguments: Ts->integer; tournament_selection: use shuffled indices in
    … `#114 <https://github.com/NiaOrg/NiaPy/pull/114>`__
    (`mlaky88 <https://github.com/mlaky88>`__)
 

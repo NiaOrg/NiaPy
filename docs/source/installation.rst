@@ -40,7 +40,7 @@ openpyxl    ==3.0.3    All
 xlwt        ==1.3.0    All
 enum34      >=1.1.6    All: python < 3.4
 future      >=0.18.2   All: python < 3
-==========  =======  ====================
+==========  ========  ===================
 
 Install project dependencies into a virtual environment:
 

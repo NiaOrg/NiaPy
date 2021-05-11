@@ -9,7 +9,7 @@ jobs:
       max-parallel: 9
       matrix:
         os: [ubuntu-latest, windows-latest, macOS-latest]
-        python-version: [3.6, 3.7, 3.8]
+        python-version: [3.6, 3.7, 3.8, 3.9]
     env:
       MPLBACKEND: "agg"
     steps:
@@ -27,13 +27,13 @@ jobs:
         pipenv install --skip-lock --dev
     - name: Lint with flake8
       run: |
-        pipenv run flake8 NiaPy tests scent.py setup.py
+        pipenv run flake8 niapy tests scent.py setup.py
     - name: Check codestyle
       run: |
-        pipenv run pycodestyle NiaPy tests scent.py setup.py --config=.pycodestyle.ini
+        pipenv run pycodestyle niapy tests scent.py setup.py --config=.pycodestyle.ini
     - name: Check docstyle
       run: |
-        pipenv run pydocstyle NiaPy tests scent.py setup.py
+        pipenv run pydocstyle niapy tests scent.py setup.py
     - name: Run tests
       run: |
-        pipenv run pytest -ra -vv --random --random-seed=32786 --cov=NiaPy --no-cov-on-fail --cov-report=term-missing:skip-covered --cov-report=html NiaPy tests --junitxml=xmlreport/overall.xml
+        pipenv run pytest -ra -vv --random --random-seed=32786 --cov=niapy --no-cov-on-fail --cov-report=term-missing:skip-covered --cov-report=html niapy tests --junitxml=xmlreport/overall.xml

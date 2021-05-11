@@ -1,6 +1,6 @@
-:mod:`NiaPy.util`
+:mod:`niapy.util`
 ============================
-.. automodule:: NiaPy.util
+.. automodule:: niapy.util
     :members:
     :undoc-members:
     :show-inheritance:

@@ -2,19 +2,19 @@
 # This is temporary fix to import module from parent folder
 # It will be removed when package is published on PyPI
 import sys
+
 sys.path.append('../')
 # End of fix
 
-import random
-from NiaPy.algorithms.basic import DynNpDifferentialEvolution
-from NiaPy.task import StoppingTask
-from NiaPy.benchmarks import Sphere
+from niapy.algorithms.basic import DynNpDifferentialEvolution
+from niapy.task import StoppingTask
+from niapy.benchmarks import Sphere
 
-#we will run Differential Evolution for 5 independent runs
+# we will run Differential Evolution for 5 independent runs
 for i in range(5):
-	task = StoppingTask(D=10, nFES=10000, benchmark=Sphere())
-	algo = DynNpDifferentialEvolution(NP=120, F=0.5, CR=0.9, pmax=25)
-	best = algo.run(task=task)
-	print('%s -> %s' % (best[0], best[1]))
+    task = StoppingTask(max_evals=10000, dimension=10, benchmark=Sphere())
+    algo = DynNpDifferentialEvolution(population_size=120, differential_weight=0.5, crossover_probability=0.9, p_max=25)
+    best = algo.run(task=task)
+    print('%s -> %s' % (best[0], best[1]))
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

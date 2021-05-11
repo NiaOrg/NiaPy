@@ -1,27 +1,27 @@
-:mod:`NiaPy.algorithms`
+:mod:`niapy.algorithms`
 ============================
-.. automodule:: NiaPy.algorithms
+.. automodule:: niapy.algorithms
     :members:
     :undoc-members:
     :show-inheritance:
 
-:mod:`NiaPy.algorithms.basic`
+:mod:`niapy.algorithms.basic`
 ----------------------------------
-.. automodule:: NiaPy.algorithms.basic
+.. automodule:: niapy.algorithms.basic
     :members:
     :undoc-members:
     :show-inheritance:
 
-:mod:`NiaPy.algorithms.modified`
+:mod:`niapy.algorithms.modified`
 -----------------------------------
-.. automodule:: NiaPy.algorithms.modified
+.. automodule:: niapy.algorithms.modified
     :members:
     :undoc-members:
     :show-inheritance:
 
-:mod:`NiaPy.algorithms.other`
+:mod:`niapy.algorithms.other`
 -----------------------------------
-.. automodule:: NiaPy.algorithms.other
+.. automodule:: niapy.algorithms.other
     :members:
     :undoc-members:
     :show-inheritance:

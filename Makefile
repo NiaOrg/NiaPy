@@ -1,6 +1,6 @@
 # Project settings
 PROJECT := NiaPy
-PACKAGE := NiaPy
+PACKAGE := niapy
 REPOSITORY := NiaOrg/NiaPy
 
 # Project paths

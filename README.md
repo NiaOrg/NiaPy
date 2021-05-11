@@ -50,7 +50,7 @@ Install NiaPy with pip:
 ## Latest version (2.0.0rc14)
 
 ```sh
-$ pip install NiaPy==2.0.0rc14
+$ pip install niapy==2.0.0rc14
 ```
 
 To install NiaPy with conda, use:
@@ -62,7 +62,7 @@ $ conda install -c niaorg niapy=2.0.0rc14
 ## Latest stable version
 
 ```sh
-$ pip install NiaPy
+$ pip install niapy
 ```
 
 To install NiaPy with conda, use:
@@ -83,7 +83,7 @@ In case you want to install directly from the source code, use:
 
 ```sh
 $ git clone https://github.com/NiaOrg/NiaPy.git
-$ cd NiaPy
+$ cd niapy
 $ python setup.py install
 ```
 
@@ -97,8 +97,8 @@ After installation, you can import NiaPy as any other Python module:
 
 ```sh
 $ python
->>> import NiaPy
->>> NiaPy.__version__
+>>> import niapy
+>>> niapy.__version__
 ```
 
 
@@ -108,13 +108,13 @@ Let's go through a basic and advanced example.
 Let’s say, we want to try out Gray Wolf Optimizer algorithm against Pintér benchmark function. Firstly, we have to create new file, with name, for example *basic_example.py*. Then we have to import chosen algorithm from NiaPy, so we can use it. Afterwards we initialize GreyWolfOptimizer class instance and run the algorithm. Given bellow is complete source code of basic example.
 
 ```sh
-from NiaPy.algorithms.basic import GreyWolfOptimizer
-from NiaPy.task import StoppingTask
+from niapy.algorithms.basic import GreyWolfOptimizer
+from niapy.task import StoppingTask
 
 # we will run 10 repetitions of Grey Wolf Optimizer against Pinter benchmark function
 for i in range(10):
-    task = StoppingTask(D=10, nFES=1000, benchmark='pinter')
-    algorithm = GreyWolfOptimizer(NP=20)
+    task = StoppingTask(dimension=10, max_evals=1000, benchmark='pinter')
+    algorithm = GreyWolfOptimizer(population_size=20)
     best = algorithm.run(task)
     print(best[-1])
 ```
@@ -141,9 +141,9 @@ In this example we will show you how to implement your own benchmark function an
 For our custom benchmark function, we have to create new class. Let’s name it MyBenchmark. In the initialization method of MyBenchmark class we have to set Lower and Upper bounds of the function. Afterwards we have to implement a function which returns evaluation function which takes two parameters *D* (as dimension of problem) and *sol* (as solution of problem). Now we should have something similar as is shown in code snippet bellow.
 
 ```sh
-from NiaPy.task import StoppingTask, OptimizationType
-from NiaPy.benchmarks import Benchmark
-from NiaPy.algorithms.basic import ParticleSwarmAlgorithm
+from niapy.task import StoppingTask, OptimizationType
+from niapy.benchmarks import Benchmark
+from niapy.algorithms.basic import ParticleSwarmAlgorithm
 
 # our custom benchmark class
 class MyBenchmark(Benchmark):
@@ -162,10 +162,10 @@ Now, all we have to do is to initialize our algorithm as in previous examples an
 
 ```sh
 for i in range(10):
-    task = StoppingTask(D=20, nGEN=100, optType=OptimizationType.MINIMIZATION, benchmark=MyBenchmark())
+    task = StoppingTask(dimension=20, max_iters=100, optimization_type=OptimizationType.MINIMIZATION, benchmark=MyBenchmark())
 
     # parameter is population size
-    algo = GreyWolfOptimizer(NP=20)
+    algo = GreyWolfOptimizer(population_size=20)
 
     # running algorithm returns best found minimum
     best = algo.run(task)
