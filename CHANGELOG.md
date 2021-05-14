@@ -1,5 +1,26 @@
 # Changelog
 
+## [2.0.0rc15](https://github.com/NiaOrg/NiaPy/tree/2.0.0rc15) (2021-05-14)
+
+[Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2.0.0rc14...2.0.0rc15)
+
+**Implemented enhancements:**
+
+- \[JOSS\] \(Optional\) Follow PEP-8 style guide in naming methods [\#123](https://github.com/NiaOrg/NiaPy/issues/123)
+
+**Closed issues:**
+
+- Several TODOs in ca.py [\#306](https://github.com/NiaOrg/NiaPy/issues/306)
+- limit\_repair method alters the input array [\#294](https://github.com/NiaOrg/NiaPy/issues/294)
+- CuckooSearch's runIteration is incompatible with other algorithms runIteration [\#281](https://github.com/NiaOrg/NiaPy/issues/281)
+- """ [\#264](https://github.com/NiaOrg/NiaPy/issues/264)
+
+**Merged pull requests:**
+
+- Huge refactor [\#309](https://github.com/NiaOrg/NiaPy/pull/309) ([zStupan](https://github.com/zStupan))
+- corrected reference URL for basic hs algorithm [\#307](https://github.com/NiaOrg/NiaPy/pull/307) ([firefly-cpp](https://github.com/firefly-cpp))
+- Switched to numpy.random.Generator for generating random numbers [\#305](https://github.com/NiaOrg/NiaPy/pull/305) ([zStupan](https://github.com/zStupan))
+
 ## [2.0.0rc14](https://github.com/NiaOrg/NiaPy/tree/2.0.0rc14) (2021-04-23)
 
 [Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2.0.0rc13...2.0.0rc14)
@@ -218,6 +239,7 @@
 - New features. [\#183](https://github.com/NiaOrg/NiaPy/pull/183) ([kb2623](https://github.com/kb2623))
 - FOA examples added and README.md update [\#181](https://github.com/NiaOrg/NiaPy/pull/181) ([lukapecnik](https://github.com/lukapecnik))
 - FOA [\#180](https://github.com/NiaOrg/NiaPy/pull/180) ([lukapecnik](https://github.com/lukapecnik))
+- add scandir dev dependency [\#176](https://github.com/NiaOrg/NiaPy/pull/176) ([GregaVrbancic](https://github.com/GregaVrbancic))
 - New algorithms and port of old algorithms [\#175](https://github.com/NiaOrg/NiaPy/pull/175) ([kb2623](https://github.com/kb2623))
 - fix scrutinizer python version [\#174](https://github.com/NiaOrg/NiaPy/pull/174) ([GregaVrbancic](https://github.com/GregaVrbancic))
 - New tests [\#173](https://github.com/NiaOrg/NiaPy/pull/173) ([firefly-cpp](https://github.com/firefly-cpp))
@@ -237,7 +259,6 @@
 
 **Merged pull requests:**
 
-- add scandir dev dependency [\#176](https://github.com/NiaOrg/NiaPy/pull/176) ([GregaVrbancic](https://github.com/GregaVrbancic))
 - Added iterations counter to some of the algorithms [\#171](https://github.com/NiaOrg/NiaPy/pull/171) ([kb2623](https://github.com/kb2623))
 - Added fixes for stopping conditions [\#170](https://github.com/NiaOrg/NiaPy/pull/170) ([kb2623](https://github.com/kb2623))
 - Added stopping conditions [\#169](https://github.com/NiaOrg/NiaPy/pull/169) ([kb2623](https://github.com/kb2623))

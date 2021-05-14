@@ -1,6 +1,38 @@
 Changelog
 =========
 
+`2.0.0rc15 <https://github.com/NiaOrg/NiaPy/tree/2.0.0rc15>`__ (2021-05-14)
+---------------------------------------------------------------------------
+
+`Full
+Changelog <https://github.com/NiaOrg/NiaPy/compare/2.0.0rc14...2.0.0rc15>`__
+
+**Implemented enhancements:**
+
+-  [JOSS] (Optional) Follow PEP-8 style guide in naming methods
+   `#123 <https://github.com/NiaOrg/NiaPy/issues/123>`__
+
+**Closed issues:**
+
+-  Several TODOs in ca.py
+   `#306 <https://github.com/NiaOrg/NiaPy/issues/306>`__
+-  limit_repair method alters the input array
+   `#294 <https://github.com/NiaOrg/NiaPy/issues/294>`__
+-  CuckooSearch’s runIteration is incompatible with other algorithms
+   runIteration `#281 <https://github.com/NiaOrg/NiaPy/issues/281>`__
+-  """ `#264 <https://github.com/NiaOrg/NiaPy/issues/264>`__
+
+**Merged pull requests:**
+
+-  Huge refactor `#309 <https://github.com/NiaOrg/NiaPy/pull/309>`__
+   (`zStupan <https://github.com/zStupan>`__)
+-  corrected reference URL for basic hs algorithm
+   `#307 <https://github.com/NiaOrg/NiaPy/pull/307>`__
+   (`firefly-cpp <https://github.com/firefly-cpp>`__)
+-  Switched to numpy.random.Generator for generating random numbers
+   `#305 <https://github.com/NiaOrg/NiaPy/pull/305>`__
+   (`zStupan <https://github.com/zStupan>`__)
+
 `2.0.0rc14 <https://github.com/NiaOrg/NiaPy/tree/2.0.0rc14>`__ (2021-04-23)
 ---------------------------------------------------------------------------
 
@@ -409,6 +441,9 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/2.0.0rc4...2.0.0rc5>`__
    (`lukapecnik <https://github.com/lukapecnik>`__)
 -  FOA `#180 <https://github.com/NiaOrg/NiaPy/pull/180>`__
    (`lukapecnik <https://github.com/lukapecnik>`__)
+-  add scandir dev dependency
+   `#176 <https://github.com/NiaOrg/NiaPy/pull/176>`__
+   (`GregaVrbancic <https://github.com/GregaVrbancic>`__)
 -  New algorithms and port of old algorithms
    `#175 <https://github.com/NiaOrg/NiaPy/pull/175>`__
    (`kb2623 <https://github.com/kb2623>`__)
@@ -440,9 +475,6 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/1.0.2...2.0.0rc3>`__
 
 **Merged pull requests:**
 
--  add scandir dev dependency
-   `#176 <https://github.com/NiaOrg/NiaPy/pull/176>`__
-   (`GregaVrbancic <https://github.com/GregaVrbancic>`__)
 -  Added iterations counter to some of the algorithms
    `#171 <https://github.com/NiaOrg/NiaPy/pull/171>`__
    (`kb2623 <https://github.com/kb2623>`__)
@@ -619,7 +651,7 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/1.0.0...1.0.1>`__
    (`GregaVrbancic <https://github.com/GregaVrbancic>`__)
 -  Fix paper `#115 <https://github.com/NiaOrg/NiaPy/pull/115>`__
    (`GregaVrbancic <https://github.com/GregaVrbancic>`__)
--  arguments: Ts->integer; tournament_selection: use shuffled indices in
+-  arguments: Ts->integer; TournamentSelection: use shuffled indices in
    … `#114 <https://github.com/NiaOrg/NiaPy/pull/114>`__
    (`mlaky88 <https://github.com/mlaky88>`__)
 
