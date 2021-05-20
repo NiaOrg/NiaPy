@@ -9,7 +9,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 from niapy.benchmarks import Benchmark
 from niapy.util.array import full_array
-import niapy.util.repair as repair
+from niapy.util.repair import limit
 from niapy.util.factory import get_benchmark
 from niapy.util.exception import FesException, GenException, RefException
 
@@ -50,7 +50,7 @@ class Task:
     """
 
     def __init__(self, dimension=0, optimization_type=OptimizationType.MINIMIZATION, benchmark=None, lower=None,
-                 upper=None, repair_function=repair.limit):
+                 upper=None, repair_function=limit):
         r"""Initialize task class for optimization.
 
         Args:
@@ -173,7 +173,7 @@ class CountingTask(Task):
     """
 
     def __init__(self, dimension=0, optimization_type=OptimizationType.MINIMIZATION, benchmark=None, lower=None,
-                 upper=None, repair_function=repair.limit):
+                 upper=None, repair_function=limit):
         r"""Initialize counting task.
 
         Args:
@@ -237,7 +237,7 @@ class StoppingTask(CountingTask):
 
     def __init__(self, max_evals=np.inf, max_iters=np.inf, cutoff_value=None, enable_logging=False, dimension=0,
                  optimization_type=OptimizationType.MINIMIZATION, benchmark=None, lower=None, upper=None,
-                 repair_function=repair.limit):
+                 repair_function=limit):
         r"""Initialize task class for optimization.
 
         Args:
