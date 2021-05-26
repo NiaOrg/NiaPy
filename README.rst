@@ -1,4 +1,4 @@
-.. image:: http://c1.staticflickr.com/5/4757/26625486258_41ea6d95e0.jpg
+.. image:: https://raw.githubusercontent.com/NiaOrg/NiaPy/master/.github/imgs/NiaPyLogo.png
     :align: center
 
 --------------
@@ -14,8 +14,9 @@ open| |GitHub contributors|
 |DOI| |image1|
 
 Nature-inspired algorithms are a very popular tool for solving
-optimization problems. Numerous variants of `nature-inspired algorithms
-have been developed <https://arxiv.org/abs/1307.4186>`__ since the
+optimization problems. Numerous variants of nature-inspired algorithms
+have been developed (`paper 1 <https://arxiv.org/abs/1307.4186>`__,
+`paper 2 <https://www.mdpi.com/2076-3417/8/9/1521>`__) since the
 beginning of their era. To prove their versatility, those were tested in
 various domains on various applications, especially when they are
 hybridized, modified or adapted. However, implementation of
@@ -26,10 +27,9 @@ scratch.
 
 -  **Free software:** MIT license
 -  **Documentation:** https://niapy.readthedocs.io/en/stable/
--  **Python versions:** 3.6.x, 3.7.x or 3.8.x (backward compatibility
-   with 2.7.x)
--  **Dependencies:**
-   `click <CONTRIBUTING.md#development-dependencies>`__
+-  **Python versions:** 3.6.x, 3.7.x, 3.8.x, 3.9.x
+-  **Dependencies:** `click
+   here <CONTRIBUTING.md#development-dependencies>`__
 
 Mission
 =======
@@ -48,33 +48,49 @@ offers:
 Installation
 ============
 
-To install NiaPy, run this command in your terminal:
+Install NiaPy with pip:
+
+Latest version (2.0.0rc16)
+--------------------------
 
 .. code:: sh
 
-   $ pip install NiaPy
-
-This is the preferred method to install NiaPy, as it will always install
-the most recent stable release.
+   $ pip install niapy==2.0.0rc16
 
 To install NiaPy with conda, use:
 
 .. code:: sh
 
-   conda install -c niaorg niapy
+   $ conda install -c niaorg niapy=2.0.0rc16
+
+Latest stable version
+---------------------
+
+.. code:: sh
+
+   $ pip install niapy
+
+To install NiaPy with conda, use:
+
+.. code:: sh
+
+   $ conda install -c niaorg niapy
 
 To install NiaPy on Fedora, use:
 
 .. code:: sh
 
-   yum install python3-niapy
+   $ dnf install python3-niapy
+
+Install from source
+-------------------
 
 In case you want to install directly from the source code, use:
 
 .. code:: sh
 
    $ git clone https://github.com/NiaOrg/NiaPy.git
-   $ cd NiaPy
+   $ cd niapy
    $ python setup.py install
 
 Usage
@@ -85,24 +101,8 @@ After installation, you can import NiaPy as any other Python module:
 .. code:: sh
 
    $ python
-      >>> import niapy
-      >>> NiaPy.__version__
-
-   Let’s go through a basic and advanced example.
-      >>> import niapy
-      >>> NiaPy.__version__
-
-   Let’s go through a basic and advanced example.
-      >>> import niapy
-      >>> niapy.__version__
-
-   Let’s go through a basic and advanced example.
-      >>> import niapy
-      >>> niapy.__version__
-
-   Let’s go through a basic and advanced example.
-   >>> import NiaPy
-   >>> NiaPy.__version__
+   >>> import niapy
+   >>> niapy.__version__
 
 Let’s go through a basic and advanced example.
 
@@ -118,8 +118,8 @@ complete source code of basic example.
 
 .. code:: sh
 
-   from NiaPy.algorithms.basic import GreyWolfOptimizer
-   from NiaPy.task import StoppingTask
+   from niapy.algorithms.basic import GreyWolfOptimizer
+   from niapy.task import StoppingTask
 
    # we will run 10 repetitions of Grey Wolf Optimizer against Pinter benchmark function
    for i in range(10):
@@ -162,9 +162,9 @@ in code snippet bellow.
 
 .. code:: sh
 
-   from NiaPy.task import StoppingTask, OptimizationType
-   from NiaPy.benchmarks import Benchmark
-   from NiaPy.algorithms.basic import ParticleSwarmAlgorithm
+   from niapy.task import StoppingTask, OptimizationType
+   from niapy.benchmarks import Benchmark
+   from niapy.algorithms.basic import ParticleSwarmAlgorithm
 
    # our custom benchmark class
    class MyBenchmark(Benchmark):
@@ -185,7 +185,7 @@ class.
 .. code:: sh
 
    for i in range(10):
-       task = StoppingTask(dimension=20, max_iters=100, optType=OptimizationType.MINIMIZATION, benchmark=MyBenchmark())
+       task = StoppingTask(dimension=20, max_iters=100, optimization_type=OptimizationType.MINIMIZATION, benchmark=MyBenchmark())
 
        # parameter is population size
        algo = GreyWolfOptimizer(population_size=20)
