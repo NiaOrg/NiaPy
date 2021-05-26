@@ -48,19 +48,20 @@ class Michalewichz(Benchmark):
 
     Name = ['Michalewichz']
 
-    def __init__(self, lower=0.0, upper=np.pi, m=10):
+    def __init__(self, dimension=4, lower=0.0, upper=np.pi, m=10, *args, **kwargs):
         r"""Initialize of Michalewichz benchmark.
 
         Args:
-            lower (Optional[float]): Lower bound of problem.
-            upper (Optional[float]): Upper bound of problem.
+            dimension (Optional[int]): Dimension of the problem.
+            lower (Optional[Union[float, Iterable[float]]]): Lower bounds of the problem.
+            upper (Optional[Union[float, Iterable[float]]]): Upper bounds of the problem.
             m (float): Steepness of valleys and ridges. Recommended value is 10.
 
         See Also:
             :func:`niapy.benchmarks.Benchmark.__init__`
 
         """
-        super().__init__(lower, upper)
+        super().__init__(dimension, lower, upper, *args, **kwargs)
         self.m = m
 
     @staticmethod
@@ -73,29 +74,7 @@ class Michalewichz(Benchmark):
         """
         return r'''$f(\textbf{x}) = - \sum_{i = 1}^{D} \sin(x_i) \sin\left( \frac{ix_i^2}{\pi} \right)^{2m}$'''
 
-    def function(self):
-        r"""Return benchmark evaluation function.
-
-        Returns:
-            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
-
-        """
-        def evaluate(dimension, x):
-            r"""Fitness function.
-
-            Args:
-                dimension (int): Dimensionality of the problem
-                x (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
-
-            Returns:
-                float: Fitness value for the solution.
-
-            """
-            v = 0.0
-            for i in range(dimension):
-                v += np.sin(x[i]) * np.sin(((i + 1) * x[i] ** 2) / np.pi) ** (2 * self.m)
-            return -v
-
-        return evaluate
+    def _evaluate(self, x):
+        return -np.sum(np.sin(x) * np.sin((np.arange(1, self.dimension + 1) * x ** 2.0) / np.pi) ** (2.0 * self.m))
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

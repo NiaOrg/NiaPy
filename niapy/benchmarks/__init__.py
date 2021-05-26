@@ -77,7 +77,6 @@ __all__ = [
     'Discus',
     'Michalewichz',
     'Levy',
-    'Sphere',
     'Sphere2',
     'Sphere3',
     'Trid',

@@ -46,18 +46,19 @@ class Infinity(Benchmark):
 
     Name = ['Infinity']
 
-    def __init__(self, lower=-1.0, upper=1.0):
+    def __init__(self, dimension=2, lower=-1.0, upper=1.0, *args, **kwargs):
         r"""Initialize of Infinity benchmark.
 
         Args:
-            lower (Optional[float]): Lower bound of problem.
-            upper (Optional[float]): Upper bound of problem.
+            dimension (Optional[int]): Dimension of the problem.
+            lower (Optional[Union[float, Iterable[float]]]): Lower bounds of the problem.
+            upper (Optional[Union[float, Iterable[float]]]): Upper bounds of the problem.
 
         See Also:
             :func:`niapy.benchmarks.Benchmark.__init__`
 
         """
-        super().__init__(lower, upper)
+        super().__init__(dimension, lower, upper, *args, **kwargs)
 
     @staticmethod
     def latex_code():
@@ -69,29 +70,7 @@ class Infinity(Benchmark):
         """
         return r'''$f(\textbf{x}) = \sum_{i = 1}^D x_i^6 \left( \sin \left( \frac{1}{x_i} \right) + 2 \right)$'''
 
-    def function(self):
-        r"""Return benchmark evaluation function.
-
-        Returns:
-            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
-
-        """
-        def f(dimension, x):
-            r"""Fitness function.
-
-            Args:
-                dimension (int): Dimensionality of the problem
-                x (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
-
-            Returns:
-                float: Fitness value for the solution.
-
-            """
-            val = 0.0
-            for i in range(dimension):
-                val += x[i] ** 6 * (np.sin(1 / x[i]) + 2)
-            return val
-
-        return f
+    def _evaluate(self, x):
+        return np.sum(x ** 6.0 * (np.sin(1.0 / x) + 2.0))
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

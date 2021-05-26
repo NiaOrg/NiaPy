@@ -2,7 +2,7 @@
 
 """Implementation of Csendes function."""
 
-import math
+import numpy as np
 from niapy.benchmarks.benchmark import Benchmark
 
 __all__ = ['Csendes']
@@ -48,18 +48,19 @@ class Csendes(Benchmark):
 
     Name = ['Csendes']
 
-    def __init__(self, lower=-1.0, upper=1.0):
+    def __init__(self, dimension=4, lower=-1.0, upper=1.0, *args, **kwargs):
         r"""Initialize of Csendes benchmark.
 
         Args:
-            lower (Optional[float]): Lower bound of problem.
-            upper (Optional[float]): Upper bound of problem.
+            dimension (Optional[int]): Dimension of the problem.
+            lower (Optional[Union[float, Iterable[float]]]): Lower bounds of the problem.
+            upper (Optional[Union[float, Iterable[float]]]): Upper bounds of the problem.
 
         See Also:
             :func:`niapy.benchmarks.Benchmark.__init__`
 
         """
-        super().__init__(lower, upper)
+        super().__init__(dimension, lower, upper, *args, **kwargs)
 
     @staticmethod
     def latex_code():
@@ -71,30 +72,6 @@ class Csendes(Benchmark):
         """
         return r'''$f(\mathbf{x}) = \sum_{i=1}^D x_i^6\left( 2 + \sin \frac{1}{x_i}\right)$'''
 
-    def function(self):
-        r"""Return benchmark evaluation function.
-
-        Returns:
-            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
-
-        """
-        def evaluate(dimension, x):
-            r"""Fitness function.
-
-            Args:
-                dimension (int): Dimensionality of the problem
-                x (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
-
-            Returns:
-                float: Fitness value for the solution.
-
-            """
-            val = 0.0
-
-            for i in range(dimension):
-                if x[i] != 0:
-                    val += math.pow(x[i], 6) * (2.0 + math.sin(1.0 / x[i]))
-
-            return val
-
-        return evaluate
+    def _evaluate(self, x):
+        mask = x != 0
+        return np.sum(np.power(x[mask], 6.0) * (2.0 * np.sin(1.0 / x[mask])))

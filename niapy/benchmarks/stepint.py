@@ -2,7 +2,7 @@
 
 """Step int benchmark."""
 
-import math
+import numpy as np
 from niapy.benchmarks.benchmark import Benchmark
 
 __all__ = ['Stepint']
@@ -47,18 +47,19 @@ class Stepint(Benchmark):
 
     Name = ['Stepint']
 
-    def __init__(self, lower=-5.12, upper=5.12):
+    def __init__(self, dimension=4, lower=-5.12, upper=5.12, *args, **kwargs):
         r"""Initialize of Stepint benchmark.
 
         Args:
-            lower (Optional[float]): Lower bound of problem.
-            upper (Optional[float]): Upper bound of problem.
+            dimension (Optional[int]): Dimension of the problem.
+            lower (Optional[Union[float, Iterable[float]]]): Lower bounds of the problem.
+            upper (Optional[Union[float, Iterable[float]]]): Upper bounds of the problem.
 
         See Also:
             :func:`niapy.benchmarks.Benchmark.__init__`
 
         """
-        super().__init__(lower, upper)
+        super().__init__(dimension, lower, upper, *args, **kwargs)
 
     @staticmethod
     def latex_code():
@@ -70,29 +71,5 @@ class Stepint(Benchmark):
         """
         return r'''$f(\mathbf{x}) = \sum_{i=1}^D x_i^2$'''
 
-    def function(self):
-        r"""Return benchmark evaluation function.
-
-        Returns:
-            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
-
-        """
-        def evaluate(dimension, x):
-            r"""Fitness function.
-
-            Args:
-                dimension (int): Dimensionality of the problem
-                x (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
-
-            Returns:
-                float: Fitness value for the solution.
-
-            """
-            val = 0.0
-
-            for i in range(dimension):
-                val += math.floor(x[i])
-
-            return 25.0 + val
-
-        return evaluate
+    def _evaluate(self, x):
+        return 25.0 + np.sum(np.floor(x))

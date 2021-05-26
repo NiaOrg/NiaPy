@@ -1,6 +1,7 @@
 # encoding=utf8
 
 """Implementations of Perm function."""
+import numpy as np
 
 from niapy.benchmarks.benchmark import Benchmark
 
@@ -46,19 +47,18 @@ class Perm(Benchmark):
 
     Name = ['Perm']
 
-    def __init__(self, dimension=10.0, beta=.5):
-        r"""Initialize of Bent Cigar benchmark.
+    def __init__(self, dimension=4, beta=0.5, *args, **kwargs):
+        r"""Initialize Perm benchmark.
 
         Args:
-            dimension (float): Dimension of the problem.
-                -dimension will be the lower bound, dimension will be the upper bound.
-            beta (float): Beta parameter.
+            dimension (Optional[int]): Dimension of the problem.
+            beta (Optional[float]): Beta parameter.
 
         See Also:
             :func:`niapy.benchmarks.Benchmark.__init__`
 
         """
-        super().__init__(-dimension, dimension)
+        super().__init__(dimension, -dimension, dimension, *args, **kwargs)
         self.beta = beta
 
     @staticmethod
@@ -71,32 +71,11 @@ class Perm(Benchmark):
         """
         return r'''$f(\textbf{x}) = \sum_{i = 1}^D \left( \sum_{j = 1}^D (j - \beta) \left( x_j^i - \frac{1}{j^i} \right) \right)^2$'''
 
-    def function(self):
-        r"""Return benchmark evaluation function.
-
-        Returns:
-            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
-
-        """
-        def f(dimension, x):
-            r"""Fitness function.
-
-            Args:
-                dimension (int): Dimensionality of the problem
-                x (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
-
-            Returns:
-                float: Fitness value for the solution.
-
-            """
-            v = .0
-            for i in range(1, dimension + 1):
-                vv = .0
-                for j in range(1, dimension + 1):
-                    vv += (j + self.beta) * (x[j - 1] ** i - 1 / j ** i)
-                v += vv ** 2
-            return v
-
-        return f
+    def _evaluate(self, x):
+        ii = np.arange(1, self.dimension + 1)
+        jj = np.tile(ii, (self.dimension, 1))
+        x_matrix = np.tile(x, (self.dimension, 1))
+        inner = np.sum((jj + self.beta) * (np.power(x_matrix, ii) - np.power(1.0 / jj, ii)), axis=0)
+        return np.sum(inner ** 2)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

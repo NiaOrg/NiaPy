@@ -2,7 +2,7 @@
 
 """Styblinski Tang benchmark."""
 
-import math
+import numpy as np
 from niapy.benchmarks.benchmark import Benchmark
 
 __all__ = ['StyblinskiTang']
@@ -50,18 +50,19 @@ class StyblinskiTang(Benchmark):
 
     Name = ['StyblinskiTang']
 
-    def __init__(self, lower=-5.0, upper=5.0):
+    def __init__(self, dimension=4, lower=-5.0, upper=5.0, *args, **kwargs):
         r"""Initialize of Styblinski Tang benchmark.
 
         Args:
-            lower (Optional[float]): Lower bound of problem.
-            upper (Optional[float]): Upper bound of problem.
+            dimension (Optional[int]): Dimension of the problem.
+            lower (Optional[Union[float, Iterable[float]]]): Lower bounds of the problem.
+            upper (Optional[Union[float, Iterable[float]]]): Upper bounds of the problem.
 
         See Also:
             :func:`niapy.benchmarks.Benchmark.__init__`
 
         """
-        super().__init__(lower, upper)
+        super().__init__(dimension, lower, upper, *args, **kwargs)
 
     @staticmethod
     def latex_code():
@@ -74,29 +75,5 @@ class StyblinskiTang(Benchmark):
         return r'''$f(\mathbf{x}) = \frac{1}{2} \sum_{i=1}^D \left(
                 x_i^4 - 16x_i^2 + 5x_i \right) $'''
 
-    def function(self):
-        r"""Return benchmark evaluation function.
-
-        Returns:
-            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
-
-        """
-        def evaluate(dimension, x):
-            r"""Fitness function.
-
-            Args:
-                dimension (int): Dimensionality of the problem
-                x (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
-
-            Returns:
-                float: Fitness value for the solution.
-
-            """
-            val = 0.0
-
-            for i in range(dimension):
-                val += (math.pow(x[i], 4) - 16.0 * math.pow(x[i], 2) + 5.0 * x[i])
-
-            return 0.5 * val
-
-        return evaluate
+    def _evaluate(self, x):
+        return 0.5 * np.sum(x ** 4 - 16.0 * x ** 2 + 5.0 * x)

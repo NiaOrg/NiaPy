@@ -2,6 +2,7 @@
 
 """Implementations of Trid function."""
 
+import numpy as np
 from niapy.benchmarks.benchmark import Benchmark
 
 __all__ = ['Trid']
@@ -45,17 +46,19 @@ class Trid(Benchmark):
 
     Name = ['Trid']
 
-    def __init__(self, dimension=2):
+    def __init__(self, dimension=4, *args, **kwargs):
         r"""Initialize of Trid benchmark.
 
         Args:
-            dimension (int): Dimension of the problem used to determine lower and upper bounds.
+            dimension (Optional[int]): Dimension of the problem.
 
         See Also:
             :func:`niapy.benchmarks.Benchmark.__init__`
 
         """
-        super().__init__(-(dimension ** 2), dimension ** 2)
+        kwargs.pop('lower', None)
+        kwargs.pop('upper', None)
+        super().__init__(dimension, -(dimension ** 2), dimension ** 2, *args, **kwargs)
 
     @staticmethod
     def latex_code():
@@ -67,31 +70,9 @@ class Trid(Benchmark):
         """
         return r'''$f(\textbf{x}) = \sum_{i = 1}^D \left( x_i - 1 \right)^2 - \sum_{i = 2}^D x_i x_{i - 1}$'''
 
-    def function(self):
-        r"""Return benchmark evaluation function.
-
-        Returns:
-            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
-
-        """
-        def f(dimension, x):
-            r"""Fitness function.
-
-            Args:
-                dimension (int): Dimensionality of the problem
-                x (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
-
-            Returns:
-                float: Fitness value for the solution.
-
-            """
-            v1, v2 = 0.0, 0.0
-            for i in range(dimension):
-                v1 += (x[i] - 1) ** 2
-            for i in range(1, dimension):
-                v2 += x[i] * x[i - 1]
-            return v1 - v2
-
-        return f
+    def _evaluate(self, x):
+        sum1 = np.sum((x - 1) ** 2)
+        sum2 = np.sum(x[1:] * x[:-1])
+        return sum1 - sum2
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

@@ -2,7 +2,7 @@
 
 """Implementation of Quintic funcion."""
 
-import math
+import numpy as np
 from niapy.benchmarks.benchmark import Benchmark
 
 __all__ = ['Quintic']
@@ -51,18 +51,19 @@ class Quintic(Benchmark):
 
     Name = ['Quintic']
 
-    def __init__(self, lower=-10.0, upper=10.0):
+    def __init__(self, dimension=4, lower=-10.0, upper=10.0, *args, **kwargs):
         r"""Initialize of Quintic benchmark.
 
         Args:
-            lower (Optional[float]): Lower bound of problem.
-            upper (Optional[float]): Upper bound of problem.
+            dimension (Optional[int]): Dimension of the problem.
+            lower (Optional[Union[float, Iterable[float]]]): Lower bounds of the problem.
+            upper (Optional[Union[float, Iterable[float]]]): Upper bounds of the problem.
 
         See Also:
             :func:`niapy.benchmarks.Benchmark.__init__`
 
         """
-        super().__init__(lower, upper)
+        super().__init__(dimension, lower, upper, *args, **kwargs)
 
     @staticmethod
     def latex_code():
@@ -75,29 +76,5 @@ class Quintic(Benchmark):
         return r'''$f(\mathbf{x}) = \sum_{i=1}^D \left| x_i^5 - 3x_i^4 +
                 4x_i^3 + 2x_i^2 - 10x_i - 4\right|$'''
 
-    def function(self):
-        r"""Return benchmark evaluation function.
-
-        Returns:
-            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
-
-        """
-        def evaluate(dimension, x):
-            r"""Fitness function.
-
-            Args:
-                dimension (int): Dimensionality of the problem
-                x (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
-
-            Returns:
-                float: Fitness value for the solution.
-
-            """
-            val = 0.0
-
-            for i in range(dimension):
-                val += abs(math.pow(x[i], 5) - 3.0 * math.pow(x[i], 4) + 4.0 * math.pow(x[i], 3) + 2.0 * math.pow(x[i], 2) - 10.0 * x[i] - 4)
-
-            return val
-
-        return evaluate
+    def _evaluate(self, x):
+        return np.sum(np.abs(x ** 5 - 3.0 * x ** 4 + 4.0 * x ** 3 + 2.0 * x ** 2 - 10.0 * x - 4.0))

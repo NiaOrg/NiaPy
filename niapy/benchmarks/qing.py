@@ -3,7 +3,7 @@
 
 """Implementation of Qing funcion."""
 
-import math
+import numpy as np
 from niapy.benchmarks.benchmark import Benchmark
 
 __all__ = ['Qing']
@@ -49,18 +49,19 @@ class Qing(Benchmark):
 
     Name = ['Qing']
 
-    def __init__(self, lower=-500.0, upper=500.0):
+    def __init__(self, dimension=4, lower=-500.0, upper=500.0, *args, **kwargs):
         r"""Initialize of Qing benchmark.
 
         Args:
-            lower (Optional[float]): Lower bound of problem.
-            upper (Optional[float]): Upper bound of problem.
+            dimension (Optional[int]): Dimension of the problem.
+            lower (Optional[Union[float, Iterable[float]]]): Lower bounds of the problem.
+            upper (Optional[Union[float, Iterable[float]]]): Upper bounds of the problem.
 
         See Also:
             :func:`niapy.benchmarks.Benchmark.__init__`
 
         """
-        super().__init__(lower, upper)
+        super().__init__(dimension, lower, upper, *args, **kwargs)
 
     @staticmethod
     def latex_code():
@@ -72,29 +73,5 @@ class Qing(Benchmark):
         """
         return r'''$f(\mathbf{x}) = \sum_{i=1}^D \left (x_i^2 - i\right)^2$'''
 
-    def function(self):
-        r"""Return benchmark evaluation function.
-
-        Returns:
-            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
-
-        """
-        def evaluate(dimension, x):
-            r"""Fitness function.
-
-            Args:
-                dimension (int): Dimensionality of the problem
-                x (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
-
-            Returns:
-                float: Fitness value for the solution.
-
-            """
-            val = 0.0
-
-            for i in range(dimension):
-                val += math.pow(math.pow(x[i], 2) - i, 2)
-
-            return val
-
-        return evaluate
+    def _evaluate(self, x):
+        return np.sum(np.power(x ** 2.0 - np.arange(1, self.dimension + 1), 2.0))

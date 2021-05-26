@@ -2,7 +2,7 @@
 
 """Implementations of HGBat functions."""
 
-from math import fabs
+import numpy as np
 from niapy.benchmarks.benchmark import Benchmark
 
 __all__ = ['HGBat']
@@ -45,18 +45,19 @@ class HGBat(Benchmark):
 
     Name = ['HGBat']
 
-    def __init__(self, lower=-100.0, upper=100.0):
+    def __init__(self, dimension=4, lower=-100.0, upper=100.0, *args, **kwargs):
         r"""Initialize of HGBat benchmark.
 
         Args:
-            lower (Optional[float]): Lower bound of problem.
-            upper (Optional[float]): Upper bound of problem.
+            dimension (Optional[int]): Dimension of the problem.
+            lower (Optional[Union[float, Iterable[float]]]): Lower bounds of the problem.
+            upper (Optional[Union[float, Iterable[float]]]): Upper bounds of the problem.
 
         See Also:
             :func:`niapy.benchmarks.Benchmark.__init__`
 
         """
-        super().__init__(lower, upper)
+        super().__init__(dimension, lower, upper, *args, **kwargs)
 
     @staticmethod
     def latex_code():
@@ -68,31 +69,9 @@ class HGBat(Benchmark):
         """
         return r'''$f(\textbf{x}) = \left| \left( \sum_{i=1}^D x_i^2 \right)^2 - \left( \sum_{i=1}^D x_i \right)^2 \right|^{\frac{1}{2}} + \frac{0.5 \sum_{i=1}^D x_i^2 + \sum_{i=1}^D x_i}{D} + 0.5$'''
 
-    def function(self):
-        r"""Return benchmark evaluation function.
-
-        Returns:
-            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
-
-        """
-        def f(dimension, x):
-            r"""Fitness function.
-
-            Args:
-                dimension (int): Dimensionality of the problem
-                x (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
-
-            Returns:
-                float: Fitness value for the solution.
-
-            """
-            val1, val2 = 0.0, 0.0
-            for i in range(dimension):
-                val1 += x[i] ** 2
-            for i in range(dimension):
-                val2 += x[i]
-            return fabs(val1 ** 2 - val2 ** 2) ** (1 / 2) + (0.5 * val1 + val2) / dimension + 0.5
-
-        return f
+    def _evaluate(self, x):
+        val1 = np.sum(x ** 2)
+        val2 = np.sum(x)
+        return np.sqrt(np.abs(val1 * val1 - val2 ** 2)) + (0.5 * val1 + val2) / self.dimension + 0.5
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

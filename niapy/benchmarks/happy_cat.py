@@ -2,7 +2,7 @@
 
 """Implementation of Happy Cat function."""
 
-import math
+import numpy as np
 from niapy.benchmarks.benchmark import Benchmark
 
 __all__ = ['HappyCat']
@@ -49,18 +49,20 @@ class HappyCat(Benchmark):
 
     Name = ['HappyCat']
 
-    def __init__(self, lower=-100.0, upper=100.0):
+    def __init__(self, dimension=4, lower=-100.0, upper=100.0, alpha=0.25, *args, **kwargs):
         r"""Initialize of Happy cat benchmark.
 
         Args:
-            lower (Optional[float]): Lower bound of problem.
-            upper (Optional[float]): Upper bound of problem.
+            dimension (Optional[int]): Dimension of the problem.
+            lower (Optional[Union[float, Iterable[float]]]): Lower bounds of the problem.
+            upper (Optional[Union[float, Iterable[float]]]): Upper bounds of the problem.
 
         See Also:
             :func:`niapy.benchmarks.Benchmark.__init__`
 
         """
-        super().__init__(lower, upper)
+        super().__init__(dimension, lower, upper, *args, **kwargs)
+        self.alpha = alpha
 
     @staticmethod
     def latex_code():
@@ -74,32 +76,7 @@ class HappyCat(Benchmark):
                 D \right|}^{1/4} + (0.5 \sum_{i = 1}^D {x_i}^2 +
                 \sum_{i = 1}^D x_i) / D + 0.5$'''
 
-    def function(self):
-        r"""Return benchmark evaluation function.
-
-        Returns:
-            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
-
-        """
-        def evaluate(dimension, x):
-            r"""Fitness function.
-
-            Args:
-                dimension (int): Dimensionality of the problem
-                x (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
-
-            Returns:
-                float: Fitness value for the solution.
-
-            """
-            val1 = 0.0
-            val2 = 0.0
-            alpha = 0.125
-
-            for i in range(dimension):
-                val1 += math.pow(abs(math.pow(x[i], 2) - dimension), alpha)
-                val2 += (0.5 * math.pow(x[i], 2) + x[i]) / dimension
-
-            return val1 + val2 + 0.5
-
-        return evaluate
+    def _evaluate(self, x):
+        val1 = np.sum(np.abs(x * x - self.dimension) ** self.alpha)
+        val2 = np.sum((0.5 * x * x + x) / self.dimension)
+        return val1 + val2 + 0.5

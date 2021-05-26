@@ -46,18 +46,19 @@ class CosineMixture(Benchmark):
 
     Name = ['CosineMixture']
 
-    def __init__(self, lower=-1.0, upper=1.0):
+    def __init__(self, dimension=4, lower=-1.0, upper=1.0, *args, **kwargs):
         r"""Initialize of Cosine mixture benchmark.
 
         Args:
-            lower (Optional[float]): Lower bound of problem.
-            upper (Optional[float]): Upper bound of problem.
+            dimension (Optional[int]): Dimension of the problem.
+            lower (Optional[Union[float, Iterable[float]]]): Lower bounds of the problem.
+            upper (Optional[Union[float, Iterable[float]]]): Upper bounds of the problem.
 
         See Also:
             :func:`niapy.benchmarks.Benchmark.__init__`
 
         """
-        super().__init__(lower, upper)
+        super().__init__(dimension, lower, upper, *args, **kwargs)
 
     @staticmethod
     def latex_code():
@@ -69,29 +70,7 @@ class CosineMixture(Benchmark):
         """
         return r'''$f(\textbf{x}) = - 0.1 \sum_{i = 1}^D \cos (5 \pi x_i) - \sum_{i = 1}^D x_i^2$'''
 
-    def function(self):
-        r"""Return benchmark evaluation function.
-
-        Returns:
-            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
-
-        """
-        def f(dimension, x):
-            r"""Fitness function.
-
-            Args:
-                dimension (int): Dimensionality of the problem
-                x (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
-
-            Returns:
-                float: Fitness value for the solution.
-
-            """
-            v1, v2 = 0.0, 0.0
-            for i in range(dimension):
-                v1, v2 = v1 + np.cos(5 * np.pi * x[i]), v2 + x[i] ** 2
-            return -0.1 * v1 - v2
-
-        return f
+    def _evaluate(self, x):
+        return -0.1 * np.sum(np.cos(5 * np.pi * x)) - np.sum(x ** 2)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

@@ -47,18 +47,19 @@ class Sphere(Benchmark):
 
     Name = ['Sphere']
 
-    def __init__(self, lower=-5.12, upper=5.12):
+    def __init__(self, dimension=4, lower=-5.12, upper=5.12, *args, **kwargs):
         r"""Initialize of Sphere benchmark.
 
         Args:
-            lower (Optional[float]): Lower bound of problem.
-            upper (Optional[float]): Upper bound of problem.
+            dimension (Optional[int]): Dimension of the problem.
+            lower (Optional[Union[float, Iterable[float]]]): Lower bounds of the problem.
+            upper (Optional[Union[float, Iterable[float]]]): Upper bounds of the problem.
 
         See Also:
             :func:`niapy.benchmarks.Benchmark.__init__`
 
         """
-        super().__init__(lower, upper)
+        super().__init__(dimension, lower, upper, *args, **kwargs)
 
     @staticmethod
     def latex_code():
@@ -70,30 +71,8 @@ class Sphere(Benchmark):
         """
         return r'''$f(\mathbf{x}) = \sum_{i=1}^D x_i^2$'''
 
-    def function(self):
-        r"""Return benchmark evaluation function.
-
-        Returns:
-            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
-
-        """
-        def evaluate(dimension, x):
-            r"""Fitness function.
-
-            Args:
-                dimension (int): Dimensionality of the problem.
-                x (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
-
-            Returns:
-                float: Fitness value for the solution.
-
-            """
-            val = 0.0
-            for i in range(dimension):
-                val += x[i] ** 2
-            return val
-
-        return evaluate
+    def _evaluate(self, x):
+        return np.sum(x ** 2)
 
 
 class Sphere2(Benchmark):
@@ -132,18 +111,19 @@ class Sphere2(Benchmark):
 
     Name = ['Sphere2']
 
-    def __init__(self, lower=-1., upper=1.):
+    def __init__(self, dimension=4, lower=-1.0, upper=1.0, *args, **kwargs):
         r"""Initialize of Sphere2 benchmark.
 
         Args:
-            lower (Optional[float]): Lower bound of problem.
-            upper (Optional[float]): Upper bound of problem.
+            dimension (Optional[int]): Dimension of the problem.
+            lower (Optional[Union[float, Iterable[float]]]): Lower bounds of the problem.
+            upper (Optional[Union[float, Iterable[float]]]): Upper bounds of the problem.
 
         See Also:
             :func:`niapy.benchmarks.Benchmark.__init__`
 
         """
-        super().__init__(lower, upper)
+        super().__init__(dimension, lower, upper, *args, **kwargs)
 
     @staticmethod
     def latex_code():
@@ -155,30 +135,9 @@ class Sphere2(Benchmark):
         """
         return r'''$f(\textbf{x}) = \sum_{i = 1}^D \lvert x_i \rvert^{i + 1}$'''
 
-    def function(self):
-        r"""Return benchmark evaluation function.
-
-        Returns:
-            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
-
-        """
-        def evaluate(dimension, x):
-            r"""Fitness function.
-
-            Args:
-                dimension (int): Dimensionality of the problem
-                x (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
-
-            Returns:
-                float: Fitness value for the solution.
-
-            """
-            val = 0.0
-            for i in range(dimension):
-                val += np.abs(x[i]) ** (i + 2)
-            return val
-
-        return evaluate
+    def _evaluate(self, x):
+        indices = np.arange(2, self.dimension + 2)
+        return np.sum(np.power(np.abs(x), indices))
 
 
 class Sphere3(Benchmark):
@@ -217,18 +176,19 @@ class Sphere3(Benchmark):
 
     Name = ['Sphere3']
 
-    def __init__(self, lower=-65.536, upper=65.536):
+    def __init__(self, dimension=4, lower=-65.536, upper=65.536, *args, **kwargs):
         r"""Initialize of Sphere3 benchmark.
 
         Args:
-            lower (Optional[float]): Lower bound of problem.
-            upper (Optional[float]): Upper bound of problem.
+            dimension (Optional[int]): Dimension of the problem.
+            lower (Optional[Union[float, Iterable[float]]]): Lower bounds of the problem.
+            upper (Optional[Union[float, Iterable[float]]]): Upper bounds of the problem.
 
         See Also:
             :func:`niapy.benchmarks.Benchmark.__init__`
 
         """
-        super().__init__(lower, upper)
+        super().__init__(dimension, lower, upper, *args, **kwargs)
 
     @staticmethod
     def latex_code():
@@ -240,32 +200,9 @@ class Sphere3(Benchmark):
         """
         return r'''$f(\textbf{x}) = \sum_{i = 1}^D \sum_{j = 1}^i x_j^2$'''
 
-    def function(self):
-        r"""Return benchmark evaluation function.
-
-        Returns:
-            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
-
-        """
-        def evaluate(dimension, x):
-            r"""Fitness function.
-
-            Args:
-                dimension (int): Dimensionality of the problem
-                x (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
-
-            Returns:
-                float: Fitness value for the solution.
-
-            """
-            val = 0.0
-            for i in range(dimension):
-                v = .0
-                for j in range(i + 1):
-                    val += np.abs(x[j]) ** 2
-                val += v
-            return val
-
-        return evaluate
+    def _evaluate(self, x):
+        x_matrix = np.tile(x, (self.dimension, 1))
+        val = np.sum(np.tril(x_matrix) ** 2.0, axis=0)
+        return np.sum(val)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
