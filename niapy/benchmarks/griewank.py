@@ -2,7 +2,7 @@
 
 """Implementation of Griewank funcion."""
 
-from math import sqrt, cos
+import numpy as np
 from niapy.benchmarks.benchmark import Benchmark
 
 __all__ = ['Griewank', 'ExpandedGriewankPlusRosenbrock']
@@ -49,18 +49,19 @@ class Griewank(Benchmark):
 
     Name = ['Griewank']
 
-    def __init__(self, lower=-100.0, upper=100.0):
+    def __init__(self, dimension=4, lower=-100.0, upper=100.0, *args, **kwargs):
         r"""Initialize of Griewank benchmark.
 
         Args:
-            lower (Optional[float]): Lower bound of problem.
-            upper (Optional[float]): Upper bound of problem.
+            dimension (Optional[int]): Dimension of the problem.
+            lower (Optional[Union[float, Iterable[float]]]): Lower bound of the problem.
+            upper (Optional[Union[float, Iterable[float]]]): Upper bound of the problem.
 
         See Also:
             :func:`niapy.benchmarks.Benchmark.__init__`
 
         """
-        super().__init__(lower, upper)
+        super().__init__(dimension, lower, upper, *args, **kwargs)
 
     @staticmethod
     def latex_code():
@@ -72,31 +73,11 @@ class Griewank(Benchmark):
         """
         return r'''$f(\mathbf{x}) = \sum_{i=1}^D \frac{x_i^2}{4000} - \prod_{i=1}^D \cos(\frac{x_i}{\sqrt{i}}) + 1$'''
 
-    def function(self):
-        r"""Return benchmark evaluation function.
-
-        Returns:
-            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
-
-        """
-        def evaluate(dimension, x):
-            r"""Fitness function.
-
-            Args:
-                dimension (int): Dimensionality of the problem
-                x (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
-
-            Returns:
-                float: Fitness value for the solution.
-
-            """
-            val1, val2 = 0.0, 1.0
-            for i in range(dimension):
-                val1 += x[i] ** 2 / 4000.0
-                val2 *= cos(x[i] / sqrt(i + 1))
-            return val1 - val2 + 1.0
-
-        return evaluate
+    def _evaluate(self, x):
+        val1 = np.sum(x * x / 4000.0)
+        i = np.arange(1, self.dimension + 1)
+        val2 = np.product(np.cos(x / np.sqrt(i)))
+        return val1 - val2 + 1.0
 
 
 class ExpandedGriewankPlusRosenbrock(Benchmark):
@@ -136,18 +117,19 @@ class ExpandedGriewankPlusRosenbrock(Benchmark):
 
     Name = ['ExpandedGriewankPlusRosenbrock']
 
-    def __init__(self, lower=-100.0, upper=100.0):
+    def __init__(self, dimension=4, lower=-100.0, upper=100.0, *args, **kwargs):
         r"""Initialize of Expanded Griewank's plus Rosenbrock benchmark.
 
         Args:
-            lower (Optional[float]): Lower bound of problem.
-            upper (Optional[float]): Upper bound of problem.
+            dimension (Optional[int]): Dimension of the problem.
+            lower (Optional[Union[float, Iterable[float]]]): Lower bounds of the problem.
+            upper (Optional[Union[float, Iterable[float]]]): Upper bounds of the problem.
 
         See Also:
             :func:`niapy.benchmarks.Benchmark.__init__`
 
         """
-        super().__init__(lower, upper)
+        super().__init__(dimension, lower, upper, *args, **kwargs)
 
     @staticmethod
     def latex_code():
@@ -159,35 +141,9 @@ class ExpandedGriewankPlusRosenbrock(Benchmark):
         """
         return r'''$f(\textbf{x}) = h(g(x_D, x_1)) + \sum_{i=2}^D h(g(x_{i - 1}, x_i)) \\ g(x, y) = 100 (x^2 - y)^2 + (x - 1)^2 \\ h(z) = \frac{z^2}{4000} - \cos \left( \frac{z}{\sqrt{1}} \right) + 1$'''
 
-    def function(self):
-        r"""Return benchmark evaluation function.
-
-        Returns:
-            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
-
-        """
-        def h(z):
-            return z ** 2 / 4000 - cos(z / sqrt(1)) + 1
-
-        def g(x, y):
-            return 100 * (x ** 2 - y ** 2) ** 2 + (x - 1) ** 2
-
-        def f(dimension, x):
-            r"""Fitness function.
-
-            Args:
-                dimension (int): Dimensionality of the problem
-                x (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
-
-            Returns:
-                float: Fitness value for the solution.
-
-            """
-            val = 0.0
-            for i in range(1, dimension):
-                val += h(g(x[i - 1], x[i]))
-            return h(g(x[dimension - 1], x[0])) + val
-
-        return f
+    def _evaluate(self, x):
+        x1 = 100.0 * (x[1:] - x[:-1] ** 2.0) ** 2.0 + (1 - x[:-1]) ** 2.0
+        x2 = x1 * x1 / 4000.0 - np.cos(x1 / np.sqrt(np.arange(1, self.dimension)))
+        return np.sum(x2)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

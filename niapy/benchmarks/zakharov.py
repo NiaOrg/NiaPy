@@ -1,6 +1,7 @@
 # encoding=utf8
 """Implementations of Zakharov function."""
 
+import numpy as np
 from niapy.benchmarks.benchmark import Benchmark
 
 __all__ = ['Zakharov']
@@ -44,18 +45,19 @@ class Zakharov(Benchmark):
 
     Name = ['Zakharov']
 
-    def __init__(self, lower=-5.0, upper=10.0):
+    def __init__(self, dimension=4, lower=-5.0, upper=10.0, *args, **kwargs):
         r"""Initialize of Zakharov benchmark.
 
         Args:
-            lower (Optional[float]): Lower bound of problem.
-            upper (Optional[float]): Upper bound of problem.
+            dimension (Optional[int]): Dimension of the problem.
+            lower (Optional[Union[float, Iterable[float]]]): Lower bounds of the problem.
+            upper (Optional[Union[float, Iterable[float]]]): Upper bounds of the problem.
 
         See Also:
             :func:`niapy.benchmarks.Benchmark.__init__`
 
         """
-        super().__init__(lower, upper)
+        super().__init__(dimension, lower, upper, *args, **kwargs)
 
     @staticmethod
     def latex_code():
@@ -67,29 +69,9 @@ class Zakharov(Benchmark):
         """
         return r'''$f(\textbf{x}) = \sum_{i = 1}^D x_i^2 + \left( \sum_{i = 1}^D 0.5 i x_i \right)^2 + \left( \sum_{i = 1}^D 0.5 i x_i \right)^4$'''
 
-    def function(self):
-        r"""Return benchmark evaluation function.
-
-        Returns:
-            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
-
-        """
-        def f(dimension, x):
-            r"""Fitness function.
-
-            Args:
-                dimension (int): Dimensionality of the problem
-                x (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
-
-            Returns:
-                float: Fitness value for the solution.
-
-            """
-            v1, v2 = 0.0, 0.0
-            for i in range(dimension):
-                v1, v2 = v1 + x[i] ** 2, v2 + 0.5 * (i + 1) * x[i]
-            return v1 + v2 ** 2 + v2 ** 4
-
-        return f
+    def _evaluate(self, x):
+        sum1 = np.sum(x * x)
+        sum2 = np.sum(0.5 * np.arange(1, self.dimension + 1) * x)
+        return sum1 + sum2 ** 2 + sum2 ** 4
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

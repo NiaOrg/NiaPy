@@ -2,7 +2,7 @@
 
 """Implementations of Alpine functions."""
 
-import math
+import numpy as np
 from niapy.benchmarks.benchmark import Benchmark
 
 __all__ = ['Alpine1', 'Alpine2']
@@ -47,18 +47,19 @@ class Alpine1(Benchmark):
 
     Name = ['Alpine1']
 
-    def __init__(self, lower=-10.0, upper=10.0):
+    def __init__(self, dimension=4, lower=-10.0, upper=10.0, *args, **kwargs):
         r"""Initialize of Alpine1 benchmark.
 
         Args:
-            lower (Optional[float]): Lower bound of problem.
-            upper (Optional[float]): Upper bound of problem.
+            dimension (Optional[int]): Dimension of the problem.
+            lower (Optional[Union[float, Iterable[float]]]): Lower bounds of the problem.
+            upper (Optional[Union[float, Iterable[float]]]): Upper bounds of the problem.
 
         See Also:
             :func:`niapy.benchmarks.Benchmark.__init__`
 
         """
-        super().__init__(lower, upper)
+        super().__init__(dimension, lower, upper, *args, **kwargs)
 
     @staticmethod
     def latex_code():
@@ -70,32 +71,8 @@ class Alpine1(Benchmark):
         """
         return r'''$f(\mathbf{x}) = \sum_{i=1}^{D} \lvert x_i \sin(x_i)+0.1x_i \rvert$'''
 
-    def function(self):
-        r"""Return benchmark evaluation function.
-
-        Returns:
-            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function
-
-        """
-        def evaluate(dimension, x):
-            r"""Fitness function.
-
-            Args:
-                dimension (int): Dimensionality of the problem
-                x (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
-
-            Returns:
-                float: Fitness value for the solution.
-
-            """
-            val = 0.0
-
-            for i in range(dimension):
-                val += abs(math.sin(x[i]) + 0.1 * x[i])
-
-            return val
-
-        return evaluate
+    def _evaluate(self, x):
+        return np.sum(np.abs(np.sin(x) + 0.1 * x))
 
 
 class Alpine2(Benchmark):
@@ -138,18 +115,19 @@ class Alpine2(Benchmark):
 
     Name = ['Alpine2']
 
-    def __init__(self, lower=0.0, upper=10.0):
+    def __init__(self, dimension=4, lower=0.0, upper=10.0, *args, **kwargs):
         r"""Initialize of Alpine2 benchmark.
 
         Args:
-            lower (Optional[float]): Lower bound of problem.
-            upper (Optional[float]): Upper bound of problem.
+            dimension (Optional[int]): Dimension of the problem.
+            lower (Optional[Union[float, Iterable[float]]]): Lower bounds of the problem.
+            upper (Optional[Union[float, Iterable[float]]]): Upper bounds of the problem.
 
         See Also:
             :func:`niapy.benchmarks.Benchmark.__init__`
 
         """
-        super().__init__(lower=lower, upper=upper)
+        super().__init__(dimension, lower, upper, *args, **kwargs)
 
     @staticmethod
     def latex_code():
@@ -161,29 +139,5 @@ class Alpine2(Benchmark):
         """
         return r'''$f(\mathbf{x}) = \prod_{i=1}^{D} \sqrt{x_i} \sin(x_i)$'''
 
-    def function(self):
-        r"""Return benchmark evaluation function.
-
-        Returns:
-            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
-
-        """
-        def evaluate(dimension, x):
-            r"""Fitness function.
-
-            Args:
-                dimension (int): Dimensionality of the problem
-                x (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
-
-            Returns:
-                float: Fitness value for the solution.
-
-            """
-            val = 1.0
-
-            for i in range(dimension):
-                val *= math.sqrt(x[i]) * math.sin(x[i])
-
-            return val
-
-        return evaluate
+    def _evaluate(self, x):
+        return np.product(np.sqrt(x) * np.sin(x))

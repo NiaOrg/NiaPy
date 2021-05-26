@@ -8,7 +8,6 @@ from enum import Enum
 import numpy as np
 from matplotlib import pyplot as plt
 from niapy.benchmarks import Benchmark
-from niapy.util.array import full_array
 from niapy.util.repair import limit
 from niapy.util.factory import get_benchmark
 from niapy.util.exception import FesException, GenException, RefException
@@ -49,7 +48,7 @@ class Task:
 
     """
 
-    def __init__(self, dimension=0, optimization_type=OptimizationType.MINIMIZATION, benchmark=None, lower=None,
+    def __init__(self, dimension=None, optimization_type=OptimizationType.MINIMIZATION, benchmark=None, lower=None,
                  upper=None, repair_function=limit):
         r"""Initialize task class for optimization.
 
@@ -65,39 +64,22 @@ class Task:
             * `func`:niapy.task.Utility.__init__`
 
         """
-        # dimension of the problem
-        self.dimension = dimension
-        # set optimization type
-        self.optimization_type = optimization_type
-        # set optimization function
-        self.benchmark = None
         if isinstance(benchmark, str):
-            self.benchmark = get_benchmark(benchmark)
+            params = dict(dimension=dimension, lower=lower, upper=upper)
+            params = {key: val for key, val in params.items() if val is not None}
+            self.benchmark = get_benchmark(benchmark, **params)
         elif isinstance(benchmark, Benchmark):
             self.benchmark = benchmark
-
-        if self.benchmark is not None:
-            self.function = self.benchmark.function() if self.benchmark is not None else None
-
-        # set Lower limits
-        if lower is not None:
-            self.lower = full_array(lower, self.dimension)
-        elif lower is None and benchmark is not None:
-            self.lower = full_array(self.benchmark.lower, self.dimension)
+            if dimension is not None or lower is not None or upper is not None:
+                logger.warning('An instance of the Benchmark class was passed in, `dimension`, `lower` and `upper` parameters will be ignored.')
         else:
-            self.lower = full_array(0, self.dimension)
+            raise TypeError('Unsupported type for benchmark: {}'.format(type(benchmark)))
 
-        # set Upper limits
-        if upper is not None:
-            self.upper = full_array(upper, self.dimension)
-        elif upper is None and benchmark is not None:
-            self.upper = full_array(self.benchmark.upper, self.dimension)
-        else:
-            self.upper = full_array(0, self.dimension)
-
-        # set range
+        self.optimization_type = optimization_type
+        self.dimension = self.benchmark.dimension
+        self.lower = self.benchmark.lower
+        self.upper = self.benchmark.upper
         self.range = self.upper - self.lower
-        # set repair function
         self.repair_function = repair_function
 
     def repair(self, x, rng=None):
@@ -136,7 +118,7 @@ class Task:
             float: Fitness/function values of solution.
 
         """
-        return self.function(self.dimension, x) * self.optimization_type.value
+        return self.benchmark.evaluate(x) * self.optimization_type.value
 
     def is_feasible(self, x):
         r"""Check if the solution is feasible.
@@ -172,7 +154,7 @@ class CountingTask(Task):
 
     """
 
-    def __init__(self, dimension=0, optimization_type=OptimizationType.MINIMIZATION, benchmark=None, lower=None,
+    def __init__(self, dimension=None, optimization_type=OptimizationType.MINIMIZATION, benchmark=None, lower=None,
                  upper=None, repair_function=limit):
         r"""Initialize counting task.
 
@@ -235,7 +217,7 @@ class StoppingTask(CountingTask):
 
     """
 
-    def __init__(self, max_evals=np.inf, max_iters=np.inf, cutoff_value=None, enable_logging=False, dimension=0,
+    def __init__(self, max_evals=np.inf, max_iters=np.inf, cutoff_value=None, enable_logging=False, dimension=None,
                  optimization_type=OptimizationType.MINIMIZATION, benchmark=None, lower=None, upper=None,
                  repair_function=limit):
         r"""Initialize task class for optimization.

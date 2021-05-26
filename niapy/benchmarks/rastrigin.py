@@ -2,7 +2,7 @@
 
 """Implementation of Rastrigin function."""
 
-import math
+import numpy as np
 from niapy.benchmarks.benchmark import Benchmark
 
 __all__ = ['Rastrigin']
@@ -46,18 +46,19 @@ class Rastrigin(Benchmark):
 
     Name = ['Rastrigin']
 
-    def __init__(self, lower=-5.12, upper=5.12):
+    def __init__(self, dimension=4, lower=-5.12, upper=5.12, *args, **kwargs):
         r"""Initialize of Rastrigin benchmark.
 
         Args:
-            lower (Optional[float]): Lower bound of problem.
-            upper (Optional[float]): Upper bound of problem.
+            dimension (Optional[int]): Dimension of the problem.
+            lower (Optional[Union[float, Iterable[float]]]): Lower bounds of the problem.
+            upper (Optional[Union[float, Iterable[float]]]): Upper bounds of the problem.
 
         See Also:
             :func:`niapy.benchmarks.Benchmark.__init__`
 
         """
-        super().__init__(lower, upper)
+        super().__init__(dimension, lower, upper, *args, **kwargs)
 
     @staticmethod
     def latex_code():
@@ -69,29 +70,5 @@ class Rastrigin(Benchmark):
         """
         return r'''$f(\mathbf{x}) = 10D + \sum_{i=1}^D \left(x_i^2 -10\cos(2\pi x_i)\right)$'''
 
-    def function(self):
-        r"""Return benchmark evaluation function.
-
-        Returns:
-            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
-
-        """
-        def evaluate(dimension, x):
-            r"""Fitness function.
-
-            Args:
-                dimension (int): Dimensionality of the problem
-                x (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
-
-            Returns:
-                float: Fitness value for the solution.
-
-            """
-            val = 0.0
-
-            for i in range(dimension):
-                val += math.pow(x[i], 2) - (10.0 * math.cos(2 * math.pi * x[i]))
-
-            return 10 * dimension + val
-
-        return evaluate
+    def _evaluate(self, x):
+        return 10.0 * self.dimension + np.sum(x * x - 10.0 * np.cos(2 * np.pi * x))

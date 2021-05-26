@@ -9,7 +9,7 @@ import numpy as np
 from numpy.random import default_rng
 
 from niapy.algorithms.algorithm import Individual, Algorithm
-from niapy.benchmarks import Benchmark, Sphere
+from niapy.benchmarks import Benchmark
 from niapy.task import Task, StoppingTask
 from niapy.util import objects_to_array
 
@@ -29,15 +29,16 @@ class MyBenchmark(Benchmark):
 
     See Also:
         * :class:`niapy.benchmarks.Benchmark`
+
     """
 
     Name = ['Custom']
 
-    def __init__(self):
-        super().__init__(-5.12, 5.12)
+    def __init__(self, dimension=10, *_args, **_kwargs):
+        super().__init__(dimension, -5.12, 5.12)
 
-    def function(self):
-        return Sphere(self.lower, self.upper).function()
+    def _evaluate(self, x):
+        return np.sum(x ** 2)
 
 
 class IndividualTestCase(TestCase):
@@ -51,13 +52,14 @@ class IndividualTestCase(TestCase):
 
     See Also:
         * :class:`niapy.algorithms.Individual`
+
     """
 
     def setUp(self):
         self.dimension = 20
         rng = default_rng()
         self.x = rng.uniform(-100, 100, self.dimension)
-        self.task = StoppingTask(max_evals=230, max_iters=np.inf, dimension=self.dimension, benchmark=MyBenchmark())
+        self.task = StoppingTask(max_evals=230, max_iters=np.inf, benchmark=MyBenchmark(self.dimension))
         self.s1 = Individual(x=self.x, e=False)
         self.s2 = Individual(task=self.task, rng=rng)
         self.s3 = Individual(task=self.task)
@@ -102,6 +104,7 @@ def init_pop_numpy(task, population_size, **_kwargs):
         Tuple[numpy.ndarray, numpy.ndarray[float]):
             1. Initialized population.
             2. Initialized populations fitness/function values.
+
     """
     pop = np.zeros((population_size, task.dimension))
     fpop = np.apply_along_axis(task.eval, 1, pop)
@@ -120,6 +123,7 @@ def init_pop_individual(task, population_size, individual_type, **_kwargs):
         Tuple[numpy.ndarray, numpy.ndarray[float]):
             1. Initialized population.
             2. Initialized populations fitness/function values.
+
     """
     pop = objects_to_array([individual_type(x=np.zeros(task.dimension), task=task) for _ in range(population_size)])
     return pop, np.asarray([x.f for x in pop])
@@ -141,6 +145,7 @@ class AlgorithmBaseTestCase(TestCase):
 
     See Also:
         * :class:`niapy.algorithms.Individual`
+
     """
 
     def setUp(self):
@@ -245,6 +250,7 @@ class TestingTask(StoppingTask, TestCase):
 
     See Also:
         * :class:`niapy.util.StoppingTask`
+
     """
 
     def names(self):
@@ -252,6 +258,7 @@ class TestingTask(StoppingTask, TestCase):
 
         Returns:
              List[str]: List of task names.
+
         """
         return self.benchmark.Name
 
@@ -278,11 +285,12 @@ class AlgorithmTestCase(TestCase):
 
     See Also:
         * :class:`niapy.algorithms.Algorithm`
+
     """
 
     def setUp(self):
         r"""Setup basic parameters of the algorithm run."""
-        self.dimensions = [10, 40]
+        self.dimensions = (10, 40)
         self.max_iters = 1000
         self.max_evals = 1000
         self.seed = 1
@@ -309,7 +317,12 @@ class AlgorithmTestCase(TestCase):
 
         Returns:
             Tuple[Task, Task]: Two testing tasks.
+
         """
+        if isinstance(benchmark, Benchmark):
+            cls = benchmark.__class__
+            benchmark = cls(dimension=dimension)
+            dimension = None
         max_evals = self.max_evals if max_evals is None else max_evals
         max_iters = self.max_iters if max_iters is None else max_iters
         task1 = TestingTask(dimension=dimension, max_evals=max_evals, max_iters=max_iters, benchmark=benchmark)
@@ -325,6 +338,7 @@ class AlgorithmTestCase(TestCase):
             benchmark (Union[Benchmark, str]): Benchmark to use for testing.
             max_evals (int): Number of function evaluations.
             max_iters (int): Number of algorithm generations/iterations.
+
         """
         if a is None or b is None:
             return
@@ -348,7 +362,7 @@ class AlgorithmTestCase(TestCase):
             self.assertIsNotNone(x)
             self.assertIsNotNone(y)
             logger.info('%s\n%s -> %s\n%s -> %s' % (task1.names(), x[0], x[1], y[0], y[1]))
-            self.assertAlmostEqual(task1.benchmark.function()(D, x[0].x if isinstance(x[0], Individual) else x[0]),
+            self.assertAlmostEqual(task1.benchmark.evaluate(x[0].x if isinstance(x[0], Individual) else x[0]),
                                    x[1], msg='Best individual fitness values does not mach the given one')
             self.assertAlmostEqual(task1.x_f, x[1],
                                    msg='While running the algorithm, algorithm got better individual with fitness: %s' % task1.x_f)

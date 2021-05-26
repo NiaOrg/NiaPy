@@ -13,7 +13,7 @@ from niapy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
 class MkeSolutionTestCase(TestCase):
     def setUp(self):
         self.D = 20
-        self.x, self.task = default_rng().uniform(-2, 2, self.D), Task(self.D, benchmark=MyBenchmark())
+        self.x, self.task = default_rng().uniform(-2, 2, self.D), Task(benchmark=MyBenchmark(self.D))
         self.sol1, self.sol2, self.sol3 = MkeSolution(x=self.x, e=False), MkeSolution(task=self.task), MkeSolution(
             x=self.x, e=False)
 

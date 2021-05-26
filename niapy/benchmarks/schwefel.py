@@ -2,7 +2,7 @@
 
 """Implementations of Schwefel's functions."""
 
-from math import sin, fmod, fabs, sqrt
+import numpy as np
 from niapy.benchmarks.benchmark import Benchmark
 
 __all__ = ['Schwefel', 'Schwefel221', 'Schwefel222', 'ModifiedSchwefel']
@@ -45,18 +45,19 @@ class Schwefel(Benchmark):
 
     Name = ['Schwefel']
 
-    def __init__(self, lower=-500.0, upper=500.0):
+    def __init__(self, dimension=4, lower=-500.0, upper=500.0, *args, **kwargs):
         r"""Initialize of Schwefel benchmark.
 
         Args:
-            lower (Optional[float]): Lower bound of problem.
-            upper (Optional[float]): Upper bound of problem.
+            dimension (Optional[int]): Dimension of the problem.
+            lower (Optional[Union[float, Iterable[float]]]): Lower bounds of the problem.
+            upper (Optional[Union[float, Iterable[float]]]): Upper bounds of the problem.
 
         See Also:
             :func:`niapy.benchmarks.Benchmark.__init__`
 
         """
-        super().__init__(lower, upper)
+        super().__init__(dimension, lower, upper, *args, **kwargs)
 
     @staticmethod
     def latex_code():
@@ -68,30 +69,8 @@ class Schwefel(Benchmark):
         """
         return r'''$f(\textbf{x}) = 418.9829d - \sum_{i=1}^{D} x_i \sin(\sqrt{\lvert x_i \rvert})$'''
 
-    def function(self):
-        r"""Return benchmark evaluation function.
-
-        Returns:
-            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
-
-        """
-        def evaluate(dimension, x):
-            r"""Fitness function.
-
-            Args:
-                dimension (int): Dimensionality of the problem
-                x (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
-
-            Returns:
-                float: Fitness value for the solution.
-
-            """
-            val = 0.0
-            for i in range(dimension):
-                val += (x[i] * sin(sqrt(abs(x[i]))))
-            return 418.9829 * dimension - val
-
-        return evaluate
+    def _evaluate(self, x):
+        return 418.9829 * self.dimension - np.sum(x * np.sin(np.sqrt(np.abs(x))))
 
 
 class Schwefel221(Benchmark):
@@ -133,18 +112,19 @@ class Schwefel221(Benchmark):
 
     Name = ['Schwefel221']
 
-    def __init__(self, lower=-100.0, upper=100.0):
+    def __init__(self, dimension=4, lower=-100.0, upper=100.0, *args, **kwargs):
         r"""Initialize of Schwefel221 benchmark.
 
         Args:
-            lower (Optional[float]): Lower bound of problem.
-            upper (Optional[float]): Upper bound of problem.
+            dimension (Optional[int]): Dimension of the problem.
+            lower (Optional[Union[float, Iterable[float]]]): Lower bounds of the problem.
+            upper (Optional[Union[float, Iterable[float]]]): Upper bounds of the problem.
 
         See Also:
             :func:`niapy.benchmarks.Benchmark.__init__`
 
         """
-        super().__init__(lower, upper)
+        super().__init__(dimension, lower, upper, *args, **kwargs)
 
     @staticmethod
     def latex_code():
@@ -156,31 +136,8 @@ class Schwefel221(Benchmark):
         """
         return r'''$f(\mathbf{x})=\max_{i=1,...,D} \lvert x_i \rvert$'''
 
-    def function(self):
-        r"""Return benchmark evaluation function.
-
-        Returns:
-            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
-
-        """
-        def evaluate(dimension, x):
-            r"""Fitness function.
-
-            Args:
-                dimension (int): Dimensionality of the problem
-                x (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
-
-            Returns:
-                Callable[[int, numpy.ndarray, dict], float]: Fitness function.
-
-            """
-            maximum = 0.0
-            for i in range(dimension):
-                if abs(x[i]) > maximum:
-                    maximum = abs(x[i])
-            return maximum
-
-        return evaluate
+    def _evaluate(self, x):
+        return np.amax(np.abs(x))
 
 
 class Schwefel222(Benchmark):
@@ -222,18 +179,19 @@ class Schwefel222(Benchmark):
 
     Name = ['Schwefel222']
 
-    def __init__(self, lower=-100.0, upper=100.0):
+    def __init__(self, dimension=4, lower=-100.0, upper=100.0, *args, **kwargs):
         r"""Initialize of Schwefel222 benchmark.
 
         Args:
-            lower (Optional[float]): Lower bound of problem.
-            upper (Optional[float]): Upper bound of problem.
+            dimension (Optional[int]): Dimension of the problem.
+            lower (Optional[Union[float, Iterable[float]]]): Lower bounds of the problem.
+            upper (Optional[Union[float, Iterable[float]]]): Upper bounds of the problem.
 
         See Also:
             :func:`niapy.benchmarks.Benchmark.__init__`
 
         """
-        super().__init__(lower, upper)
+        super().__init__(dimension, lower, upper, *args, **kwargs)
 
     @staticmethod
     def latex_code():
@@ -245,32 +203,8 @@ class Schwefel222(Benchmark):
         """
         return r'''$f(\mathbf{x})=\sum_{i=1}^{D} \lvert x_i \rvert +\prod_{i=1}^{D} \lvert x_i \rvert$'''
 
-    def function(self):
-        r"""Return benchmark evaluation function.
-
-        Returns:
-            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
-
-        """
-        def evaluate(dimension, x):
-            r"""Fitness function.
-
-            Args:
-                dimension (int): Dimensionality of the problem
-                x (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
-
-            Returns:
-                float: Fitness value for the solution.
-
-            """
-            part1 = 0.0
-            part2 = 1.0
-            for i in range(dimension):
-                part1 += abs(x[i])
-                part2 *= abs(x[i])
-            return part1 + part2
-
-        return evaluate
+    def _evaluate(self, x):
+        return np.sum(np.abs(x)) + np.product(np.abs(x))
 
 
 class ModifiedSchwefel(Benchmark):
@@ -310,18 +244,19 @@ class ModifiedSchwefel(Benchmark):
 
     Name = ['ModifiedSchwefel']
 
-    def __init__(self, lower=-100.0, upper=100.0):
+    def __init__(self, dimension=4, lower=-100.0, upper=100.0, *args, **kwargs):
         r"""Initialize of Modified Schwefel benchmark.
 
         Args:
-            lower (Optional[float]): Lower bound of problem.
-            upper (Optional[float]): Upper bound of problem.
+            dimension (Optional[int]): Dimension of the problem.
+            lower (Optional[Union[float, Iterable[float]]]): Lower bounds of the problem.
+            upper (Optional[Union[float, Iterable[float]]]): Upper bounds of the problem.
 
         See Also:
             :func:`niapy.benchmarks.Benchmark.__init__`
 
         """
-        super().__init__(lower, upper)
+        super().__init__(dimension, lower, upper, *args, **kwargs)
 
     @staticmethod
     def latex_code():
@@ -333,39 +268,14 @@ class ModifiedSchwefel(Benchmark):
         """
         return r'''$f(\textbf{x}) = 418.9829 \cdot D - \sum_{i=1}^D h(x_i) \\ h(x) = g(x + 420.9687462275036)  \\ g(z) = \begin{cases} z \sin \left( \lvert z \rvert^{\frac{1}{2}} \right) &\quad \lvert z \rvert \leq 500 \\ \left( 500 - \mod (z, 500) \right) \sin \left( \sqrt{\lvert 500 - \mod (z, 500) \rvert} \right) - \frac{ \left( z - 500 \right)^2 }{ 10000 D }  &\quad z > 500 \\ \left( \mod (\lvert z \rvert, 500) - 500 \right) \sin \left( \sqrt{\lvert \mod (\lvert z \rvert, 500) - 500 \rvert} \right) + \frac{ \left( z - 500 \right)^2 }{ 10000 D } &\quad z < -500\end{cases}$'''
 
-    def function(self):
-        r"""Return benchmark evaluation function.
-
-        Returns:
-            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
-
-        """
-        def g(z, dimension):
-            if z > 500:
-                return (500 - fmod(z, 500)) * sin(sqrt(fabs(500 - fmod(z, 500)))) - (z - 500) ** 2 / (10000 * dimension)
-            elif z < -500:
-                return (fmod(z, 500) - 500) * sin(sqrt(fabs(fmod(z, 500) - 500))) + (z - 500) ** 2 / (10000 * dimension)
-            return z * sin(fabs(z) ** (1 / 2))
-
-        def h(x, dimension):
-            return g(x + 420.9687462275036, dimension)
-
-        def f(dimension, x):
-            r"""Fitness function.
-
-            Args:
-                dimension (int): Dimensionality of the problem.
-                x (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
-
-            Returns:
-                float: Fitness value for the solution.
-
-            """
-            val = 0.0
-            for i in range(dimension):
-                val += h(x[i], dimension)
-            return 418.9829 * dimension - val
-
-        return f
+    def _evaluate(self, x):
+        xx = x + 420.9687462275036
+        conditions = [x > 500.0, x < -500.0]
+        xx_mod = np.fmod(xx, 500.0)
+        choices = [(500.0 - xx_mod) * np.sin(np.sqrt(np.abs(500.0 - xx_mod))) - (xx - 500.0) ** 2 / (10000 * self.dimension),
+                   (xx_mod - 500.0) * np.sin(np.sqrt(np.abs(xx_mod - 500.0))) + (xx - 500.0) ** 2 / (10000 * self.dimension)]
+        default = xx * np.sin(np.sqrt(np.abs(xx)))
+        val = np.sum(np.select(conditions, choices, default=default))
+        return 418.9829 * self.dimension - val
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

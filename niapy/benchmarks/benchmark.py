@@ -2,11 +2,9 @@
 
 """Implementation of benchmarks utility function."""
 
+from abc import ABC, abstractmethod
 import logging
-import numpy as np
-from matplotlib import pyplot as plt
-from matplotlib import cm
-from mpl_toolkits.mplot3d import Axes3D
+from niapy.util.array import full_array
 
 logging.basicConfig()
 logger = logging.getLogger('niapy.benchmarks.benchmark')
@@ -15,28 +13,28 @@ logger.setLevel('INFO')
 __all__ = ['Benchmark']
 
 
-class Benchmark:
+class Benchmark(ABC):
     r"""Class representing benchmarks.
 
     Attributes:
-        Name (List[str]): List of names representing benchmark names.
-        lower (Union[int, float, list, numpy.ndarray]): Lower bounds.
-        upper (Union[int, float, list, numpy.ndarray]): Upper bounds.
+        dimension (int): Dimension of the problem.
+        lower (numpy.ndarray): Lower bounds of the problem.
+        upper (numpy.ndarray): Upper bounds of the problem.
 
     """
 
-    Name = ['Benchmark', 'BBB']
-
-    def __init__(self, lower, upper):
+    def __init__(self, dimension=1, lower=None, upper=None, *args, **kwargs):
         r"""Initialize benchmark.
 
         Args:
-            lower (Union[int, float, list, numpy.ndarray]): Lower bounds.
-            upper (Union[int, float, list, numpy.ndarray]): Upper bounds.
+            dimension (Optional[int]): Dimension of the problem.
+            lower (Optional[Union[float, Iterable[float]]]): Lower bounds of the problem.
+            upper (Optional[Union[float, Iterable[float]]]): Upper bounds of the problem.
 
         """
-        self.lower = lower
-        self.upper = upper
+        self.dimension = dimension
+        self.lower = full_array(lower, dimension)
+        self.upper = full_array(upper, dimension)
 
     @staticmethod
     def latex_code():
@@ -46,76 +44,41 @@ class Benchmark:
             str: Latex code
 
         """
-        return r'''$f(x) = \infty$'''
-
-    def function(self):
-        r"""Get the optimization function.
-
-        Returns:
-            Callable[[int, Union[list, numpy.ndarray]], float]: Fitness function.
-
-        """
-        def fun(dimension, x):
-            r"""Initialize benchmark.
-
-            Args:
-                dimension (int): Dimensionality of the problem.
-                x (Union[int, float, list, numpy.ndarray]): Solution to the problem.
-
-            Returns:
-                float: Fitness value for the solution.
-
-            """
-            return np.inf
-
-        return fun
-
-    def __call__(self):
-        r"""Get the optimization function.
-
-        Returns:
-            Callable[[int, Union[list, numpy.ndarray]], float]: Fitness function.
-
-        """
-        return self.function()
-
-    def plot2d(self):
-        r"""Plot 2D graph."""
         pass
 
-    @staticmethod
-    def __2d_fun(x, y, f):
-        r"""Calculate function value.
+    @abstractmethod
+    def _evaluate(self, x):
+        """Evaluate solution."""
+        pass
+
+    def evaluate(self, x):
+        """Evaluate solution.
 
         Args:
-            x (float): First coordinate.
-            y (float): Second coordinate.
-            f (Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]): Evaluation function.
+            x (numpy.ndarray): Solution.
 
         Returns:
-            float: Calculate functional value for given input.
+            float: Function value of `x`.
 
         """
-        return f(2, [x, y])
+        if x.shape[0] != self.dimension:
+            raise ValueError('Dimensions do not match. {} != {}'.format(x.shape[0], self.dimension))
 
-    def plot3d(self, scale=0.32):
-        r"""Plot 3d scatter plot of benchmark function.
+        return self._evaluate(x)
+
+    def __call__(self, x):
+        r"""Evaluate solution.
 
         Args:
-            scale (float): Scale factor for points.
+            x (numpy.ndarray): Solution.
+
+        Returns:
+            float: Function value of `x`.
+
+        See Also:
+            :func:`niapy.benchmarks.Benchmark.evaluate`
 
         """
-        fig = plt.figure()
-        ax = Axes3D(fig)
-        func = self.function()
-        xr, yr = np.arange(self.lower, self.upper, scale), np.arange(self.lower, self.upper, scale)
-        x, y = np.meshgrid(xr, yr)
-        z = np.vectorize(self.__2d_fun)(x, y, func)
-        ax.plot_surface(x, y, z, rstride=8, cstride=8, alpha=0.3)
-        ax.contourf(x, y, z, zdir='z', offset=-10, cmap=cm.coolwarm)
-        ax.set_xlabel('X')
-        ax.set_ylabel('Y')
-        ax.set_zlabel('Z')
-        plt.show()
+        return self.evaluate(x)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

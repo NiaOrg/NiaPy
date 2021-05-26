@@ -51,18 +51,25 @@ class Ackley(Benchmark):
 
     Name = ['Ackley']
 
-    def __init__(self, lower=-32.768, upper=32.768):
+    def __init__(self, dimension=4, lower=-32.768, upper=32.768, a=20.0, b=0.2, c=2 * np.pi, *args, **kwargs):
         r"""Initialize of Ackley benchmark.
 
         Args:
-            lower (Optional[float]): Lower bound of problem.
-            upper (Optional[float]): Upper bound of problem.
+            dimension (Optional[int]): Dimension of the problem.
+            lower (Optional[Union[float, Iterable[float]]]): Lower bounds of the problem.
+            upper (Optional[Union[float, Iterable[float]]]): Upper bounds of the problem.
+            a (Optional[float]): a parameter.
+            b (Optional[float]): b parameter.
+            c (Optional[float]): c parameter.
 
         See Also:
             :func:`niapy.benchmarks.Benchmark.__init__`
 
         """
-        super().__init__(lower, upper)
+        super().__init__(dimension, lower, upper, *args, **kwargs)
+        self.a = a
+        self.b = b
+        self.c = c
 
     @staticmethod
     def latex_code():
@@ -76,40 +83,11 @@ class Ackley(Benchmark):
                 \sum_{i=1}^D x_i^2}\right) - \exp\left(\frac{1}{D}
                 \sum_{i=1}^D \cos(c\;x_i)\right) + a + \exp(1)$'''
 
-    def function(self):
-        r"""Return benchmark evaluation function.
+    def _evaluate(self, x):
+        val1 = np.sum(np.square(x))
+        val2 = np.sum(np.cos(self.c * x))
 
-        Returns:
-            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
+        temp1 = -self.b * np.sqrt(val1 / self.dimension)
+        temp2 = val2 / self.dimension
 
-        """
-        def evaluate(dimension, x):
-            r"""Fitness function.
-
-            Args:
-                dimension (int): Dimensionality of the problem
-                x (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
-
-            Returns:
-                float: Fitness value for the solution.
-
-            """
-            a = 20  # Recommended variable value
-            b = 0.2  # Recommended variable value
-            c = 2 * np.pi  # Recommended variable value
-
-            val1 = 0.0
-            val2 = 0.0
-
-            for i in range(dimension):
-                val1 += x[i] ** 2
-                val2 += np.cos(c * x[i])
-
-            temp1 = -b * np.sqrt(val1 / dimension)
-            temp2 = val2 / dimension
-
-            val = -a * np.exp(temp1) - np.exp(temp2) + a + np.exp(1)
-
-            return val
-
-        return evaluate
+        return -self.a * np.exp(temp1) - np.exp(temp2) + self.a + np.exp(1)

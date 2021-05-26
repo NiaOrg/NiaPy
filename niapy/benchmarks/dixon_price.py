@@ -1,6 +1,7 @@
 # encoding=utf8
 
 """Implementations of Dixon Price function."""
+import numpy as np
 
 from niapy.benchmarks.benchmark import Benchmark
 
@@ -45,18 +46,19 @@ class DixonPrice(Benchmark):
 
     Name = ['DixonPrice']
 
-    def __init__(self, lower=-10.0, upper=10):
+    def __init__(self, dimension=4, lower=-10.0, upper=10.0, *args, **kwargs):
         r"""Initialize of Dixon Price benchmark.
 
         Args:
-            lower (Optional[float]): Lower bound of problem.
-            upper (Optional[float]): Upper bound of problem.
+            dimension (Optional[int]): Dimension of the problem.
+            lower (Optional[Union[float, Iterable[float]]]): Lower bounds of the problem.
+            upper (Optional[Union[float, Iterable[float]]]): Upper bounds of the problem.
 
         See Also:
             :func:`niapy.benchmarks.Benchmark.__init__`
 
         """
-        super().__init__(lower, upper)
+        super().__init__(dimension, lower, upper, *args, **kwargs)
 
     @staticmethod
     def latex_code():
@@ -68,29 +70,9 @@ class DixonPrice(Benchmark):
         """
         return r'''$f(\textbf{x}) = (x_1 - 1)^2 + \sum_{i = 2}^D i (2x_i^2 - x_{i - 1})^2$'''
 
-    def function(self):
-        r"""Return benchmark evaluation function.
-
-        Returns:
-            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
-
-        """
-        def f(dimension, x):
-            r"""Fitness function.
-
-            Args:
-                dimension (int): Dimensionality of the problem
-                x (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
-
-            Returns:
-                float: Fitness value for the solution.
-
-            """
-            v = 0.0
-            for i in range(2, dimension):
-                v += i * (2 * x[i] ** 2 - x[i - 1]) ** 2
-            return (x[0] - 1) ** 2 + v
-
-        return f
+    def _evaluate(self, x):
+        indices = np.arange(2, self.dimension)
+        val = np.sum(indices * (2 * x[2:] ** 2 - x[1:self.dimension - 1]) ** 2)
+        return (x[0] - 1) ** 2 + val
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

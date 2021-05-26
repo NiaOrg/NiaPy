@@ -1,7 +1,7 @@
 # encoding=utf8
 """Implementations of Weierstrass functions."""
 
-from math import pi, cos
+import numpy as np
 from niapy.benchmarks.benchmark import Benchmark
 
 __all__ = ['Weierstrass']
@@ -45,12 +45,13 @@ class Weierstrass(Benchmark):
 
     Name = ['Weierstrass']
 
-    def __init__(self, lower=-100.0, upper=100.0, a=0.5, b=3, k_max=20):
+    def __init__(self, dimension=4, lower=-100.0, upper=100.0, a=0.5, b=3, k_max=20, *args, **kwargs):
         r"""Initialize of Bent Cigar benchmark.
 
         Args:
-            lower (Optional[float]): Lower bound of problem.
-            upper (Optional[float]): Upper bound of problem.
+            dimension (Optional[int]): Dimension of the problem.
+            lower (Optional[Union[float, Iterable[float]]]): Lower bounds of the problem.
+            upper (Optional[Union[float, Iterable[float]]]): Upper bounds of the problem.
             a (Optional[float]): The a parameter.
             b (Optional[float]): The b parameter.
             k_max (Optional[int]): Number of elements of the series to compute.
@@ -59,7 +60,7 @@ class Weierstrass(Benchmark):
             :func:`niapy.benchmarks.Benchmark.__init__`
 
         """
-        super().__init__(lower, upper)
+        super().__init__(dimension, lower, upper, *args, **kwargs)
         self.a = a
         self.b = b
         self.k_max = k_max
@@ -74,35 +75,16 @@ class Weierstrass(Benchmark):
         """
         return r'''$f(\textbf{x}) = \sum_{i=1}^D \left( \sum_{k=0}^{k_{max}} a^k \cos\left( 2 \pi b^k ( x_i + 0.5) \right) \right) - D \sum_{k=0}^{k_{max}} a^k \cos \left( 2 \pi b^k \cdot 0.5 \right)$'''
 
-    def function(self):
-        r"""Return benchmark evaluation function.
-
-        Returns:
-            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
-
-        """
-        def f(dimension, x):
-            r"""Fitness function.
-
-            Args:
-                dimension (int): Dimensionality of the problem
-                x (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
-
-            Returns:
-                float: Fitness value for the solution.
-
-            """
-            val1 = 0.0
-            for i in range(dimension):
-                val = 0.0
-                for k in range(self.k_max):
-                    val += self.a ** k * cos(2 * pi * self.b ** k * (x[i] + 0.5))
-                val1 += val
-            val2 = 0.0
+    def _evaluate(self, x):
+        val1 = 0.0
+        for i in range(self.dimension):
+            val = 0.0
             for k in range(self.k_max):
-                val2 += self.a ** k * cos(2 * pi * self.b ** k * 0.5)
-            return val1 - dimension * val2
-
-        return f
+                val += self.a ** k * np.cos(2.0 * np.pi * self.b ** k * (x[i] + 0.5))
+            val1 += val
+        val2 = 0.0
+        for k in range(self.k_max):
+            val2 += self.a ** k * np.cos(2 * np.pi * self.b ** k * 0.5)
+        return val1 - self.dimension * val2
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

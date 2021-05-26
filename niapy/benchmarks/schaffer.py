@@ -2,7 +2,7 @@
 
 """Implementations of Schaffer functions."""
 
-from math import sin, cos, sqrt
+import numpy as np
 from niapy.benchmarks.benchmark import Benchmark
 
 __all__ = ['SchafferN2', 'SchafferN4', 'ExpandedSchaffer']
@@ -44,18 +44,19 @@ class SchafferN2(Benchmark):
 
     Name = ['SchafferN2']
 
-    def __init__(self, lower=-100.0, upper=100.0):
+    def __init__(self, lower=-100.0, upper=100.0, *args, **kwargs):
         r"""Initialize of SchafferN2 benchmark.
 
         Args:
-            lower (Optional[float]): Lower bound of problem.
-            upper (Optional[float]): Upper bound of problem.
+            lower (Optional[Union[float, Iterable[float]]]): Lower bounds of the problem.
+            upper (Optional[Union[float, Iterable[float]]]): Upper bounds of the problem.
 
         See Also:
             :func:`niapy.benchmarks.Benchmark.__init__`
 
         """
-        super().__init__(lower, upper)
+        kwargs.pop('dimension', None)
+        super().__init__(2, lower, upper, *args, **kwargs)
 
     @staticmethod
     def latex_code():
@@ -67,27 +68,8 @@ class SchafferN2(Benchmark):
         """
         return r'''$f(\textbf{x}) = 0.5 + \frac{ \sin^2 \left( x_1^2 - x_2^2 \right) - 0.5 }{ \left( 1 + 0.001 \left(  x_1^2 + x_2^2 \right) \right)^2 }$'''
 
-    def function(self):
-        r"""Return benchmark evaluation function.
-
-        Returns:
-            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
-
-        """
-        def f(dimension, x):
-            r"""Fitness function.
-
-            Args:
-                dimension (int): Dimensionality of the problem
-                x (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
-
-            Returns:
-                float: Fitness value for the solution.
-
-            """
-            return 0.5 + (sin(x[0] ** 2 - x[1] ** 2) ** 2 - 0.5) / (1 + 0.001 * (x[0] ** 2 + x[1] ** 2)) ** 2
-
-        return f
+    def _evaluate(self, x):
+        return 0.5 + (np.sin(x[0] ** 2 - x[1] ** 2) ** 2 - 0.5) / (1 + 0.001 * (x[0] ** 2 + x[1] ** 2)) ** 2
 
 
 class SchafferN4(Benchmark):
@@ -126,18 +108,19 @@ class SchafferN4(Benchmark):
 
     Name = ['SchafferN4']
 
-    def __init__(self, lower=-100.0, upper=100.0):
+    def __init__(self, lower=-100.0, upper=100.0, *args, **kwargs):
         r"""Initialize of SchafferN4 benchmark.
 
         Args:
-            lower (Optional[float]): Lower bound of problem.
-            upper (Optional[float]): Upper bound of problem.
+            lower (Optional[Union[float, Iterable[float]]]): Lower bounds of the problem.
+            upper (Optional[Union[float, Iterable[float]]]): Upper bounds of the problem.
 
         See Also:
             :func:`niapy.benchmarks.Benchmark.__init__`
 
         """
-        super().__init__(lower, upper)
+        kwargs.pop('dimension', None)
+        super().__init__(2, lower, upper, *args, **kwargs)
 
     @staticmethod
     def latex_code():
@@ -149,27 +132,8 @@ class SchafferN4(Benchmark):
         """
         return r'''$f(\textbf{x}) = 0.5 + \frac{ \cos^2 \left( \sin \left( x_1^2 - x_2^2 \right) \right)- 0.5 }{ \left( 1 + 0.001 \left(  x_1^2 + x_2^2 \right) \right)^2 }$'''
 
-    def function(self):
-        r"""Return benchmark evaluation function.
-
-        Returns:
-            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
-
-        """
-        def f(dimension, x):
-            r"""Fitness function.
-
-            Args:
-                dimension (int): Dimensionality of the problem
-                x (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
-
-            Returns:
-                float: Fitness value for the solution.
-
-            """
-            return 0.5 + (cos(sin(x[0] ** 2 - x[1] ** 2)) ** 2 - 0.5) / (1 + 0.001 * (x[0] ** 2 + x[1] ** 2)) ** 2
-
-        return f
+    def _evaluate(self, x):
+        return 0.5 + (np.cos(np.sin(x[0] ** 2 - x[1] ** 2)) ** 2 - 0.5) / (1 + 0.001 * (x[0] ** 2 + x[1] ** 2)) ** 2
 
 
 class ExpandedSchaffer(Benchmark):
@@ -208,18 +172,19 @@ class ExpandedSchaffer(Benchmark):
 
     Name = ['ExpandedSchaffer']
 
-    def __init__(self, lower=-100.0, upper=100.0):
+    def __init__(self, dimension=4, lower=-100.0, upper=100.0, *args, **kwargs):
         r"""Initialize of Expanded Schaffer benchmark.
 
         Args:
-            lower (Optional[float]): Lower bound of problem.
-            upper (Optional[float]): Upper bound of problem.
+            dimension (Optional[int]): Dimension of the problem.
+            lower (Optional[Union[float, Iterable[float]]]): Lower bounds of the problem.
+            upper (Optional[Union[float, Iterable[float]]]): Upper bounds of the problem.
 
         See Also:
             :func:`niapy.benchmarks.Benchmark.__init__`
 
         """
-        super().__init__(lower, upper)
+        super().__init__(dimension, lower, upper, *args, **kwargs)
 
     @staticmethod
     def latex_code():
@@ -231,32 +196,10 @@ class ExpandedSchaffer(Benchmark):
         """
         return r'''$f(\textbf{x}) = g(x_D, x_1) + \sum_{i=2}^D g(x_{i - 1}, x_i) \\ g(x, y) = 0.5 + \frac{\sin \left(\sqrt{x^2 + y^2} \right)^2 - 0.5}{\left( 1 + 0.001 (x^2 + y^2) \right)}^2$'''
 
-    def function(self):
-        r"""Return benchmark evaluation function.
-
-        Returns:
-            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
-
-        """
-        def g(x, y):
-            return 0.5 + (sin(sqrt(x ** 2 + y ** 2)) ** 2 - 0.5) / (1 + 0.001 * (x ** 2 + y ** 2)) ** 2
-
-        def f(dimension, x):
-            r"""Fitness function.
-
-            Args:
-                dimension (int): Dimensionality of the problem
-                x (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
-
-            Returns:
-                float: Fitness value for the solution.
-
-            """
-            val = 0.0
-            for i in range(1, dimension):
-                val += g(x[i - 1], x[i])
-            return g(x[dimension - 1], x[0]) + val
-
-        return f
+    def _evaluate(self, x):
+        x_next = np.roll(x, -1)
+        tmp = x ** 2 + x_next ** 2
+        val = 0.5 + (np.sin(np.sqrt(tmp)) ** 2 - 0.5) / (1 + 0.001 * tmp) ** 2
+        return np.sum(val)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

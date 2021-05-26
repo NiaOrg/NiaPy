@@ -2,7 +2,7 @@
 
 """Implementation of Pinter function."""
 
-import math
+import numpy as np
 from niapy.benchmarks.benchmark import Benchmark
 
 __all__ = ['Pinter']
@@ -58,18 +58,19 @@ class Pinter(Benchmark):
 
     Name = ['Pinter']
 
-    def __init__(self, lower=-10.0, upper=10.0):
+    def __init__(self, dimension=4, lower=-10.0, upper=10.0, *args, **kwargs):
         r"""Initialize of Pinter benchmark.
 
         Args:
-            lower (Optional[float]): Lower bound of problem.
-            upper (Optional[float]): Upper bound of problem.
+            dimension (Optional[int]): Dimension of the problem.
+            lower (Optional[Union[float, Iterable[float]]]): Lower bounds of the problem.
+            upper (Optional[Union[float, Iterable[float]]]): Upper bounds of the problem.
 
         See Also:
             :func:`niapy.benchmarks.Benchmark.__init__`
 
         """
-        super().__init__(lower, upper)
+        super().__init__(dimension, lower, upper, *args, **kwargs)
 
     @staticmethod
     def latex_code():
@@ -85,47 +86,16 @@ class Pinter(Benchmark):
                 A = (x_{i-1}\sin(x_i)+\sin(x_{i+1}))\quad \text{and} \quad
                 B = (x_{i-1}^2 - 2x_i + 3x_{i+1} - \cos(x_i) + 1)$'''
 
-    def function(self):
-        r"""Return benchmark evaluation function.
+    def _evaluate(self, x):
+        sub = np.roll(x, 1)
+        add = np.roll(x, - 1)
+        indices = np.arange(1, self.dimension + 1)
 
-        Returns:
-            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
+        a = (sub * np.sin(x) + np.sin(add))
+        b = ((sub * sub) - 2.0 * x + 3.0 * add - np.cos(x) + 1.0)
 
-        """
-        def evaluate(dimension, x):
-            r"""Fitness function.
+        val1 = np.sum(indices * x * x)
+        val2 = np.sum(20.0 * indices * np.power(np.sin(a), 2.0))
+        val3 = np.sum(indices * np.log10(1.0 + indices * np.power(b, 2.0)))
 
-            Args:
-                dimension (int): Dimensionality of the problem
-                x (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
-
-            Returns:
-                float: Fitness value for the solution.
-
-            """
-            val1 = 0.0
-            val2 = 0.0
-            val3 = 0.0
-
-            for i in range(dimension):
-
-                if i == 0:
-                    sub = x[dimension - 1]
-                    add = x[i + 1]
-                elif i == dimension - 1:
-                    sub = x[i - 1]
-                    add = x[0]
-                else:
-                    sub = x[i - 1]
-                    add = x[i + 1]
-
-                a = (sub * math.sin(x[i]) + math.sin(add))
-                b = (math.pow(sub, 2) - 2.0 * x[i] + 3.0 * add - math.cos(x[i]) + 1.0)
-
-                val1 += (i + 1.0) * math.pow(x[i], 2)
-                val2 += 20.0 * (i + 1.0) * math.pow(math.sin(a), 2)
-                val3 += (i + 1.0) * math.log10(1.0 + (i + 1.0) * math.pow(b, 2))
-
-            return val1 + val2 + val3
-
-        return evaluate
+        return val1 + val2 + val3

@@ -2,6 +2,7 @@
 
 """Implementations of High Conditioned Elliptic functions."""
 
+import numpy as np
 from niapy.benchmarks.benchmark import Benchmark
 
 __all__ = ['Elliptic']
@@ -45,18 +46,19 @@ class Elliptic(Benchmark):
 
     Name = ['Elliptic']
 
-    def __init__(self, lower=-100.0, upper=100.0):
+    def __init__(self, dimension=4, lower=-100.0, upper=100.0, *args, **kwargs):
         r"""Initialize of High Conditioned Elliptic benchmark.
 
         Args:
-            lower (Optional[float]): Lower bound of problem.
-            upper (Optional[float]): Upper bound of problem.
+            dimension (Optional[int]): Dimension of the problem.
+            lower (Optional[Union[float, Iterable[float]]]): Lower bounds of the problem.
+            upper (Optional[Union[float, Iterable[float]]]): Upper bounds of the problem.
 
         See Also:
             :func:`niapy.benchmarks.Benchmark.__init__`
 
         """
-        super().__init__(lower, upper)
+        super().__init__(dimension, lower, upper, *args, **kwargs)
 
     @staticmethod
     def latex_code():
@@ -68,29 +70,8 @@ class Elliptic(Benchmark):
         """
         return r'''$f(\textbf{x}) = \sum_{i=1}^D \left( 10^6 \right)^{ \frac{i - 1}{D - 1} } x_i^2$'''
 
-    def function(self):
-        r"""Return benchmark evaluation function.
-
-        Returns:
-            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
-
-        """
-        def evaluate(dimension, x):
-            r"""Fitness function.
-
-            Args:
-                dimension (int): Dimensionality of the problem
-                x (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
-
-            Returns:
-                float: Fitness value for the solution.
-
-            """
-            val = 0.0
-            for i in range(dimension):
-                val += (10 ** 6) ** (i / (dimension - 1)) * x[i]
-            return val
-
-        return evaluate
+    def _evaluate(self, x):
+        indices = np.arange(self.dimension)
+        return np.sum(1000000.0 ** (indices / (self.dimension - 1)) * x)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

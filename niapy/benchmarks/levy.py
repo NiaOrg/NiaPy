@@ -46,18 +46,19 @@ class Levy(Benchmark):
 
     Name = ['Levy']
 
-    def __init__(self, lower=0.0, upper=np.pi):
+    def __init__(self, dimension=4, lower=-10.0, upper=10.0, *args, **kwargs):
         r"""Initialize of Levy benchmark.
 
         Args:
-            lower (Optional[float]): Lower bound of problem.
-            upper (Optional[float]): Upper bound of problem.
+            dimension (Optional[int]): Dimension of the problem.
+            lower (Optional[Union[float, Iterable[float]]]): Lower bounds of the problem.
+            upper (Optional[Union[float, Iterable[float]]]): Upper bounds of the problem.
 
         See Also:
             :func:`niapy.benchmarks.Benchmark.__init__`
 
         """
-        super().__init__(lower, upper)
+        super().__init__(dimension, lower, upper, *args, **kwargs)
 
     @staticmethod
     def latex_code():
@@ -69,32 +70,12 @@ class Levy(Benchmark):
         """
         return r'''$f(\textbf{x}) = \sin^2 (\pi w_1) + \sum_{i = 1}^{D - 1} (w_i - 1)^2 \left( 1 + 10 \sin^2 (\pi w_i + 1) \right) + (w_d - 1)^2 (1 + \sin^2 (2 \pi w_d)) \\ w_i = 1 + \frac{x_i - 1}{4}$'''
 
-    def function(self):
-        r"""Return benchmark evaluation function.
-
-        Returns:
-            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
-
-        """
-        def w(x):
-            return 1 + (x - 1) / 4
-
-        def f(dimension, x):
-            r"""Fitness function.
-
-            Args:
-                dimension (int): Dimensionality of the problem
-                x (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
-
-            Returns:
-                float: Fitness value for the solution.
-
-            """
-            v = 0.0
-            for i in range(dimension - 1):
-                v += (w(x[i]) - 1) ** 2 * (1 + 10 * np.sin(np.pi * w(x[i]) + 1) ** 2) + (w(x[-1]) - 1) ** 2 * (1 + np.sin(2 * np.pi * w(x[-1]) ** 2))
-            return np.sin(np.pi * w(x[0])) ** 2 + v
-
-        return f
+    def _evaluate(self, x):
+        w = 1 + (x - 1) / 4
+        term1 = np.sin(np.pi * w[0]) ** 2
+        wi = w[:-1]
+        term2 = np.sum((wi - 1) ** 2 * (1 + 10 * np.sin(np.pi * wi + 1)))
+        term3 = (w[-1] - 1) ** 2 * (1 + np.sin(2 * np.pi * w[-1]) ** 2)
+        return term1 + term2 + term3
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

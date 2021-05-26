@@ -1,6 +1,7 @@
 # encoding=utf8
 
 """Implementations of Powell function."""
+import numpy as np
 
 from niapy.benchmarks.benchmark import Benchmark
 
@@ -45,18 +46,19 @@ class Powell(Benchmark):
 
     Name = ['Powell']
 
-    def __init__(self, lower=-4.0, upper=5.0):
+    def __init__(self, dimension=4, lower=-4.0, upper=5.0, *args, **kwargs):
         r"""Initialize of Powell benchmark.
 
         Args:
-            lower (Optional[float]): Lower bound of problem.
-            upper (Optional[float]): Upper bound of problem.
+            dimension (Optional[int]): Dimension of the problem.
+            lower (Optional[Union[float, Iterable[float]]]): Lower bounds of the problem.
+            upper (Optional[Union[float, Iterable[float]]]): Upper bounds of the problem.
 
         See Also:
             :func:`niapy.benchmarks.Benchmark.__init__`
 
         """
-        super().__init__(lower, upper)
+        super().__init__(dimension, lower, upper, *args, **kwargs)
 
     @staticmethod
     def latex_code():
@@ -68,29 +70,16 @@ class Powell(Benchmark):
         """
         return r'''$f(\textbf{x}) = \sum_{i = 1}^{D / 4} \left( (x_{4 i - 3} + 10 x_{4 i - 2})^2 + 5 (x_{4 i - 1} - x_{4 i})^2 + (x_{4 i - 2} - 2 x_{4 i - 1})^4 + 10 (x_{4 i - 3} - x_{4 i})^4 \right)$'''
 
-    def function(self):
-        r"""Return benchmark evaluation function.
+    def _evaluate(self, x):
+        x1 = x[range(1, self.dimension - 3, 4)]
+        x2 = x[range(2, self.dimension - 2, 4)]
+        x3 = x[range(3, self.dimension - 1, 4)]
+        x4 = x[range(4, self.dimension, 4)]
 
-        Returns:
-            Callable[[int, Union[int, float, List[int, float], numpy.ndarray]], float]: Fitness function.
-
-        """
-        def f(dimension, x):
-            r"""Fitness function.
-
-            Args:
-                dimension (int): Dimensionality of the problem
-                x (Union[int, float, List[int, float], numpy.ndarray]): Solution to check.
-
-            Returns:
-                float: Fitness value for the solution.
-
-            """
-            v = 0.0
-            for i in range(1, (dimension // 4) + 1):
-                v += (x[4 * i - 4] + 10 * x[4 * i - 3]) ** 2 + 5 * (x[4 * i - 2] - x[4 * i - 1]) ** 2 + (x[4 * i - 3] - 2 * x[4 * i - 2]) ** 4 + 10 * (x[4 * i - 4] - x[4 * i - 1]) ** 4
-            return v
-
-        return f
+        term1 = (x1 + 10 * x2) ** 2.0
+        term2 = 5 * (x3 - x4) ** 2.0
+        term3 = (x2 - 2 * x3) ** 4.0
+        term4 = 10 * (x1 - x4) ** 4.0
+        return np.sum(term1 + term2 + term3 + term4)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
