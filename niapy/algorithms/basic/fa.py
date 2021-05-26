@@ -186,10 +186,9 @@ class FireflyAlgorithm(Algorithm):
 
         alpha = self.alpha_new(task.max_evals / self.population_size, alpha)
         sorted_index = np.argsort(population_fitness)
-        tmp = np.asarray(
-            [self.move_ffa(i, population[sorted_index], population_fitness[sorted_index],
-                           population, alpha, task) for i in range(self.population_size)], dtype=object)
-        population = np.asarray([tmp[i][0] for i in range(len(tmp))], dtype=object)
+        tmp = [self.move_ffa(i, population[sorted_index], population_fitness[sorted_index], population, alpha, task)
+               for i in range(self.population_size)]
+        population = np.asarray([tmp[i][0] for i in range(len(tmp))])
         moved = np.asarray([tmp[i][1] for i in range(len(tmp))])
         population_fitness[np.where(moved)] = np.apply_along_axis(task.eval, 1, population[np.where(moved)])
         best_x, best_fitness = self.get_best(population, population_fitness, best_x, best_fitness)
