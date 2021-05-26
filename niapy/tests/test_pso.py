@@ -57,7 +57,6 @@ class OVCPSOTestCase(AlgorithmTestCase):
 
     def test_custom(self):
         wvcpso_custom = self.algo(population_size=40, c1=2.0, c2=2.0, w=0.7, min_velocity=-4, max_velocity=4, seed=self.seed)
-        print("Params", wvcpso_custom.get_parameters())
         wvcpso_customc = self.algo(population_size=40, c1=2.0, c2=2.0, w=0.7, min_velocity=-4, max_velocity=4, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, wvcpso_custom, wvcpso_customc, MyBenchmark())
 

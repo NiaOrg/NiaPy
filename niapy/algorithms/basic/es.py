@@ -174,7 +174,6 @@ class EvolutionStrategy1p1(Algorithm):
                     * ki (int): Number of successful rho update.
 
         """
-        print(task.dimension)
         c, ki = IndividualES(task=task, rng=self.rng), 0
         return c, c.f, {'ki': ki}
 
