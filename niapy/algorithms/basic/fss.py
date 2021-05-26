@@ -24,7 +24,6 @@ class Fish(Individual):
 
         Args:
             weight (float): Weight of fish.
-            **kwargs (Dict[str, Any]): Additional arguments.
 
         See Also:
             * :func:`niapy.algorithms.algorithm.Individual`

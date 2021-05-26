@@ -261,9 +261,6 @@ class EvolutionStrategyMp1(EvolutionStrategy1p1):
     def set_parameters(self, **kwargs):
         r"""Set core parameters of EvolutionStrategy(mu+1) algorithm.
 
-        Args:
-            **kwargs (Dict[str, Any]):
-
         See Also:
             * :func:`niapy.algorithms.basic.EvolutionStrategy1p1.set_parameters`
 

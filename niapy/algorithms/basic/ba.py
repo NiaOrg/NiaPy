@@ -143,7 +143,6 @@ class BatAlgorithm(Algorithm):
         Args:
             best (numpy.ndarray): Global best individual.
             task (Task): Optimization task.
-            **kwargs (Dict[str, Any]): Additional arguments.
 
         Returns:
             numpy.ndarray: New solution based on global best individual.

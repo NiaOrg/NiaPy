@@ -308,9 +308,6 @@ class ParticleSwarmOptimization(ParticleSwarmAlgorithm):
     def set_parameters(self, **kwargs):
         r"""Set core parameters of algorithm.
 
-        Args:
-            **kwargs (Dict[str, Any]): Additional parameters.
-
         See Also:
             * :func:`niapy.algorithms.basic.WeightedVelocityClampingParticleSwarmAlgorithm.set_parameters`
 

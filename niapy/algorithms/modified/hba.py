@@ -96,7 +96,6 @@ class HybridBatAlgorithm(BatAlgorithm):
             task (Task): Optimization task.
             i (int): Index of current individual.
             population (numpy.ndarray): Current best population.
-            **kwargs (Dict[str, Any]):
 
         Returns:
             numpy.ndarray: New solution based on global best individual.

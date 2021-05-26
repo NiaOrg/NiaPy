@@ -344,7 +344,6 @@ class DifferentialEvolution(Algorithm):
             pop (numpy.ndarray): Current population.
             xb (numpy.ndarray): Current best individual.
             task (Task): Optimization task.
-            **kwargs (Dict[str, Any]): Additional arguments.
 
         Returns:
             numpy.ndarray: New evolved populations.
@@ -363,7 +362,6 @@ class DifferentialEvolution(Algorithm):
             best_x (numpy.ndarray): Current global best solution.
             best_fitness (float): Current global best solutions fitness/objective value.
             task (Task): Optimization task.
-            **kwargs (Dict[str, Any]): Additional arguments.
 
         Returns:
             Tuple[numpy.ndarray, numpy.ndarray, float]:
@@ -384,7 +382,6 @@ class DifferentialEvolution(Algorithm):
             task (Task): Optimization task.
             xb (numpy.ndarray): Global best solution.
             fxb (float): Global best fitness.
-            **kwargs (Dict[str, Any]): Additional arguments.
 
         Returns:
             Tuple[numpy.ndarray, numpy.ndarray, float]:
@@ -677,9 +674,6 @@ class AgingIndividual(Individual):
     def __init__(self, **kwargs):
         r"""Init Aging Individual.
 
-        Args:
-            **kwargs (Dict[str, Any]): Additional arguments sent to parent.
-
         See Also:
             * :func:`niapy.algorithms.Individual.__init__`
 
@@ -870,7 +864,6 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
             best_x (numpy.ndarray): Current global best solution.
             best_fitness (float): Current global best solutions fitness/objective value.
             task (Task): Optimization task.
-            **kwargs (Dict[str, Any]): Additional arguments.
 
         Returns:
             Tuple[numpy.ndarray, numpy.ndarray, float]:
@@ -893,7 +886,6 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
             task (Task): Optimization task.
             xb (Individual): Global best individual.
             fxb (float): Global best fitness.
-            **kwargs (Dict[str, Any]): Additional arguments.
 
         Returns:
             Tuple[numpy.ndarray, numpy.ndarray, float]:
@@ -1016,7 +1008,6 @@ class MultiStrategyDifferentialEvolution(DifferentialEvolution):
             pop (numpy.ndarray): Current population.
             xb (numpy.ndarray): Current best individual.
             task (Task): Optimization task.
-            **kwargs (Dict[str, Any]): Additional arguments.
 
         Returns:
             numpy.ndarray: New population of individuals.
@@ -1084,7 +1075,6 @@ class DynNpMultiStrategyDifferentialEvolution(MultiStrategyDifferentialEvolution
             pop (numpy.ndarray): Current population.
             xb (numpy.ndarray): Global best solution.
             task (Task): Optimization task.
-            **kwargs (dict): Additional arguments.
 
         Returns:
             numpy.ndarray: Evolved new population.
@@ -1100,7 +1090,6 @@ class DynNpMultiStrategyDifferentialEvolution(MultiStrategyDifferentialEvolution
             task (Task): Optimization task.
             xb (numpy.ndarray): Global best individual
             fxb (float): Global best fitness.
-            **kwargs (Dict[str, Any]): Additional arguments.
 
         Returns:
             Tuple[numpy.ndarray, numpy.ndarray, float]:
@@ -1173,7 +1162,6 @@ class DynNpMultiStrategyDifferentialEvolution(MultiStrategyDifferentialEvolution
 #             pop (numpy.ndarray): Current population.
 #             xb (numpy.ndarray): Global best individual.
 #             task (Task): Optimization task.
-#             **kwargs (Dict[str, Any]): Additional arguments.
 #
 #         Returns:
 #             numpy.ndarray: New population of individuals.

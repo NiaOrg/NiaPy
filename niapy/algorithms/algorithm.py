@@ -82,8 +82,8 @@ class Algorithm:
 
     Name = ['Algorithm', 'AAA']
 
-    def __init__(self, population_size=50, *args, initialization_function=default_numpy_init, individual_type=None,
-                 seed=None, **kwargs):
+    def __init__(self, population_size=50, initialization_function=default_numpy_init, individual_type=None,
+                 seed=None, *args, **kwargs):
         r"""Initialize algorithm and create name for an algorithm.
 
         Args:
@@ -121,7 +121,7 @@ class Algorithm:
             population_size (Optional[int]): Population size.
             initialization_function (Optional[Callable[[int, Task, numpy.random.Generator, Dict[str, Any]], Tuple[numpy.ndarray, numpy.ndarray[float]]]]):
                 Population initialization function.
-            individual_type (Optional[Any]): Individual type used in population, default is Numpy array.
+            individual_type (Optional[Type[Individual]]): Individual type used in population, default is Numpy array.
 
         See Also:
             * :func:`niapy.algorithms.default_numpy_init`
@@ -137,8 +137,8 @@ class Algorithm:
 
         Returns:
             Dict[str, Any]:
-            * Parameter name (str): Represents a parameter name
-            * Value of parameter (Any): Represents the value of the parameter
+                * Parameter name (str): Represents a parameter name
+                * Value of parameter (Any): Represents the value of the parameter
 
         """
         return {
@@ -394,7 +394,6 @@ class Individual:
             rand (Optional[numpy.random.Generator]): Random generator.
             x (Optional[numpy.ndarray]): Individuals components.
             e (Optional[bool]): True to evaluate the individual on initialization. Default value is True.
-            **kwargs (Dict[str, Any]): Additional arguments.
 
         """
         self.f = task.optimization_type.value * np.inf if task is not None else np.inf
