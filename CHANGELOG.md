@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.0.0rc16](https://github.com/NiaOrg/NiaPy/tree/2.0.0rc16) (2021-05-26)
+
+[Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2.0.0rc15...2.0.0rc16)
+
+**Implemented enhancements:**
+
+- Create a new release [\#310](https://github.com/NiaOrg/NiaPy/issues/310)
+
+**Closed issues:**
+
+- niapy import fails for Python 3.6.x [\#311](https://github.com/NiaOrg/NiaPy/issues/311)
+
+**Merged pull requests:**
+
+- Fixed import error. [\#312](https://github.com/NiaOrg/NiaPy/pull/312) ([zStupan](https://github.com/zStupan))
+
 ## [2.0.0rc15](https://github.com/NiaOrg/NiaPy/tree/2.0.0rc15) (2021-05-14)
 
 [Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2.0.0rc14...2.0.0rc15)
