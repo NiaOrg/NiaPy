@@ -241,7 +241,6 @@ class MultiStrategySelfAdaptiveDifferentialEvolution(SelfAdaptiveDifferentialEvo
             pop (numpy.ndarray[Individual]): Current population.
             xb (Individual): Current best individual.
             task (Task): Optimization task.
-            **kwargs (Dict[str, Any]): Additional arguments.
 
         Returns:
             numpy.ndarray[Individual]: New population of individuals.
@@ -266,9 +265,6 @@ class MultiStrategySelfAdaptiveDifferentialEvolution(SelfAdaptiveDifferentialEvo
 #
 #     def __init__(self, **kwargs):
 #         r"""Initialize aging individual for jDE algorithm.
-#
-#         Args:
-#             **kwargs (Dict[str, Any]): Additional arguments.
 #
 #         See Also:
 #             * :func:`niapy.algorithms.modified.SolutionJDE.__init__`
@@ -326,7 +322,6 @@ class MultiStrategySelfAdaptiveDifferentialEvolution(SelfAdaptiveDifferentialEvo
 #             LT_min (Optional[int]): Minimum age.
 #             LT_max (Optional[int]): Maximum age.
 #             age (Optional[Callable[[], int]]): Function for calculating age of individual.
-#             **kwargs (Dict[str, Any]): Additional arguments.
 #
 #         See Also:
 #             * :func:`SelfAdaptiveDifferentialEvolution.set_parameters`
@@ -440,7 +435,6 @@ class MultiStrategySelfAdaptiveDifferentialEvolution(SelfAdaptiveDifferentialEvo
 #         Args:
 #             p_max (Optional[int]):
 #             rp (Optional[int]):
-#             **kwargs (Dict[str, Any]):
 #
 #         See Also:
 #             * :func:`niapy.algorithms.modified.MultiStrategySelfAdaptiveDifferentialEvolution.set_parameters`

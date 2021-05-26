@@ -39,7 +39,6 @@ class MtsIndividual(Individual):
             grade (Optional[int]): Grade of individual.
             enable (Optional[bool]): If enabled individual.
             improved (Optional[bool]): If individual improved.
-            **kwargs (Dict[str, Any]): Additional arguments.
 
         See Also:
             :func:`niapy.algorithms.algorithm.Individual.__init__`
@@ -121,7 +120,6 @@ class DifferentialEvolutionMTS(DifferentialEvolution, MultipleTrajectorySearch):
             task (Task): Optimization task.
             xb (numpy.ndarray): Global best individual.
             fxb (float): Global best fitness.
-            **kwargs (Dict[str, Any]): Additional arguments.
 
         Returns:
             Tuple[numpy.ndarray, numpy.ndarray, float]: New population.
@@ -299,9 +297,6 @@ class DynNpDifferentialEvolutionMTSv1(DynNpDifferentialEvolutionMTS):
     def set_parameters(self, **kwargs):
         r"""Set core arguments of DynNpDifferentialEvolutionMTSv1 algorithm.
 
-        Args:
-            **kwargs (Dict[str, Any]): Additional arguments.
-
         See Also:
             :func:`niapy.algorithms.modified.hde.DifferentialEvolutionMTS.set_parameters`
 
@@ -370,7 +365,6 @@ class MultiStrategyDifferentialEvolutionMTS(DifferentialEvolutionMTS, MultiStrat
             pop (numpy.ndarray[Individual]): Current population of individuals.
             xb (numpy.ndarray): Global best individual.
             task (Task): Optimization task.
-            **kwargs (Dict[str, Any]): Additional arguments.
 
         Returns:
             numpy.ndarray[Individual]: Evolved population.
@@ -423,9 +417,6 @@ class MultiStrategyDifferentialEvolutionMTSv1(MultiStrategyDifferentialEvolution
 
     def set_parameters(self, **kwargs):
         r"""Set core parameters of MultiStrategyDifferentialEvolutionMTSv1 algorithm.
-
-        Args:
-            **kwargs (Dict[str, Any]): Additional arguments.
 
         See Also:
             * :func:`niapy.algorithms.modified.MultiStrategyDifferentialEvolutionMTS.set_parameters`
@@ -480,9 +471,6 @@ class DynNpMultiStrategyDifferentialEvolutionMTS(MultiStrategyDifferentialEvolut
     def set_parameters(self, **kwargs):
         r"""Set core arguments of DynNpMultiStrategyDifferentialEvolutionMTS algorithm.
 
-        Args:
-            **kwargs (Dict[str, Any]): Additional arguments.
-
         See Also:
             * :func:`niapy.algorithms.modified.MultiStrategyDifferentialEvolutionMTS.set_parameters`
             * :func:`niapy.algorithms.modified.DynNpDifferentialEvolutionMTS.set_parameters`
@@ -536,9 +524,6 @@ class DynNpMultiStrategyDifferentialEvolutionMTSv1(DynNpMultiStrategyDifferentia
 
     def set_parameters(self, **kwargs):
         r"""Set core parameters of DynNpMultiStrategyDifferentialEvolutionMTSv1 algorithm.
-
-        Args:
-            **kwargs (Dict[str, Any]): Additional arguments.
 
         See Also:
             * :func:`niapy.algorithm.modified.DynNpMultiStrategyDifferentialEvolutionMTS.set_parameters`

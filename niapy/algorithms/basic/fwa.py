@@ -444,7 +444,6 @@ class EnhancedFireworksAlgorithm(FireworksAlgorithm):
         Args:
             amplitude_init (float): Initial amplitude.
             amplitude_final (float): Final amplitude.
-            **kwargs (Dict[str, Any]): Additional arguments.
 
         See Also:
             * :func:`FireworksAlgorithm.__init__`
@@ -460,7 +459,6 @@ class EnhancedFireworksAlgorithm(FireworksAlgorithm):
         Args:
             amplitude_init (float): Initial amplitude.
             amplitude_final (float): Final amplitude.
-            **kwargs (Dict[str, Any]): Additional arguments.
 
         See Also:
             * :func:`FireworksAlgorithm.set_parameters`
