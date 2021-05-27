@@ -37,7 +37,7 @@ Pull requests (PR)
 
     Firstly follow the developers :doc:`/installation` guide to install needed software in order to contribute to our source code.
 
-- Fill in the reqired template
+- Fill in the required template
 - Document new code
 - Make sure all the code goes through Flake8 without problems (run ``make check`` command)
 - Run tests (run ``make test`` command)

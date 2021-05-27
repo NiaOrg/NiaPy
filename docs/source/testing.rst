@@ -12,7 +12,7 @@ We have an automated building system which also runs all of provided tests. In c
 the test cases fails, we are notified about failing tests. Those should be fixed before we
 merge your pull request to master branch.
 
-For the purpose of checking if all test are passing localy you can run following command:
+For the purpose of checking if all test are passing locally you can run following command:
 
 .. code-block:: bash
 

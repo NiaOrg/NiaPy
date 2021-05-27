@@ -7,7 +7,7 @@ Setup development environment
 Requirements
 ~~~~~~~~~~~~
 
-- Python: `download <https://www.python.org/downloads/>`_ (at least version 2.7.14, prefferable 3.6 or greater)
+- Python: `download <https://www.python.org/downloads/>`_ (3.6 or greater)
 - Pip: `installation docs <https://pip.pypa.io/en/stable/installing/>`_
 - Make
     - Windows: `download <http://mingw.org/download/installer>`_ [:doc:`/guides/mingw_installation`]
