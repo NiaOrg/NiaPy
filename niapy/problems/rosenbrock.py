@@ -47,8 +47,6 @@ class Rosenbrock(Problem):
 
     """
 
-    Name = ['Rosenbrock']
-
     def __init__(self, dimension=4, lower=-30.0, upper=30.0, *args, **kwargs):
         r"""Initialize Rosenbrock problem..
 

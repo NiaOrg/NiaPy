@@ -56,8 +56,6 @@ class Pinter(Problem):
 
     """
 
-    Name = ['Pinter']
-
     def __init__(self, dimension=4, lower=-10.0, upper=10.0, *args, **kwargs):
         r"""Initialize Pinter problem..
 

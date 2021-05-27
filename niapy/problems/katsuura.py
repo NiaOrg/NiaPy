@@ -42,8 +42,6 @@ class Katsuura(Problem):
 
     """
 
-    Name = ['Katsuura']
-
     def __init__(self, dimension=5, lower=-100.0, upper=100.0, *args, **kwargs):
         r"""Initialize Katsuura problem..
 

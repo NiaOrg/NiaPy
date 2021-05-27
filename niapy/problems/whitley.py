@@ -52,8 +52,6 @@ class Whitley(Problem):
 
     """
 
-    Name = ['Whitley']
-
     def __init__(self, dimension=4, lower=-10.24, upper=10.24, *args, **kwargs):
         r"""Initialize Whitley problem..
 

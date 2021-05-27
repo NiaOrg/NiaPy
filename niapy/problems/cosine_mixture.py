@@ -44,8 +44,6 @@ class CosineMixture(Problem):
 
     """
 
-    Name = ['CosineMixture']
-
     def __init__(self, dimension=4, lower=-1.0, upper=1.0, *args, **kwargs):
         r"""Initialize Cosine mixture problem..
 

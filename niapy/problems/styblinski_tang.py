@@ -48,8 +48,6 @@ class StyblinskiTang(Problem):
 
     """
 
-    Name = ['StyblinskiTang']
-
     def __init__(self, dimension=4, lower=-5.0, upper=5.0, *args, **kwargs):
         r"""Initialize Styblinski Tang problem..
 

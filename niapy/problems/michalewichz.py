@@ -46,8 +46,6 @@ class Michalewichz(Problem):
 
     """
 
-    Name = ['Michalewichz']
-
     def __init__(self, dimension=4, lower=0.0, upper=np.pi, m=10, *args, **kwargs):
         r"""Initialize Michalewichz problem..
 

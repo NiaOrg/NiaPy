@@ -47,8 +47,6 @@ class Qing(Problem):
 
     """
 
-    Name = ['Qing']
-
     def __init__(self, dimension=4, lower=-500.0, upper=500.0, *args, **kwargs):
         r"""Initialize Qing problem..
 

@@ -49,8 +49,6 @@ class Salomon(Problem):
 
     """
 
-    Name = ['Salomon']
-
     def __init__(self, dimension=4, lower=-100.0, upper=100.0, *args, **kwargs):
         r"""Initialize Salomon problem..
 

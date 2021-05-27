@@ -44,8 +44,6 @@ class Rastrigin(Problem):
 
     """
 
-    Name = ['Rastrigin']
-
     def __init__(self, dimension=4, lower=-5.12, upper=5.12, *args, **kwargs):
         r"""Initialize Rastrigin problem..
 

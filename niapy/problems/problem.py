@@ -36,16 +36,6 @@ class Problem(ABC):
         self.lower = full_array(lower, dimension)
         self.upper = full_array(upper, dimension)
 
-    @staticmethod
-    def latex_code():
-        r"""Return the latex code of the problem.
-
-        Returns:
-            str: Latex code
-
-        """
-        pass
-
     @abstractmethod
     def _evaluate(self, x):
         """Evaluate solution."""
@@ -80,5 +70,9 @@ class Problem(ABC):
 
         """
         return self.evaluate(x)
+
+    def name(self):
+        """Get class name."""
+        return self.__class__.__name__
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

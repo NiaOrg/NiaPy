@@ -45,8 +45,6 @@ class Alpine1(Problem):
 
     """
 
-    Name = ['Alpine1']
-
     def __init__(self, dimension=4, lower=-10.0, upper=10.0, *args, **kwargs):
         r"""Initialize Alpine1 problem.
 
@@ -112,8 +110,6 @@ class Alpine2(Problem):
         4(2), 150-194.
 
     """
-
-    Name = ['Alpine2']
 
     def __init__(self, dimension=4, lower=0.0, upper=10.0, *args, **kwargs):
         r"""Initialize Alpine2 problem..

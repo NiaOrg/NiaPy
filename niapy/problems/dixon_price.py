@@ -44,8 +44,6 @@ class DixonPrice(Problem):
 
     """
 
-    Name = ['DixonPrice']
-
     def __init__(self, dimension=4, lower=-10.0, upper=10.0, *args, **kwargs):
         r"""Initialize Dixon Price problem..
 

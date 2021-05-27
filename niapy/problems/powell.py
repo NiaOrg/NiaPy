@@ -44,8 +44,6 @@ class Powell(Problem):
 
     """
 
-    Name = ['Powell']
-
     def __init__(self, dimension=4, lower=-4.0, upper=5.0, *args, **kwargs):
         r"""Initialize Powell problem..
 

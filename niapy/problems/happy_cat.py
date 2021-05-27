@@ -47,8 +47,6 @@ class HappyCat(Problem):
 
     """
 
-    Name = ['HappyCat']
-
     def __init__(self, dimension=4, lower=-100.0, upper=100.0, alpha=0.25, *args, **kwargs):
         r"""Initialize Happy cat problem..
 

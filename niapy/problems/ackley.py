@@ -49,8 +49,6 @@ class Ackley(Problem):
 
     """
 
-    Name = ['Ackley']
-
     def __init__(self, dimension=4, lower=-32.768, upper=32.768, a=20.0, b=0.2, c=2 * np.pi, *args, **kwargs):
         r"""Initialize Ackley problem.
 
