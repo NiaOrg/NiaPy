@@ -2,10 +2,10 @@
 
 """Python micro framework for building nature-inspired algorithms."""
 
-from niapy import util, algorithms, benchmarks, task
+from niapy import util, algorithms, problems, task
 from niapy.runner import Runner
 
-__all__ = ["algorithms", "benchmarks", "util", "task", "Runner"]
+__all__ = ["algorithms", "problems", "util", "task", "Runner"]
 __project__ = "NiaPy"
 __version__ = "2.0.0rc16"
 

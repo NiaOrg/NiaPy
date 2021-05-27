@@ -4,7 +4,7 @@ from unittest import TestCase
 from niapy.algorithms.basic import EvolutionStrategy1p1, EvolutionStrategyMp1, EvolutionStrategyMpL, \
     EvolutionStrategyML, CovarianceMatrixAdaptionEvolutionStrategy
 from niapy.algorithms.basic.es import IndividualES
-from niapy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
+from niapy.tests.test_algorithm import AlgorithmTestCase, MyProblem
 
 
 class IndividualESTestCase(TestCase):
@@ -25,7 +25,7 @@ class ES1p1TestCase(AlgorithmTestCase):
     def test_custom(self):
         es_custom = self.algo(k=10, c_a=1.5, c_r=0.42, seed=self.seed)
         es_customc = self.algo(k=10, c_a=1.5, c_r=0.42, seed=self.seed)
-        AlgorithmTestCase.test_algorithm_run(self, es_custom, es_customc, MyBenchmark())
+        AlgorithmTestCase.test_algorithm_run(self, es_custom, es_customc, MyProblem())
 
     def test_griewank(self):
         es_griewank = self.algo(k=15, c_a=1.2, c_r=0.5, seed=self.seed)
@@ -41,7 +41,7 @@ class ESMp1TestCase(AlgorithmTestCase):
     def test_custom(self):
         es_custom = self.algo(mu=45, k=50, c_a=1.1, c_r=0.5, seed=self.seed)
         es_customc = self.algo(mu=45, k=50, c_a=1.1, c_r=0.5, seed=self.seed)
-        AlgorithmTestCase.test_algorithm_run(self, es_custom, es_customc, MyBenchmark())
+        AlgorithmTestCase.test_algorithm_run(self, es_custom, es_customc, MyProblem())
 
     def test_griewank(self):
         es_griewank = self.algo(mu=30, k=25, c_a=1.5, c_r=0.5, seed=self.seed)
@@ -57,7 +57,7 @@ class ESMpLTestCase(AlgorithmTestCase):
     def test_custom(self):
         es_custom = self.algo(mu=45, lam=55, k=50, c_a=1.1, c_r=0.5, seed=self.seed)
         es_customc = self.algo(mu=45, lam=55, k=50, c_a=1.1, c_r=0.5, seed=self.seed)
-        AlgorithmTestCase.test_algorithm_run(self, es_custom, es_customc, MyBenchmark())
+        AlgorithmTestCase.test_algorithm_run(self, es_custom, es_customc, MyProblem())
 
     def test_griewank(self):
         es_griewank = self.algo(mu=30, lam=50, k=25, c_a=1.5, c_r=0.5, seed=self.seed)
@@ -67,7 +67,7 @@ class ESMpLTestCase(AlgorithmTestCase):
     def test_custom1(self):
         es1_custom = self.algo(mu=55, lam=45, k=50, c_a=1.1, c_r=0.5, seed=self.seed)
         es1_customc = self.algo(mu=55, lam=45, k=50, c_a=1.1, c_r=0.5, seed=self.seed)
-        AlgorithmTestCase.test_algorithm_run(self, es1_custom, es1_customc, MyBenchmark())
+        AlgorithmTestCase.test_algorithm_run(self, es1_custom, es1_customc, MyProblem())
 
     def test_griewank1(self):
         es1_griewank = self.algo(mu=50, lam=30, k=25, c_a=1.5, c_r=0.5, seed=self.seed)
@@ -83,7 +83,7 @@ class ESMLTestCase(AlgorithmTestCase):
     def test_custom(self):
         es_custom = self.algo(mu=45, k=50, c_a=1.1, c_r=0.5, seed=self.seed)
         es_customc = self.algo(mu=45, k=50, c_a=1.1, c_r=0.5, seed=self.seed)
-        AlgorithmTestCase.test_algorithm_run(self, es_custom, es_customc, MyBenchmark())
+        AlgorithmTestCase.test_algorithm_run(self, es_custom, es_customc, MyProblem())
 
     def test_griewank(self):
         es_griewank = self.algo(mu=35, lam=45, k=45, c_a=1.5, c_r=0.5, seed=self.seed)
@@ -93,7 +93,7 @@ class ESMLTestCase(AlgorithmTestCase):
     def test_custom1(self):
         es1_custom = self.algo(mu=45, lam=35, k=50, c_a=1.1, c_r=0.5, seed=self.seed)
         es1_customc = self.algo(mu=45, lam=35, k=50, c_a=1.1, c_r=0.5, seed=self.seed)
-        AlgorithmTestCase.test_algorithm_run(self, es1_custom, es1_customc, MyBenchmark())
+        AlgorithmTestCase.test_algorithm_run(self, es1_custom, es1_customc, MyProblem())
 
     def test_griewank1(self):
         es1_griewank = self.algo(mu=45, lam=35, k=25, c_a=1.5, c_r=0.5, seed=self.seed)
@@ -109,7 +109,7 @@ class CMAESTestCase(AlgorithmTestCase):
     def test_custom(self):
         es_custom = self.algo(seed=self.seed)
         es_customc = self.algo(seed=self.seed)
-        AlgorithmTestCase.test_algorithm_run(self, es_custom, es_customc, MyBenchmark())
+        AlgorithmTestCase.test_algorithm_run(self, es_custom, es_customc, MyProblem())
 
     def test_griewank(self):
         es_griewank = self.algo(seed=self.seed)
@@ -119,7 +119,7 @@ class CMAESTestCase(AlgorithmTestCase):
     def test_custom1(self):
         es1_custom = self.algo(seed=self.seed)
         es1_customc = self.algo(seed=self.seed)
-        AlgorithmTestCase.test_algorithm_run(self, es1_custom, es1_customc, MyBenchmark())
+        AlgorithmTestCase.test_algorithm_run(self, es1_custom, es1_customc, MyProblem())
 
     def test_griewank1(self):
         es1_griewank = self.algo(seed=self.seed)

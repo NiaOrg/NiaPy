@@ -9,7 +9,7 @@ import numpy as np
 from numpy.random import default_rng
 
 from niapy.algorithms.algorithm import Individual, Algorithm
-from niapy.benchmarks import Benchmark
+from niapy.problems import Problem
 from niapy.task import Task, StoppingTask
 from niapy.util import objects_to_array
 
@@ -18,8 +18,8 @@ logger = logging.getLogger('niapy.test')
 logger.setLevel('INFO')
 
 
-class MyBenchmark(Benchmark):
-    r"""Testing benchmark class.
+class MyProblem(Problem):
+    r"""Testing problem class.
 
     Date:
         April 2019
@@ -28,7 +28,7 @@ class MyBenchmark(Benchmark):
         Klemen Berkovič
 
     See Also:
-        * :class:`niapy.benchmarks.Benchmark`
+        * :class:`niapy.problems.Problem`
 
     """
 
@@ -59,7 +59,7 @@ class IndividualTestCase(TestCase):
         self.dimension = 20
         rng = default_rng()
         self.x = rng.uniform(-100, 100, self.dimension)
-        self.task = StoppingTask(max_evals=230, max_iters=np.inf, benchmark=MyBenchmark(self.dimension))
+        self.task = StoppingTask(max_evals=230, max_iters=np.inf, problem=MyProblem(self.dimension))
         self.s1 = Individual(x=self.x, e=False)
         self.s2 = Individual(task=self.task, rng=rng)
         self.s3 = Individual(task=self.task)
@@ -167,13 +167,13 @@ class AlgorithmBaseTestCase(TestCase):
     def test_init_population_numpy(self):
         r"""Test if custom generation initialization works ok."""
         a = Algorithm(population_size=10, initialization_function=init_pop_numpy)
-        t = Task(benchmark=MyBenchmark(dimension=20))
+        t = Task(problem=MyProblem(dimension=20))
         self.assertTrue(np.array_equal(np.zeros((10, t.dimension)), a.init_population(t)[0]))
 
     def test_init_population_individual(self):
         r"""Test if custom generation initialization works ok."""
         a = Algorithm(population_size=10, initialization_function=init_pop_individual, individual_type=Individual)
-        t = Task(benchmark=MyBenchmark(dimension=20))
+        t = Task(problem=MyProblem(dimension=20))
         i = Individual(x=np.zeros(t.dimension), task=t)
         pop, fpop, d = a.init_population(t)
         for e in pop:
@@ -254,13 +254,13 @@ class TestingTask(StoppingTask, TestCase):
     """
 
     def names(self):
-        r"""Get names of benchmark.
+        r"""Get names of problem.
 
         Returns:
              List[str]: List of task names.
 
         """
-        return self.benchmark.Name
+        return self.problem.Name
 
     def eval(self, x):
         r"""Check if is algorithm trying to evaluate solution out of bounds."""
@@ -306,12 +306,12 @@ class AlgorithmTestCase(TestCase):
         params = self.algo().get_parameters()
         self.assertIsNotNone(params)
 
-    def setUpTasks(self, dimension, benchmark='griewank', max_evals=None, max_iters=None):
+    def setUpTasks(self, dimension, problem='griewank', max_evals=None, max_iters=None):
         r"""Setup optimization tasks for testing.
 
         Args:
             dimension (int): Dimension of the problem.
-            benchmark (Optional[str, class]): Optimization problem to use.
+            problem (Optional[str, class]): Optimization problem to use.
             max_evals (int): Number of fitness/objective function evaluations.
             max_iters (int): Number of generations.
 
@@ -319,23 +319,23 @@ class AlgorithmTestCase(TestCase):
             Tuple[Task, Task]: Two testing tasks.
 
         """
-        if isinstance(benchmark, Benchmark):
-            cls = benchmark.__class__
-            benchmark = cls(dimension=dimension)
+        if isinstance(problem, Problem):
+            cls = problem.__class__
+            problem = cls(dimension=dimension)
             dimension = None
         max_evals = self.max_evals if max_evals is None else max_evals
         max_iters = self.max_iters if max_iters is None else max_iters
-        task1 = TestingTask(dimension=dimension, max_evals=max_evals, max_iters=max_iters, benchmark=benchmark)
-        task2 = TestingTask(dimension=dimension, max_evals=max_evals, max_iters=max_iters, benchmark=benchmark)
+        task1 = TestingTask(dimension=dimension, max_evals=max_evals, max_iters=max_iters, problem=problem)
+        task2 = TestingTask(dimension=dimension, max_evals=max_evals, max_iters=max_iters, problem=problem)
         return task1, task2
 
-    def test_algorithm_run(self, a=None, b=None, benchmark='griewank', max_evals=None, max_iters=None):
+    def test_algorithm_run(self, a=None, b=None, problem='griewank', max_evals=None, max_iters=None):
         r"""Run main testing of algorithm.
 
         Args:
             a (Algorithm): First instance of algorithm.
             b (Algorithm): Second instance of algorithm.
-            benchmark (Union[Benchmark, str]): Benchmark to use for testing.
+            problem (Union[Problem, str]): Problem to use for testing.
             max_evals (int): Number of function evaluations.
             max_iters (int): Number of algorithm generations/iterations.
 
@@ -343,7 +343,7 @@ class AlgorithmTestCase(TestCase):
         if a is None or b is None:
             return
         for D in self.dimensions:
-            task1, task2 = self.setUpTasks(D, benchmark, max_evals=max_evals, max_iters=max_iters)
+            task1, task2 = self.setUpTasks(D, problem, max_evals=max_evals, max_iters=max_iters)
             # x = a.run(task1) # For debugging purposes
             # y = b.run(task2) # For debugging purposes
             q = Queue(maxsize=2)
@@ -362,7 +362,7 @@ class AlgorithmTestCase(TestCase):
             self.assertIsNotNone(x)
             self.assertIsNotNone(y)
             logger.info('%s\n%s -> %s\n%s -> %s' % (task1.names(), x[0], x[1], y[0], y[1]))
-            self.assertAlmostEqual(task1.benchmark.evaluate(x[0].x if isinstance(x[0], Individual) else x[0]),
+            self.assertAlmostEqual(task1.problem.evaluate(x[0].x if isinstance(x[0], Individual) else x[0]),
                                    x[1], msg='Best individual fitness values does not mach the given one')
             self.assertAlmostEqual(task1.x_f, x[1],
                                    msg='While running the algorithm, algorithm got better individual with fitness: %s' % task1.x_f)

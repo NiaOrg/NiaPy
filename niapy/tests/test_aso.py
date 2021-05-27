@@ -1,7 +1,7 @@
 # encoding=utf8
 from niapy.algorithms.other import AnarchicSocietyOptimization
 from niapy.algorithms.other.aso import elitism, sequential, crossover
-from niapy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
+from niapy.tests.test_algorithm import AlgorithmTestCase, MyProblem
 
 
 class ASOTestCase(AlgorithmTestCase):
@@ -14,7 +14,7 @@ class ASOElitismTestCase(ASOTestCase):
     def test_custom(self):
         aso_custom = self.algo(population_size=40, combination=elitism, seed=self.seed)
         aso_customc = self.algo(population_size=40, combination=elitism, seed=self.seed)
-        AlgorithmTestCase.test_algorithm_run(self, aso_custom, aso_customc, MyBenchmark())
+        AlgorithmTestCase.test_algorithm_run(self, aso_custom, aso_customc, MyProblem())
 
     def test_griewank(self):
         aso_griewank = self.algo(population_size=40, combination=elitism, seed=self.seed)
@@ -26,7 +26,7 @@ class ASOSequentialTestCase(AlgorithmTestCase):
     def test_custom(self):
         aso_custom = self.algo(population_size=40, combination=sequential, seed=self.seed)
         aso_customc = self.algo(population_size=40, combination=sequential, seed=self.seed)
-        AlgorithmTestCase.test_algorithm_run(self, aso_custom, aso_customc, MyBenchmark())
+        AlgorithmTestCase.test_algorithm_run(self, aso_custom, aso_customc, MyProblem())
 
     def test_griewank(self):
         aso_griewank = self.algo(population_size=40, combination=sequential, seed=self.seed)
@@ -38,7 +38,7 @@ class ASOCrossoverTestCase(AlgorithmTestCase):
     def test_custom(self):
         aso_custom = self.algo(population_size=40, combination=crossover, seed=self.seed)
         aso_customc = self.algo(population_size=40, combination=crossover, seed=self.seed)
-        AlgorithmTestCase.test_algorithm_run(self, aso_custom, aso_customc, MyBenchmark())
+        AlgorithmTestCase.test_algorithm_run(self, aso_custom, aso_customc, MyProblem())
 
     def test_griewank(self):
         aso_griewank = self.algo(population_size=40, combination=crossover, seed=self.seed)

@@ -7,5 +7,5 @@ This is the NiaPy API documentation, auto generated from the source code.
 
     niapy
     algorithms
-    benchmarks
+    problems
     util

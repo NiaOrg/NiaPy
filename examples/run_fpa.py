@@ -8,11 +8,11 @@ sys.path.append('../')
 
 from niapy.algorithms.basic import FlowerPollinationAlgorithm
 from niapy.task import StoppingTask
-from niapy.benchmarks import Sphere
+from niapy.problems import Sphere
 
 # we will run Flower Pollination Algorithm for 5 independent runs
 for i in range(5):
-    task = StoppingTask(max_evals=10000, dimension=10, benchmark=Sphere())
+    task = StoppingTask(problem=Sphere(dimension=10), max_evals=10000)
     algo = FlowerPollinationAlgorithm(population_size=20, p=0.5)
     best = algo.run(task=task)
     print(best)

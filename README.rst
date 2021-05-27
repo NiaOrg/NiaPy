@@ -38,7 +38,7 @@ Our mission is to build a collection of nature-inspired algorithms and
 create a simple interface for managing the optimization process. NiaPy
 offers:
 
--  numerous benchmark functions implementations,
+-  numerous optimization problem implementations,
 -  use of various nature-inspired algorithms without struggle and effort
    with a simple interface,
 -  easy comparison between nature-inspired algorithms, and
@@ -109,21 +109,19 @@ Let’s go through a basic and advanced example.
 Basic Example
 -------------
 
-Let’s say, we want to try out Gray Wolf Optimizer algorithm against
-Pintér benchmark function. Firstly, we have to create new file, with
-name, for example *basic_example.py*. Then we have to import chosen
-algorithm from NiaPy, so we can use it. Afterwards we initialize
-GreyWolfOptimizer class instance and run the algorithm. Given bellow is
-complete source code of basic example.
+Let’s say, we want to try out Gray Wolf Optimizer algorithm against the
+Pintér problem. Firstly, we have to create a new file, called *basic_example.py*.
+Then we have to import chosen algorithm from NiaPy, so we can use it. Afterwards we initialize
+GreyWolfOptimizer class instance and run the algorithm. Given bellow is the complete source code of basic example.
 
 .. code:: python
 
     from niapy.algorithms.basic import GreyWolfOptimizer
     from niapy.task import StoppingTask
 
-    # we will run 10 repetitions of Grey Wolf Optimizer against Pinter benchmark function
+    # we will run 10 repetitions of Grey Wolf Optimizer against the Pinter problem
     for i in range(10):
-        task = StoppingTask(benchmark='pinter', dimension=10, max_evals=1000)
+        task = StoppingTask(problem='pinter', dimension=10, max_evals=1000)
         algorithm = GreyWolfOptimizer(population_size=20)
         best = algorithm.run(task)
         print(best[-1])
@@ -147,44 +145,36 @@ should give you similar output as following:
 Advanced Example
 ----------------
 
-In this example we will show you how to implement your own benchmark
-function and use it with any of implemented algorithms. First let’s
-create new file named *advanced_example.py*. As in the previous examples
-we wil import algorithm we want to use from NiaPy module.
+In this example we will show you how to implement a custom problem class and use it with any of
+implemented algorithms. First let's create new file named advanced_example.py. As in the previous examples
+we wil import algorithm we want to use from niapy module.
 
-For our custom benchmark function, we have to create new class. Let’s
-name it MyBenchmark. In the initialization method of MyBenchmark class
-we have to set Lower and Upper bounds of the function. Afterwards we
-have to implement a function which returns evaluation function which
-takes two parameters *D* (as dimension of problem) and *sol* (as
-solution of problem). Now we should have something similar as is shown
-in code snippet bellow.
+For our custom optimization function, we have to create new class. Let's name it *MyProblem*. In the initialization
+method of *MyProblem* class we have to set the *dimension*, *lower* and *upper* bounds of the problem. Afterwards we have to
+override the abstract method _evaluate which takes a parameter *x*, the solution to be evaluated, and returns the function value.
+Now we should have something similar as is shown in code snippet bellow.
 
 .. code:: python
 
     from niapy.task import StoppingTask
-    from niapy.benchmarks import Benchmark
+    from niapy.problems import Problem
     from niapy.algorithms.basic import GreyWolfOptimizer
 
-    # our custom benchmark class
-    class MyBenchmark(Benchmark):
+    # our custom Problem class
+    class MyProblem(Problem):
         def __init__(self, dimension, lower=-10, upper=10, *args, **kwargs):
             super().__init__(dimension, lower, upper, *args, **kwargs)
 
         def _evaluate(self, x):
             return np.sum(x ** 2)
 
-Now, all we have to do is to initialize our algorithm as in previous
-examples and pass as benchmark parameter, instance of our MyBenchmark
-class.
+Now, all we have to do is to initialize our algorithm as in previous examples and pass an instance of our MyProblem class as the problem argument.
 
 .. code:: python
 
-    my_benchmark = MyBenchmark(dimension=20)
+    my_problem = MyProblem(dimension=20)
     for i in range(10):
-        task = StoppingTask(benchmark=my_benchmark, max_iters=100)
-
-        # parameter is population size
+        task = StoppingTask(problem=my_problem, max_iters=100)
         algo = GreyWolfOptimizer(population_size=20)
 
         # running algorithm returns best found minimum

@@ -1,7 +1,7 @@
 # encoding=utf8
 
 from niapy.algorithms.other import RandomSearch
-from niapy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
+from niapy.tests.test_algorithm import AlgorithmTestCase, MyProblem
 
 
 class RSTestCase(AlgorithmTestCase):
@@ -12,7 +12,7 @@ class RSTestCase(AlgorithmTestCase):
     def test_custom(self):
         ca_custom = self.algo(population_size=40, seed=self.seed)
         ca_customc = self.algo(population_size=40, seed=self.seed)
-        AlgorithmTestCase.test_algorithm_run(self, ca_custom, ca_customc, MyBenchmark())
+        AlgorithmTestCase.test_algorithm_run(self, ca_custom, ca_customc, MyProblem())
 
     def test_griewank(self):
         ca_griewank = self.algo(population_size=40, seed=self.seed)

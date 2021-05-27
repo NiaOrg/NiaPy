@@ -8,9 +8,9 @@ sys.path.append('../')
 from niapy.algorithms.basic import GreyWolfOptimizer
 from niapy.task import StoppingTask
 
-# we will run 10 repetitions of Grey Wolf Optimizer against Pinter benchmark function
+# we will run 10 repetitions of Grey Wolf Optimizer against Pinter problem
 for i in range(10):
-    task = StoppingTask(max_evals=1000, dimension=10, benchmark='pinter')
+    task = StoppingTask(problem='pinter', dimension=10, max_evals=1000)
     algorithm = GreyWolfOptimizer(population_size=20)
     best = algorithm.run(task)
     print(best[-1])

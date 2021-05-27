@@ -1,7 +1,7 @@
 # encoding=utf8
 
 from niapy.algorithms.basic import HarrisHawksOptimization
-from niapy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
+from niapy.tests.test_algorithm import AlgorithmTestCase, MyProblem
 
 
 class HHOTestCase(AlgorithmTestCase):
@@ -12,7 +12,7 @@ class HHOTestCase(AlgorithmTestCase):
     def test_custom(self):
         hho_custom = self.algo(population_size=20, levy=0.01, seed=self.seed)
         hho_customc = self.algo(population_size=20, levy=0.01, seed=self.seed)
-        AlgorithmTestCase.test_algorithm_run(self, hho_custom, hho_customc, MyBenchmark())
+        AlgorithmTestCase.test_algorithm_run(self, hho_custom, hho_customc, MyProblem())
 
     def test_griewank(self):
         hho_griewank = self.algo(population_size=20, nFES=4000, nGEN=200, levy=0.01, seed=self.seed)

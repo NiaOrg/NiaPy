@@ -7,9 +7,9 @@ from enum import Enum
 
 import numpy as np
 from matplotlib import pyplot as plt
-from niapy.benchmarks import Benchmark
+from niapy.problems import Problem
 from niapy.util.repair import limit
-from niapy.util.factory import get_benchmark
+from niapy.util.factory import get_problem
 from niapy.util.exception import FesException, GenException, RefException
 
 logging.basicConfig()
@@ -31,7 +31,7 @@ class OptimizationType(Enum):
 
 
 class Task:
-    r"""Class representing problem to solve with optimization.
+    r"""Class representing optimization task.
 
     Date:
         2019
@@ -40,6 +40,7 @@ class Task:
         Klemen Berkovič and others
 
     Attributes:
+        problem (Problem): Optimization problem.
         dimension (int): Dimension of the problem.
         lower (numpy.ndarray): Lower bounds of the problem.
         upper (numpy.ndarray): Upper bounds of the problem.
@@ -48,34 +49,34 @@ class Task:
 
     """
 
-    def __init__(self, benchmark=None, dimension=None, lower=None, upper=None,
+    def __init__(self, problem=None, dimension=None, lower=None, upper=None,
                  optimization_type=OptimizationType.MINIMIZATION, repair_function=limit):
         r"""Initialize task class for optimization.
 
         Args:
-            benchmark (Union[str, Benchmark]): Problem to solve with optimization.
-            dimension (Optional[int]): Dimension of the problem.
-            lower (Optional[numpy.ndarray]): Lower bounds of the problem.
-            upper (Optional[numpy.ndarray]): Upper bounds of the problem.
-            optimization_type (Optional[OptimizationType]): Set the type of optimization.
+            problem (Union[str, Problem]): Optimization problem.
+            dimension (Optional[int]): Dimension of the problem. Will be ignored if problem is instance of the `Problem` class.
+            lower (Optional[Union[float, Iterable[float]]]): Lower bounds of the problem. Will be ignored if problem is instance of the `Problem` class.
+            upper (Optional[Union[float, Iterable[float]]]): Upper bounds of the problem. Will be ignored if problem is instance of the `Problem` class.
+            optimization_type (Optional[OptimizationType]): Set the type of optimization. Default is minimization.
             repair_function (Optional[Callable[[numpy.ndarray, numpy.ndarray, numpy.ndarray, Dict[str, Any]], numpy.ndarray]]): Function for repairing individuals components to desired limits.
 
         """
-        if isinstance(benchmark, str):
+        if isinstance(problem, str):
             params = dict(dimension=dimension, lower=lower, upper=upper)
             params = {key: val for key, val in params.items() if val is not None}
-            self.benchmark = get_benchmark(benchmark, **params)
-        elif isinstance(benchmark, Benchmark):
-            self.benchmark = benchmark
+            self.problem = get_problem(problem, **params)
+        elif isinstance(problem, Problem):
+            self.problem = problem
             if dimension is not None or lower is not None or upper is not None:
-                logger.warning('An instance of the Benchmark class was passed in, `dimension`, `lower` and `upper` parameters will be ignored.')
+                logger.warning('An instance of the Problem class was passed in, `dimension`, `lower` and `upper` parameters will be ignored.')
         else:
-            raise TypeError('Unsupported type for benchmark: {}'.format(type(benchmark)))
+            raise TypeError('Unsupported type for problem: {}'.format(type(problem)))
 
         self.optimization_type = optimization_type
-        self.dimension = self.benchmark.dimension
-        self.lower = self.benchmark.lower
-        self.upper = self.benchmark.upper
+        self.dimension = self.problem.dimension
+        self.lower = self.problem.lower
+        self.upper = self.problem.upper
         self.range = self.upper - self.lower
         self.repair_function = repair_function
 
@@ -112,7 +113,7 @@ class Task:
             float: Fitness/function values of solution.
 
         """
-        return self.benchmark.evaluate(x) * self.optimization_type.value
+        return self.problem.evaluate(x) * self.optimization_type.value
 
     def is_feasible(self, x):
         r"""Check if the solution is feasible.
@@ -148,23 +149,23 @@ class CountingTask(Task):
 
     """
 
-    def __init__(self, benchmark=None, dimension=None, lower=None, upper=None,
+    def __init__(self, problem=None, dimension=None, lower=None, upper=None,
                  optimization_type=OptimizationType.MINIMIZATION, repair_function=limit):
         r"""Initialize task class for optimization.
 
         Args:
-            benchmark (Union[str, Benchmark]): Problem to solve with optimization.
-            dimension (Optional[int]): Dimension of the problem.
-            lower (Optional[numpy.ndarray]): Lower bounds of the problem.
-            upper (Optional[numpy.ndarray]): Upper bounds of the problem.
-            optimization_type (Optional[OptimizationType]): Set the type of optimization.
+            problem (Union[str, Problem]): Optimization problem.
+            dimension (Optional[int]): Dimension of the problem. Will be ignored if problem is instance of the `Problem` class.
+            lower (Optional[Union[float, Iterable[float]]]): Lower bounds of the problem. Will be ignored if problem is instance of the `Problem` class.
+            upper (Optional[Union[float, Iterable[float]]]): Upper bounds of the problem. Will be ignored if problem is instance of the `Problem` class.
+            optimization_type (Optional[OptimizationType]): Set the type of optimization. Default is minimization.
             repair_function (Optional[Callable[[numpy.ndarray, numpy.ndarray, numpy.ndarray, Dict[str, Any]], numpy.ndarray]]): Function for repairing individuals components to desired limits.
 
         See Also:
             * :func:`niapy.task.Task.__init__`
 
         """
-        super().__init__(benchmark, dimension, lower, upper, optimization_type, repair_function)
+        super().__init__(problem, dimension, lower, upper, optimization_type, repair_function)
         self.iters = 0
         self.evals = 0
 
@@ -211,22 +212,22 @@ class StoppingTask(CountingTask):
 
     """
 
-    def __init__(self, max_evals=np.inf, max_iters=np.inf, cutoff_value=None, enable_logging=False, benchmark=None,
-                 dimension=None, lower=None, upper=None, optimization_type=OptimizationType.MINIMIZATION,
-                 repair_function=limit):
+    def __init__(self, problem=None, dimension=None, lower=None, upper=None,
+                 optimization_type=OptimizationType.MINIMIZATION, repair_function=limit, max_evals=np.inf,
+                 max_iters=np.inf, cutoff_value=None, enable_logging=False):
         r"""Initialize task class for optimization.
 
         Args:
+            problem (Union[str, Problem]): Optimization problem.
+            dimension (Optional[int]): Dimension of the problem. Will be ignored if problem is instance of the `Problem` class.
+            lower (Optional[Union[float, Iterable[float]]]): Lower bounds of the problem. Will be ignored if problem is instance of the `Problem` class.
+            upper (Optional[Union[float, Iterable[float]]]): Upper bounds of the problem. Will be ignored if problem is instance of the `Problem` class.
+            optimization_type (Optional[OptimizationType]): Set the type of optimization. Default is minimization.
+            repair_function (Optional[Callable[[numpy.ndarray, numpy.ndarray, numpy.ndarray, Dict[str, Any]], numpy.ndarray]]): Function for repairing individuals components to desired limits.
             max_evals (Optional[int]): Number of function evaluations.
             max_iters (Optional[int]): Number of generations or iterations.
             cutoff_value (Optional[float]): Reference value of function/fitness function.
             enable_logging (Optional[bool]): Enable/disable logging of improvements.
-            dimension (Optional[int]): Number of dimensions.
-            optimization_type (Optional[OptimizationType]): Set the type of optimization.
-            benchmark (Union[str, Benchmark]): Problem to solve with optimization.
-            lower (Optional[numpy.ndarray]): Lower limits of the problem.
-            upper (Optional[numpy.ndarray]): Upper limits of the problem.
-            repair_function (Optional[Callable[[numpy.ndarray, numpy.ndarray, numpy.ndarray, Dict[str, Any]], numpy.ndarray]]): Function for repairing individuals components to desired limits.
 
         Note:
             Storing improvements during the evolutionary cycle is
@@ -236,7 +237,7 @@ class StoppingTask(CountingTask):
             * :func:`niapy.task.CountingTask.__init__`
 
         """
-        super().__init__(benchmark, dimension, lower, upper, optimization_type, repair_function)
+        super().__init__(problem, dimension, lower, upper, optimization_type, repair_function)
         self.cutoff_value = -np.inf * optimization_type.value if cutoff_value is None else cutoff_value
         self.enable_logging = enable_logging
         self.x = None

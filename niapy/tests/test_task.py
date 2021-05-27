@@ -4,12 +4,12 @@ from unittest import TestCase
 import numpy as np
 from numpy.random import default_rng
 
-from niapy.benchmarks import Benchmark
+from niapy.problems import Problem
 from niapy.task import StoppingTask, ThrowingTask
 from niapy.util import full_array, FesException, GenException, RefException
 
 
-class MyBenchmark(Benchmark):
+class MyProblem(Problem):
     def __init__(self, dimension=20):
         super().__init__(dimension, -10, 10)
 
@@ -35,7 +35,7 @@ class StoppingTaskBaseTestCase(TestCase):
     def setUp(self):
         self.D = 6
         self.Lower, self.Upper = [2, 1, 1], [10, 10, 2]
-        self.task = StoppingTask(dimension=self.D, lower=self.Lower, upper=self.Upper, benchmark='sphere')
+        self.task = StoppingTask(dimension=self.D, lower=self.Lower, upper=self.Upper, problem='sphere')
 
     def test_dim_ok(self):
         self.assertEqual(self.D, self.task.dimension)
@@ -101,7 +101,7 @@ class StoppingTaskTestCase(TestCase):
     def setUp(self):
         self.D, self.nFES, self.nGEN = 10, 10, 10
         self.t = StoppingTask(max_evals=self.nFES, max_iters=self.nGEN, cutoff_value=1,
-                              benchmark=MyBenchmark(self.D))
+                              problem=MyProblem(self.D))
 
     def test_is_feasible(self):
         x = np.full(self.D, 10)
@@ -217,8 +217,7 @@ class ThrowingTaskTestCase(TestCase):
 
     def setUp(self):
         self.D, self.nFES, self.nGEN = 10, 10, 10
-        self.t = ThrowingTask(max_evals=self.nFES, max_iters=self.nGEN, cutoff_value=0,
-                              benchmark=MyBenchmark(self.D))
+        self.t = ThrowingTask(max_evals=self.nFES, max_iters=self.nGEN, cutoff_value=0, problem=MyProblem(self.D))
 
     def test_is_feasible(self):
         x = np.full(self.D, 10)

@@ -5,29 +5,25 @@ import sys
 
 sys.path.append('../')
 
-from niapy.task import StoppingTask, OptimizationType
-from niapy.benchmarks import Benchmark
+import numpy as np
+from niapy.task import StoppingTask
+from niapy.problems import Problem
 from niapy.algorithms.basic import GreyWolfOptimizer
 
 
-# our custom benchmark class
-class MyBenchmark(Benchmark):
-    def __init__(self):
-        Benchmark.__init__(self, -10, 10)
+# our custom problem class
+class MyProblem(Problem):
+    def __init__(self, dimension, lower=-10, upper=10, *args, **kwargs):
+        super().__init__(dimension, lower, upper, *args, **kwargs)
 
-    def function(self):
-        def evaluate(D, sol):
-            val = 0.0
-            for i in range(D): val += sol[i] ** 2
-            return val
-
-        return evaluate
+    def _evaluate(self, x):
+        return np.sum(x ** 2)
 
 
-# we will run 10 repetitions of Grey Wolf Optimizer against our custom MyBenchmark benchmark function
+# we will run 10 repetitions of Grey Wolf Optimizer against our custom MyProblem problem.
+my_problem = MyProblem(20)
 for i in range(10):
-    task = StoppingTask(max_iters=100, dimension=20, optimization_type=OptimizationType.MINIMIZATION,
-                        benchmark=MyBenchmark())
+    task = StoppingTask(problem=my_problem, max_iters=100)
 
     # parameter is population size
     algo = GreyWolfOptimizer(population_size=20)

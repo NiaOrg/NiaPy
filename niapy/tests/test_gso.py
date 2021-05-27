@@ -2,7 +2,7 @@
 
 from niapy.algorithms.basic import GlowwormSwarmOptimization, GlowwormSwarmOptimizationV1, GlowwormSwarmOptimizationV2, \
     GlowwormSwarmOptimizationV3
-from niapy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
+from niapy.tests.test_algorithm import AlgorithmTestCase, MyProblem
 
 
 class GSOTestCase(AlgorithmTestCase):
@@ -13,7 +13,7 @@ class GSOTestCase(AlgorithmTestCase):
     def test_custom(self):
         gso_custom = self.algo(population_size=25, a=7, Rmin=0.1, Rmax=3, seed=self.seed)
         gso_customc = self.algo(population_size=25, a=7, Rmin=0.1, Rmax=3, seed=self.seed)
-        AlgorithmTestCase.test_algorithm_run(self, gso_custom, gso_customc, MyBenchmark())
+        AlgorithmTestCase.test_algorithm_run(self, gso_custom, gso_customc, MyProblem())
 
     def test_griewank(self):
         gso_griewank = self.algo(population_size=25, a=5, Rmin=0.01, Rmax=3, seed=self.seed)
@@ -29,7 +29,7 @@ class GSOv1TestCase(AlgorithmTestCase):
     def test_custom(self):
         gso_custom = self.algo(population_size=25, seed=self.seed)
         gso_customc = self.algo(population_size=25, seed=self.seed)
-        AlgorithmTestCase.test_algorithm_run(self, gso_custom, gso_customc, MyBenchmark())
+        AlgorithmTestCase.test_algorithm_run(self, gso_custom, gso_customc, MyProblem())
 
     def test_griewank(self):
         gso_griewank = self.algo(population_size=25, seed=self.seed)
@@ -45,7 +45,7 @@ class GSOv2TestCase(AlgorithmTestCase):
     def test_custom(self):
         gso_custom = self.algo(population_size=25, a=7, Rmin=0.1, Rmax=3, seed=self.seed)
         gso_customc = self.algo(population_size=25, a=7, Rmin=0.1, Rmax=3, seed=self.seed)
-        AlgorithmTestCase.test_algorithm_run(self, gso_custom, gso_customc, MyBenchmark())
+        AlgorithmTestCase.test_algorithm_run(self, gso_custom, gso_customc, MyProblem())
 
     def test_griewank(self):
         gso_griewank = self.algo(population_size=25, a=5, Rmin=0.01, Rmax=3, seed=self.seed)
@@ -61,7 +61,7 @@ class GSOv3TestCase(AlgorithmTestCase):
     def test_custom(self):
         gso_custom = self.algo(population_size=25, a=7, Rmin=0.1, Rmax=3, seed=self.seed)
         gso_customc = self.algo(population_size=25, a=7, Rmin=0.1, Rmax=3, seed=self.seed)
-        AlgorithmTestCase.test_algorithm_run(self, gso_custom, gso_customc, MyBenchmark())
+        AlgorithmTestCase.test_algorithm_run(self, gso_custom, gso_customc, MyProblem())
 
     def test_griewank(self):
         gso_griewank = self.algo(population_size=25, a=5, Rmin=0.01, Rmax=3, seed=self.seed)

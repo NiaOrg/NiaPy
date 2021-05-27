@@ -1,6 +1,6 @@
 # encoding=utf8
 from niapy.algorithms.basic import MothFlameOptimizer
-from niapy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
+from niapy.tests.test_algorithm import AlgorithmTestCase, MyProblem
 
 
 class MFOTestCase(AlgorithmTestCase):
@@ -11,7 +11,7 @@ class MFOTestCase(AlgorithmTestCase):
     def test_custom(self):
         mfo_custom = self.algo(population_size=20, seed=self.seed)
         mfo_customc = self.algo(population_size=20, seed=self.seed)
-        AlgorithmTestCase.test_algorithm_run(self, mfo_custom, mfo_customc, MyBenchmark())
+        AlgorithmTestCase.test_algorithm_run(self, mfo_custom, mfo_customc, MyProblem())
 
     def test_griewank(self):
         mfo_griewank = self.algo(population_size=10, seed=self.seed)
