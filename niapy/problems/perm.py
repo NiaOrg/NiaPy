@@ -45,8 +45,6 @@ class Perm(Problem):
 
     """
 
-    Name = ['Perm']
-
     def __init__(self, dimension=4, beta=0.5, *args, **kwargs):
         r"""Initialize Perm problem.
 

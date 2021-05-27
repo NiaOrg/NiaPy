@@ -44,8 +44,6 @@ class Infinity(Problem):
 
     """
 
-    Name = ['Infinity']
-
     def __init__(self, dimension=2, lower=-1.0, upper=1.0, *args, **kwargs):
         r"""Initialize Infinity problem..
 

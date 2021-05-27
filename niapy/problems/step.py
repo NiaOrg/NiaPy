@@ -48,8 +48,6 @@ class Step(Problem):
 
     """
 
-    Name = ['Step']
-
     def __init__(self, dimension=4, lower=-100.0, upper=100.0, *args, **kwargs):
         r"""Initialize Step problem..
 
@@ -116,8 +114,6 @@ class Step2(Problem):
 
     """
 
-    Name = ['Step2']
-
     def __init__(self, dimension=4, lower=-100.0, upper=100.0, *args, **kwargs):
         r"""Initialize Step2 problem..
 
@@ -183,8 +179,6 @@ class Step3(Problem):
         4(2), 150-194.
 
     """
-
-    Name = ['Step3']
 
     def __init__(self, dimension=4, lower=-100.0, upper=100.0, *args, **kwargs):
         r"""Initialize Step3 problem..

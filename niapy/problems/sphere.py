@@ -45,8 +45,6 @@ class Sphere(Problem):
 
     """
 
-    Name = ['Sphere']
-
     def __init__(self, dimension=4, lower=-5.12, upper=5.12, *args, **kwargs):
         r"""Initialize Sphere problem..
 
@@ -108,8 +106,6 @@ class Sphere2(Problem):
         https://www.sfu.ca/~ssurjano/sumpow.html
 
     """
-
-    Name = ['Sphere2']
 
     def __init__(self, dimension=4, lower=-1.0, upper=1.0, *args, **kwargs):
         r"""Initialize Sphere2 problem..
@@ -173,8 +169,6 @@ class Sphere3(Problem):
         https://www.sfu.ca/~ssurjano/rothyp.html
 
     """
-
-    Name = ['Sphere3']
 
     def __init__(self, dimension=4, lower=-65.536, upper=65.536, *args, **kwargs):
         r"""Initialize Sphere3 problem..

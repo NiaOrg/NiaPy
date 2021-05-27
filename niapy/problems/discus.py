@@ -44,8 +44,6 @@ class Discus(Problem):
 
     """
 
-    Name = ['Discus']
-
     def __init__(self, dimension=4, lower=-100.0, upper=100.0, *args, **kwargs):
         r"""Initialize Discus problem..
 

@@ -44,8 +44,6 @@ class Trid(Problem):
 
     """
 
-    Name = ['Trid']
-
     def __init__(self, dimension=4, *args, **kwargs):
         r"""Initialize Trid problem..
 

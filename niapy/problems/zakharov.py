@@ -43,8 +43,6 @@ class Zakharov(Problem):
 
     """
 
-    Name = ['Zakharov']
-
     def __init__(self, dimension=4, lower=-5.0, upper=10.0, *args, **kwargs):
         r"""Initialize Zakharov problem..
 

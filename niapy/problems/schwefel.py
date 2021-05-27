@@ -43,8 +43,6 @@ class Schwefel(Problem):
 
     """
 
-    Name = ['Schwefel']
-
     def __init__(self, dimension=4, lower=-500.0, upper=500.0, *args, **kwargs):
         r"""Initialize Schwefel problem..
 
@@ -109,8 +107,6 @@ class Schwefel221(Problem):
         4(2), 150-194.
 
     """
-
-    Name = ['Schwefel221']
 
     def __init__(self, dimension=4, lower=-100.0, upper=100.0, *args, **kwargs):
         r"""Initialize Schwefel221 problem..
@@ -177,8 +173,6 @@ class Schwefel222(Problem):
 
     """
 
-    Name = ['Schwefel222']
-
     def __init__(self, dimension=4, lower=-100.0, upper=100.0, *args, **kwargs):
         r"""Initialize Schwefel222 problem..
 
@@ -241,8 +235,6 @@ class ModifiedSchwefel(Problem):
         http://www5.zzu.edu.cn/__local/A/69/BC/D3B5DFE94CD2574B38AD7CD1D12_C802DAFE_BC0C0.pdf
 
     """
-
-    Name = ['ModifiedSchwefel']
 
     def __init__(self, dimension=4, lower=-100.0, upper=100.0, *args, **kwargs):
         r"""Initialize Modified Schwefel problem..

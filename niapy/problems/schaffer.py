@@ -42,8 +42,6 @@ class SchafferN2(Problem):
 
     """
 
-    Name = ['SchafferN2']
-
     def __init__(self, lower=-100.0, upper=100.0, *args, **kwargs):
         r"""Initialize SchafferN2 problem..
 
@@ -106,8 +104,6 @@ class SchafferN4(Problem):
 
     """
 
-    Name = ['SchafferN4']
-
     def __init__(self, lower=-100.0, upper=100.0, *args, **kwargs):
         r"""Initialize SchafferN4 problem..
 
@@ -169,8 +165,6 @@ class ExpandedSchaffer(Problem):
         http://www5.zzu.edu.cn/__local/A/69/BC/D3B5DFE94CD2574B38AD7CD1D12_C802DAFE_BC0C0.pdf
 
     """
-
-    Name = ['ExpandedSchaffer']
 
     def __init__(self, dimension=4, lower=-100.0, upper=100.0, *args, **kwargs):
         r"""Initialize Expanded Schaffer problem..

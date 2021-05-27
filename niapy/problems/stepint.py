@@ -45,8 +45,6 @@ class Stepint(Problem):
 
     """
 
-    Name = ['Stepint']
-
     def __init__(self, dimension=4, lower=-5.12, upper=5.12, *args, **kwargs):
         r"""Initialize Stepint problem..
 

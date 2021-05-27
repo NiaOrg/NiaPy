@@ -43,8 +43,6 @@ class Weierstrass(Problem):
 
     """
 
-    Name = ['Weierstrass']
-
     def __init__(self, dimension=4, lower=-100.0, upper=100.0, a=0.5, b=3, k_max=20, *args, **kwargs):
         r"""Initialize Bent Cigar problem..
 

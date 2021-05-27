@@ -45,8 +45,6 @@ class ChungReynolds(Problem):
 
     """
 
-    Name = ['ChungReynolds']
-
     def __init__(self, dimension=4, lower=-100.0, upper=100.0, *args, **kwargs):
         r"""Initialize Chung Reynolds problem..
 

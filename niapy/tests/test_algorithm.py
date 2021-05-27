@@ -32,8 +32,6 @@ class MyProblem(Problem):
 
     """
 
-    Name = ['Custom']
-
     def __init__(self, dimension=10, *_args, **_kwargs):
         super().__init__(dimension, -5.12, 5.12)
 
@@ -253,15 +251,6 @@ class TestingTask(StoppingTask, TestCase):
 
     """
 
-    def names(self):
-        r"""Get names of problem.
-
-        Returns:
-             List[str]: List of task names.
-
-        """
-        return self.problem.Name
-
     def eval(self, x):
         r"""Check if is algorithm trying to evaluate solution out of bounds."""
         self.assertTrue(self.is_feasible(x), 'Solution %s is not in feasible space!!!' % x)
@@ -361,7 +350,7 @@ class AlgorithmTestCase(TestCase):
                              "Something went wrong at runtime of the algorithm --> %s" % a.exception)
             self.assertIsNotNone(x)
             self.assertIsNotNone(y)
-            logger.info('%s\n%s -> %s\n%s -> %s' % (task1.names(), x[0], x[1], y[0], y[1]))
+            logger.info('%s\n%s -> %s\n%s -> %s' % (task1.problem.name(), x[0], x[1], y[0], y[1]))
             self.assertAlmostEqual(task1.problem.evaluate(x[0].x if isinstance(x[0], Individual) else x[0]),
                                    x[1], msg='Best individual fitness values does not mach the given one')
             self.assertAlmostEqual(task1.x_f, x[1],

@@ -43,8 +43,6 @@ class Ridge(Problem):
 
     """
 
-    Name = ['Ridge']
-
     def __init__(self, dimension=4, lower=-64.0, upper=64.0, *args, **kwargs):
         r"""Initialize Ridge problem..
 

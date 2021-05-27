@@ -47,8 +47,6 @@ class Griewank(Problem):
 
     """
 
-    Name = ['Griewank']
-
     def __init__(self, dimension=4, lower=-100.0, upper=100.0, *args, **kwargs):
         r"""Initialize Griewank problem..
 
@@ -114,8 +112,6 @@ class ExpandedGriewankPlusRosenbrock(Problem):
         http://www5.zzu.edu.cn/__local/A/69/BC/D3B5DFE94CD2574B38AD7CD1D12_C802DAFE_BC0C0.pdf
 
     """
-
-    Name = ['ExpandedGriewankPlusRosenbrock']
 
     def __init__(self, dimension=4, lower=-100.0, upper=100.0, *args, **kwargs):
         r"""Initialize Expanded Griewank's plus Rosenbrock problem..
