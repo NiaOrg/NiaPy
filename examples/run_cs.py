@@ -7,12 +7,12 @@ sys.path.append('../')
 # End of fix
 
 from niapy.algorithms.basic import CuckooSearch
-from niapy.benchmarks import Sphere
+from niapy.problems import Sphere
 from niapy.task import StoppingTask
 
 # we will run Cuckoo Search for 5 independent runs
 for i in range(5):
-    task = StoppingTask(max_evals=10000, dimension=10, benchmark=Sphere())
+    task = StoppingTask(problem=Sphere(dimension=10), max_evals=10000)
     algo = CuckooSearch(population_size=100, pa=0.95, alpha=1)
     best = algo.run(task)
     print(best)

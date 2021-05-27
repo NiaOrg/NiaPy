@@ -15,7 +15,7 @@ Our mission is to build a collection of nature-inspired algorithms and create a 
 interface for managing the optimization process along with statistical evaluation.
 NiaPy offers:
 
-- numerous benchmark functions implementations,
+- numerous optimization problem implementations,
 - use of various nature-inspired algorithms without struggle and effort with a simple interface, and
 - easy comparison between nature-inspired algorithms.
 

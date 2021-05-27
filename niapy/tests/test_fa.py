@@ -1,5 +1,5 @@
 from niapy.algorithms.basic import FireflyAlgorithm
-from niapy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
+from niapy.tests.test_algorithm import AlgorithmTestCase, MyProblem
 
 
 class FATestCase(AlgorithmTestCase):
@@ -10,7 +10,7 @@ class FATestCase(AlgorithmTestCase):
     def test(self):
         fa = self.algo(population_size=20, alpha=0.5, beta_min=0.2, gamma=1.0, seed=self.seed)
         fac = self.algo(population_size=20, alpha=0.5, beta_min=0.2, gamma=1.0, seed=self.seed)
-        AlgorithmTestCase.test_algorithm_run(self, fa, fac, MyBenchmark())
+        AlgorithmTestCase.test_algorithm_run(self, fa, fac, MyProblem())
 
     def test_griewank(self):
         fa_griewank = self.algo(population_size=20, alpha=0.5, beta_min=0.2, gamma=1.0, seed=self.seed)

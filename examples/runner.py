@@ -6,13 +6,14 @@ import sys
 sys.path.append('../')
 # End of fix
 
+import numpy as np
 from niapy import Runner
 from niapy.algorithms.basic import (
     GreyWolfOptimizer,
     ParticleSwarmAlgorithm
 )
-from niapy.benchmarks import (
-    Benchmark,
+from niapy.problems import (
+    Problem,
     Ackley,
     Griewank,
     Sphere,
@@ -22,18 +23,12 @@ from niapy.benchmarks import (
 """Example demonstrating the use of niapy Runner."""
 
 
-class MyBenchmark(Benchmark):
-    def __init__(self):
+class MyProblem(Problem):
+    def __init__(self, dimension, lower=-10, upper=10, *args, **kwargs):
+        super().__init__(dimension, lower, upper, *args, **kwargs)
 
-        Benchmark.__init__(self, -10, 10)
-
-    def function(self):
-        def evaluate(D, sol):
-            val = 0.0
-            for i in range(D): val += sol[i] ** 2
-            return val
-
-        return evaluate
+    def _evaluate(self, x):
+        return np.sum(x ** 2)
 
 
 runner = Runner(dimension=40, max_evals=100, runs=2, algorithms=[
@@ -42,13 +37,13 @@ runner = Runner(dimension=40, max_evals=100, runs=2, algorithms=[
     ParticleSwarmAlgorithm(),
     "HybridBatAlgorithm",
     "SimulatedAnnealing",
-    "CuckooSearch"], benchmarks=[
-    Ackley(),
-    Griewank(),
-    Sphere(),
-    HappyCat(),
+    "CuckooSearch"], problems=[
+    Ackley(dimension=40),
+    Griewank(dimension=40),
+    Sphere(dimension=40),
+    HappyCat(dimension=40),
     "rastrigin",
-    MyBenchmark()
+    MyProblem(dimension=40)
 ])
 
 runner.run(export='dataframe', verbose=True)

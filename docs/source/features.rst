@@ -39,7 +39,7 @@ Basic algorithms
 - Particle Swarm Optimization
 - Sine Cosine Algorithm
 
-Documentation for the basic algorithms can be found here: :mod:`NiaPy.algorithms.basic`.
+Documentation for the basic algorithms can be found here: :mod:`niapy.algorithms.basic`.
 
 
 Modified algorithms
@@ -49,7 +49,7 @@ Modified algorithms
 - Self-adaptive Differential Evolution
 - Dynamic Population Size Self-adaptive Differential Evolution
 
-Documentation for the modified algorithms can be found here: :mod:`NiaPy.algorithms.modified`.
+Documentation for the modified algorithms can be found here: :mod:`niapy.algorithms.modified`.
 
 
 Other algorithms
@@ -61,13 +61,13 @@ Other algorithms
 - Nelder Mead Method
 - Simulated Annealing
 
-Documentation for the other algorithms can be found here: :mod:`NiaPy.algorithms.other`.
+Documentation for the other algorithms can be found here: :mod:`niapy.algorithms.other`.
 
 
 Functions
 -----------------------------
 
-NiaPy features more than 30 benchmark functions. Documentation for them can be found here: :mod:`NiaPy.benchmarks`.
+NiaPy features more than 30 optimization problems. Documentation for them can be found here: :mod:`niapy.problems`.
 
 - Ackley
 - Alpine

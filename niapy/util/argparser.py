@@ -8,7 +8,7 @@ from argparse import ArgumentParser
 
 import numpy as np
 
-import niapy.benchmarks as benchmarks
+import niapy.problems as problems
 from niapy.task import OptimizationType
 
 logging.basicConfig()
@@ -18,12 +18,12 @@ logger.setLevel('INFO')
 __all__ = ['get_argparser', 'get_args', 'get_args_dict']
 
 
-def get_benchmark_names():
-    r"""Get benchmark names."""
-    return benchmarks.__all__
+def _get_problem_names():
+    r"""Get problem names."""
+    return problems.__all__
 
 
-def optimization_type(x):
+def _optimization_type(x):
     r"""Get OptimizationType from string.
 
     Args:
@@ -44,10 +44,10 @@ def get_argparser():
     Parser:
         * `-a` or `--algorithm` (str):
             Name of algorithm to use. Default value is `jDE`.
-        * `-b` or `--benchmark` (str):
-            Name of benchmark to use. Default values is `Benchmark`.
+        * `-p` or `--problem` (str):
+            Name of problem to use. Default values is `Ackley`.
         * `-d` or `--dimension` (int):
-            Number of dimensions/components usd by benchmark. Default values is `10`.
+            Number of dimensions/components used by problem. Default values is `10`.
         * `--max-evals` (int):
             Number of maximum function evaluations. Default values is `inf`.
         * `--max-iters` (int):
@@ -78,16 +78,16 @@ def get_argparser():
         * :func:`ArgumentParser.add_argument`
 
     """
-    parser, benchmark_names = ArgumentParser(description='Runner example.'), get_benchmark_names()
+    parser, problem_names = ArgumentParser(description='Runner example.'), _get_problem_names()
     parser.add_argument('-a', '--algorithm', dest='algo', default='jDE', type=str)
-    parser.add_argument('-b', '--benchmark', dest='benchmark', nargs='*', default=benchmark_names[0], choices=benchmark_names, type=str)
+    parser.add_argument('-p', '--problem', dest='problem', nargs='*', default=problem_names[0], choices=problem_names, type=str)
     parser.add_argument('-d', '--dimension', dest='dimension', default=10, type=int)
     parser.add_argument('--max-evals', dest='max_evals', default=np.inf, type=int)
     parser.add_argument('--max-iters', dest='max_iters', default=np.inf, type=int)
     parser.add_argument('-n', '--population-size', dest='population_size', default=43, type=int)
     parser.add_argument('-r', '--run-type', dest='run_type', choices=['', 'log', 'plot'], default='', type=str)
     parser.add_argument('--seed', dest='seed', nargs='+', default=[None], type=int)
-    parser.add_argument('--opt-type', dest='opt_type', default=optimization_type('min'), type=optimization_type)
+    parser.add_argument('--opt-type', dest='opt_type', default=_optimization_type('min'), type=_optimization_type)
     return parser
 
 

@@ -1,23 +1,23 @@
-"""Factory functions for getting algorithms and benchmarks by name."""
+"""Factory functions for getting algorithms and problems by name."""
 
-__all__ = ['get_algorithm', 'get_benchmark']
+__all__ = ['get_algorithm', 'get_problem']
 
 
-def get_benchmark(name, *args, **kwargs):
-    r"""Get benchmark by name.
+def get_problem(name, *args, **kwargs):
+    r"""Get problem by name.
 
     Args:
-        name (str): Name of the benchmark.
+        name (str): Name of the problem.
 
     Returns:
-        Benchmark: An instance of benchmark instantiated with \*args and \*\*kwargs.
+        Problem: An instance of Problem, instantiated with \*args and \*\*kwargs.
 
     Raises:
         KeyError: If an invalid name is provided.
 
     """
-    benchmark = _benchmark_options().pop(name.lower())
-    return benchmark(*args, **kwargs)
+    problem = _problem_options().pop(name.lower())
+    return problem(*args, **kwargs)
 
 
 def get_algorithm(name, *args, **kwargs):
@@ -37,61 +37,61 @@ def get_algorithm(name, *args, **kwargs):
     return algorithm(*args, **kwargs)
 
 
-def _benchmark_options():
-    import niapy.benchmarks as benchmarks
+def _problem_options():
+    import niapy.problems as problems
 
-    benchmarks_dict = {
-        'ackley': benchmarks.Ackley,
-        'alpine1': benchmarks.Alpine1,
-        'alpine2': benchmarks.Alpine2,
-        'bent_cigar': benchmarks.BentCigar,
-        'chung_reynolds': benchmarks.ChungReynolds,
-        'cosine_mixture': benchmarks.CosineMixture,
-        'csendes': benchmarks.Csendes,
-        'discus': benchmarks.Discus,
-        "dixon_price": benchmarks.DixonPrice,
-        "elliptic": benchmarks.Elliptic,
-        "conditioned_elliptic": benchmarks.Elliptic,
-        "expanded_griewank_plus_rosenbrock": benchmarks.ExpandedGriewankPlusRosenbrock,
-        "expanded_schaffer": benchmarks.ExpandedSchaffer,
-        "griewank": benchmarks.Griewank,
-        "happy_cat": benchmarks.HappyCat,
-        "hgbat": benchmarks.HGBat,
-        "infinity": benchmarks.Infinity,
-        "katsuura": benchmarks.Katsuura,
-        "levy": benchmarks.Levy,
-        "michalewicz": benchmarks.Michalewichz,
-        "modified_schwefel": benchmarks.ModifiedSchwefel,
-        "perm": benchmarks.Perm,
-        "pinter": benchmarks.Pinter,
-        "powell": benchmarks.Powell,
-        "qing": benchmarks.Qing,
-        "quintic": benchmarks.Quintic,
-        "rastrigin": benchmarks.Rastrigin,
-        "ridge": benchmarks.Ridge,
-        "rosenbrock": benchmarks.Rosenbrock,
-        "salomon": benchmarks.Salomon,
-        "schaffer2": benchmarks.SchafferN2,
-        "schaffer4": benchmarks.SchafferN4,
-        "schumer_steiglitz": benchmarks.SchumerSteiglitz,
-        "schwefel": benchmarks.Schwefel,
-        "schwefel221": benchmarks.Schwefel221,
-        "schwefel222": benchmarks.Schwefel222,
-        "sphere": benchmarks.Sphere,
-        "sphere2": benchmarks.Sphere2,
-        "sphere3": benchmarks.Sphere3,
-        "step": benchmarks.Step,
-        "step2": benchmarks.Step2,
-        "step3": benchmarks.Step3,
-        "stepint": benchmarks.Stepint,
-        "styblinski_tang": benchmarks.StyblinskiTang,
-        "sum_squares": benchmarks.SumSquares,
-        "trid": benchmarks.Trid,
-        "weierstrass": benchmarks.Weierstrass,
-        "whitley": benchmarks.Whitley,
-        "zakharov": benchmarks.Zakharov,
+    problems_dict = {
+        'ackley': problems.Ackley,
+        'alpine1': problems.Alpine1,
+        'alpine2': problems.Alpine2,
+        'bent_cigar': problems.BentCigar,
+        'chung_reynolds': problems.ChungReynolds,
+        'cosine_mixture': problems.CosineMixture,
+        'csendes': problems.Csendes,
+        'discus': problems.Discus,
+        "dixon_price": problems.DixonPrice,
+        "elliptic": problems.Elliptic,
+        "conditioned_elliptic": problems.Elliptic,
+        "expanded_griewank_plus_rosenbrock": problems.ExpandedGriewankPlusRosenbrock,
+        "expanded_schaffer": problems.ExpandedSchaffer,
+        "griewank": problems.Griewank,
+        "happy_cat": problems.HappyCat,
+        "hgbat": problems.HGBat,
+        "infinity": problems.Infinity,
+        "katsuura": problems.Katsuura,
+        "levy": problems.Levy,
+        "michalewicz": problems.Michalewichz,
+        "modified_schwefel": problems.ModifiedSchwefel,
+        "perm": problems.Perm,
+        "pinter": problems.Pinter,
+        "powell": problems.Powell,
+        "qing": problems.Qing,
+        "quintic": problems.Quintic,
+        "rastrigin": problems.Rastrigin,
+        "ridge": problems.Ridge,
+        "rosenbrock": problems.Rosenbrock,
+        "salomon": problems.Salomon,
+        "schaffer2": problems.SchafferN2,
+        "schaffer4": problems.SchafferN4,
+        "schumer_steiglitz": problems.SchumerSteiglitz,
+        "schwefel": problems.Schwefel,
+        "schwefel221": problems.Schwefel221,
+        "schwefel222": problems.Schwefel222,
+        "sphere": problems.Sphere,
+        "sphere2": problems.Sphere2,
+        "sphere3": problems.Sphere3,
+        "step": problems.Step,
+        "step2": problems.Step2,
+        "step3": problems.Step3,
+        "stepint": problems.Stepint,
+        "styblinski_tang": problems.StyblinskiTang,
+        "sum_squares": problems.SumSquares,
+        "trid": problems.Trid,
+        "weierstrass": problems.Weierstrass,
+        "whitley": problems.Whitley,
+        "zakharov": problems.Zakharov,
     }
-    return benchmarks_dict
+    return problems_dict
 
 
 def _algorithm_options():

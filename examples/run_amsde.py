@@ -9,7 +9,7 @@
 # from niapy.algorithms.basic import AgingNpMultiMutationDifferentialEvolution
 # from niapy.algorithms.basic.de import cross_curr2best1, cross_best2
 # from niapy.task import StoppingTask
-# from niapy.benchmarks import Sphere
+# from niapy.problems import Sphere
 #
 # # we will run Differential Evolution for 5 independent runs
 # for i in range(5):

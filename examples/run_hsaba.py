@@ -8,12 +8,12 @@ sys.path.append('../')
 
 from niapy.algorithms.modified import HybridSelfAdaptiveBatAlgorithm
 from niapy.task import StoppingTask
-from niapy.benchmarks import Griewank
+from niapy.problems import Griewank
 
 # we will run Bat Algorithm for 5 independent runs
 algo = HybridSelfAdaptiveBatAlgorithm(population_size=50)
 for i in range(5):
-    task = StoppingTask(max_iters=10000, dimension=10, benchmark=Griewank(upper=600, lower=-600))
+    task = StoppingTask(problem=Griewank(dimension=10, upper=600, lower=-600), max_iters=10000)
     best = algo.run(task)
     print('%s -> %s' % (best[0], best[1]))
 print(algo.get_parameters())

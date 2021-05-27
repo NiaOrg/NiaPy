@@ -1,6 +1,6 @@
 # encoding=utf8
 from niapy.algorithms.modified import HybridSelfAdaptiveBatAlgorithm
-from niapy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
+from niapy.tests.test_algorithm import AlgorithmTestCase, MyProblem
 
 
 class HSABATestCase(AlgorithmTestCase):
@@ -27,13 +27,13 @@ class HSABATestCase(AlgorithmTestCase):
         self.assertIsNotNone(i)
 
     def test_custom(self):
-        """Test case for running algorithm on costume benchmarks."""
+        """Test case for running algorithm on custom problem."""
         hsaba_custom = self.algo(population_size=10, Limit=2, seed=self.seed)
         hsaba_customc = self.algo(population_size=10, Limit=2, seed=self.seed)
-        AlgorithmTestCase.test_algorithm_run(self, hsaba_custom, hsaba_customc, MyBenchmark())
+        AlgorithmTestCase.test_algorithm_run(self, hsaba_custom, hsaba_customc, MyProblem())
 
     def test_griewank(self):
-        """Test case for running algorithm on benchmark."""
+        """Test case for running algorithm on griewank problem."""
         hsaba_griewank = self.algo(population_size=10, seed=self.seed)
         hsaba_griewankc = self.algo(population_size=10, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, hsaba_griewank, hsaba_griewankc)

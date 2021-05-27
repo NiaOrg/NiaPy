@@ -8,7 +8,7 @@
 #
 # from niapy.algorithms.modified import DynNpSelfAdaptiveDifferentialEvolutionAlgorithm
 # from niapy.task import StoppingTask
-# from niapy.benchmarks import Sphere
+# from niapy.problems import Sphere
 #
 # # we will run Differential Evolution for 5 independent runs
 # for i in range(5):

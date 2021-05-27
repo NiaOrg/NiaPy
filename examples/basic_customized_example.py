@@ -7,19 +7,14 @@ sys.path.append('../')
 
 from niapy.algorithms.basic import GreyWolfOptimizer
 from niapy.task import StoppingTask, OptimizationType
-from niapy.benchmarks import Pinter
+from niapy.problems import Pinter
 
-# initialize Pinter benchamrk with custom bound
-pinterCustom = Pinter(-5, 5)
+# initialize Pinter problem with custom bound
+pinter = Pinter(20, -5, 5)
 
-# we will run 10 repetitions of Grey Wolf Optimizer against Pinter benchmark function
+# we will run 10 repetitions of Grey Wolf Optimizer against Pinter problem
 for i in range(10):
-    # first parameter takes dimension of problem
-    # second parameter takes the number of function evaluations
-    # third parameter is benchmark optimization type
-    # forth parameter is benchmark function
-    task = StoppingTask(max_iters=100, dimension=20, optimization_type=OptimizationType.MINIMIZATION,
-                        benchmark=pinterCustom)
+    task = StoppingTask(problem=pinter, max_iters=100)
 
     # parameter is population size
     algo = GreyWolfOptimizer(population_size=20)
