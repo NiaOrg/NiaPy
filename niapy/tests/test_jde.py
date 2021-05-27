@@ -13,7 +13,7 @@ from niapy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
 class SolutionJDETestCase(TestCase):
     def setUp(self):
         self.D, self.F, self.CR = 10, 0.9, 0.3
-        self.x, self.task = default_rng().uniform(10, 50, self.D), Task(self.D, benchmark=MyBenchmark())
+        self.x, self.task = default_rng().uniform(10, 50, self.D), Task(benchmark=MyBenchmark(self.D))
         self.s1, self.s2 = SolutionJDE(task=self.task, e=False), SolutionJDE(differential_weight=self.F,
                                                                              crossover_probability=self.CR, x=self.x)
 

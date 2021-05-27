@@ -167,13 +167,13 @@ class AlgorithmBaseTestCase(TestCase):
     def test_init_population_numpy(self):
         r"""Test if custom generation initialization works ok."""
         a = Algorithm(population_size=10, initialization_function=init_pop_numpy)
-        t = Task(dimension=20, benchmark=MyBenchmark())
+        t = Task(benchmark=MyBenchmark(dimension=20))
         self.assertTrue(np.array_equal(np.zeros((10, t.dimension)), a.init_population(t)[0]))
 
     def test_init_population_individual(self):
         r"""Test if custom generation initialization works ok."""
         a = Algorithm(population_size=10, initialization_function=init_pop_individual, individual_type=Individual)
-        t = Task(dimension=20, benchmark=MyBenchmark())
+        t = Task(benchmark=MyBenchmark(dimension=20))
         i = Individual(x=np.zeros(t.dimension), task=t)
         pop, fpop, d = a.init_population(t)
         for e in pop:

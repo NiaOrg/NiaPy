@@ -48,20 +48,17 @@ class Task:
 
     """
 
-    def __init__(self, dimension=None, optimization_type=OptimizationType.MINIMIZATION, benchmark=None, lower=None,
-                 upper=None, repair_function=limit):
+    def __init__(self, benchmark=None, dimension=None, lower=None, upper=None,
+                 optimization_type=OptimizationType.MINIMIZATION, repair_function=limit):
         r"""Initialize task class for optimization.
 
         Args:
-            dimension (Optional[int]): Number of dimensions.
-            optimization_type (Optional[OptimizationType]): Set the type of optimization.
             benchmark (Union[str, Benchmark]): Problem to solve with optimization.
-            lower (Optional[numpy.ndarray]): Lower limits of the problem.
-            upper (Optional[numpy.ndarray]): Upper limits of the problem.
+            dimension (Optional[int]): Dimension of the problem.
+            lower (Optional[numpy.ndarray]): Lower bounds of the problem.
+            upper (Optional[numpy.ndarray]): Upper bounds of the problem.
+            optimization_type (Optional[OptimizationType]): Set the type of optimization.
             repair_function (Optional[Callable[[numpy.ndarray, numpy.ndarray, numpy.ndarray, Dict[str, Any]], numpy.ndarray]]): Function for repairing individuals components to desired limits.
-
-        See Also:
-            * `func`:niapy.task.Utility.__init__`
 
         """
         if isinstance(benchmark, str):
@@ -87,7 +84,7 @@ class Task:
 
         Args:
             x (numpy.ndarray): Solution to check and repair if needed.
-            rng (numpy.random.Generator): Random number generator.
+            rng (Optional[numpy.random.Generator]): Random number generator.
 
         Returns:
             numpy.ndarray: Fixed solution.
@@ -104,9 +101,6 @@ class Task:
 
     def next_iter(self):
         r"""Increments the number of algorithm iterations."""
-
-    def start(self):
-        r"""Start stopwatch."""
 
     def eval(self, x):
         r"""Evaluate the solution A.
@@ -154,23 +148,23 @@ class CountingTask(Task):
 
     """
 
-    def __init__(self, dimension=None, optimization_type=OptimizationType.MINIMIZATION, benchmark=None, lower=None,
-                 upper=None, repair_function=limit):
-        r"""Initialize counting task.
+    def __init__(self, benchmark=None, dimension=None, lower=None, upper=None,
+                 optimization_type=OptimizationType.MINIMIZATION, repair_function=limit):
+        r"""Initialize task class for optimization.
 
         Args:
-            dimension (Optional[int]): Number of dimensions.
-            optimization_type (Optional[OptimizationType]): Set the type of optimization.
             benchmark (Union[str, Benchmark]): Problem to solve with optimization.
-            lower (Optional[numpy.ndarray]): Lower limits of the problem.
-            upper (Optional[numpy.ndarray]): Upper limits of the problem.
+            dimension (Optional[int]): Dimension of the problem.
+            lower (Optional[numpy.ndarray]): Lower bounds of the problem.
+            upper (Optional[numpy.ndarray]): Upper bounds of the problem.
+            optimization_type (Optional[OptimizationType]): Set the type of optimization.
             repair_function (Optional[Callable[[numpy.ndarray, numpy.ndarray, numpy.ndarray, Dict[str, Any]], numpy.ndarray]]): Function for repairing individuals components to desired limits.
 
         See Also:
             * :func:`niapy.task.Task.__init__`
 
         """
-        super().__init__(dimension, optimization_type, benchmark, lower, upper, repair_function)
+        super().__init__(benchmark, dimension, lower, upper, optimization_type, repair_function)
         self.iters = 0
         self.evals = 0
 
@@ -217,8 +211,8 @@ class StoppingTask(CountingTask):
 
     """
 
-    def __init__(self, max_evals=np.inf, max_iters=np.inf, cutoff_value=None, enable_logging=False, dimension=None,
-                 optimization_type=OptimizationType.MINIMIZATION, benchmark=None, lower=None, upper=None,
+    def __init__(self, max_evals=np.inf, max_iters=np.inf, cutoff_value=None, enable_logging=False, benchmark=None,
+                 dimension=None, lower=None, upper=None, optimization_type=OptimizationType.MINIMIZATION,
                  repair_function=limit):
         r"""Initialize task class for optimization.
 
@@ -242,7 +236,7 @@ class StoppingTask(CountingTask):
             * :func:`niapy.task.CountingTask.__init__`
 
         """
-        super().__init__(dimension, optimization_type, benchmark, lower, upper, repair_function)
+        super().__init__(benchmark, dimension, lower, upper, optimization_type, repair_function)
         self.cutoff_value = -np.inf * optimization_type.value if cutoff_value is None else cutoff_value
         self.enable_logging = enable_logging
         self.x = None
