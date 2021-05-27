@@ -11,25 +11,32 @@ NiaPy features more than 30 algorithms. They are categorized as basic, modified,
 Basic algorithms
 ~~~~~~~~~~~~~~~~
 
-- Artificial bee colony algorithm
-- Bat algorithm
-- Camel algorithm
-- Cuckoo search
-- Differential evolution algorithm
+- Artificial Bee Colony
+- Bacterial Foraging Optimization Algorithm
+- Bat Algorithm
+- Bees Algorithm
+- Camel Algorithm
+- Cat Swarm Optimization
+- Coral Reefs Optimization Algorithm
+- Cuckoo Search
+- Differential Evolution
 - Evolution Strategy
-- Firefly algorithm
-- Fireworks algorithm
-- Flower pollination algorithm
-- Forest optimization algorithm
-- Genetic algorithm
+- Firefly Algorithm
+- Fireworks Algorithm
+- Fish School Search
+- Flower Pollination Algorithm
+- Forest Optimization Algorithm
+- Genetic Algorithm
 - Glowworm Swarm Optimization
-- Grey wolf optimizer
-- Harmony Search Algorithm
+- Gravitational Search Algorithm
+- Grey Wolf Optimizer
+- Harmony Search
+- Harris Hawks Optimization
 - Krill Herd Algorithm
-- Monarch butterfly optimization
+- Monarch Butterfly Optimization
 - Monkey King Evolution
-- Moth flame optimizer
-- Particle swarm optimization
+- Moth flame Optimizer
+- Particle Swarm Optimization
 - Sine Cosine Algorithm
 
 Documentation for the basic algorithms can be found here: :mod:`NiaPy.algorithms.basic`.
@@ -38,9 +45,9 @@ Documentation for the basic algorithms can be found here: :mod:`NiaPy.algorithms
 Modified algorithms
 ~~~~~~~~~~~~~~~~~~~
 
-- Hybrid bat algorithm
-- Self-adaptive differential evolution algorithm
-- Dynamic population size self-adaptive differential evolution algorithm
+- Hybrid Bat Algorithm
+- Self-adaptive Differential Evolution
+- Dynamic Population Size Self-adaptive Differential Evolution
 
 Documentation for the modified algorithms can be found here: :mod:`NiaPy.algorithms.modified`.
 
@@ -48,11 +55,11 @@ Documentation for the modified algorithms can be found here: :mod:`NiaPy.algorit
 Other algorithms
 ~~~~~~~~~~~~~~~~
 
-- Anarchic society optimization
-- Hill climb algorithm
-- Multiple trajectory search
-- Nelder mead method
-- Simulated annealing algorithm
+- Anarchic Society Optimization
+- Hill Climb algorithm
+- Multiple Trajectory Search
+- Nelder Mead Method
+- Simulated Annealing
 
 Documentation for the other algorithms can be found here: :mod:`NiaPy.algorithms.other`.
 

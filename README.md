@@ -107,13 +107,13 @@ Let's go through a basic and advanced example.
 ## Basic Example
 Let’s say, we want to try out Gray Wolf Optimizer algorithm against Pintér benchmark function. Firstly, we have to create new file, with name, for example *basic_example.py*. Then we have to import chosen algorithm from NiaPy, so we can use it. Afterwards we initialize GreyWolfOptimizer class instance and run the algorithm. Given bellow is complete source code of basic example.
 
-```sh
+```python
 from niapy.algorithms.basic import GreyWolfOptimizer
 from niapy.task import StoppingTask
 
 # we will run 10 repetitions of Grey Wolf Optimizer against Pinter benchmark function
 for i in range(10):
-    task = StoppingTask(dimension=10, max_evals=1000, benchmark='pinter')
+    task = StoppingTask(benchmark='pinter', dimension=10, max_evals=1000)
     algorithm = GreyWolfOptimizer(population_size=20)
     best = algorithm.run(task)
     print(best[-1])
@@ -140,29 +140,27 @@ In this example we will show you how to implement your own benchmark function an
 
 For our custom benchmark function, we have to create new class. Let’s name it MyBenchmark. In the initialization method of MyBenchmark class we have to set Lower and Upper bounds of the function. Afterwards we have to implement a function which returns evaluation function which takes two parameters *D* (as dimension of problem) and *sol* (as solution of problem). Now we should have something similar as is shown in code snippet bellow.
 
-```sh
-from niapy.task import StoppingTask, OptimizationType
+```python
+import numpy as np
+from niapy.task import StoppingTask
 from niapy.benchmarks import Benchmark
-from niapy.algorithms.basic import ParticleSwarmAlgorithm
+from niapy.algorithms.basic import GreyWolfOptimizer
 
 # our custom benchmark class
 class MyBenchmark(Benchmark):
-    def __init__(self):
-        Benchmark.__init__(self, -10, 10)
+        def __init__(self, dimension, lower=-10, upper=10, *args, **kwargs):
+            super().__init__(dimension, lower, upper, *args, **kwargs)
 
-    def function(self):
-        def evaluate(D, sol):
-            val = 0.0
-            for i in range(D): val += sol[i] ** 2
-            return val
-        return evaluate
+        def _evaluate(self, x):
+            return np.sum(x ** 2)
 ```
 
 Now, all we have to do is to initialize our algorithm as in previous examples and pass as benchmark parameter, instance of our MyBenchmark class.
 
-```sh
+```python
+my_benchmark = MyBenchmark(dimension=20)
 for i in range(10):
-    task = StoppingTask(dimension=20, max_iters=100, optimization_type=OptimizationType.MINIMIZATION, benchmark=MyBenchmark())
+    task = StoppingTask(benchmark=my_benchmark, max_iters=100)
 
     # parameter is population size
     algo = GreyWolfOptimizer(population_size=20)

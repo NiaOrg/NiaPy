@@ -7,7 +7,7 @@ This project and everyone participating in it is governed by the [NiaPy Code of 
 ## How Can I Contribute?
 
 ### Reporting Bugs
-Before creating bug reports, please check existing issues list as you might find out that you don't need to create one. When you are creating a bug report, please include as many details as possible. Fill out the [required template](.github/issue_template.md), the information it asks for helps us resolve issues faster.
+Before creating bug reports, please check existing issues list as you might find out that you don't need to create one. When you are creating a bug report, please include as many details as possible. Fill out the [required template](.github/ISSUE_TEMPLATE/bug_report.md), the information it asks for helps us resolve issues faster.
 
 ### Suggesting Enhancements
 - Open new issue
