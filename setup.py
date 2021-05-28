@@ -11,13 +11,13 @@ import setuptools
 
 
 PACKAGE_NAME = 'niapy'
-MINIMUM_PYTHON_VERSION = '3.6'
+MINIMUM_PYTHON_VERSION = (3,6)
 
 
 def check_python_version():
     """Exit when the Python version is too low."""
-    if sys.version < MINIMUM_PYTHON_VERSION:
-        sys.exit("Python {0}+ is required.".format(MINIMUM_PYTHON_VERSION))
+    if sys.version_info[:2] < MINIMUM_PYTHON_VERSION:
+        sys.exit("Python {}.{}+ is required.".format(*MINIMUM_PYTHON_VERSION))
 
 
 def read_package_variable(key, filename='__init__.py'):
