@@ -102,7 +102,8 @@
       "contributions": [
         "code",
         "doc",
-        "example"
+        "example",
+        "bug"
       ]
     },
     {
