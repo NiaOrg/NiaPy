@@ -274,6 +274,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="http://timzatko.eu"><img src="https://avatars2.githubusercontent.com/u/11925394?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Timotej Zaťko</b></sub></a><br /><a href="https://github.com/NiaOrg/NiaPy/issues?q=author%3Atimzatko" title="Bug reports">🐛</a></td>
     <td align="center"><a href="https://github.com/sisco0"><img src="https://avatars0.githubusercontent.com/u/25695302?v=4?s=100" width="100px;" alt=""/><br /><sub><b>sisco0</b></sub></a><br /><a href="https://github.com/NiaOrg/NiaPy/commits?author=sisco0" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/zStupan"><img src="https://avatars.githubusercontent.com/u/48752988?v=4?s=100" width="100px;" alt=""/><br /><sub><b>zStupan</b></sub></a><br /><a href="https://github.com/NiaOrg/NiaPy/commits?author=zStupan" title="Code">💻</a> <a href="https://github.com/NiaOrg/NiaPy/issues?q=author%3AzStupan" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://github.com/hrnciar"><img src="https://avatars.githubusercontent.com/u/13086088?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Tomáš Hrnčiar</b></sub></a><br /><a href="https://github.com/NiaOrg/NiaPy/commits?author=hrnciar" title="Code">💻</a></td>
   </tr>
 </table>
 
