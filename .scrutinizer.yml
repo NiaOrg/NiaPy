@@ -12,6 +12,5 @@ checks:
     code_rating: true
     duplicate_code: true
 filter:
-  excluded_paths:
-    - "*/tests/*"
-    - "*/examples/*"
+  paths:
+    - niapy/*
