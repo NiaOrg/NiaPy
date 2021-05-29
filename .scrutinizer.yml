@@ -1,6 +1,6 @@
 build:
   environment:
-    python: 3.6.3
+    python: 3.9.5
   tests:
     override:
       - flake8
