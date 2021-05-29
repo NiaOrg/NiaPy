@@ -1,6 +1,9 @@
 build:
   environment:
     python: 3.9.5
+  dependencies:
+    override:
+      - pip install -q flake8
   tests:
     override:
       - flake8
