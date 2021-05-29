@@ -7,15 +7,15 @@ Setup development environment
 Requirements
 ~~~~~~~~~~~~
 
-- Python: `download <https://www.python.org/downloads/>`_ (3.6 or greater)
-- Pip: `installation docs <https://pip.pypa.io/en/stable/installing/>`_
+- Python: `download <https://www.python.org/downloads/>`__ (3.6 or greater)
+- Pip: `installation docs <https://pip.pypa.io/en/stable/installing/>`__
 - Make
-    - Windows: `download <http://mingw.org/download/installer>`_ [:doc:`/guides/mingw_installation`]
-    - Mac: `download <http://developer.apple.com/xcode>`_
-    - Linux: `download <http://www.gnu.org/software/make>`_
-- pipenv: `docs <http://docs.pipenv.org>`_ (run ``pip install pipenv`` command)
-- Pandoc: `installation docs <http://johnmacfarlane.net/pandoc/installing.html>`_ * optional
-- Graphviz: `download <http://www.graphviz.org/Download.php>`_ * optional
+    - Windows: `download <http://mingw.org/download/installer>`__ [:doc:`/guides/mingw_installation`]
+    - Mac: `download <http://developer.apple.com/xcode>`__
+    - Linux: `download <http://www.gnu.org/software/make>`__
+- pipenv: `docs <http://docs.pipenv.org>`__ (run ``pip install pipenv`` command)
+- Pandoc: `installation docs <http://johnmacfarlane.net/pandoc/installing.html>`__ * optional
+- Graphviz: `download <http://www.graphviz.org/Download.php>`__ * optional
 
 To confirm these system dependencies are configured correctly:
 
