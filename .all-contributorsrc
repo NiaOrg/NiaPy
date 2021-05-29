@@ -208,7 +208,10 @@
       "profile": "https://github.com/zStupan",
       "contributions": [
         "code",
-        "bug"
+        "bug",
+        "doc",
+        "example",
+        "test"
       ]
     },
     {
