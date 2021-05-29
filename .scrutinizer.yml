@@ -7,7 +7,7 @@ build:
   tests:
     stop_on_failure: false
     override:
-      - flake8 --exclude examples
+      - flake8 --exclude examples docs
 checks:
   python:
     code_rating: true
