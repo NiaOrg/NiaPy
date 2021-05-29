@@ -6,6 +6,7 @@ build:
       - pip install -q flake8
   tests:
     stop_on_failure: false
+    override: flake8 --exclude examples
 checks:
   python:
     code_rating: true
