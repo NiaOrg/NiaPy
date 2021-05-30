@@ -9,7 +9,7 @@ import os
 import pandas as pd
 
 from niapy.algorithms.algorithm import Algorithm
-from niapy.task import StoppingTask, OptimizationType
+from niapy.task import Task
 from niapy.util.factory import get_algorithm
 
 logging.basicConfig()
@@ -63,8 +63,7 @@ class Runner:
             Task: Optimization task to use.
 
         """
-        return StoppingTask(max_evals=self.max_evals, dimension=self.dimension,
-                            optimization_type=OptimizationType.MINIMIZATION, problem=name)
+        return Task(max_evals=self.max_evals, dimension=self.dimension, problem=name)
 
     @classmethod
     def __create_export_dir(cls):

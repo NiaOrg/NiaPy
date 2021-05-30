@@ -10,7 +10,7 @@ from numpy.random import default_rng
 
 from niapy.algorithms.algorithm import Individual, Algorithm
 from niapy.problems import Problem
-from niapy.task import Task, StoppingTask
+from niapy.task import Task
 from niapy.util import objects_to_array
 
 logging.basicConfig()
@@ -57,7 +57,7 @@ class IndividualTestCase(TestCase):
         self.dimension = 20
         rng = default_rng()
         self.x = rng.uniform(-100, 100, self.dimension)
-        self.task = StoppingTask(max_evals=230, max_iters=np.inf, problem=MyProblem(self.dimension))
+        self.task = Task(max_evals=230, max_iters=np.inf, problem=MyProblem(self.dimension))
         self.s1 = Individual(x=self.x, e=False)
         self.s2 = Individual(task=self.task, rng=rng)
         self.s3 = Individual(task=self.task)
@@ -237,7 +237,7 @@ class AlgorithmBaseTestCase(TestCase):
         self.assertEqual(self.rng.normal(10, 100), a)
 
 
-class TestingTask(StoppingTask, TestCase):
+class TestingTask(Task, TestCase):
     r"""Testing task.
 
     Date:
@@ -247,7 +247,7 @@ class TestingTask(StoppingTask, TestCase):
         Klemen Berkovič
 
     See Also:
-        * :class:`niapy.util.StoppingTask`
+        * :class:`niapy.task.Task`
 
     """
 
