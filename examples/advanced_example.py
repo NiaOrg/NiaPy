@@ -6,7 +6,7 @@ import sys
 sys.path.append('../')
 
 import numpy as np
-from niapy.task import StoppingTask
+from niapy.task import Task
 from niapy.problems import Problem
 from niapy.algorithms.basic import GreyWolfOptimizer
 
@@ -23,7 +23,7 @@ class MyProblem(Problem):
 # we will run 10 repetitions of Grey Wolf Optimizer against our custom MyProblem problem.
 my_problem = MyProblem(20)
 for i in range(10):
-    task = StoppingTask(problem=my_problem, max_iters=100)
+    task = Task(problem=my_problem, max_iters=100)
 
     # parameter is population size
     algo = GreyWolfOptimizer(population_size=20)

@@ -7,12 +7,12 @@ sys.path.append('../')
 # End of fix
 
 from niapy.algorithms.basic import HarmonySearch
-from niapy.task import StoppingTask
+from niapy.task import Task
 from niapy.problems import Sphere
 
 # we will run Harmony Search for 5 independent runs
 for i in range(5):
-    task = StoppingTask(problem=Sphere(dimension=10), max_evals=10000)
+    task = Task(problem=Sphere(dimension=10), max_evals=10000)
     algo = HarmonySearch()
     best = algo.run(task)
     print(best)

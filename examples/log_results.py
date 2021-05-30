@@ -6,13 +6,13 @@ import sys
 sys.path.append('../')
 # End of fix
 
-from niapy.task import StoppingTask
+from niapy.task import Task
 from niapy.problems import Sphere
 from niapy.algorithms.basic import DifferentialEvolution
 
 # Storing improvements during the evolutionary cycle
 
-task = StoppingTask(max_evals=10000, problem=Sphere(dimension=10))
+task = Task(max_evals=10000, problem=Sphere(dimension=10))
 algo = DifferentialEvolution(population_size=40, crossover_probability=0.9, differential_weight=0.5)
 best = algo.run(task)
 evals, x_f = task.return_conv()

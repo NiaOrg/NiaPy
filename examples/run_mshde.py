@@ -8,12 +8,12 @@ sys.path.append('../')
 
 from niapy.algorithms.modified import MultiStrategyDifferentialEvolutionMTS
 from niapy.algorithms.basic.de import cross_curr2best1, cross_best1
-from niapy.task import StoppingTask, OptimizationType
+from niapy.task import Task, OptimizationType
 from niapy.problems import Sphere
 
 # we will run Differential Evolution for 5 independent runs
 for i in range(5):
-    task = StoppingTask(problem=Sphere(dimension=10), max_evals=10000)
+    task = Task(problem=Sphere(dimension=10), max_evals=10000)
     algo = MultiStrategyDifferentialEvolutionMTS(population_size=50, differential_weight=0.5, crossover_probability=0.9,
                                                  strategies=(cross_best1, cross_curr2best1))
     best = algo.run(task)

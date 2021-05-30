@@ -5,14 +5,14 @@ import sys
 
 from niapy.algorithms.basic import CovarianceMatrixAdaptionEvolutionStrategy
 from niapy.problems import Sphere
-from niapy.task import StoppingTask
+from niapy.task import Task
 
 sys.path.append('../')
 # End of fix
 
 # we will run CMA-ES for 5 independent runs
 for i in range(5):
-    task = StoppingTask(problem=Sphere(dimension=10), max_evals=1000, enable_logging=True)
+    task = Task(problem=Sphere(dimension=10), max_evals=1000, enable_logging=True)
     algo = CovarianceMatrixAdaptionEvolutionStrategy(population_size=20)
     best = algo.run(task)
     print('%s -> %s' % (best[0], best[1]))
