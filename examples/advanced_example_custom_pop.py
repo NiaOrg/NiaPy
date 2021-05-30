@@ -5,41 +5,33 @@ import sys
 
 sys.path.append('../')
 
-from niapy.task import StoppingTask, OptimizationType
-from niapy.benchmarks import Benchmark
+import numpy as np
+from niapy.task import StoppingTask
+from niapy.problems import Problem
 from niapy.algorithms.basic import GreyWolfOptimizer
-from numpy import random as rand, apply_along_axis
 
 
-# our custom benchmark class
-class MyBenchmark(Benchmark):
-    def __init__(self):
+# our custom problem class
+class MyProblem(Problem):
+    def __init__(self, dimension, lower=-10, upper=10, *args, **kwargs):
+        super().__init__(dimension, lower, upper, *args, **kwargs)
 
-        Benchmark.__init__(self, -10, 10)
-
-    def function(self):
-        def evaluate(D, sol):
-            val = 0.0
-            for i in range(D): val += sol[i] ** 2
-            return val
-
-        return evaluate
+    def _evaluate(self, x):
+        return np.sum(x ** 2)
 
 
 # custom initialization population function
-def MyInit(task, NP, rnd=rand, **kwargs):
-    pop = 0.2 + rnd.rand(NP, task.dimension) * task.range
-    fpop = apply_along_axis(task.eval, 1, pop)
+def my_init(task, population_size, rng, **_kwargs):
+    pop = 0.2 + rng.random((population_size, task.dimension)) * task.range
+    fpop = np.apply_along_axis(task.eval, 1, pop)
     return pop, fpop
 
 
-# we will run 10 repetitions of Grey Wolf Optimizer against our custom MyBenchmark benchmark function
+# we will run 10 repetitions of Grey Wolf Optimizer against our custom MyBenchmark problem.
+my_problem = MyProblem(dimension=20)
 for i in range(10):
-    task = StoppingTask(max_iters=100, dimension=20, optimization_type=OptimizationType.MINIMIZATION,
-                        benchmark=MyBenchmark())
-
-    # parameter is population size
-    algo = GreyWolfOptimizer(population_size=20, initialization_function=MyInit)
+    task = StoppingTask(problem=my_problem, max_iters=100)
+    algo = GreyWolfOptimizer(population_size=20, initialization_function=my_init)
 
     # running algorithm returns best found minimum
     best = algo.run(task)

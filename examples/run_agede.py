@@ -9,11 +9,11 @@ sys.path.append('../')
 from niapy.algorithms.basic import AgingNpDifferentialEvolution
 from niapy.algorithms.basic.de import bilinear
 from niapy.task import StoppingTask
-from niapy.benchmarks import Sphere
+from niapy.problems import Sphere
 
 # we will run Differential Evolution for 5 independent runs
 for i in range(5):
-    task = StoppingTask(max_evals=10000, dimension=10, benchmark=Sphere())
+    task = StoppingTask(problem=Sphere(dimension=10), max_evals=10000)
     algo = AgingNpDifferentialEvolution(population_size=40, differential_weight=0.63, crossover_probability=0.9, min_lifetime=3, max_lifetime=7, omega=0.2, delta_np=0.1,
                                         age=bilinear)
     best = algo.run(task)

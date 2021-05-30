@@ -7,11 +7,11 @@ sys.path.append('../')
 # End of fix
 
 from niapy.task import StoppingTask
-from niapy.benchmarks import Sphere
+from niapy.problems import Sphere
 from niapy.algorithms.other import RandomSearch
 
-for i in range(1):
-    task = StoppingTask(max_iters=5000, dimension=5, benchmark=Sphere())
-    algo = RandomSearch()
-    best = algo.run(task=task)
-    print(best)
+
+task = StoppingTask(problem=Sphere(dimension=5), max_iters=5000)
+algo = RandomSearch()
+best = algo.run(task=task)
+print(best)

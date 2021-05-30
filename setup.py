@@ -11,7 +11,7 @@ import setuptools
 
 
 PACKAGE_NAME = 'niapy'
-MINIMUM_PYTHON_VERSION = (3,6)
+MINIMUM_PYTHON_VERSION = (3, 6)
 
 
 def check_python_version():

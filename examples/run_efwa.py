@@ -8,11 +8,11 @@ sys.path.append('../')
 
 from niapy.algorithms.basic import EnhancedFireworksAlgorithm
 from niapy.task import StoppingTask
-from niapy.benchmarks import Sphere
+from niapy.problems import Sphere
 
 # we will run Fireworks Algorithm for 5 independent runs
 for i in range(5):
-    task = StoppingTask(max_iters=100, dimension=10, benchmark=Sphere())
+    task = StoppingTask(problem=Sphere(dimension=10), max_iters=100)
     algo = EnhancedFireworksAlgorithm(population_size=70, amplitude_init=0.1, amplitude_final=0.9)
     best = algo.run(task)
     print('%s -> %s' % (best[0], best[1]))

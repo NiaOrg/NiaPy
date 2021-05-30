@@ -4,7 +4,6 @@ import logging
 import numpy as np
 
 from niapy.algorithms.algorithm import Algorithm
-from niapy.util import repair
 
 __all__ = ['ForestOptimizationAlgorithm']
 
@@ -138,14 +137,12 @@ class ForestOptimizationAlgorithm(Algorithm):
             numpy.ndarray: Resulting zero age trees.
 
         """
-        n = trees.shape[0]
-        deltas = self.uniform(-self.dx, self.dx, (n, self.local_seeding_changes))
-        deltas = np.append(deltas, np.zeros((n, task.dimension - self.local_seeding_changes)), axis=1)
-        perms = self.random([deltas.shape[0], deltas.shape[1]]).argsort(1)
-        deltas = deltas[np.arange(deltas.shape[0])[:, None], perms]
-        trees += deltas
-        trees = np.apply_along_axis(repair.limit, 1, trees, task.lower, task.upper)
-        return trees
+        seeds = np.repeat(trees, self.local_seeding_changes, axis=0)
+        for i in range(seeds.shape[0]):
+            indices = self.rng.choice(task.dimension, self.local_seeding_changes, replace=False)
+            seeds[i, indices] += self.uniform(-self.dx[indices], self.dx[indices])
+            seeds[i] = task.repair(seeds[i], rng=self.rng)
+        return seeds
 
     def global_seeding(self, task, candidates, size):
         r"""Global optimum search stage that should prevent getting stuck in a local optimum.
@@ -159,16 +156,11 @@ class ForestOptimizationAlgorithm(Algorithm):
             numpy.ndarray: Resulting trees.
 
         """
-        seeds = candidates[self.integers(len(candidates), size=size)]
-        deltas = self.uniform(task.benchmark.lower, task.benchmark.upper, (size, self.global_seeding_changes))
-        deltas = np.append(deltas, np.zeros((size, task.dimension - self.global_seeding_changes)), axis=1)
-        perms = self.random([deltas.shape[0], deltas.shape[1]]).argsort(1)
-        deltas = deltas[np.arange(deltas.shape[0])[:, None], perms]
-        deltas = deltas.flatten()
-        seeds = seeds.flatten()
-        seeds[deltas != 0] = deltas[deltas != 0]
-
-        return seeds.reshape(size, task.dimension)
+        seeds = candidates[self.rng.choice(len(candidates), size, replace=False)]
+        for i in range(seeds.shape[0]):
+            indices = self.rng.choice(task.dimension, self.global_seeding_changes, replace=False)
+            seeds[i, indices] = self.uniform(task.lower[indices], task.upper[indices])
+        return seeds
 
     def remove_lifetime_exceeded(self, trees, age):
         r"""Remove dead trees.
@@ -234,7 +226,7 @@ class ForestOptimizationAlgorithm(Algorithm):
         """
         trees, fitness, _ = Algorithm.init_population(self, task)
         age = np.zeros(self.population_size, dtype=np.int32)
-        self.dx = np.absolute(task.benchmark.upper) / 5
+        self.dx = np.absolute(task.upper) / 5.0
         return trees, fitness, {'age': age}
 
     def run_iteration(self, task, population, population_fitness, best_x, best_fitness, **params):

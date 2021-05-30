@@ -8,11 +8,11 @@ sys.path.append('../')
 
 from niapy.algorithms.basic import ForestOptimizationAlgorithm
 from niapy.task import StoppingTask
-from niapy.benchmarks import Sphere
+from niapy.problems import Sphere
 
 # we will run Forest Optimization Algorithm for 5 independent runs
 for i in range(5):
-    task = StoppingTask(max_evals=10000, dimension=10, benchmark=Sphere())
+    task = StoppingTask(problem=Sphere(dimension=10), max_evals=10000)
     algo = ForestOptimizationAlgorithm(population_size=20, lifetime=5, area_limit=20, local_seeding_changes=1,
                                        global_seeding_changes=1, transfer_rate=0.35)
     best = algo.run(task)

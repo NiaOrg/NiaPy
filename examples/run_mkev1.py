@@ -8,11 +8,11 @@ sys.path.append('../')
 
 from niapy.algorithms.basic import MonkeyKingEvolutionV1
 from niapy.task import StoppingTask
-from niapy.benchmarks import Sphere
+from niapy.problems import Sphere
 
 # we will run Nelder Mead algorithm for 5 independent runs
 for i in range(5):
-    task = StoppingTask(max_iters=50, dimension=10, benchmark=Sphere())
+    task = StoppingTask(problem=Sphere(dimension=10), max_iters=50)
     algo = MonkeyKingEvolutionV1()
     best = algo.run(task)
     print('%s -> %s' % (best[0], best[1]))

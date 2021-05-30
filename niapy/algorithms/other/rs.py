@@ -93,9 +93,12 @@ class RandomSearch(Algorithm):
             3. Additional arguments
 
         """
-        total_candidates = 0
-        if task.max_iters or task.max_evals:
-            total_candidates = task.max_iters if task.max_iters else task.max_evals
+        if task.max_iters != np.inf:
+            total_candidates = task.max_iters
+        elif task.max_evals != np.inf:
+            total_candidates = task.max_evals
+        else:
+            total_candidates = 0
         self.candidates = []
         x = None
         for i in range(total_candidates):
@@ -128,7 +131,7 @@ class RandomSearch(Algorithm):
             5. Additional arguments
 
         """
-        current_candidate = task.evals if task.evals else task.iters
+        current_candidate = task.evals if task.max_evals != np.inf else task.iters
         x = self.candidates[current_candidate]
         x_fit = task.eval(x)
         best_x, best_fitness = self.get_best(x, x_fit, best_x, best_fitness)

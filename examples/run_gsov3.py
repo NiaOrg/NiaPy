@@ -8,10 +8,10 @@ sys.path.append('../')
 
 from niapy.algorithms.basic import GlowwormSwarmOptimizationV3
 from niapy.task import StoppingTask
-from niapy.benchmarks import Sphere
+from niapy.problems import Sphere
 
 for i in range(5):
-    task = StoppingTask(max_evals=10000, dimension=10, benchmark=Sphere())
+    task = StoppingTask(problem=Sphere(dimension=10), max_evals=10000)
     algo = GlowwormSwarmOptimizationV3()
     best = algo.run(task)
     print(best)

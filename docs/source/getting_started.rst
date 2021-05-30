@@ -6,7 +6,7 @@ using following command:
 
 .. code:: bash
 
-    pip install NiaPy
+    pip install niapy
 
 or:
 
@@ -18,19 +18,19 @@ When package is successfully installed you are ready to write you first example.
 
 Basic example
 -------------
-In this example, let's say, we want to try out Gray Wolf Optimizer algorithm against Pintér benchmark function.
+In this example, let's say, we want to try out Gray Wolf Optimizer algorithm against the Pintér problem.
 Firstly, we have to create new file, with name, for example *basic_example.py*. Then we have to import chosen
 algorithm from NiaPy, so we can use it. Afterwards we initialize GreyWolfOptimizer class instance and run the algorithm.
 Given bellow is complete source code of basic example.
 
 .. code:: python
 
-    from NiaPy.algorithms.basic import GreyWolfOptimizer
-    from NiaPy.task import StoppingTask
+    from niapy.algorithms.basic import GreyWolfOptimizer
+    from niapy.task import StoppingTask
 
-    # we will run 10 repetitions of Grey Wolf Optimizer against Pinter benchmark function
+    # we will run 10 repetitions of Grey Wolf Optimizer against the Pinter problem
     for i in range(10):
-        task = StoppingTask(dimension=10, max_evals=1000, benchmark='pinter')
+        task = StoppingTask(problem='pinter', dimension=10, max_evals=1000)
         algorithm = GreyWolfOptimizer(population_size=20)
         best = algorithm.run(task)
         print(best[-1])
@@ -53,34 +53,28 @@ following:
     135.6754069530421
 
 
-Customize benchmark bounds
+Customize problem bounds
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
-By default, Pintér benchmark has the bound set to -10 and 10. We can simply override those predefined
-values very easily. We will modify our basic example to run Grey Wolf Optimizer against Pintér benchmark
-function with custom benchmark bounds set to -5 and 5. Given bellow is complete source code of customized
+By default, the Pintér problem has the bound set to -10 and 10. We can override those predefined
+values very easily. We will modify our basic example to run Grey Wolf Optimizer against Pintér problem
+function with custom problem bounds set to -5 and 5. Given bellow is the complete source code of customized
 basic example.
 
 .. code:: python
 
-    from NiaPy.algorithms.basic import GreyWolfOptimizer
-    from NiaPy.task import StoppingTask, OptimizationType
-    from NiaPy.benchmarks import Pinter
+    from niapy.algorithms.basic import GreyWolfOptimizer
+    from niapy.task import StoppingTask
+    from niapy.problems import Pinter
 
-    # initialize Pinter benchamrk with custom bound
-    pinterCustom = Pinter(-5, 5)
+    # initialize Pinter problem with custom bound
+    pinter = Pinter(dimension=20, lower=-5, upper=5)
 
-    # we will run 10 repetitions of Grey Wolf Optimizer against Pinter benchmark function
+    # we will run 10 repetitions of Grey Wolf Optimizer against Pinter problem function
     for i in range(10):
-        # first parameter takes dimension of problem
-        # second parameter takes the number of function evaluations
-        # third parameter is benchmark optimization type
-        # forth parameter is benchmark function
-        task = StoppingTask(dimension=20, max_iters=100, optimization_type=OptimizationType.MINIMIZATION, benchmark=pinterCustom)
-
-        # parameter is population size
+        task = StoppingTask(problem=pinter, max_iters=100)
         algo = GreyWolfOptimizer(population_size=20)
 
-        # running algorithm returns best found minimum
+        # running algorithm returns best found coordinates and fitness
         best = algo.run(task)
 
         # printing best minimum
@@ -104,43 +98,39 @@ following:
 
 Advanced example
 ----------------
-In this example we will show you how to implement your own benchmark function and use it with any of
+In this example we will show you how to implement a custom problem class and use it with any of
 implemented algorithms. First let's create new file named advanced_example.py. As in the previous examples
-we wil import algorithm we want to use from NiaPy module.
+we wil import algorithm we want to use from niapy module.
 
-For our custom benchmark function, we have to create new class. Let's name it *MyBenchmark*. In the initialization
-method of *MyBenchmark* class we have to set *Lower* and *Upper* bounds of the function. Afterwards we have to
-implement a function which returns evaluation function which takes two parameters *D* (as dimension of problem)
-and *sol* (as solution of problem). Now we should have something similar as is shown in code snippet bellow.
-
-.. code:: python
-
-    from NiaPy.task import StoppingTask, OptimizationType
-    from NiaPy.benchmarks import Benchmark
-    from NiaPy.algorithms.basic import ParticleSwarmAlgorithm
-
-    # our custom benchmark class
-    class MyBenchmark(Benchmark):
-        def __init__(self):
-            Benchmark.__init__(self, -10, 10)
-
-        def function(self):
-            def evaluate(D, sol):
-                val = 0.0
-                for i in range(D): val += sol[i] ** 2
-                return val
-            return evaluate
-
-
-Now, all we have to do is to initialize our algorithm as in previous examples and pass as benchmark parameter,
-instance of our *MyBenchmark* class.
+For our custom optimization function, we have to create new class. Let's name it *MyProblem*. In the initialization
+method of *MyProblem* class we have to set the *dimension*, *lower* and *upper* bounds of the problem. Afterwards we have to
+override the abstract method _evaluate which takes a parameter *x*, the solution to be evaluated, and returns the function value.
+Now we should have something similar as is shown in code snippet bellow.
 
 .. code:: python
 
+    from niapy.task import StoppingTask
+    from niapy.problems import Problem
+    from niapy.algorithms.basic import GreyWolfOptimizer
+    import numpy as np
+
+    # our custom Problem class
+    class MyProblem(Problem):
+        def __init__(self, dimension, lower=-10, upper=10, *args, **kwargs):
+            super().__init__(dimension, lower, upper, *args, **kwargs)
+
+        def _evaluate(self, x):
+            return np.sum(x ** 2)
+
+
+Now, all we have to do is to initialize our algorithm as in previous examples and pass as problem parameter,
+instance of our *MyProblem* class.
+
+.. code:: python
+
+    my_problem = MyProblem(dimension=20)
     for i in range(10):
-        task = StoppingTask(dimension=20, max_iters=100, optimization_type=OptimizationType.MINIMIZATION, benchmark=MyBenchmark())
-
-        # parameter is population size
+        task = StoppingTask(problem=my_problem, max_iters=100)
         algo = GreyWolfOptimizer(population_size=20)
 
         # running algorithm returns best found minimum
@@ -168,15 +158,18 @@ similar to those bellow.
 Advanced example with custom population initialization
 ------------------------------------------------------
 In this examples we will showcase how to define our own population initialization function for previous advanced example.
-We extend previous example by adding another function, lets name it MyInit which would receive the task, population number NP,
-and optional parameters. Such initialization population function is presented bellow.
+We extend previous example by adding another function, lets name it my_init which would receive the task, population size,
+a random number generator and optional parameters. Such population initialization function is presented bellow.
 
 .. code:: python
 
-    # custom initialization population function
-    def MyInit(task, NP, rnd=rand, **kwargs):
-        pop = 0.2 + rnd.rand(NP, task.D) * task.bRange
-        fpop = apply_along_axis(task.eval, 1, pop)
+    import numpy as np
+
+
+    # custom population initialization function
+    def my_init(task, population_size, rng, **kwargs):
+        pop = 0.2 + rng.random(population_size, task.dimension) * task.range
+        fpop = np.apply_along_axis(task.eval, 1, pop)
         return pop, fpop
 
 
@@ -184,36 +177,30 @@ The complete example would look something like this.
 
 .. code:: python
 
-    from NiaPy.task import StoppingTask, OptimizationType
-    from NiaPy.benchmarks import Benchmark
-    from NiaPy.algorithms.basic import GreyWolfOptimizer
-    from numpy import random as rand, apply_along_axis
+    import numpy as np
+    from niapy.task import StoppingTask
+    from niapy.problems import Problem
+    from niapy.algorithms.basic import GreyWolfOptimizer
 
-    # our custom benchmark class
-    class MyBenchmark(Benchmark):
-        def __init__(self):
-            Benchmark.__init__(self, -10, 10)
+    # our custom Problem class
+    class MyProblem(Problem):
+        def __init__(self, dimension, lower=-10, upper=10, *args, **kwargs):
+            super().__init__(dimension, lower, upper, *args, **kwargs)
 
-        def function(self):
-            def evaluate(D, sol):
-                val = 0.0
-                for i in range(D): val += sol[i] ** 2
-                return val
-            return evaluate
+        def _evaluate(self, x):
+            return np.sum(x ** 2)
 
-
-    # custom initialization population function
-    def MyInit(task, NP, rnd=rand, **kwargs):
-        pop = 0.2 + rnd.rand(NP, task.D) * task.bRange
-        fpop = apply_along_axis(task.eval, 1, pop)
+    # custom population initialization function
+    def my_init(task, population_size, rng, **kwargs):
+        pop = 0.2 + rng.random(population_size, task.dimension) * task.range
+        fpop = np.apply_along_axis(task.eval, 1, pop)
         return pop, fpop
 
-    # we will run 10 repetitions of Grey Wolf Optimizer against our custom MyBenchmark benchmark function
+    # we will run 10 repetitions of Grey Wolf Optimizer against our custom MyProblem problem function
+    my_problem = MyProblem(dimension=20)
     for i in range(10):
-        task = StoppingTask(dimension=20, max_iters=100, optimization_type=OptimizationType.MINIMIZATION, benchmark=MyBenchmark())
-
-        # parameter is population size
-        algo = GreyWolfOptimizer(population_size=20, initialization_function=MyInit)
+        task = StoppingTask(problem=my_problem, max_iters=100)
+        algo = GreyWolfOptimizer(population_size=20, initialization_function=my_init)
 
         # running algorithm returns best found minimum
         best = algo.run(task)
@@ -238,39 +225,35 @@ And results when running the above example should be similar to those bellow.
 
 Runner example
 --------------
-For easier comparison between many different algorithms and benchmarks, we developed a useful feature called
-*Runner*. Runner can take an array of algorithms and an array of benchmarks to compare and run all combinations
+For easier comparison between many different algorithms and problems, we developed a useful feature called
+*Runner*. Runner can take an array of algorithms and an array of problems to compare and run all combinations
 for you. We also provide an extra feature, which lets you easily exports those results in many different formats
-(Pandas DataFrame, Excell, JSON).
+(Pandas DataFrame, Excel, JSON).
 
-Below is given a usage example of our *Runner*, which will run various algorithms and benchmark
+Below is given a usage example of our *Runner*, which will run various algorithms and problems
 functions. Results will be exported as JSON.
 
 .. code:: python
 
-    from NiaPy import Runner
-    from NiaPy.algorithms.basic import (
+    from niapy import Runner
+    from niapy.algorithms.basic import (
         GreyWolfOptimizer,
         ParticleSwarmAlgorithm
     )
-    from NiaPy.benchmarks import (
-        Benchmark,
+    from niapy.problems import (
+        Problem,
         Ackley,
         Griewank,
         Sphere,
         HappyCat
     )
 
-    class MyBenchmark(Benchmark):
-        def __init__(self):
-            Benchmark.__init__(self, -10, 10)
+    class MyProblem(Problem):
+        def __init__(self, dimension, lower=-10, upper=10, *args, **kwargs):
+            super().__init__(dimension, lower, upper, *args, **kwargs)
 
-        def function(self):
-            def evaluate(D, sol):
-                val = 0.0
-                for i in range(D): val += sol[i] ** 2
-                return val
-            return evaluate
+        def _evaluate(self, x):
+            return np.sum(x ** 2)
 
     runner = Runner(
         dimension=40,
@@ -283,13 +266,13 @@ functions. Results will be exported as JSON.
             "HybridBatAlgorithm",
             "SimulatedAnnealing",
             "CuckooSearch"],
-        benchmarks=[
-            Ackley(),
-            Griewank(),
-            Sphere(),
-            HappyCat(),
+        problems=[
+            Ackley(40),
+            Griewank(40),
+            Sphere(40),
+            HappyCat(40),
             "rastrigin",
-            MyBenchmark()
+            MyProblem(dimension=40)
         ]
     )
 
@@ -300,54 +283,54 @@ Output of running above example should look like something as following.
 
 .. code:: bash
 
-    INFO:NiaPy.runner.Runner:Running GreyWolfOptimizer...
-    INFO:NiaPy.runner.Runner:Running GreyWolfOptimizer algorithm on Ackley benchmark...
-    INFO:NiaPy.runner.Runner:Running GreyWolfOptimizer algorithm on Griewank benchmark...
-    INFO:NiaPy.runner.Runner:Running GreyWolfOptimizer algorithm on Sphere benchmark...
-    INFO:NiaPy.runner.Runner:Running GreyWolfOptimizer algorithm on HappyCat benchmark...
-    INFO:NiaPy.runner.Runner:Running GreyWolfOptimizer algorithm on rastrigin benchmark...
-    INFO:NiaPy.runner.Runner:Running GreyWolfOptimizer algorithm on MyBenchmark benchmark...
-    INFO:NiaPy.runner.Runner:---------------------------------------------------
-    INFO:NiaPy.runner.Runner:Running FlowerPollinationAlgorithm...
-    INFO:NiaPy.runner.Runner:Running FlowerPollinationAlgorithm algorithm on Ackley benchmark...
-    INFO:NiaPy.runner.Runner:Running FlowerPollinationAlgorithm algorithm on Griewank benchmark...
-    INFO:NiaPy.runner.Runner:Running FlowerPollinationAlgorithm algorithm on Sphere benchmark...
-    INFO:NiaPy.runner.Runner:Running FlowerPollinationAlgorithm algorithm on HappyCat benchmark...
-    INFO:NiaPy.runner.Runner:Running FlowerPollinationAlgorithm algorithm on rastrigin benchmark...
-    INFO:NiaPy.runner.Runner:Running FlowerPollinationAlgorithm algorithm on MyBenchmark benchmark...
-    INFO:NiaPy.runner.Runner:---------------------------------------------------
-    INFO:NiaPy.runner.Runner:Running ParticleSwarmAlgorithm...
-    INFO:NiaPy.runner.Runner:Running ParticleSwarmAlgorithm algorithm on Ackley benchmark...
-    INFO:NiaPy.runner.Runner:Running ParticleSwarmAlgorithm algorithm on Griewank benchmark...
-    INFO:NiaPy.runner.Runner:Running ParticleSwarmAlgorithm algorithm on Sphere benchmark...
-    INFO:NiaPy.runner.Runner:Running ParticleSwarmAlgorithm algorithm on HappyCat benchmark...
-    INFO:NiaPy.runner.Runner:Running ParticleSwarmAlgorithm algorithm on rastrigin benchmark...
-    INFO:NiaPy.runner.Runner:Running ParticleSwarmAlgorithm algorithm on MyBenchmark benchmark...
-    INFO:NiaPy.runner.Runner:---------------------------------------------------
-    INFO:NiaPy.runner.Runner:Running HybridBatAlgorithm...
-    INFO:NiaPy.runner.Runner:Running HybridBatAlgorithm algorithm on Ackley benchmark...
-    INFO:NiaPy.runner.Runner:Running HybridBatAlgorithm algorithm on Griewank benchmark...
-    INFO:NiaPy.runner.Runner:Running HybridBatAlgorithm algorithm on Sphere benchmark...
-    INFO:NiaPy.runner.Runner:Running HybridBatAlgorithm algorithm on HappyCat benchmark...
-    INFO:NiaPy.runner.Runner:Running HybridBatAlgorithm algorithm on rastrigin benchmark...
-    INFO:NiaPy.runner.Runner:Running HybridBatAlgorithm algorithm on MyBenchmark benchmark...
-    INFO:NiaPy.runner.Runner:---------------------------------------------------
-    INFO:NiaPy.runner.Runner:Running SimulatedAnnealing...
-    INFO:NiaPy.runner.Runner:Running SimulatedAnnealing algorithm on Ackley benchmark...
-    INFO:NiaPy.runner.Runner:Running SimulatedAnnealing algorithm on Griewank benchmark...
-    INFO:NiaPy.runner.Runner:Running SimulatedAnnealing algorithm on Sphere benchmark...
-    INFO:NiaPy.runner.Runner:Running SimulatedAnnealing algorithm on HappyCat benchmark...
-    INFO:NiaPy.runner.Runner:Running SimulatedAnnealing algorithm on rastrigin benchmark...
-    INFO:NiaPy.runner.Runner:Running SimulatedAnnealing algorithm on MyBenchmark benchmark...
-    INFO:NiaPy.runner.Runner:---------------------------------------------------
-    INFO:NiaPy.runner.Runner:Running CuckooSearch...
-    INFO:NiaPy.runner.Runner:Running CuckooSearch algorithm on Ackley benchmark...
-    INFO:NiaPy.runner.Runner:Running CuckooSearch algorithm on Griewank benchmark...
-    INFO:NiaPy.runner.Runner:Running CuckooSearch algorithm on Sphere benchmark...
-    INFO:NiaPy.runner.Runner:Running CuckooSearch algorithm on HappyCat benchmark...
-    INFO:NiaPy.runner.Runner:Running CuckooSearch algorithm on rastrigin benchmark...
-    INFO:NiaPy.runner.Runner:Running CuckooSearch algorithm on MyBenchmark benchmark...
-    INFO:NiaPy.runner.Runner:---------------------------------------------------
-    INFO:NiaPy.runner.Runner:Export to JSON completed!
+    INFO:niapy.runner.Runner:Running GreyWolfOptimizer...
+    INFO:niapy.runner.Runner:Running GreyWolfOptimizer algorithm on Ackley problem...
+    INFO:niapy.runner.Runner:Running GreyWolfOptimizer algorithm on Griewank problem...
+    INFO:niapy.runner.Runner:Running GreyWolfOptimizer algorithm on Sphere problem...
+    INFO:niapy.runner.Runner:Running GreyWolfOptimizer algorithm on HappyCat problem...
+    INFO:niapy.runner.Runner:Running GreyWolfOptimizer algorithm on rastrigin problem...
+    INFO:niapy.runner.Runner:Running GreyWolfOptimizer algorithm on MyProblem problem...
+    INFO:niapy.runner.Runner:---------------------------------------------------
+    INFO:niapy.runner.Runner:Running FlowerPollinationAlgorithm...
+    INFO:niapy.runner.Runner:Running FlowerPollinationAlgorithm algorithm on Ackley problem...
+    INFO:niapy.runner.Runner:Running FlowerPollinationAlgorithm algorithm on Griewank problem...
+    INFO:niapy.runner.Runner:Running FlowerPollinationAlgorithm algorithm on Sphere problem...
+    INFO:niapy.runner.Runner:Running FlowerPollinationAlgorithm algorithm on HappyCat problem...
+    INFO:niapy.runner.Runner:Running FlowerPollinationAlgorithm algorithm on rastrigin problem...
+    INFO:niapy.runner.Runner:Running FlowerPollinationAlgorithm algorithm on MyProblem problem...
+    INFO:niapy.runner.Runner:---------------------------------------------------
+    INFO:niapy.runner.Runner:Running ParticleSwarmAlgorithm...
+    INFO:niapy.runner.Runner:Running ParticleSwarmAlgorithm algorithm on Ackley problem...
+    INFO:niapy.runner.Runner:Running ParticleSwarmAlgorithm algorithm on Griewank problem...
+    INFO:niapy.runner.Runner:Running ParticleSwarmAlgorithm algorithm on Sphere problem...
+    INFO:niapy.runner.Runner:Running ParticleSwarmAlgorithm algorithm on HappyCat problem...
+    INFO:niapy.runner.Runner:Running ParticleSwarmAlgorithm algorithm on rastrigin problem...
+    INFO:niapy.runner.Runner:Running ParticleSwarmAlgorithm algorithm on MyProblem problem...
+    INFO:niapy.runner.Runner:---------------------------------------------------
+    INFO:niapy.runner.Runner:Running HybridBatAlgorithm...
+    INFO:niapy.runner.Runner:Running HybridBatAlgorithm algorithm on Ackley problem...
+    INFO:niapy.runner.Runner:Running HybridBatAlgorithm algorithm on Griewank problem...
+    INFO:niapy.runner.Runner:Running HybridBatAlgorithm algorithm on Sphere problem...
+    INFO:niapy.runner.Runner:Running HybridBatAlgorithm algorithm on HappyCat problem...
+    INFO:niapy.runner.Runner:Running HybridBatAlgorithm algorithm on rastrigin problem...
+    INFO:niapy.runner.Runner:Running HybridBatAlgorithm algorithm on MyProblem problem...
+    INFO:niapy.runner.Runner:---------------------------------------------------
+    INFO:niapy.runner.Runner:Running SimulatedAnnealing...
+    INFO:niapy.runner.Runner:Running SimulatedAnnealing algorithm on Ackley problem...
+    INFO:niapy.runner.Runner:Running SimulatedAnnealing algorithm on Griewank problem...
+    INFO:niapy.runner.Runner:Running SimulatedAnnealing algorithm on Sphere problem...
+    INFO:niapy.runner.Runner:Running SimulatedAnnealing algorithm on HappyCat problem...
+    INFO:niapy.runner.Runner:Running SimulatedAnnealing algorithm on rastrigin problem...
+    INFO:niapy.runner.Runner:Running SimulatedAnnealing algorithm on MyProblem problem...
+    INFO:niapy.runner.Runner:---------------------------------------------------
+    INFO:niapy.runner.Runner:Running CuckooSearch...
+    INFO:niapy.runner.Runner:Running CuckooSearch algorithm on Ackley problem...
+    INFO:niapy.runner.Runner:Running CuckooSearch algorithm on Griewank problem...
+    INFO:niapy.runner.Runner:Running CuckooSearch algorithm on Sphere problem...
+    INFO:niapy.runner.Runner:Running CuckooSearch algorithm on HappyCat problem...
+    INFO:niapy.runner.Runner:Running CuckooSearch algorithm on rastrigin problem...
+    INFO:niapy.runner.Runner:Running CuckooSearch algorithm on MyProblem problem...
+    INFO:niapy.runner.Runner:---------------------------------------------------
+    INFO:niapy.runner.Runner:Export to JSON completed!
 
 Results will be also exported in a JSON file (in export folder).

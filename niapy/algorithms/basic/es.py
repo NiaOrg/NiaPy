@@ -174,7 +174,6 @@ class EvolutionStrategy1p1(Algorithm):
                     * ki (int): Number of successful rho update.
 
         """
-        print(task.dimension)
         c, ki = IndividualES(task=task, rng=self.rng), 0
         return c, c.f, {'ki': ki}
 
@@ -261,9 +260,6 @@ class EvolutionStrategyMp1(EvolutionStrategy1p1):
 
     def set_parameters(self, **kwargs):
         r"""Set core parameters of EvolutionStrategy(mu+1) algorithm.
-
-        Args:
-            **kwargs (Dict[str, Any]):
 
         See Also:
             * :func:`niapy.algorithms.basic.EvolutionStrategy1p1.set_parameters`

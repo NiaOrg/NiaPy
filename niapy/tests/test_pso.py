@@ -3,7 +3,7 @@ from niapy.algorithms.basic import ParticleSwarmOptimization, ParticleSwarmAlgor
     OppositionVelocityClampingParticleSwarmOptimization, CenterParticleSwarmOptimization, \
     MutatedParticleSwarmOptimization, MutatedCenterParticleSwarmOptimization, \
     ComprehensiveLearningParticleSwarmOptimizer, MutatedCenterUnifiedParticleSwarmOptimization
-from niapy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
+from niapy.tests.test_algorithm import AlgorithmTestCase, MyProblem
 
 
 class PSOTestCase(AlgorithmTestCase):
@@ -18,7 +18,7 @@ class PSOTestCase(AlgorithmTestCase):
     def test_custom(self):
         pso_custom = self.algo(population_size=40, c1=2.0, c2=2.0, w=0.7, min_velocity=-4, max_velocity=4, seed=self.seed)
         pso_customc = self.algo(population_size=40, c1=2.0, c2=2.0, w=0.7, min_velocity=-4, max_velocity=4, seed=self.seed)
-        AlgorithmTestCase.test_algorithm_run(self, pso_custom, pso_customc, MyBenchmark())
+        AlgorithmTestCase.test_algorithm_run(self, pso_custom, pso_customc, MyProblem())
 
     def test_griewank(self):
         pso_griewank = self.algo(population_size=40, c1=2.0, c2=2.0, w=0.7, min_velocity=-4, max_velocity=4, seed=self.seed)
@@ -38,7 +38,7 @@ class PSATestCase(AlgorithmTestCase):
     def test_custom(self):
         wvcpso_custom = ParticleSwarmAlgorithm(population_size=40, c1=2.0, c2=2.0, w=0.7, min_velocity=-4, max_velocity=4, seed=self.seed)
         wvcpso_customc = ParticleSwarmAlgorithm(population_size=40, c1=2.0, c2=2.0, w=0.7, min_velocity=-4, max_velocity=4, seed=self.seed)
-        AlgorithmTestCase.test_algorithm_run(self, wvcpso_custom, wvcpso_customc, MyBenchmark())
+        AlgorithmTestCase.test_algorithm_run(self, wvcpso_custom, wvcpso_customc, MyProblem())
 
     def test_griewank(self):
         wvcpso_griewank = ParticleSwarmAlgorithm(population_size=40, c1=2.0, c2=2.0, w=0.7, min_velocity=-4, max_velocity=4, seed=self.seed)
@@ -57,9 +57,8 @@ class OVCPSOTestCase(AlgorithmTestCase):
 
     def test_custom(self):
         wvcpso_custom = self.algo(population_size=40, c1=2.0, c2=2.0, w=0.7, min_velocity=-4, max_velocity=4, seed=self.seed)
-        print("Params", wvcpso_custom.get_parameters())
         wvcpso_customc = self.algo(population_size=40, c1=2.0, c2=2.0, w=0.7, min_velocity=-4, max_velocity=4, seed=self.seed)
-        AlgorithmTestCase.test_algorithm_run(self, wvcpso_custom, wvcpso_customc, MyBenchmark())
+        AlgorithmTestCase.test_algorithm_run(self, wvcpso_custom, wvcpso_customc, MyProblem())
 
     def test_griewank(self):
         wvcpso_griewank = self.algo(population_size=40, c1=2.0, c2=2.0, w=0.7, min_velocity=-4, max_velocity=4, seed=self.seed)
@@ -79,7 +78,7 @@ class CPSOTestCase(AlgorithmTestCase):
     def test_custom(self):
         cpso_custom = self.algo(population_size=40, c1=2.0, c2=2.0, w=0.7, min_velocity=-4, max_velocity=4, seed=self.seed)
         cpso_customc = self.algo(population_size=40, c1=2.0, c2=2.0, w=0.7, min_velocity=-4, max_velocity=4, seed=self.seed)
-        AlgorithmTestCase.test_algorithm_run(self, cpso_custom, cpso_customc, MyBenchmark())
+        AlgorithmTestCase.test_algorithm_run(self, cpso_custom, cpso_customc, MyProblem())
 
     def test_griewank(self):
         cpso_griewank = self.algo(population_size=40, c1=2.0, c2=2.0, w=0.7, min_velocity=-4, max_velocity=4, seed=self.seed)
@@ -99,7 +98,7 @@ class MPSOTestCase(AlgorithmTestCase):
     def test_custom(self):
         mpso_custom = MutatedParticleSwarmOptimization(population_size=40, c1=2.0, c2=2.0, w=0.7, min_velocity=-4, max_velocity=4, seed=self.seed)
         mpso_customc = MutatedParticleSwarmOptimization(population_size=40, c1=2.0, c2=2.0, w=0.7, min_velocity=-4, max_velocity=4, seed=self.seed)
-        AlgorithmTestCase.test_algorithm_run(self, mpso_custom, mpso_customc, MyBenchmark())
+        AlgorithmTestCase.test_algorithm_run(self, mpso_custom, mpso_customc, MyProblem())
 
     def test_griewank(self):
         mpso_griewank = MutatedParticleSwarmOptimization(population_size=40, c1=2.0, c2=2.0, w=0.7, min_velocity=-4, max_velocity=4, seed=self.seed)
@@ -119,7 +118,7 @@ class MCPSOTestCase(AlgorithmTestCase):
     def test_custom(self):
         mcpso_custom = self.algo(population_size=40, c1=2.0, c2=2.0, w=0.7, min_velocity=-4, max_velocity=4, seed=self.seed)
         mcpso_customc = self.algo(population_size=40, c1=2.0, c2=2.0, w=0.7, min_velocity=-4, max_velocity=4, seed=self.seed)
-        AlgorithmTestCase.test_algorithm_run(self, mcpso_custom, mcpso_customc, MyBenchmark())
+        AlgorithmTestCase.test_algorithm_run(self, mcpso_custom, mcpso_customc, MyProblem())
 
     def test_griewank(self):
         mcpso_griewank = self.algo(population_size=40, c1=2.0, c2=2.0, w=0.7, min_velocity=-4, max_velocity=4, seed=self.seed)
@@ -139,7 +138,7 @@ class MCUPSOTestCase(AlgorithmTestCase):
     def test_custom(self):
         mcupso_custom = self.algo(population_size=40, c1=2.0, c2=2.0, w=0.7, min_velocity=-4, max_velocity=4, seed=self.seed)
         mcupso_customc = self.algo(population_size=40, c1=2.0, c2=2.0, w=0.7, min_velocity=-4, max_velocity=4, seed=self.seed)
-        AlgorithmTestCase.test_algorithm_run(self, mcupso_custom, mcupso_customc, MyBenchmark())
+        AlgorithmTestCase.test_algorithm_run(self, mcupso_custom, mcupso_customc, MyProblem())
 
     def test_griewank(self):
         mcupso_griewank = self.algo(population_size=40, c1=2.0, c2=2.0, w=0.7, min_velocity=-4, max_velocity=4, seed=self.seed)
@@ -159,7 +158,7 @@ class CLPSOTestCase(AlgorithmTestCase):
     def test_custom(self):
         clpso_custom = self.algo(population_size=40, c1=2.0, c2=2.0, w=0.7, min_velocity=-4, max_velocity=4, seed=self.seed)
         clpso_customc = self.algo(population_size=40, c1=2.0, c2=2.0, w=0.7, min_velocity=-4, max_velocity=4, seed=self.seed)
-        AlgorithmTestCase.test_algorithm_run(self, clpso_custom, clpso_customc, MyBenchmark())
+        AlgorithmTestCase.test_algorithm_run(self, clpso_custom, clpso_customc, MyProblem())
 
     def test_griewank(self):
         clpso_griewank = self.algo(population_size=40, c1=2.0, c2=2.0, w=0.7, min_velocity=-4, max_velocity=4, seed=self.seed)

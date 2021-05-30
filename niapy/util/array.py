@@ -7,26 +7,24 @@ def full_array(a, dimension):
     r"""Fill or create array of length dimension, from value or value form a.
 
     Args:
-        a (Union[int, float, numpy.ndarray], Iterable[Any]): Input values for fill.
+        a (Union[int, float, numpy.ndarray, Iterable[Any]]): Input values for fill.
         dimension (int): Length of new array.
 
     Returns:
         numpy.ndarray: Array filled with passed values or value.
 
     """
-    out = []
-
     if isinstance(a, (int, float)):
-        out = np.full(dimension, a)
+        out = np.ones(dimension) * a
     elif isinstance(a, (np.ndarray, list, tuple)):
         if len(a) == dimension:
-            out = a if isinstance(a, np.ndarray) else np.asarray(a)
+            out = np.asarray(a)
         elif len(a) > dimension:
-            out = a[:dimension] if isinstance(a, np.ndarray) else np.asarray(a[:dimension])
+            out = np.asarray(a[:dimension])
         else:
-            for i in range(int(np.ceil(float(dimension) / len(a)))):
-                out.extend(a[:dimension if (dimension - i * len(a)) >= len(a) else dimension - i * len(a)])
-            out = np.asarray(out)
+            out = np.tile(a, int(np.ceil(dimension / len(a))))[:dimension]
+    else:
+        raise TypeError('`a` must be a scalar or an Iterable.')
     return out
 
 

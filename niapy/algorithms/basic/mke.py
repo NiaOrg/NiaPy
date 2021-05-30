@@ -450,9 +450,6 @@ class MonkeyKingEvolutionV3(MonkeyKingEvolutionV1):
     def set_parameters(self, **kwargs):
         r"""Set core parameters of MonkeyKingEvolutionV3 algorithm.
 
-        Args:
-            **kwargs (Dict[str, Any]): Additional arguments.
-
         See Also:
             * :func:`niapy.algorithms.basic.MonkeyKingEvolutionV1.set_parameters`
 

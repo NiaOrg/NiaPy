@@ -7,13 +7,13 @@ from numpy.random import default_rng
 from niapy.algorithms.basic import MonkeyKingEvolutionV1, MonkeyKingEvolutionV2, MonkeyKingEvolutionV3
 from niapy.algorithms.basic.mke import MkeSolution
 from niapy.task import Task
-from niapy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
+from niapy.tests.test_algorithm import AlgorithmTestCase, MyProblem
 
 
 class MkeSolutionTestCase(TestCase):
     def setUp(self):
         self.D = 20
-        self.x, self.task = default_rng().uniform(-2, 2, self.D), Task(self.D, benchmark=MyBenchmark())
+        self.x, self.task = default_rng().uniform(-2, 2, self.D), Task(problem=MyProblem(self.D))
         self.sol1, self.sol2, self.sol3 = MkeSolution(x=self.x, e=False), MkeSolution(task=self.task), MkeSolution(
             x=self.x, e=False)
 
@@ -37,7 +37,7 @@ class MKEv1TestCase(AlgorithmTestCase):
     def test_custom(self):
         mke_custom = self.algo(population_size=10, C_a=2, C_r=0.5, seed=self.seed)
         mke_customc = self.algo(population_size=10, C_a=2, C_r=0.5, seed=self.seed)
-        AlgorithmTestCase.test_algorithm_run(self, mke_custom, mke_customc, MyBenchmark())
+        AlgorithmTestCase.test_algorithm_run(self, mke_custom, mke_customc, MyProblem())
 
     def test_griewank(self):
         mke_griewank = self.algo(population_size=10, C_a=5, C_r=0.5, seed=self.seed)
@@ -53,7 +53,7 @@ class MKEv2TestCase(AlgorithmTestCase):
     def test_custom(self):
         mke_custom = self.algo(population_size=10, C_a=2, C_r=0.5, seed=self.seed)
         mke_customc = self.algo(population_size=10, C_a=2, C_r=0.5, seed=self.seed)
-        AlgorithmTestCase.test_algorithm_run(self, mke_custom, mke_customc, MyBenchmark())
+        AlgorithmTestCase.test_algorithm_run(self, mke_custom, mke_customc, MyProblem())
 
     def test_griewank(self):
         mke_griewank = self.algo(population_size=10, C_a=5, C_r=0.5, seed=self.seed)
@@ -69,7 +69,7 @@ class MKEv3TestCase(AlgorithmTestCase):
     def test_custom(self):
         mke_custom = self.algo(population_size=10, C_a=2, C_r=0.5, seed=self.seed)
         mke_customc = self.algo(population_size=10, C_a=2, C_r=0.5, seed=self.seed)
-        AlgorithmTestCase.test_algorithm_run(self, mke_custom, mke_customc, MyBenchmark())
+        AlgorithmTestCase.test_algorithm_run(self, mke_custom, mke_customc, MyProblem())
 
     def test_griewank(self):
         mke_griewank = self.algo(population_size=10, C_a=5, C_r=0.5, seed=self.seed)

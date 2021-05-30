@@ -8,19 +8,19 @@ sys.path.append('../')
 
 from niapy.algorithms.basic import ParticleSwarmAlgorithm
 from niapy.task import StoppingTask
-from niapy.benchmarks import Sphere
-from numpy import random as rand, apply_along_axis
+from niapy.problems import Sphere
+import numpy as np
 
 
-def MyInit(task, NP, rnd=rand, **kwargs):
-    pop = 0.2 + rnd.rand(NP, task.dimension) * task.range
-    fpop = apply_along_axis(task.eval, 1, pop)
+def my_init(task, population_size, rng, **_kwargs):
+    pop = 0.2 + rng.random((population_size, task.dimension)) * task.range
+    fpop = np.apply_along_axis(task.eval, 1, pop)
     return pop, fpop
 
 
 # we will run Particle Swarm Algorithm with custom Init function for 5 independent runs
 for i in range(5):
-    task = StoppingTask(max_evals=1000, dimension=10, benchmark=Sphere())
-    algo = ParticleSwarmAlgorithm(population_size=10, c1=2.0, c2=2.0, w=0.7, min_velocity=-4, max_velocity=4, initialization_function=MyInit)
+    task = StoppingTask(problem=Sphere(dimension=10), max_evals=1000)
+    algo = ParticleSwarmAlgorithm(population_size=10, c1=2.0, c2=2.0, w=0.7, min_velocity=-4, max_velocity=4, initialization_function=my_init)
     best = algo.run(task=task)
     print(best)

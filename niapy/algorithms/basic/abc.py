@@ -94,7 +94,6 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
         Args:
             population_size(Optional[int]): Population size.
             limit (Optional[int]): Maximum number of cycles without improvement.
-            **kwargs (Dict[str, Any]): Additional arguments
 
         See Also:
             * :func:`niapy.algorithms.Algorithm.set_parameters`

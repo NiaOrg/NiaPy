@@ -8,11 +8,11 @@ sys.path.append('../')
 
 from niapy.algorithms.basic import ParticleSwarmAlgorithm
 from niapy.task import StoppingTask
-from niapy.benchmarks import Sphere
+from niapy.problems import Sphere
 
 # we will run ParticleSwarmAlgorithm for 5 independent runs
 for i in range(5):
-    task = StoppingTask(max_evals=1000, dimension=10, benchmark=Sphere())
+    task = StoppingTask(problem=Sphere(dimension=10), max_evals=1000)
     algo = ParticleSwarmAlgorithm(population_size=40, c1=2.0, c2=2.0, w=0.7, min_velocity=-4, max_velocity=4)
     best = algo.run(task=task)
     print(best)

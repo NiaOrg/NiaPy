@@ -1,6 +1,6 @@
 # encoding=utf8
 from niapy.algorithms.other import MultipleTrajectorySearch, MultipleTrajectorySearchV1
-from niapy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
+from niapy.tests.test_algorithm import AlgorithmTestCase, MyProblem
 
 
 class MTSTestCase(AlgorithmTestCase):
@@ -11,7 +11,7 @@ class MTSTestCase(AlgorithmTestCase):
     def test_custom(self):
         mts_custom = self.algo(population_size=10, C_a=2, C_r=0.5, seed=self.seed)
         mts_customc = self.algo(population_size=10, C_a=2, C_r=0.5, seed=self.seed)
-        AlgorithmTestCase.test_algorithm_run(self, mts_custom, mts_customc, MyBenchmark())
+        AlgorithmTestCase.test_algorithm_run(self, mts_custom, mts_customc, MyProblem())
 
     def test_griewank(self):
         mts_griewank = self.algo(population_size=10, C_a=5, C_r=0.5, seed=self.seed)
@@ -27,7 +27,7 @@ class MTSv1TestCase(AlgorithmTestCase):
     def test_custom(self):
         mts_custom = self.algo(population_size=10, C_a=2, C_r=0.5, seed=self.seed)
         mts_customc = self.algo(population_size=10, C_a=2, C_r=0.5, seed=self.seed)
-        AlgorithmTestCase.test_algorithm_run(self, mts_custom, mts_customc, MyBenchmark())
+        AlgorithmTestCase.test_algorithm_run(self, mts_custom, mts_customc, MyProblem())
 
     def test_griewank(self):
         mts_griewank = self.algo(population_size=10, C_a=5, C_r=0.5, seed=self.seed)

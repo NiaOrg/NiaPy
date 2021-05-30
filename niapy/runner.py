@@ -8,6 +8,7 @@ import os
 
 import pandas as pd
 
+from niapy.algorithms.algorithm import Algorithm
 from niapy.task import StoppingTask, OptimizationType
 from niapy.util.factory import get_algorithm
 
@@ -21,7 +22,7 @@ __all__ = ["Runner"]
 class Runner:
     r"""Runner utility feature.
 
-    Feature which enables running multiple algorithms with multiple benchmarks.
+    Feature which enables running multiple algorithms with multiple problems.
     It also support exporting results in various formats (e.g. Pandas DataFrame, JSON, Excel)
 
     Attributes:
@@ -29,12 +30,12 @@ class Runner:
         max_evals (int): Number of function evaluations
         runs (int): Number of repetitions
         algorithms (Union[List[str], List[Algorithm]]): List of algorithms to run
-        benchmarks (Union[List[str], List[Benchmark]]): List of benchmarks to run
+        problems (List[Union[str, Problem]]): List of problems to run
 
     """
 
     def __init__(self, dimension=10, max_evals=1000000, runs=1, algorithms='ArtificialBeeColonyAlgorithm',
-                 benchmarks='Ackley'):
+                 problems='Ackley'):
         r"""Initialize Runner.
 
         Args:
@@ -42,28 +43,28 @@ class Runner:
             max_evals (int): Number of function evaluations
             runs (int): Number of repetitions
             algorithms (List[Algorithm]): List of algorithms to run
-            benchmarks (List[Benchmark]): List of benchmarks to run
+            problems (List[Union[str, Problem]]): List of problems to run
 
         """
         self.dimension = dimension
         self.max_evals = max_evals
         self.runs = runs
         self.algorithms = algorithms
-        self.benchmarks = benchmarks
+        self.problems = problems
         self.results = {}
 
     def task_factory(self, name):
         r"""Create optimization task.
 
         Args:
-            name (str): Benchmark name.
+            name (str): Problem name.
 
         Returns:
             Task: Optimization task to use.
 
         """
         return StoppingTask(max_evals=self.max_evals, dimension=self.dimension,
-                            optimization_type=OptimizationType.MINIMIZATION, benchmark=name)
+                            optimization_type=OptimizationType.MINIMIZATION, problem=name)
 
     @classmethod
     def __create_export_dir(cls):
@@ -120,20 +121,23 @@ class Runner:
             if verbose:
                 logger.info("Running %s...", alg_name)
 
-            for bench in self.benchmarks:
-                if not isinstance(bench, "".__class__):
-                    bench_name = str(type(bench).__name__)
+            for problem in self.problems:
+                if not isinstance(problem, "".__class__):
+                    problem_name = str(type(problem).__name__)
                 else:
-                    bench_name = bench
+                    problem_name = problem
 
                 if verbose:
-                    logger.info("Running %s algorithm on %s benchmark...", alg_name, bench_name)
+                    logger.info("Running %s algorithm on %s problem...", alg_name, problem_name)
 
-                self.results[alg_name][bench_name] = []
+                self.results[alg_name][problem_name] = []
                 for _ in range(self.runs):
-                    algorithm = get_algorithm(alg)
-                    benchmark_stopping_task = self.task_factory(bench)
-                    self.results[alg_name][bench_name].append(algorithm.run(benchmark_stopping_task))
+                    if isinstance(alg, Algorithm):
+                        algorithm = alg
+                    else:
+                        algorithm = get_algorithm(alg)
+                    task = self.task_factory(problem)
+                    self.results[alg_name][problem_name].append(algorithm.run(task))
             if verbose:
                 logger.info("---------------------------------------------------")
         if export == "dataframe":

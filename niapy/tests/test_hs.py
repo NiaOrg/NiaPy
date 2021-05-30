@@ -1,7 +1,7 @@
 # encoding=utf8
 
 from niapy.algorithms.basic import HarmonySearch, HarmonySearchV1
-from niapy.tests.test_algorithm import AlgorithmTestCase, MyBenchmark
+from niapy.tests.test_algorithm import AlgorithmTestCase, MyProblem
 
 
 class HSTestCase(AlgorithmTestCase):
@@ -12,7 +12,7 @@ class HSTestCase(AlgorithmTestCase):
     def test_custom(self):
         hs_costom = self.algo(seed=self.seed)
         hs_costomc = self.algo(seed=self.seed)
-        AlgorithmTestCase.test_algorithm_run(self, hs_costom, hs_costomc, MyBenchmark())
+        AlgorithmTestCase.test_algorithm_run(self, hs_costom, hs_costomc, MyProblem())
 
     def test_griewank(self):
         hs_griewank = self.algo(seed=self.seed)
@@ -28,7 +28,7 @@ class HSv1TestCase(AlgorithmTestCase):
     def test_custom(self):
         hs_costom = self.algo(seed=self.seed)
         hs_costomc = self.algo(seed=self.seed)
-        AlgorithmTestCase.test_algorithm_run(self, hs_costom, hs_costomc, MyBenchmark())
+        AlgorithmTestCase.test_algorithm_run(self, hs_costom, hs_costomc, MyProblem())
 
     def test_griewank(self):
         hs_griewank = self.algo(seed=self.seed)

@@ -7,11 +7,11 @@ sys.path.append('../')
 
 from niapy.algorithms.basic import MonarchButterflyOptimization
 from niapy.task import StoppingTask
-from niapy.benchmarks import Sphere
+from niapy.problems import Sphere
 
 # we will run Monarch Butterfly Optimization algorithm for 5 independent runs
 for i in range(5):
-    task = StoppingTask(max_evals=10000, dimension=10, benchmark=Sphere())
+    task = StoppingTask(problem=Sphere(dimension=10), max_evals=10000)
     algo = MonarchButterflyOptimization(population_size=20, partition=5.0 / 12.0, period=1.2)
     best = algo.run(task)
     print('%s -> %s' % (best[0], best[1]))

@@ -1,13 +1,17 @@
 build:
   environment:
-    python: 3.6.3
-  tests:
+    python: 3.9.5
+  dependencies:
     override:
-      - flake8
+      - pip install -q flake8
+  tests:
+    stop_on_failure: false
+    override:
+      - flake8 --exclude examples,docs/source/conf.py
 checks:
   python:
     code_rating: true
     duplicate_code: true
 filter:
-  excluded_paths:
-    - "*/tests/*"
+  paths:
+    - niapy/*
