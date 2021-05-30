@@ -26,11 +26,11 @@ Given bellow is complete source code of basic example.
 .. code:: python
 
     from niapy.algorithms.basic import GreyWolfOptimizer
-    from niapy.task import StoppingTask
+    from niapy.task import Task
 
     # we will run 10 repetitions of Grey Wolf Optimizer against the Pinter problem
     for i in range(10):
-        task = StoppingTask(problem='pinter', dimension=10, max_evals=1000)
+        task = Task(problem='pinter', dimension=10, max_evals=1000)
         algorithm = GreyWolfOptimizer(population_size=20)
         best = algorithm.run(task)
         print(best[-1])
@@ -63,7 +63,7 @@ basic example.
 .. code:: python
 
     from niapy.algorithms.basic import GreyWolfOptimizer
-    from niapy.task import StoppingTask
+    from niapy.task import Task
     from niapy.problems import Pinter
 
     # initialize Pinter problem with custom bound
@@ -71,7 +71,7 @@ basic example.
 
     # we will run 10 repetitions of Grey Wolf Optimizer against Pinter problem function
     for i in range(10):
-        task = StoppingTask(problem=pinter, max_iters=100)
+        task = Task(problem=pinter, max_iters=100)
         algo = GreyWolfOptimizer(population_size=20)
 
         # running algorithm returns best found coordinates and fitness
@@ -109,7 +109,7 @@ Now we should have something similar as is shown in code snippet bellow.
 
 .. code:: python
 
-    from niapy.task import StoppingTask
+    from niapy.task import Task
     from niapy.problems import Problem
     from niapy.algorithms.basic import GreyWolfOptimizer
     import numpy as np
@@ -130,7 +130,7 @@ instance of our *MyProblem* class.
 
     my_problem = MyProblem(dimension=20)
     for i in range(10):
-        task = StoppingTask(problem=my_problem, max_iters=100)
+        task = Task(problem=my_problem, max_iters=100)
         algo = GreyWolfOptimizer(population_size=20)
 
         # running algorithm returns best found minimum
@@ -178,7 +178,7 @@ The complete example would look something like this.
 .. code:: python
 
     import numpy as np
-    from niapy.task import StoppingTask
+    from niapy.task import Task
     from niapy.problems import Problem
     from niapy.algorithms.basic import GreyWolfOptimizer
 
@@ -199,7 +199,7 @@ The complete example would look something like this.
     # we will run 10 repetitions of Grey Wolf Optimizer against our custom MyProblem problem function
     my_problem = MyProblem(dimension=20)
     for i in range(10):
-        task = StoppingTask(problem=my_problem, max_iters=100)
+        task = Task(problem=my_problem, max_iters=100)
         algo = GreyWolfOptimizer(population_size=20, initialization_function=my_init)
 
         # running algorithm returns best found minimum

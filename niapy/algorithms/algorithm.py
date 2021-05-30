@@ -6,7 +6,7 @@ import threading
 import numpy as np
 from numpy.random import default_rng
 
-from niapy.util import FesException, GenException, TimeException, RefException, objects_to_array
+from niapy.util.array import objects_to_array
 
 logging.basicConfig()
 logger = logging.getLogger('niapy.util.utility')
@@ -350,9 +350,7 @@ class Algorithm:
         try:
             r = self.run_task(task)
             return r[0], r[1] * task.optimization_type.value
-        except (FesException, GenException, TimeException, RefException):
-            return task.x, task.x_f * task.optimization_type.value
-        except Exception as e:
+        except BaseException as e:
             if threading.current_thread() == threading.main_thread() and multiprocessing.current_process().name == 'MainProcess':
                 raise e
             self.exception = e
