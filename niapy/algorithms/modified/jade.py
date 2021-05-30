@@ -91,7 +91,7 @@
 #         r"""Get algorithm information.
 #
 #         Returns:
-#             str: Alogrithm information.
+#             str: Algorithm information.
 #
 #         See Also:
 #             :func:`niapy.algorithms.algorithm.Algorithm.info`
