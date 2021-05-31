@@ -7,7 +7,7 @@ sys.path.append('../')
 # End of fix
 
 from niapy.algorithms.basic import ParticleSwarmAlgorithm
-from niapy.task import StoppingTask
+from niapy.task import Task
 from niapy.problems import Sphere
 import numpy as np
 
@@ -20,7 +20,7 @@ def my_init(task, population_size, rng, **_kwargs):
 
 # we will run Particle Swarm Algorithm with custom Init function for 5 independent runs
 for i in range(5):
-    task = StoppingTask(problem=Sphere(dimension=10), max_evals=1000)
+    task = Task(problem=Sphere(dimension=10), max_evals=1000)
     algo = ParticleSwarmAlgorithm(population_size=10, c1=2.0, c2=2.0, w=0.7, min_velocity=-4, max_velocity=4, initialization_function=my_init)
     best = algo.run(task=task)
     print(best)

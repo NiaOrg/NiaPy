@@ -90,7 +90,7 @@ In case you want to install directly from the source code, use:
 .. code:: sh
 
    $ git clone https://github.com/NiaOrg/NiaPy.git
-   $ cd niapy
+   $ cd NiaPy
    $ python setup.py install
 
 Usage
@@ -117,11 +117,11 @@ GreyWolfOptimizer class instance and run the algorithm. Given bellow is the comp
 .. code:: python
 
     from niapy.algorithms.basic import GreyWolfOptimizer
-    from niapy.task import StoppingTask
+    from niapy.task import Task
 
     # we will run 10 repetitions of Grey Wolf Optimizer against the Pinter problem
     for i in range(10):
-        task = StoppingTask(problem='pinter', dimension=10, max_evals=1000)
+        task = Task(problem='pinter', dimension=10, max_evals=1000)
         algorithm = GreyWolfOptimizer(population_size=20)
         best = algorithm.run(task)
         print(best[-1])
@@ -156,7 +156,7 @@ Now we should have something similar as is shown in code snippet bellow.
 
 .. code:: python
 
-    from niapy.task import StoppingTask
+    from niapy.task import Task
     from niapy.problems import Problem
     from niapy.algorithms.basic import GreyWolfOptimizer
 
@@ -174,7 +174,7 @@ Now, all we have to do is to initialize our algorithm as in previous examples an
 
     my_problem = MyProblem(dimension=20)
     for i in range(10):
-        task = StoppingTask(problem=my_problem, max_iters=100)
+        task = Task(problem=my_problem, max_iters=100)
         algo = GreyWolfOptimizer(population_size=20)
 
         # running algorithm returns best found minimum

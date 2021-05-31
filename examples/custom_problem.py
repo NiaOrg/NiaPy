@@ -6,7 +6,7 @@ import sys
 sys.path.append('../')
 
 import numpy as np
-from niapy.task import StoppingTask
+from niapy.task import Task
 from niapy.problems import Problem
 from niapy.algorithms.basic import ParticleSwarmAlgorithm
 
@@ -20,7 +20,7 @@ class MyProblem(Problem):
 
 
 # we will run Particle Swarm Algorithm on custom problem
-task = StoppingTask(problem=MyProblem(dimension=10), max_iters=1000)
+task = Task(problem=MyProblem(dimension=10), max_iters=1000)
 algo = ParticleSwarmAlgorithm(population_size=40, c1=2.0, c2=2.0, w=0.7, min_velocity=-4, max_velocity=4)
 best = algo.run(task=task)
 print('%s -> %s ' % (best[0], best[1]))

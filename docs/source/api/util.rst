@@ -22,13 +22,6 @@
     :undoc-members:
     :show-inheritance:
 
-:mod:`niapy.util.exception`
----------------------------
-.. automodule:: niapy.util.exception
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 :mod:`niapy.util.factory`
 -------------------------
 .. automodule:: niapy.util.factory
