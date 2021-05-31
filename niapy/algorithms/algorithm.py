@@ -307,6 +307,8 @@ class Algorithm:
         """
         pop, fpop, params = self.init_population(task)
         xb, fxb = self.get_best(pop, fpop)
+        if task.stopping_condition():
+            yield xb, fxb
         while True:
             pop, fpop, xb, fxb, params = self.run_iteration(task, pop, fpop, xb, fxb, **params)
             yield xb, fxb
