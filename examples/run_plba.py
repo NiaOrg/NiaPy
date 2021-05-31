@@ -8,13 +8,13 @@ sys.path.append('../')
 
 from niapy.algorithms.modified import ParameterFreeBatAlgorithm
 
-from niapy.task import StoppingTask
+from niapy.task import Task
 from niapy.problems import Sphere
 
 algo = ParameterFreeBatAlgorithm()
 
 for i in range(10):
-    task = StoppingTask(problem=Sphere(dimension=10), max_evals=10000)
+    task = Task(problem=Sphere(dimension=10), max_evals=10000)
     best = algo.run(task)
     print('%s -> %s' % (best[0], best[1]))
 print(algo.get_parameters())

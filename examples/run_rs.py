@@ -6,12 +6,12 @@ import sys
 sys.path.append('../')
 # End of fix
 
-from niapy.task import StoppingTask
+from niapy.task import Task
 from niapy.problems import Sphere
 from niapy.algorithms.other import RandomSearch
 
 
-task = StoppingTask(problem=Sphere(dimension=5), max_iters=5000)
+task = Task(problem=Sphere(dimension=5), max_iters=5000)
 algo = RandomSearch()
 best = algo.run(task=task)
 print(best)
