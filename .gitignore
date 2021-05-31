@@ -61,6 +61,6 @@ Icon*
 .idea/
 
 # Project related
-/examples/export
+**/export
 
 .python-version
