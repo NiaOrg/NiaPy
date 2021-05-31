@@ -82,6 +82,7 @@ class HillClimbAlgorithm(Algorithm):
             * neighborhood_function (Optional[Callable[numpy.ndarray, float, Task], Tuple[numpy.ndarray, float]]]): Function for getting neighbours.
 
         """
+        kwargs.pop('population_size', None)
         super().__init__(1, *args, **kwargs)
         self.delta = delta
         self.neighborhood_function = neighborhood_function
@@ -94,6 +95,7 @@ class HillClimbAlgorithm(Algorithm):
             * neighborhood_function (Optional[Callable[numpy.ndarray, float, Task], Tuple[numpy.ndarray, float]]]): Function for getting neighbours.
 
         """
+        kwargs.pop('population_size', None)
         super().set_parameters(population_size=1, **kwargs)
         self.delta = delta
         self.neighborhood_function = neighborhood_function

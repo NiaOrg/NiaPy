@@ -131,7 +131,7 @@ class RandomSearch(Algorithm):
             5. Additional arguments
 
         """
-        current_candidate = task.evals if task.max_evals != np.inf else task.iters
+        current_candidate = task.iters if task.max_iters != np.inf else task.evals
         x = self.candidates[current_candidate]
         x_fit = task.eval(x)
         best_x, best_fitness = self.get_best(x, x_fit, best_x, best_fitness)

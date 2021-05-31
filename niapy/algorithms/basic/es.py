@@ -100,6 +100,7 @@ class EvolutionStrategy1p1(Algorithm):
             * :func:`niapy.algorithms.Algorithm.__init__`
 
         """
+        kwargs.pop('population_size', None)
         super().__init__(population_size=mu, individual_type=kwargs.pop('individual_type', IndividualES), *args, **kwargs)
         self.mu = mu
         self.k = k
@@ -121,6 +122,7 @@ class EvolutionStrategy1p1(Algorithm):
             * :func:`niapy.algorithms.Algorithm.set_parameters`
 
         """
+        kwargs.pop('population_size', None)
         super().set_parameters(population_size=mu, individual_type=kwargs.pop('individual_type', IndividualES), **kwargs)
         self.mu = mu
         self.k = k

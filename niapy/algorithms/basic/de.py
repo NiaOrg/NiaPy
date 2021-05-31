@@ -503,7 +503,7 @@ class CrowdingDifferentialEvolution(DifferentialEvolution):
         """
         selected = []
         for e in new_population:
-            i = np.argmin([euclidean(e, f) for f in population])
+            i = np.argmin([euclidean(e.x, f.x) for f in population])
             selected.append(population[i] if population[i].f < e.f else e)
         return np.asarray(selected), best_x, best_fitness
 
