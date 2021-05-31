@@ -37,3 +37,4 @@ jobs:
     - name: Run tests
       run: |
         pipenv run pytest -ra -vv --random --random-seed=32786 --cov=niapy --no-cov-on-fail --cov-report=term-missing:skip-covered --cov-report=html niapy tests --junitxml=xmlreport/overall.xml
+        pipenv run coverage.space NiaOrg/NiaPy overall
