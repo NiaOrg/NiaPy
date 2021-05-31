@@ -9,8 +9,8 @@ class GWOTestCase(AlgorithmTestCase):
         self.algo = GreyWolfOptimizer
 
     def test_custom(self):
-        gwo_custom = self.algo(population_size=20, seed=self.seed)
-        gwo_customc = self.algo(population_size=20, seed=self.seed)
+        gwo_custom = self.algo(population_size=10, seed=self.seed)
+        gwo_customc = self.algo(population_size=10, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, gwo_custom, gwo_customc, MyProblem())
 
     def test_griewank(self):

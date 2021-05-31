@@ -10,11 +10,11 @@ class RSTestCase(AlgorithmTestCase):
         self.algo = RandomSearch
 
     def test_custom(self):
-        ca_custom = self.algo(population_size=40, seed=self.seed)
-        ca_customc = self.algo(population_size=40, seed=self.seed)
+        ca_custom = self.algo(population_size=10, seed=self.seed)
+        ca_customc = self.algo(population_size=10, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, ca_custom, ca_customc, MyProblem(), max_iters=100, max_evals=50000)
 
     def test_griewank(self):
-        ca_griewank = self.algo(population_size=40, seed=self.seed)
-        ca_griewankc = self.algo(population_size=40, seed=self.seed)
+        ca_griewank = self.algo(population_size=10, seed=self.seed)
+        ca_griewankc = self.algo(population_size=10, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, ca_griewank, ca_griewankc, max_iters=100, max_evals=50000)

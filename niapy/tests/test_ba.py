@@ -10,8 +10,8 @@ class BATestCase(AlgorithmTestCase):
         self.algo = BatAlgorithm
 
     def test_custom(self):
-        ba_custom = self.algo(population_size=20, loudness=0.5, pulse_rate=0.5, min_frequency=0.0, max_frequency=2.0, seed=self.seed)
-        ba_customc = self.algo(population_size=20, loudness=0.5, pulse_rate=0.5, min_frequency=0.0, max_frequency=2.0, seed=self.seed)
+        ba_custom = self.algo(population_size=10, loudness=0.5, pulse_rate=0.5, min_frequency=0.0, max_frequency=2.0, seed=self.seed)
+        ba_customc = self.algo(population_size=10, loudness=0.5, pulse_rate=0.5, min_frequency=0.0, max_frequency=2.0, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, ba_custom, ba_customc, MyProblem())
 
     def test_griewank(self):

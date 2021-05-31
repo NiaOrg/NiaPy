@@ -5,15 +5,12 @@ import math
 import numpy as np
 
 from niapy.algorithms.algorithm import Algorithm, Individual, default_individual_init
-from niapy.util import objects_to_array, euclidean
+from niapy.util.array import objects_to_array
 
 __all__ = ['DifferentialEvolution', 'DynNpDifferentialEvolution', 'AgingNpDifferentialEvolution',
-           'CrowdingDifferentialEvolution', 'MultiStrategyDifferentialEvolution',
-           'DynNpMultiStrategyDifferentialEvolution',
-           # 'AgingNpMultiMutationDifferentialEvolution',
-           'AgingIndividual',
-           'cross_rand1', 'cross_rand2', 'cross_best2', 'cross_best1', 'cross_best2', 'cross_curr2rand1', 'cross_curr2best1',
-           'multi_mutations', 'proportional', 'linear', 'bilinear']
+           'MultiStrategyDifferentialEvolution', 'DynNpMultiStrategyDifferentialEvolution', 'AgingIndividual',
+           'cross_rand1', 'cross_rand2', 'cross_best2', 'cross_best1', 'cross_best2', 'cross_curr2rand1',
+           'cross_curr2best1', 'multi_mutations', 'proportional', 'linear', 'bilinear']
 
 logging.basicConfig()
 logger = logging.getLogger('niapy.algorithms.basic')
@@ -423,89 +420,6 @@ class DifferentialEvolution(Algorithm):
         population_fitness = np.asarray([x.f for x in population])
         best_x, best_fitness = self.get_best(population, population_fitness, best_x, best_fitness)
         return population, population_fitness, best_x, best_fitness, {}
-
-
-class CrowdingDifferentialEvolution(DifferentialEvolution):
-    r"""Implementation of Differential evolution algorithm with multiple mutation strategies.
-
-    Algorithm:
-        Implementation of Differential evolution algorithm with multiple mutation strategies
-
-    Date:
-        2018
-
-    Author:
-        Klemen Berkovič
-
-    License:
-        MIT
-
-    Attributes:
-        Name (List[str]): List of strings representing algorithm name.
-        crowding_distance (float): Proportion of range for crowding.
-
-    See Also:
-        * :class:`niapy.algorithms.basic.DifferentialEvolution`
-
-    """
-
-    Name = ['CrowdingDifferentialEvolution', 'CDE']
-
-    @staticmethod
-    def info():
-        r"""Get basic information of algorithm.
-
-        Returns:
-            str: Basic information of algorithm.
-
-        See Also:
-            * :func:`niapy.algorithms.Algorithm.info`
-
-        """
-        return r"""No New"""
-
-    def __init__(self, crowding_distance=0.1, *args, **kwargs):
-        """Initialize CrowdingDifferentialEvolution."""
-        super().__init__(*args, **kwargs)
-        self.crowding_distance = crowding_distance
-
-    def set_parameters(self, crowding_distance=0.1, **kwargs):
-        r"""Set core parameters of algorithm.
-
-        Args:
-            crowding_distance (Optional[float]): Crowding distance.
-            **kwargs: Additional arguments.
-
-        See Also:
-            * :func:`niapy.algorithms.basic.DifferentialEvolution.set_parameters`
-
-        """
-        super().set_parameters(**kwargs)
-        self.crowding_distance = crowding_distance
-
-    def selection(self, population, new_population, best_x, best_fitness, task, **kwargs):
-        r"""Operator for selection of individuals.
-
-        Args:
-            population (numpy.ndarray): Current population.
-            new_population (numpy.ndarray): New population.
-            best_x (numpy.ndarray): Current global best solution.
-            best_fitness (float): Current global best solutions fitness/objective value.
-            task (Task): Optimization task.
-            kwargs (Dict[str, Any]): Additional arguments.
-
-        Returns:
-            Tuple[numpy.ndarray, numpy.ndarray, float]:
-                1. New population.
-                2. New global best solution.
-                3. New global best solutions fitness/objective value.
-
-        """
-        selected = []
-        for e in new_population:
-            i = np.argmin([euclidean(e.x, f.x) for f in population])
-            selected.append(population[i] if population[i].f < e.f else e)
-        return np.asarray(selected), best_x, best_fitness
 
 
 class DynNpDifferentialEvolution(DifferentialEvolution):
@@ -1102,71 +1016,5 @@ class DynNpMultiStrategyDifferentialEvolution(MultiStrategyDifferentialEvolution
 
         """
         return DynNpDifferentialEvolution.post_selection(self, pop, task, xb, fxb)
-
-# TODO Fix this algorithm, commenting out for the time being
-# class AgingNpMultiMutationDifferentialEvolution(AgingNpDifferentialEvolution, MultiStrategyDifferentialEvolution):
-#     r"""Implementation of Differential evolution algorithm with aging individuals.
-#
-#     Algorithm:
-#         Differential evolution algorithm with dynamic population size that is defined by the quality of population
-#
-#     Date:
-#         2018
-#
-#     Author:
-#         Klemen Berkovič
-#
-#     License:
-#         MIT
-#
-#     Attributes:
-#         Name (List[str]): List of strings representing algorithm names
-#
-#     See Also:
-#         * :class:`niapy.algorithms.basic.AgingNpDifferentialEvolution`
-#         * :class:`niapy.algorithms.basic.MultiStrategyDifferentialEvolution`
-#
-#     """
-#
-#     Name = ['AgingNpMultiMutationDifferentialEvolution', 'ANpMSDE']
-#
-#     @staticmethod
-#     def info():
-#         r"""Get basic information of algorithm.
-#
-#         Returns:
-#             str: Basic information of algorithm.
-#
-#         See Also:
-#             * :func:`niapy.algorithms.Algorithm.info`
-#
-#         """
-#         return r"""No info"""
-#
-#     def set_parameters(self, **kwargs):
-#         r"""Set core parameter arguments.
-#
-#         See Also:
-#             * :func:`niapy.algorithms.basic.AgingNpDifferentialEvolution.set_parameters`
-#             * :func:`niapy.algorithms.basic.MultiStrategyDifferentialEvolution.set_parameters`
-#
-#         """
-#         AgingNpDifferentialEvolution.set_parameters(self, **kwargs)
-#         MultiStrategyDifferentialEvolution.set_parameters(self, strategies=(cross_rand1, cross_best1, cross_curr2rand1, cross_rand2),
-#                                                           individual_type=AgingIndividual, **kwargs)
-#
-#     def evolve(self, pop, xb, task, **kwargs):
-#         r"""Evolve current population.
-#
-#         Args:
-#             pop (numpy.ndarray): Current population.
-#             xb (numpy.ndarray): Global best individual.
-#             task (Task): Optimization task.
-#
-#         Returns:
-#             numpy.ndarray: New population of individuals.
-#
-#         """
-#         return MultiStrategyDifferentialEvolution.evolve(self, pop, xb, task, **kwargs)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

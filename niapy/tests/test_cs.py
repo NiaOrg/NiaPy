@@ -9,8 +9,8 @@ class CSTestCase(AlgorithmTestCase):
         self.algo = CuckooSearch
 
     def test_custom(self):
-        cs_custom = self.algo(population_size=20, seed=self.seed)
-        cs_customc = self.algo(population_size=20, seed=self.seed)
+        cs_custom = self.algo(population_size=10, seed=self.seed)
+        cs_customc = self.algo(population_size=10, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, cs_custom, cs_customc, MyProblem())
 
     def test_griewank(self):

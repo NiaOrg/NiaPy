@@ -9,8 +9,8 @@ class GSATestCase(AlgorithmTestCase):
         self.algo = GravitationalSearchAlgorithm
 
     def test_Custom(self):
-        gsa_custom = self.algo(population_size=40, seed=self.seed)
-        gsa_customc = self.algo(population_size=40, seed=self.seed)
+        gsa_custom = self.algo(population_size=10, seed=self.seed)
+        gsa_customc = self.algo(population_size=10, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, gsa_custom, gsa_customc, MyProblem())
 
     def test_griewank(self):

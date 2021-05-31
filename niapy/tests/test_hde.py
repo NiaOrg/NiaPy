@@ -12,14 +12,14 @@ class DEMTSTestCase(AlgorithmTestCase):
         self.algo = DifferentialEvolutionMTS
 
     def test_custom(self):
-        ca_custom = self.algo(population_size=40, num_tests=1, num_searches=2, num_enabled=2, seed=self.seed)
-        ca_customc = self.algo(population_size=40, num_tests=1, num_searches=2, num_enabled=2, seed=self.seed)
-        AlgorithmTestCase.test_algorithm_run(self, ca_custom, ca_customc, MyProblem())
+        ca_custom = self.algo(population_size=10, num_tests=1, num_searches=2, num_enabled=2, seed=self.seed)
+        ca_customc = self.algo(population_size=10, num_tests=1, num_searches=2, num_enabled=2, seed=self.seed)
+        AlgorithmTestCase.test_algorithm_run(self, ca_custom, ca_customc, MyProblem(), max_iters=100)
 
     def test_griewank(self):
-        ca_griewank = self.algo(population_size=40, num_tests=1, num_searches=2, num_enabled=2, seed=self.seed)
-        ca_griewankc = self.algo(population_size=40, num_tests=1, num_searches=2, num_enabled=2, seed=self.seed)
-        AlgorithmTestCase.test_algorithm_run(self, ca_griewank, ca_griewankc)
+        ca_griewank = self.algo(population_size=10, num_tests=1, num_searches=2, num_enabled=2, seed=self.seed)
+        ca_griewankc = self.algo(population_size=10, num_tests=1, num_searches=2, num_enabled=2, seed=self.seed)
+        AlgorithmTestCase.test_algorithm_run(self, ca_griewank, ca_griewankc, max_iters=100)
 
 
 class DEMTSv1TestCase(AlgorithmTestCase):
@@ -28,14 +28,14 @@ class DEMTSv1TestCase(AlgorithmTestCase):
         self.algo = DifferentialEvolutionMTSv1
 
     def test_custom(self):
-        ca_custom = self.algo(population_size=40, num_tests=1, num_searches=2, num_enabled=2, seed=self.seed)
-        ca_customc = self.algo(population_size=40, num_tests=1, num_searches=2, num_enabled=2, seed=self.seed)
-        AlgorithmTestCase.test_algorithm_run(self, ca_custom, ca_customc, MyProblem())
+        ca_custom = self.algo(population_size=10, num_tests=1, num_searches=2, num_enabled=2, seed=self.seed)
+        ca_customc = self.algo(population_size=10, num_tests=1, num_searches=2, num_enabled=2, seed=self.seed)
+        AlgorithmTestCase.test_algorithm_run(self, ca_custom, ca_customc, MyProblem(), max_iters=100)
 
     def test_griewank(self):
-        ca_griewank = self.algo(population_size=40, num_tests=1, num_searches=2, num_enabled=2, seed=self.seed)
-        ca_griewankc = self.algo(population_size=40, num_tests=1, num_searches=2, num_enabled=2, seed=self.seed)
-        AlgorithmTestCase.test_algorithm_run(self, ca_griewank, ca_griewankc)
+        ca_griewank = self.algo(population_size=10, num_tests=1, num_searches=2, num_enabled=2, seed=self.seed)
+        ca_griewankc = self.algo(population_size=10, num_tests=1, num_searches=2, num_enabled=2, seed=self.seed)
+        AlgorithmTestCase.test_algorithm_run(self, ca_griewank, ca_griewankc, max_iters=100)
 
 
 class DynNpDEMTSTestCase(AlgorithmTestCase):
@@ -44,14 +44,14 @@ class DynNpDEMTSTestCase(AlgorithmTestCase):
         self.algo = DynNpDifferentialEvolutionMTS
 
     def test_custom(self):
-        ca_custom = self.algo(population_size=40, num_tests=1, num_searches=2, num_enabled=2, p_max=10, rp=3, seed=self.seed)
-        ca_customc = self.algo(population_size=40, num_tests=1, num_searches=2, num_enabled=2, p_max=10, rp=3, seed=self.seed)
+        ca_custom = self.algo(population_size=10, num_tests=1, num_searches=2, num_enabled=2, p_max=10, rp=3, seed=self.seed)
+        ca_customc = self.algo(population_size=10, num_tests=1, num_searches=2, num_enabled=2, p_max=10, rp=3, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, ca_custom, ca_customc, MyProblem())
 
     def test_griewank(self):
-        ca_griewank = self.algo(population_size=40, num_tests=1, num_searches=2, num_enabled=2, p_max=10, rp=3, seed=self.seed)
-        ca_griewankc = self.algo(population_size=40, num_tests=1, num_searches=2, num_enabled=2, p_max=10, rp=3, seed=self.seed)
-        AlgorithmTestCase.test_algorithm_run(self, ca_griewank, ca_griewankc)
+        ca_griewank = self.algo(population_size=10, num_tests=1, num_searches=2, num_enabled=2, p_max=10, rp=3, seed=self.seed)
+        ca_griewankc = self.algo(population_size=10, num_tests=1, num_searches=2, num_enabled=2, p_max=10, rp=3, seed=self.seed)
+        AlgorithmTestCase.test_algorithm_run(self, ca_griewank, ca_griewankc, max_iters=100)
 
 
 class DynNpDEMTSv1TestCase(AlgorithmTestCase):
@@ -60,14 +60,14 @@ class DynNpDEMTSv1TestCase(AlgorithmTestCase):
         self.algo = DynNpDifferentialEvolutionMTSv1
 
     def test_custom(self):
-        ca_custom = self.algo(population_size=40, num_tests=1, num_searches=2, num_enabled=2, p_max=10, rp=3, seed=self.seed)
-        ca_customc = self.algo(population_size=40, num_tests=1, num_searches=2, num_enabled=2, p_max=10, rp=3, seed=self.seed)
-        AlgorithmTestCase.test_algorithm_run(self, ca_custom, ca_customc, MyProblem())
+        ca_custom = self.algo(population_size=10, num_tests=1, num_searches=2, num_enabled=2, p_max=10, rp=3, seed=self.seed)
+        ca_customc = self.algo(population_size=10, num_tests=1, num_searches=2, num_enabled=2, p_max=10, rp=3, seed=self.seed)
+        AlgorithmTestCase.test_algorithm_run(self, ca_custom, ca_customc, MyProblem(), max_iters=100)
 
     def test_griewank(self):
-        ca_griewank = self.algo(population_size=40, num_tests=1, num_searches=2, num_enabled=2, p_max=10, rp=3, seed=self.seed)
-        ca_griewankc = self.algo(population_size=40, num_tests=1, num_searches=2, num_enabled=2, p_max=10, rp=3, seed=self.seed)
-        AlgorithmTestCase.test_algorithm_run(self, ca_griewank, ca_griewankc)
+        ca_griewank = self.algo(population_size=10, num_tests=1, num_searches=2, num_enabled=2, p_max=10, rp=3, seed=self.seed)
+        ca_griewankc = self.algo(population_size=10, num_tests=1, num_searches=2, num_enabled=2, p_max=10, rp=3, seed=self.seed)
+        AlgorithmTestCase.test_algorithm_run(self, ca_griewank, ca_griewankc, max_iters=100)
 
 
 class MSDEMTSTestCase(AlgorithmTestCase):
@@ -76,14 +76,14 @@ class MSDEMTSTestCase(AlgorithmTestCase):
         self.algo = MultiStrategyDifferentialEvolutionMTS
 
     def test_custom(self):
-        ca_custom = self.algo(population_size=40, num_tests=1, num_searches=2, num_enabled=2, seed=self.seed)
-        ca_customc = self.algo(population_size=40, num_tests=1, num_searches=2, num_enabled=2, seed=self.seed)
+        ca_custom = self.algo(population_size=10, num_tests=1, num_searches=2, num_enabled=2, seed=self.seed)
+        ca_customc = self.algo(population_size=10, num_tests=1, num_searches=2, num_enabled=2, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, ca_custom, ca_customc, MyProblem())
 
     def test_griewank(self):
-        ca_griewank = self.algo(population_size=40, num_tests=1, num_searches=2, num_enabled=2, seed=self.seed)
-        ca_griewankc = self.algo(population_size=40, num_tests=1, num_searches=2, num_enabled=2, seed=self.seed)
-        AlgorithmTestCase.test_algorithm_run(self, ca_griewank, ca_griewankc)
+        ca_griewank = self.algo(population_size=10, num_tests=1, num_searches=2, num_enabled=2, seed=self.seed)
+        ca_griewankc = self.algo(population_size=10, num_tests=1, num_searches=2, num_enabled=2, seed=self.seed)
+        AlgorithmTestCase.test_algorithm_run(self, ca_griewank, ca_griewankc, max_iters=100)
 
 
 class MSDEMTSv1STestCase(AlgorithmTestCase):
@@ -92,14 +92,14 @@ class MSDEMTSv1STestCase(AlgorithmTestCase):
         self.algo = MultiStrategyDifferentialEvolutionMTSv1
 
     def test_custom(self):
-        ca_custom = self.algo(population_size=40, num_tests=1, num_searches=2, num_enabled=2, seed=self.seed)
-        ca_customc = self.algo(population_size=40, num_tests=1, num_searches=2, num_enabled=2, seed=self.seed)
-        AlgorithmTestCase.test_algorithm_run(self, ca_custom, ca_customc, MyProblem())
+        ca_custom = self.algo(population_size=10, num_tests=1, num_searches=2, num_enabled=2, seed=self.seed)
+        ca_customc = self.algo(population_size=10, num_tests=1, num_searches=2, num_enabled=2, seed=self.seed)
+        AlgorithmTestCase.test_algorithm_run(self, ca_custom, ca_customc, MyProblem(), max_iters=100)
 
     def test_griewank(self):
-        ca_griewank = self.algo(population_size=40, num_tests=1, num_searches=2, num_enabled=2, seed=self.seed)
-        ca_griewankc = self.algo(population_size=40, num_tests=1, num_searches=2, num_enabled=2, seed=self.seed)
-        AlgorithmTestCase.test_algorithm_run(self, ca_griewank, ca_griewankc)
+        ca_griewank = self.algo(population_size=10, num_tests=1, num_searches=2, num_enabled=2, seed=self.seed)
+        ca_griewankc = self.algo(population_size=10, num_tests=1, num_searches=2, num_enabled=2, seed=self.seed)
+        AlgorithmTestCase.test_algorithm_run(self, ca_griewank, ca_griewankc, max_iters=100)
 
 
 class DynNpMSDEMTSTestCase(AlgorithmTestCase):
@@ -108,14 +108,14 @@ class DynNpMSDEMTSTestCase(AlgorithmTestCase):
         self.algo = DynNpMultiStrategyDifferentialEvolutionMTS
 
     def test_custom(self):
-        ca_custom = self.algo(population_size=40, num_tests=1, num_searches=2, num_enabled=2, seed=self.seed)
-        ca_customc = self.algo(population_size=40, num_tests=1, num_searches=2, num_enabled=2, seed=self.seed)
-        AlgorithmTestCase.test_algorithm_run(self, ca_custom, ca_customc, MyProblem())
+        ca_custom = self.algo(population_size=10, num_tests=1, num_searches=2, num_enabled=2, seed=self.seed)
+        ca_customc = self.algo(population_size=10, num_tests=1, num_searches=2, num_enabled=2, seed=self.seed)
+        AlgorithmTestCase.test_algorithm_run(self, ca_custom, ca_customc, MyProblem(), max_iters=100)
 
     def test_griewank(self):
-        ca_griewank = self.algo(population_size=40, num_tests=1, num_searches=2, num_enabled=2, seed=self.seed)
-        ca_griewankc = self.algo(population_size=40, num_tests=1, num_searches=2, num_enabled=2, seed=self.seed)
-        AlgorithmTestCase.test_algorithm_run(self, ca_griewank, ca_griewankc)
+        ca_griewank = self.algo(population_size=10, num_tests=1, num_searches=2, num_enabled=2, seed=self.seed)
+        ca_griewankc = self.algo(population_size=10, num_tests=1, num_searches=2, num_enabled=2, seed=self.seed)
+        AlgorithmTestCase.test_algorithm_run(self, ca_griewank, ca_griewankc, max_iters=100)
 
 
 class DynNpMSDEMTSv1TestCase(AlgorithmTestCase):
@@ -124,13 +124,13 @@ class DynNpMSDEMTSv1TestCase(AlgorithmTestCase):
         self.algo = DynNpMultiStrategyDifferentialEvolutionMTSv1
 
     def test_custom(self):
-        ca_custom = self.algo(population_size=40, num_tests=1, num_searches=2, num_enabled=2, seed=self.seed)
-        ca_customc = self.algo(population_size=40, num_tests=1, num_searches=2, num_enabled=2, seed=self.seed)
-        AlgorithmTestCase.test_algorithm_run(self, ca_custom, ca_customc, MyProblem())
+        ca_custom = self.algo(population_size=10, num_tests=1, num_searches=2, num_enabled=2, seed=self.seed)
+        ca_customc = self.algo(population_size=10, num_tests=1, num_searches=2, num_enabled=2, seed=self.seed)
+        AlgorithmTestCase.test_algorithm_run(self, ca_custom, ca_customc, MyProblem(), max_iters=100)
 
     def test_griewank(self):
-        ca_griewank = self.algo(population_size=40, num_tests=1, num_searches=2, num_enabled=2, seed=self.seed)
-        ca_griewankc = self.algo(population_size=40, num_tests=1, num_searches=2, num_enabled=2, seed=self.seed)
-        AlgorithmTestCase.test_algorithm_run(self, ca_griewank, ca_griewankc)
+        ca_griewank = self.algo(population_size=10, num_tests=1, num_searches=2, num_enabled=2, seed=self.seed)
+        ca_griewankc = self.algo(population_size=10, num_tests=1, num_searches=2, num_enabled=2, seed=self.seed)
+        AlgorithmTestCase.test_algorithm_run(self, ca_griewank, ca_griewankc, max_iters=100)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
