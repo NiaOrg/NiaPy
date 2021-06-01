@@ -61,9 +61,6 @@ class TaskTestCase(TestCase):
         self.assertEqual(self.nFES, self.task.max_evals)
 
     def test_is_feasible(self):
-        print(self.task.lower)
-        print(self.task.upper)
-
         x = np.full(self.D, 2)
         self.assertTrue(self.task.is_feasible(x))
         x = np.full(self.D, 3)
@@ -140,7 +137,6 @@ class TaskTestCase(TestCase):
             self.task.next_iter()
         x = np.zeros(self.D)
         self.assertEqual(0, self.task.eval(x))
-        print(self.task.stopping_condition())
         self.assertTrue(self.task.stopping_condition())
         self.assertEqual(self.nGEN - 5, self.task.iters)
 

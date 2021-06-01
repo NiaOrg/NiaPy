@@ -171,7 +171,7 @@ class Task:
             bool: `True` if number of function evaluations or number of algorithm iterations/generations or reference values is reach else `False`.
 
         """
-        return (self.evals >= self.max_evals) or (self.iters >= self.max_iters) or (self.cutoff_value >= self.x_f)
+        return (self.evals >= self.max_evals) or (self.iters >= self.max_iters) or (self.cutoff_value * self.optimization_type.value >= self.x_f * self.optimization_type.value)
 
     def stopping_condition_iter(self):
         r"""Check if stopping condition reached and increase number of iterations.

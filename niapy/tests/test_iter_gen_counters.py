@@ -12,14 +12,14 @@ class DETestCase(TestCase):
 
     def test_DE_evals(self):
         task = Task(max_evals=1000, problem=Sphere(10))
-        algo = DifferentialEvolution(population_size=40, CR=0.9, F=0.5)
+        algo = DifferentialEvolution(population_size=10, CR=0.9, F=0.5)
         algo.run_task(task)
         evals = task.evals
         self.assertEqual(1000, evals)
 
     def test_DE_iters(self):
         task = Task(max_iters=1000, problem=Sphere(10))
-        algo = DifferentialEvolution(population_size=40, CR=0.9, F=0.5)
+        algo = DifferentialEvolution(population_size=10, CR=0.9, F=0.5)
         algo.run_task(task)
         iters = task.iters
         self.assertEqual(1000, iters)
@@ -29,14 +29,14 @@ class BATestCase(TestCase):
 
     def test_BA_evals(self):
         task = Task(max_evals=1000, problem=Sphere(10))
-        algo = BatAlgorithm(population_size=25)
+        algo = BatAlgorithm(population_size=10)
         algo.run_task(task)
         evals = task.evals
         self.assertEqual(1000, evals)
 
     def test_BA_iters(self):
         task = Task(max_iters=1000, problem=Sphere(10))
-        algo = BatAlgorithm(population_size=25)
+        algo = BatAlgorithm(population_size=10)
         algo.run_task(task)
         iters = task.iters
         self.assertEqual(1000, iters)
@@ -54,14 +54,14 @@ class FATestCase(TestCase):
 
     def test_FA_evals(self):
         task = Task(max_evals=1000, problem=Sphere(10))
-        algo = FireflyAlgorithm(population_size=25)
+        algo = FireflyAlgorithm(population_size=10)
         algo.run_task(task)
         evals = task.evals
         self.assertEqual(1000, evals)
 
     def test_FA_iters(self):
         task = Task(max_iters=1000, problem=Sphere(10))
-        algo = FireflyAlgorithm(population_size=25)
+        algo = FireflyAlgorithm(population_size=10)
         algo.run_task(task)
         iters = task.iters
         self.assertEqual(1000, iters)

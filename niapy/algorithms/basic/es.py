@@ -3,7 +3,6 @@ import logging
 from math import ceil
 
 import numpy as np
-from numpy.linalg import norm, cholesky, eig, solve, lstsq
 
 from niapy.algorithms.algorithm import Algorithm, Individual, default_individual_init
 from niapy.util import objects_to_array
@@ -12,8 +11,7 @@ logging.basicConfig()
 logger = logging.getLogger('niapy.algorithms.basic')
 logger.setLevel('INFO')
 
-__all__ = ['EvolutionStrategy1p1', 'EvolutionStrategyMp1', 'EvolutionStrategyMpL', 'EvolutionStrategyML',
-           'CovarianceMatrixAdaptionEvolutionStrategy']
+__all__ = ['EvolutionStrategy1p1', 'EvolutionStrategyMp1', 'EvolutionStrategyMpL', 'EvolutionStrategyML']
 
 
 class IndividualES(Individual):
@@ -100,6 +98,7 @@ class EvolutionStrategy1p1(Algorithm):
             * :func:`niapy.algorithms.Algorithm.__init__`
 
         """
+        kwargs.pop('population_size', None)
         super().__init__(population_size=mu, individual_type=kwargs.pop('individual_type', IndividualES), *args, **kwargs)
         self.mu = mu
         self.k = k
@@ -121,6 +120,7 @@ class EvolutionStrategy1p1(Algorithm):
             * :func:`niapy.algorithms.Algorithm.set_parameters`
 
         """
+        kwargs.pop('population_size', None)
         super().set_parameters(population_size=mu, individual_type=kwargs.pop('individual_type', IndividualES), **kwargs)
         self.mu = mu
         self.k = k
@@ -544,135 +544,5 @@ class EvolutionStrategyML(EvolutionStrategyMpL):
         fc = np.asarray([x.f for x in c])
         best_x, best_fitness = self.get_best(c, fc, best_x, best_fitness)
         return c, fc, best_x, best_fitness, {}
-
-
-def cmaes_function(task, rng, epsilon=1e-20):
-    lam, alpha_mu, hs, sigma0 = (4 + np.round(3 * np.log(task.dimension))) * 10, 2, 0, 0.3 * task.range
-    mu = int(np.round(lam / 2))
-    w = np.log(mu + 0.5) - np.log(range(1, mu + 1))
-    w = w / np.sum(w)
-    mu_eff = 1 / np.sum(w ** 2)
-    cs = (mu_eff + 2) / (task.dimension + mu_eff + 5)
-    ds = 1 + cs + 2 * max(np.sqrt((mu_eff - 1) / (task.dimension + 1)) - 1, 0)
-    enn = np.sqrt(task.dimension) * (1 - 1 / (4 * task.dimension) + 1 / (21 * task.dimension ** 2))
-    cc, c1 = (4 + mu_eff / task.dimension) / (4 + task.dimension + 2 * mu_eff / task.dimension), 2 / ((task.dimension + 1.3) ** 2 + mu_eff)
-    cmu, hth = min(1 - c1, alpha_mu * (mu_eff - 2 + 1 / mu_eff) / ((task.dimension + 2) ** 2 + alpha_mu * mu_eff / 2)), (
-                1.4 + 2 / (task.dimension + 1)) * enn
-    ps = np.zeros(task.dimension)
-    pc = np.zeros(task.dimension)
-    c = np.eye(task.dimension)
-    sigma = sigma0
-    x = rng.uniform(task.lower, task.upper)
-    x_f = task.eval(x)
-    while not task.stopping_condition_iter():
-        pop_step = np.asarray([rng.multivariate_normal(np.zeros(task.dimension), c) for _ in range(int(lam))])
-        pop = np.asarray([task.repair(x + sigma * ps, rng=rng) for ps in pop_step])
-        pop_f = np.apply_along_axis(task.eval, 1, pop)
-        i_sort = np.argsort(pop_f)
-        pop, pop_f, pop_step = pop[i_sort[:mu]], pop_f[i_sort[:mu]], pop_step[i_sort[:mu]]
-        if pop_f[0] < x_f:
-            x, x_f = pop[0], pop_f[0]
-        m = np.sum(w * pop_step.T, axis=1)
-        ps = solve(cholesky(c).conj() + epsilon, ((1 - cs) * ps + np.sqrt(cs * (2 - cs) * mu_eff) * m + epsilon).T)[0].T
-        sigma *= np.exp(cs / ds * (norm(ps) / enn - 1)) ** 0.3
-        i_fix = np.where(sigma == np.inf)
-        if np.any(i_fix):
-            sigma[i_fix] = sigma0
-        if norm(ps) / np.sqrt(1 - (1 - cs) ** (2 * ((task.iters + 1) + 1))) < hth:
-            hs = 1
-        else:
-            hs = 0
-        delta = (1 - hs) * cc * (2 - cc)
-        pc = (1 - cc) * pc + hs * np.sqrt(cc * (2 - cc) * mu_eff) * m
-        c = (1 - c1 - cmu) * c + c1 * (
-                    np.tile(pc, [len(pc), 1]) * np.tile(pc.reshape([len(pc), 1]), [1, len(pc)]) + delta * c)
-        for i in range(mu):
-            c += cmu * w[i] * np.tile(pop_step[i], [len(pop_step[i]), 1]) * np.tile(pop_step[i].reshape([len(pop_step[i]), 1]), [1, len(pop_step[i])])
-        e, v = eig(c)
-        if np.any(e < epsilon):
-            e = np.fmax(e, 0)
-            c = lstsq(v.T, np.dot(v, np.diag(e)).T, rcond=None)[0].T
-    return x, x_f
-
-
-class CovarianceMatrixAdaptionEvolutionStrategy(Algorithm):
-    r"""Implementation of CMAES.
-
-    Algorithm:
-        CMAES
-
-    Date:
-        2018
-
-    Authors:
-        Klemen Berkovič
-
-    License:
-        MIT
-
-    Reference URL:
-        https://arxiv.org/abs/1604.00772
-
-    Reference paper:
-        Hansen, Nikolaus. "The CMA evolution strategy: A tutorial." arXiv preprint arXiv:1604.00772 (2016).
-
-    Attributes:
-        Name (List[str]): List of names representing algorithm names
-        epsilon (float): Small number.
-
-    """
-
-    Name = ['CovarianceMatrixAdaptionEvolutionStrategy', 'CMA-ES', 'CMAES']
-    epsilon = 1e-20
-
-    @staticmethod
-    def info():
-        r"""Get algorithms information.
-
-        Returns:
-            str: Algorithm information.
-
-        See Also:
-            * :func:`niapy.algorithms.Algorithm.info`
-
-        """
-        return r"""Hansen, Nikolaus. "The CMA evolution strategy: A tutorial." arXiv preprint arXiv:1604.00772 (2016)."""
-
-    def __init__(self, epsilon=1e-20, *args, **kwargs):
-        """Initialize CovarianceMatrixAdaptionEvolutionStrategy.
-
-        Args:
-            epsilon (float): Small number.
-
-        """
-        super().__init__(*args, **kwargs)
-        self.epsilon = epsilon
-
-    def set_parameters(self, epsilon=1e-20, **kwargs):
-        r"""Set core parameters of CovarianceMatrixAdaptionEvolutionStrategy algorithm.
-
-        Args:
-            epsilon (float): Small number.
-
-        """
-        super().set_parameters(**kwargs)
-        self.epsilon = epsilon
-
-    def run_task(self, task):
-        r"""Start the optimization.
-
-        Args:
-            task (Task): Task with bounds and objective function for optimization.
-
-        Returns:
-            Tuple[numpy.ndarray, float]:
-                1. Best individuals components found in optimization process.
-                2. Best fitness value found in optimization process.
-
-        See Also:
-            * :func:`niapy.algorithms.Algorithm.run_task`
-
-        """
-        return cmaes_function(task, rng=self.rng, epsilon=self.epsilon)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

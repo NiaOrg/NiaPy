@@ -68,6 +68,7 @@ class BareBonesFireworksAlgorithm(Algorithm):
             reduction_coefficient (float): Reduction coefficient :math:`\in (0, 1)`.
 
         """
+        kwargs.pop('population_size', None)
         super().__init__(1, *args, **kwargs)
         self.num_sparks = num_sparks
         self.amplification_coefficient = amplification_coefficient

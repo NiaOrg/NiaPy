@@ -30,79 +30,44 @@ class JDETestCase(AlgorithmTestCase):
 
     def test_custom(self):
         jde_custom = SelfAdaptiveDifferentialEvolution(f_lower=0.0, f_upper=2.0, tao1=0.9, tao2=0.45,
-                                                       population_size=40, differential_weight=0.5,
+                                                       population_size=10, differential_weight=0.5,
                                                        crossover_probability=0.1, seed=self.seed)
         jde_customc = SelfAdaptiveDifferentialEvolution(f_lower=0.0, f_upper=2.0, tao1=0.9, tao2=0.45,
-                                                        population_size=40, differential_weight=0.5,
+                                                        population_size=10, differential_weight=0.5,
                                                         crossover_probability=0.1, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, jde_custom, jde_customc, MyProblem())
 
     def test_griewank(self):
         jde_griewank = SelfAdaptiveDifferentialEvolution(f_lower=0.0, f_upper=2.0, tao1=0.9, tao2=0.45,
-                                                         population_size=40, differential_weight=0.5,
+                                                         population_size=10, differential_weight=0.5,
                                                          crossover_probability=0.1, seed=self.seed)
         jde_griewankc = SelfAdaptiveDifferentialEvolution(f_lower=0.0, f_upper=2.0, tao1=0.9, tao2=0.45,
-                                                          population_size=40, differential_weight=0.5,
+                                                          population_size=10, differential_weight=0.5,
                                                           crossover_probability=0.1, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, jde_griewank, jde_griewankc)
 
 
 class MsjDETestCase(AlgorithmTestCase):
     def test_custom(self):
-        jde_custom = MultiStrategySelfAdaptiveDifferentialEvolution(population_size=40, differential_weight=0.5,
+        jde_custom = MultiStrategySelfAdaptiveDifferentialEvolution(population_size=10, differential_weight=0.5,
                                                                     f_lower=0.0, f_upper=2.0, tao1=0.9,
                                                                     crossover_probability=0.1,
                                                                     tao2=0.45, seed=self.seed)
-        jde_customc = MultiStrategySelfAdaptiveDifferentialEvolution(population_size=40, differential_weight=0.5,
+        jde_customc = MultiStrategySelfAdaptiveDifferentialEvolution(population_size=10, differential_weight=0.5,
                                                                      f_lower=0.0, f_upper=2.0, tao1=0.9,
                                                                      crossover_probability=0.1,
                                                                      tao2=0.45, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, jde_custom, jde_customc, MyProblem())
 
     def test_griewank(self):
-        jde_griewank = MultiStrategySelfAdaptiveDifferentialEvolution(population_size=40, differential_weight=0.5,
+        jde_griewank = MultiStrategySelfAdaptiveDifferentialEvolution(population_size=10, differential_weight=0.5,
                                                                       f_lower=0.0, f_upper=2.0, tao1=0.9,
                                                                       crossover_probability=0.1,
                                                                       tao2=0.45, seed=self.seed)
-        jde_griewankc = MultiStrategySelfAdaptiveDifferentialEvolution(population_size=40, differential_weight=0.5,
+        jde_griewankc = MultiStrategySelfAdaptiveDifferentialEvolution(population_size=10, differential_weight=0.5,
                                                                        f_lower=0.0, f_upper=2.0, tao1=0.9,
                                                                        crossover_probability=0.1,
                                                                        tao2=0.45, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, jde_griewank, jde_griewankc)
-
-# class DynNPjDETestCase(AlgorithmTestCase):
-#     @skip("Not working")
-#     def test_custom(self):
-#         dynnpjde_custom = DynNpSelfAdaptiveDifferentialEvolutionAlgorithm(population_size=40, differential_weight=0.5, f_lower=0.0, f_upper=2.0, tao1=0.9,
-#                                                                           crossover_probability=0.1, tao2=0.45, seed=self.seed)
-#         dynnpjde_customc = DynNpSelfAdaptiveDifferentialEvolutionAlgorithm(population_size=40, differential_weight=0.5, f_lower=0.0, f_upper=2.0, tao1=0.9,
-#                                                                            crossover_probability=0.1, tao2=0.45, seed=self.seed)
-#         AlgorithmTestCase.test_algorithm_run(self, dynnpjde_custom, dynnpjde_customc, MyBenchmark())
-#
-#     @skip("Not working")
-#     def test_griewank(self):
-#         dynnpjde_griewank = DynNpSelfAdaptiveDifferentialEvolutionAlgorithm(population_size=40, differential_weight=0.5, f_lower=0.0, f_upper=2.0, tao1=0.9,
-#                                                                             crossover_probability=0.1, tao2=0.45, seed=self.seed)
-#         dynnpjde_griewankc = DynNpSelfAdaptiveDifferentialEvolutionAlgorithm(population_size=40, differential_weight=0.5, f_lower=0.0, f_upper=2.0, tao1=0.9,
-#                                                                              crossover_probability=0.1, tao2=0.45, seed=self.seed)
-#         AlgorithmTestCase.test_algorithm_run(self, dynnpjde_griewank, dynnpjde_griewankc)
-#
-#
-# class DynNpMsjDETestCase(AlgorithmTestCase):
-#     @skip("Not working")
-#     def test_custom(self):
-#         jde_custom = DynNpMultiStrategySelfAdaptiveDifferentialEvolution(population_size=40, differential_weight=0.5, f_lower=0.0, f_upper=2.0, tao1=0.9,
-#                                                                          crossover_probability=0.1, tao2=0.45, seed=self.seed)
-#         jde_customc = DynNpMultiStrategySelfAdaptiveDifferentialEvolution(population_size=40, differential_weight=0.5, f_lower=0.0, f_upper=2.0, tao1=0.9,
-#                                                                           crossover_probability=0.1, tao2=0.45, seed=self.seed)
-#         AlgorithmTestCase.test_algorithm_run(self, jde_custom, jde_customc, MyBenchmark())
-#
-#     @skip("Not working")
-#     def test_griewank(self):
-#         jde_griewank = DynNpMultiStrategySelfAdaptiveDifferentialEvolution(population_size=40, differential_weight=0.5, f_lower=0.0, f_upper=2.0, tao1=0.9,
-#                                                                            crossover_probability=0.1, tao2=0.45, seed=self.seed)
-#         jde_griewankc = MultiStrategySelfAdaptiveDifferentialEvolution(population_size=40, differential_weight=0.5, f_lower=0.0, f_upper=2.0, tao1=0.9, crossover_probability=0.1,
-#                                                                        tao2=0.45, seed=self.seed)
-#         AlgorithmTestCase.test_algorithm_run(self, jde_griewank, jde_griewankc)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

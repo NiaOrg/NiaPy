@@ -125,7 +125,7 @@ class GlowwormSwarmOptimization(Algorithm):
             'gamma': self.gamma,
             'beta': self.beta,
             's': self.s,
-            'Distance': self.distance
+            'distance': self.distance
         })
         return d
 
@@ -159,9 +159,9 @@ class GlowwormSwarmOptimization(Algorithm):
             numpy.ndarray[float]: Probabilities for each glowworm in swarm.
 
         """
-        d, probabilities = np.sum(luciferin[np.where(neighbors == 1)] - luciferin[i]), np.zeros(self.population_size)
-        for j in range(self.population_size):
-            probabilities[i] = ((luciferin[j] - luciferin[i]) / d) if neighbors[j] == 1 else 0
+        d = np.sum(luciferin[neighbors == 1] - luciferin[i]) + np.finfo(float).eps
+        probabilities = np.zeros(self.population_size)
+        probabilities[neighbors == 1] = (luciferin[neighbors == 1] - luciferin[i]) / d
         return probabilities
 
     def move_select(self, pb, i):
@@ -299,7 +299,8 @@ class GlowwormSwarmOptimizationV1(GlowwormSwarmOptimization):
         return r"""Kaipa, Krishnanand N., and Debasish Ghose. Glowworm swarm optimization: theory, algorithms, and applications. Vol. 698. Springer, 2017."""
 
     def calculate_luciferin(self, luciferin, fitness):
-        return np.fmax(0.0, (1 - self.rho) * luciferin + self.gamma * fitness)
+        r = super().calculate_luciferin(luciferin, fitness)
+        return np.fmax(0.0, r)
 
     def range_update(self, range_, neighbors, sensing_range):
         """Update range."""

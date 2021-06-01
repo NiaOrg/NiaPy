@@ -9,10 +9,9 @@ from niapy.algorithms.basic.cro import CoralReefsOptimization
 from niapy.algorithms.basic.cs import CuckooSearch
 from niapy.algorithms.basic.cso import CatSwarmOptimization
 from niapy.algorithms.basic.de import DifferentialEvolution, MultiStrategyDifferentialEvolution, \
-    DynNpDifferentialEvolution, AgingNpDifferentialEvolution, DynNpMultiStrategyDifferentialEvolution, \
-    CrowdingDifferentialEvolution, multi_mutations
+    DynNpDifferentialEvolution, AgingNpDifferentialEvolution, DynNpMultiStrategyDifferentialEvolution, multi_mutations
 from niapy.algorithms.basic.es import EvolutionStrategy1p1, EvolutionStrategyMp1, EvolutionStrategyMpL, \
-    EvolutionStrategyML, CovarianceMatrixAdaptionEvolutionStrategy
+    EvolutionStrategyML
 from niapy.algorithms.basic.fa import FireflyAlgorithm
 from niapy.algorithms.basic.foa import ForestOptimizationAlgorithm
 from niapy.algorithms.basic.fpa import FlowerPollinationAlgorithm
@@ -26,7 +25,7 @@ from niapy.algorithms.basic.gso import GlowwormSwarmOptimization, GlowwormSwarmO
 from niapy.algorithms.basic.gwo import GreyWolfOptimizer
 from niapy.algorithms.basic.hho import HarrisHawksOptimization
 from niapy.algorithms.basic.hs import HarmonySearch, HarmonySearchV1
-from niapy.algorithms.basic.kh import KrillHerdV1, KrillHerdV2, KrillHerdV3, KrillHerdV4, KrillHerdV11
+from niapy.algorithms.basic.kh import KrillHerd
 from niapy.algorithms.basic.mbo import MonarchButterflyOptimization
 from niapy.algorithms.basic.mfo import MothFlameOptimizer
 from niapy.algorithms.basic.mke import MonkeyKingEvolutionV1, MonkeyKingEvolutionV2, MonkeyKingEvolutionV3
@@ -40,13 +39,11 @@ __all__ = [
     'BatAlgorithm',
     'FireflyAlgorithm',
     'DifferentialEvolution',
-    'CrowdingDifferentialEvolution',
     'AgingNpDifferentialEvolution',
     'DynNpDifferentialEvolution',
     'MultiStrategyDifferentialEvolution',
     'DynNpMultiStrategyDifferentialEvolution',
     'multi_mutations',
-    # 'AgingNpMultiMutationDifferentialEvolution',
     'FlowerPollinationAlgorithm',
     'GreyWolfOptimizer',
     'CatSwarmOptimization',
@@ -62,7 +59,6 @@ __all__ = [
     'EvolutionStrategyMp1',
     'EvolutionStrategyMpL',
     'EvolutionStrategyML',
-    'CovarianceMatrixAdaptionEvolutionStrategy',
     'SineCosineAlgorithm',
     'GlowwormSwarmOptimization',
     'GlowwormSwarmOptimizationV1',
@@ -70,11 +66,7 @@ __all__ = [
     'GlowwormSwarmOptimizationV3',
     'HarmonySearch',
     'HarmonySearchV1',
-    'KrillHerdV1',
-    'KrillHerdV2',
-    'KrillHerdV3',
-    'KrillHerdV4',
-    'KrillHerdV11',
+    'KrillHerd',
     'FireworksAlgorithm',
     'EnhancedFireworksAlgorithm',
     'DynamicFireworksAlgorithm',

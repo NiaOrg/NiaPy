@@ -27,13 +27,13 @@ class FWATestCase(AlgorithmTestCase):
         self.algo = FireworksAlgorithm
 
     def test_custom(self):
-        fwa_custom = self.algo(seed=self.seed)
-        fwa_customc = self.algo(seed=self.seed)
+        fwa_custom = self.algo(population_size=10, seed=self.seed)
+        fwa_customc = self.algo(population_size=10, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, fwa_custom, fwa_customc, MyProblem())
 
     def test_griewank(self):
-        fwa_griewank = self.algo(seed=self.seed)
-        fwa_griewankc = self.algo(seed=self.seed)
+        fwa_griewank = self.algo(population_size=10, seed=self.seed)
+        fwa_griewankc = self.algo(population_size=10, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, fwa_griewank, fwa_griewankc)
 
 
@@ -43,13 +43,13 @@ class EFWATestCase(AlgorithmTestCase):
         self.algo = EnhancedFireworksAlgorithm
 
     def test_custom(self):
-        fwa_custom = self.algo(seed=self.seed)
-        fwa_customc = self.algo(seed=self.seed)
+        fwa_custom = self.algo(population_size=10, seed=self.seed)
+        fwa_customc = self.algo(population_size=10, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, fwa_custom, fwa_customc, MyProblem(), max_evals=12345, max_iters=17)
 
     def test_griewank(self):
-        fwa_griewank = self.algo(seed=self.seed)
-        fwa_griewankc = self.algo(seed=self.seed)
+        fwa_griewank = self.algo(population_size=10, seed=self.seed)
+        fwa_griewankc = self.algo(population_size=10, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, fwa_griewank, fwa_griewankc)
 
 

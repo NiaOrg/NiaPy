@@ -8,11 +8,11 @@ class MBOTestCase(AlgorithmTestCase):
         self.algo = MonarchButterflyOptimization
 
     def test(self):
-        mbo = self.algo(population_size=20, PAR=5.0 / 12.0, PER=1.2, seed=self.seed)
-        mboc = self.algo(population_size=20, PAR=5.0 / 12.0, PER=1.2, seed=self.seed)
+        mbo = self.algo(population_size=10, PAR=5.0 / 12.0, PER=1.2, seed=self.seed)
+        mboc = self.algo(population_size=10, PAR=5.0 / 12.0, PER=1.2, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, mbo, mboc, MyProblem())
 
     def test_griewank(self):
-        mbo_griewank = self.algo(population_size=20, PAR=5.0 / 12.0, PER=1.2, seed=self.seed)
-        mbo_griewankc = self.algo(population_size=20, PAR=5.0 / 12.0, PER=1.2, seed=self.seed)
+        mbo_griewank = self.algo(population_size=10, PAR=5.0 / 12.0, PER=1.2, seed=self.seed)
+        mbo_griewankc = self.algo(population_size=10, PAR=5.0 / 12.0, PER=1.2, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, mbo_griewank, mbo_griewankc)

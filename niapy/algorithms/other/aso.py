@@ -415,10 +415,9 @@ class AnarchicSocietyOptimization(Algorithm):
         """
         population, population_fitness, d = Algorithm.init_population(self, task)
         alpha, gamma, theta = self.init(task)
-        x_best, x_best_fitness = self.update_personal_best(population, population_fitness,
+        x_best, x_best_fitness = self.update_personal_best(population, task.optimization_type.value * population_fitness,
                                                            np.zeros((self.population_size, task.dimension)),
-                                                           np.full(self.population_size,
-                                                                   task.optimization_type.value * np.inf))
+                                                           np.full(self.population_size, np.inf))
         d.update({'x_best': x_best, 'x_best_fitness': x_best_fitness, 'alpha': alpha, 'gamma': gamma, 'theta': theta,
                   'rs': self.d(task.upper, task.lower)})
         return population, population_fitness, d

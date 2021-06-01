@@ -9,8 +9,8 @@ class FSSTestCase(AlgorithmTestCase):
         self.algo = FishSchoolSearch
 
     def test_custom(self):
-        fss_custom = self.algo(population_size=20, seed=self.seed)
-        fss_customc = self.algo(population_size=20, seed=self.seed)
+        fss_custom = self.algo(population_size=10, seed=self.seed)
+        fss_customc = self.algo(population_size=10, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, fss_custom, fss_customc, MyProblem())
 
     def test_griewank(self):
