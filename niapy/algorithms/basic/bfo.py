@@ -10,10 +10,10 @@ logging.basicConfig()
 logger = logging.getLogger('niapy.algorithms.basic')
 logger.setLevel('INFO')
 
-__all__ = ['BacterialForagingOptimizationAlgorithm']
+__all__ = ['BacterialForagingOptimization']
 
 
-class BacterialForagingOptimizationAlgorithm(Algorithm):
+class BacterialForagingOptimization(Algorithm):
     r"""Implementation of the Bacterial foraging optimization algorithm.
 
     Date:
@@ -47,7 +47,7 @@ class BacterialForagingOptimizationAlgorithm(Algorithm):
 
     """
 
-    Name = ['BacterialForagingOptimizationAlgorithm', 'BFOA', 'BFO']
+    Name = ['BacterialForagingOptimization', 'BFO', 'BFOA']
 
     @staticmethod
     def info():
@@ -151,7 +151,6 @@ class BacterialForagingOptimizationAlgorithm(Algorithm):
             'h_repel': self.h_repel,
             'w_repel': self.w_repel
         })
-
         return params
 
     def init_population(self, task):
@@ -174,10 +173,9 @@ class BacterialForagingOptimizationAlgorithm(Algorithm):
         """
         pop, fpop, d = super().init_population(task)
         d.update({
-            'cost': np.zeros((self.population_size,), dtype=np.float64),
-            'health': np.zeros((self.population_size,), dtype=np.float64)
+            'cost': np.zeros(self.population_size, dtype=np.float64),
+            'health': np.zeros(self.population_size, dtype=np.float64)
         })
-
         return pop, fpop, d
 
     def interaction(self, cell, population):

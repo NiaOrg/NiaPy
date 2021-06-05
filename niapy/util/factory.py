@@ -156,6 +156,6 @@ def _algorithm_options():
         "MultipleTrajectorySearchV1": other_algorithms.MultipleTrajectorySearchV1,
         "AnarchicSocietyOptimization": other_algorithms.AnarchicSocietyOptimization,
         "RandomSearch": other_algorithms.RandomSearch,
-        "BacterialForagingOptimizationAlgorithm": basic_algorithms.BacterialForagingOptimizationAlgorithm
+        "BacterialForagingOptimization": basic_algorithms.BacterialForagingOptimization
     }
     return algorithms

@@ -12,7 +12,7 @@ Basic algorithms
 ~~~~~~~~~~~~~~~~
 
 - Artificial Bee Colony
-- Bacterial Foraging Optimization Algorithm
+- Bacterial Foraging Optimization
 - Bat Algorithm
 - Bees Algorithm
 - Camel Algorithm

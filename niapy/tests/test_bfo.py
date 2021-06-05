@@ -1,13 +1,13 @@
 # encoding=utf8
 
-from niapy.algorithms.basic import BacterialForagingOptimizationAlgorithm
+from niapy.algorithms.basic import BacterialForagingOptimization
 from niapy.tests.test_algorithm import AlgorithmTestCase, MyProblem
 
 
-class BFOATestCase(AlgorithmTestCase):
+class BFOTestCase(AlgorithmTestCase):
     def setUp(self):
         AlgorithmTestCase.setUp(self)
-        self.algo = BacterialForagingOptimizationAlgorithm
+        self.algo = BacterialForagingOptimization
 
     def test_custom(self):
         bfoa_custom = self.algo(population_size=10, n_chemotactic=100, n_reproduction=4, n_elimination=1, step_size=0.1,
