@@ -1,4 +1,6 @@
-# Basic algorithms
+# List of algorithms included in niapy (alphabetically)
+
+## Basic algorithms
 
 |Full name               |Acronym|Reference                                                                                                                                                                                                                                                                                                                                                                     |
 |------------------------|-------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -31,7 +33,7 @@ Harris hawks optimization      |HHO| Heidari et al. "Harris hawks optimization: 
 |Sine Cosine Algorithm         |SCA|Seyedali Mirjalili, SCA: A Sine Cosine Algorithm for solving optimization problems, Knowledge-Based Systems, Volume 96, 2016, Pages 120-133,
 
 
-# Modified algorithms
+## Modified algorithms
 
 |Full name                           |Acronym|Reference                                                                                                                                                                                                                                                 |
 |------------------------------------|-------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -40,7 +42,7 @@ Harris hawks optimization      |HHO| Heidari et al. "Harris hawks optimization: 
 |Self-adaptive differential evolution|jDE    |Brest, J., Greiner, S., Boskovic, B., Mernik, M., Zumer, V. Self-adapting control parameters in differential evolution: A comparative study on numerical benchmark problems. IEEE transactions on evolutionary computation, 10(6), 646-657, 2006.|
 |Parameter-free bat algorithm|PLBA   |Iztok Fister Jr., Iztok Fister, Xin-She Yang. Towards the development of a parameter-free bat algorithm . In: FISTER Jr., Iztok (Ed.), BRODNIK, Andrej (Ed.). StuCoSReC : proceedings of the 2015 2nd Student Computer Science Research Conference. Koper: University of Primorska, 2015, pp. 31-34.|
 
-# Other algorithms
+## Other algorithms
 
 |Full name                    |Acronym|Reference                                                                                                                                                                                              |
 |-----------------------------|-------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
