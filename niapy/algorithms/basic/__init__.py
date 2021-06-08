@@ -3,7 +3,7 @@
 from niapy.algorithms.basic.abc import ArtificialBeeColonyAlgorithm
 from niapy.algorithms.basic.ba import BatAlgorithm
 from niapy.algorithms.basic.bea import BeesAlgorithm
-from niapy.algorithms.basic.bfoa import BacterialForagingOptimizationAlgorithm
+from niapy.algorithms.basic.bfo import BacterialForagingOptimization
 from niapy.algorithms.basic.ca import CamelAlgorithm
 from niapy.algorithms.basic.cro import CoralReefsOptimization
 from niapy.algorithms.basic.cs import CuckooSearch
@@ -87,5 +87,5 @@ __all__ = [
     'ComprehensiveLearningParticleSwarmOptimizer',
     'CenterParticleSwarmOptimization',
     'HarrisHawksOptimization',
-    'BacterialForagingOptimizationAlgorithm'
+    'BacterialForagingOptimization'
 ]

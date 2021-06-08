@@ -12,7 +12,7 @@ Basic algorithms
 ~~~~~~~~~~~~~~~~
 
 - Artificial Bee Colony
-- Bacterial Foraging Optimization Algorithm
+- Bacterial Foraging Optimization
 - Bat Algorithm
 - Bees Algorithm
 - Camel Algorithm
@@ -113,10 +113,9 @@ NiaPy features more than 30 optimization problems. Documentation for them can be
 - Zakharov
 
 
-Other examples:
------------------------------
+Other features:
+---------------
 
-- Using different termination conditions (nFES, nGEN, reference value)
-- Basic statistics example (min, max, mean, median, std)
+- Using different termination conditions (function evaluations, number of iterations, cutoff value)
 - Storing improvements during the evolutionary cycle
 - Custom initialization of initial population

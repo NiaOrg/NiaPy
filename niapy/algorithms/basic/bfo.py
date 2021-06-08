@@ -10,10 +10,10 @@ logging.basicConfig()
 logger = logging.getLogger('niapy.algorithms.basic')
 logger.setLevel('INFO')
 
-__all__ = ['BacterialForagingOptimizationAlgorithm']
+__all__ = ['BacterialForagingOptimization']
 
 
-class BacterialForagingOptimizationAlgorithm(Algorithm):
+class BacterialForagingOptimization(Algorithm):
     r"""Implementation of the Bacterial foraging optimization algorithm.
 
     Date:
@@ -47,7 +47,7 @@ class BacterialForagingOptimizationAlgorithm(Algorithm):
 
     """
 
-    Name = ['BacterialForagingOptimizationAlgorithm', 'BFOA', 'BFO']
+    Name = ['BacterialForagingOptimization', 'BFO', 'BFOA']
 
     @staticmethod
     def info():
@@ -63,8 +63,8 @@ class BacterialForagingOptimizationAlgorithm(Algorithm):
         return r"""K. M. Passino, "Biomimicry of bacterial foraging for distributed optimization and control," in IEEE Control Systems Magazine, vol. 22, no. 3, pp. 52-67, June 2002, doi: 10.1109/MCS.2002.1004010."""
 
     def __init__(self, population_size=50, n_chemotactic=100, n_swim=4, n_reproduction=4, n_elimination=2,
-                 prob_elimination=0.25, step_size=0.1, d_attract=0.1, w_attract=0.2, h_repel=0.1, w_repel=10.0, *args,
-                 **kwargs):
+                 prob_elimination=0.25, step_size=0.1, swarming=True, d_attract=0.1, w_attract=0.2, h_repel=0.1,
+                 w_repel=10.0, *args, **kwargs):
         r"""Initialize algorithm.
 
         Args:
@@ -75,6 +75,7 @@ class BacterialForagingOptimizationAlgorithm(Algorithm):
             n_elimination (Optional[int]): Number of elimination and dispersal steps.
             prob_elimination (Optional[float]): Probability of a bacterium being eliminated and a new one being created at a random location in the search space.
             step_size (Optional[float]): Size of a chemotactic step.
+            swarming (Optional[bool]): If `True` use swarming.
             d_attract (Optional[float]): Depth of the attractant released by the cell (a quantification of how much attractant is released).
             w_attract (Optional[float]): Width of the attractant signal (a quantification of the diffusion rate of the chemical).
             h_repel (Optional[float]): Height of the repellent effect (magnitude of its effect).
@@ -91,6 +92,7 @@ class BacterialForagingOptimizationAlgorithm(Algorithm):
         self.n_elimination = n_elimination
         self.prob_elimination = prob_elimination
         self.step_size = step_size
+        self.swarming = swarming
         self.d_attract = d_attract
         self.w_attract = w_attract
         self.h_repel = h_repel
@@ -101,8 +103,8 @@ class BacterialForagingOptimizationAlgorithm(Algorithm):
         self.k = 0  # chemotaxis step counter
 
     def set_parameters(self, population_size=50, n_chemotactic=100, n_swim=4, n_reproduction=4, n_elimination=2,
-                       prob_elimination=0.25, step_size=0.1, d_attract=0.1, w_attract=0.2, h_repel=0.1, w_repel=10.0,
-                       **kwargs):
+                       prob_elimination=0.25, step_size=0.1, swarming=True, d_attract=0.1, w_attract=0.2, h_repel=0.1,
+                       w_repel=10.0, **kwargs):
         r"""Set the parameters/arguments of the algorithm.
 
         Args:
@@ -113,6 +115,7 @@ class BacterialForagingOptimizationAlgorithm(Algorithm):
             n_elimination (Optional[int]): Number of elimination and dispersal steps.
             prob_elimination (Optional[float]): Probability of a bacterium being eliminated and a new one being created at a random location in the search space.
             step_size (Optional[float]): Size of a chemotactic step.
+            swarming (Optional[bool]): If `True` use swarming.
             d_attract (Optional[float]): Depth of the attractant released by the cell (a quantification of how much attractant is released).
             w_attract (Optional[float]): Width of the attractant signal (a quantification of the diffusion rate of the chemical).
             h_repel (Optional[float]): Height of the repellent effect (magnitude of its effect).
@@ -151,7 +154,6 @@ class BacterialForagingOptimizationAlgorithm(Algorithm):
             'h_repel': self.h_repel,
             'w_repel': self.w_repel
         })
-
         return params
 
     def init_population(self, task):
@@ -174,10 +176,9 @@ class BacterialForagingOptimizationAlgorithm(Algorithm):
         """
         pop, fpop, d = super().init_population(task)
         d.update({
-            'cost': np.zeros((self.population_size,), dtype=np.float64),
-            'health': np.zeros((self.population_size,), dtype=np.float64)
+            'cost': np.zeros(self.population_size, dtype=np.float64),
+            'health': np.zeros(self.population_size, dtype=np.float64)
         })
-
         return pop, fpop, d
 
     def interaction(self, cell, population):
@@ -191,6 +192,8 @@ class BacterialForagingOptimizationAlgorithm(Algorithm):
             float: Cell to cell interaction J_cc
 
         """
+        if not self.swarming:
+            return 0.0
         distances = euclidean(cell, population)
         attract = np.sum(-self.d_attract * np.exp(-self.w_attract * distances))
         repel = np.sum(self.h_repel * np.exp(-self.w_repel * distances))
