@@ -1,5 +1,31 @@
 # Changelog
 
+## [2.0.0rc17](https://github.com/NiaOrg/NiaPy/tree/2.0.0rc17) (2021-06-10)
+
+[Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2.0.0rc16...2.0.0rc17)
+
+**Closed issues:**
+
+- Maximization doesn't work [\#328](https://github.com/NiaOrg/NiaPy/issues/328)
+- Remove ThrowingTask and CountingTask [\#317](https://github.com/NiaOrg/NiaPy/issues/317)
+- Tasks are missing from the documentation. [\#315](https://github.com/NiaOrg/NiaPy/issues/315)
+- NiaPy fails to build with Python 3.10.0a7. [\#308](https://github.com/NiaOrg/NiaPy/issues/308)
+
+**Merged pull requests:**
+
+- Edit Algorithms.md [\#333](https://github.com/NiaOrg/NiaPy/pull/333) ([firefly-cpp](https://github.com/firefly-cpp))
+- Rename BFOA [\#331](https://github.com/NiaOrg/NiaPy/pull/331) ([zStupan](https://github.com/zStupan))
+- Fixed Maximization [\#329](https://github.com/NiaOrg/NiaPy/pull/329) ([zStupan](https://github.com/zStupan))
+- Remove export directory [\#327](https://github.com/NiaOrg/NiaPy/pull/327) ([zStupan](https://github.com/zStupan))
+- docs: add eltociear as a contributor [\#326](https://github.com/NiaOrg/NiaPy/pull/326) ([allcontributors[bot]](https://github.com/apps/allcontributors))
+- Fix typo in jade.py [\#324](https://github.com/NiaOrg/NiaPy/pull/324) ([eltociear](https://github.com/eltociear))
+- Remove ThrowingTask and CountingTask [\#323](https://github.com/NiaOrg/NiaPy/pull/323) ([zStupan](https://github.com/zStupan))
+- Benchmark refactor [\#321](https://github.com/NiaOrg/NiaPy/pull/321) ([zStupan](https://github.com/zStupan))
+- docs: add lukapecnik as a contributor [\#320](https://github.com/NiaOrg/NiaPy/pull/320) ([allcontributors[bot]](https://github.com/apps/allcontributors))
+- docs: add zStupan as a contributor [\#319](https://github.com/NiaOrg/NiaPy/pull/319) ([allcontributors[bot]](https://github.com/apps/allcontributors))
+- docs: add hrnciar as a contributor [\#318](https://github.com/NiaOrg/NiaPy/pull/318) ([allcontributors[bot]](https://github.com/apps/allcontributors))
+- Fix detection of two digit Python minor version [\#316](https://github.com/NiaOrg/NiaPy/pull/316) ([hrnciar](https://github.com/hrnciar))
+
 ## [2.0.0rc16](https://github.com/NiaOrg/NiaPy/tree/2.0.0rc16) (2021-05-26)
 
 [Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2.0.0rc15...2.0.0rc16)

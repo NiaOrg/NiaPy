@@ -1,6 +1,61 @@
 Changelog
 =========
 
+`2.0.0rc17 <https://github.com/NiaOrg/NiaPy/tree/2.0.0rc17>`__ (2021-06-10)
+---------------------------------------------------------------------------
+
+`Full
+Changelog <https://github.com/NiaOrg/NiaPy/compare/2.0.0rc16...2.0.0rc17>`__
+
+**Closed issues:**
+
+-  Maximization doesn’t work
+   `#328 <https://github.com/NiaOrg/NiaPy/issues/328>`__
+-  Remove ThrowingTask and CountingTask
+   `#317 <https://github.com/NiaOrg/NiaPy/issues/317>`__
+-  Tasks are missing from the documentation.
+   `#315 <https://github.com/NiaOrg/NiaPy/issues/315>`__
+-  NiaPy fails to build with Python 3.10.0a7.
+   `#308 <https://github.com/NiaOrg/NiaPy/issues/308>`__
+
+**Merged pull requests:**
+
+-  Edit Algorithms.md
+   `#333 <https://github.com/NiaOrg/NiaPy/pull/333>`__
+   (`firefly-cpp <https://github.com/firefly-cpp>`__)
+-  Rename BFOA `#331 <https://github.com/NiaOrg/NiaPy/pull/331>`__
+   (`zStupan <https://github.com/zStupan>`__)
+-  Fixed Maximization
+   `#329 <https://github.com/NiaOrg/NiaPy/pull/329>`__
+   (`zStupan <https://github.com/zStupan>`__)
+-  Remove export directory
+   `#327 <https://github.com/NiaOrg/NiaPy/pull/327>`__
+   (`zStupan <https://github.com/zStupan>`__)
+-  docs: add eltociear as a contributor
+   `#326 <https://github.com/NiaOrg/NiaPy/pull/326>`__
+   (`allcontributors[bot] <https://github.com/apps/allcontributors>`__)
+-  Fix typo in jade.py
+   `#324 <https://github.com/NiaOrg/NiaPy/pull/324>`__
+   (`eltociear <https://github.com/eltociear>`__)
+-  Remove ThrowingTask and CountingTask
+   `#323 <https://github.com/NiaOrg/NiaPy/pull/323>`__
+   (`zStupan <https://github.com/zStupan>`__)
+-  Benchmark refactor
+   `#321 <https://github.com/NiaOrg/NiaPy/pull/321>`__
+   (`zStupan <https://github.com/zStupan>`__)
+-  docs: add lukapecnik as a contributor
+   `#320 <https://github.com/NiaOrg/NiaPy/pull/320>`__
+   (`allcontributors[bot] <https://github.com/apps/allcontributors>`__)
+-  docs: add zStupan as a contributor
+   `#319 <https://github.com/NiaOrg/NiaPy/pull/319>`__
+   (`allcontributors[bot] <https://github.com/apps/allcontributors>`__)
+-  docs: add hrnciar as a contributor
+   `#318 <https://github.com/NiaOrg/NiaPy/pull/318>`__
+   (`allcontributors[bot] <https://github.com/apps/allcontributors>`__)
+-  Fix detection of two digit Python minor version
+   `#316 <https://github.com/NiaOrg/NiaPy/pull/316>`__
+   (`hrnciar <https://github.com/hrnciar>`__)
+
 `2.0.0rc16 <https://github.com/NiaOrg/NiaPy/tree/2.0.0rc16>`__ (2021-05-26)
 ---------------------------------------------------------------------------
 
@@ -42,7 +97,7 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/2.0.0rc14...2.0.0rc15>`__
    `#294 <https://github.com/NiaOrg/NiaPy/issues/294>`__
 -  CuckooSearch’s runIteration is incompatible with other algorithms
    runIteration `#281 <https://github.com/NiaOrg/NiaPy/issues/281>`__
--  """ `#264 <https://github.com/NiaOrg/NiaPy/issues/264>`__
+-  ““” `#264 <https://github.com/NiaOrg/NiaPy/issues/264>`__
 
 **Merged pull requests:**
 
