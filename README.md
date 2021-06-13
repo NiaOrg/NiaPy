@@ -93,7 +93,7 @@ $ python setup.py install
 
 # Problems
 
-[click here](Problems.md) for the list of implemented test problems.
+[Click here](Problems.md) for the list of implemented test problems.
 
 # Usage
 
