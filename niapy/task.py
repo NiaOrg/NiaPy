@@ -50,7 +50,6 @@ class Task:
         max_iters (int): Maximum number of algorithm iterations/generations.
         max_evals (int): Maximum number of function evaluations.
         cutoff_value (float): Reference function/fitness values to reach in optimization.
-        x (numpy.ndarray): Best found individual.
         x_f (float): Best found individual function/fitness value.
 
     """
@@ -96,7 +95,6 @@ class Task:
 
         self.cutoff_value = -np.inf * optimization_type.value if cutoff_value is None else cutoff_value
         self.enable_logging = enable_logging
-        self.x = None
         self.x_f = np.inf * optimization_type.value
         self.max_evals = max_evals
         self.max_iters = max_iters
@@ -138,13 +136,13 @@ class Task:
 
         """
         if self.stopping_condition():
-            return np.inf * self.optimization_type.value
+            return np.inf
 
         self.evals += 1
         x_f = self.problem.evaluate(x) * self.optimization_type.value
 
-        if x_f < self.x_f:
-            self.x_f = x_f
+        if x_f < self.x_f * self.optimization_type.value:
+            self.x_f = x_f * self.optimization_type.value
             self.n_evals.append(self.evals)
             self.x_f_vals.append(x_f)
             if self.enable_logging:
