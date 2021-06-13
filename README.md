@@ -91,6 +91,10 @@ $ python setup.py install
 
 [Click here](Algorithms.md) for the list of implemented algorithms.
 
+# Problems
+
+[click here](Problems.md) for the list of implemented test problems.
+
 # Usage
 
 After installation, you can import NiaPy as any other Python module:

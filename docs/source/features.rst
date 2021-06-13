@@ -113,8 +113,8 @@ NiaPy features more than 30 optimization problems. Documentation for them can be
 - Zakharov
 
 
-Other features:
----------------
+Other features
+--------------
 
 - Using different termination conditions (function evaluations, number of iterations, cutoff value)
 - Storing improvements during the evolutionary cycle
