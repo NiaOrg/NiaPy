@@ -31,7 +31,9 @@
         "doc",
         "bug",
         "example",
-        "review"
+        "review",
+        "question",
+        "test"
       ]
     },
     {
