@@ -151,6 +151,7 @@ def _algorithm_options():
         "BeesAlgorithm": basic_algorithms.BeesAlgorithm,
         "CatSwarmOptimization": basic_algorithms.CatSwarmOptimization,
         "HarrisHawksOptimization": basic_algorithms.HarrisHawksOptimization,
+        "ClonalSelectionAlgorithm": basic_algorithms.ClonalSelectionAlgorithm,
         "HybridBatAlgorithm": modified_algorithms.HybridBatAlgorithm,
         "AdaptiveBatAlgorithm": modified_algorithms.AdaptiveBatAlgorithm,
         "SelfAdaptiveBatAlgorithm": modified_algorithms.SelfAdaptiveBatAlgorithm,
