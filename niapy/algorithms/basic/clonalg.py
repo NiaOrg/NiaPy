@@ -1,12 +1,8 @@
 # encoding=utf8
 import numpy as np
-from numpy.random import uniform
-from random import choice
-import math
-import copy
 import logging
 
-from niapy.algorithms.algorithm import Algorithm, Individual, default_individual_init
+from niapy.algorithms.algorithm import Algorithm
 
 logging.basicConfig()
 logger = logging.getLogger('niapy.algorithms.basic')
@@ -15,61 +11,35 @@ logger.setLevel('INFO')
 __all__ = ['ClonalSelectionAlgorithm']
 
 
-class Population:
-    def __init__(self, bitstring='', vector=None, cost=0, affinity=0):
-        if vector is None:
-            vector = [0, 0]
-        self.bitstring = bitstring
-        self.vector = vector
-        self.cost = cost
-        self.affinity = affinity
-
-    def set_bitstring(self, bitstring):
-        self.bitstring = bitstring
-
-    def set_vector(self, vector):
-        self.vector = vector
-
-    def set_cost(self, cost):
-        self.cost = cost
-
-    def set_affinity(self, affinity):
-        self.affinity = affinity
-
-
-class SolutionCLONALG(Individual):
-    pass
-
-
 class ClonalSelectionAlgorithm(Algorithm):
     r"""Implementation of Clonal Selection Algorithm.
 
-        Algorithm:
-            Clonal selection algorithm
+    Algorithm:
+        Clonal selection algorithm
 
-        Date:
-            2021
+    Date:
+        2021
 
-        Authors:
-            Andraž Peršon
+    Authors:
+        Andraž Peršon
 
-        License:
-            MIT
+    License:
+        MIT
 
-        Reference paper:
-            Brownlee, J. "Clever Algorithms: Nature-Inspired Programming Recipes" Revision 2. 2012. 280-286.
+    Reference paper:
+        Brownlee, J. "Clever Algorithms: Nature-Inspired Programming Recipes" Revision 2. 2012. 280-286.
 
-        Attributes:
-            population_size (int): Size of population.
-            search_space (List[Dict[int, int]]): Minimum and maximum values to be searched.
-            max_gens (int): Number of iterations for algorithm.
-            clone_factor (float): Factor based on which the clones are generated.
-            num_rand (int): Random number for a seed.
+    Attributes:
+        population_size (int): Population size.
+        clone_factor (float): Clone factor.
+        mutation_factor (float): Mutation factor.
+        num_rand (int): Number of random antibodies to be added to the population each generation.
+        bits_per_param (int): Number of bits per parameter of solution vector.
 
-        See Also:
-            * :class:`niapy.algorithms.Algorithm`
+    See Also:
+        * :class:`niapy.algorithms.Algorithm`
 
-        """
+    """
 
     Name = ['ClonalSelectionAlgorithm', 'CLONALG']
 
@@ -86,61 +56,49 @@ class ClonalSelectionAlgorithm(Algorithm):
         """
         return r"""Brownlee, J. "Clever Algorithms: Nature-Inspired Programming Recipes" Revision 2. 2012. 280-286."""
 
-    def __init__(self, population_size=10, search_space=None, max_gens=100, clone_factor=0.1, num_rand=1, *args,
+    def __init__(self, population_size=10, clone_factor=0.1, mutation_factor=-2.5, num_rand=1, bits_per_param=16, *args,
                  **kwargs):
         """Initialize ClonalSelectionAlgorithm.
 
-                Args:
-                    population_size (Optional[int]): Population size.
-                    search_space (Optional[List[Dict[int, int]]]): Search space.
-                    max_gens (Optional[int]): Maximum generations.
-                    clone_factor (Optional[float]): Clone factor.
-                    num_rand (Optional[int]): Random number.
+        Args:
+            population_size (Optional[int]): Population size.
+            clone_factor (Optional[float]): Clone factor.
+            mutation_factor (Optional[float]): Mutation factor.
+            num_rand (Optional[int]): Number of random antibodies to be added to the population each generation.
+            bits_per_param (Optional[int]): Number of bits per parameter of solution vector.
 
-                See Also:
-                    :func:`niapy.algorithms.Algorithm.__init__`
+        See Also:
+            :func:`niapy.algorithms.Algorithm.__init__`
 
-                """
-        super().__init__(
-            population_size,
-            initialization_function=default_individual_init,
-            individual_type=SolutionCLONALG,
-            *args, **kwargs
-        )
-        if search_space is None:
-            search_space = [[-5, 5]]
-        self.search_space = search_space
-        self.max_gens = max_gens
+        """
+        super().__init__(population_size, *args, **kwargs)
         self.clone_factor = clone_factor
+        self.num_clones = int(self.population_size * self.clone_factor)
+        self.mutation_factor = mutation_factor
         self.num_rand = num_rand
+        self.bits_per_param = bits_per_param
 
-    def set_parameters(self, population_size=10, search_space=None, max_gens=100, clone_factor=0.1, num_rand=0.1,
+    def set_parameters(self, population_size=10, clone_factor=0.1, mutation_factor=-2.5, num_rand=1, bits_per_param=16,
                        **kwargs):
         r"""Set the parameters of the algorithm.
 
-                Args:
-                    population_size (Optional[int]): Population size.
-                    search_space (Optional[List[Dict[int, int]]]): Search space.
-                    max_gens (Optional[int]): Maximum generations.
-                    clone_factor (Optional[float]): Clone factor.
-                    num_rand (Optional[int]): Random number.
+        Args:
+            population_size (Optional[int]): Population size.
+            clone_factor (Optional[float]): Clone factor.
+            mutation_factor (Optional[float]): Mutation factor.
+            num_rand (Optional[int]): Random number.
+            bits_per_param (Optional[int]): Number of bits per parameter of solution vector.
 
-                See Also:
-                    * :func:`niapy.algorithms.Algorithm.set_parameters`
+        See Also:
+            * :func:`niapy.algorithms.Algorithm.set_parameters`
 
-                """
-        if search_space is None:
-            search_space = [[-5, 5]]
-        super().set_parameters(
-            population_size=population_size,
-            initialization_function=default_individual_init,
-            individual_type=SolutionCLONALG,
-            **kwargs
-        )
-        self.search_space = search_space
-        self.max_gens = max_gens
+        """
+        super().set_parameters(population_size=population_size, **kwargs)
         self.clone_factor = clone_factor
+        self.num_clones = int(self.population_size * self.clone_factor)
+        self.mutation_factor = mutation_factor
         self.num_rand = num_rand
+        self.bits_per_param = bits_per_param
 
     def get_parameters(self):
         r"""Get parameters of the algorithm.
@@ -151,92 +109,65 @@ class ClonalSelectionAlgorithm(Algorithm):
         """
         params = super().get_parameters()
         params.update({
-            'search_space': self.search_space,
-            'max_gens': self.max_gens,
             'clone_factor': self.clone_factor,
-            'num_rand': self.num_rand
+            'mutation_factor': self.mutation_factor,
+            'num_rand': self.num_rand,
+            'bits_per_param': self.bits_per_param,
         })
         return params
 
-    def objective_function(self, vector):
-        return np.sum(np.power(vector, 2))
+    def decode(self, bitstrings, task):
+        bits = np.flip(np.arange(self.bits_per_param))
+        z = np.sum(bitstrings * 2 ** bits, axis=-1)
+        return task.lower + task.range * z / (2 ** self.bits_per_param - 1)
 
-    def decode(self, bitstring, search_space, bits_per_param):
-        vector = []
+    def evaluate(self, bitstrings, task):
+        population = self.decode(bitstrings, task)
+        fitness = np.apply_along_axis(task.eval, 1, population)
+        return population, fitness
 
-        for i, bounds in enumerate(search_space):
-            off = i * bits_per_param
-            sum = 0.0
-            param_rev = bitstring[off:(off + bits_per_param)]
-            param = param_rev[::-1]
+    def mutate(self, bitstring, mutation_rate):
+        flip = self.random(bitstring.shape) < mutation_rate
+        bitstring[flip] = np.logical_not(bitstring[flip])
+        return bitstring
 
-            for x in range(len(param)):
-                sum += (1.0 if (param[x] == '1') else 0.0) * (np.power(2.0, float(x)))
+    def clone_and_hypermutate(self, bitstrings, population, population_fitness, task):
+        range_ = np.max(population_fitness) - np.min(population_fitness)
+        affinity = np.ones(self.population_size) if range_ == 0.0 else 1.0 - (population_fitness / range_)
 
-            min = bounds[0]
-            max = bounds[1]
+        clones = np.repeat(bitstrings, self.num_clones, axis=0)
+        for i in range(clones.shape[0]):
+            mutation_rate = np.exp(self.mutation_factor * affinity[i // self.num_clones])
+            clones[i] = self.mutate(clones[i], mutation_rate)
 
-            vector.append(min + ((max - min) / (np.power(2.0, float(bits_per_param)) - 1.0)) * sum)
-        return vector
+        clones_pop, clones_fitness = self.evaluate(clones, task)
+        all_bitstrings = np.concatenate((bitstrings, clones), axis=0)
+        all_population = np.concatenate((population, clones_pop), axis=0)
+        all_fitness = np.concatenate((population_fitness, clones_fitness))
+        sorted_ind = np.argsort(all_fitness)
 
-    def evaluate(self, pop, search_space, bits_per_param):
-        for p in pop:
-            p.set_vector(self.decode(p.bitstring, search_space, bits_per_param))
-            p.set_cost(self.objective_function(p.vector))
+        new_bitstrings = all_bitstrings[sorted_ind][:self.population_size]
+        new_population = all_population[sorted_ind][:self.population_size]
+        new_fitness = all_fitness[sorted_ind][:self.population_size]
 
-    def random_bitstring(self, num_bits):
-        return ''.join(choice('01') for _ in range(num_bits))
+        return new_bitstrings, new_population, new_fitness
 
-    def point_mutation(self, bitstring, rate):
-        child = ''
+    def random_insertion(self, bitstrings, population, population_fitness, task):
+        if self.num_rand == 0:
+            return bitstrings, population, population_fitness
+        new_bitstrings = self.random((self.num_rand, task.dimension, self.bits_per_param)) > 0.5
+        new_population, new_fitness = self.evaluate(new_bitstrings, task)
 
-        for x in range(len(bitstring)):
-            bit = bitstring[x]
-            child += (('0' if (bit == '1') else '1') if (uniform(0, 1) < rate) else bit)
+        all_bitstrings = np.concatenate((bitstrings, new_bitstrings), axis=0)
+        all_population = np.concatenate((population, new_population), axis=0)
+        all_fitness = np.concatenate((population_fitness, new_fitness))
+        sorted_ind = np.argsort(all_fitness)
 
-        return child
+        next_bitstrings = all_bitstrings[sorted_ind][:self.population_size]
+        next_population = all_population[sorted_ind][:self.population_size]
+        next_fitness = all_fitness[sorted_ind][:self.population_size]
 
-    def calculate_mutation_rate(self, antibody, mutate_factor=-2.5):
-        return math.exp(mutate_factor * antibody.affinity)
-
-    def calculate_num_clones(self, pop_size, clone_factor):
-        return math.floor(pop_size * clone_factor)
-
-    def calculate_affinity(self, pop):
-        pop = sorted(pop, key=lambda _p: _p.cost)
-        cost_range = pop[-1].cost - pop[0].cost
-
-        if cost_range == 0.0:
-            for p in pop:
-                p.set_affinity(1.0)
-        else:
-            for p in pop:
-                p.set_affinity(1.0 - (p.cost / cost_range))
-
-    def clone_and_hypermutate(self, pop, clone_factor):
-        clones = []
-        num_clones = self.calculate_num_clones(len(pop), clone_factor)
-        self.calculate_affinity(pop)
-        for p in pop:
-            m_rate = self.calculate_mutation_rate(p)
-            for _ in range(num_clones):
-                clone = Population(bitstring=self.point_mutation(p.bitstring, m_rate))
-                clones.append(clone)
-
-        return clones
-
-    def random_insertion(self, search_space, pop, num_rand, bits_per_param):
-        if num_rand == 0:
-            return pop
-
-        rands = []
-        for _ in range(num_rand):
-            rands.append(Population(bitstring=self.random_bitstring(len(search_space) * bits_per_param)))
-
-        self.evaluate(rands, search_space, bits_per_param)
-
-        sorted_pop = sorted(pop + rands, key=lambda p: p.cost)
-        return sorted_pop[:len(pop)]
+        return next_bitstrings, next_population, next_fitness
 
     def init_population(self, task):
         r"""Initialize the starting population.
@@ -248,13 +179,16 @@ class ClonalSelectionAlgorithm(Algorithm):
             Tuple[numpy.ndarray, numpy.ndarray[float], Dict[str, Any]]:
                 1. New population.
                 2. New population fitness/function values.
+                3. Additional arguments:
+                    * bitstring (numpy.ndarray): Binary representation of the population.
 
         See Also:
             * :func:`niapy.algorithms.Algorithm.init_population`
 
         """
-        population, fitness, d = super().init_population(task)
-        return population, fitness, d
+        bitstrings = self.random((self.population_size, task.dimension, self.bits_per_param)) > 0.5
+        population, fitness = self.evaluate(bitstrings, task)
+        return population, fitness, {'bitstrings': bitstrings}
 
     def run_iteration(self, task, population, population_fitness, best_x, best_fitness, **params):
         r"""Core function of Clonal Selection Algorithm.
@@ -273,23 +207,19 @@ class ClonalSelectionAlgorithm(Algorithm):
                 2. New population fitness/function values
                 3. New global best solution
                 4. New global best fitness/objective value
+                5. Additional arguments:
+                    * bitstring (numpy.ndarray): Binary representation of the population.
 
         """
-        pop = []
-        bits_per_param = 16
-        for _ in range(self.population_size):
-            pop.append(Population(bitstring=self.random_bitstring(len(self.search_space) * bits_per_param)))
+        bitstrings = params.pop('bitstrings')
 
-        self.evaluate(pop, self.search_space, bits_per_param)
-        best = min(pop, key=lambda p: p.cost)
-        for _ in range(self.max_gens):
-            clones = self.clone_and_hypermutate(pop, self.clone_factor)
-            self.evaluate(clones, self.search_space, bits_per_param)
-            sorted_pop = sorted(pop + clones, key=lambda p: p.cost)
-            pop = sorted_pop[:self.population_size]
-            pop = self.random_insertion(self.search_space, pop, self.num_rand, bits_per_param)
-            best = min((pop + [best]), key=lambda p: p.cost)
+        bitstrings, population, population_fitness = self.clone_and_hypermutate(bitstrings, population,
+                                                                                population_fitness, task)
+        best_x, best_fitness = self.get_best(population, population_fitness, best_x, best_fitness)
+        bitstrings, population, population_fitness = self.random_insertion(bitstrings, population, population_fitness,
+                                                                           task)
+        best_x, best_fitness = self.get_best(population, population_fitness, best_x, best_fitness)
 
-        return best
+        return population, population_fitness, best_x, best_fitness, {'bitstrings': bitstrings}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
