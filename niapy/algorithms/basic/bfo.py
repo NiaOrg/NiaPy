@@ -16,6 +16,9 @@ __all__ = ['BacterialForagingOptimization']
 class BacterialForagingOptimization(Algorithm):
     r"""Implementation of the Bacterial foraging optimization algorithm.
 
+    Algorithm:
+        Bacterial Foraging Optimization
+
     Date:
         2021
 
