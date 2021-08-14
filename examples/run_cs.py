@@ -13,6 +13,6 @@ from niapy.task import Task
 # we will run Cuckoo Search for 5 independent runs
 for i in range(5):
     task = Task(problem=Sphere(dimension=10), max_evals=10000)
-    algo = CuckooSearch(population_size=100, pa=0.95, alpha=1)
+    algo = CuckooSearch(population_size=100, pa=0.95)
     best = algo.run(task)
     print(best)
