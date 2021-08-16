@@ -1,8 +1,6 @@
 # encoding=utf8
 import logging
 
-import numpy as np
-
 from niapy.algorithms.algorithm import Algorithm
 from niapy.util import levy_flight
 
@@ -37,7 +35,6 @@ class FlowerPollinationAlgorithm(Algorithm):
     Attributes:
         Name (List[str]): List of strings representing algorithm names.
         p (float): Switch probability.
-        beta (float): Beta parameter of the Levy distribution (Should be between 0.3 and 1.99).
 
     See Also:
         * :class:`niapy.algorithms.Algorithm`
@@ -59,13 +56,12 @@ class FlowerPollinationAlgorithm(Algorithm):
         """
         return r"""Yang, Xin-She. "Flower pollination algorithm for global optimization. International conference on unconventional computing and natural computation. Springer, Berlin, Heidelberg, 2012."""
 
-    def __init__(self, population_size=25, p=0.8, beta=1.5, *args, **kwargs):
+    def __init__(self, population_size=20, p=0.8, *args, **kwargs):
         """Initialize FlowerPollinationAlgorithm.
 
         Args:
             population_size (int): Population size.
             p (float): Switch probability.
-            beta (float): Beta parameter of the Levy distribution (Should be between 0.3 and 1.99).
 
         See Also:
             * :func:`niapy.algorithms.Algorithm.__init__`
@@ -73,15 +69,13 @@ class FlowerPollinationAlgorithm(Algorithm):
         """
         super().__init__(population_size, *args, **kwargs)
         self.p = p
-        self.beta = beta
 
-    def set_parameters(self, population_size=25, p=0.8, beta=1.5, **kwargs):
+    def set_parameters(self, population_size=25, p=0.8, **kwargs):
         r"""Set core parameters of FlowerPollinationAlgorithm algorithm.
 
         Args:
             population_size (int): Population size.
             p (float): Switch probability.
-            beta (float): Beta parameter of the Levy distribution (Should be between 0.3 and 1.99).
 
         See Also:
             * :func:`niapy.algorithms.Algorithm.set_parameters`
@@ -89,12 +83,11 @@ class FlowerPollinationAlgorithm(Algorithm):
         """
         super().set_parameters(population_size=population_size, **kwargs)
         self.p = p
-        self.beta = beta
 
     def init_population(self, task):
         """Initialize population."""
         pop, fpop, d = super().init_population(task)
-        d.update({'solutions': np.zeros((self.population_size, task.dimension))})
+        d.update({'solutions': pop.copy()})
         return pop, fpop, d
 
     def run_iteration(self, task, population, population_fitness, best_x, best_fitness, **params):
@@ -121,15 +114,16 @@ class FlowerPollinationAlgorithm(Algorithm):
 
         for i in range(self.population_size):
             if self.random() > self.p:
-                step_size = levy_flight(beta=self.beta, size=task.dimension, rng=self.rng)
-                solutions[i] += step_size * (population[i] - best_x)
+                step_size = levy_flight(size=task.dimension, rng=self.rng)
+                solutions[i] = population[i] + step_size * (population[i] - best_x)
+                solutions[i] = task.repair(solutions[i], rng=self.rng)
             else:
                 j, k = self.rng.choice(self.population_size, size=2, replace=False)
                 solutions[i] += self.random() * (population[j] - population[k])
-            solutions[i] = task.repair(solutions[i], rng=self.rng)
+                solutions[i] = task.repair(solutions[i], rng=self.rng)
             f_i = task.eval(solutions[i])
             if f_i <= population_fitness[i]:
-                population[i], population_fitness[i] = solutions[i], f_i
+                population[i], population_fitness[i] = solutions[i].copy(), f_i
             if f_i <= best_fitness:
                 best_x, best_fitness = solutions[i].copy(), f_i
         return population, population_fitness, best_x, best_fitness, {'solutions': solutions}

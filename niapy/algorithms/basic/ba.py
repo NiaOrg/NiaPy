@@ -32,8 +32,10 @@ class BatAlgorithm(Algorithm):
 
     Attributes:
         Name (List[str]): List of strings representing algorithm name.
-        loudness (float): Loudness.
-        pulse_rate (float): Pulse rate.
+        loudness (float): Initial loudness.
+        pulse_rate (float): Initial pulse rate.
+        alpha (float): Parameter for controlling loudness decrease.
+        gamma (float): Parameter for controlling pulse rate increase.
         min_frequency (float): Minimum frequency.
         max_frequency (float): Maximum frequency.
 
@@ -57,14 +59,16 @@ class BatAlgorithm(Algorithm):
         """
         return r"""Yang, Xin-She. "A new metaheuristic bat-inspired algorithm." Nature inspired cooperative strategies for optimization (NICSO 2010). Springer, Berlin, Heidelberg, 2010. 65-74."""
 
-    def __init__(self, population_size=40, loudness=0.5, pulse_rate=0.5, min_frequency=0.0, max_frequency=2.0, *args,
-                 **kwargs):
+    def __init__(self, population_size=40, loudness=1.0, pulse_rate=1.0, alpha=0.97, gamma=0.1, min_frequency=0.0,
+                 max_frequency=2.0, *args, **kwargs):
         """Initialize BatAlgorithm.
 
         Args:
             population_size (Optional[int]): Population size.
-            loudness (Optional[float]): Loudness.
-            pulse_rate (Optional[float]): Pulse rate.
+            loudness (Optional[float]): Initial loudness.
+            pulse_rate (Optional[float]): Initial pulse rate.
+            alpha (Optional[float]): Parameter for controlling loudness decrease.
+            gamma (Optional[float]): Parameter for controlling pulse rate increase.
             min_frequency (Optional[float]): Minimum frequency.
             max_frequency (Optional[float]): Maximum frequency.
 
@@ -75,17 +79,21 @@ class BatAlgorithm(Algorithm):
         super().__init__(population_size, *args, **kwargs)
         self.loudness = loudness
         self.pulse_rate = pulse_rate
+        self.alpha = alpha
+        self.gamma = gamma
         self.min_frequency = min_frequency
         self.max_frequency = max_frequency
 
-    def set_parameters(self, population_size=40, loudness=0.5, pulse_rate=0.5, min_frequency=0.0, max_frequency=2.0,
-                       **kwargs):
+    def set_parameters(self, population_size=20, loudness=1.0, pulse_rate=1.0, alpha=0.97, gamma=0.1, min_frequency=0.0,
+                       max_frequency=2.0, **kwargs):
         r"""Set the parameters of the algorithm.
 
         Args:
             population_size (Optional[int]): Population size.
-            loudness (Optional[float]): Loudness.
-            pulse_rate (Optional[float]): Pulse rate.
+            loudness (Optional[float]): Initial loudness.
+            pulse_rate (Optional[float]): Initial pulse rate.
+            alpha (Optional[float]): Parameter for controlling loudness decrease.
+            gamma (Optional[float]): Parameter for controlling pulse rate increase.
             min_frequency (Optional[float]): Minimum frequency.
             max_frequency (Optional[float]): Maximum frequency.
 
@@ -96,6 +104,8 @@ class BatAlgorithm(Algorithm):
         super().set_parameters(population_size=population_size, **kwargs)
         self.loudness = loudness
         self.pulse_rate = pulse_rate
+        self.alpha = alpha
+        self.gamma = gamma
         self.min_frequency = min_frequency
         self.max_frequency = max_frequency
 
@@ -110,6 +120,8 @@ class BatAlgorithm(Algorithm):
         d.update({
             'loudness': self.loudness,
             'pulse_rate': self.pulse_rate,
+            'alpha': self.alpha,
+            'gamma': self.gamma,
             'min_frequency': self.min_frequency,
             'max_frequency': self.max_frequency
         })
@@ -126,7 +138,8 @@ class BatAlgorithm(Algorithm):
                 1. New population.
                 2. New population fitness/function values.
                 3. Additional arguments:
-                    * velocities (numpy.ndarray[float]): Velocities
+                    * velocities (numpy.ndarray[float]): Velocities.
+                    * alpha (float): Previous iterations loudness.
 
         See Also:
             * :func:`niapy.algorithms.Algorithm.init_population`
@@ -134,21 +147,22 @@ class BatAlgorithm(Algorithm):
         """
         population, fitness, d = super().init_population(task)
         velocities = np.zeros((self.population_size, task.dimension))
-        d.update({'velocities': velocities})
+        d.update({'velocities': velocities, 'loudness': self.loudness})
         return population, fitness, d
 
-    def local_search(self, best, task, **kwargs):
+    def local_search(self, best, loudness, task, **kwargs):
         r"""Improve the best solution according to the Yang (2010).
 
         Args:
             best (numpy.ndarray): Global best individual.
+            loudness (float): Current loudness.
             task (Task): Optimization task.
 
         Returns:
             numpy.ndarray: New solution based on global best individual.
 
         """
-        return task.repair(best + 0.001 * self.standard_normal(task.dimension))
+        return task.repair(best + 0.1 * self.standard_normal(task.dimension) * loudness)
 
     def run_iteration(self, task, population, population_fitness, best_x, best_fitness, **params):
         r"""Core function of Bat Algorithm.
@@ -168,23 +182,27 @@ class BatAlgorithm(Algorithm):
                 3. New global best solution
                 4. New global best fitness/objective value
                 5. Additional arguments:
-                    * velocities (numpy.ndarray): Velocities
+                    * velocities (numpy.ndarray): Velocities.
+                    * alpha (float): Previous iterations loudness.
 
         """
         velocities = params.pop('velocities')
+        loudness = params.pop('loudness') * self.alpha
+
+        pulse_rate = self.pulse_rate * (1 - np.exp(-self.gamma * task.iters))
 
         for i in range(self.population_size):
             frequency = self.min_frequency + (self.max_frequency - self.min_frequency) * self.random()
             velocities[i] += (population[i] - best_x) * frequency
-            if self.random() > self.pulse_rate:
-                solution = self.local_search(best=best_x, task=task, i=i, population=population)
+            if self.random() < pulse_rate:
+                solution = self.local_search(best=best_x, loudness=loudness, task=task, i=i, population=population)
             else:
                 solution = task.repair(population[i] + velocities[i], rng=self.rng)
             new_fitness = task.eval(solution)
-            if (new_fitness <= population_fitness[i]) and (self.random() < self.loudness):
+            if (new_fitness <= population_fitness[i]) and (self.random() > self.loudness):
                 population[i], population_fitness[i] = solution, new_fitness
             if new_fitness <= best_fitness:
                 best_x, best_fitness = solution.copy(), new_fitness
-        return population, population_fitness, best_x, best_fitness, {'velocities': velocities}
+        return population, population_fitness, best_x, best_fitness, {'velocities': velocities, 'loudness': loudness}
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
