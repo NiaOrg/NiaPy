@@ -17,6 +17,7 @@ Basic algorithms
 - Bees Algorithm
 - Camel Algorithm
 - Cat Swarm Optimization
+- Clonal Selection Algorithm
 - Coral Reefs Optimization Algorithm
 - Cuckoo Search
 - Differential Evolution

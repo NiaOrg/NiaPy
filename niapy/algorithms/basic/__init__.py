@@ -34,6 +34,7 @@ from niapy.algorithms.basic.pso import ParticleSwarmAlgorithm, ParticleSwarmOpti
     OppositionVelocityClampingParticleSwarmOptimization, MutatedCenterParticleSwarmOptimization, \
     MutatedCenterUnifiedParticleSwarmOptimization, MutatedParticleSwarmOptimization
 from niapy.algorithms.basic.sca import SineCosineAlgorithm
+from niapy.algorithms.basic.clonalg import ClonalSelectionAlgorithm
 
 __all__ = [
     'BatAlgorithm',
@@ -87,5 +88,6 @@ __all__ = [
     'ComprehensiveLearningParticleSwarmOptimizer',
     'CenterParticleSwarmOptimization',
     'HarrisHawksOptimization',
-    'BacterialForagingOptimization'
+    'BacterialForagingOptimization',
+    'ClonalSelectionAlgorithm'
 ]
