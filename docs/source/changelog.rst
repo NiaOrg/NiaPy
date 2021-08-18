@@ -1,6 +1,43 @@
 Changelog
 =========
 
+`2.0.0rc18 <https://github.com/NiaOrg/NiaPy/tree/2.0.0rc18>`__ (2021-08-18)
+---------------------------------------------------------------------------
+
+`Full
+Changelog <https://github.com/NiaOrg/NiaPy/compare/2.0.0rc17...2.0.0rc18>`__
+
+**Closed issues:**
+
+-  BA, CS and FA implementations are incorrect
+   `#341 <https://github.com/NiaOrg/NiaPy/issues/341>`__
+-  ModuleNotFoundError: No module named ‘NiaPy’
+   `#339 <https://github.com/NiaOrg/NiaPy/issues/339>`__
+-  Add Problems.md file
+   `#332 <https://github.com/NiaOrg/NiaPy/issues/332>`__
+-  Add an example/guide showing how to solve a real-world problem
+   `#215 <https://github.com/NiaOrg/NiaPy/issues/215>`__
+
+**Merged pull requests:**
+
+-  docs: add andrazperson as a contributor for code
+   `#343 <https://github.com/NiaOrg/NiaPy/pull/343>`__
+   (`allcontributors[bot] <https://github.com/apps/allcontributors>`__)
+-  Fix various algorithms
+   `#342 <https://github.com/NiaOrg/NiaPy/pull/342>`__
+   (`zStupan <https://github.com/zStupan>`__)
+-  Initial implementation of Clonal Selection Algorithm
+   `#340 <https://github.com/NiaOrg/NiaPy/pull/340>`__
+   (`andrazperson <https://github.com/andrazperson>`__)
+-  docs: add firefly-cpp as a contributor for question, test
+   `#337 <https://github.com/NiaOrg/NiaPy/pull/337>`__
+   (`allcontributors[bot] <https://github.com/apps/allcontributors>`__)
+-  Add Python 3.10 tag
+   `#336 <https://github.com/NiaOrg/NiaPy/pull/336>`__
+   (`firefly-cpp <https://github.com/firefly-cpp>`__)
+-  Update docs `#335 <https://github.com/NiaOrg/NiaPy/pull/335>`__
+   (`zStupan <https://github.com/zStupan>`__)
+
 `2.0.0rc17 <https://github.com/NiaOrg/NiaPy/tree/2.0.0rc17>`__ (2021-06-10)
 ---------------------------------------------------------------------------
 
@@ -587,7 +624,8 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/1.0.2...2.0.0rc3>`__
 `1.0.2 <https://github.com/NiaOrg/NiaPy/tree/1.0.2>`__ (2018-10-24)
 -------------------------------------------------------------------
 
-`Full Changelog <https://github.com/NiaOrg/NiaPy/compare/2...1.0.2>`__
+`Full
+Changelog <https://github.com/NiaOrg/NiaPy/compare/2.0.0rc2...1.0.2>`__
 
 **Fixed bugs:**
 
@@ -599,19 +637,19 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/1.0.2...2.0.0rc3>`__
 -  fix Bat Algorithm `#161 <https://github.com/NiaOrg/NiaPy/pull/161>`__
    (`GregaVrbancic <https://github.com/GregaVrbancic>`__)
 
+`2.0.0rc2 <https://github.com/NiaOrg/NiaPy/tree/2.0.0rc2>`__ (2018-08-30)
+-------------------------------------------------------------------------
+
+`Full
+Changelog <https://github.com/NiaOrg/NiaPy/compare/2...2.0.0rc2>`__
+
 .. _section-1:
 
 `2 <https://github.com/NiaOrg/NiaPy/tree/2>`__ (2018-08-30)
 -----------------------------------------------------------
 
 `Full
-Changelog <https://github.com/NiaOrg/NiaPy/compare/2.0.0rc2...2>`__
-
-`2.0.0rc2 <https://github.com/NiaOrg/NiaPy/tree/2.0.0rc2>`__ (2018-08-30)
--------------------------------------------------------------------------
-
-`Full
-Changelog <https://github.com/NiaOrg/NiaPy/compare/2.0.0rc1...2.0.0rc2>`__
+Changelog <https://github.com/NiaOrg/NiaPy/compare/2.0.0rc1...2>`__
 
 `2.0.0rc1 <https://github.com/NiaOrg/NiaPy/tree/2.0.0rc1>`__ (2018-08-30)
 -------------------------------------------------------------------------
