@@ -234,6 +234,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "andrazperson",
+      "name": "andrazperson",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32928199?v=4",
+      "profile": "https://github.com/andrazperson",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "skipCi": true,
