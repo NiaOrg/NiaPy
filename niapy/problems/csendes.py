@@ -72,4 +72,4 @@ class Csendes(Problem):
 
     def _evaluate(self, x):
         mask = x != 0
-        return np.sum(np.power(x[mask], 6.0) * (2.0 * np.sin(1.0 / x[mask])))
+        return np.sum(np.power(x[mask], 6.0) * (2.0 + np.sin(1.0 / x[mask])))
