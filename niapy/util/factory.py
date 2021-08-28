@@ -57,7 +57,6 @@ def _problem_options():
         "griewank": problems.Griewank,
         "happy_cat": problems.HappyCat,
         "hgbat": problems.HGBat,
-        "infinity": problems.Infinity,
         "katsuura": problems.Katsuura,
         "levy": problems.Levy,
         "michalewicz": problems.Michalewichz,
