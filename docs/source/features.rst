@@ -68,7 +68,7 @@ Documentation for the other algorithms can be found here: :mod:`niapy.algorithms
 Functions
 -----------------------------
 
-NiaPy features more than 30 optimization problems. Documentation for them can be found here: :mod:`niapy.problems`.
+NiaPy features more than 30 optimization test problems. Documentation for them can be found here: :mod:`niapy.problems`.
 
 - Ackley
 - Alpine
@@ -76,11 +76,13 @@ NiaPy features more than 30 optimization problems. Documentation for them can be
     - Alpine2
 - Bent Cigar
 - Chung Reynolds
+- Cosine Mixture
 - Csendes
 - Discus
 - Dixon-Price
 - Elliptic
 - Griewank
+  - Expanded Griewank plus Rosenbrock
 - Happy cat
 - HGBat
 - Katsuura
@@ -95,10 +97,15 @@ NiaPy features more than 30 optimization problems. Documentation for them can be
 - Ridge
 - Rosenbrock
 - Salomon
+- Schaffer
+  - Schaffer N. 2
+  - Schaffer N. 4
+  - Expanded Schaffer
 - Schumer Steiglitz
 - Schwefel
     - Schwefel 2.21
     - Schwefel 2.22
+    - Modified Schwefel
 - Sphere
     - Sphere2 -> Sphere with different powers
     - Sphere3 -> Rotated hyper-ellipsoid
