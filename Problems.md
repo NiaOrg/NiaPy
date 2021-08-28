@@ -6,11 +6,13 @@
     - Alpine2
 - Bent Cigar
 - Chung Reynolds
+- Cosine Mixture
 - Csendes
 - Discus
 - Dixon-Price
 - Elliptic
 - Griewank
+  - Expanded Griewank plus Rosenbrock
 - Happy cat
 - HGBat
 - Katsuura
@@ -25,10 +27,15 @@
 - Ridge
 - Rosenbrock
 - Salomon
+- Schaffer
+  - Schaffer N. 2
+  - Schaffer N. 4
+  - Expanded Schaffer
 - Schumer Steiglitz
 - Schwefel
     - Schwefel 2.21
     - Schwefel 2.22
+    - Modified Schwefel
 - Sphere
     - Sphere2 -> Sphere with different powers
     - Sphere3 -> Rotated hyper-ellipsoid

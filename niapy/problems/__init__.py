@@ -13,7 +13,6 @@ from niapy.problems.elliptic import Elliptic
 from niapy.problems.griewank import Griewank, ExpandedGriewankPlusRosenbrock
 from niapy.problems.happy_cat import HappyCat
 from niapy.problems.hgbat import HGBat
-from niapy.problems.infinity import Infinity
 from niapy.problems.katsuura import Katsuura
 from niapy.problems.levy import Levy
 from niapy.problems.michalewichz import Michalewichz
@@ -85,7 +84,6 @@ __all__ = [
     'DixonPrice',
     'Powell',
     'CosineMixture',
-    'Infinity',
     'ExpandedSchaffer',
     'SchafferN2',
     'SchafferN4'

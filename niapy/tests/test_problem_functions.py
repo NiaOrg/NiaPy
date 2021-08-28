@@ -267,12 +267,3 @@ class TestProblemFunctions(TestCase):
         """Test the cosine mixture function."""
         fun = get_problem('cosine_mixture', dimension=2, lower=-1, upper=1)
         self.assertAlmostEqual(fun(np.zeros(2)), -0.2)
-
-    def test_infinity(self):
-        """Test the infinity function."""
-        infinity = get_problem('infinity', dimension=2, lower=-1, upper=1)
-        defaults = np.seterr('raise')
-        with self.assertRaises(FloatingPointError):
-            infinity(np.zeros(2))
-        self.assertAlmostEqual(infinity(np.ones(2)), 5.6829419696157935)
-        np.seterr(**defaults)
