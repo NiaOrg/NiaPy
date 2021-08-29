@@ -20,5 +20,3 @@ class SCATestCase(AlgorithmTestCase):
         sca_griewank = self.algo(population_size=10, a=5, r_min=0.01, r_max=3, seed=self.seed)
         sca_griewankc = self.algo(population_size=10, a=5, r_min=0.01, r_max=3, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, sca_griewank, sca_griewankc)
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

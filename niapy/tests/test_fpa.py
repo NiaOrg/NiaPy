@@ -17,5 +17,3 @@ class FPATestCase(AlgorithmTestCase):
         fpa_griewank = self.algo(population_size=10, p=0.5, seed=self.seed)
         fpa_griewankc = self.algo(population_size=10, p=0.5, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, fpa_griewank, fpa_griewankc)
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

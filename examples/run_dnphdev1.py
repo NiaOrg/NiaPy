@@ -16,5 +16,3 @@ for i in range(5):
     algo = DynNpDifferentialEvolutionMTSv1(population_size=50, differential_weight=0.8, crossover_probability=0.4, p_max=20)
     best = algo.run(task)
     print('%s -> %s' % (best[0], best[1]))
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

@@ -141,5 +141,3 @@ class ExpandedGriewankPlusRosenbrock(Problem):
         x1 = 100.0 * (x[1:] - x[:-1] ** 2.0) ** 2.0 + (1 - x[:-1]) ** 2.0
         x2 = x1 * x1 / 4000.0 - np.cos(x1 / np.sqrt(np.arange(1, self.dimension)))
         return np.sum(x2)
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

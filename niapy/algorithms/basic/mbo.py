@@ -268,5 +268,3 @@ class MonarchButterflyOptimization(Algorithm):
         population_fitness, population = self.evaluate_and_sort(task, population)
         best_x, best_fitness = self.get_best(population, population_fitness, best_x, best_fitness)
         return population, population_fitness, best_x, best_fitness, {'current_best': current_best}
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

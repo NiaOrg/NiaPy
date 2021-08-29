@@ -84,5 +84,3 @@ class Weierstrass(Problem):
         for k in range(self.k_max):
             val2 += self.a ** k * np.cos(2 * np.pi * self.b ** k * 0.5)
         return val1 - self.dimension * val2
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

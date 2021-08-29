@@ -74,5 +74,3 @@ class Michalewichz(Problem):
 
     def _evaluate(self, x):
         return -np.sum(np.sin(x) * np.sin((np.arange(1, self.dimension + 1) * x ** 2.0) / np.pi) ** (2.0 * self.m))
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

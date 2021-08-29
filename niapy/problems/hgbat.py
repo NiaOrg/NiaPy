@@ -71,5 +71,3 @@ class HGBat(Problem):
         val1 = np.sum(x ** 2)
         val2 = np.sum(x)
         return np.sqrt(np.abs(val1 * val1 - val2 ** 2)) + (0.5 * val1 + val2) / self.dimension + 0.5
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

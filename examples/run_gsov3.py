@@ -15,5 +15,3 @@ for i in range(5):
     algo = GlowwormSwarmOptimizationV3()
     best = algo.run(task)
     print(best)
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

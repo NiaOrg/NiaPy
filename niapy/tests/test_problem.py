@@ -30,5 +30,3 @@ class ProblemTestCase(TestCase):
 
     def test_function_eval(self):
         self.assertEqual(np.inf, self.b.evaluate(self.Upper))
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

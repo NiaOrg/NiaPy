@@ -114,5 +114,3 @@ class DynNpMsDETestCase(AlgorithmTestCase):
         de_griewank = self.algo(population_size=10, crossover_probability=0.5, differential_weight=0.9, seed=self.seed)
         de_griewankc = self.algo(population_size=10, crossover_probability=0.5, differential_weight=0.9, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, de_griewank, de_griewankc, 'griewank')
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

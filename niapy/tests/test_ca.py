@@ -17,5 +17,3 @@ class CATestCase(AlgorithmTestCase):
         ca_griewank = self.algo(population_size=10, seed=self.seed)
         ca_griewankc = self.algo(population_size=10, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, ca_griewank, ca_griewankc)
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

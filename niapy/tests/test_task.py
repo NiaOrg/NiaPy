@@ -157,5 +157,3 @@ class TaskTestCase(TestCase):
         t_r1, t_r2 = self.task.return_conv()
         self.assertTrue(np.array_equal(r2, t_r2))
         self.assertTrue(np.array_equal(r1, t_r1))
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

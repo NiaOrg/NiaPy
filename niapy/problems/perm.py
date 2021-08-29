@@ -75,5 +75,3 @@ class Perm(Problem):
         x_matrix = np.tile(x, (self.dimension, 1))
         inner = np.sum((jj + self.beta) * (np.power(x_matrix, ii) - np.power(1.0 / jj, ii)), axis=0)
         return np.sum(inner ** 2)
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

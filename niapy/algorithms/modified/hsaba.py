@@ -124,5 +124,3 @@ class HybridSelfAdaptiveBatAlgorithm(SelfAdaptiveBatAlgorithm):
 
         """
         return task.repair(self.strategy(population, i, self.differential_weight, self.crossover_probability, rng=self.rng, x_b=best), rng=self.rng)
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

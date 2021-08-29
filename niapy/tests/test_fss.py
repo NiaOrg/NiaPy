@@ -17,5 +17,3 @@ class FSSTestCase(AlgorithmTestCase):
         fss_custom = self.algo(population_size=10, seed=self.seed)
         fss_customc = self.algo(population_size=10, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, fss_custom, fss_customc)
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

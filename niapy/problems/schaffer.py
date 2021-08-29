@@ -195,5 +195,3 @@ class ExpandedSchaffer(Problem):
         tmp = x ** 2 + x_next ** 2
         val = 0.5 + (np.sin(np.sqrt(tmp)) ** 2 - 0.5) / (1 + 0.001 * tmp) ** 2
         return np.sum(val)
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

@@ -476,5 +476,3 @@ class AnarchicSocietyOptimization(Algorithm):
                                                                       'gamma': gamma,
                                                                       'theta': theta,
                                                                       'rs': rs}
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

@@ -269,5 +269,3 @@ class ModifiedSchwefel(Problem):
         default = xx * np.sin(np.sqrt(np.abs(xx)))
         val = np.sum(np.select(conditions, choices, default=default))
         return 418.9829 * self.dimension - val
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

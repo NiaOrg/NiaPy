@@ -152,5 +152,3 @@ class HillClimbAlgorithm(Algorithm):
                 lo = True or task.stopping_condition()
         best_x, best_fitness = self.get_best(xn, xn_f, best_x, best_fitness)
         return xn, xn_f, best_x, best_fitness, {}
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

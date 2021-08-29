@@ -362,5 +362,3 @@ class AlgorithmTestCase(TestCase):
             self.assertEqual(task1.evals, task2.evals)
             self.assertTrue(self.max_iters if max_iters is None else max_iters >= task1.iters)
             self.assertEqual(task1.iters, task2.iters)
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

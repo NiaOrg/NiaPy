@@ -17,5 +17,3 @@ class BEATestCase(AlgorithmTestCase):
         bea_griewank = self.algo(population_size=10, m=5, e=4, nep=5, nsp=5, ngh=2, seed=self.seed)
         bea_griewankc = self.algo(population_size=10, m=5, e=4, nep=5, nsp=5, ngh=2, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, bea_griewank, bea_griewankc)
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

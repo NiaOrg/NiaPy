@@ -167,5 +167,3 @@ class ReflectRepairTestCase(LimitRepairTestCase):
     def setUp(self):
         LimitRepairTestCase.setUp(self)
         self.met = repair.reflect
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

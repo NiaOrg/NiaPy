@@ -216,5 +216,3 @@ class BeesAlgorithm(Algorithm):
         population = population[sorted_indices, :]
         ngh = ngh * 0.95
         return population, population_fitness, population[0].copy(), population_fitness[0], {'ngh': ngh}
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

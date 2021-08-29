@@ -654,5 +654,3 @@ class MultipleTrajectorySearchV1(MultipleTrajectorySearch):
         """
         kwargs.pop('num_searches_best', None)
         super().set_parameters(num_searches_best=0, local_searches=(mts_ls1v1, mts_ls2), **kwargs)
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

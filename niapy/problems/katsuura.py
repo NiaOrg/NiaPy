@@ -74,5 +74,3 @@ class Katsuura(Problem):
                 val_t += fabs(2 ** j * x[i] - round(2 ** j * x[i])) / 2 ** j
             val *= (1 + (i + 1) * val_t) ** (10 / self.dimension ** 1.2) - (10 / self.dimension ** 2)
         return 10 / self.dimension ** 2 * val
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

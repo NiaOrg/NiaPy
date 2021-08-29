@@ -41,5 +41,3 @@ class ArgParserTestCase(TestCase):
         self.assertEqual(args['max_evals'], 100000000)
         self.assertEqual(args['algo'], 'SCA')
         self.assertEqual(args['seed'], [1, 234, 231523])
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

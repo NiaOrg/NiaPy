@@ -71,5 +71,3 @@ class Zakharov(Problem):
         sum1 = np.sum(x * x)
         sum2 = np.sum(0.5 * np.arange(1, self.dimension + 1) * x)
         return sum1 + sum2 ** 2 + sum2 ** 4
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

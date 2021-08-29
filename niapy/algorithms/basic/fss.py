@@ -343,5 +343,3 @@ class FishSchoolSearch(Algorithm):
                                                                                          'step_volitive': step_volitive,
                                                                                          'school_weight': school_weight
                                                                                          }
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
