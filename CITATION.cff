@@ -1,0 +1,27 @@
+# YAML 1.2
+---
+authors: 
+  -
+    family-names: "Vrbančič"
+    given-names: Grega
+  -
+    family-names: "Brezočnik"
+    given-names: Lucija
+  -
+    family-names: Mlakar
+    given-names: "Uroš"
+  -
+    family-names: Fister
+    given-names: "Dušan"
+  -
+    family-names: "Fister Jr."
+    given-names: Iztok
+cff-version: "1.1.0"
+date-released: 2018-10-24
+doi: "10.21105/joss.00613"
+license: MIT
+message: "If you use this software, please cite it using these metadata."
+repository-code: "https://github.com/NiaOrg/NiaPy"
+title: "NiaPy: Python microframework for building nature-inspired algorithms"
+version: "1.0.2"
+...
