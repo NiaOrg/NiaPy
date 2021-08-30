@@ -260,5 +260,3 @@ class HarmonySearchV1(HarmonySearch):
 
         """
         return self.bw_min * np.exp(np.log(self.bw_min / self.bw_max) * (task.iters + 1) / task.max_iters)
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

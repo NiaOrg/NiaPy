@@ -75,5 +75,3 @@ class Levy(Problem):
         term2 = np.sum((wi - 1) ** 2 * (1 + 10 * np.sin(np.pi * wi + 1)))
         term3 = (w[-1] - 1) ** 2 * (1 + np.sin(2 * np.pi * w[-1]) ** 2)
         return term1 + term2 + term3
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

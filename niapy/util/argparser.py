@@ -130,5 +130,3 @@ if __name__ == '__main__':
     r"""Run the algorithms based on parameters from the command line interface."""
     args = get_args(sys.argv[1:])
     logger.info(str(args))
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

@@ -174,5 +174,3 @@ class HarrisHawksOptimization(Algorithm):
             best_fitness = fxb_cand
             best_x = xb_cand.copy()
         return population, population_fitness, best_x, best_fitness, {}
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

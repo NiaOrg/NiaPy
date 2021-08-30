@@ -96,5 +96,3 @@ class MothFlameOptimizer(Algorithm):
         population_fitness = np.apply_along_axis(task.eval, 1, population)
         best_x, best_fitness = self.get_best(population, population_fitness, best_x, best_fitness)
         return population, population_fitness, best_x, best_fitness, {}
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

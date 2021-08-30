@@ -21,5 +21,3 @@ class HBATestCase(AlgorithmTestCase):
         hba_griewankc = self.algo(population_size=10, loudness=0.5, pulse_rate=0.5, differential_weight=0.5,
                                   crossover_probability=0.9, min_frequency=0.0, max_frequency=2.0, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, hba_griewank, hba_griewankc)
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

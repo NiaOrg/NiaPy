@@ -259,5 +259,3 @@ class CatSwarmOptimization(Algorithm):
         if population_fitness[best_index] < best_fitness:
             best_x, best_fitness = pop_copies[best_index].copy(), population_fitness[best_index]
         return pop_copies, population_fitness, best_x, best_fitness, {'velocities': velocities}
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

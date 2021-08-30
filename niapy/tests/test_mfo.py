@@ -17,5 +17,3 @@ class MFOTestCase(AlgorithmTestCase):
         mfo_griewank = self.algo(population_size=10, seed=self.seed)
         mfo_griewankc = self.algo(population_size=10, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, mfo_griewank, mfo_griewankc)
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

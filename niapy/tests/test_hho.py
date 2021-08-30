@@ -18,5 +18,3 @@ class HHOTestCase(AlgorithmTestCase):
         hho_griewank = self.algo(population_size=10, nFES=4000, nGEN=200, levy=0.01, seed=self.seed)
         hho_griewankc = self.algo(population_size=10, nFES=4000, nGEN=200, levy=0.01, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, hho_griewank, hho_griewankc)
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

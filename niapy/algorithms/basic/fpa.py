@@ -127,5 +127,3 @@ class FlowerPollinationAlgorithm(Algorithm):
             if f_i <= best_fitness:
                 best_x, best_fitness = solutions[i].copy(), f_i
         return population, population_fitness, best_x, best_fitness, {'solutions': solutions}
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

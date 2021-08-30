@@ -201,5 +201,3 @@ class SimulatedAnnealing(Algorithm):
                                                   delta_temperature=self.delta_temperature, max_evals=task.max_evals)
         best_x, best_fitness = self.get_best(x, x_fit, best_x, best_fitness)
         return x, x_fit, best_x, best_fitness, {'current_temperature': current_temperature}
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

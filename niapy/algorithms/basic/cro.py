@@ -357,5 +357,3 @@ class CoralReefsOptimization(Algorithm):
         if (task.iters + 1) % self.k == 0:
             population, population_fitness = self.depredation(population, population_fitness)
         return population, population_fitness, best_x, best_fitness, {}
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

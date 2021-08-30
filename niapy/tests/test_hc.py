@@ -17,5 +17,3 @@ class HCTestCase(AlgorithmTestCase):
         ihc_griewank = self.algo(delta=0.1, seed=self.seed)
         ihc_griewankc = self.algo(delta=0.1, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, ihc_griewank, ihc_griewankc)
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

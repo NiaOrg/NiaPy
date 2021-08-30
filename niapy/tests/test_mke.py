@@ -75,5 +75,3 @@ class MKEv3TestCase(AlgorithmTestCase):
         mke_griewank = self.algo(population_size=10, C_a=5, C_r=0.5, seed=self.seed)
         mke_griewankc = self.algo(population_size=10, C_a=5, C_r=0.5, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, mke_griewank, mke_griewankc)
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

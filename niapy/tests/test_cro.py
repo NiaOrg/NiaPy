@@ -18,5 +18,3 @@ class CROTestCase(AlgorithmTestCase):
         cro_griewank = self.algo(population_size=10, seed=self.seed)
         cro_griewankc = self.algo(population_size=10, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, cro_griewank, cro_griewankc, max_iters=100)
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

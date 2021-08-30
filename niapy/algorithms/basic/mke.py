@@ -534,5 +534,3 @@ class MonkeyKingEvolutionV3(MonkeyKingEvolutionV1):
         if x_gb_f[ib_gb] <= population_fitness[iw]:
             population[iw], population_fitness[iw] = x_gb[ib_gb], x_gb_f[ib_gb]
         return population, population_fitness, best_x, best_fitness, {'k': k, 'c': c}
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

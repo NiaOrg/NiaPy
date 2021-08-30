@@ -392,5 +392,3 @@ class SelfAdaptiveBatAlgorithm(AdaptiveBatAlgorithm):
             if new_fitness <= best_fitness:
                 best_x, best_fitness = solution.copy(), new_fitness
         return population, population_fitness, best_x, best_fitness, {'loudness': loudness, 'pulse_rates': pulse_rates, 'velocities': velocities}
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

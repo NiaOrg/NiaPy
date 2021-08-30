@@ -70,5 +70,3 @@ class Discus(Problem):
 
     def _evaluate(self, x):
         return x[0] * 1000000 + np.sum(np.square(x[1:]))
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

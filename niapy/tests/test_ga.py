@@ -79,5 +79,3 @@ class GATestCase(AlgorithmTestCase):
         ga_crmt = self.algo(population_size=10, tournament_size=4, mutation_rate=0.05, crossover_rate=0.4, mutation=mutation_uros, seed=self.seed)
         ga_crmtc = self.algo(population_size=10, tournament_size=4, mutation_rate=0.05, crossover_rate=0.4, mutation=mutation_uros, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, ga_crmt, ga_crmtc)
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

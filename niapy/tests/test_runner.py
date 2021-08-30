@@ -31,5 +31,3 @@ class RunnerTestCase(TestCase):
     def test_runner_bad_export_throws(self):
         self.assertRaises(TypeError,
                           lambda: niapy.Runner(4, 10, 3, ['GreyWolfOptimizer'], self.problems).run(export="pandas"))
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

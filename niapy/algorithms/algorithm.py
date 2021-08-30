@@ -502,5 +502,3 @@ class Individual:
 
         """
         return len(self.x)
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

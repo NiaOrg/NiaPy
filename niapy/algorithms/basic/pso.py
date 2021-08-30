@@ -1146,5 +1146,3 @@ class ComprehensiveLearningParticleSwarmOptimizer(ParticleSwarmAlgorithm):
         return pop, fpop, xb, fxb, {'personal_best': personal_best, 'personal_best_fitness': personal_best_fitness,
                                     'min_velocity': min_velocity,
                                     'max_velocity': max_velocity, 'v': v, 'flag': flag, 'pc': pc}
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

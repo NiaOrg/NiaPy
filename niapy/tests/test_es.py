@@ -98,5 +98,3 @@ class ESMLTestCase(AlgorithmTestCase):
         es1_griewank = self.algo(mu=10, lam=35, k=25, c_a=1.5, c_r=0.5, seed=self.seed)
         es1_griewankc = self.algo(mu=10, lam=35, k=25, c_a=1.5, c_r=0.5, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, es1_griewank, es1_griewankc)
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

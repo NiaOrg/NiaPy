@@ -69,5 +69,3 @@ class MsjDETestCase(AlgorithmTestCase):
                                                                        crossover_probability=0.1,
                                                                        tao2=0.45, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, jde_griewank, jde_griewankc)
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

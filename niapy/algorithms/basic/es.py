@@ -544,5 +544,3 @@ class EvolutionStrategyML(EvolutionStrategyMpL):
         fc = np.asarray([x.f for x in c])
         best_x, best_fitness = self.get_best(c, fc, best_x, best_fitness)
         return c, fc, best_x, best_fitness, {}
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

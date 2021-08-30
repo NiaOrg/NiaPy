@@ -17,5 +17,3 @@ class GSATestCase(AlgorithmTestCase):
         gsa_griewank = self.algo(population_size=10, seed=self.seed)
         gsa_griewankc = self.algo(population_size=10, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, gsa_griewank, gsa_griewankc)
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

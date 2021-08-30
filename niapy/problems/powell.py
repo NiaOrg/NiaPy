@@ -79,5 +79,3 @@ class Powell(Problem):
         term3 = (x2 - 2 * x3) ** 4.0
         term4 = 10 * (x1 - x4) ** 4.0
         return np.sum(term1 + term2 + term3 + term4)
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

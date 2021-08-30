@@ -102,5 +102,3 @@ class HybridBatAlgorithm(BatAlgorithm):
 
         """
         return task.repair(self.strategy(population, i, self.differential_weight, self.crossover_probability, self.rng, best), rng=self.rng)
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

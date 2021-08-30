@@ -74,5 +74,3 @@ class Problem(ABC):
     def name(self):
         """Get class name."""
         return self.__class__.__name__
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

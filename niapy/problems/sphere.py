@@ -198,5 +198,3 @@ class Sphere3(Problem):
         x_matrix = np.tile(x, (self.dimension, 1))
         val = np.sum(np.tril(x_matrix) ** 2.0, axis=0)
         return np.sum(val)
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

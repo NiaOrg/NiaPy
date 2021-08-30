@@ -16,5 +16,3 @@ for i in range(5):
     algo = EvolutionStrategyMpL()
     best = algo.run(task)
     print('%s -> %f' % (best[0], best[1]))
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

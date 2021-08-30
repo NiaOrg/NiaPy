@@ -33,5 +33,3 @@ class MTSv1TestCase(AlgorithmTestCase):
         mts_griewank = self.algo(population_size=10, C_a=5, C_r=0.5, seed=self.seed)
         mts_griewankc = self.algo(population_size=10, C_a=5, C_r=0.5, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, mts_griewank, mts_griewankc)
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

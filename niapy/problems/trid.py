@@ -72,5 +72,3 @@ class Trid(Problem):
         sum1 = np.sum((x - 1) ** 2)
         sum2 = np.sum(x[1:] * x[:-1])
         return sum1 - sum2
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

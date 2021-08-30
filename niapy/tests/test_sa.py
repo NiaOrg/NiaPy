@@ -29,5 +29,3 @@ class SATestCase(AlgorithmTestCase):
         ca_griewank = self.algo(population_size=10, seed=self.seed, cooling_method=cool_linear)
         ca_griewankc = self.algo(population_size=10, seed=self.seed, cooling_method=cool_linear)
         AlgorithmTestCase.test_algorithm_run(self, ca_griewank, ca_griewankc)
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

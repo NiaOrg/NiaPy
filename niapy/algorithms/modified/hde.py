@@ -530,5 +530,3 @@ class DynNpMultiStrategyDifferentialEvolutionMTSv1(DynNpMultiStrategyDifferentia
 
         """
         DynNpMultiStrategyDifferentialEvolutionMTS.set_parameters(self, local_searches=(mts_ls1v1, mts_ls2, mts_ls3v1), **kwargs)
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

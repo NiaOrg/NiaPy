@@ -72,5 +72,3 @@ class DixonPrice(Problem):
         indices = np.arange(2, self.dimension)
         val = np.sum(indices * (2 * x[2:] ** 2 - x[1:self.dimension - 1]) ** 2)
         return (x[0] - 1) ** 2 + val
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

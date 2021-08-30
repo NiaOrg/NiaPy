@@ -70,5 +70,3 @@ class CosineMixture(Problem):
 
     def _evaluate(self, x):
         return -0.1 * np.sum(np.cos(5 * np.pi * x)) - np.sum(x ** 2)
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
