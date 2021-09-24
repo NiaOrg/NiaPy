@@ -199,7 +199,7 @@ class BatAlgorithm(Algorithm):
             else:
                 solution = task.repair(population[i] + velocities[i], rng=self.rng)
             new_fitness = task.eval(solution)
-            if (new_fitness <= population_fitness[i]) and (self.random() > self.loudness):
+            if (new_fitness <= population_fitness[i]) and (self.random() > loudness):
                 population[i], population_fitness[i] = solution, new_fitness
             if new_fitness <= best_fitness:
                 best_x, best_fitness = solution.copy(), new_fitness
