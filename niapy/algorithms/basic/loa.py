@@ -1,7 +1,6 @@
 # encoding=utf8
 import copy
 import logging
-import math
 import random
 
 import numpy
@@ -62,7 +61,7 @@ class Lion(Individual):
 
         """
         super().__init__(**kwargs)
-        self.gender = gender;
+        self.gender = gender
         self.has_pride = has_pride
         self.pride = pride
         self.hunting_group = hunting_group
@@ -124,7 +123,7 @@ class LionOptimizationAlgorithm(Algorithm):
         """
         return r'''Yazdani, Maziar, Jolai, Fariborz. Lion Optimization Algorithm (LOA): A nature-inspired metaheuristic algorithm. Journal of Computational Design and Engineering, Volume 3, Issue 1, Pages 24-36. 2016.'''
 
-    def __init__(self, population_size=50, nomad_ratio = 0.2, num_of_prides = 5, female_ratio = 0.8, roaming_factor = 0.2, mating_factor = 0.3, mutation_factor = 0.2, immigration_factor = 0.4, *args, **kwargs):
+    def __init__(self, population_size=50, nomad_ratio=0.2, num_of_prides=5, female_ratio=0.8, roaming_factor=0.2, mating_factor=0.3, mutation_factor=0.2, immigration_factor=0.4, *args, **kwargs):
         r"""Initialize LionOptimizationAlgorithm.
 
         Args:
@@ -152,7 +151,7 @@ class LionOptimizationAlgorithm(Algorithm):
         self.mutation_factor = mutation_factor
         self.immigration_factor = immigration_factor
 
-    def set_parameters(self, population_size=50, nomad_ratio = 0.2, num_of_prides = 5, female_ratio = 0.8, roaming_factor = 0.2, mating_factor = 0.3, mutation_factor = 0.2, immigration_factor = 0.4, **kwargs):
+    def set_parameters(self, population_size=50, nomad_ratio=0.2, num_of_prides=5, female_ratio=0.8, roaming_factor=0.2, mating_factor=0.3, mutation_factor=0.2, immigration_factor=0.4, **kwargs):
         r"""Set the arguments of an algorithm.
 
         Args:
@@ -233,7 +232,7 @@ class LionOptimizationAlgorithm(Algorithm):
         """
         nomad_size = (int)(round(self.nomad_ratio * self.population_size))
 
-        #Creating array of pride sizes.
+        # Creating array of pride sizes.
         pride_size = np.zeros(self.num_of_prides + 1, dtype=int)
         pride_size[-1] = nomad_size
         remaining_lions = self.population_size - nomad_size
@@ -244,7 +243,7 @@ class LionOptimizationAlgorithm(Algorithm):
                 pride_size[:remaining_lions] += 1
             remaining_lions -= self.num_of_prides
 
-        #Setting gender and pride id of pride members.
+        # Setting gender and pride id of pride members.
         index_counter = 0
         for i in range(self.num_of_prides):
             curr_pride_size = pride_size[i]
@@ -257,13 +256,13 @@ class LionOptimizationAlgorithm(Algorithm):
                     num_of_females -= 1
             index_counter += curr_pride_size
 
-        #Setting gender of nomads
+        # Setting gender of nomads
         num_of_females = int(round((1 - self.female_ratio) * pride_size[-1]))
-        for lion in pop[index_counter:index_counter+num_of_females]:
-            lion.gender ="f"
+        for lion in pop[index_counter:index_counter + num_of_females]:
+            lion.gender = "f"
 
-        #Creating array of pride gender quantities
-        gender_distribution = np.zeros((self.num_of_prides+1,2), dtype=int)
+        # Creating array of pride gender quantities
+        gender_distribution = np.zeros((self.num_of_prides+1, 2), dtype=int)
         index_counter = 0
         for i in range(self.num_of_prides):
             curr_pride_size = pride_size[i]
@@ -273,17 +272,16 @@ class LionOptimizationAlgorithm(Algorithm):
                 elif lion.gender == "m":
                     gender_distribution[i][1] += 1
             index_counter += curr_pride_size
-        #Creating array of nomad gender quantities
+        # Creating array of nomad gender quantities
         for lion in pop[index_counter:]:
             if lion.gender == "f":
                 gender_distribution[self.num_of_prides][0] += 1
             elif lion.gender == "m":
                 gender_distribution[self.num_of_prides][1] += 1
 
-        #Updating params
+        # Updating params
         d.update({'pride_size': pride_size, 'gender_distribution': gender_distribution})
         return pop, d
-
 
     def hunting(self, population, pride_size, task):
         r"""Pride female hunters go hunting.
@@ -305,20 +303,20 @@ class LionOptimizationAlgorithm(Algorithm):
             hunting_group_fitness = np.zeros(4)
             for lion in population[index_counter_pride:index_counter_pride + curr_pride_size]:
                 if lion.gender == "f":
-                    lion.hunting_group = self.integers(0,4,1)[0]
+                    lion.hunting_group = self.integers(0, 4, 1)[0]
                     hunting_group_fitness[lion.hunting_group] += lion.current_f
                 if not (lion.hunting_group == 0):
                     prey_x += lion.current_x
                     num_of_hunters += 1
 
-            #Group with highest fitness becomes center group, the rest become left and right groups
+            # Group with highest fitness becomes center group, the rest become left and right groups
             sorted_hunting_group_indices = np.argsort(hunting_group_fitness[1:])
             right_group, left_group, center_group = sorted_hunting_group_indices + 1
 
             if not (num_of_hunters == 0):
                 prey_x /= num_of_hunters
 
-            #Calculate new positions of hunters with "Opposition-Based Learning method".
+            # Calculate new positions of hunters with "Opposition-Based Learning method".
             for lion in population[index_counter_pride:index_counter_pride + curr_pride_size]:
                 if lion.hunting_group == left_group or lion.hunting_group == right_group:
                     for i in range(task.dimension):
@@ -334,22 +332,22 @@ class LionOptimizationAlgorithm(Algorithm):
                             lion.current_x[i] = self.uniform(prey_x[i], lion.current_x[i])
 
                 if not(lion.hunting_group == 0):
-                    #Check that lion's position is still in limits
+                    # Check that lion's position is still in limits
                     for i, x in enumerate(lion.current_x):
                         if x > task.upper[i]:
                             lion.current_x[i] = task.upper[i]
                         elif x < task.lower[i]:
                             lion.current_x[i] = task.lower[i]
                     lion.current_f = task.eval(lion.current_x)
-                    #If hunter's new fitness is better then change prey's position.
+                    # If hunter's new fitness is better then change prey's position.
                     if lion.current_f < lion.f:
                         lion.x = np.copy(lion.current_x)
                         lion.f = lion.current_f
                         percentage_of_improvement = 1 - lion.f / lion.previous_iter_best_f
                         prey_x = prey_x + self.random(1)[0] * percentage_of_improvement * (prey_x - lion.current_x)
-                        #Check that prey's position is still in limits.
+                        # Check that prey's position is still in limits.
                         for i, x in enumerate(prey_x):
-                            if x > task.upper[i] :
+                            if x > task.upper[i]:
                                 prey_x[i] = task.upper[i]
                             elif x < task.lower[i]:
                                 prey_x[i] = task.lower[i]
@@ -378,8 +376,8 @@ class LionOptimizationAlgorithm(Algorithm):
                 pride_teritory.append((lion.x, lion.f))
                 if lion.has_improved:
                     num_of_improvements += 1
-            #Tournament selection
-            tournament_size = np.max([2, int(np.ceil(num_of_improvements/2))])
+            # Tournament selection
+            tournament_size = np.max([2, int(np.ceil(num_of_improvements / 2))])
             tournament_selections = random.sample(pride_teritory, tournament_size)
             tournament_min_f = tournament_selections[0][1]
             tournament_winner = tournament_selections[0][0].copy()
@@ -388,36 +386,36 @@ class LionOptimizationAlgorithm(Algorithm):
                     tournament_min_f = candidate[1]
                     tournament_winner = candidate[0].copy()
 
-            #Move female non-hunters
+            # Move female non-hunters
             for lion in population[index_counter_pride:index_counter_pride + curr_pride_size]:
                 if lion.gender == "f" and lion.hunting_group == 0:
-                    #Get vector r_one.
+                    # Get vector r_one.
                     r_one = tournament_winner.copy()
                     r_one -= lion.current_x
-                    #Get vector 2_two with Gram-Schmidt process.
+                    # Get vector 2_two with Gram-Schmidt process.
                     if np.linalg.norm((r_one).T) == 0:
-                        #If r_one vector is 0 then Gram-Schmidt proces return wrong values
+                        # If r_one vector is 0 then Gram-Schmidt proces return wrong values
                         r_two = np.zeros(len(r_one.T))
                         rand_index = np.random.randint(0, len(r_one.T))
                         r_two[rand_index] = 1
                     else:
-                        #Gram-Schmidt process to find orthogonal vector r_two.
+                        # Gram-Schmidt process to find orthogonal vector r_two.
                         random_vec = np.random.randn(len(r_one))
                         r_two = random_vec - ((r_one.T).dot(random_vec)) / ((r_one.T).dot(r_one)) * r_one
-                    #Calculate other variables and new lion's position
+                    # Calculate other variables and new lion's position
                     d = np.linalg.norm(r_one) / np.linalg.norm(task.upper[0] - task.lower[0])
                     rnd_num = self.random(1)[0]
                     rnd_num_u = self.uniform(-1, 1, 1)[0]
                     angle = self.uniform(-np.pi / 6, np.pi / 6, 1)[0]
                     lion.current_x += 2 * d * rnd_num * r_one + rnd_num_u * np.tan(angle) * d * r_two
-                    #Check if lion's current position is in limits.
+                    # Check if lion's current position is in limits.
                     for i, x in enumerate(lion.current_x):
                         if x > task.upper[i]:
                             lion.current_x[i] = task.upper[i]
                         elif x < task.lower[i]:
                             lion.current_x[i] = task.lower[i]
                     lion.current_f = task.eval(lion.current_x)
-                    #If lion's position has improved update best position and fitness
+                    # If lion's position has improved update best position and fitness
                     if lion.current_f < lion.f:
                         lion.x = np.copy(lion.current_x)
                         lion.f = lion.current_f
@@ -438,42 +436,42 @@ class LionOptimizationAlgorithm(Algorithm):
         """
         num_of_prides = len(pride_size) - 1
         index_counter_pride = 0
-        #Pride lions roam.
+        # Pride lions roam.
         for pride_i in range(num_of_prides):
             curr_pride_size = pride_size[pride_i]
             for lion in population[index_counter_pride:index_counter_pride + curr_pride_size]:
                 if lion.gender == "m":
-                    #Select teritory for roaming.
+                    # Select teritory for roaming.
                     pride_teritory = []
                     for lion in population[index_counter_pride:index_counter_pride + curr_pride_size]:
                         pride_teritory.append((lion.x, lion.f))
                     teritory_to_roam = random.sample(pride_teritory, int(np.round(len(pride_teritory) * self.roaming_factor)))
-                    #Move towards selected teritories.
+                    # Move towards selected teritories.
                     for current_place in teritory_to_roam:
                         d = np.linalg.norm(current_place[0] - lion.x) / np.linalg.norm(task.upper[0] - task.lower[0])
                         x = self.uniform(0, 2 * d, 1)
-                        angle = self.uniform(-np.pi/6, np.pi/6)
+                        angle = self.uniform(-np.pi / 6, np.pi / 6)
                         lion.current_x += x * d * np.tan(angle)
-                        #Check that lion's new position is in limits.
-                        for i,x in enumerate(lion.current_x):
+                        # Check that lion's new position is in limits.
+                        for i, x in enumerate(lion.current_x):
                             if x > task.upper[i]:
                                 lion.current_x[i] = task.upper[i]
                             elif x < task.lower[i]:
                                 lion.current_x[i] = task.lower[i]
                         lion.current_f = task.eval(lion.current_x)
-                        #Update best position/fitness if lion's best position is improved
+                        # Update best position/fitness if lion's best position is improved
                         if lion.current_f < lion.f:
                             lion.x = np.copy(lion.current_x)
                             lion.f = lion.current_f
             index_counter_pride += curr_pride_size
 
-        #Nomad lions roam.
+        # Nomad lions roam.
         nomad_size = pride_size[-1]
         for lion in population[len(population) - nomad_size:]:
-            best_nomad_fitness = np.min([l.current_f for l in population[len(population) - nomad_size:]])
+            best_nomad_fitness = np.min([c_l.current_f for c_l in population[len(population) - nomad_size:]])
             roaming_probability = 0.1 + np.minimum(0.5, (lion.current_f - best_nomad_fitness) / best_nomad_fitness)
             rand = self.uniform(0, 1, 1)
-            #If roaming treshold is met, move lion according to reference paper formula.
+            # If roaming treshold is met, move lion according to reference paper formula.
             if not rand > roaming_probability:
                 lion.current_x = self.uniform(task.lower, task.upper, task.dimension)
                 lion.current_f = task.eval(lion.current_x)
@@ -499,9 +497,9 @@ class LionOptimizationAlgorithm(Algorithm):
                 2. Pride and nomad excess gender quantities.
         """
         added_cubs = []
-        excess_lion_gender_quantities = np.zeros((self.num_of_prides+1,2), dtype=int)
+        excess_lion_gender_quantities = np.zeros((self.num_of_prides+1, 2), dtype=int)
         num_of_prides = len(pride_size) - 1
-        #Copy of all pride lions.
+        # Copy of all pride lions.
         pride_lions = []
         index_counter_pride = 0
         for pride_i in range(num_of_prides):
@@ -511,49 +509,49 @@ class LionOptimizationAlgorithm(Algorithm):
                 pride_lions = np.append(pride_lions, objects_to_array([lion_copy]))
             index_counter_pride += curr_pride_size
 
-        #Copy of all nomad lions.
+        # Copy of all nomad lions.
         nomad_lions = []
         nomad_size = pride_size[-1]
         for lion in population[len(population) - nomad_size]:
             lion_copy = copy.deepcopy(lion)
             nomad_lions = np.append(nomad_lions, objects_to_array([lion_copy]))
 
-        #Prides mating.
+        # Prides mating.
         index_counter_pride = 0
         for pride_i in range(num_of_prides):
             curr_pride_size = pride_size[pride_i]
             num_of_males = gender_distribution[pride_i][1]
-            #If there's at least 1 male, proceed
+            # If there's at least 1 male, proceed
             if not num_of_males == 0:
-                #Array of males that can mate.
+                # Array of males that can mate.
                 males_x = []
                 for lion in population[index_counter_pride:index_counter_pride + curr_pride_size]:
                     if lion.gender == "m":
                         males_x.append(lion.x)
-                #Mate all females with a mating probability.
+                # Mate all females with a mating probability.
                 for lion in population[index_counter_pride:index_counter_pride + curr_pride_size]:
                     if lion.gender == "f" and self.random(1) < self.mating_factor:
-                        #Choose males that will mate.
+                        # Choose males that will mate.
                         num_of_mating_males = random.randint(1, num_of_males)
                         mating_males_x = random.sample(males_x, num_of_mating_males)
 
-                        beta =  np.random.normal(0.5, 0.1)
+                        beta = np.random.normal(0.5, 0.1)
 
-                        #Total position x of mating males. Needed for calculating average.
+                        # Total position x of mating males. Needed for calculating average.
                         mating_males_x_sum = np.zeros(task.dimension)
                         for mating_male_x in mating_males_x:
                             mating_males_x_sum = np.add(mating_males_x_sum, mating_male_x)
-                        #Calculate position x for offsprings.
+                        # Calculate position x for offsprings.
                         offspring_one_position = beta * lion.x + ((1 - beta) * mating_males_x_sum / num_of_mating_males)
                         offspring_two_position = (1 - beta) * lion.x + (beta * mating_males_x_sum / num_of_mating_males)
 
-                        #Mutation of the genes with mutation probability.
+                        # Mutation of the genes with mutation probability.
                         for i in range(task.dimension):
                             if self.random(1) < self.mutation_factor:
                                 offspring_one_position[i] = self.uniform(task.lower[i], task.upper[i], 1)
                             if self.random(1) < self.mutation_factor:
                                 offspring_two_position[i] = self.uniform(task.lower[i], task.upper[i], 1)
-                        #Create offspring Lion objects
+                        # Create offspring Lion objects
                         offspring_one = copy.deepcopy(lion)
                         offspring_two = copy.deepcopy(lion)
                         offspring_one.has_pride = True
@@ -564,7 +562,7 @@ class LionOptimizationAlgorithm(Algorithm):
                         offspring_two.hunting_group = 0
                         offspring_one.has_improved = True
                         offspring_two.has_improved = True
-                        #Randomly assign genders to offsprings.
+                        # Randomly assign genders to offsprings.
                         if self.random(1) < 0.5:
                             offspring_one.gender = "m"
                             offspring_two.gender = "f"
@@ -573,18 +571,18 @@ class LionOptimizationAlgorithm(Algorithm):
                             offspring_two.gender = "m"
                         offspring_one.x = offspring_one_position
                         offspring_two.x = offspring_two_position
-                        #Check that offspring x is in limits.
-                        for i,x in enumerate(offspring_one.x):
+                        # Check that offspring x is in limits.
+                        for i, x in enumerate(offspring_one.x):
                             if x > task.upper[i]:
                                 offspring_one.x[i] = task.upper[i]
                             elif x < task.lower[i]:
                                 offspring_one.x[i] = task.lower[i]
-                        for i,x in enumerate(offspring_two.x):
+                        for i, x in enumerate(offspring_two.x):
                             if x > task.upper[i]:
                                 offspring_two.x[i] = task.upper[i]
                             elif x < task.lower[i]:
                                 offspring_two.x[i] = task.lower[i]
-                        #Assign other values of offsprings.
+                        # Assign other values of offsprings.
                         offspring_one.f = task.eval(offspring_one.x)
                         offspring_two.f = task.eval(offspring_two.x)
                         offspring_one.current_x = np.copy(offspring_one.x)
@@ -593,7 +591,7 @@ class LionOptimizationAlgorithm(Algorithm):
                         offspring_two.current_f = offspring_two.f
                         offspring_one.previous_iter_best_f = offspring_one.f + 1
                         offspring_two.previous_iter_best_f = offspring_two.f + 1
-                        #Add offspring to array of added cubs.
+                        # Add offspring to array of added cubs.
                         added_cubs = np.append(added_cubs, objects_to_array([offspring_one]))
                         added_cubs = np.append(added_cubs, objects_to_array([offspring_two]))
                         excess_lion_gender_quantities[pride_i][0] += 1
@@ -603,42 +601,42 @@ class LionOptimizationAlgorithm(Algorithm):
                         gender_distribution[pride_i][1] += 1
             index_counter_pride += curr_pride_size
 
-        #Nomads mating.
+        # Nomads mating.
         nomad_size = pride_size[-1]
         num_of_males = gender_distribution[pride_i][1]
-        #If there's at least one male nomad, proceed
+        # If there's at least one male nomad, proceed
         if not num_of_males == 0:
-            #Create array of males that can mate.
+            # Create array of males that can mate.
             males_x = []
             for lion in population[len(population) - nomad_size:]:
                 if lion.gender == "m":
                     males_x.append(lion.x)
-            #Mate all females with mating probability.
+            # Mate all females with mating probability.
             for lion in population[len(population) - nomad_size:]:
                 if lion.gender == "f" and self.random(1) < self.mating_factor:
-                    #Choose one male that will mate.
+                    # Choose one male that will mate.
                     mating_male_x = np.zeros(task.dimension)
                     mating_males_x = random.sample(males_x, 1)
 
                     beta = np.random.normal(0.5, 0.1)
 
-                    #Total x of mating males.
+                    # Total x of mating males.
                     mating_males_x_sum = np.zeros(task.dimension)
                     for mating_male_x in mating_males_x:
                         mating_males_x_sum = np.add(mating_males_x_sum, mating_male_x)
 
-                    #Calculate x for offsprings.
+                    # Calculate x for offsprings.
                     offspring_one_position = beta * lion.x + ((1 - beta) * mating_males_x_sum / 1)
                     offspring_two_position = (1 - beta) * lion.x + (beta * mating_males_x_sum / 1)
 
-                    #Mutation of the genes with mutation probability.
+                    # Mutation of the genes with mutation probability.
                     for i in range(task.dimension):
                         if self.random(1) < self.mutation_factor:
                             offspring_one_position[i] = self.uniform(task.lower[i], task.upper[i], 1)
                         if self.random(1) < self.mutation_factor:
                             offspring_two_position[i] = self.uniform(task.lower[i], task.upper[i], 1)
 
-                    #Create offspring Lion objects.
+                    # Create offspring Lion objects.
                     offspring_one = copy.deepcopy(lion)
                     offspring_two = copy.deepcopy(lion)
                     offspring_one.has_pride = False
@@ -649,7 +647,7 @@ class LionOptimizationAlgorithm(Algorithm):
                     offspring_two.hunting_group = 0
                     offspring_one.has_improved = True
                     offspring_two.has_improved = True
-                    #Randomly assign genders to offsprings.
+                    # Randomly assign genders to offsprings.
                     if self.random(1) < 0.5:
                         offspring_one.gender = "m"
                         offspring_two.gender = "f"
@@ -659,7 +657,7 @@ class LionOptimizationAlgorithm(Algorithm):
 
                     offspring_one.x = offspring_one_position
                     offspring_two.x = offspring_two_position
-                    #Check that offspring x is in limits.
+                    # Check that offspring x is in limits.
                     for i, x in enumerate(offspring_one.x):
                         if x > task.upper[i]:
                             offspring_one.x[i] = task.upper[i]
@@ -670,7 +668,7 @@ class LionOptimizationAlgorithm(Algorithm):
                             offspring_two.x[i] = task.upper[i]
                         elif x < task.lower[i]:
                             offspring_two.x[i] = task.lower[i]
-                    #Assign other values of offsprings.
+                    # Assign other values of offsprings.
                     offspring_one.f = task.eval(offspring_one.x)
                     offspring_two.f = task.eval(offspring_two.x)
                     offspring_one.current_x = np.copy(offspring_one.x)
@@ -679,7 +677,7 @@ class LionOptimizationAlgorithm(Algorithm):
                     offspring_two.current_f = offspring_two.f
                     offspring_one.previous_iter_best_f = offspring_one.f + 1
                     offspring_two.previous_iter_best_f = offspring_two.f + 1
-                    #Add offspring to array of added cubs
+                    # Add offspring to array of added cubs
                     added_cubs = np.append(added_cubs, objects_to_array([offspring_one]))
                     added_cubs = np.append(added_cubs, objects_to_array([offspring_two]))
                     excess_lion_gender_quantities[-1][0] += 1
@@ -688,17 +686,17 @@ class LionOptimizationAlgorithm(Algorithm):
                     gender_distribution[-1][0] += 1
                     gender_distribution[-1][1] += 1
 
-        #Add pride originals and cubs to same population.
+        # Add pride originals and cubs to same population.
         new_population = []
         original_index_counter_pride = 0
         cub_index_counter_pride = 0
         for pride_i in range(num_of_prides):
-            #Append original pride lion.
+            # Append original pride lion.
             curr_original_pride_size = pride_size[pride_i] - excess_lion_gender_quantities[pride_i][0] - excess_lion_gender_quantities[pride_i][1]
             for lion in population[original_index_counter_pride:original_index_counter_pride + curr_original_pride_size]:
                 lion_copy = copy.deepcopy(lion)
                 new_population = np.append(new_population, objects_to_array([lion_copy]))
-            #Append cub pride lions.
+            # Append cub pride lions.
             curr_cub_pride_size = excess_lion_gender_quantities[pride_i][0] + excess_lion_gender_quantities[pride_i][1]
             for lion in added_cubs[cub_index_counter_pride:cub_index_counter_pride + curr_cub_pride_size]:
                 lion_copy = copy.deepcopy(lion)
@@ -706,7 +704,7 @@ class LionOptimizationAlgorithm(Algorithm):
 
             original_index_counter_pride += curr_original_pride_size
             cub_index_counter_pride += curr_cub_pride_size
-        #Add nomad originals and cubs to same population.
+        # Add nomad originals and cubs to same population.
         originals_nomad_size = pride_size[-1] - excess_lion_gender_quantities[-1][0] - excess_lion_gender_quantities[-1][1]
         for lion in population[len(population) - originals_nomad_size:]:
             lion_copy = copy.deepcopy(lion)
@@ -735,22 +733,21 @@ class LionOptimizationAlgorithm(Algorithm):
         """
         new_nomads = []
         original_pride_lions = []
-        original_nomads = []
         num_of_prides = len(pride_size) - 1
-        #Pride lions defense
+        # Pride lions defense
         index_counter_pride = 0
         for pride_i in range(num_of_prides):
             curr_pride_size = pride_size[pride_i]
             num_of_males_to_be_kicked = excess_lion_gender_quantities[pride_i][1]
             males = []
-            #Go through pride
+            # Go through pride
             for lion in population[index_counter_pride:index_counter_pride + curr_pride_size]:
                 lion_copy = copy.deepcopy(lion)
                 if lion.gender == "m":
                     males = np.append(males, objects_to_array([lion_copy]))
                 elif lion.gender == "f":
                     original_pride_lions = np.append(original_pride_lions, objects_to_array([lion_copy]))
-            #Find males with worst fitness that will be kicked, leave the rest
+            # Find males with worst fitness that will be kicked, leave the rest
             males = sorted(males, key=lambda lion: lion.current_f, reverse=True)
             for lion in males:
                 lion_copy = copy.deepcopy(lion)
@@ -761,18 +758,18 @@ class LionOptimizationAlgorithm(Algorithm):
                     num_of_males_to_be_kicked -= 1
             index_counter_pride += curr_pride_size
 
-        #Create new population after kicking pride lions
+        # Create new population after kicking pride lions
         moved_population = []
-        #Append original pride lions.
+        # Append original pride lions.
         for lion in original_pride_lions:
             lion_copy = copy.deepcopy(lion)
             moved_population = np.append(moved_population, objects_to_array([lion_copy]))
-        #Append original nomads.
+        # Append original nomads.
         original_nomads_size = pride_size[-1]
         for lion in population[len(population) - original_nomads_size:]:
             lion_copy = copy.deepcopy(lion)
             moved_population = np.append(moved_population, objects_to_array([lion_copy]))
-        #Append new nomads.
+        # Append new nomads.
         for lion in new_nomads:
             lion_copy = copy.deepcopy(lion)
 
@@ -789,25 +786,24 @@ class LionOptimizationAlgorithm(Algorithm):
             gender_distribution[-1][1] += 1
             pride_size[-1] += 1
 
-
-        #Nomad lions defense.
+        # Nomad lions defense.
         nomads_size = pride_size[-1]
         for nomad_lion in moved_population[len(moved_population) - nomads_size:]:
             nomad_lion_has_won = False
-            #Create binary template - which prides a nomad lion will attack.
+            # Create binary template - which prides a nomad lion will attack.
             pride_index_to_attack = np.zeros(num_of_prides, dtype=int)
             for i in range(num_of_prides):
                 if self.random(1) < 0.5:
                     pride_index_to_attack[i] = 1
-            #Nomad attacks prides based on binary template.
+            # Nomad attacks prides based on binary template.
             index_counter_pride = 0
             for pride_i in range(num_of_prides):
                 curr_pride_size = pride_size[pride_i]
                 if pride_index_to_attack[pride_i] == 1:
-                    #Attack all male lions.
+                    # Attack all male lions.
                     for pride_lion in moved_population[index_counter_pride:index_counter_pride + curr_pride_size]:
                         if(lion.gender == "m"):
-                            #Swap nomad and pride lion if nomad has better fitness.
+                            # Swap nomad and pride lion if nomad has better fitness.
                             if nomad_lion.current_f < pride_lion.current_f:
                                 copy_nomad_lion = copy.deepcopy(nomad_lion)
                                 copy_pride_lion = copy.deepcopy(pride_lion)
@@ -819,11 +815,11 @@ class LionOptimizationAlgorithm(Algorithm):
                                 nomad_lion = copy_pride_lion
                                 nomad_lion.has_pride = False
                                 nomad_lion.pride = -1
-                                #If nomad lion won the attack, we continue with next nomad.
+                                # If nomad lion won the attack, we continue with next nomad.
                                 nomad_lion_has_won = True
                                 break
                     if nomad_lion_has_won:
-                       break
+                        break
                 index_counter_pride += curr_pride_size
 
         return moved_population, excess_lion_gender_quantities
@@ -845,10 +841,9 @@ class LionOptimizationAlgorithm(Algorithm):
         """
         new_nomads = []
         original_pride_lions = []
-        original_nomads = []
 
         num_of_prides = len(pride_size) - 1
-        #Pride females migration
+        # Pride females migration
         index_counter_pride = 0
         for pride_i in range(num_of_prides):
             curr_pride_size = pride_size[pride_i]
@@ -857,14 +852,14 @@ class LionOptimizationAlgorithm(Algorithm):
             num_of_females_to_migrate = num_of_excess_females + int(round(((num_of_females - num_of_excess_females) * self.immigration_factor)))
 
             females = []
-            #Go through pride
+            # Go through pride
             for lion in population[index_counter_pride:index_counter_pride + curr_pride_size]:
                 lion_copy = copy.deepcopy(lion)
                 if lion.gender == "m":
                     original_pride_lions = np.append(original_pride_lions, objects_to_array([lion_copy]))
                 elif lion.gender == "f":
                     females = np.append(females, objects_to_array([lion_copy]))
-            #Migrate random females, leave the rest
+            # Migrate random females, leave the rest
             females_indices_to_migrate = np.zeros(num_of_females, dtype=int)
             for i in range(num_of_females_to_migrate):
                 females_indices_to_migrate[i] = 1
@@ -878,18 +873,18 @@ class LionOptimizationAlgorithm(Algorithm):
                     original_pride_lions = np.append(original_pride_lions, objects_to_array([lion_copy]))
             index_counter_pride += curr_pride_size
 
-        #Create new population after migrating pride lions
+        # Create new population after migrating pride lions
         moved_population = []
-        #Append original pride lions
+        # Append original pride lions
         for lion in original_pride_lions:
             lion_copy = copy.deepcopy(lion)
             moved_population = np.append(moved_population, objects_to_array([lion_copy]))
-        #Append original nomads
+        # Append original nomads
         original_nomads_size = pride_size[-1]
         for lion in population[len(population) - original_nomads_size:]:
             lion_copy = copy.deepcopy(lion)
             moved_population = np.append(moved_population, objects_to_array([lion_copy]))
-        #Append new nomads
+        # Append new nomads
         for lion in new_nomads:
             lion_copy = copy.deepcopy(lion)
 
@@ -906,7 +901,7 @@ class LionOptimizationAlgorithm(Algorithm):
             gender_distribution[-1][0] += 1
             pride_size[-1] += 1
 
-        #Fill up empty female pride spaces with best nomad female lions
+        # Fill up empty female pride spaces with best nomad female lions
         prides_spots_to_be_filled = 0
         for i in range(num_of_prides):
             prides_spots_to_be_filled += np.abs(excess_lion_gender_quantities[i][0])
@@ -933,17 +928,17 @@ class LionOptimizationAlgorithm(Algorithm):
                 nomad_females_to_keep = np.append(nomad_females_to_keep, objects_to_array([lion_copy]))
         np.random.shuffle(nomad_females_to_move)
 
-        #Append pride lions and moved female nomads
+        # Append pride lions and moved female nomads
         final_population = []
         index_counter_pride = 0
         index_females_to_move = 0
         for pride_i in range(num_of_prides):
             curr_pride_size = pride_size[pride_i]
-            #Append pride lions
+            # Append pride lions
             for lion in moved_population[index_counter_pride:index_counter_pride + curr_pride_size]:
                 lion_copy = copy.deepcopy(lion)
                 final_population = np.append(final_population, objects_to_array([lion_copy]))
-            #Append female nomads
+            # Append female nomads
             curr_pride_spots_empty = np.abs(excess_lion_gender_quantities[pride_i][0])
             for lion in nomad_females_to_move[index_females_to_move:index_females_to_move + curr_pride_spots_empty]:
                 lion_copy = copy.deepcopy(lion)
@@ -960,14 +955,14 @@ class LionOptimizationAlgorithm(Algorithm):
                 excess_lion_gender_quantities[pride_i][0] += 1
                 gender_distribution[pride_i][0] += 1
                 pride_size[pride_i] += 1
-            #Increase starting indices for array search
+            # Increase starting indices for array search
             index_counter_pride += curr_pride_size
             index_females_to_move += curr_pride_spots_empty
-        #Append the kept nomad females
+        # Append the kept nomad females
         for lion in nomad_females_to_keep:
             lion_copy = copy.deepcopy(lion)
             final_population = np.append(final_population, objects_to_array([lion_copy]))
-        #Append nomad males
+        # Append nomad males
         for lion in nomad_males:
             lion_copy = copy.deepcopy(lion)
             final_population = np.append(final_population, objects_to_array([lion_copy]))
@@ -989,21 +984,21 @@ class LionOptimizationAlgorithm(Algorithm):
         nomad_females = []
         nomad_males = []
         kept_nomads = []
-        #Number of males and females that need to be removed.
+        # Number of males and females that need to be removed.
         num_of_female_nomads_to_remove = excess_lion_gender_quantities[-1][0]
         num_of_male_nomads_to_remove = excess_lion_gender_quantities[-1][1]
         original_nomads_size = pride_size[-1]
-        #Get lists of nomad males and females.
+        # Get lists of nomad males and females.
         for lion in population[len(population) - original_nomads_size:]:
             lion_copy = copy.deepcopy(lion)
             if lion.gender == "f":
                 nomad_females = np.append(nomad_females, objects_to_array([lion_copy]))
             elif lion.gender == "m":
                 nomad_males = np.append(nomad_males, objects_to_array([lion_copy]))
-        #Sort lists descendingly.
+        # Sort lists descendingly.
         nomad_males = sorted(nomad_males, key=lambda lion: lion.current_f, reverse=True)
         nomad_females = sorted(nomad_females, key=lambda lion: lion.current_f, reverse=True)
-        #Remove extra lions that have bad fitness, keep the rest.
+        # Remove extra lions that have bad fitness, keep the rest.
         for lion in nomad_males[num_of_male_nomads_to_remove:]:
             lion_copy = copy.deepcopy(lion)
             kept_nomads = np.append(kept_nomads, objects_to_array([lion_copy]))
@@ -1011,12 +1006,12 @@ class LionOptimizationAlgorithm(Algorithm):
             lion_copy = copy.deepcopy(lion)
             kept_nomads = np.append(kept_nomads, objects_to_array([lion_copy]))
 
-        #Append pride lions to final population.
+        # Append pride lions to final population.
         final_population = []
         for lion in population[:len(population) - original_nomads_size]:
             lion_copy = copy.deepcopy(lion)
             final_population = np.append(final_population, objects_to_array([lion_copy]))
-        #Append kept nomads to final population.
+        # Append kept nomads to final population.
         for lion in kept_nomads:
             lion_copy = copy.deepcopy(lion)
             final_population = np.append(final_population, objects_to_array([lion_copy]))
@@ -1025,8 +1020,6 @@ class LionOptimizationAlgorithm(Algorithm):
         gender_distribution[-1][1] -= num_of_male_nomads_to_remove
 
         return final_population
-
-
 
     def data_correction(self, population, pride_size, task):
         r"""Update lion's data if his position has improved since last iteration.
@@ -1050,16 +1043,16 @@ class LionOptimizationAlgorithm(Algorithm):
     def run_iteration(self, task, population, population_fitness, best_x, best_fitness, **params):
         pride_size = params.pop('pride_size')
         gender_distribution = params.pop('gender_distribution')
-        #Algorithm steps
+        # Algorithm steps
         lions = self.hunting(population, pride_size, task)
         lions = self.move_to_safe_place(lions, pride_size, task)
         lions = self.roaming(lions, pride_size, task)
         lions, excess_lion_gender_quantities = self.mating(lions, pride_size, gender_distribution, task)
-        lions, excess_lion_gender_quantities = self.defense(lions, pride_size, gender_distribution, excess_lion_gender_quantities,  task)
+        lions, excess_lion_gender_quantities = self.defense(lions, pride_size, gender_distribution, excess_lion_gender_quantities, task)
         lions, excess_lion_gender_quantities = self.migration(lions, pride_size, gender_distribution, excess_lion_gender_quantities, task)
         lions = self.population_equilibrium(lions, pride_size, gender_distribution, excess_lion_gender_quantities, task)
         lions = self.data_correction(lions, pride_size, task)
 
         lions_fitness = np.asarray([lion.f for lion in lions])
         best_x, best_fitness = self.get_best(lions, lions_fitness, best_x, best_fitness)
-        return lions, lions_fitness, best_x, best_fitness, {'pride_size':pride_size, 'gender_distribution':gender_distribution}
+        return lions, lions_fitness, best_x, best_fitness, {'pride_size': pride_size, 'gender_distribution': gender_distribution}
