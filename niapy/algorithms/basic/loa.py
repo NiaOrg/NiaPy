@@ -154,13 +154,13 @@ class LionOptimizationAlgorithm(Algorithm):
 
         Args:
             population_size (Optional[int]): Population size :math:`\in [1, \infty)`.
-            burden_factor (Optional[float]): Burden factor :math:`\in [0, 1]`.
-            death_rate (Optional[float]): Dying rate :math:`\in [0, 1]`.
-            visibility (Optional[float]): View range of camel.
-            supply_init (Optional[float]): Initial supply :math:`\in (0, \infty)`.
-            endurance_init (Optional[float]): Initial endurance :math:`\in (0, \infty)`.
-            min_temperature (Optional[float]): Minimum temperature, must be true :math:`$T_{min} < T_{max}`.
-            max_temperature (Optional[float]): Maximum temperature, must be true :math:`T_{min} < T_{max}`.
+            nomad_ratio (Optional[float]): Ratio of nomad lions :math:`\in [0, 1]`.
+            num_of_prides = Number of prides :math:`\in [1, \infty)`.
+            female_ratio = Ratio of female lions in prides :math:`\in [0, 1]`.
+            roaming_factor = Roaming factor :math:`\in [0, 1]`.
+            mating_factor = Mating factor :math:`\in [0, 1]`.
+            mutation_factor = Mutation factor :math:`\in [0, 1]`.
+            immigration_factor = Immigration factor :math:`\in [0, 1]`.
 
         See Also:
             * :func:`niapy.algorithms.Algorithm.set_parameters`
@@ -374,7 +374,7 @@ class LionOptimizationAlgorithm(Algorithm):
                     num_of_improvements += 1
             # Tournament selection to select places in teritory if there's more than 2 places
             if len(pride_teritory) > 1:
-                tournament_size = np.max([2, int(np.ceil(num_of_improvements / 2))])
+                tournament_size = max([2, int(np.ceil(num_of_improvements / 2))])
                 tournament_selections = self.rng.choice(pride_teritory, tournament_size, replace=False)
                 tournament_winner = tournament_selections[0].x.copy()
                 tournament_min_f = tournament_selections[0].f
