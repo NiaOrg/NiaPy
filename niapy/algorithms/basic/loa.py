@@ -374,7 +374,7 @@ class LionOptimizationAlgorithm(Algorithm):
                     num_of_improvements += 1
             # Tournament selection to select places in teritory if there's more than 2 places
             if len(pride_teritory) > 1:
-                tournament_size = max([2, int(np.ceil(num_of_improvements / 2))])
+                tournament_size = max(2, int(np.ceil(num_of_improvements / 2)))
                 tournament_selections = self.rng.choice(pride_teritory, tournament_size, replace=False)
                 tournament_winner = tournament_selections[0].x.copy()
                 tournament_min_f = tournament_selections[0].f
@@ -529,7 +529,7 @@ class LionOptimizationAlgorithm(Algorithm):
                     if lion.gender == "f" and self.random() < self.mating_factor:
                         # Choose males that will mate.
                         num_of_mating_males = self.integers(1, num_of_males)
-                        mating_males = self.rng.choice(males, num_of_mating_males)
+                        mating_males = self.rng.choice(males, num_of_mating_males, replace=False)
 
                         beta = self.normal(0.5, 0.1)
 
