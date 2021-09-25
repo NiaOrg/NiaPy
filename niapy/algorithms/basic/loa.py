@@ -313,8 +313,12 @@ class LionOptimizationAlgorithm(Algorithm):
             sorted_hunting_group_indices = np.argsort(hunting_group_fitness[1:])
             right_group, left_group, center_group = sorted_hunting_group_indices + 1
 
+            # Prey's position is average position of hunters.
             if not (num_of_hunters == 0):
                 prey_x /= num_of_hunters
+
+            # Check if prey's new position is in limits.
+            prey_x = task.repair(prey_x)
 
             # Calculate new positions of hunters with "Opposition-Based Learning method".
             for lion in population[index_counter_pride:index_counter_pride + curr_pride_size]:
@@ -332,12 +336,8 @@ class LionOptimizationAlgorithm(Algorithm):
                             lion.current_x[i] = self.uniform(prey_x[i], lion.current_x[i])
 
                 if not(lion.hunting_group == 0):
-                    # Check that lion's position is still in limits
-                    for i, x in enumerate(lion.current_x):
-                        if x > task.upper[i]:
-                            lion.current_x[i] = task.upper[i]
-                        elif x < task.lower[i]:
-                            lion.current_x[i] = task.lower[i]
+                    # Check if lion's new position is in limits.
+                    lion.current_x = task.repair(lion.current_x)
                     lion.current_f = task.eval(lion.current_x)
                     # If hunter's new fitness is better then change prey's position.
                     if lion.current_f < lion.f:
@@ -345,12 +345,9 @@ class LionOptimizationAlgorithm(Algorithm):
                         lion.f = lion.current_f
                         percentage_of_improvement = 1 - lion.f / lion.previous_iter_best_f
                         prey_x = prey_x + self.random(1)[0] * percentage_of_improvement * (prey_x - lion.current_x)
-                        # Check that prey's position is still in limits.
-                        for i, x in enumerate(prey_x):
-                            if x > task.upper[i]:
-                                prey_x[i] = task.upper[i]
-                            elif x < task.lower[i]:
-                                prey_x[i] = task.lower[i]
+                        # Check if prey's new position is in limits.
+                        prey_x = task.repair(prey_x)
+
             index_counter_pride += curr_pride_size
 
         return population
@@ -409,11 +406,7 @@ class LionOptimizationAlgorithm(Algorithm):
                     angle = self.uniform(-np.pi / 6, np.pi / 6, 1)[0]
                     lion.current_x += 2 * d * rnd_num * r_one + rnd_num_u * np.tan(angle) * d * r_two
                     # Check if lion's current position is in limits.
-                    for i, x in enumerate(lion.current_x):
-                        if x > task.upper[i]:
-                            lion.current_x[i] = task.upper[i]
-                        elif x < task.lower[i]:
-                            lion.current_x[i] = task.lower[i]
+                    lion.current_x = task.repair(lion.current_x)
                     lion.current_f = task.eval(lion.current_x)
                     # If lion's position has improved update best position and fitness
                     if lion.current_f < lion.f:
@@ -452,12 +445,8 @@ class LionOptimizationAlgorithm(Algorithm):
                         x = self.uniform(0, 2 * d, 1)
                         angle = self.uniform(-np.pi / 6, np.pi / 6)
                         lion.current_x += x * d * np.tan(angle)
-                        # Check that lion's new position is in limits.
-                        for i, x in enumerate(lion.current_x):
-                            if x > task.upper[i]:
-                                lion.current_x[i] = task.upper[i]
-                            elif x < task.lower[i]:
-                                lion.current_x[i] = task.lower[i]
+                        # Check if lion's new position is in limits.
+                        lion.current_x = task.repair(lion.current_x)
                         lion.current_f = task.eval(lion.current_x)
                         # Update best position/fitness if lion's best position is improved
                         if lion.current_f < lion.f:
@@ -571,20 +560,10 @@ class LionOptimizationAlgorithm(Algorithm):
                             offspring_two.gender = "m"
                         offspring_one.x = offspring_one_position
                         offspring_two.x = offspring_two_position
-                        # Check that offspring x is in limits.
-                        for i, x in enumerate(offspring_one.x):
-                            if x > task.upper[i]:
-                                offspring_one.x[i] = task.upper[i]
-                            elif x < task.lower[i]:
-                                offspring_one.x[i] = task.lower[i]
-                        for i, x in enumerate(offspring_two.x):
-                            if x > task.upper[i]:
-                                offspring_two.x[i] = task.upper[i]
-                            elif x < task.lower[i]:
-                                offspring_two.x[i] = task.lower[i]
-                        # Assign other values of offsprings.
-                        offspring_one.f = task.eval(offspring_one.x)
-                        offspring_two.f = task.eval(offspring_two.x)
+                        # Check if offspring's position is in limits.
+                        offspring_one.evaluate(task)
+                        offspring_two.evaluate(task)
+                        # Assign other offspring's values.
                         offspring_one.current_x = np.copy(offspring_one.x)
                         offspring_two.current_x = np.copy(offspring_two.x)
                         offspring_one.current_f = offspring_one.f
@@ -657,20 +636,10 @@ class LionOptimizationAlgorithm(Algorithm):
 
                     offspring_one.x = offspring_one_position
                     offspring_two.x = offspring_two_position
-                    # Check that offspring x is in limits.
-                    for i, x in enumerate(offspring_one.x):
-                        if x > task.upper[i]:
-                            offspring_one.x[i] = task.upper[i]
-                        elif x < task.lower[i]:
-                            offspring_one.x[i] = task.lower[i]
-                    for i, x in enumerate(offspring_two.x):
-                        if x > task.upper[i]:
-                            offspring_two.x[i] = task.upper[i]
-                        elif x < task.lower[i]:
-                            offspring_two.x[i] = task.lower[i]
-                    # Assign other values of offsprings.
-                    offspring_one.f = task.eval(offspring_one.x)
-                    offspring_two.f = task.eval(offspring_two.x)
+                    # Check if offspring's position is in limits.
+                    offspring_one.evaluate(task)
+                    offspring_two.evaluate(task)
+                    # Assign other offspring's values.
                     offspring_one.current_x = np.copy(offspring_one.x)
                     offspring_two.current_x = np.copy(offspring_two.x)
                     offspring_one.current_f = offspring_one.f
