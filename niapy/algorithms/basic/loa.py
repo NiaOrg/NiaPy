@@ -228,7 +228,7 @@ class LionOptimizationAlgorithm(Algorithm):
                     * pride_size (numpy.ndarray): Pride and nomad sizes.
                     * gender_distribution (numpy.ndarray): Pride and nomad gender distributions.
         """
-        nomad_size = (int)(round(self.nomad_ratio * self.population_size))
+        nomad_size = round(self.nomad_ratio * self.population_size)
 
         # Creating array of pride sizes.
         pride_size = np.zeros(self.num_of_prides + 1, dtype=int)
@@ -245,7 +245,7 @@ class LionOptimizationAlgorithm(Algorithm):
         index_counter = 0
         for i in range(self.num_of_prides):
             curr_pride_size = pride_size[i]
-            num_of_females = int(round(self.female_ratio * curr_pride_size))
+            num_of_females = round(self.female_ratio * curr_pride_size)
             for lion in pop[index_counter:index_counter + curr_pride_size]:
                 lion.has_pride = True
                 lion.pride = i
@@ -255,12 +255,12 @@ class LionOptimizationAlgorithm(Algorithm):
             index_counter += curr_pride_size
 
         # Setting gender of nomads
-        num_of_females = int(round((1 - self.female_ratio) * pride_size[-1]))
+        num_of_females = round((1 - self.female_ratio) * pride_size[-1])
         for lion in pop[index_counter:index_counter + num_of_females]:
             lion.gender = "f"
 
         # Creating array of pride gender quantities
-        gender_distribution = np.zeros((self.num_of_prides+1, 2), dtype=int)
+        gender_distribution = np.zeros((self.num_of_prides + 1, 2), dtype=int)
         index_counter = 0
         for i in range(self.num_of_prides):
             curr_pride_size = pride_size[i]
@@ -369,7 +369,7 @@ class LionOptimizationAlgorithm(Algorithm):
             pride_teritory = []
             for lion in population[index_counter_pride:index_counter_pride + curr_pride_size]:
                 lion_copy = copy.deepcopy(lion)
-                pride_teritory = np.append(pride_teritory, objects_to_array([lion]))
+                pride_teritory = np.append(pride_teritory, objects_to_array([lion_copy]))
                 if lion.has_improved:
                     num_of_improvements += 1
             # Tournament selection to select places in teritory if there's more than 2 places
@@ -820,7 +820,7 @@ class LionOptimizationAlgorithm(Algorithm):
             curr_pride_size = pride_size[pride_i]
             num_of_females = gender_distribution[pride_i][0]
             num_of_excess_females = excess_lion_gender_quantities[pride_i][0]
-            num_of_females_to_migrate = num_of_excess_females + int(round(((num_of_females - num_of_excess_females) * self.immigration_factor)))
+            num_of_females_to_migrate = num_of_excess_females + round(((num_of_females - num_of_excess_females) * self.immigration_factor))
 
             females = []
             # Go through pride
