@@ -215,7 +215,7 @@ class LionOptimizationAlgorithm(Algorithm):
         return pop, fpop, d
 
     def init_population_data(self, pop, d):
-        r"""Initialize data of starting population
+        r"""Initialize data of starting population.
 
         Args:
             pop (numpy.ndarray[Lion]: Starting lion population
