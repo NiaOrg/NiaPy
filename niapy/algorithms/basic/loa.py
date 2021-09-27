@@ -227,6 +227,7 @@ class LionOptimizationAlgorithm(Algorithm):
                 2. Additional arguments:
                     * pride_size (numpy.ndarray): Pride and nomad sizes.
                     * gender_distribution (numpy.ndarray): Pride and nomad gender distributions.
+        
         """
         nomad_size = round(self.nomad_ratio * self.population_size)
 
@@ -291,6 +292,7 @@ class LionOptimizationAlgorithm(Algorithm):
 
         Returns:
             population (numpy.ndarray[Lion]): Lion population that finished with hunting.
+        
         """
         num_of_prides = len(pride_size) - 1
         index_counter_pride = 0
@@ -360,6 +362,7 @@ class LionOptimizationAlgorithm(Algorithm):
 
         Returns:
             population (numpy.ndarray[Lion]): Lion population that finished with moving to safe place.
+        
         """
         num_of_prides = len(pride_size) - 1
         index_counter_pride = 0
@@ -429,6 +432,7 @@ class LionOptimizationAlgorithm(Algorithm):
 
         Returns:
             population (numpy.ndarray[Lion]): Lion population that finished with roaming.
+        
         """
         num_of_prides = len(pride_size) - 1
         index_counter_pride = 0
@@ -490,6 +494,7 @@ class LionOptimizationAlgorithm(Algorithm):
             Tuple[numpy.ndarray[Lion], numpy.ndarray[int]):
                 1. Lion population that finished with mating.
                 2. Pride and nomad excess gender quantities.
+        
         """
         added_cubs = []
         excess_lion_gender_quantities = np.zeros((self.num_of_prides + 1, 2), dtype=int)
@@ -701,6 +706,7 @@ class LionOptimizationAlgorithm(Algorithm):
             Tuple[numpy.ndarray[Lion], numpy.ndarray[int]):
                 1. Lion population that finished with defending.
                 2. Pride and nomad excess gender quantities.
+        
         """
         new_nomads = []
         original_pride_lions = []
@@ -809,6 +815,7 @@ class LionOptimizationAlgorithm(Algorithm):
             Tuple[numpy.ndarray[Lion], numpy.ndarray[int]):
                 1. Lion population that finished with migration.
                 2. Pride and nomad excess gender quantities.
+        
         """
         new_nomads = []
         original_pride_lions = []
@@ -951,6 +958,7 @@ class LionOptimizationAlgorithm(Algorithm):
 
         Returns:
             final_population (numpy.ndarray[Lion]): Lion population with removed extra nomads.
+        
         """
         nomad_females = []
         nomad_males = []
@@ -1002,6 +1010,7 @@ class LionOptimizationAlgorithm(Algorithm):
 
         Returns:
             population (numpy.ndarray[Lion]): Lion population with corrected data.
+        
         """
         for lion in population:
             if lion.f < lion.previous_iter_best_f:
