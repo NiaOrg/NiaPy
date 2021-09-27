@@ -26,6 +26,7 @@ from niapy.algorithms.basic.gwo import GreyWolfOptimizer
 from niapy.algorithms.basic.hho import HarrisHawksOptimization
 from niapy.algorithms.basic.hs import HarmonySearch, HarmonySearchV1
 from niapy.algorithms.basic.kh import KrillHerd
+from niapy.algorithms.basic.loa import LionOptimizationAlgorithm
 from niapy.algorithms.basic.mbo import MonarchButterflyOptimization
 from niapy.algorithms.basic.mfo import MothFlameOptimizer
 from niapy.algorithms.basic.mke import MonkeyKingEvolutionV1, MonkeyKingEvolutionV2, MonkeyKingEvolutionV3
@@ -68,6 +69,7 @@ __all__ = [
     'HarmonySearch',
     'HarmonySearchV1',
     'KrillHerd',
+    'LionOptimizationAlgorithm',
     'FireworksAlgorithm',
     'EnhancedFireworksAlgorithm',
     'DynamicFireworksAlgorithm',
