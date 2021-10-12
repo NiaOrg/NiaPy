@@ -99,7 +99,7 @@ class CoralReefsOptimization(Algorithm):
         The Scientific World Journal, vol. 2014, Article ID 739768, 15 pages, 2014.
 
     Reference URL:
-        https://doi.org/10.1155/2014/739768.
+        https://doi.org/10.1155/2014/739768
 
     Attributes:
         Name (List[str]): List of strings representing algorithm name.
