@@ -291,7 +291,7 @@ fits your purposes or that it is bug-free. Use it at your own risk!
 .. |Anaconda-Server Badge| image:: https://anaconda.org/niaorg/niapy/badges/installer/conda.svg
    :target: https://conda.anaconda.org/niaorg
 .. |Fedora package| image:: https://img.shields.io/fedora/v/python3-niapy?color=blue&label=Fedora%20Linux&logo=fedora
-   :target: https://src.fedoraproject.org/rpms/python-sport-activities-features
+   :target: https://src.fedoraproject.org/rpms/python-niapy
 .. |Documentation Status| image:: https://readthedocs.org/projects/niapy/badge/?version=latest
    :target: http://niapy.readthedocs.io/en/latest/?badge=latest
 .. |GitHub license| image:: https://img.shields.io/github/license/NiaOrg/NiaPy.svg
