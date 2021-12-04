@@ -55,7 +55,7 @@ setuptools.setup(
     url='https://github.com/NiaOrg/NiaPy',
     author='NiaOrg',
     author_email='niapy.organization@gmail.com',
-    packages=setuptools.find_packages(),
+    packages=setuptools.find_packages(exclude=['*tests*']),
     long_description=build_description(),
     license='MIT',
     classifiers=[
