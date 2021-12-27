@@ -50,22 +50,6 @@ Installation
 
 Install NiaPy with pip:
 
-Latest version (2.0.0rc18)
---------------------------
-
-.. code:: sh
-
-   $ pip install niapy==2.0.0rc18
-
-To install NiaPy with conda, use:
-
-.. code:: sh
-
-   $ conda install -c niaorg niapy=2.0.0rc18
-
-Latest stable version
----------------------
-
 .. code:: sh
 
    $ pip install niapy

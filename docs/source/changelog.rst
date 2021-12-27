@@ -1,6 +1,54 @@
 Changelog
 =========
 
+`2.0.0 <https://github.com/NiaOrg/NiaPy/tree/2.0.0>`__ (2021-12-27)
+-------------------------------------------------------------------
+
+`Full
+Changelog <https://github.com/NiaOrg/NiaPy/compare/2.0.0rc18...2.0.0>`__
+
+**Fixed bugs:**
+
+-  BA implementation bug
+   `#352 <https://github.com/NiaOrg/NiaPy/issues/352>`__
+
+**Closed issues:**
+
+-  Remove vim comments
+   `#349 <https://github.com/NiaOrg/NiaPy/issues/349>`__
+-  Infinity test problem is a duplicate of Csendes
+   `#347 <https://github.com/NiaOrg/NiaPy/issues/347>`__
+-  Add a citation.cff file
+   `#346 <https://github.com/NiaOrg/NiaPy/issues/346>`__
+
+**Merged pull requests:**
+
+-  Do not package the tests
+   `#358 <https://github.com/NiaOrg/NiaPy/pull/358>`__
+   (`firefly-cpp <https://github.com/firefly-cpp>`__)
+-  Add badge for Fedora
+   `#356 <https://github.com/NiaOrg/NiaPy/pull/356>`__
+   (`firefly-cpp <https://github.com/firefly-cpp>`__)
+-  Fixed flake8 versions
+   `#355 <https://github.com/NiaOrg/NiaPy/pull/355>`__
+   (`zStupan <https://github.com/zStupan>`__)
+-  Maximization example corrected
+   `#354 <https://github.com/NiaOrg/NiaPy/pull/354>`__
+   (`firefly-cpp <https://github.com/firefly-cpp>`__)
+-  Fixed BA `#353 <https://github.com/NiaOrg/NiaPy/pull/353>`__
+   (`zStupan <https://github.com/zStupan>`__)
+-  Loa algorithm `#351 <https://github.com/NiaOrg/NiaPy/pull/351>`__
+   (`AljoM <https://github.com/AljoM>`__)
+-  Removed vim comments
+   `#350 <https://github.com/NiaOrg/NiaPy/pull/350>`__
+   (`zStupan <https://github.com/zStupan>`__)
+-  Remove infinity test problem and add missing test problems to docs
+   `#348 <https://github.com/NiaOrg/NiaPy/pull/348>`__
+   (`zStupan <https://github.com/zStupan>`__)
+-  Fixed csendes function.
+   `#345 <https://github.com/NiaOrg/NiaPy/pull/345>`__
+   (`zStupan <https://github.com/zStupan>`__)
+
 `2.0.0rc18 <https://github.com/NiaOrg/NiaPy/tree/2.0.0rc18>`__ (2021-08-18)
 ---------------------------------------------------------------------------
 
@@ -621,6 +669,8 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/1.0.2...2.0.0rc3>`__
 -  HBA - bugfix `#157 <https://github.com/NiaOrg/NiaPy/pull/157>`__
    (`kivancguckiran <https://github.com/kivancguckiran>`__)
 
+.. _section-1:
+
 `1.0.2 <https://github.com/NiaOrg/NiaPy/tree/1.0.2>`__ (2018-10-24)
 -------------------------------------------------------------------
 
@@ -643,7 +693,7 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/2.0.0rc2...1.0.2>`__
 `Full
 Changelog <https://github.com/NiaOrg/NiaPy/compare/2...2.0.0rc2>`__
 
-.. _section-1:
+.. _section-2:
 
 `2 <https://github.com/NiaOrg/NiaPy/tree/2>`__ (2018-08-30)
 -----------------------------------------------------------
@@ -724,7 +774,7 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/1.0.1...2.0.0rc1>`__
 -  DOI added `#128 <https://github.com/NiaOrg/NiaPy/pull/128>`__
    (`lucijabrezocnik <https://github.com/lucijabrezocnik>`__)
 
-.. _section-2:
+.. _section-3:
 
 `1.0.1 <https://github.com/NiaOrg/NiaPy/tree/1.0.1>`__ (2018-03-21)
 -------------------------------------------------------------------
@@ -770,7 +820,7 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/1.0.0...1.0.1>`__
    … `#114 <https://github.com/NiaOrg/NiaPy/pull/114>`__
    (`mlaky88 <https://github.com/mlaky88>`__)
 
-.. _section-3:
+.. _section-4:
 
 `1.0.0 <https://github.com/NiaOrg/NiaPy/tree/1.0.0>`__ (2018-02-28)
 -------------------------------------------------------------------
