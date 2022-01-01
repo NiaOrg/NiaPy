@@ -10,9 +10,9 @@ class HSTestCase(AlgorithmTestCase):
         self.algo = HarmonySearch
 
     def test_custom(self):
-        hs_costom = self.algo(population_size=10, seed=self.seed)
-        hs_costomc = self.algo(population_size=10, seed=self.seed)
-        AlgorithmTestCase.test_algorithm_run(self, hs_costom, hs_costomc, MyProblem())
+        hs_custom = self.algo(population_size=10, seed=self.seed)
+        hs_customc = self.algo(population_size=10, seed=self.seed)
+        AlgorithmTestCase.test_algorithm_run(self, hs_custom, hs_customc, MyProblem())
 
     def test_griewank(self):
         hs_griewank = self.algo(population_size=10, seed=self.seed)
@@ -26,9 +26,9 @@ class HSv1TestCase(AlgorithmTestCase):
         self.algo = HarmonySearchV1
 
     def test_custom(self):
-        hs_costom = self.algo(population_size=10, seed=self.seed)
-        hs_costomc = self.algo(population_size=10, seed=self.seed)
-        AlgorithmTestCase.test_algorithm_run(self, hs_costom, hs_costomc, MyProblem())
+        hs_custom = self.algo(population_size=10, seed=self.seed)
+        hs_customc = self.algo(population_size=10, seed=self.seed)
+        AlgorithmTestCase.test_algorithm_run(self, hs_custom, hs_customc, MyProblem())
 
     def test_griewank(self):
         hs_griewank = self.algo(population_size=10, seed=self.seed)

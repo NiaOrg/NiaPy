@@ -369,16 +369,16 @@ class LionOptimizationAlgorithm(Algorithm):
         for pride_i in range(num_of_prides):
             curr_pride_size = pride_size[pride_i]
             num_of_improvements = 0
-            pride_teritory = []
+            pride_territory = []
             for lion in population[index_counter_pride:index_counter_pride + curr_pride_size]:
                 lion_copy = copy.deepcopy(lion)
-                pride_teritory = np.append(pride_teritory, objects_to_array([lion_copy]))
+                pride_territory = np.append(pride_territory, objects_to_array([lion_copy]))
                 if lion.has_improved:
                     num_of_improvements += 1
-            # Tournament selection to select places in teritory if there's more than 2 places
-            if len(pride_teritory) > 1:
+            # Tournament selection to select places in territory if there's more than 2 places
+            if len(pride_territory) > 1:
                 tournament_size = max(2, int(np.ceil(num_of_improvements / 2)))
-                tournament_selections = self.rng.choice(pride_teritory, tournament_size, replace=False)
+                tournament_selections = self.rng.choice(pride_territory, tournament_size, replace=False)
                 tournament_winner = tournament_selections[0].x.copy()
                 tournament_min_f = tournament_selections[0].f
                 for candidate in tournament_selections[1:]:
@@ -386,8 +386,8 @@ class LionOptimizationAlgorithm(Algorithm):
                         tournament_min_f = candidate.f
                         tournament_winner = candidate.x.copy()
             else:
-                tournament_winner = pride_teritory[0].x.copy()
-                tournament_min_f = pride_teritory[0].f
+                tournament_winner = pride_territory[0].x.copy()
+                tournament_min_f = pride_territory[0].f
 
             # Move female non-hunters
             for lion in population[index_counter_pride:index_counter_pride + curr_pride_size]:
@@ -397,7 +397,7 @@ class LionOptimizationAlgorithm(Algorithm):
                     r_one -= lion.x
                     # Get vector 2_two with Gram-Schmidt process.
                     if np.linalg.norm((r_one).T) == 0:
-                        # If r_one vector is 0 then Gram-Schmidt proces return wrong values
+                        # If r_one vector is 0 then Gram-Schmidt process return wrong values
                         r_two = np.zeros(len(r_one.T))
                         rand_index = self.integers(0, len(r_one.T))
                         r_two[rand_index] = 1
@@ -449,7 +449,7 @@ class LionOptimizationAlgorithm(Algorithm):
                     # Select random lions, their amount is based on roaming factor.
                     num_of_selected_lions = round(len(pride_lions) * self.roaming_factor)
                     selected_lions = self.rng.choice(pride_lions, num_of_selected_lions, replace=False)
-                    # Move towards teritories of selected lions
+                    # Move towards territories of selected lions
                     for selected_lion in selected_lions:
                         d = np.linalg.norm(selected_lion.x - lion.x) / np.linalg.norm(task.upper[0] - task.lower[0])
                         x = self.uniform(0, 2 * d)
@@ -470,7 +470,7 @@ class LionOptimizationAlgorithm(Algorithm):
         for lion in population[len(population) - nomad_size:]:
             best_nomad_fitness = np.min([c_l.current_f for c_l in population[len(population) - nomad_size:]])
             roaming_probability = 0.1 + np.minimum(0.5, (lion.current_f - best_nomad_fitness) / best_nomad_fitness)
-            # If roaming treshold is met, move lion to a random new position.
+            # If roaming threshold is met, move lion to a random new position.
             if self.random() <= roaming_probability:
                 lion.current_x = self.uniform(task.lower, task.upper, task.dimension)
                 lion.current_f = task.eval(lion.current_x)
