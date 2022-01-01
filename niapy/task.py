@@ -205,8 +205,8 @@ class Task:
 
     def plot(self):
         """Plot a simple convergence graph."""
-        fess, fitnesses = self.return_conv()
-        plt.plot(fess, fitnesses)
+        fess, fitness = self.return_conv()
+        plt.plot(fess, fitness)
         plt.xlabel('Function Evaluations')
         plt.ylabel('Fitness')
         plt.title('Convergence Graph')
