@@ -59,7 +59,7 @@ def _problem_options():
         "hgbat": problems.HGBat,
         "katsuura": problems.Katsuura,
         "levy": problems.Levy,
-        "michalewicz": problems.Michalewichz,
+        "michalewicz": problems.Michalewicz,
         "modified_schwefel": problems.ModifiedSchwefel,
         "perm": problems.Perm,
         "pinter": problems.Pinter,
