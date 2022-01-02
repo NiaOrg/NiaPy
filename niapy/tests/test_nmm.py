@@ -18,7 +18,7 @@ class NMMTestCase(AlgorithmTestCase):
         nmm_griewankc = self.algo(population_size=10, C_a=5, C_r=0.5, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, nmm_griewank, nmm_griewankc)
 
-    def test_michalewichz(self):
+    def test_michalewicz(self):
         nmm_griewank = self.algo(population_size=10, C_a=5, C_r=0.5, seed=self.seed)
         nmm_griewankc = self.algo(population_size=10, C_a=5, C_r=0.5, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, nmm_griewank, nmm_griewankc, 'michalewicz', max_iters=10000000)

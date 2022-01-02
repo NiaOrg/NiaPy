@@ -15,7 +15,7 @@ from niapy.problems.happy_cat import HappyCat
 from niapy.problems.hgbat import HGBat
 from niapy.problems.katsuura import Katsuura
 from niapy.problems.levy import Levy
-from niapy.problems.michalewichz import Michalewichz
+from niapy.problems.michalewicz import Michalewicz
 from niapy.problems.perm import Perm
 from niapy.problems.pinter import Pinter
 from niapy.problems.powell import Powell
@@ -74,7 +74,7 @@ __all__ = [
     'Katsuura',
     'Elliptic',
     'Discus',
-    'Michalewichz',
+    'Michalewicz',
     'Levy',
     'Sphere2',
     'Sphere3',

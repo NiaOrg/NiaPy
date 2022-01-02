@@ -1,15 +1,15 @@
 # encoding=utf8
 
-"""Implementations of Michalewichz's function."""
+"""Implementations of Michalewicz's function."""
 
 import numpy as np
 from niapy.problems.problem import Problem
 
-__all__ = ['Michalewichz']
+__all__ = ['Michalewicz']
 
 
-class Michalewichz(Problem):
-    r"""Implementations of Michalewichz's functions.
+class Michalewicz(Problem):
+    r"""Implementations of Michalewicz's functions.
 
     Date: 2018
 
@@ -47,7 +47,7 @@ class Michalewichz(Problem):
     """
 
     def __init__(self, dimension=4, lower=0.0, upper=np.pi, m=10, *args, **kwargs):
-        r"""Initialize Michalewichz problem..
+        r"""Initialize Michalewicz problem..
 
         Args:
             dimension (Optional[int]): Dimension of the problem.
