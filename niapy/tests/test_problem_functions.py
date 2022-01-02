@@ -134,7 +134,7 @@ class TestProblemFunctions(TestCase):
     def test_alpine2(self):
         """Test the alpine 2 function."""
         fun = get_problem('alpine2', self.dimension, 0.0, 10.0)
-        self.assertEqual(fun(self.array8), np.power(2.8081311800070053291, self.dimension))
+        self.assertAlmostEqual(fun(self.array8), np.power(2.8081311800070053291, self.dimension))
 
     def test_chung_reynolds(self):
         """Test the chung reynolds function."""
