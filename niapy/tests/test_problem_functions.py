@@ -1,6 +1,5 @@
 # encoding=utf8
 
-from math import pow
 from unittest import TestCase
 
 import numpy as np
