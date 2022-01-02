@@ -26,8 +26,9 @@ class ClonalSelectionAlgorithm(Algorithm):
     License:
         MIT
 
-    Reference paper:
-        Brownlee, J. "Clever Algorithms: Nature-Inspired Programming Recipes" Revision 2. 2012. 280-286.
+    Reference papers:
+        * \L\. \N\. de Castro and F. J. Von Zuben. Learning and optimization using the clonal selection principle. IEEE Transactions on Evolutionary Computation, 6:239–251, 2002.
+        * Brownlee, J. "Clever Algorithms: Nature-Inspired Programming Recipes" Revision 2. 2012. 280-286.
 
     Attributes:
         population_size (int): Population size.
@@ -54,9 +55,9 @@ class ClonalSelectionAlgorithm(Algorithm):
             * :func:`niapy.algorithms.Algorithm.info`
 
         """
-        return r"""Brownlee, J. "Clever Algorithms: Nature-Inspired Programming Recipes" Revision 2. 2012. 280-286."""
+        return r"""L. N. de Castro and F. J. Von Zuben. Learning and optimization using the clonal selection principle. IEEE Transactions on Evolutionary Computation, 6:239–251, 2002."""
 
-    def __init__(self, population_size=10, clone_factor=0.1, mutation_factor=-2.5, num_rand=1, bits_per_param=16, *args,
+    def __init__(self, population_size=10, clone_factor=0.1, mutation_factor=10.0, num_rand=1, bits_per_param=16, *args,
                  **kwargs):
         """Initialize ClonalSelectionAlgorithm.
 
@@ -78,7 +79,7 @@ class ClonalSelectionAlgorithm(Algorithm):
         self.num_rand = num_rand
         self.bits_per_param = bits_per_param
 
-    def set_parameters(self, population_size=10, clone_factor=0.1, mutation_factor=-2.5, num_rand=1, bits_per_param=16,
+    def set_parameters(self, population_size=10, clone_factor=0.1, mutation_factor=10.0, num_rand=1, bits_per_param=16,
                        **kwargs):
         r"""Set the parameters of the algorithm.
 
@@ -127,17 +128,14 @@ class ClonalSelectionAlgorithm(Algorithm):
         return population, fitness
 
     def mutate(self, bitstring, mutation_rate):
-        flip = self.random(bitstring.shape) < mutation_rate
+        flip = self.random(bitstring.shape) > mutation_rate
         bitstring[flip] = np.logical_not(bitstring[flip])
         return bitstring
 
     def clone_and_hypermutate(self, bitstrings, population, population_fitness, task):
-        range_ = np.max(population_fitness) - np.min(population_fitness)
-        affinity = np.ones(self.population_size) if range_ == 0.0 else 1.0 - (population_fitness / range_)
-
         clones = np.repeat(bitstrings, self.num_clones, axis=0)
         for i in range(clones.shape[0]):
-            mutation_rate = np.exp(self.mutation_factor * affinity[i // self.num_clones])
+            mutation_rate = np.exp(-self.mutation_factor * population_fitness[i // self.num_clones])
             clones[i] = self.mutate(clones[i], mutation_rate)
 
         clones_pop, clones_fitness = self.evaluate(clones, task)
