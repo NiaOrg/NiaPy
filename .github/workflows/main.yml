@@ -38,14 +38,17 @@ jobs:
       run: |
         pipenv run pytest --testmon -ra -vv --random --random-seed=32786 niapy tests
     - name: Add and commit updated .testmondata file
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         git config --local user.email "niapy.organization+NiaPy[bot]@gmail.com"
         git config --local user.name "NiaPy[bot]"
         git add .testmondata
         git commit -m "Update .testmondata"
-        git push
+    - name: Push updated .testmondata file
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: ${{ github.ref }}
+        
   test:
     needs: build
     runs-on: ${{ matrix.os }}
