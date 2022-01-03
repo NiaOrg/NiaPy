@@ -18,16 +18,16 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Config git
-      run: |
-        git config --local user.email "$(git log --format='%ae' HEAD^!)"
-        git config --local user.name "$(git log --format='%an' HEAD^!)"
-        git remote add github "https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-        git pull github ${GITHUB_REF} --ff-only
     - name: Install pipenv
       run: |
         python3 -m pip install --upgrade pip
         pip install pipenv
+    - name: Configure git
+      run: |
+        git config --local user.email "niapy.organization+NiaPy[bot]@gmail.com"
+        git config --local user.name "NiaPy[bot]"
+        git remote add github "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git"
+        git pull github ${GITHUB_REF} --ff-only
     - name: Install dependencies
       run: |
         pipenv install --skip-lock --dev
@@ -45,7 +45,7 @@ jobs:
         pipenv run pytest --testmon -ra -vv --random --random-seed=32786 niapy tests
     - name: Add and commit updated .testmondata file
       run: |
-        git add --force .testmondata
+        git add .testmondata
         git commit -m "Update .testmondata"
         git push github HEAD:${GITHUB_REF}
         
