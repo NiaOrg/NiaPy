@@ -26,7 +26,7 @@ jobs:
       run: |
         git config --local user.email "niapy.organization+NiaPy[bot]@gmail.com"
         git config --local user.name "NiaPy[bot]"
-        git remote add github "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git"
+        git remote add github https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
         git pull github ${GITHUB_REF} --ff-only
     - name: Install dependencies
       run: |
