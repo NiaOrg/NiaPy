@@ -19,7 +19,7 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
     - name: Configure git
-      if: startsWith(matrix.os, "ubuntu-latest")
+      if: matrix.os == 'ubuntu-latest'
       run: |
         git config --local user.email "niapy.organization+NiaPy[bot]@gmail.com"
         git config --local user.name "NiaPy[bot]"
@@ -45,7 +45,7 @@ jobs:
       run: |
         pipenv run pytest --testmon -ra -vv --random --random-seed=32786 niapy tests
     - name: Add and commit updated .testmondata file
-      if: startsWith(matrix.os, "ubuntu-latest")
+      if: matrix.os == 'ubuntu-latest'
       run: |
         git add .testmondata
         git commit -m "Update .testmondata"
