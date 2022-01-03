@@ -12,6 +12,7 @@ jobs:
         python-version: [3.6, 3.7, 3.8, 3.9]
     env:
       MPLBACKEND: "agg"
+      DISABLE_COVERAGE: true
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
@@ -34,6 +35,38 @@ jobs:
     - name: Check docstyle
       run: |
         pipenv run pydocstyle niapy tests scent.py setup.py
-    - name: Run tests
+    - name: Run incremental tests
+      run: |
+        pipenv run pytest --testmon -ra -vv --random --random-seed=32786 niapy tests
+    - name: Add and commit updated .testmondata file
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+      run: |
+        git add .testmondata && git commit -m "Update .testmondata" && git push
+  test:
+    needs: build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      max-parallel: 9
+      matrix:
+        os: [ubuntu-latest, windows-latest, macOS-latest]
+        python-version: [3.6, 3.7, 3.8, 3.9]
+    env:
+      MPLBACKEND: "agg"
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install pipenv
+      run: |
+        python3 -m pip install --upgrade pip
+        pip install pipenv
+    - name: Install dependencies
+      run: |
+        pipenv install --skip-lock --dev
+    - name: Run all tests
       run: |
         pipenv run pytest -ra -vv --random --random-seed=32786 --cov=niapy --no-cov-on-fail --cov-report=term-missing:skip-covered --cov-report=html niapy tests --junitxml=xmlreport/overall.xml
+
