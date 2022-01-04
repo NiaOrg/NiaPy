@@ -40,7 +40,7 @@ jobs:
     - name: Run incremental tests
       env:
         TESTMON_DATAFILE: config/testmondata/${{ matrix.os }}_py${{ matrix.python-version }}
-      shell: bash {0}
+      shell: bash
       run: |
         echo "${TESTMON_DATAFILE}"
         pipenv run pytest --testmon -ra -vv --random --random-seed=32786 niapy tests
