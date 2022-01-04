@@ -48,6 +48,7 @@ jobs:
         git add --force .testmondata
         git commit -m "Update .testmondata"
     - name: Push updated .testmon file
+      if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.9' # this prevents multiple updates in the same run (we only run this step on ubuntu-latest with python 3.9)
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
