@@ -64,7 +64,9 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         path: artifacts
-    - name: Display structure of downloaded files
-      run: ls -R
+    - name: Move testmondata files to right location
+      run: |
+        find artifacts/ -type -f print0 | xargs -0 mv -t config/testmondata/ 
+        ls -R
         
   
