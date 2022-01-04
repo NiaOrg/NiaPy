@@ -41,7 +41,7 @@ jobs:
       run: |
         pipenv run pytest --testmon -ra -vv --random --random-seed=32786 niapy/tests/test_aba.py
     - name: Add and commit updated .testmondata file
-      if: matrix.os == 'ubuntu-latest'
+      if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.9' # this prevents multiple updates in the same run (we only run this step on ubuntu-latest with python 3.9)
       run: |
         git config --local user.email "niapy.organization+NiaPy[bot]@gmail.com"
         git config --local user.name "NiaPy[bot]"
