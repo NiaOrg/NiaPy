@@ -3,12 +3,12 @@ name: Check and Test
 on: [pull_request]
 
 jobs:
-  build_and_test:
+  build_and_test: # run lint, codestyle, docstyle, and incremental tests
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest]
-        python-version: [3.6, 3.7, 3.8, 3.9]
+        os: [ubuntu-latest, windows-latest, macOS-latest]
+        python-version: [3.6, 3.7, 3.8, 3.9, 3.10]
     env:
       MPLBACKEND: "agg"
       DISABLE_COVERAGE: true
@@ -52,7 +52,7 @@ jobs:
         name: ${{ matrix.os }}_py${{ matrix.python-version }}
         path: config/testmondata/${{ matrix.os }}_py${{ matrix.python-version }}
 
-  update_testmondata:
+  update_testmondata: # fetch all testmondata fiels and add push it to PR 
     needs: build_and_test
     runs-on: ubuntu-latest
     steps:
