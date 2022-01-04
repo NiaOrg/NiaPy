@@ -3,7 +3,7 @@ name: Check and Test
 on: [pull_request]
 
 jobs:
-  build:
+  build_and_test:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -44,19 +44,21 @@ jobs:
         echo "${TESTMON_DATAFILE}"
         status=$(pipenv run pytest --testmon -ra -vv --random --random-seed=32786 niapy/tests/test_aba.py)
         if [ $status -eq 1 ] || [ $status -eq 5 ]; then exit 0; else exit $status; fi
-    - name: Add and commit updated .testmondata file
-      run: |
-        git config --local user.email "niapy.organization+NiaPy[bot]@gmail.com"
-        git config --local user.name "NiaPy[bot]"
-        git add --force config/testmondata
-        git commit -m "Update .testmondata"
-        git config pull.rebase false
-        git pull -X ours
-    - name: Push updated .testmon file
-      uses: ad-m/github-push-action@master
+    - name: Store testmondata
+      uses: actions/upload-artifact@v2
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        branch: ${{ github.head_ref }}
-        force: false
+        name: ${{ matrix.os }}_py${{ matrix.python-version }}
+        path: config/testmondata/${{ matrix.os }}_py${{ matrix.python-version }}
+
+  update_testdata:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+        ref: refs/heads/${{ github.head_ref }}
+    - name: Fetch testmondata
+      uses: actions/download-artifact@v2
+      run: ls -R
         
   
