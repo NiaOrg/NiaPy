@@ -1,19 +1,22 @@
-name: Check and Test
+name: Build, Check, and Test
 
 on: [pull_request]
 
 jobs:
-  build:
+  build_and_test: # run lint, codestyle, docstyle, and incremental tests
     runs-on: ${{ matrix.os }}
     strategy:
-      max-parallel: 9
       matrix:
         os: [ubuntu-latest, windows-latest, macOS-latest]
-        python-version: [3.6, 3.7, 3.8, 3.9]
+        python-version: [3.6, 3.7, 3.8, 3.9, '3.10']
     env:
       MPLBACKEND: "agg"
+      DISABLE_COVERAGE: true
     steps:
     - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+        ref: refs/heads/${{ github.head_ref }}
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:
@@ -34,6 +37,51 @@ jobs:
     - name: Check docstyle
       run: |
         pipenv run pydocstyle niapy tests scent.py setup.py
-    - name: Run tests
+    - name: Run incremental tests
+      env:
+        TESTMON_DATAFILE: config/testmondata/${{ matrix.os }}_py${{ matrix.python-version }}
+      shell: bash {0}
       run: |
-        pipenv run pytest -ra -vv --random --random-seed=32786 --cov=niapy --no-cov-on-fail --cov-report=term-missing:skip-covered --cov-report=html niapy tests --junitxml=xmlreport/overall.xml
+        echo "${TESTMON_DATAFILE}"
+        pipenv run pytest --testmon -ra -vv --random --random-seed=32786 niapy tests
+        status=$?
+        if [ "$status" -eq 5 ]; then exit 0; else exit $status; fi
+    - name: Store testmondata
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ matrix.os }}_py${{ matrix.python-version }}
+        path: config/testmondata/${{ matrix.os }}_py${{ matrix.python-version }}
+
+  update_testmondata: # fetch all testmondata fiels and add push it to PR 
+    needs: build_and_test
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+        ref: refs/heads/${{ github.head_ref }}
+    - name: Fetch testmondata
+      uses: actions/download-artifact@v2
+      with:
+        path: artifacts
+    - name: Move testmondata files to right location
+      shell: bash
+      run: |
+        find artifacts/ -type f -print0 | xargs -0 mv -t config/testmondata/ 
+    - name: Add and commit updated .testmondata file
+      run: |
+        git config --local user.email "niapy.organization+NiaPy[bot]@gmail.com"
+        git config --local user.name "NiaPy[bot]"
+        git add --force config/testmondata
+        git commit -m "Update .testmondata"
+        git config pull.rebase false
+        git pull -X ours
+    - name: Push updated .testmon file
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: ${{ github.head_ref }}
+        force: false
+        
+        
+  
