@@ -38,6 +38,7 @@ jobs:
       run: |
         pipenv run pydocstyle niapy tests scent.py setup.py
     - name: Run incremental tests
+      shell: bash
       run: |
         TESTMON_DATAFILE="config/testmondata/${RUNNER_OS}_${matrix.python-version}" pipenv run pytest --testmon -ra -vv --random --random-seed=32786 niapy tests
         status=$?
