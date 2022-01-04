@@ -1,5 +1,31 @@
 # Changelog
 
+## [2.0.0](https://github.com/NiaOrg/NiaPy/tree/2.0.0) (2021-12-27)
+
+[Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2.0.0rc18...2.0.0)
+
+**Fixed bugs:**
+
+- BA implementation bug [\#352](https://github.com/NiaOrg/NiaPy/issues/352)
+
+**Closed issues:**
+
+- Remove vim comments [\#349](https://github.com/NiaOrg/NiaPy/issues/349)
+- Infinity test problem is a duplicate of Csendes [\#347](https://github.com/NiaOrg/NiaPy/issues/347)
+- Add a citation.cff file [\#346](https://github.com/NiaOrg/NiaPy/issues/346)
+
+**Merged pull requests:**
+
+- Do not package the tests [\#358](https://github.com/NiaOrg/NiaPy/pull/358) ([firefly-cpp](https://github.com/firefly-cpp))
+- Add badge for Fedora [\#356](https://github.com/NiaOrg/NiaPy/pull/356) ([firefly-cpp](https://github.com/firefly-cpp))
+- Fixed flake8 versions [\#355](https://github.com/NiaOrg/NiaPy/pull/355) ([zStupan](https://github.com/zStupan))
+- Maximization example corrected [\#354](https://github.com/NiaOrg/NiaPy/pull/354) ([firefly-cpp](https://github.com/firefly-cpp))
+- Fixed BA [\#353](https://github.com/NiaOrg/NiaPy/pull/353) ([zStupan](https://github.com/zStupan))
+- Loa algorithm [\#351](https://github.com/NiaOrg/NiaPy/pull/351) ([AljoM](https://github.com/AljoM))
+- Removed vim comments [\#350](https://github.com/NiaOrg/NiaPy/pull/350) ([zStupan](https://github.com/zStupan))
+- Remove infinity test problem and add missing test problems to docs [\#348](https://github.com/NiaOrg/NiaPy/pull/348) ([zStupan](https://github.com/zStupan))
+- Fixed csendes function. [\#345](https://github.com/NiaOrg/NiaPy/pull/345) ([zStupan](https://github.com/zStupan))
+
 ## [2.0.0rc18](https://github.com/NiaOrg/NiaPy/tree/2.0.0rc18) (2021-08-18)
 
 [Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2.0.0rc17...2.0.0rc18)

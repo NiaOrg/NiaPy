@@ -25,7 +25,7 @@ author = u'Grega Vrbančič, Lucija Brezočnik, Uroš Mlakar, Dušan Fister, Izt
 # The short X.Y version
 version = u'2.0'
 # The full version, including alpha/beta/rc tags
-release = u'2.0.0rc18'
+release = u'2.0.0'
 
 
 # -- General configuration ---------------------------------------------------
@@ -186,7 +186,7 @@ todo_include_todos = True
 add_function_parentheses = True
 
 # Napolen settings
-# chekc https://sphinxcontrib-napoleon.readthedocs.io/en/latest/sphinxcontrib.napoleon.html
+# check https://sphinxcontrib-napoleon.readthedocs.io/en/latest/sphinxcontrib.napoleon.html
 napoleon_google_docstring = True
 napoleon_numpy_docstring = False
 napoleon_include_init_with_doc = True

@@ -11,6 +11,7 @@
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/NiaPy.svg)
 ![GitHub Release Date](https://img.shields.io/github/release-date/NiaOrg/NiaPy.svg)
 [![Anaconda-Server Badge](https://anaconda.org/niaorg/niapy/badges/installer/conda.svg)](https://conda.anaconda.org/niaorg)
+[![Fedora package](https://img.shields.io/fedora/v/python3-niapy?color=blue&label=Fedora%20Linux&logo=fedora)](https://src.fedoraproject.org/rpms/python-niapy)
 [![Documentation Status](https://readthedocs.org/projects/niapy/badge/?version=latest)](http://niapy.readthedocs.io/en/latest/?badge=latest)
 [![GitHub license](https://img.shields.io/github/license/NiaOrg/NiaPy.svg)](https://github.com/NiaOrg/NiaPy/blob/master/LICENSE)
 
@@ -46,20 +47,6 @@ Our mission is to build a collection of nature-inspired algorithms and create a 
 # Installation
 
 Install NiaPy with pip:
-
-## Latest version (2.0.0rc18)
-
-```sh
-$ pip install niapy==2.0.0rc18
-```
-
-To install NiaPy with conda, use:
-
-```sh
-$ conda install -c niaorg niapy=2.0.0rc18
-```
-
-## Latest stable version
 
 ```sh
 $ pip install niapy

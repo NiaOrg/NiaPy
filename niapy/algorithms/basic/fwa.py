@@ -685,9 +685,9 @@ class DynamicFireworksAlgorithmGauss(EnhancedFireworksAlgorithm):
                     * amplitude_cf (numpy.ndarray): Initial amplitude of the core firework.
 
         """
-        fireworks, fitnesses, _ = super().init_population(task)
+        fireworks, fitness, _ = super().init_population(task)
         amplitude_cf = task.range
-        return fireworks, fitnesses, {'amplitude_cf': amplitude_cf}
+        return fireworks, fitness, {'amplitude_cf': amplitude_cf}
 
     def selection(self, population, population_fitness, sparks, task):
         """Select fireworks for the next generation."""
