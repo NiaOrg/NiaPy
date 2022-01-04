@@ -14,17 +14,12 @@ jobs:
       DISABLE_COVERAGE: true
     steps:
     - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Configure git
-      if: matrix.os == 'ubuntu-latest'
-      run: |
-        git config --local user.email "niapy.organization+NiaPy[bot]@gmail.com"
-        git config --local user.name "NiaPy[bot]"
-        git remote add github "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git"
-        git pull github ${GITHUB_REF} --ff-only
     - name: Install pipenv
       run: |
         python3 -m pip install --upgrade pip
@@ -50,5 +45,11 @@ jobs:
         git add --force .testmondata
         git commit -m "Update .testmondata"
         git push --force github HEAD:${GITHUB_REF}
+    - name: Push updated .testmon file
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: ${{ github.ref }}
+        force: true
         
   
