@@ -39,7 +39,7 @@ jobs:
         pipenv run pydocstyle niapy tests scent.py setup.py
     - name: Run incremental tests
       run: |
-        pipenv run pytest --testmon -ra -vv --random --random-seed=32786 niapy/tests/test_aba.py
+        pipenv run pytest --testmon -ra -vv --random --random-seed=32786 niapy tests
     - name: Add and commit updated .testmondata file
       if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.9' # this prevents multiple updates in the same run (we only run this step on ubuntu-latest with python 3.9)
       run: |
