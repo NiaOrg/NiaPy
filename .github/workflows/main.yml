@@ -42,8 +42,7 @@ jobs:
         TESTMON_DATAFILE: config/testmondata/${{ matrix.os }}_py${{ matrix.python-version }}
       run: |
         echo "${TESTMON_DATAFILE}"
-        pipenv run pytest --testmon -ra -vv --random --random-seed=32786 niapy/tests/test_aba.py
-        status=$?
+        status=$(pipenv run pytest --testmon -ra -vv --random --random-seed=32786 niapy/tests/test_aba.py)
         if [ $status -eq 1 ] || [ $status -eq 5 ]; then exit 0; else exit $status; fi
     - name: Add and commit updated .testmondata file
       run: |
