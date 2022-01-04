@@ -45,7 +45,6 @@ jobs:
         echo "${TESTMON_DATAFILE}"
         pipenv run pytest --testmon -ra -vv --random --random-seed=32786 niapy/tests/test_aba.py
         status=$?
-        echo "EXIT CODE IS: $status"
         if [ "$status" -eq 5 ]; then exit 0; else exit $status; fi
     - name: Store testmondata
       uses: actions/upload-artifact@v2
@@ -63,6 +62,8 @@ jobs:
         ref: refs/heads/${{ github.head_ref }}
     - name: Fetch testmondata
       uses: actions/download-artifact@v2
+      with:
+        path: artifacts
     - name: Display structure of downloaded files
       run: ls -R
         
