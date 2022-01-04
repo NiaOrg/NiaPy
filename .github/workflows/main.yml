@@ -1,4 +1,4 @@
-name: Check and Test
+name: Build, Check, and Test
 
 on: [pull_request]
 
@@ -43,7 +43,7 @@ jobs:
       shell: bash {0}
       run: |
         echo "${TESTMON_DATAFILE}"
-        pipenv run pytest --testmon -ra -vv --random --random-seed=32786 niapy/tests/test_aba.py
+        pipenv run pytest --testmon -ra -vv --random --random-seed=32786 niapy tests
         status=$?
         if [ "$status" -eq 5 ]; then exit 0; else exit $status; fi
     - name: Store testmondata
