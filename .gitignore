@@ -42,6 +42,7 @@ Icon*
 /pyunit.xml
 /tmp/
 *.tmp
+.testmondata
 
 # Build and release directories
 /build/
