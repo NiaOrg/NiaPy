@@ -34,3 +34,4 @@ sphinx-autobuild = {version = "~=0.7.1",sys_platform= "!= 'win32'"}
 bump2version = "*"
 pandoc = "*"
 twine = "*"
+pytest-testmon = "~=1.2.2"

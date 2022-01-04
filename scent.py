@@ -23,6 +23,7 @@ class Options:
     targets = [
         (('make', 'test-unit', 'DISABLE_COVERAGE=true'), "Unit Tests", True),
         (('make', 'test-all'), "Integration Tests", False),
+        (('make', 'test-incremental'), "Incremental Tests", False),
         (('make', 'check'), "Static Analysis", True),
         (('make', 'docs'), None, True),
     ]

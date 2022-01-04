@@ -92,6 +92,7 @@ REPORTS ?= xmlreport
 PYTEST_CORE_OPTIONS := -ra -vv
 PYTEST_COV_OPTIONS := --cov=$(PACKAGE) --no-cov-on-fail --cov-report=term-missing:skip-covered --cov-report=html
 PYTEST_RANDOM_OPTIONS := --random --random-seed=$(RANDOM_SEED)
+PYTEST_TESTMON_OPTIONS := --testmon
 
 PYTEST_OPTIONS := $(PYTEST_CORE_OPTIONS) $(PYTEST_RANDOM_OPTIONS)
 ifndef DISABLE_COVERAGE
@@ -100,7 +101,13 @@ endif
 PYTEST_RERUN_OPTIONS := $(PYTEST_CORE_OPTIONS) --last-failed --exitfirst
 
 .PHONY: test
-test: test-all ## Run unit and integration tests
+test: test-incremental ## Run unit and integration tests
+
+.PHONY: test-incremental
+test-incremental: install
+	@ if test -e $(FAILURES); then $(PYTEST) $(PYTEST_RERUN_OPTIONS) $(PACKAGES); fi
+	@ rm -rf $(FAILURES)
+	$(PYTEST) $(PYTEST_TESTMON_OPTIONS) $(PYTEST_OPTIONS) $(PACKAGES)
 
 .PHONY: test-unit
 test-unit: install

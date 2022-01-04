@@ -6,14 +6,16 @@ jobs:
   build:
     runs-on: ${{ matrix.os }}
     strategy:
-      max-parallel: 9
       matrix:
         os: [ubuntu-latest, windows-latest, macOS-latest]
         python-version: [3.6, 3.7, 3.8, 3.9]
     env:
       MPLBACKEND: "agg"
+      DISABLE_COVERAGE: true
     steps:
     - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:
@@ -34,6 +36,21 @@ jobs:
     - name: Check docstyle
       run: |
         pipenv run pydocstyle niapy tests scent.py setup.py
-    - name: Run tests
+    - name: Run incremental tests
       run: |
-        pipenv run pytest -ra -vv --random --random-seed=32786 --cov=niapy --no-cov-on-fail --cov-report=term-missing:skip-covered --cov-report=html niapy tests --junitxml=xmlreport/overall.xml
+        pipenv run pytest --testmon -ra -vv --random --random-seed=32786 niapy/tests/test_aba.py
+    - name: Add and commit updated .testmondata file
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        git config --local user.email "niapy.organization+NiaPy[bot]@gmail.com"
+        git config --local user.name "NiaPy[bot]"
+        git add --force .testmondata
+        git commit -m "Update .testmondata"
+    - name: Push updated .testmon file
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: ${{ github.head_ref }}
+        force: true
+        
+  
