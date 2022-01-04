@@ -10,7 +10,7 @@ jobs:
         os: [ubuntu-latest, windows-latest, macOS-latest]
         python-version: [3.6, 3.7, 3.8, 3.9]
     permissions:
-      pull-requests: write
+      pull-requests: read|write
     env:
       MPLBACKEND: "agg"
       DISABLE_COVERAGE: true
