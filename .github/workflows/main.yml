@@ -51,7 +51,7 @@ jobs:
         git config --local user.name "NiaPy[bot]"
         git add --force config/testmondata
         git commit -m "Update .testmondata"
-        git pull
+        git pull -X ours
     - name: Push updated .testmon file
       uses: ad-m/github-push-action@master
       with:
