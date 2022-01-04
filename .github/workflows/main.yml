@@ -42,6 +42,8 @@ jobs:
     - name: Add and commit updated .testmondata file
       if: matrix.os == 'ubuntu-latest'
       run: |
+        git config --local user.email "niapy.organization+NiaPy[bot]@gmail.com"
+        git config --local user.name "NiaPy[bot]"
         git add --force .testmondata
         git commit -m "Update .testmondata"
         git push --force github HEAD:${GITHUB_REF}
