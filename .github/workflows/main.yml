@@ -42,7 +42,7 @@ jobs:
         TESTMON_DATAFILE: config/testmondata/${{ matrix.os }}_py${{ matrix.python-version }}
       run: |
         echo "${TESTMON_DATAFILE}"
-        pipenv run pytest --testmon -ra -vv --random --random-seed=32786 niapy tests
+        pipenv run pytest --testmon -ra -vv --random --random-seed=32786 niapy/tests/test_aba.py
         status=$?
         if [ $status -eq 1 ] || [ $status -eq 5 ]; then exit 0; else exit $status; fi
     - name: Add and commit updated .testmondata file
@@ -51,6 +51,7 @@ jobs:
         git config --local user.name "NiaPy[bot]"
         git add --force config/testmondata
         git commit -m "Update .testmondata"
+        git config pull.rebase false
         git pull -X ours
     - name: Push updated .testmon file
       uses: ad-m/github-push-action@master
