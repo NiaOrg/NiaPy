@@ -42,7 +42,7 @@ jobs:
         TESTMON_DATAFILE: config/testmondata/${{ matrix.os }}_py${{ matrix.python-version }}
       run: |
         echo "${TESTMON_DATAFILE}"
-        if [ $(pipenv run pytest --testmon -ra -vv --random --random-seed=32786 niapy/tests/test_aba.py) -eq 5 ]; then exit 0; else exit $STATUS; fi
+        if [ $(pipenv run pytest --testmon -ra -vv --random --random-seed=32786 niapy/tests/test_aba.py) -eq 5 ]; then exit 0; else exit $?; fi
     - name: Store testmondata
       uses: actions/upload-artifact@v2
       with:
