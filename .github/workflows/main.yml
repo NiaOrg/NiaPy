@@ -51,6 +51,7 @@ jobs:
         path: config/testmondata/${{ matrix.os }}_py${{ matrix.python-version }}
 
   update_testdata:
+    needs: build_and_test
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
