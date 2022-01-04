@@ -68,6 +68,20 @@ jobs:
       shell: bash
       run: |
         find artifacts/ -type f -print0 | xargs -0 mv -t config/testmondata/ 
-        ls -R
+    - name: Add and commit updated .testmondata file
+      run: |
+        git config --local user.email "niapy.organization+NiaPy[bot]@gmail.com"
+        git config --local user.name "NiaPy[bot]"
+        git add --force config/testmondata
+        git commit -m "Update .testmondata"
+        git config pull.rebase false
+        git pull -X ours
+    - name: Push updated .testmon file
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: ${{ github.head_ref }}
+        force: false
+        
         
   
