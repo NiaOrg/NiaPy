@@ -59,6 +59,7 @@ jobs:
         ref: refs/heads/${{ github.head_ref }}
     - name: Fetch testmondata
       uses: actions/download-artifact@v2
+    - name: Display structure of downloaded files
       run: ls -R
         
   
