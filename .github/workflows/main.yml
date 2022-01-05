@@ -13,6 +13,7 @@ jobs:
       MPLBACKEND: "agg"
       DISABLE_COVERAGE: true
       PIPENV_VENV_IN_PROJECT: 1
+      WORKON_HOME: ".venv"
     steps:
     - uses: actions/checkout@v2
       with:
@@ -29,6 +30,7 @@ jobs:
     - name: Install dependencies
       run: |
         pipenv install --skip-lock --dev
+        pipenv --venv
     - name: Lint with flake8
       run: |
         pipenv run flake8 niapy tests scent.py setup.py
