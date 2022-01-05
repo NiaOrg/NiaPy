@@ -36,8 +36,6 @@ jobs:
         key: ${{ matrix.os }}_py${{ matrix.python-version }}-Pipfile_${{ hashFiles('Pipfile') }}
         path: |
           .venv
-        restore-keys: |
-          ${{ matrix.os }}_py${{ matrix.python-version }}-Pipfile_
     - name: Install dependencies
       if: steps.cache-dependencies.outputs.cache-hit != 'true'
       run: |
