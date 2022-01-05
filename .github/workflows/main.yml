@@ -23,7 +23,6 @@ jobs:
       run: |
         python3 -m pip install --upgrade pip
         pip install pipenv
-        pwd
     - name: Cache dependencies
       id: cache-dependencies
       uses: tespkg/actions-cache@v1
@@ -67,7 +66,7 @@ jobs:
     - name: Run incremental tests
       env:
         TESTMON_DATAFILE: config/testmondata/${{ matrix.os }}_py${{ matrix.python-version }}
-      shell: bash
+      shell: bash {0}
       run: |
         echo "${TESTMON_DATAFILE}"
         pipenv run pytest --testmon -ra -vv --random --random-seed=32786 niapy tests
