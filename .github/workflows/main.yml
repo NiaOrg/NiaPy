@@ -1,6 +1,6 @@
 name: Build, Check, and Test
 
-on: [pull_request]
+on: [pull_request, push]
 
 jobs:
   build_and_test: # run lint, codestyle, docstyle, and incremental tests
@@ -12,11 +12,9 @@ jobs:
     env:
       MPLBACKEND: "agg"
       DISABLE_COVERAGE: true
+      PIPENV_VENV_IN_PROJECT: 1
     steps:
     - uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-        ref: refs/heads/${{ github.head_ref }}
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:
@@ -25,7 +23,24 @@ jobs:
       run: |
         python3 -m pip install --upgrade pip
         pip install pipenv
+        pwd
+    - name: Cache dependencies
+      id: cache-dependencies
+      uses: tespkg/actions-cache@v1
+      with:
+        endpoint: s3.eu-central-1.wasabisys.com
+        insecure: false
+        accessKey: ${{ secrets.S3_ACCESS_KEY }}
+        secretKey: ${{ secrets.S3_SECRET_KEY }}
+        bucket: niapy-actions-cache
+        use-fallback: false
+        key: ${{ matrix.os }}_py${{ matrix.python-version }}-Pipfile_${{ hashFiles('**/Pipfile') }}
+        path: |
+          .venv
+        restore-keys: |
+          ${{ matrix.os }}_py${{ matrix.python-version }}-Pipfile_
     - name: Install dependencies
+      if: steps.cache-dependencies.outputs.cache-hit != 'true'
       run: |
         pipenv install --skip-lock --dev
     - name: Lint with flake8
@@ -37,51 +52,3 @@ jobs:
     - name: Check docstyle
       run: |
         pipenv run pydocstyle niapy tests scent.py setup.py
-    - name: Run incremental tests
-      env:
-        TESTMON_DATAFILE: config/testmondata/${{ matrix.os }}_py${{ matrix.python-version }}
-      shell: bash
-      run: |
-        echo "${TESTMON_DATAFILE}"
-        pipenv run pytest --testmon -ra -vv --random --random-seed=32786 niapy tests
-        status=$?
-        if [ "$status" -eq 5 ]; then exit 0; else exit $status; fi
-    - name: Store testmondata
-      uses: actions/upload-artifact@v2
-      with:
-        name: ${{ matrix.os }}_py${{ matrix.python-version }}
-        path: config/testmondata/${{ matrix.os }}_py${{ matrix.python-version }}
-
-  update_testmondata: # fetch all testmondata fiels and add push it to PR 
-    needs: build_and_test
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-        ref: refs/heads/${{ github.head_ref }}
-    - name: Fetch testmondata
-      uses: actions/download-artifact@v2
-      with:
-        path: artifacts
-    - name: Move testmondata files to right location
-      shell: bash
-      run: |
-        find artifacts/ -type f -print0 | xargs -0 mv -t config/testmondata/ 
-    - name: Add and commit updated .testmondata file
-      run: |
-        git config --local user.email "niapy.organization+NiaPy[bot]@gmail.com"
-        git config --local user.name "NiaPy[bot]"
-        git add --force config/testmondata
-        git commit -m "Update .testmondata"
-        git config pull.rebase false
-        git pull -X ours
-    - name: Push updated .testmon file
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        branch: ${{ github.head_ref }}
-        force: false
-        
-        
-  
