@@ -1,6 +1,6 @@
 name: Build, Check, and Test
 
-on: [pull_request, push]
+on: [pull_request]
 
 jobs:
   build_and_test: # run lint, codestyle, docstyle, and incremental tests
@@ -52,3 +52,24 @@ jobs:
     - name: Check docstyle
       run: |
         pipenv run pydocstyle niapy tests scent.py setup.py
+    - name: Cache testmondata
+      uses: tespkg/actions-cache@v1
+      with:
+        endpoint: s3.eu-central-1.wasabisys.com
+        insecure: false
+        accessKey: ${{ secrets.S3_ACCESS_KEY }}
+        secretKey: ${{ secrets.S3_SECRET_KEY }}
+        bucket: niapy-actions-cache
+        use-fallback: false
+        key: testmondata-${{ matrix.os }}_py${{ matrix.python-version }}
+        path: |
+          config/testmondata
+    - name: Run incremental tests
+      env:
+        TESTMON_DATAFILE: config/testmondata/${{ matrix.os }}_py${{ matrix.python-version }}
+      shell: bash
+      run: |
+        echo "${TESTMON_DATAFILE}"
+        pipenv run pytest --testmon -ra -vv --random --random-seed=32786 niapy tests
+        status=$?
+        if [ "$status" -eq 5 ]; then exit 0; else exit $status; fi
