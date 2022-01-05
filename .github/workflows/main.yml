@@ -37,3 +37,5 @@ jobs:
     - name: Check docstyle
       run: |
         pipenv run pydocstyle niapy tests scent.py setup.py
+    - name: List files
+      run: ls -R
