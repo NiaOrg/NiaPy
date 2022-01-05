@@ -133,6 +133,7 @@ class Runner:
                 for _ in range(self.runs):
                     if isinstance(alg, Algorithm):
                         algorithm = alg
+                        print(alg)
                     else:
                         algorithm = get_algorithm(alg)
                     task = self.task_factory(problem)
