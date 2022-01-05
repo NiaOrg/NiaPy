@@ -1,6 +1,6 @@
 name: Build, Check, and Test
 
-on: [pull_request, push]
+on: [pull_request]
 
 jobs:
   build_and_test: # run lint, codestyle, docstyle, and incremental tests
@@ -11,7 +11,6 @@ jobs:
         python-version: [3.6, 3.7, 3.8, 3.9, '3.10']
     env:
       MPLBACKEND: "agg"
-      DISABLE_COVERAGE: true
       PIPENV_VENV_IN_PROJECT: 1
     steps:
     - uses: actions/checkout@v2
@@ -23,7 +22,7 @@ jobs:
       run: |
         python3 -m pip install --upgrade pip
         pip install pipenv
-        pwd
+        echo "HASH PIPFILE: ${{ hashFiles('Pipfile') }}"
     - name: Cache dependencies
       id: cache-dependencies
       uses: tespkg/actions-cache@v1
@@ -34,11 +33,9 @@ jobs:
         secretKey: ${{ secrets.S3_SECRET_KEY }}
         bucket: niapy-actions-cache
         use-fallback: false
-        key: ${{ matrix.os }}_py${{ matrix.python-version }}-Pipfile_${{ hashFiles('**/Pipfile') }}
+        key: ${{ matrix.os }}_py${{ matrix.python-version }}-Pipfile_${{ hashFiles('Pipfile') }}
         path: |
           .venv
-        restore-keys: |
-          ${{ matrix.os }}_py${{ matrix.python-version }}-Pipfile_
     - name: Install dependencies
       if: steps.cache-dependencies.outputs.cache-hit != 'true'
       run: |
@@ -52,3 +49,24 @@ jobs:
     - name: Check docstyle
       run: |
         pipenv run pydocstyle niapy tests scent.py setup.py
+    - name: Cache testmondata
+      uses: tespkg/actions-cache@v1
+      with:
+        endpoint: s3.eu-central-1.wasabisys.com
+        insecure: false
+        accessKey: ${{ secrets.S3_ACCESS_KEY }}
+        secretKey: ${{ secrets.S3_SECRET_KEY }}
+        bucket: niapy-actions-cache
+        use-fallback: false
+        key: testmondata-${{ matrix.os }}_py${{ matrix.python-version }}
+        path: |
+          config/testmondata
+    - name: Run incremental tests
+      env:
+        TESTMON_DATAFILE: config/testmondata/${{ matrix.os }}_py${{ matrix.python-version }}
+      shell: bash
+      run: |
+        echo "${TESTMON_DATAFILE}"
+        pipenv run pytest --testmon --suppress-no-test-exit-code -ra -vv --random --random-seed=32786 niapy tests
+        status=$?
+        if [ "$status" -eq 5 ]; then exit 0; else exit $status; fi
