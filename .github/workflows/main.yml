@@ -32,7 +32,7 @@ jobs:
         secretKey: ${{ secrets.S3_SECRET_KEY }}
         bucket: niapy-actions-cache
         use-fallback: false
-        key: ${{ matrix.os }}_py${{ matrix.python-version }}-Pipfile_${{ hashFiles('**/Pipfile') }}
+        key: ${{ matrix.os }}_py${{ matrix.python-version }}-Pipfile_${{ hashFiles('Pipfile') }}
         path: |
           .venv
         restore-keys: |
