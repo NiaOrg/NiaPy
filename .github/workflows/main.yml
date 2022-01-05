@@ -24,6 +24,21 @@ jobs:
         python3 -m pip install --upgrade pip
         pip install pipenv
         pwd
+    - name: Cache dependencies
+      id: cache-dependencies
+      uses: tespkg/actions-cache@v1
+      with:
+        endpoint: s3.eu-central-1.wasabisys.com
+        insecure: false
+        accessKey: ${{ secrets.S3_ACCESS_KEY }}
+        secretKey: ${{ secrets.S3_SECRET_KEY }}
+        bucket: niapy-actions-cache
+        use-fallback: false
+        key: ${{ matrix.os }}_py${{ matrix.python-version }}-Pipfile_${{ hashFiles('**/Pipfile') }}
+        path: |
+          .venv
+        restore-keys: |
+          ${{ matrix.os }}_py${{ matrix.python-version }}-Pipfile_
     - name: Install dependencies
       if: steps.cache-dependencies.outputs.cache-hit != 'true'
       run: |
@@ -37,8 +52,3 @@ jobs:
     - name: Check docstyle
       run: |
         pipenv run pydocstyle niapy tests scent.py setup.py
-    - name: List files
-      run: |
-        pwd
-        ls -alh
-        ls -alh ../
