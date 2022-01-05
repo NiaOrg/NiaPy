@@ -9,6 +9,7 @@
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/NiaPy.svg)
 ![PyPI - Status](https://img.shields.io/pypi/status/NiaPy.svg)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/NiaPy.svg)
+[![Downloads](https://pepy.tech/badge/niapy)](https://pepy.tech/project/niapy)
 ![GitHub Release Date](https://img.shields.io/github/release-date/NiaOrg/NiaPy.svg)
 [![Anaconda-Server Badge](https://anaconda.org/niaorg/niapy/badges/installer/conda.svg)](https://conda.anaconda.org/niaorg)
 [![Fedora package](https://img.shields.io/fedora/v/python3-niapy?color=blue&label=Fedora%20Linux&logo=fedora)](https://src.fedoraproject.org/rpms/python-niapy)
