@@ -12,6 +12,7 @@ jobs:
     env:
       MPLBACKEND: "agg"
       DISABLE_COVERAGE: true
+      PIPENV_VENV_IN_PROJECT: 1
     steps:
     - uses: actions/checkout@v2
       with:
