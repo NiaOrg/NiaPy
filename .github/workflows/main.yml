@@ -37,29 +37,6 @@ jobs:
     - name: Check docstyle
       run: |
         pipenv run pydocstyle niapy tests scent.py setup.py
-    - name: Run incremental tests
-      env:
-        TESTMON_DATAFILE: config/testmondata/${{ matrix.os }}_py${{ matrix.python-version }}
-      shell: bash
-      run: |
-        echo "${TESTMON_DATAFILE}"
-        pipenv run pytest --testmon -ra -vv --random --random-seed=32786 niapy tests
-        status=$?
-        if [ "$status" -eq 5 ]; then exit 0; else exit $status; fi
-    - name: Store testmondata
-      uses: actions/upload-artifact@v2
-      with:
-        name: ${{ matrix.os }}_py${{ matrix.python-version }}
-        path: config/testmondata/${{ matrix.os }}_py${{ matrix.python-version }}
-
-  update_testmondata: # fetch all testmondata fiels and add push it to PR 
-    needs: build_and_test
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-        ref: refs/heads/${{ github.head_ref }}
     - name: Fetch testmondata
       uses: actions/download-artifact@v2
       with:
@@ -67,21 +44,5 @@ jobs:
     - name: Move testmondata files to right location
       shell: bash
       run: |
-        find artifacts/ -type f -print0 | xargs -0 mv -t config/testmondata/ 
-    - name: Add and commit updated .testmondata file
-      run: |
-        git config --local user.email "niapy.organization+NiaPy[bot]@gmail.com"
-        git config --local user.name "NiaPy[bot]"
-        git add --force config/testmondata
-        git commit -m "Update .testmondata"
-        git config pull.rebase false
-        git pull -X ours
-    - name: Push updated .testmon file
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        branch: ${{ github.head_ref }}
-        force: false
-        
-        
-  
+        find artifacts/ -type f -print0 | xargs -0 mv -t config/testmondata/
+        ls -alh config/testmondata
