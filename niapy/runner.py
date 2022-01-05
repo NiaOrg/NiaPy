@@ -17,6 +17,8 @@ logger = logging.getLogger('niapy.runner.Runner')
 logger.setLevel('INFO')
 
 __all__ = ["Runner"]
+
+
 class Runner:
     r"""Runner utility feature.
 

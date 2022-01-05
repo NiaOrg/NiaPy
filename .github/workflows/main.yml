@@ -11,7 +11,6 @@ jobs:
         python-version: [3.6, 3.7, 3.8, 3.9, '3.10']
     env:
       MPLBACKEND: "agg"
-      DISABLE_COVERAGE: true
       PIPENV_VENV_IN_PROJECT: 1
     steps:
     - uses: actions/checkout@v2
@@ -66,9 +65,9 @@ jobs:
     - name: Run incremental tests
       env:
         TESTMON_DATAFILE: config/testmondata/${{ matrix.os }}_py${{ matrix.python-version }}
-      shell: bash {0}
+      shell: bash
       run: |
         echo "${TESTMON_DATAFILE}"
-        pipenv run pytest --testmon -ra -vv --random --random-seed=32786 niapy tests
+        pipenv run pytest --testmon --suppress-no-test-exit-code -ra -vv --random --random-seed=32786 niapy tests
         status=$?
         if [ "$status" -eq 5 ]; then exit 0; else exit $status; fi
