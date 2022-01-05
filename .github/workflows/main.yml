@@ -13,7 +13,6 @@ jobs:
       MPLBACKEND: "agg"
       DISABLE_COVERAGE: true
       PIPENV_VENV_IN_PROJECT: 1
-      WORKON_HOME: ".venv"
     steps:
     - uses: actions/checkout@v2
       with:
