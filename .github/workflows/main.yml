@@ -1,23 +1,20 @@
 name: Build, Check, and Test
 
-on: [pull_request]
+on: [pull_request, push]
 
 jobs:
   build_and_test: # run lint, codestyle, docstyle, and incremental tests
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macOS-latest]
-        python-version: [3.6, 3.7, 3.8, 3.9, '3.10']
+        os: [ubuntu-latest]
+        python-version: ['3.10']
     env:
       MPLBACKEND: "agg"
       DISABLE_COVERAGE: true
       PIPENV_VENV_IN_PROJECT: 1
     steps:
     - uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-        ref: refs/heads/${{ github.head_ref }}
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:
@@ -26,10 +23,11 @@ jobs:
       run: |
         python3 -m pip install --upgrade pip
         pip install pipenv
+        pwd
     - name: Install dependencies
+      if: steps.cache-dependencies.outputs.cache-hit != 'true'
       run: |
         pipenv install --skip-lock --dev
-        pipenv --venv
     - name: Lint with flake8
       run: |
         pipenv run flake8 niapy tests scent.py setup.py
@@ -40,4 +38,7 @@ jobs:
       run: |
         pipenv run pydocstyle niapy tests scent.py setup.py
     - name: List files
-      run: ls -R
+      run: |
+        pwd
+        ls -alh
+        ls -alh ../
