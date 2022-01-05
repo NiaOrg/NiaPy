@@ -37,12 +37,3 @@ jobs:
     - name: Check docstyle
       run: |
         pipenv run pydocstyle niapy tests scent.py setup.py
-    - name: Fetch testmondata
-      uses: actions/download-artifact@v2
-      with:
-        path: artifacts
-    - name: Move testmondata files to right location
-      shell: bash
-      run: |
-        find artifacts/ -type f -print0 | xargs -0 mv -t config/testmondata/
-        ls -alh config/testmondata
