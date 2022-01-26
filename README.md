@@ -13,6 +13,7 @@
 ![GitHub Release Date](https://img.shields.io/github/release-date/NiaOrg/NiaPy.svg)
 [![Anaconda-Server Badge](https://anaconda.org/niaorg/niapy/badges/installer/conda.svg)](https://conda.anaconda.org/niaorg)
 [![Fedora package](https://img.shields.io/fedora/v/python3-niapy?color=blue&label=Fedora%20Linux&logo=fedora)](https://src.fedoraproject.org/rpms/python-niapy)
+[![AUR package](https://img.shields.io/aur/version/python-niapy?color=blue&label=Arch%20Linux&logo=arch-linux)](https://aur.archlinux.org/packages/python-niapy)
 [![Documentation Status](https://readthedocs.org/projects/niapy/badge/?version=latest)](http://niapy.readthedocs.io/en/latest/?badge=latest)
 [![GitHub license](https://img.shields.io/github/license/NiaOrg/NiaPy.svg)](https://github.com/NiaOrg/NiaPy/blob/master/LICENSE)
 
@@ -63,6 +64,12 @@ To install NiaPy on Fedora, use:
 
 ```sh
 $ dnf install python3-niapy
+```
+
+To install NiaPy on Arch Linux, please use an [AUR helper](https://wiki.archlinux.org/title/AUR_helpers):
+
+```sh
+$ yay -Syyu python-niapy
 ```
 
 ## Install from source
