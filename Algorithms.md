@@ -15,7 +15,7 @@
 |Cat Swarm Optimization  |CSO|Chu, S. C., Tsai, P. W., & Pan, J. S. (2006, August). Cat swarm optimization. In Pacific Rim international conference on artificial intelligence (pp. 854-858). Springer, Berlin, Heidelberg.
 |Differential Evolution  |DE |Storn, Rainer, and Kenneth Price. "Differential evolution - a simple and efficient heuristic for global optimization over continuous spaces." Journal of global optimization 11.4 (1997): 341-359.
 |Evolution Strategies    |ES |Hansen, Nikolaus. "The CMA evolution strategy: A tutorial." arXiv preprint arXiv:1604.00772 (2016).
-|Firefly Algorithm       |FA |Fister, I., Fister Jr, I., Yang, X. S., & Brest, J. (2013). A comprehensive review of firefly algorithms. Swarm and Evolutionary Computation, 13, 34-46.
+|Firefly Algorithm       |FA |Yang, Xin-She. Nature-inspired metaheuristic algorithms. Luniver press, 2010.
 |Forest Optimization Algorithm |FOA|Manizheh Ghaemi, Mohammad-Reza Feizi-Derakhshi, Forest Optimization Algorithm, Expert Systems with Applications, Volume 41, Issue 15, 2014, Pages 6676-6687
 |Flower Pollination Algorithm  |FPA|Yang, Xin-She. "Flower pollination algorithm for global optimization. International conference on unconventional computing and natural computation. Springer, Berlin, Heidelberg, 2012.
 |Fish School Search            |FSS|Bastos Filho, Lima Neto, Lins, D. O. Nascimento and P. Lima, “A novel search algorithm based on fish school behavior,” in 2008 IEEE International Conference on Systems, Man and Cybernetics, Oct 2008, pp. 2646–2651.
@@ -49,6 +49,7 @@ Harris hawks optimization      |HHO| Heidari et al. "Harris hawks optimization: 
 |Full name                    |Acronym|Reference                                                                                                                                                                                              |
 |-----------------------------|-------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 |Anarchic Society Optimization|ASO    |Ahmadi-Javid, Amir. "Anarchic Society Optimization: A human-inspired method." Evolutionary Computation (CEC), 2011 IEEE Congress on. IEEE, 2011.                                                       |
+|Multiple trajectory search   |MTS    |Lin-Yu Tseng and Chun Chen, "Multiple trajectory search for Large Scale Global Optimization," 2008 IEEE Congress on Evolutionary Computation (IEEE World Congress on Computational Intelligence), Hong Kong, 2008, pp. 3052-3059.|
 |Nelder-Mead method           |NM     |                                                                                                                                               https://en.wikipedia.org/wiki/Nelder%E2%80%93Mead_method|
 |Simulated Annealing          |SA     |Kirkpatrick, S., Gelatt, C. D., & Vecchi, M. P. (1983). Optimization by simulated annealing. Science, 220(4598), 671-680.|
 |Random Search          |RS     |https://en.wikipedia.org/wiki/Random_search
