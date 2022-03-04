@@ -15,4 +15,4 @@ algo = CatSwarmOptimization()
 best = algo.run(task=task)
 print('%s -> %s' % (best[0], best[1]))
 # plot a convergence graph
-task.plot()
+task.plot_convergence(x_axis='evals')

@@ -145,7 +145,7 @@ class TaskTestCase(TestCase):
         for i in range(self.nFES):
             x = np.full(self.D, 10 - i)
             r1.append(i + 1), r2.append(self.task.eval(x))
-        t_r1, t_r2 = self.task.return_conv()
+        t_r1, t_r2 = self.task.convergence_data()
         self.assertTrue(np.array_equal(r1, t_r1))
         self.assertTrue(np.array_equal(r2, t_r2))
 
@@ -154,6 +154,6 @@ class TaskTestCase(TestCase):
         for i in range(self.nFES):
             x = np.full(self.D, 10 - i if i not in (3, 4, 5) else 4)
             r1.append(i + 1), r2.append(self.task.eval(x))
-        t_r1, t_r2 = self.task.return_conv()
+        t_r1, t_r2 = self.task.convergence_data()
         self.assertTrue(np.array_equal(r2, t_r2))
         self.assertTrue(np.array_equal(r1, t_r1))
