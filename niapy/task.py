@@ -7,6 +7,7 @@ from enum import Enum
 
 import numpy as np
 from matplotlib import pyplot as plt
+import matplotlib.ticker as ticker
 from niapy.problems import Problem
 from niapy.util.repair import limit
 from niapy.util.factory import get_problem
@@ -99,7 +100,8 @@ class Task:
         self.max_evals = max_evals
         self.max_iters = max_iters
         self.n_evals = []
-        self.x_f_vals = []
+        self.fitness_evals = []  # fitness improvements at self.n_evals evaluations
+        self.fitness_iters = []  # best fitness at each iteration
 
     def repair(self, x, rng=None):
         r"""Repair solution and put the solution in the random position inside of the bounds of problem.
@@ -123,6 +125,7 @@ class Task:
 
     def next_iter(self):
         r"""Increments the number of algorithm iterations."""
+        self.fitness_iters.append(self.x_f)
         self.iters += 1
 
     def eval(self, x):
@@ -144,10 +147,9 @@ class Task:
         if x_f < self.x_f * self.optimization_type.value:
             self.x_f = x_f * self.optimization_type.value
             self.n_evals.append(self.evals)
-            self.x_f_vals.append(x_f)
+            self.fitness_evals.append(x_f)
             if self.enable_logging:
                 logger.info('evals:%d => %s' % (self.evals, self.x_f))
-
         return x_f
 
     def is_feasible(self, x):
@@ -182,32 +184,51 @@ class Task:
         self.next_iter()
         return r
 
-    def return_conv(self):
-        r"""Get values of x and y axis for plotting covariance graph.
+    def convergence_data(self, x_axis='iters'):
+        r"""Get values of x and y-axis for plotting covariance graph.
+
+        Args:
+            x_axis (Literal['iters', 'evals']): Quantity to be displayed on the x-axis. Either 'iters' or 'evals'.
 
         Returns:
-            Tuple[List[int], List[float]]:
-                1. List of ints of function evaluations.
-                2. List of ints of function/fitness values.
+            Tuple[np.ndarray, np.ndarray]:
+                1. array  of function evaluations.
+                2. array of fitness values.
 
         """
-        r1, r2 = [], []
-        for i, v in enumerate(self.n_evals):
-            r1.append(v), r2.append(self.x_f_vals[i])
-            if i >= len(self.n_evals) - 1:
-                break
-            diff = self.n_evals[i + 1] - v
-            if diff <= 1:
-                continue
-            for j in range(diff - 1):
-                r1.append(v + j + 1), r2.append(self.x_f_vals[i])
-        return r1, r2
+        if x_axis == 'iters':
+            return np.arange(self.iters), np.array(self.fitness_iters)
+        else:  # x_axis == 'evals'
+            r1, r2 = [], []
+            for i, v in enumerate(self.n_evals):
+                r1.append(v)
+                r2.append(self.fitness_evals[i])
+                if i >= len(self.n_evals) - 1:
+                    break
+                diff = self.n_evals[i + 1] - v
+                if diff <= 1:
+                    continue
+                for j in range(diff - 1):
+                    r1.append(v + j + 1)
+                    r2.append(self.fitness_evals[i])
+            return np.array(r1), np.array(r2)
 
-    def plot(self):
-        """Plot a simple convergence graph."""
-        fess, fitness = self.return_conv()
-        plt.plot(fess, fitness)
-        plt.xlabel('Function Evaluations')
+    def plot_convergence(self, x_axis='iters', title='Convergence Graph'):
+        """Plot a simple convergence graph.
+
+        Args:
+            x_axis (Literal['iters', 'evals']): Quantity to be displayed on the x-axis. Either 'iters' or 'evals'.
+            title (str): Title of the graph.
+
+        """
+        x, fitness = self.convergence_data(x_axis)
+        _, ax = plt.subplots()
+        ax.plot(x, fitness)
+        ax.xaxis.set_major_locator(ticker.MaxNLocator(integer=True))
+        if x_axis == 'iters':
+            plt.xlabel('Iterations')
+        else:
+            plt.xlabel('Fitness Evaluations')
         plt.ylabel('Fitness')
-        plt.title('Convergence Graph')
+        plt.title(title)
         plt.show()
