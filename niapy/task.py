@@ -202,14 +202,16 @@ class Task:
         else:  # x_axis == 'evals'
             r1, r2 = [], []
             for i, v in enumerate(self.n_evals):
-                r1.append(v), r2.append(self.fitness_evals[i])
+                r1.append(v)
+                r2.append(self.fitness_evals[i])
                 if i >= len(self.n_evals) - 1:
                     break
                 diff = self.n_evals[i + 1] - v
                 if diff <= 1:
                     continue
                 for j in range(diff - 1):
-                    r1.append(v + j + 1), r2.append(self.fitness_evals[i])
+                    r1.append(v + j + 1)
+                    r2.append(self.fitness_evals[i])
             return np.array(r1), np.array(r2)
 
     def plot_convergence(self, x_axis='iters', title='Convergence Graph'):
@@ -221,7 +223,7 @@ class Task:
 
         """
         x, fitness = self.convergence_data(x_axis)
-        fig, ax = plt.subplots()
+        _, ax = plt.subplots()
         ax.plot(x, fitness)
         ax.xaxis.set_major_locator(ticker.MaxNLocator(integer=True))
         if x_axis == 'iters':
