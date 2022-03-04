@@ -150,7 +150,6 @@ class Task:
             self.fitness_evals.append(x_f)
             if self.enable_logging:
                 logger.info('evals:%d => %s' % (self.evals, self.x_f))
-
         return x_f
 
     def is_feasible(self, x):
