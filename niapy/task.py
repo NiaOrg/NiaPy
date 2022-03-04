@@ -7,6 +7,7 @@ from enum import Enum
 
 import numpy as np
 from matplotlib import pyplot as plt
+import matplotlib.ticker as ticker
 from niapy.problems import Problem
 from niapy.util.repair import limit
 from niapy.util.factory import get_problem
@@ -220,10 +221,11 @@ class Task:
 
         """
         x, fitness = self.convergence_data(x_axis)
-        plt.plot(x, fitness)
+        fig, ax = plt.subplots()
+        ax.plot(x, fitness)
+        ax.xaxis.set_major_locator(ticker.MaxNLocator(integer=True))
         if x_axis == 'iters':
             plt.xlabel('Iterations')
-            plt.xticks(range(self.iters))
         else:
             plt.xlabel('Fitness Evaluations')
         plt.ylabel('Fitness')
