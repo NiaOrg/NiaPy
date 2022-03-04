@@ -36,3 +36,4 @@ pandoc = "*"
 twine = "*"
 pytest-testmon = "~=1.2.2"
 pytest-custom-exit-code = {git = "https://github.com/GregaVrbancic/pytest-custom_exit_code.git"}
+bandit = "<1.7.3"
