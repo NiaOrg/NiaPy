@@ -33,7 +33,8 @@
         "example",
         "review",
         "question",
-        "test"
+        "test",
+        "platform"
       ]
     },
     {
@@ -242,6 +243,15 @@
       "profile": "https://github.com/andrazperson",
       "contributions": [
         "code"
+      ]
+    },
+    {
+      "login": "carlosal1015",
+      "name": "Oromion",
+      "avatar_url": "https://avatars.githubusercontent.com/u/21283014?v=4",
+      "profile": "http://carlosal1015.github.io",
+      "contributions": [
+        "platform"
       ]
     }
   ],

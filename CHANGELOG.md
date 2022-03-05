@@ -1,5 +1,38 @@
 # Changelog
 
+## [2.0.1](https://github.com/NiaOrg/NiaPy/tree/2.0.1) (2022-03-05)
+
+[Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2.0.0...2.0.1)
+
+**Implemented enhancements:**
+
+- Installation instructions for Arch Linux users [\#373](https://github.com/NiaOrg/NiaPy/issues/373)
+
+**Closed issues:**
+
+- Whale Optimization Algorithm \(WOA\) and Sparrow Search Algorithm \(SSA\) implementation [\#378](https://github.com/NiaOrg/NiaPy/issues/378)
+- raise ValueError\('Newlines are not allowed'\) [\#371](https://github.com/NiaOrg/NiaPy/issues/371)
+- Logging not working if optimization type set to maximization  [\#367](https://github.com/NiaOrg/NiaPy/issues/367)
+- ConalgTestCase related tests warnings [\#364](https://github.com/NiaOrg/NiaPy/issues/364)
+- Correct naming of Michalewicz functions [\#361](https://github.com/NiaOrg/NiaPy/issues/361)
+- Second stable release [\#359](https://github.com/NiaOrg/NiaPy/issues/359)
+
+**Merged pull requests:**
+
+- docs: add firefly-cpp as a contributor for platform [\#382](https://github.com/NiaOrg/NiaPy/pull/382) ([allcontributors[bot]](https://github.com/apps/allcontributors))
+- docs: add carlosal1015 as a contributor for platform [\#381](https://github.com/NiaOrg/NiaPy/pull/381) ([allcontributors[bot]](https://github.com/apps/allcontributors))
+- Modify convergence plotting [\#380](https://github.com/NiaOrg/NiaPy/pull/380) ([zStupan](https://github.com/zStupan))
+- Update Algorithms.md [\#377](https://github.com/NiaOrg/NiaPy/pull/377) ([firefly-cpp](https://github.com/firefly-cpp))
+- Add instructions for install from AUR [\#374](https://github.com/NiaOrg/NiaPy/pull/374) ([carlosal1015](https://github.com/carlosal1015))
+- Fix setup error [\#372](https://github.com/NiaOrg/NiaPy/pull/372) ([zStupan](https://github.com/zStupan))
+- Add nice badge for showing the total downloads of this package [\#370](https://github.com/NiaOrg/NiaPy/pull/370) ([firefly-cpp](https://github.com/firefly-cpp))
+- Add incremental testing to main workflow supported with cache [\#369](https://github.com/NiaOrg/NiaPy/pull/369) ([GregaVrbancic](https://github.com/GregaVrbancic))
+- Improve CI [\#368](https://github.com/NiaOrg/NiaPy/pull/368) ([GregaVrbancic](https://github.com/GregaVrbancic))
+- Add pytest-testmon to reduce the execution time of tests. [\#366](https://github.com/NiaOrg/NiaPy/pull/366) ([GregaVrbancic](https://github.com/GregaVrbancic))
+- Fix clonalg implementation [\#365](https://github.com/NiaOrg/NiaPy/pull/365) ([zStupan](https://github.com/zStupan))
+- Refactor/fix michalewicz name [\#363](https://github.com/NiaOrg/NiaPy/pull/363) ([sisco0](https://github.com/sisco0))
+- Refactor/fix py typos [\#362](https://github.com/NiaOrg/NiaPy/pull/362) ([sisco0](https://github.com/sisco0))
+
 ## [2.0.0](https://github.com/NiaOrg/NiaPy/tree/2.0.0) (2021-12-27)
 
 [Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2.0.0rc18...2.0.0)
@@ -362,7 +395,7 @@
 
 ## [1.0.2](https://github.com/NiaOrg/NiaPy/tree/1.0.2) (2018-10-24)
 
-[Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2.0.0rc2...1.0.2)
+[Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2...1.0.2)
 
 **Fixed bugs:**
 
@@ -372,13 +405,13 @@
 
 - fix Bat Algorithm [\#161](https://github.com/NiaOrg/NiaPy/pull/161) ([GregaVrbancic](https://github.com/GregaVrbancic))
 
-## [2.0.0rc2](https://github.com/NiaOrg/NiaPy/tree/2.0.0rc2) (2018-08-30)
-
-[Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2...2.0.0rc2)
-
 ## [2](https://github.com/NiaOrg/NiaPy/tree/2) (2018-08-30)
 
-[Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2.0.0rc1...2)
+[Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2.0.0rc2...2)
+
+## [2.0.0rc2](https://github.com/NiaOrg/NiaPy/tree/2.0.0rc2) (2018-08-30)
+
+[Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2.0.0rc1...2.0.0rc2)
 
 ## [2.0.0rc1](https://github.com/NiaOrg/NiaPy/tree/2.0.0rc1) (2018-08-30)
 
