@@ -231,6 +231,17 @@ class MultiStrategySelfAdaptiveDifferentialEvolution(SelfAdaptiveDifferentialEvo
         super().set_parameters(strategy=kwargs.pop('strategy', multi_mutations), **kwargs)
         self.strategies = strategies
 
+    def get_parameters(self):
+        r"""Get parameters of the algorithm.
+
+        Returns:
+            Dict[str, Any]: Algorithm parameters.
+
+        """
+        params = super().get_parameters()
+        params.update({'strategies': self.strategies})
+        return params
+
     def evolve(self, pop, xb, task, **kwargs):
         r"""Evolve population with the help multiple mutation strategies.
 

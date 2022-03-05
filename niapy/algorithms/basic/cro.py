@@ -165,6 +165,9 @@ class CoralReefsOptimization(Algorithm):
         self.k = k
         self.crossover_rate = crossover_rate
         self.mutation_rate = mutation_rate
+        self.asexual_reproduction_prob = asexual_reproduction_prob
+        self.broadcast_prob = broadcast_prob
+        self.depredation_prob = depredation_prob
         self.num_asexual_reproduction = int(self.population_size * asexual_reproduction_prob)
         self.num_broadcast = int(self.population_size * broadcast_prob)
         self.num_depredation = int(self.population_size * depredation_prob)
@@ -199,6 +202,9 @@ class CoralReefsOptimization(Algorithm):
         self.k = k
         self.crossover_rate = crossover_rate
         self.mutation_rate = mutation_rate
+        self.asexual_reproduction_prob = asexual_reproduction_prob
+        self.broadcast_prob = broadcast_prob
+        self.depredation_prob = depredation_prob
         self.num_asexual_reproduction = int(self.population_size * asexual_reproduction_prob)
         self.num_broadcast = int(self.population_size * broadcast_prob)
         self.num_depredation = int(self.population_size * depredation_prob)
@@ -216,11 +222,13 @@ class CoralReefsOptimization(Algorithm):
         d.update({
             'phi': self.phi,
             'k': self.k,
-            'crossover_rate': self.crossover_rate,
-            'mutation_rate': self.mutation_rate,
-            'num_asexual_reproduction': self.num_asexual_reproduction,
-            'num_depredation': self.num_depredation,
-            'num_broadcast': self.num_broadcast
+            'cr': self.crossover_rate,
+            'mr': self.mutation_rate,
+            'asexual_reproduction_prob': self.asexual_reproduction_prob,
+            'depredation_prob': self.depredation_prob,
+            'broadcast_prob': self.broadcast_prob,
+            'sexual_crossover': self.sexual_crossover,
+            'brooding': self.brooding
         })
         return d
 

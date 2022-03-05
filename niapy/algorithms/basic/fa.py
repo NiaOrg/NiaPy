@@ -99,6 +99,22 @@ class FireflyAlgorithm(Algorithm):
         self.gamma = gamma
         self.theta = theta
 
+    def get_parameters(self):
+        r"""Get parameters of the algorithm.
+
+        Returns:
+            Dict[str, Any]: Algorithm parameters.
+
+        """
+        params = super().get_parameters()
+        params.update({
+            'alpha': self.alpha,
+            'beta0': self.beta0,
+            'gamma': self.gamma,
+            'theta': self.theta,
+        })
+        return params
+
     def init_population(self, task):
         r"""Initialize the starting population.
 

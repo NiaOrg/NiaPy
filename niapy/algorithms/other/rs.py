@@ -66,7 +66,7 @@ class RandomSearch(Algorithm):
 
         """
         kwargs.pop('population_size', None)
-        Algorithm.set_parameters(self, population_size=1, **kwargs)
+        super().set_parameters(population_size=1, **kwargs)
         self.candidates = None
 
     def get_parameters(self):
@@ -78,7 +78,8 @@ class RandomSearch(Algorithm):
             * :func:`niapy.algorithms.Algorithm.get_parameters`
 
         """
-        d = Algorithm.get_parameters(self)
+        d = super().get_parameters()
+        d.pop('population_size', None)
         return d
 
     def init_population(self, task):

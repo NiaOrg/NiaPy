@@ -98,7 +98,7 @@ class NelderMeadMethod(Algorithm):
         self.sigma = sigma
 
     def get_parameters(self):
-        d = Algorithm.get_parameters(self)
+        d = super().get_parameters()
         d.update({
             'alpha': self.alpha,
             'gamma': self.gamma,

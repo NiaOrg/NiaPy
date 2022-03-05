@@ -100,6 +100,25 @@ class CatSwarmOptimization(Algorithm):
         self.srd = srd
         self.max_velocity = max_velocity
 
+    def get_parameters(self):
+        r"""Get parameters values of the algorithm.
+
+        Returns:
+            Dict[str, Any]: Algorithm parameters.
+
+        """
+        params = super().get_parameters()
+        params.update({
+            'mixture_ratio': self.mixture_ratio,
+            'c1': self.c1,
+            'smp': self.smp,
+            'spc': self.spc,
+            'cdc': self.cdc,
+            'srd': self.srd,
+            'max_velocity': self.max_velocity
+        })
+        return params
+
     def init_population(self, task):
         r"""Initialize population.
 

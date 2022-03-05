@@ -36,16 +36,17 @@ class KrillHerd(Algorithm):
 
     Attributes:
         Name (List[str]): List of strings representing algorithm names.
-        population_size (int): Number of krill herds in population.
-        N_max (float): Maximum induced speed.
-        V_f (float): Foraging speed.
-        D_max (float): Maximum diffusion speed.
-        C_t (float): Constant :math:`\in [0, 2]`
-        W_n (Union[int, float, numpy.ndarray]): Inertia weights of the motion induced from neighbors :math:`\in [0, 1]`.
-        W_f (Union[int, float, numpy.ndarray]): Inertia weights of the motion induced from foraging :math`\in [0, 1]`.
-        d_s (float): Maximum euclidean distance for neighbors.
-        nn (int): Maximum neighbors for neighbors effect.
-        epsilon (float): Small numbers for division.
+        population_size (Optional[int]): Number of krill herds in population.
+        n_max (Optional[float]): Maximum induced speed.
+        foraging_speed (Optional[float]): Foraging speed.
+        diffusion_speed (Optional[float]): Maximum diffusion speed.
+        c_t (Optional[float]): Constant $\in [0, 2]$.
+        w_neighbor (Optional[Union[int, float, numpy.ndarray]]): Inertia weights of the motion induced from neighbors :math:`\in [0, 1]`.
+        w_foraging (Optional[Union[int, float, numpy.ndarray]]): Inertia weights of the motion induced from foraging :math:`\in [0, 1]`.
+        d_s (Optional[float]): Maximum euclidean distance for neighbors.
+        max_neighbors (Optional[int]): Maximum neighbors for neighbors effect.
+        crossover_rate (Optional[float]): Crossover probability.
+        mutation_rate (Optional[float]): Mutation probability.
 
     See Also:
         * :class:`niapy.algorithms.algorithm.Algorithm`
@@ -82,7 +83,7 @@ class KrillHerd(Algorithm):
             w_foraging (Optional[Union[int, float, numpy.ndarray]]): Inertia weights of the motion induced from foraging :math:`\in [0, 1]`.
             d_s (Optional[float]): Maximum euclidean distance for neighbors.
             max_neighbors (Optional[int]): Maximum neighbors for neighbors effect.
-            crossover_rate (Optional[float]): Crossover probability.
+            cr (Optional[float]): Crossover probability.
             mutation_rate (Optional[float]): Mutation probability.
 
         See Also:
@@ -90,16 +91,16 @@ class KrillHerd(Algorithm):
 
         """
         super().__init__(population_size, *args, **kwargs)
-        self.N_max = n_max
-        self.V_f = foraging_speed
-        self.D_max = diffusion_speed
-        self.C_t = c_t
-        self.W_n = w_neighbor
-        self.W_f = w_foraging
+        self.n_max = n_max
+        self.foraging_speed = foraging_speed
+        self.diffusion_speed = diffusion_speed
+        self.c_t = c_t
+        self.w_neighbor = w_neighbor
+        self.w_foraging = w_foraging
         self.d_s = d_s
-        self.nn = max_neighbors
-        self._Cr = crossover_rate
-        self._Mu = mutation_rate
+        self.max_neighbors = max_neighbors
+        self.cr = crossover_rate
+        self.mr = mutation_rate
         self.epsilon = np.finfo(float).eps
 
     def set_parameters(self, population_size=50, n_max=0.01, foraging_speed=0.02, diffusion_speed=0.002, c_t=0.93,
@@ -125,16 +126,16 @@ class KrillHerd(Algorithm):
 
         """
         super().set_parameters(population_size=population_size, **kwargs)
-        self.N_max = n_max
-        self.V_f = foraging_speed
-        self.D_max = diffusion_speed
-        self.C_t = c_t
-        self.W_n = w_neighbor
-        self.W_f = w_foraging
+        self.n_max = n_max
+        self.foraging_speed = foraging_speed
+        self.diffusion_speed = diffusion_speed
+        self.c_t = c_t
+        self.w_neighbor = w_neighbor
+        self.w_foraging = w_foraging
         self.d_s = d_s
-        self.nn = max_neighbors
-        self._Cr = crossover_rate
-        self._Mu = mutation_rate
+        self.max_neighbors = max_neighbors
+        self.cr = crossover_rate
+        self.mr = mutation_rate
         self.epsilon = np.finfo(float).eps
 
     def get_parameters(self):
@@ -146,14 +147,16 @@ class KrillHerd(Algorithm):
         """
         d = Algorithm.get_parameters(self)
         d.update({
-            'N_max': self.N_max,
-            'V_f': self.V_f,
-            'D_max': self.D_max,
-            'C_t': self.C_t,
-            'W_n': self.W_n,
-            'W_f': self.W_f,
+            'n_max': self.n_max,
+            'foraging_speed': self.foraging_speed,
+            'diffusion_speed': self.diffusion_speed,
+            'c_t': self.c_t,
+            'w_neighbor': self.w_neighbor,
+            'w_foraging': self.w_foraging,
             'd_s': self.d_s,
-            'nn': self.nn,
+            'max_neighbors': self.max_neighbors,
+            'crossover_rate': self.cr,
+            'mutation_rate': self.mr
         })
         return d
 
@@ -169,7 +172,7 @@ class KrillHerd(Algorithm):
                 2. Weights for foraging.
 
         """
-        return full_array(self.W_n, task.dimension), full_array(self.W_f, task.dimension)
+        return full_array(self.w_neighbor, task.dimension), full_array(self.w_foraging, task.dimension)
 
     def sense_range(self, ki, population):
         r"""Calculate sense range for selected individual.
@@ -182,7 +185,7 @@ class KrillHerd(Algorithm):
             float: Sense range for krill.
 
         """
-        return np.sum([euclidean(population[ki], population[i]) for i in range(self.population_size)]) / (self.nn * self.population_size)
+        return np.sum([euclidean(population[ki], population[i]) for i in range(self.population_size)]) / (self.max_neighbors * self.population_size)
 
     def get_neighbours(self, i, ids, population):
         r"""Get neighbours.
@@ -254,7 +257,7 @@ class KrillHerd(Algorithm):
         alpha_l = np.sum(
             np.asarray([self.get_k(population_fitness[i], j, f_b, f_w) for j in neighbor_f]) * np.asarray([self.get_x(population[i], j) for j in neighbor_x]).T)
         alpha_t = 2 * (1 + self.random() * (task.iters + 1) / task.max_iters)
-        return self.N_max * (alpha_l + alpha_t) + weights * n
+        return self.n_max * (alpha_l + alpha_t) + weights * n
 
     def induce_foraging_motion(self, i, x, x_f, f, weights, population, population_fitness, best_index, worst_index, task):
         r"""Induced foraging motion operator.
@@ -278,7 +281,7 @@ class KrillHerd(Algorithm):
         beta_f = 2 * (1 - (task.iters + 1) / task.max_iters) * self.get_k(population_fitness[i], x_f, population_fitness[best_index], population_fitness[worst_index]) * self.get_x(
             population[i], x) if population_fitness[best_index] < population_fitness[i] else 0
         beta_b = self.get_k(population_fitness[i], population_fitness[best_index], population_fitness[best_index], population_fitness[worst_index]) * self.get_x(population[i], population[best_index])
-        return self.V_f * (beta_f + beta_b) + weights * f
+        return self.foraging_speed * (beta_f + beta_b) + weights * f
 
     def induce_physical_diffusion(self, task):
         r"""Induced physical diffusion operator.
@@ -290,7 +293,7 @@ class KrillHerd(Algorithm):
             numpy.ndarray:
 
         """
-        return self.D_max * (1 - (task.iters + 1) / task.max_iters) * self.uniform(-1, 1, task.dimension)
+        return self.diffusion_speed * (1 - (task.iters + 1) / task.max_iters) * self.uniform(-1, 1, task.dimension)
 
     def delta_t(self, task):
         r"""Get new delta for all dimensions.
@@ -302,7 +305,7 @@ class KrillHerd(Algorithm):
             numpy.ndarray: --
 
         """
-        return self.C_t * np.sum(task.range)
+        return self.c_t * np.sum(task.range)
 
     def crossover(self, x, xo, crossover_rate):
         r"""Crossover operator.
@@ -364,7 +367,7 @@ class KrillHerd(Algorithm):
             float: New mutation probability.
 
         """
-        return self._Mu / (self.get_k(xf, yf, xf_best, xf_worst) + 1e-31)
+        return self.mr / (self.get_k(xf, yf, xf_best, xf_worst) + 1e-31)
 
     def crossover_rate(self, xf, yf, xf_best, xf_worst):
         r"""Get crossover probability.
@@ -379,7 +382,7 @@ class KrillHerd(Algorithm):
             float: New crossover probability.
 
         """
-        return self._Cr * self.get_k(xf, yf, xf_best, xf_worst)
+        return self.cr * self.get_k(xf, yf, xf_best, xf_worst)
 
     def init_population(self, task):
         r"""Initialize stating population.

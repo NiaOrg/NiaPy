@@ -133,7 +133,8 @@ class ParticleSwarmAlgorithm(Algorithm):
             'c2': self.c2,
             'w': self.w,
             'min_velocity': self.min_velocity,
-            'max_velocity': self.max_velocity
+            'max_velocity': self.max_velocity,
+            'repair': self.repair
         })
         return d
 
@@ -312,7 +313,7 @@ class ParticleSwarmOptimization(ParticleSwarmAlgorithm):
             * :func:`niapy.algorithms.basic.WeightedVelocityClampingParticleSwarmAlgorithm.set_parameters`
 
         """
-        kwargs.pop('w', None), kwargs.pop('vMin', None), kwargs.pop('vMax', None)
+        kwargs.pop('w', None), kwargs.pop('min_velocity', None), kwargs.pop('max_velocity', None)
         super().set_parameters(w=1, min_velocity=-np.inf, max_velocity=np.inf, **kwargs)
 
 

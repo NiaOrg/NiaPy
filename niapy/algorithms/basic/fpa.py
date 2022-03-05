@@ -84,6 +84,17 @@ class FlowerPollinationAlgorithm(Algorithm):
         super().set_parameters(population_size=population_size, **kwargs)
         self.p = p
 
+    def get_parameters(self):
+        r"""Get parameters of the algorithm.
+
+        Returns:
+            Dict[str, Any]: Algorithm parameters.
+
+        """
+        params = super().get_parameters()
+        params.update({'p': self.p})
+        return params
+
     def init_population(self, task):
         """Initialize population."""
         pop, fpop, d = super().init_population(task)

@@ -246,6 +246,17 @@ class DynNpDifferentialEvolutionMTS(DifferentialEvolutionMTS, DynNpDifferentialE
         DynNpDifferentialEvolution.set_parameters(self, p_max=p_max, rp=rp, **kwargs)
         DifferentialEvolutionMTS.set_parameters(self, **kwargs)
 
+    def get_parameters(self):
+        r"""Get parameters of the algorithm.
+
+        Returns:
+            Dict[str, Any]: Algorithm parameters.
+
+        """
+        params = DynNpDifferentialEvolution.get_parameters(self)
+        params.update(DifferentialEvolutionMTS.get_parameters(self))
+        return params
+
     def post_selection(self, population, task, xb, fxb, **kwargs):
         new_x, xb, fxb = DynNpDifferentialEvolution.post_selection(self, population, task, xb, fxb)
         new_x, xb, fxb = DifferentialEvolutionMTS.post_selection(self, new_x, task, xb, fxb)
@@ -357,6 +368,17 @@ class MultiStrategyDifferentialEvolutionMTS(DifferentialEvolutionMTS, MultiStrat
         """
         DifferentialEvolutionMTS.set_parameters(self, **kwargs)
         MultiStrategyDifferentialEvolution.set_parameters(self, individual_type=kwargs.pop('individual_type', MtsIndividual), **kwargs)
+
+    def get_parameters(self):
+        r"""Get parameters of the algorithm.
+
+        Returns:
+            Dict[str, Any]: Algorithm parameters.
+
+        """
+        params = DifferentialEvolutionMTS.get_parameters(self)
+        params.update(MultiStrategyDifferentialEvolution.get_parameters(self))
+        return params
 
     def evolve(self, pop, xb, task, **kwargs):
         r"""Evolve population.
@@ -478,6 +500,17 @@ class DynNpMultiStrategyDifferentialEvolutionMTS(MultiStrategyDifferentialEvolut
         """
         DynNpDifferentialEvolutionMTS.set_parameters(self, **kwargs)
         MultiStrategyDifferentialEvolutionMTS.set_parameters(self, **kwargs)
+
+    def get_parameters(self):
+        r"""Get parameters of the algorithm.
+
+        Returns:
+            Dict[str, Any]: Algorithm parameters.
+
+        """
+        params = DynNpDifferentialEvolutionMTS.get_parameters(self)
+        params.update(MultiStrategyDifferentialEvolutionMTS.get_parameters(self))
+        return params
 
 
 class DynNpMultiStrategyDifferentialEvolutionMTSv1(DynNpMultiStrategyDifferentialEvolutionMTS):
