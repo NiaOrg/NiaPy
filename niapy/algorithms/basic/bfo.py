@@ -57,7 +57,7 @@ class BacterialForagingOptimization(Algorithm):
         r"""Get algorithm information.
 
         Returns:
-            str: Bit item.
+            str: Algorithm information.
 
         See Also:
             * :func:`niapy.algorithms.Algorithm.info`
@@ -132,6 +132,7 @@ class BacterialForagingOptimization(Algorithm):
         self.n_elimination = n_elimination
         self.prob_elimination = prob_elimination
         self.step_size = step_size
+        self.swarming = swarming
         self.d_attract = d_attract
         self.w_attract = w_attract
         self.h_repel = h_repel
@@ -152,6 +153,7 @@ class BacterialForagingOptimization(Algorithm):
             'n_elimination': self.n_elimination,
             'prob_elimination': self.prob_elimination,
             'step_size': self.step_size,
+            'swarming': self.swarming,
             'd_attract': self.d_attract,
             'w_attract': self.w_attract,
             'h_repel': self.h_repel,
@@ -170,8 +172,8 @@ class BacterialForagingOptimization(Algorithm):
                 1. New population.
                 2. New population fitness/function values.
                 3. Additional arguments:
-                    * cost (numpy.ndarray): Costs of cells i. e. Fitness + cell interaction
-                    * health (numpy.ndarray): Cell health i. e. The accumulation of costs over all chemotactic steps.
+                    * cost (numpy.ndarray): Costs of cells i.e. Fitness + cell interaction
+                    * health (numpy.ndarray): Cell health i.e. The accumulation of costs over all chemotactic steps.
 
         See Also:
             * :func:`niapy.algorithms.Algorithm.init_population`
@@ -221,7 +223,7 @@ class BacterialForagingOptimization(Algorithm):
         Args:
             task (Task): Optimization task.
             population (numpy.ndarray): Current population.
-            population_fitness (numpy.ndarray): Current populations fitness/function values.
+            population_fitness (numpy.ndarray): Current population's fitness/function values.
             best_x (numpy.ndarray): Global best individual.
             best_fitness (float): Global best individuals function/fitness value.
             **params (Dict[str, Any]): Additional arguments.
@@ -231,10 +233,10 @@ class BacterialForagingOptimization(Algorithm):
                 1. New population.
                 2. New populations function/fitness values.
                 3. New global best solution,
-                4. New global best solutions fitness/objective value.
+                4. New global best solution's fitness/objective value.
                 5. Additional arguments:
-                    * cost (numpy.ndarray): Costs of cells i. e. Fitness + cell interaction
-                    * health (numpy.ndarray): Cell health i. e. The accumulation of costs over all chemotactic steps.
+                    * cost (numpy.ndarray): Costs of cells i.e. Fitness + cell interaction
+                    * health (numpy.ndarray): Cell health i.e. The accumulation of costs over all chemotactic steps.
 
         """
         cost = params.pop('cost')

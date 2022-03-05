@@ -492,6 +492,20 @@ class DynNpDifferentialEvolution(DifferentialEvolution):
         self.p_max = p_max
         self.rp = rp
 
+    def get_parameters(self):
+        r"""Get parameters of the algorithm.
+
+        Returns:
+            Dict[str, Any]: Algorithm parameters.
+
+        """
+        params = super().get_parameters()
+        params.update({
+            'p_max': self.p_max,
+            'rp': self.rp
+        })
+        return params
+
     def post_selection(self, pop, task, xb, fxb, **kwargs):
         r"""Post selection operator.
 
@@ -683,6 +697,17 @@ class AgingNpDifferentialEvolution(DifferentialEvolution):
         self.delta_np = delta_np
         self.omega = omega
         self.mu = abs(self.max_lifetime - self.min_lifetime) / 2
+
+    def get_parameters(self):
+        params = super().get_parameters()
+        params.update({
+            'min_lifetime': self.min_lifetime,
+            'max_lifetime': self.max_lifetime,
+            'delta_np': self.delta_np,
+            'omega': self.omega,
+            'age': self.age
+        })
+        return params
 
     def delta_pop_eliminated(self, t):
         r"""Calculate how many individuals are going to die.
@@ -911,7 +936,7 @@ class MultiStrategyDifferentialEvolution(DifferentialEvolution):
             * :func:`niapy.algorithms.basic.DifferentialEvolution.get_parameters`
 
         """
-        d = DifferentialEvolution.get_parameters(self)
+        d = super().get_parameters()
         d.update({'strategies': self.strategies})
         return d
 
@@ -981,6 +1006,17 @@ class DynNpMultiStrategyDifferentialEvolution(MultiStrategyDifferentialEvolution
         """
         DynNpDifferentialEvolution.set_parameters(self, **kwargs)
         MultiStrategyDifferentialEvolution.set_parameters(self, **kwargs)
+
+    def get_parameters(self):
+        r"""Get parameters of the algorithm.
+
+        Returns:
+            Dict[str, Any]: Algorithm parameters.
+
+        """
+        params = DynNpDifferentialEvolution.get_parameters(self)
+        params.update(MultiStrategyDifferentialEvolution.get_parameters(self))
+        return params
 
     def evolve(self, pop, xb, task, **kwargs):
         r"""Evolve the current population.

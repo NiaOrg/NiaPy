@@ -89,6 +89,22 @@ class BareBonesFireworksAlgorithm(Algorithm):
         self.amplification_coefficient = amplification_coefficient
         self.reduction_coefficient = reduction_coefficient
 
+    def get_parameters(self):
+        r"""Get parameters of the algorithm.
+
+        Returns:
+            Dict[str, Any]: Algorithm parameters.
+
+        """
+        params = super().get_parameters()
+        params.pop('population_size', None)
+        params.update({
+            'num_sparks': self.num_sparks,
+            'amplification_coefficient': self.amplification_coefficient,
+            'reduction_coefficient': self.reduction_coefficient
+        })
+        return params
+
     def init_population(self, task):
         r"""Initialize starting population.
 
@@ -224,6 +240,23 @@ class FireworksAlgorithm(Algorithm):
         self.max_amplitude = max_amplitude
         self.num_gaussian = num_gaussian
         self.epsilon = np.finfo(float).eps
+
+    def get_parameters(self):
+        r"""Get parameters of the algorithm.
+
+        Returns:
+            Dict[str, Any]: Algorithm parameters.
+
+        """
+        params = super().get_parameters()
+        params.update({
+            'num_sparks': self.num_sparks,
+            'a': self.a,
+            'b': self.b,
+            'max_amplitude': self.max_amplitude,
+            'num_gaussian': self.num_gaussian
+        })
+        return params
 
     def sparks_num(self, population_fitness):
         r"""Calculate number of sparks.
@@ -469,6 +502,20 @@ class EnhancedFireworksAlgorithm(FireworksAlgorithm):
         self.amplitude_init = amplitude_init
         self.amplitude_final = amplitude_final
 
+    def get_parameters(self):
+        r"""Get parameters of the algorithm.
+
+        Returns:
+            Dict[str, Any]: Algorithm parameters.
+
+        """
+        params = super().get_parameters()
+        params.update({
+            'amplitude_init': self.amplitude_init,
+            'amplitude_final': self.amplitude_final
+        })
+        return params
+
     def explosion_amplitudes(self, population_fitness, task=None):
         r"""Calculate explosion amplitude.
 
@@ -637,6 +684,20 @@ class DynamicFireworksAlgorithmGauss(EnhancedFireworksAlgorithm):
         super().set_parameters(**kwargs)
         self.amplification_coeff = amplification_coeff
         self.reduction_coeff = reduction_coeff
+
+    def get_parameters(self):
+        r"""Get parameters of the algorithm.
+
+        Returns:
+            Dict[str, Any]: Algorithm parameters.
+
+        """
+        params = super().get_parameters()
+        params.update({
+            'amplification_coeff': self.amplification_coeff,
+            'reduction_coeff': self.reduction_coeff
+        })
+        return params
 
     def update_cf(self, xnb, xcb, xcb_f, xb, xb_f, amplitude_cf, task):
         r"""Update the core firework.

@@ -252,7 +252,7 @@ class AnarchicSocietyOptimization(Algorithm):
         self.nl = nl
         self.mutation_rate = mutation_rate
         self.crossover_rate = crossover_rate
-        self.Combination = combination
+        self.combination = combination
 
     def set_parameters(self, population_size=43, alpha=(1, 0.83), gamma=(1.17, 0.56), theta=(0.932, 0.832), d=euclidean,
                        dn=euclidean, nl=1, mutation_rate=1.2, crossover_rate=0.25, combination=elitism, **kwargs):
@@ -287,7 +287,28 @@ class AnarchicSocietyOptimization(Algorithm):
         self.nl = nl
         self.mutation_rate = mutation_rate
         self.crossover_rate = crossover_rate
-        self.Combination = combination
+        self.combination = combination
+
+    def get_parameters(self):
+        r"""Get parameters of the algorithm.
+
+        Returns:
+            Dict[str, Any]: Algorithm parameters.
+
+        """
+        params = super().get_parameters()
+        params.update({
+            'alpha': self.alpha,
+            'gamma': self.gamma,
+            'theta': self.theta,
+            'd': self.d,
+            'dn': self.dn,
+            'nl': self.nl,
+            'mutation_rate': self.mutation_rate,
+            'crossover_rate': self.crossover_rate,
+            'combination': self.combination
+        })
+        return params
 
     def init(self, _task):
         r"""Initialize dynamic parameters of algorithm.
@@ -462,7 +483,7 @@ class AnarchicSocietyOptimization(Algorithm):
             [self.external_irregularity(population_fitness[i], population_fitness[x_in[i]], gamma[i]) for i in
              range(len(population))]), np.asarray(
             [self.irregularity_index(population_fitness[i], x_best_fitness[i], theta[i]) for i in range(len(population))])
-        x_tmp = np.asarray([self.Combination(population[i], x_best[i], best_x,
+        x_tmp = np.asarray([self.combination(population[i], x_best[i], best_x,
                                              population[self.integers(len(population), skip=[i])], mp_c[i], mp_s[i],
                                              mp_p[i], self.mutation_rate, self.crossover_rate, task, self.rng) for i in range(len(population))],
                            dtype=object)

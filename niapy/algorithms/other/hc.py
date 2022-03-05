@@ -101,7 +101,8 @@ class HillClimbAlgorithm(Algorithm):
         self.neighborhood_function = neighborhood_function
 
     def get_parameters(self):
-        d = Algorithm.get_parameters(self)
+        d = super().get_parameters()
+        d.pop('population_size', None)
         d.update({
             'delta': self.delta,
             'neighborhood_function': self.neighborhood_function

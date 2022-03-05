@@ -145,7 +145,8 @@ class SimulatedAnnealing(Algorithm):
             * :func:`niapy.algorithms.Algorithm.get_parameters`
 
         """
-        d = Algorithm.get_parameters(self)
+        d = super().get_parameters()
+        d.pop('population_size', None)
         d.update({
             'delta': self.delta,
             'delta_temperature': self.delta_temperature,

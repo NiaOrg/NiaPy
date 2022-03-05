@@ -128,6 +128,24 @@ class EvolutionStrategy1p1(Algorithm):
         self.c_r = c_r
         self.epsilon = epsilon
 
+    def get_parameters(self):
+        r"""Get parameters of the algorithm.
+
+        Returns:
+            Dict[str, Any]: Algorithm parameters.
+
+        """
+        params = super().get_parameters()
+        params.pop('population_size', None)
+        params.update({
+            'mu': self.mu,
+            'k': self.k,
+            'c_a': self.c_a,
+            'c_r': self.c_r,
+            'epsilon': self.epsilon
+        })
+        return params
+
     def mutate(self, x, rho):
         r"""Mutate individual.
 
@@ -334,6 +352,17 @@ class EvolutionStrategyMpL(EvolutionStrategy1p1):
         """
         super().set_parameters(initialization_function=default_individual_init, **kwargs)
         self.lam = lam
+
+    def get_parameters(self):
+        r"""Get parameters of the algorithm.
+
+        Returns:
+            Dict[str, Any]: Algorithm parameters.
+
+        """
+        params = super().get_parameters()
+        params.update({'lam': self.lam})
+        return params
 
     def update_rho(self, pop, k):
         r"""Update standard deviation for population.

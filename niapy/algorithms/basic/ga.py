@@ -321,6 +321,24 @@ class GeneticAlgorithm(Algorithm):
         self.crossover = crossover
         self.mutation = mutation
 
+    def get_parameters(self):
+        r"""Get parameters of the algorithm.
+
+        Returns:
+            Dict[str, Any]: Algorithm parameters.
+
+        """
+        params = super().get_parameters()
+        params.update({
+            'tournament_size': self.tournament_size,
+            'mutation_rate': self.mutation_rate,
+            'crossover_rate': self.crossover_rate,
+            'selection': self.selection,
+            'crossover': self.crossover,
+            'mutation': self.mutation
+        })
+        return params
+
     def run_iteration(self, task, population, population_fitness, best_x, best_fitness, **params):
         r"""Core function of GeneticAlgorithm algorithm.
 

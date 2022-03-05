@@ -88,6 +88,21 @@ class HybridBatAlgorithm(BatAlgorithm):
         self.crossover_probability = crossover_probability
         self.strategy = strategy
 
+    def get_parameters(self):
+        r"""Get parameters of the algorithm.
+
+        Returns:
+            Dict[str, Any]: Algorithm parameters.
+
+        """
+        params = super().get_parameters()
+        params.update({
+            'differential_weight': self.differential_weight,
+            'crossover_probability': self.crossover_probability,
+            'strategy': self.strategy
+        })
+        return params
+
     def local_search(self, best, task, i=None, population=None, **kwargs):
         r"""Improve the best solution.
 
