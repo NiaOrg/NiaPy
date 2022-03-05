@@ -280,6 +280,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   </tr>
   <tr>
     <td align="center"><a href="https://github.com/andrazperson"><img src="https://avatars.githubusercontent.com/u/32928199?v=4?s=100" width="100px;" alt=""/><br /><sub><b>andrazperson</b></sub></a><br /><a href="https://github.com/NiaOrg/NiaPy/commits?author=andrazperson" title="Code">💻</a></td>
+    <td align="center"><a href="http://carlosal1015.github.io"><img src="https://avatars.githubusercontent.com/u/21283014?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Oromion</b></sub></a><br /><a href="#platform-carlosal1015" title="Packaging/porting to new platform">📦</a></td>
   </tr>
 </table>
 
