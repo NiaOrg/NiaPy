@@ -66,6 +66,12 @@ To install NiaPy on Fedora, use:
 
    $ dnf install python3-niapy
 
+To install NiaPy on Arch Linux, please use an `AUR helper <https://wiki.archlinux.org/title/AUR_helpers>`__:
+
+.. code:: sh
+
+   $ yay -Syyu python-niapy
+
 To install NiaPy on Alpine Linux, please enable Testing repository and use::
 
 .. code:: sh
