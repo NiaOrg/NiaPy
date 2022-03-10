@@ -110,33 +110,33 @@ $ python
 Let's go through a basic and advanced example.
 
 ## Basic Example
-Let’s say, we want to try out Gray Wolf Optimizer algorithm against the Pintér problem function. Firstly, we have to create new file, with name, for example *basic_example.py*. Then we have to import chosen algorithm from NiaPy, so we can use it. Afterwards we initialize GreyWolfOptimizer class instance and run the algorithm. Given bellow is the complete source code of basic example.
+Let’s say, we want to try out PSO against the Pintér problem function. Firstly, we have to create new file, with name, for example *basic_example.py*. Then we have to import chosen algorithm from NiaPy, so we can use it. Afterwards we initialize ParticleSwarmAlgorithm class instance and run the algorithm. Given bellow is the complete source code of basic example.
 
 ```python
-from niapy.algorithms.basic import GreyWolfOptimizer
+from niapy.algorithms.basic import ParticleSwarmAlgorithm
 from niapy.task import Task
 
-# we will run 10 repetitions of Grey Wolf Optimizer against the Pinter problem
+# we will run 10 repetitions of Weighed, velocity clamped PSO on the Pinter problem
 for i in range(10):
-    task = Task(problem='pinter', dimension=10, max_evals=1000)
-    algorithm = GreyWolfOptimizer(population_size=20)
-    best = algorithm.run(task)
-    print(best[-1])
+    task = Task(problem='pinter', dimension=10, max_evals=10000)
+    algorithm = ParticleSwarmAlgorithm(population_size=100, w=0.9, c1=0.5, c2=0.3, min_velocity=-1, max_velocity=1)
+    best_x, best_fit = algorithm.run(task)
+    print(best_fit)
 ```
 
 Given example can be run with *python basic_example.py* command and should give you similar output as following:
 
 ```sh
-0.27046073106003377
-50.89301186976975
-1.089147452727528
-1.18418058254198
-102.46876441081712
-0.11237241605812048
-1.8869331711450696
-0.04861881403346098
-2.5748611081742325
-135.6754069530421
+0.008773534890863646
+0.036616190934621755
+186.75116812592546
+0.024186452828927896
+263.5697469837348
+45.420706924365916
+0.6946753611091367
+7.756100204780568
+5.839673314425907
+0.06732518679742806
 ```
 
 ## Advanced Example
@@ -154,7 +154,7 @@ Now we should have something similar as is shown in code snippet bellow.
 import numpy as np
 from niapy.task import Task
 from niapy.problems import Problem
-from niapy.algorithms.basic import GreyWolfOptimizer
+from niapy.algorithms.basic import ParticleSwarmAlgorithm
 
 
 # our custom problem class
@@ -172,28 +172,27 @@ Now, all we have to do is to initialize our algorithm as in previous examples an
 my_problem = MyProblem(dimension=20)
 for i in range(10):
     task = Task(problem=my_problem, max_iters=100)
-    algo = GreyWolfOptimizer(population_size=20)
+    algo = ParticleSwarmAlgorithm(population_size=100, w=0.9, c1=0.5, c2=0.3, min_velocity=-1, max_velocity=1)
 
     # running algorithm returns best found minimum
-    best = algo.run(task)
-
+    best_x, best_fit = algo.run(task)
     # printing best minimum
-    print(best[-1])
+    print(best_fit)
 ```
 
 Now we can run our advanced example with following command: *python advanced_example.py*. The results should be similar to those bellow.
 
 ```sh
-7.606465129178389e-09
-5.288697102580944e-08
-6.875762169124336e-09
-1.386574251424837e-08
-2.174923591233085e-08
-2.578545710051624e-09
-1.1400628541972142e-08
-2.99387377733644e-08
-7.029492316948289e-09
-7.426212520156997e-09
+0.002455614050761476
+0.000557652972392164
+0.0029791325679865413
+0.0009443595274525336
+0.001012658824492069
+0.0006837236892816072
+0.0026789725774685495
+0.005017746993004601
+0.0011654473402322196
+0.0019074442166293853
 ```
 
 For more usage examples please look at [examples](/examples) folder.
