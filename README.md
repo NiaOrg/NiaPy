@@ -110,7 +110,7 @@ $ python
 Let's go through a basic and advanced example.
 
 ## Basic Example
-Let’s say, we want to try out Gray Wolf Optimizer algorithm against the Pintér problem function. Firstly, we have to create new file, with name, for example *basic_example.py*. Then we have to import chosen algorithm from NiaPy, so we can use it. Afterwards we initialize ParticleSwarmAlgorithm class instance and run the algorithm. Given bellow is the complete source code of basic example.
+Let’s say, we want to try out PSO against the Pintér problem function. Firstly, we have to create new file, with name, for example *basic_example.py*. Then we have to import chosen algorithm from NiaPy, so we can use it. Afterwards we initialize ParticleSwarmAlgorithm class instance and run the algorithm. Given bellow is the complete source code of basic example.
 
 ```python
 from niapy.algorithms.basic import ParticleSwarmAlgorithm
