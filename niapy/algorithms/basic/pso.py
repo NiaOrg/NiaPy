@@ -316,6 +316,19 @@ class ParticleSwarmOptimization(ParticleSwarmAlgorithm):
         kwargs.pop('w', None), kwargs.pop('min_velocity', None), kwargs.pop('max_velocity', None)
         super().set_parameters(w=1, min_velocity=-np.inf, max_velocity=np.inf, **kwargs)
 
+    def get_parameters(self):
+        r"""Get parameters of the algorithm.
+
+        Returns:
+            Dict[str, Any]: Algorithm parameters.
+
+        """
+        params = super().get_parameters()
+        params.pop('w', None)
+        params.pop('min_velocity', None)
+        params.pop('max_velocity', None)
+        return params
+
 
 class OppositionVelocityClampingParticleSwarmOptimization(ParticleSwarmAlgorithm):
     r"""Implementation of Opposition-Based Particle Swarm Optimization with Velocity Clamping.
