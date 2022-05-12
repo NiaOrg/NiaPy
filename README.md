@@ -72,7 +72,7 @@ To install NiaPy on Arch Linux, please use an [AUR helper](https://wiki.archlinu
 $ yay -Syyu python-niapy
 ```
 
-To install NiaPy on Alpine Linux, please enable Testing repository and use:
+To install NiaPy on Alpine Linux, please enable Community repository and use:
 
 ```sh
 $ apk add py3-niapy
