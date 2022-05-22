@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.0.2](https://github.com/NiaOrg/NiaPy/tree/2.0.2) (2022-05-22)
+
+[Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2.0.1...2.0.2)
+
+**Closed issues:**
+
+- all-contributors [\#375](https://github.com/NiaOrg/NiaPy/issues/375)
+
+**Merged pull requests:**
+
+- Update docs [\#385](https://github.com/NiaOrg/NiaPy/pull/385) ([zStupan](https://github.com/zStupan))
+- Installation instructions for Alpine linux users [\#384](https://github.com/NiaOrg/NiaPy/pull/384) ([firefly-cpp](https://github.com/firefly-cpp))
+- Fix get\_parameters [\#383](https://github.com/NiaOrg/NiaPy/pull/383) ([zStupan](https://github.com/zStupan))
+
 ## [2.0.1](https://github.com/NiaOrg/NiaPy/tree/2.0.1) (2022-03-05)
 
 [Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2.0.0...2.0.1)
@@ -28,7 +42,6 @@
 - Add nice badge for showing the total downloads of this package [\#370](https://github.com/NiaOrg/NiaPy/pull/370) ([firefly-cpp](https://github.com/firefly-cpp))
 - Add incremental testing to main workflow supported with cache [\#369](https://github.com/NiaOrg/NiaPy/pull/369) ([GregaVrbancic](https://github.com/GregaVrbancic))
 - Improve CI [\#368](https://github.com/NiaOrg/NiaPy/pull/368) ([GregaVrbancic](https://github.com/GregaVrbancic))
-- Add pytest-testmon to reduce the execution time of tests. [\#366](https://github.com/NiaOrg/NiaPy/pull/366) ([GregaVrbancic](https://github.com/GregaVrbancic))
 - Fix clonalg implementation [\#365](https://github.com/NiaOrg/NiaPy/pull/365) ([zStupan](https://github.com/zStupan))
 - Refactor/fix michalewicz name [\#363](https://github.com/NiaOrg/NiaPy/pull/363) ([sisco0](https://github.com/sisco0))
 - Refactor/fix py typos [\#362](https://github.com/NiaOrg/NiaPy/pull/362) ([sisco0](https://github.com/sisco0))
@@ -49,6 +62,7 @@
 
 **Merged pull requests:**
 
+- Add pytest-testmon to reduce the execution time of tests. [\#366](https://github.com/NiaOrg/NiaPy/pull/366) ([GregaVrbancic](https://github.com/GregaVrbancic))
 - Do not package the tests [\#358](https://github.com/NiaOrg/NiaPy/pull/358) ([firefly-cpp](https://github.com/firefly-cpp))
 - Add badge for Fedora [\#356](https://github.com/NiaOrg/NiaPy/pull/356) ([firefly-cpp](https://github.com/firefly-cpp))
 - Fixed flake8 versions [\#355](https://github.com/NiaOrg/NiaPy/pull/355) ([zStupan](https://github.com/zStupan))
@@ -58,6 +72,7 @@
 - Removed vim comments [\#350](https://github.com/NiaOrg/NiaPy/pull/350) ([zStupan](https://github.com/zStupan))
 - Remove infinity test problem and add missing test problems to docs [\#348](https://github.com/NiaOrg/NiaPy/pull/348) ([zStupan](https://github.com/zStupan))
 - Fixed csendes function. [\#345](https://github.com/NiaOrg/NiaPy/pull/345) ([zStupan](https://github.com/zStupan))
+- Initial implementation of Clonal Selection Algorithm [\#340](https://github.com/NiaOrg/NiaPy/pull/340) ([andrazperson](https://github.com/andrazperson))
 
 ## [2.0.0rc18](https://github.com/NiaOrg/NiaPy/tree/2.0.0rc18) (2021-08-18)
 
@@ -74,7 +89,6 @@
 
 - docs: add andrazperson as a contributor for code [\#343](https://github.com/NiaOrg/NiaPy/pull/343) ([allcontributors[bot]](https://github.com/apps/allcontributors))
 - Fix various algorithms [\#342](https://github.com/NiaOrg/NiaPy/pull/342) ([zStupan](https://github.com/zStupan))
-- Initial implementation of Clonal Selection Algorithm [\#340](https://github.com/NiaOrg/NiaPy/pull/340) ([andrazperson](https://github.com/andrazperson))
 - docs: add firefly-cpp as a contributor for question, test [\#337](https://github.com/NiaOrg/NiaPy/pull/337) ([allcontributors[bot]](https://github.com/apps/allcontributors))
 - Add Python 3.10 tag [\#336](https://github.com/NiaOrg/NiaPy/pull/336) ([firefly-cpp](https://github.com/firefly-cpp))
 - Update docs [\#335](https://github.com/NiaOrg/NiaPy/pull/335) ([zStupan](https://github.com/zStupan))
@@ -104,6 +118,7 @@
 - docs: add zStupan as a contributor [\#319](https://github.com/NiaOrg/NiaPy/pull/319) ([allcontributors[bot]](https://github.com/apps/allcontributors))
 - docs: add hrnciar as a contributor [\#318](https://github.com/NiaOrg/NiaPy/pull/318) ([allcontributors[bot]](https://github.com/apps/allcontributors))
 - Fix detection of two digit Python minor version [\#316](https://github.com/NiaOrg/NiaPy/pull/316) ([hrnciar](https://github.com/hrnciar))
+- Huge refactor [\#309](https://github.com/NiaOrg/NiaPy/pull/309) ([zStupan](https://github.com/zStupan))
 
 ## [2.0.0rc16](https://github.com/NiaOrg/NiaPy/tree/2.0.0rc16) (2021-05-26)
 
@@ -138,7 +153,6 @@
 
 **Merged pull requests:**
 
-- Huge refactor [\#309](https://github.com/NiaOrg/NiaPy/pull/309) ([zStupan](https://github.com/zStupan))
 - corrected reference URL for basic hs algorithm [\#307](https://github.com/NiaOrg/NiaPy/pull/307) ([firefly-cpp](https://github.com/firefly-cpp))
 - Switched to numpy.random.Generator for generating random numbers [\#305](https://github.com/NiaOrg/NiaPy/pull/305) ([zStupan](https://github.com/zStupan))
 
@@ -249,6 +263,7 @@
 - docs: add timzatko as a contributor [\#251](https://github.com/NiaOrg/NiaPy/pull/251) ([allcontributors[bot]](https://github.com/apps/allcontributors))
 - Fix GWO maximization [\#249](https://github.com/NiaOrg/NiaPy/pull/249) ([GregaVrbancic](https://github.com/GregaVrbancic))
 - update getting started documentation [\#248](https://github.com/NiaOrg/NiaPy/pull/248) ([GregaVrbancic](https://github.com/GregaVrbancic))
+- Development [\#247](https://github.com/NiaOrg/NiaPy/pull/247) ([kb2623](https://github.com/kb2623))
 - docs: add brett18618 as a contributor [\#242](https://github.com/NiaOrg/NiaPy/pull/242) ([allcontributors[bot]](https://github.com/apps/allcontributors))
 - Fix HSABA, SABA, ABA and fixes for examples [\#240](https://github.com/NiaOrg/NiaPy/pull/240) ([kb2623](https://github.com/kb2623))
 

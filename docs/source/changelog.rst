@@ -1,6 +1,30 @@
 Changelog
 =========
 
+`2.0.2 <https://github.com/NiaOrg/NiaPy/tree/2.0.2>`__ (2022-05-22)
+-------------------------------------------------------------------
+
+`Full
+Changelog <https://github.com/NiaOrg/NiaPy/compare/2.0.1...2.0.2>`__
+
+**Closed issues:**
+
+-  all-contributors
+   `#375 <https://github.com/NiaOrg/NiaPy/issues/375>`__
+
+**Merged pull requests:**
+
+-  Update docs `#385 <https://github.com/NiaOrg/NiaPy/pull/385>`__
+   (`zStupan <https://github.com/zStupan>`__)
+-  Installation instructions for Alpine linux users
+   `#384 <https://github.com/NiaOrg/NiaPy/pull/384>`__
+   (`firefly-cpp <https://github.com/firefly-cpp>`__)
+-  Fix get_parameters
+   `#383 <https://github.com/NiaOrg/NiaPy/pull/383>`__
+   (`zStupan <https://github.com/zStupan>`__)
+
+.. _section-1:
+
 `2.0.1 <https://github.com/NiaOrg/NiaPy/tree/2.0.1>`__ (2022-03-05)
 -------------------------------------------------------------------
 
@@ -54,9 +78,6 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/2.0.0...2.0.1>`__
    (`GregaVrbancic <https://github.com/GregaVrbancic>`__)
 -  Improve CI `#368 <https://github.com/NiaOrg/NiaPy/pull/368>`__
    (`GregaVrbancic <https://github.com/GregaVrbancic>`__)
--  Add pytest-testmon to reduce the execution time of tests.
-   `#366 <https://github.com/NiaOrg/NiaPy/pull/366>`__
-   (`GregaVrbancic <https://github.com/GregaVrbancic>`__)
 -  Fix clonalg implementation
    `#365 <https://github.com/NiaOrg/NiaPy/pull/365>`__
    (`zStupan <https://github.com/zStupan>`__)
@@ -67,7 +88,7 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/2.0.0...2.0.1>`__
    `#362 <https://github.com/NiaOrg/NiaPy/pull/362>`__
    (`sisco0 <https://github.com/sisco0>`__)
 
-.. _section-1:
+.. _section-2:
 
 `2.0.0 <https://github.com/NiaOrg/NiaPy/tree/2.0.0>`__ (2021-12-27)
 -------------------------------------------------------------------
@@ -91,6 +112,9 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/2.0.0rc18...2.0.0>`__
 
 **Merged pull requests:**
 
+-  Add pytest-testmon to reduce the execution time of tests.
+   `#366 <https://github.com/NiaOrg/NiaPy/pull/366>`__
+   (`GregaVrbancic <https://github.com/GregaVrbancic>`__)
 -  Do not package the tests
    `#358 <https://github.com/NiaOrg/NiaPy/pull/358>`__
    (`firefly-cpp <https://github.com/firefly-cpp>`__)
@@ -116,6 +140,9 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/2.0.0rc18...2.0.0>`__
 -  Fixed csendes function.
    `#345 <https://github.com/NiaOrg/NiaPy/pull/345>`__
    (`zStupan <https://github.com/zStupan>`__)
+-  Initial implementation of Clonal Selection Algorithm
+   `#340 <https://github.com/NiaOrg/NiaPy/pull/340>`__
+   (`andrazperson <https://github.com/andrazperson>`__)
 
 `2.0.0rc18 <https://github.com/NiaOrg/NiaPy/tree/2.0.0rc18>`__ (2021-08-18)
 ---------------------------------------------------------------------------
@@ -142,9 +169,6 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/2.0.0rc17...2.0.0rc18>`__
 -  Fix various algorithms
    `#342 <https://github.com/NiaOrg/NiaPy/pull/342>`__
    (`zStupan <https://github.com/zStupan>`__)
--  Initial implementation of Clonal Selection Algorithm
-   `#340 <https://github.com/NiaOrg/NiaPy/pull/340>`__
-   (`andrazperson <https://github.com/andrazperson>`__)
 -  docs: add firefly-cpp as a contributor for question, test
    `#337 <https://github.com/NiaOrg/NiaPy/pull/337>`__
    (`allcontributors[bot] <https://github.com/apps/allcontributors>`__)
@@ -208,6 +232,8 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/2.0.0rc16...2.0.0rc17>`__
 -  Fix detection of two digit Python minor version
    `#316 <https://github.com/NiaOrg/NiaPy/pull/316>`__
    (`hrnciar <https://github.com/hrnciar>`__)
+-  Huge refactor `#309 <https://github.com/NiaOrg/NiaPy/pull/309>`__
+   (`zStupan <https://github.com/zStupan>`__)
 
 `2.0.0rc16 <https://github.com/NiaOrg/NiaPy/tree/2.0.0rc16>`__ (2021-05-26)
 ---------------------------------------------------------------------------
@@ -254,8 +280,6 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/2.0.0rc14...2.0.0rc15>`__
 
 **Merged pull requests:**
 
--  Huge refactor `#309 <https://github.com/NiaOrg/NiaPy/pull/309>`__
-   (`zStupan <https://github.com/zStupan>`__)
 -  corrected reference URL for basic hs algorithm
    `#307 <https://github.com/NiaOrg/NiaPy/pull/307>`__
    (`firefly-cpp <https://github.com/firefly-cpp>`__)
@@ -467,6 +491,8 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/2.0.0rc10...2.0.0rc11>`__
 -  update getting started documentation
    `#248 <https://github.com/NiaOrg/NiaPy/pull/248>`__
    (`GregaVrbancic <https://github.com/GregaVrbancic>`__)
+-  Development `#247 <https://github.com/NiaOrg/NiaPy/pull/247>`__
+   (`kb2623 <https://github.com/kb2623>`__)
 -  docs: add brett18618 as a contributor
    `#242 <https://github.com/NiaOrg/NiaPy/pull/242>`__
    (`allcontributors[bot] <https://github.com/apps/allcontributors>`__)
@@ -737,7 +763,7 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/1.0.2...2.0.0rc3>`__
 -  HBA - bugfix `#157 <https://github.com/NiaOrg/NiaPy/pull/157>`__
    (`kivancguckiran <https://github.com/kivancguckiran>`__)
 
-.. _section-2:
+.. _section-3:
 
 `1.0.2 <https://github.com/NiaOrg/NiaPy/tree/1.0.2>`__ (2018-10-24)
 -------------------------------------------------------------------
@@ -754,7 +780,7 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/1.0.2...2.0.0rc3>`__
 -  fix Bat Algorithm `#161 <https://github.com/NiaOrg/NiaPy/pull/161>`__
    (`GregaVrbancic <https://github.com/GregaVrbancic>`__)
 
-.. _section-3:
+.. _section-4:
 
 `2 <https://github.com/NiaOrg/NiaPy/tree/2>`__ (2018-08-30)
 -----------------------------------------------------------
@@ -841,7 +867,7 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/1.0.1...2.0.0rc1>`__
 -  DOI added `#128 <https://github.com/NiaOrg/NiaPy/pull/128>`__
    (`lucijabrezocnik <https://github.com/lucijabrezocnik>`__)
 
-.. _section-4:
+.. _section-5:
 
 `1.0.1 <https://github.com/NiaOrg/NiaPy/tree/1.0.1>`__ (2018-03-21)
 -------------------------------------------------------------------
@@ -887,7 +913,7 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/1.0.0...1.0.1>`__
    … `#114 <https://github.com/NiaOrg/NiaPy/pull/114>`__
    (`mlaky88 <https://github.com/mlaky88>`__)
 
-.. _section-5:
+.. _section-6:
 
 `1.0.0 <https://github.com/NiaOrg/NiaPy/tree/1.0.0>`__ (2018-02-28)
 -------------------------------------------------------------------
