@@ -78,6 +78,12 @@ To install NiaPy on Alpine Linux, please enable Community repository and use:
 $ apk add py3-niapy
 ```
 
+To install NiaPy on NixOS, please use:
+
+```sh
+$ nix-env -iA nixos.python310Packages.niapy
+```
+
 ## Install from source
 
 In case you want to install directly from the source code, use:
