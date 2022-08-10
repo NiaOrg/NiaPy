@@ -15,7 +15,8 @@ class SolutionSHADETestCase(TestCase):
         self.D, self.F, self.CR = 10, 0.9, 0.3
         self.x, self.task = default_rng().uniform(10, 50, self.D), Task(problem=MyProblem(self.D))
         self.s1, self.s2 = SolutionSHADE(task=self.task, e=False), SolutionSHADE(differential_weight=self.F,
-                                                                             crossover_probability=self.CR, x=self.x)
+                                                                                 crossover_probability=self.CR,
+                                                                                 x=self.x)
 
     def test_F(self):
         self.assertAlmostEqual(self.s1.differential_weight, 0.5)
@@ -24,6 +25,7 @@ class SolutionSHADETestCase(TestCase):
     def test_CR(self):
         self.assertAlmostEqual(self.s1.crossover_probability, 0.5)
         self.assertAlmostEqual(self.s2.crossover_probability, self.CR)
+
 
 class SHADETestCase(AlgorithmTestCase):
 
@@ -40,6 +42,7 @@ class SHADETestCase(AlgorithmTestCase):
         shade_griewankc = SuccessHistoryAdaptiveDifferentialEvolution(init_pop_size=10, extern_arc_rate=2.0,
                                                                       pbest_factor=0.2, hist_mem_size=5, seed=self.seed)
         AlgorithmTestCase.test_algorithm_run(self, shade_griewank, shade_griewankc)
+
 
 class LSHADETestCase(AlgorithmTestCase):
 

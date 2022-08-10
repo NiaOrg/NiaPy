@@ -33,11 +33,12 @@ def parent_medium(x, p, lower, upper, **_kwargs):
         numpy.ndarray: Solution in search space.
 
     """
-    ir = np.where(x < lower)# values under the range are repaired to a medium of x_min and parents value
+    ir = np.where(x < lower)    # values under the range are repaired to a medium of x_min and parents value
     x[ir] = (lower[ir] + p[ir]) / 2.0
-    ir = np.where(x > upper)# values over the range are repaired to a medium of x_max and parents value
+    ir = np.where(x > upper)    # values over the range are repaired to a medium of x_max and parents value
     x[ir] = (upper[ir] + p[ir]) / 2.0
     return x
+
 
 def cross_curr2pbest1(pop, ic, f, cr, rng, pbest_factor, archive, arc_ind_cnt, task, **_kwargs):
     r"""Mutation strategy with crossover.
@@ -45,12 +46,15 @@ def cross_curr2pbest1(pop, ic, f, cr, rng, pbest_factor, archive, arc_ind_cnt, t
     Mutation:
         Name: current-to-pbest/1
 
-        <LATEX>
+        :math:`\mathbf{v}_{i, G} = \mathbf{x}_{i, G} + differential_weight \cdot (\mathbf{x}_{pbest, G} - \mathbf{x}_{i, G}) + differential_weight \cdot (\mathbf{x}_{r_1, G} - \mathbf{x}_{r_2, G})`
+        where individual :math:`\mathbf{x}_{pbest, G}` is randomly selected from the top :math:`N \cdot pbest_factor (pbest_factor \in [0,1])` current population members,
+        :math:`r_1` is an index representing a random current population member and :math:`r_2` is an index representing a random member of :math:`N_{G} \cup A`
 
     Crossover:
         Name: Binomial crossover
 
-        <LATEX>
+        :math:`\mathbf{u}_{j, i, G} = \begin{cases} \mathbf{v}_{j, i, G}, & \text{if $rand[0,1) \leq crossover_rate$ or $j=j_{rand}$}, \\ \mathbf{x}_{j, i, G}, & \text{otherwise}. \end{cases}`
+        where :math:`j_{rand}` is an index representing a random problem dimension.
 
     Args:
         pop (numpy.ndarray[Individual]): Current population.
@@ -69,22 +73,26 @@ def cross_curr2pbest1(pop, ic, f, cr, rng, pbest_factor, archive, arc_ind_cnt, t
     """
     # Note: the population passed in the argument must be sorted by fitness!
     p_num = np.int_(np.around(len(pop) * pbest_factor))
-    x_pbest = rng.integers(p_num) if p_num > 1 else 0 #a random individual is selected from the best p_num individuals of the population rng.integers
+    x_pbest = rng.integers(p_num) if p_num > 1 else 0
+    # a random individual is selected from the best p_num individuals of the population rng.integers
     p = [1 / (len(pop) - 1.0) if i != ic else 0 for i in range(len(pop))]
-    r1 = rng.choice(len(pop), p=p)#a random individual != to the current individual is selected from the population
+    r1 = rng.choice(len(pop), p=p)  # a random individual != to the current individual is selected from the population
     p = [1 / (len(pop) + arc_ind_cnt - 2.0) if i != ic and i != r1 else 0 for i in range(len(pop) + arc_ind_cnt)]
-    r2 = rng.choice(len(pop) + arc_ind_cnt, p=p)#a second random individual != to the current individual and r1 is selected from the population U archive
+    r2 = rng.choice(len(pop) + arc_ind_cnt, p=p)
+    # a second random individual != to the current individual and r1 is selected from the population U archive
     j = rng.integers(len(pop[ic]))
     if r2 >= len(pop):
         r2 -= len(pop)
         v = [pop[ic][i] + f * (pop[x_pbest][i] - pop[ic][i]) + f * (pop[r1][i] - archive[r2][i])
              if rng.random() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
-        return parent_medium(np.asarray(v), pop[ic].x, task.lower, task.upper) #the mutant vector is repaired if needed
+        return parent_medium(np.asarray(v), pop[ic].x, task.lower, task.upper)
+        # the mutant vector is repaired if needed
 
     else:
         v = [pop[ic][i] + f * (pop[x_pbest][i] - pop[ic][i]) + f * (pop[r1][i] - pop[r2][i])
              if rng.random() < cr or i == j else pop[ic][i] for i in range(len(pop[ic]))]
-        return parent_medium(np.asarray(v), pop[ic].x, task.lower, task.upper) #the mutant vector is repaired if needed
+        return parent_medium(np.asarray(v), pop[ic].x, task.lower, task.upper)
+        # the mutant vector is repaired if needed
 
 
 class SolutionSHADE(Individual):
@@ -102,15 +110,14 @@ class SolutionSHADE(Individual):
     def __init__(self, differential_weight=0.5, crossover_probability=0.5, **kwargs):
         r"""Initialize SolutionSHADE.
 
-            Attributes:
-                differential_weight (float): Scale factor.
-                crossover_probability (float): Crossover probability.
+        Attributes:
+            differential_weight (float): Scale factor.
+            crossover_probability (float): Crossover probability.
 
-            See Also:
-                :func:`niapy.algorithm.Individual.__init__`
+        See Also:
+            :func:`niapy.algorithm.Individual.__init__`
 
         """
-
         super().__init__(**kwargs)
         self.differential_weight = differential_weight
         self.crossover_probability = crossover_probability
@@ -126,10 +133,10 @@ class SuccessHistoryAdaptiveDifferentialEvolution(DifferentialEvolution):
         2022
 
     Author:
-        ...
+        Aleš Gartner
 
     License:
-        ...
+        MIT
 
     Reference paper:
         Ryoji Tanabe and Alex Fukunaga: Improving the Search Performance of SHADE Using Linear Population Size Reduction,  Proc. IEEE Congress on Evolutionary Computation (CEC-2014), Beijing, July, 2014.
@@ -193,9 +200,9 @@ class SuccessHistoryAdaptiveDifferentialEvolution(DifferentialEvolution):
         """
         super().set_parameters(population_size=population_size,
                                individual_type=kwargs.pop('individual_type', SolutionSHADE), **kwargs)
-        self.extern_arc_rate = extern_arc_rate #the size of the external archive = initial population size * extern_arc_rate
-        self.pbest_factor = pbest_factor #the greediness factor for the curr2pbest1 mutation
-        self.hist_mem_size = hist_mem_size #size of the historical memory
+        self.extern_arc_rate = extern_arc_rate
+        self.pbest_factor = pbest_factor
+        self.hist_mem_size = hist_mem_size
 
     def get_parameters(self):
         r"""Get algorithm parameters.
@@ -241,9 +248,11 @@ class SuccessHistoryAdaptiveDifferentialEvolution(DifferentialEvolution):
         mi = self.integers(self.hist_mem_size)  # a random pair of f cr is selected form historical memory
         m_cr = hist_cr[mi]
         m_f = hist_f[mi]
-        cr = self.normal(m_cr, 0.1) if m_cr != -1 else 0  # cr is randomised from normal distribution and then repaired if needed
+        cr = self.normal(m_cr, 0.1) if m_cr != -1 else 0
+        # cr is randomised from normal distribution and then repaired if needed
         cr = np.clip(cr, 0, 1)
-        f = self.cauchy(m_f, 0.1)  # f is randomised from cauchy distribution until the value is >0 and then repaired if needed
+        f = self.cauchy(m_f, 0.1)
+        # f is randomised from cauchy distribution until the value is >0 and then repaired if needed
         f = np.clip(f, 0, 1)
         return self.individual_type(x=x.x, differential_weight=f, crossover_probability=cr, e=False)
 
@@ -262,10 +271,11 @@ class SuccessHistoryAdaptiveDifferentialEvolution(DifferentialEvolution):
             numpy.ndarray: New population.
 
         """
-        new_pop = objects_to_array([self.gen_ind_params(xi, hist_cr, hist_f) for xi in pop]) #cr and f for mutation are computed
+        new_pop = objects_to_array([self.gen_ind_params(xi, hist_cr, hist_f) for xi in pop])
+        # cr and f for mutation are computed
         for i, xi in enumerate(new_pop):
             new_pop[i].x = cross_curr2pbest1(new_pop, i, xi.differential_weight, xi.crossover_probability, self.rng,
-                                             self.pbest_factor, archive, arc_ind_cnt, task) #trial vectors are created
+                                             self.pbest_factor, archive, arc_ind_cnt, task)  # trial vectors are created
         for xi in new_pop:
             xi.evaluate(task, rng=self.random)
 
@@ -294,21 +304,24 @@ class SuccessHistoryAdaptiveDifferentialEvolution(DifferentialEvolution):
                 7. New global best solutions fitness/objective value.
 
         """
-        success_f = np.asarray([]) #array for storing succesful f values
-        success_cr = np.asarray([]) #array for storing succesful cr values
-        fitness_diff = np.asarray([]) #array for storing the difference of fitness of new individuales
+        success_f = np.asarray([])  # array for storing successful f values
+        success_cr = np.asarray([])  # array for storing successful cr values
+        fitness_diff = np.asarray([])  # array for storing the difference of fitness of new individuals
         archive_size = np.int_(np.around(len(pop) * self.extern_arc_rate))
         arr = np.copy(pop)
         for i, vi in enumerate(new_pop):
             if vi.f == pop[i].f:
                 arr[i] = vi
-            elif vi.f < pop[i].f: #trial vectors that have a better or equal fitness value are selected for the next generation
+            elif vi.f < pop[i].f:
+                # trial vectors that have a better or equal fitness value are selected for the next generation
                 if archive_size > 1:
                     if arc_ind_cnt < archive_size:
-                        archive[arc_ind_cnt] = pop[i].x #parents that have worse fitness then their trial vector are stored into the external archive
+                        archive[arc_ind_cnt] = pop[i].x
+                        # parents that have worse fitness then their trial vector are stored into the external archive
                         arc_ind_cnt += 1
                     else:
-                        rand_ind = self.integers(archive_size) #if the archive is full random archive members are replaced
+                        rand_ind = self.integers(archive_size)
+                        # if the archive is full random archive members are replaced
                         archive[rand_ind] = pop[i].x
                 fitness_diff = np.append(fitness_diff, np.absolute(pop[i].f - vi.f))
                 success_f = np.append(success_f, vi.differential_weight)
@@ -341,7 +354,7 @@ class SuccessHistoryAdaptiveDifferentialEvolution(DifferentialEvolution):
         """
         population_fitness = np.asarray([x.f for x in pop])
         indexes = np.argsort(population_fitness)
-        sorted_pop = pop[indexes] # sorted population
+        sorted_pop = pop[indexes]  # sorted population
         return sorted_pop, arc, arc_ind_cnt, xb, fxb
 
     def init_population(self, task):
@@ -365,21 +378,22 @@ class SuccessHistoryAdaptiveDifferentialEvolution(DifferentialEvolution):
             * :func:`niapy.algorithms.Algorithm.init_population`
 
         """
-        pop, fitness, _ = DifferentialEvolution.init_population(self, task) #pop vectors are initilized randomly
+        pop, fitness, _ = DifferentialEvolution.init_population(self, task)  # pop vectors are initialized randomly
         h_mem_cr = np.full(self.hist_mem_size, 0.5)
-        h_mem_f = np.full(self.hist_mem_size, 0.5) #all values in the historical memory for parameters f and cr are initilized to 0.5
-        k = 0 #the starting memory position is set to 1
+        h_mem_f = np.full(self.hist_mem_size, 0.5)
+        # all values in the historical memory for parameters f and cr are initialized to 0.5
+        k = 0  # the starting memory position is set to 1
         arc_size = np.int_(np.around(self.population_size * self.extern_arc_rate))
-        archive = np.zeros((arc_size, task.dimension)) #the external archive of max size pop_size * arc_rate is initilized
-        arc_ind_cnt = 0 #the number of archive elements is set to 0
+        archive = np.zeros((arc_size, task.dimension))
+        # the external archive of max size pop_size * arc_rate is initialized
+        arc_ind_cnt = 0  # the number of archive elements is set to 0
 
         indexes = np.argsort(fitness)
         sorted_pop = pop[indexes]   # the starting population is sorted
         fitness = np.asarray([x.f for x in sorted_pop])
 
         return sorted_pop, fitness, {'h_mem_cr': h_mem_cr, 'h_mem_f': h_mem_f, 'k': k,
-                              'archive': archive, 'arc_ind_cnt': arc_ind_cnt}
-
+                                     'archive': archive, 'arc_ind_cnt': arc_ind_cnt}
 
     def run_iteration(self, task, population, population_fitness, best_x, best_fitness, **params):
         r"""Core function of Success-history based adaptive differential evolution algorithm.
@@ -410,12 +424,15 @@ class SuccessHistoryAdaptiveDifferentialEvolution(DifferentialEvolution):
         archive = params.pop('archive')
         arc_ind_cnt = params.pop('arc_ind_cnt')
 
-        new_population = self.evolve(population, h_mem_cr, h_mem_f, archive, arc_ind_cnt, task) #mutant vectors are created
+        new_population = self.evolve(population, h_mem_cr, h_mem_f, archive, arc_ind_cnt, task)
+        # mutant vectors are created
         population, s_f, s_cr, fit_diff, archive, arc_ind_cnt, best_x, best_fitness = self.selection(
-            population, new_population, archive, arc_ind_cnt, best_x, best_fitness, task=task) #best individuals are selected for the next population
+            population, new_population, archive, arc_ind_cnt, best_x, best_fitness, task=task)
+        # best individuals are selected for the next population
 
         num_of_success_params = len(s_f)
-        if num_of_success_params > 0:  # if children better than their parents were created the historical memory is updated
+        if num_of_success_params > 0:
+            # if children better than their parents were created the historical memory is updated
             m_sf_k = 0
             m_cr_k = 0
             sum_sf = 0
@@ -430,14 +447,17 @@ class SuccessHistoryAdaptiveDifferentialEvolution(DifferentialEvolution):
                 m_cr_k += weight * s_cr[i] * s_cr[i]
                 sum_cr += weight * s_cr[i]
 
-            h_mem_f[k] = m_sf_k / sum_sf #f and cr that are stored into the historic memory are calculated with the use of weighted Lehmer mean
+            h_mem_f[k] = m_sf_k / sum_sf
+            # f and cr that are stored into the historic memory are calculated with the use of weighted Lehmer mean
+            h_mem_cr[k] = -1 if sum_cr == 0 or h_mem_cr[k] == -1 else m_cr_k / sum_cr
+            # the value of cr is updated if the previous value isn't terminal and max(s_cr)!=0
 
-            h_mem_cr[k] = -1 if sum_cr == 0 or h_mem_cr[k] == -1 else m_cr_k / sum_cr #the value of cr is updated if the previous value isnt terminal and max(s_cr)!=0
+            k = 0 if k + 1 >= self.hist_mem_size else k + 1
+            # historical memory position is increased, if over the size of the memory its set back to 1
 
-            k = 0 if k + 1 >= self.hist_mem_size else k + 1 #historical memory position is increased, if over the size of the memory its set back to 1
-
-        population, archive, arc_ind_cnt, best_x, best_fitness = self.post_selection(population, archive, arc_ind_cnt, task, best_x, best_fitness) #population is sorted for the next iteration
-
+        population, archive, arc_ind_cnt, best_x, best_fitness = self.post_selection(population, archive, arc_ind_cnt,
+                                                                                     task, best_x, best_fitness)
+        # population is sorted for the next iteration
         population_fitness = np.asarray([x.f for x in population])
         best_x, best_fitness = self.get_best(population, population_fitness, best_x, best_fitness)
 
@@ -448,29 +468,26 @@ class SuccessHistoryAdaptiveDifferentialEvolution(DifferentialEvolution):
 class LpsrSuccessHistoryAdaptiveDifferentialEvolution(SuccessHistoryAdaptiveDifferentialEvolution):
     r"""Implementation of Success-history based adaptive differential evolution algorithm with Linear population size reduction.
 
-        Algorithm:
-            Success-history based adaptive differential evolution algorithm with Linear population size reduction
+    Algorithm:
+        Success-history based adaptive differential evolution algorithm with Linear population size reduction
 
-        Date:
-            2022
+    Date:
+        2022
 
-        Author:
-            ...
+    Author:
+        Aleš Gartner
 
-        License:
-            ...
+    License:
+        MIT
 
-        Reference paper:
-            Ryoji Tanabe and Alex Fukunaga: Improving the Search Performance of SHADE Using Linear Population Size Reduction,  Proc. IEEE Congress on Evolutionary Computation (CEC-2014), Beijing, July, 2014.
+    Reference paper:
+        Ryoji Tanabe and Alex Fukunaga: Improving the Search Performance of SHADE Using Linear Population Size Reduction,  Proc. IEEE Congress on Evolutionary Computation (CEC-2014), Beijing, July, 2014.
 
-        Attributes:
-            Name (List[str]): List of strings representing algorithm name
-            extern_arc_rate (float): External archive size factor.
-            pbest_factor (float): Greediness factor for current-to-pbest/1 mutation.
-            hist_mem_size (int): Size of historical memory.
+    Attributes:
+        Name (List[str]): List of strings representing algorithm name
 
-        See Also:
-            * :class:`niapy.algorithms.modified.SuccessHistoryAdaptiveDifferentialEvolution`
+    See Also:
+        * :class:`niapy.algorithms.modified.SuccessHistoryAdaptiveDifferentialEvolution`
 
     """
 
@@ -504,9 +521,12 @@ class LpsrSuccessHistoryAdaptiveDifferentialEvolution(SuccessHistoryAdaptiveDiff
 
         max_nfe = task.max_evals
         nfe = task.evals
-        next_pop_size = np.int_(np.around(((4.0 - self.population_size) / max_nfe) * nfe + self.population_size))  # the size of the next population is calculated
-        sorted_pop = objects_to_array([sorted_pop[i] for i in range(next_pop_size)]) if next_pop_size < len(sorted_pop) else sorted_pop  # if the size of the new population is smaller than the current, the worst pop_size - new_pop_size individuals are deleted
-
+        next_pop_size = np.int_(np.around(((4.0 - self.population_size) / max_nfe) * nfe + self.population_size))
+        # the size of the next population is calculated
+        sorted_pop = objects_to_array([sorted_pop[i] for i in range(next_pop_size)]) if next_pop_size < len(sorted_pop)\
+            else sorted_pop
+        # if the size of the new population is smaller than the current,
+        # the worst pop_size - new_pop_size individuals are deleted
         next_arc_size = np.int_(np.around(len(sorted_pop) * self.extern_arc_rate))  # the size of the new archive
         if next_pop_size < len(pop):
             new_archive = np.asarray([arc[i] for i in range(next_arc_size)])  # the archive is resized
