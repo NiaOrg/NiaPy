@@ -12,7 +12,7 @@ openpyxl = ">=3.0.3"
 [dev-packages]
 flake8 = "~=4.0.1"
 flake8-docstrings = "~=1.6.0"
-flake8-rst-docstrings = "~=0.2.7"
+flake8-rst-docstrings = "~=0.2.3"
 flake8-bandit = "~=2.1.2"
 pycodestyle = "~=2.3.1"
 pydocstyle = "*"
