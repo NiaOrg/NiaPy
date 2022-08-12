@@ -73,12 +73,12 @@ setuptools.setup(
         'Topic :: Software Development'
     ],
     tests_require=[
-        'flake8 ~= 3.7.7',
+        'flake8 ~= 4.0.1',
         'astroid >= 2.0.4',
         'pytest ~= 3.7.1',
         'coverage ~= 4.4.2',
         'coverage-space ~= 1.0.2',
-        'bandit < 1.7.3'
+        'bandit < 1.7.4'
     ],
     install_requires=[
         'numpy >= 1.17.0',
