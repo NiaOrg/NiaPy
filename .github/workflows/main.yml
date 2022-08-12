@@ -39,7 +39,7 @@ jobs:
     - name: Install dependencies
       if: steps.cache-dependencies.outputs.cache-hit != 'true'
       run: |
-        pipenv install --skip-lock --dev
+        pipenv install --python ${{ matrix.python-version }} --skip-lock --dev
     - name: Lint with flake8
       run: |
         pipenv run flake8 niapy tests scent.py setup.py
