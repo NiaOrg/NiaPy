@@ -10,7 +10,7 @@ pandas = ">=0.24.2"
 openpyxl = ">=3.0.3"
 
 [dev-packages]
-flake8 = "*"
+flake8 = "~=3.7.7"
 flake8-docstrings = "*"
 flake8-rst-docstrings = "*"
 flake8-bandit = "*"
