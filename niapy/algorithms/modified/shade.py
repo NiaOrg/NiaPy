@@ -40,7 +40,7 @@ def parent_medium(x, p, lower, upper, **_kwargs):
     return x
 
 
-def cross_curr2pbest1(pop, ic, f, cr, rng, pbest_factor, archive, arc_ind_cnt, task, **_kwargs):
+def cross_curr2pbest1(pop, ic, f, cr, rng, p_num, archive, arc_ind_cnt, task, **_kwargs):
     r"""Mutation strategy with crossover.
 
     Mutation:
@@ -72,9 +72,6 @@ def cross_curr2pbest1(pop, ic, f, cr, rng, pbest_factor, archive, arc_ind_cnt, t
 
     """
     # Note: the population passed in the argument must be sorted by fitness!
-    p_num = np.int_(np.around(len(pop) * pbest_factor))
-    if p_num <= 1:
-        p_num = 2
     x_pbest = rng.integers(p_num)
     # a random individual is selected from the best p_num individuals of the population rng.integers
     p = [1 / (len(pop) - 1.0) if i != ic else 0 for i in range(len(pop))]
@@ -169,7 +166,7 @@ class SuccessHistoryAdaptiveDifferentialEvolution(DifferentialEvolution):
         """
         return r"""Ryoji Tanabe and Alex Fukunaga: Improving the Search Performance of SHADE Using Linear Population Size Reduction,  Proc. IEEE Congress on Evolutionary Computation (CEC-2014), Beijing, July, 2014."""
 
-    def __init__(self, population_size=180, extern_arc_rate=2.6, pbest_factor=0.11, hist_mem_size=6, *args, **kwargs):
+    def __init__(self, population_size=540, extern_arc_rate=2.6, pbest_factor=0.11, hist_mem_size=6, *args, **kwargs):
         """Initialize SHADE.
 
         Args:
@@ -187,7 +184,7 @@ class SuccessHistoryAdaptiveDifferentialEvolution(DifferentialEvolution):
         self.pbest_factor = pbest_factor
         self.hist_mem_size = hist_mem_size
 
-    def set_parameters(self, population_size=180, extern_arc_rate=2.6, pbest_factor=0.11, hist_mem_size=6, **kwargs):
+    def set_parameters(self, population_size=540, extern_arc_rate=2.6, pbest_factor=0.11, hist_mem_size=6, **kwargs):
         r"""Set the parameters of an algorithm.
 
         Args:
@@ -274,10 +271,13 @@ class SuccessHistoryAdaptiveDifferentialEvolution(DifferentialEvolution):
 
         """
         new_pop = objects_to_array([self.gen_ind_params(xi, hist_cr, hist_f) for xi in pop])
+        p_num = np.int_(np.around(len(pop) * self.pbest_factor))
+        if p_num < 2:
+            p_num = 2
         # cr and f for mutation are computed
         for i, xi in enumerate(new_pop):
-            new_pop[i].x = cross_curr2pbest1(new_pop, i, xi.differential_weight, xi.crossover_probability, self.rng,
-                                             self.pbest_factor, archive, arc_ind_cnt, task)  # trial vectors are created
+            new_pop[i].x = cross_curr2pbest1(pop, i, xi.differential_weight, xi.crossover_probability, self.rng,
+                                             p_num, archive, arc_ind_cnt, task)  # trial vectors are created
         for xi in new_pop:
             xi.evaluate(task, rng=self.random)
 
@@ -513,7 +513,8 @@ class LpsrSuccessHistoryAdaptiveDifferentialEvolution(SuccessHistoryAdaptiveDiff
         pop_size = len(pop)
         max_nfe = task.max_evals
         nfe = task.evals
-        next_pop_size = np.int_(np.around(((4.0 - self.population_size) / np.float_(max_nfe)) * nfe + self.population_size))
+
+        next_pop_size = np.int_(np.around((((4.0 - self.population_size) / np.float_(max_nfe)) * nfe) + self.population_size))
 
         if next_pop_size < 4:
             next_pop_size = 4
@@ -521,12 +522,14 @@ class LpsrSuccessHistoryAdaptiveDifferentialEvolution(SuccessHistoryAdaptiveDiff
         # if the size of the new population is smaller than the current,
         # the worst pop_size - new_pop_size individuals are deleted
         if next_pop_size < pop_size:
-            pop_fit = np.asarray([x.f for x in pop])
-            indexes = np.argsort(pop_fit)
-            sorted_pop = pop[indexes]  # sorted population
-            pop = objects_to_array([sorted_pop[i] for i in range(next_pop_size)])
+            reduction = pop_size - next_pop_size
+            for i in range(reduction):
+                worst = 0
+                for j, e in enumerate(pop):
+                    worst = j if e.f > pop[worst].f else worst
+                pop = np.delete(pop, worst)
 
-            next_arc_size = np.int_(np.around(next_pop_size * self.extern_arc_rate))  # the size of the new archive
+            next_arc_size = np.int_(next_pop_size * self.extern_arc_rate)  # the size of the new archive
             if arc_ind_cnt > next_arc_size:
                 arc_ind_cnt = next_arc_size
 
