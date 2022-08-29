@@ -22,6 +22,10 @@ from niapy.algorithms.modified.saba import (
     AdaptiveBatAlgorithm,
     SelfAdaptiveBatAlgorithm
 )
+from niapy.algorithms.modified.shade import (
+    SuccessHistoryAdaptiveDifferentialEvolution,
+    LpsrSuccessHistoryAdaptiveDifferentialEvolution
+)
 
 __all__ = [
     'HybridBatAlgorithm',
@@ -38,5 +42,7 @@ __all__ = [
     'AdaptiveBatAlgorithm',
     'SelfAdaptiveBatAlgorithm',
     'HybridSelfAdaptiveBatAlgorithm',
-    'ParameterFreeBatAlgorithm'
+    'ParameterFreeBatAlgorithm',
+    'SuccessHistoryAdaptiveDifferentialEvolution',
+    'LpsrSuccessHistoryAdaptiveDifferentialEvolution'
 ]
