@@ -1,14 +1,14 @@
 name: All Tests
 
-on: workflow_dispatch
+on: [workflow_dispatch, push]
 
 jobs:
   all_tests:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macOS-latest]
-        python-version: [3.6, 3.7, 3.8, 3.9, '3.10']
+        os: [ubuntu-latest]
+        python-version: [3.6]
     env:
       MPLBACKEND: "agg"
     steps:
@@ -39,7 +39,18 @@ jobs:
     - name: Install dependencies
       if: steps.cache-dependencies.outputs.cache-hit != 'true'
       run: |
+        export LC_ALL=C.UTF-8
+        export LANG=C.UTF-8
         pipenv install --skip-lock --dev
     - name: Run all tests
       run: |
-        pipenv run pytest -ra -vv --random --random-seed=32786 --cov=niapy --no-cov-on-fail --cov-report=term-missing:skip-covered --cov-report=html niapy tests --junitxml=xmlreport/overall.xml
+        export LC_ALL=C.UTF-8
+        export LANG=C.UTF-8
+        pipenv run pytest -ra -vv --random --random-seed=32786 --cov=niapy --no-cov-on-fail --cov-report=term-missing:skip-covered niapy niapy/tests/test_aba.py --junitxml=xmlreport/overall.xml
+    - name: Run codacy-coverage-reporter
+      uses: codacy/codacy-coverage-reporter-action@v1
+      with:
+        # project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+        # or
+        api-token: b8fc77c78d904f2cb5fbc113bfb9d6f4 # ${{ secrets.CODACY_API_TOKEN }}
+        coverage-reports: xmlreport/overall.xml
