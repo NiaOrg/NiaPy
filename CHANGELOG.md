@@ -1,5 +1,25 @@
 # Changelog
 
+## [2.0.3](https://github.com/NiaOrg/NiaPy/tree/2.0.3) (2022-09-03)
+
+[Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2.0.2...2.0.3)
+
+**Fixed bugs:**
+
+- AttributeError: 'NoneType' object has no attribute 'copy' [\#393](https://github.com/NiaOrg/NiaPy/issues/393)
+
+**Closed issues:**
+
+- Draft a new release [\#387](https://github.com/NiaOrg/NiaPy/issues/387)
+- L-SHADE algorithm [\#386](https://github.com/NiaOrg/NiaPy/issues/386)
+- Can not control the number of max\_evals or max\_iters [\#376](https://github.com/NiaOrg/NiaPy/issues/376)
+- Graphical user interface \(GUI\) for NiaPy  [\#330](https://github.com/NiaOrg/NiaPy/issues/330)
+
+**Merged pull requests:**
+
+- L-SHADE implementation [\#390](https://github.com/NiaOrg/NiaPy/pull/390) ([AlesGartner](https://github.com/AlesGartner))
+- Installation instructions for NixOS [\#389](https://github.com/NiaOrg/NiaPy/pull/389) ([firefly-cpp](https://github.com/firefly-cpp))
+
 ## [2.0.2](https://github.com/NiaOrg/NiaPy/tree/2.0.2) (2022-05-22)
 
 [Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2.0.1...2.0.2)
