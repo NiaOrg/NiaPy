@@ -25,7 +25,7 @@ author = u'Grega Vrbančič, Lucija Brezočnik, Uroš Mlakar, Dušan Fister, Izt
 # The short X.Y version
 version = u'2.0'
 # The full version, including alpha/beta/rc tags
-release = u'2.0.2'
+release = u'2.0.3'
 
 
 # -- General configuration ---------------------------------------------------
