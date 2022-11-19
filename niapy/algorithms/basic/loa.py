@@ -235,8 +235,8 @@ class LionOptimizationAlgorithm(Algorithm):
         pride_size = np.zeros(self.num_of_prides + 1, dtype=int)
         pride_size[-1] = nomad_size
         remaining_lions = self.population_size - nomad_size
-        while(remaining_lions > 0):
-            if(remaining_lions >= self.num_of_prides):
+        while remaining_lions > 0:
+            if remaining_lions >= self.num_of_prides:
                 pride_size[:self.num_of_prides] += 1
             else:
                 pride_size[:remaining_lions] += 1
@@ -250,7 +250,7 @@ class LionOptimizationAlgorithm(Algorithm):
             for lion in pop[index_counter:index_counter + curr_pride_size]:
                 lion.has_pride = True
                 lion.pride = i
-                if(num_of_females > 0):
+                if num_of_females > 0:
                     lion.gender = "f"
                     num_of_females -= 1
             index_counter += curr_pride_size
@@ -305,7 +305,7 @@ class LionOptimizationAlgorithm(Algorithm):
                 if lion.gender == "f":
                     lion.hunting_group = self.integers(0, 4)
                     hunting_group_fitness[lion.hunting_group] += lion.current_f
-                if not (lion.hunting_group == 0):
+                if lion.hunting_group != 0:
                     prey_x += lion.current_x
                     num_of_hunters += 1
 
@@ -314,7 +314,7 @@ class LionOptimizationAlgorithm(Algorithm):
             right_group, left_group, center_group = sorted_hunting_group_indices + 1
 
             # Prey's position is average position of hunters.
-            if not (num_of_hunters == 0):
+            if num_of_hunters != 0:
                 prey_x /= num_of_hunters
 
             # Check if prey's new position is in limits.
@@ -335,7 +335,7 @@ class LionOptimizationAlgorithm(Algorithm):
                         elif lion.current_x[i] > prey_x[i]:
                             lion.current_x[i] = self.uniform(prey_x[i], lion.current_x[i])
 
-                if not(lion.hunting_group == 0):
+                if lion.hunting_group != 0:
                     # Check if lion's new position is in limits.
                     lion.current_x = task.repair(lion.current_x)
                     lion.current_f = task.eval(lion.current_x)
@@ -522,7 +522,7 @@ class LionOptimizationAlgorithm(Algorithm):
             curr_pride_size = pride_size[pride_i]
             num_of_males = gender_distribution[pride_i][1]
             # If there's at least 1 male, proceed
-            if not num_of_males == 0:
+            if num_of_males != 0:
                 # Array of males.
                 males = []
                 for lion in population[index_counter_pride:index_counter_pride + curr_pride_size]:
@@ -596,7 +596,7 @@ class LionOptimizationAlgorithm(Algorithm):
         nomad_size = pride_size[-1]
         num_of_males = gender_distribution[pride_i][1]
         # If there's at least one male nomad, proceed
-        if not num_of_males == 0:
+        if num_of_males != 0:
             # Create array of males that can mate.
             males = []
             for lion in population[len(population) - nomad_size:]:
@@ -779,7 +779,7 @@ class LionOptimizationAlgorithm(Algorithm):
                 if pride_index_to_attack[pride_i] == 1:
                     # Attack all male lions.
                     for pride_lion in moved_population[index_counter_pride:index_counter_pride + curr_pride_size]:
-                        if(lion.gender == "m"):
+                        if lion.gender == "m":
                             # Swap nomad and pride lion if nomad has better fitness.
                             if nomad_lion.current_f < pride_lion.current_f:
                                 copy_nomad_lion = copy.deepcopy(nomad_lion)
