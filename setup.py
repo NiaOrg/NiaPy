@@ -48,7 +48,7 @@ PACKAGE_VERSION = read_package_variable('__version__')
 
 setuptools.setup(
     name=PACKAGE_NAME,
-    version="2.0.3",
+    version="2.0.4",
     description="Python micro framework for building nature-inspired algorithms.",
     url='https://github.com/NiaOrg/NiaPy',
     author='NiaOrg',
