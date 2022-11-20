@@ -1,5 +1,17 @@
 # Changelog
 
+## [Unreleased](https://github.com/NiaOrg/NiaPy/tree/HEAD)
+
+[Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2.0.3...HEAD)
+
+**Closed issues:**
+
+- Make problem [\#394](https://github.com/NiaOrg/NiaPy/issues/394)
+
+**Merged pull requests:**
+
+- Update dependencies [\#395](https://github.com/NiaOrg/NiaPy/pull/395) ([zStupan](https://github.com/zStupan))
+
 ## [2.0.3](https://github.com/NiaOrg/NiaPy/tree/2.0.3) (2022-09-03)
 
 [Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2.0.2...2.0.3)
@@ -435,6 +447,10 @@
 
 - Hybrid Bat Algorithm coding mistake? [\#156](https://github.com/NiaOrg/NiaPy/issues/156)
 
+**Merged pull requests:**
+
+- fix Bat Algorithm [\#161](https://github.com/NiaOrg/NiaPy/pull/161) ([GregaVrbancic](https://github.com/GregaVrbancic))
+
 ## [2](https://github.com/NiaOrg/NiaPy/tree/2) (2018-08-30)
 
 [Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2.0.0rc2...2)
@@ -514,8 +530,6 @@
 **Merged pull requests:**
 
 - Runner export [\#39](https://github.com/NiaOrg/NiaPy/pull/39) ([GregaVrbancic](https://github.com/GregaVrbancic))
-- add benchmarks module [\#14](https://github.com/NiaOrg/NiaPy/pull/14) ([GregaVrbancic](https://github.com/GregaVrbancic))
-- add needed dependencies [\#7](https://github.com/NiaOrg/NiaPy/pull/7) ([GregaVrbancic](https://github.com/GregaVrbancic))
 
 ## [1.0.0rc2](https://github.com/NiaOrg/NiaPy/tree/1.0.0rc2) (2018-02-28)
 
@@ -634,33 +648,6 @@
 - add runner export to xlsx [\#34](https://github.com/NiaOrg/NiaPy/pull/34) ([GregaVrbancic](https://github.com/GregaVrbancic))
 - Runner export [\#33](https://github.com/NiaOrg/NiaPy/pull/33) ([GregaVrbancic](https://github.com/GregaVrbancic))
 - Feature functions2 [\#32](https://github.com/NiaOrg/NiaPy/pull/32) ([lucijabrezocnik](https://github.com/lucijabrezocnik))
-- Griewank function [\#31](https://github.com/NiaOrg/NiaPy/pull/31) ([lucijabrezocnik](https://github.com/lucijabrezocnik))
-- fix code style syntax [\#30](https://github.com/NiaOrg/NiaPy/pull/30) ([GregaVrbancic](https://github.com/GregaVrbancic))
-- schwefel and whitley [\#29](https://github.com/NiaOrg/NiaPy/pull/29) ([lucijabrezocnik](https://github.com/lucijabrezocnik))
-- add function implementations [\#28](https://github.com/NiaOrg/NiaPy/pull/28) ([GregaVrbancic](https://github.com/GregaVrbancic))
-- fix bounds for sphere function [\#27](https://github.com/NiaOrg/NiaPy/pull/27) ([GregaVrbancic](https://github.com/GregaVrbancic))
-- fix code style [\#26](https://github.com/NiaOrg/NiaPy/pull/26) ([GregaVrbancic](https://github.com/GregaVrbancic))
-- Add runner [\#25](https://github.com/NiaOrg/NiaPy/pull/25) ([GregaVrbancic](https://github.com/GregaVrbancic))
-- Added jDE,PSO,ABC,GA\(buggy code\) [\#24](https://github.com/NiaOrg/NiaPy/pull/24) ([mlaky88](https://github.com/mlaky88))
-- Functions description [\#23](https://github.com/NiaOrg/NiaPy/pull/23) ([lucijabrezocnik](https://github.com/lucijabrezocnik))
-- Schwefel function [\#22](https://github.com/NiaOrg/NiaPy/pull/22) ([lucijabrezocnik](https://github.com/lucijabrezocnik))
-- Renew architecture [\#21](https://github.com/NiaOrg/NiaPy/pull/21) ([GregaVrbancic](https://github.com/GregaVrbancic))
-- Basic tests [\#20](https://github.com/NiaOrg/NiaPy/pull/20) ([GregaVrbancic](https://github.com/GregaVrbancic))
-- Feature functions [\#19](https://github.com/NiaOrg/NiaPy/pull/19) ([lucijabrezocnik](https://github.com/lucijabrezocnik))
-- new algorithm [\#18](https://github.com/NiaOrg/NiaPy/pull/18) ([firefly-cpp](https://github.com/firefly-cpp))
-- add modified algorithm implementation  [\#17](https://github.com/NiaOrg/NiaPy/pull/17) ([GregaVrbancic](https://github.com/GregaVrbancic))
-- add fpa example. update README.md with example. [\#15](https://github.com/NiaOrg/NiaPy/pull/15) ([GregaVrbancic](https://github.com/GregaVrbancic))
-- Improve docs [\#13](https://github.com/NiaOrg/NiaPy/pull/13) ([GregaVrbancic](https://github.com/GregaVrbancic))
-- added reference for DE [\#12](https://github.com/NiaOrg/NiaPy/pull/12) ([firefly-cpp](https://github.com/firefly-cpp))
-- Rastrigin and Rosenbrock added [\#11](https://github.com/NiaOrg/NiaPy/pull/11) ([firefly-cpp](https://github.com/firefly-cpp))
-- DE algorithm implementation [\#10](https://github.com/NiaOrg/NiaPy/pull/10) ([GregaVrbancic](https://github.com/GregaVrbancic))
-- fixing typos [\#9](https://github.com/NiaOrg/NiaPy/pull/9) ([firefly-cpp](https://github.com/firefly-cpp))
-- new config files [\#6](https://github.com/NiaOrg/NiaPy/pull/6) ([firefly-cpp](https://github.com/firefly-cpp))
-- adding flower pollination algorithm [\#5](https://github.com/NiaOrg/NiaPy/pull/5) ([rhododendrom](https://github.com/rhododendrom))
-- an example of benchmark function [\#4](https://github.com/NiaOrg/NiaPy/pull/4) ([firefly-cpp](https://github.com/firefly-cpp))
-- Documentation [\#3](https://github.com/NiaOrg/NiaPy/pull/3) ([GregaVrbancic](https://github.com/GregaVrbancic))
-- Create CODE\_OF\_CONDUCT.md [\#2](https://github.com/NiaOrg/NiaPy/pull/2) ([GregaVrbancic](https://github.com/GregaVrbancic))
-- add hybrid bat algorithm implementation with example [\#1](https://github.com/NiaOrg/NiaPy/pull/1) ([GregaVrbancic](https://github.com/GregaVrbancic))
 
 
 
