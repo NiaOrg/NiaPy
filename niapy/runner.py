@@ -85,21 +85,16 @@ class Runner:
         dataframe.to_json(self.__generate_export_name("json"))
         logger.info("Export to JSON file completed!")
 
-    def _export_to_xls(self):
-        dataframe = pd.DataFrame.from_dict(self.results)
-        dataframe.to_excel(self.__generate_export_name("xls"))
-        logger.info("Export to XLS completed!")
-
     def __export_to_xlsx(self):
         dataframe = pd.DataFrame.from_dict(self.results)
-        dataframe.to_excel(self.__generate_export_name("xslx"))
+        dataframe.to_excel(self.__generate_export_name("xlsx"))
         logger.info("Export to XLSX file completed!")
 
     def run(self, export="dataframe", verbose=False):
         """Execute runner.
 
         Args:
-            export (str): Takes export type (e.g. dataframe, json, xls, xlsx) (default: "dataframe")
+            export (str): Takes export type (e.g. dataframe, json, excel) (default: "dataframe")
             verbose (bool): Switch for verbose logging (default: {False})
 
         Returns:
@@ -143,9 +138,7 @@ class Runner:
             self.__export_to_dataframe_pickle()
         elif export == "json":
             self.__export_to_json()
-        elif export == "xsl":
-            self._export_to_xls()
-        elif export == "xlsx":
+        elif export == "excel":
             self.__export_to_xlsx()
         else:
             raise TypeError("Passed export type %s is not supported!", export)
