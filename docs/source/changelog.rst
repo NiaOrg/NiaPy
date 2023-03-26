@@ -1,6 +1,30 @@
 Changelog
 =========
 
+`2.0.5 <https://github.com/NiaOrg/NiaPy/tree/2.0.5>`__ (2023-03-26)
+-------------------------------------------------------------------
+
+`Full
+Changelog <https://github.com/NiaOrg/NiaPy/compare/2.0.4...2.0.5>`__
+
+**Closed issues:**
+
+-  Dataframe to Excel – not working
+   `#396 <https://github.com/NiaOrg/NiaPy/issues/396>`__
+-  Bump version to 2.0.3
+   `#392 <https://github.com/NiaOrg/NiaPy/issues/392>`__
+-  RUN Beyond the Metaphor An Efficient Optimization Algorithm Based on
+   Runge Kutta Method
+   `#388 <https://github.com/NiaOrg/NiaPy/issues/388>`__
+
+**Merged pull requests:**
+
+-  fixed exporting to excel
+   `#397 <https://github.com/NiaOrg/NiaPy/pull/397>`__
+   (`zStupan <https://github.com/zStupan>`__)
+
+.. _section-1:
+
 `2.0.4 <https://github.com/NiaOrg/NiaPy/tree/2.0.4>`__ (2022-11-20)
 -------------------------------------------------------------------
 
@@ -17,7 +41,7 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/2.0.3...2.0.4>`__
    `#395 <https://github.com/NiaOrg/NiaPy/pull/395>`__
    (`zStupan <https://github.com/zStupan>`__)
 
-.. _section-1:
+.. _section-2:
 
 `2.0.3 <https://github.com/NiaOrg/NiaPy/tree/2.0.3>`__ (2022-09-03)
 -------------------------------------------------------------------
@@ -43,14 +67,11 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/2.0.2...2.0.3>`__
 
 **Merged pull requests:**
 
--  L-SHADE implementation
-   `#390 <https://github.com/NiaOrg/NiaPy/pull/390>`__
-   (`AlesGartner <https://github.com/AlesGartner>`__)
 -  Installation instructions for NixOS
    `#389 <https://github.com/NiaOrg/NiaPy/pull/389>`__
    (`firefly-cpp <https://github.com/firefly-cpp>`__)
 
-.. _section-2:
+.. _section-3:
 
 `2.0.2 <https://github.com/NiaOrg/NiaPy/tree/2.0.2>`__ (2022-05-22)
 -------------------------------------------------------------------
@@ -65,6 +86,11 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/2.0.1...2.0.2>`__
 
 **Merged pull requests:**
 
+-  L-SHADE implementation
+   `#390 <https://github.com/NiaOrg/NiaPy/pull/390>`__
+   (`AlesGartner <https://github.com/AlesGartner>`__)
+-  Update docs `#385 <https://github.com/NiaOrg/NiaPy/pull/385>`__
+   (`zStupan <https://github.com/zStupan>`__)
 -  Installation instructions for Alpine linux users
    `#384 <https://github.com/NiaOrg/NiaPy/pull/384>`__
    (`firefly-cpp <https://github.com/firefly-cpp>`__)
@@ -72,7 +98,7 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/2.0.1...2.0.2>`__
    `#383 <https://github.com/NiaOrg/NiaPy/pull/383>`__
    (`zStupan <https://github.com/zStupan>`__)
 
-.. _section-3:
+.. _section-4:
 
 `2.0.1 <https://github.com/NiaOrg/NiaPy/tree/2.0.1>`__ (2022-03-05)
 -------------------------------------------------------------------
@@ -102,8 +128,6 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/2.0.0...2.0.1>`__
 
 **Merged pull requests:**
 
--  Update docs `#385 <https://github.com/NiaOrg/NiaPy/pull/385>`__
-   (`zStupan <https://github.com/zStupan>`__)
 -  docs: add firefly-cpp as a contributor for platform
    `#382 <https://github.com/NiaOrg/NiaPy/pull/382>`__
    (`allcontributors[bot] <https://github.com/apps/allcontributors>`__)
@@ -142,7 +166,7 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/2.0.0...2.0.1>`__
    `#362 <https://github.com/NiaOrg/NiaPy/pull/362>`__
    (`sisco0 <https://github.com/sisco0>`__)
 
-.. _section-4:
+.. _section-5:
 
 `2.0.0 <https://github.com/NiaOrg/NiaPy/tree/2.0.0>`__ (2021-12-27)
 -------------------------------------------------------------------
@@ -812,7 +836,7 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/1.0.2...2.0.0rc3>`__
 -  HBA - bugfix `#157 <https://github.com/NiaOrg/NiaPy/pull/157>`__
    (`kivancguckiran <https://github.com/kivancguckiran>`__)
 
-.. _section-5:
+.. _section-6:
 
 `1.0.2 <https://github.com/NiaOrg/NiaPy/tree/1.0.2>`__ (2018-10-24)
 -------------------------------------------------------------------
@@ -829,7 +853,7 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/1.0.2...2.0.0rc3>`__
 -  fix Bat Algorithm `#161 <https://github.com/NiaOrg/NiaPy/pull/161>`__
    (`GregaVrbancic <https://github.com/GregaVrbancic>`__)
 
-.. _section-6:
+.. _section-7:
 
 `2 <https://github.com/NiaOrg/NiaPy/tree/2>`__ (2018-08-30)
 -----------------------------------------------------------
@@ -916,7 +940,7 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/1.0.1...2.0.0rc1>`__
 -  DOI added `#128 <https://github.com/NiaOrg/NiaPy/pull/128>`__
    (`lucijabrezocnik <https://github.com/lucijabrezocnik>`__)
 
-.. _section-7:
+.. _section-8:
 
 `1.0.1 <https://github.com/NiaOrg/NiaPy/tree/1.0.1>`__ (2018-03-21)
 -------------------------------------------------------------------
@@ -962,7 +986,7 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/1.0.0...1.0.1>`__
    … `#114 <https://github.com/NiaOrg/NiaPy/pull/114>`__
    (`mlaky88 <https://github.com/mlaky88>`__)
 
-.. _section-8:
+.. _section-9:
 
 `1.0.0 <https://github.com/NiaOrg/NiaPy/tree/1.0.0>`__ (2018-02-28)
 -------------------------------------------------------------------

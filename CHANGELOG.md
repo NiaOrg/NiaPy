@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.0.5](https://github.com/NiaOrg/NiaPy/tree/2.0.5) (2023-03-26)
+
+[Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2.0.4...2.0.5)
+
+**Closed issues:**
+
+- Dataframe to Excel -- not working [\#396](https://github.com/NiaOrg/NiaPy/issues/396)
+- Bump version to 2.0.3 [\#392](https://github.com/NiaOrg/NiaPy/issues/392)
+- RUN Beyond the Metaphor An Efficient Optimization Algorithm Based on Runge Kutta Method [\#388](https://github.com/NiaOrg/NiaPy/issues/388)
+
+**Merged pull requests:**
+
+- fixed exporting to excel [\#397](https://github.com/NiaOrg/NiaPy/pull/397) ([zStupan](https://github.com/zStupan))
+
 ## [2.0.4](https://github.com/NiaOrg/NiaPy/tree/2.0.4) (2022-11-20)
 
 [Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2.0.3...2.0.4)
@@ -29,7 +43,6 @@
 
 **Merged pull requests:**
 
-- L-SHADE implementation [\#390](https://github.com/NiaOrg/NiaPy/pull/390) ([AlesGartner](https://github.com/AlesGartner))
 - Installation instructions for NixOS [\#389](https://github.com/NiaOrg/NiaPy/pull/389) ([firefly-cpp](https://github.com/firefly-cpp))
 
 ## [2.0.2](https://github.com/NiaOrg/NiaPy/tree/2.0.2) (2022-05-22)
@@ -42,6 +55,8 @@
 
 **Merged pull requests:**
 
+- L-SHADE implementation [\#390](https://github.com/NiaOrg/NiaPy/pull/390) ([AlesGartner](https://github.com/AlesGartner))
+- Update docs [\#385](https://github.com/NiaOrg/NiaPy/pull/385) ([zStupan](https://github.com/zStupan))
 - Installation instructions for Alpine linux users [\#384](https://github.com/NiaOrg/NiaPy/pull/384) ([firefly-cpp](https://github.com/firefly-cpp))
 - Fix get\_parameters [\#383](https://github.com/NiaOrg/NiaPy/pull/383) ([zStupan](https://github.com/zStupan))
 
@@ -64,7 +79,6 @@
 
 **Merged pull requests:**
 
-- Update docs [\#385](https://github.com/NiaOrg/NiaPy/pull/385) ([zStupan](https://github.com/zStupan))
 - docs: add firefly-cpp as a contributor for platform [\#382](https://github.com/NiaOrg/NiaPy/pull/382) ([allcontributors[bot]](https://github.com/apps/allcontributors))
 - docs: add carlosal1015 as a contributor for platform [\#381](https://github.com/NiaOrg/NiaPy/pull/381) ([allcontributors[bot]](https://github.com/apps/allcontributors))
 - Modify convergence plotting [\#380](https://github.com/NiaOrg/NiaPy/pull/380) ([zStupan](https://github.com/zStupan))
