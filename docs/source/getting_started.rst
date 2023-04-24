@@ -18,7 +18,7 @@ When package is successfully installed you are ready to write you first example.
 
 Basic example
 -------------
-In this example, let's say, we want to try out Gray Wolf Optimizer algorithm against the Pintér problem.
+In this example, let's say, we want to try out Particle Swarm Optimizer algorithm against the Pintér problem.
 Firstly, we have to create new file, with name, for example *basic_example.py*. Then we have to import chosen
 algorithm from NiaPy, so we can use it. Afterwards we initialize ParticleSwarmAlgorithm class instance and run the algorithm.
 Given bellow is complete source code of basic example.
