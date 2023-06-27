@@ -33,7 +33,7 @@ Nature-inspired algorithms are a very popular tool for solving optimization prob
 
 * **Free software:** MIT license
 * **Documentation:** https://niapy.readthedocs.io/en/stable/
-* **Python versions:** 3.6.x, 3.7.x, 3.8.x, 3.9.x
+* **Python versions:** 3.6.x, 3.7.x, 3.8.x, 3.9.x, 3.10x, 3.11x
 * **Dependencies:** [click here](CONTRIBUTING.md#development-dependencies)
 
 # Mission
@@ -82,6 +82,12 @@ To install NiaPy on NixOS, please use:
 
 ```sh
 $ nix-env -iA nixos.python310Packages.niapy
+```
+
+To install NiaPy on Void Linux, use:
+
+```sh
+$ xbps-install -S python3-niapy
 ```
 
 ## Install from source
