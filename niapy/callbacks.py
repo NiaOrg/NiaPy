@@ -1,14 +1,10 @@
-from abc import ABC, abstractmethod
-
-
-class Callback(ABC):
-    """Abstract base class for callbacks.
+class Callback:
+    """Base class for callbacks.
 
     Callbacks allow you to execute code before and after each iteration of an algorithm.
 
     """
 
-    @abstractmethod
     def before_iteration(self, population, fitness, best_x, best_fitness, **params):
         """Callback method to be executed before each iteration of the algorithm.
 
@@ -22,7 +18,6 @@ class Callback(ABC):
         """
         pass
 
-    @abstractmethod
     def after_iteration(self, population, fitness, best_x, best_fitness, **params):
         """Callback method to be executed after each iteration of the algorithm.
 
