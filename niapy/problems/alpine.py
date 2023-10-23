@@ -136,4 +136,4 @@ class Alpine2(Problem):
         return r'''$f(\mathbf{x}) = \prod_{i=1}^{D} \sqrt{x_i} \sin(x_i)$'''
 
     def _evaluate(self, x):
-        return np.product(np.sqrt(x) * np.sin(x))
+        return np.prod(np.sqrt(x) * np.sin(x))

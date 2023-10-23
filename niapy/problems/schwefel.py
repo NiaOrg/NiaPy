@@ -198,7 +198,7 @@ class Schwefel222(Problem):
         return r'''$f(\mathbf{x})=\sum_{i=1}^{D} \lvert x_i \rvert +\prod_{i=1}^{D} \lvert x_i \rvert$'''
 
     def _evaluate(self, x):
-        return np.sum(np.abs(x)) + np.product(np.abs(x))
+        return np.sum(np.abs(x)) + np.prod(np.abs(x))
 
 
 class ModifiedSchwefel(Problem):

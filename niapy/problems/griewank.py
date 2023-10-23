@@ -74,7 +74,7 @@ class Griewank(Problem):
     def _evaluate(self, x):
         val1 = np.sum(x * x / 4000.0)
         i = np.arange(1, self.dimension + 1)
-        val2 = np.product(np.cos(x / np.sqrt(i)))
+        val2 = np.prod(np.cos(x / np.sqrt(i)))
         return val1 - val2 + 1.0
 
 
