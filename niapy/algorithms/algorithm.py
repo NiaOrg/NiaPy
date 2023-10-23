@@ -7,6 +7,7 @@ import numpy as np
 from numpy.random import default_rng
 
 from niapy.util.array import objects_to_array
+from niapy.callbacks import CallbackList
 
 logging.basicConfig()
 logger = logging.getLogger('niapy.util.utility')
@@ -83,7 +84,7 @@ class Algorithm:
     Name = ['Algorithm', 'AAA']
 
     def __init__(self, population_size=50, initialization_function=default_numpy_init, individual_type=None,
-                 seed=None, *args, **kwargs):
+                 callbacks=None, seed=None, *args, **kwargs):
         r"""Initialize algorithm and create name for an algorithm.
 
         Args:
@@ -91,6 +92,7 @@ class Algorithm:
             initialization_function (Optional[Callable[[int, Task, numpy.random.Generator, Dict[str, Any]], Tuple[numpy.ndarray, numpy.ndarray[float]]]]):
                 Population initialization function.
             individual_type (Optional[Type[Individual]]): Individual type used in population, default is Numpy array.
+            callbacks (Optional[Union[list[Callback], CallbackList]]): List of callbacks to apply before and after each iteration.
             seed (Optional[int]): Starting seed for random generator.
 
         See Also:
@@ -100,6 +102,8 @@ class Algorithm:
         self.population_size = population_size
         self.initialization_function = initialization_function
         self.individual_type = individual_type
+        self.callbacks = callbacks if isinstance(callbacks, CallbackList) else CallbackList(callbacks)
+        self.callbacks.set_algorithm(self)
         self.rng = default_rng(seed)
         self.exception = None
 
@@ -204,7 +208,7 @@ class Algorithm:
 
         Args:
             low (Union[int, Iterable[int]]): Lower integer bound.
-                If high = None low is 0 and this value is used as high
+                If high = None low is 0 and this value is used as high.
             high (Union[int, Iterable[int]]): One above upper integer bound.
             size (Union[None, int, Iterable[int]]): shape of returned discrete uniform random distribution.
             skip (Union[None, int, Iterable[int], numpy.ndarray[int]]): numbers to skip.
@@ -281,58 +285,10 @@ class Algorithm:
                 5. Additional arguments of the algorithm.
 
         See Also:
-            * :func:`niapy.algorithms.Algorithm.iteration_generator`
+            * :func:`niapy.algorithms.Algorithm.run`
 
         """
         return population, population_fitness, best_x, best_fitness, params
-
-    def iteration_generator(self, task):
-        r"""Run the algorithm for a single iteration and return the best solution.
-
-        Args:
-            task (Task): Task with bounds and objective function for optimization.
-
-        Returns:
-            Generator[Tuple[numpy.ndarray, float], None, None]: Generator getting new/old optimal global values.
-
-        Yields:
-            Tuple[numpy.ndarray, float]:
-                1. New population best individuals coordinates.
-                2. Fitness value of the best solution.
-
-        See Also:
-            * :func:`niapy.algorithms.Algorithm.init_population`
-            * :func:`niapy.algorithms.Algorithm.run_iteration`
-
-        """
-        pop, fpop, params = self.init_population(task)
-        xb, fxb = self.get_best(pop, fpop)
-        if task.stopping_condition():
-            yield xb, fxb
-        while True:
-            pop, fpop, xb, fxb, params = self.run_iteration(task, pop, fpop, xb, fxb, **params)
-            yield xb, fxb
-
-    def run_task(self, task):
-        r"""Start the optimization.
-
-        Args:
-            task (Task): Task with bounds and objective function for optimization.
-
-        Returns:
-            Tuple[numpy.ndarray, float]:
-                1. Best individuals components found in optimization process.
-                2. Best fitness value found in optimization process.
-
-        See Also:
-            * :func:`niapy.algorithms.Algorithm.iteration_generator`
-
-        """
-        algo, xb, fxb = self.iteration_generator(task), None, np.inf
-        while not task.stopping_condition():
-            xb, fxb = next(algo)
-            task.next_iter()
-        return xb, fxb
 
     def run(self, task):
         r"""Start the optimization.
@@ -346,14 +302,22 @@ class Algorithm:
                 2. Best fitness value found in optimization process.
 
         See Also:
-            * :func:`niapy.algorithms.Algorithm.run_task`
+            * :func:`niapy.algorithms.Algorithm.run_iteration`
 
         """
         try:
-            r = self.run_task(task)
-            return r[0], r[1] * task.optimization_type.value
+            self.callbacks.before_run()
+            pop, fpop, params = self.init_population(task)
+            xb, fxb = self.get_best(pop, fpop)
+            while not task.stopping_condition():
+                self.callbacks.before_iteration(pop, fpop, xb, fxb, **params)
+                pop, fpop, xb, fxb, params = self.run_iteration(task, pop, fpop, xb, fxb, **params)
+                self.callbacks.after_iteration(pop, fpop, xb, fxb, **params)
+                task.next_iter()
+            self.callbacks.after_run()
+            return xb, fxb * task.optimization_type.value
         except BaseException as e:
-            if threading.current_thread() == threading.main_thread() and multiprocessing.current_process().name == 'MainProcess':
+            if threading.current_thread() is threading.main_thread() and multiprocessing.current_process().name == 'MainProcess':
                 raise e
             self.exception = e
             return None, None

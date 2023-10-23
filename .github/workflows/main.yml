@@ -67,6 +67,6 @@ jobs:
       shell: bash
       run: |
         echo "${TESTMON_DATAFILE}"
-        pipenv run pytest --testmon --suppress-no-test-exit-code -ra -vv --random --random-seed=32786 niapy tests
+        pipenv run pytest --testmon -ra -vv --random --random-seed=32786 niapy tests
         status=$?
         if [ "$status" -eq 5 ]; then exit 0; else exit $status; fi
