@@ -5,6 +5,18 @@ class Callback:
 
     """
 
+    def __init__(self):
+        self.algorithm = None
+
+    def set_algorithm(self, algorithm):
+        """Set the algorithm property for this callback.
+
+        Args:
+            algorithm (Algorithm): The algorithm object to associate with this callback.
+
+        """
+        self.algorithm = algorithm
+
     def before_iteration(self, population, fitness, best_x, best_fitness, **params):
         """Callback method to be executed before each iteration of the algorithm.
 
@@ -31,6 +43,14 @@ class Callback:
         """
         pass
 
+    def before_run(self):
+        """Callback method to be executed before running the algorithm."""
+        pass
+
+    def after_run(self):
+        """Callback method to be executed after running the algorithm."""
+        pass
+
 
 class CallbackList(Callback):
     """Container for Callback objects."""
@@ -44,6 +64,17 @@ class CallbackList(Callback):
         """
         super().__init__()
         self.callbacks = list(callbacks) if callbacks else []
+
+    def set_algorithm(self, algorithm):
+        """Set the algorithm property for all the callbacks in this list.
+
+        Args:
+            algorithm (Algorithm): The algorithm object to associate with this callback list.
+
+        """
+        self.algorithm = algorithm
+        for callback in self.callbacks:
+            callback.set_algorithm(algorithm)
 
     def before_iteration(self, population, fitness, best_x, best_fitness, **params):
         """Execute before_iteration method for all callbacks.
@@ -72,6 +103,16 @@ class CallbackList(Callback):
         """
         for callback in self.callbacks:
             callback.after_iteration(population, fitness, best_x, best_fitness, **params)
+
+    def before_run(self):
+        """Execute before_run method for each callback in the list."""
+        for callback in self.callbacks:
+            callback.before_run()
+
+    def after_run(self):
+        """Execute after_run method for each callback in the list."""
+        for callback in self.callbacks:
+            callback.after_run()
 
     def append(self, callback):
         """Append callback to list.

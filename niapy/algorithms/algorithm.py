@@ -103,6 +103,7 @@ class Algorithm:
         self.initialization_function = initialization_function
         self.individual_type = individual_type
         self.callbacks = callbacks if isinstance(callbacks, CallbackList) else CallbackList(callbacks)
+        self.callbacks.set_algorithm(self)
         self.rng = default_rng(seed)
         self.exception = None
 
@@ -305,6 +306,7 @@ class Algorithm:
 
         """
         try:
+            self.callbacks.before_run()
             pop, fpop, params = self.init_population(task)
             xb, fxb = self.get_best(pop, fpop)
             while not task.stopping_condition():
@@ -312,6 +314,7 @@ class Algorithm:
                 pop, fpop, xb, fxb, params = self.run_iteration(task, pop, fpop, xb, fxb, **params)
                 self.callbacks.after_iteration(pop, fpop, xb, fxb, **params)
                 task.next_iter()
+            self.callbacks.after_run()
             return xb, fxb * task.optimization_type.value
         except BaseException as e:
             if threading.current_thread() is threading.main_thread() and multiprocessing.current_process().name == 'MainProcess':
