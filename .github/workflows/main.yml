@@ -1,72 +1,84 @@
-name: Build, Check, and Test
+name: Unit tests
 
-on: [pull_request]
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
 jobs:
-  build_and_test: # run lint, codestyle, docstyle, and incremental tests
-    runs-on: ${{ matrix.os }}
+  tests:
+    name: ${{ matrix.os }} / ${{ matrix.python-version }}
+    runs-on: ${{ matrix.image }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macOS-latest]
-        python-version: [3.8, 3.9, '3.10', '3.11']
-    env:
-      MPLBACKEND: "agg"
-      PIPENV_VENV_IN_PROJECT: 1
+        os: [Ubuntu, macOS, Windows]
+        python-version: ["3.9", "3.10", "3.11", "3.12"]
+        include:
+          - os: Ubuntu
+            image: ubuntu-22.04
+          - os: Windows
+            image: windows-2022
+          - os: macOS
+            image: macos-12
+      fail-fast: false
+    defaults:
+      run:
+        shell: bash
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install pipenv
-      run: |
-        python3 -m pip install --upgrade pip
-        pip install pipenv
-        echo "HASH PIPFILE: ${{ hashFiles('Pipfile') }}"
-    - name: Cache dependencies
-      id: cache-dependencies
-      uses: tespkg/actions-cache@v1
-      with:
-        endpoint: s3.eu-central-1.wasabisys.com
-        insecure: false
-        accessKey: ${{ secrets.S3_ACCESS_KEY }}
-        secretKey: ${{ secrets.S3_SECRET_KEY }}
-        bucket: niapy-actions-cache
-        use-fallback: false
-        key: ${{ matrix.os }}_py${{ matrix.python-version }}-Pipfile_${{ hashFiles('Pipfile') }}
-        path: |
-          .venv
-    - name: Install dependencies
-      if: steps.cache-dependencies.outputs.cache-hit != 'true'
-      run: |
-        pipenv install --skip-lock --dev
-    - name: Lint with flake8
-      run: |
-        pipenv run flake8 niapy tests scent.py setup.py
-    - name: Check codestyle
-      run: |
-        pipenv run pycodestyle niapy tests scent.py setup.py --config=.pycodestyle.ini
-    - name: Check docstyle
-      run: |
-        pipenv run pydocstyle niapy tests scent.py setup.py
-    - name: Cache testmondata
-      uses: tespkg/actions-cache@v1
-      with:
-        endpoint: s3.eu-central-1.wasabisys.com
-        insecure: false
-        accessKey: ${{ secrets.S3_ACCESS_KEY }}
-        secretKey: ${{ secrets.S3_SECRET_KEY }}
-        bucket: niapy-actions-cache
-        use-fallback: false
-        key: testmondata-${{ matrix.os }}_py${{ matrix.python-version }}
-        path: |
-          config/testmondata
-    - name: Run incremental tests
-      env:
-        TESTMON_DATAFILE: config/testmondata/${{ matrix.os }}_py${{ matrix.python-version }}
-      shell: bash
-      run: |
-        echo "${TESTMON_DATAFILE}"
-        pipenv run pytest --testmon -ra -vv --random --random-seed=32786 niapy tests
-        status=$?
-        if [ "$status" -eq 5 ]; then exit 0; else exit $status; fi
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Get full Python version
+        id: full-python-version
+        run: echo version=$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info))") >> $GITHUB_OUTPUT
+
+      - name: Bootstrap poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python - -y
+
+      - name: Update PATH
+        if: ${{ matrix.os != 'Windows' }}
+        run: echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: Update Path for Windows
+        if: ${{ matrix.os == 'Windows' }}
+        run: echo "$APPDATA\Python\Scripts" >> $GITHUB_PATH
+
+      - name: Enable long paths for git on Windows
+        if: ${{ matrix.os == 'Windows' }}
+        # Enable handling long path names (+260 char) on the Windows platform
+        # https://docs.microsoft.com/en-us/windows/win32/fileio/naming-a-file#maximum-path-length-limitation
+        run: git config --system core.longpaths true
+
+      - name: Configure poetry
+        run: poetry config virtualenvs.in-project true
+
+      - name: Set up cache
+        uses: actions/cache@v3
+        id: cache
+        with:
+          path: .venv
+          key: venv-${{ runner.os }}-${{ steps.full-python-version.outputs.version }}-${{ hashFiles('**/poetry.lock') }}
+
+      - name: Ensure cache is healthy
+        if: steps.cache.outputs.cache-hit == 'true'
+        run: |
+          # `timeout` is not available on macOS, so we define a custom function.
+          [ "$(command -v timeout)" ] || function timeout() { perl -e 'alarm shift; exec @ARGV' "$@"; }
+
+          # Using `timeout` is a safeguard against the Poetry command hanging for some reason.
+          timeout 10s poetry run pip --version || rm -rf .venv
+
+      - name: Check lock file
+        run: poetry check --lock
+
+      - name: Install dependencies
+        run: poetry install
+
+      - name: Run tests
+        run: poetry run pytest -v
