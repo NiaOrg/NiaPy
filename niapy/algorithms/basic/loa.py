@@ -94,12 +94,12 @@ class LionOptimizationAlgorithm(Algorithm):
         Name (List[str]): List of strings representing name of the algorithm.
         population_size (Optional[int]): Population size :math:`\in [1, \infty)`.
         nomad_ratio (Optional[float]): Ratio of nomad lions :math:`\in [0, 1]`.
-        num_of_prides = Number of prides :math:`\in [1, \infty)`.
-        female_ratio = Ratio of female lions in prides :math:`\in [0, 1]`.
-        roaming_factor = Roaming factor :math:`\in [0, 1]`.
-        mating_factor = Mating factor :math:`\in [0, 1]`.
-        mutation_factor = Mutation factor :math:`\in [0, 1]`.
-        immigration_factor = Immigration factor :math:`\in [0, 1]`.
+        num_of_prides (Optional[int]): Number of prides :math:`\in [1, \infty)`.
+        female_ratio (Optional[float]): Ratio of female lions in prides :math:`\in [0, 1]`.
+        roaming_factor (Optional[float]): Roaming factor :math:`\in [0, 1]`.
+        mating_factor (Optional[float]): Mating factor :math:`\in [0, 1]`.
+        mutation_factor (Optional[float]): Mutation factor :math:`\in [0, 1]`.
+        immigration_factor (Optional[float]): Immigration factor :math:`\in [0, 1]`.
 
     See Also:
         * :class:`niapy.algorithms.Algorithm`
@@ -127,12 +127,12 @@ class LionOptimizationAlgorithm(Algorithm):
         Args:
             population_size (Optional[int]): Population size :math:`\in [1, \infty)`.
             nomad_ratio (Optional[float]): Ratio of nomad lions :math:`\in [0, 1]`.
-            num_of_prides = Number of prides :math:`\in [1, \infty)`.
-            female_ratio = Ratio of female lions in prides :math:`\in [0, 1]`.
-            roaming_factor = Roaming factor :math:`\in [0, 1]`.
-            mating_factor = Mating factor :math:`\in [0, 1]`.
-            mutation_factor = Mutation factor :math:`\in [0, 1]`.
-            immigration_factor = Immigration factor :math:`\in [0, 1]`.
+            num_of_prides (Optional[int]): Number of prides :math:`\in [1, \infty)`.
+            female_ratio (Optional[float]): Ratio of female lions in prides :math:`\in [0, 1]`.
+            roaming_factor (Optional[float]): Roaming factor :math:`\in [0, 1]`.
+            mating_factor (Optional[float]): Mating factor :math:`\in [0, 1]`.
+            mutation_factor (Optional[float]): Mutation factor :math:`\in [0, 1]`.
+            immigration_factor (Optional[float]): Immigration factor :math:`\in [0, 1]`.
 
 
         See Also:
@@ -155,12 +155,12 @@ class LionOptimizationAlgorithm(Algorithm):
         Args:
             population_size (Optional[int]): Population size :math:`\in [1, \infty)`.
             nomad_ratio (Optional[float]): Ratio of nomad lions :math:`\in [0, 1]`.
-            num_of_prides = Number of prides :math:`\in [1, \infty)`.
-            female_ratio = Ratio of female lions in prides :math:`\in [0, 1]`.
-            roaming_factor = Roaming factor :math:`\in [0, 1]`.
-            mating_factor = Mating factor :math:`\in [0, 1]`.
-            mutation_factor = Mutation factor :math:`\in [0, 1]`.
-            immigration_factor = Immigration factor :math:`\in [0, 1]`.
+            num_of_prides (Optional[int]): Number of prides :math:`\in [1, \infty)`.
+            female_ratio (Optional[float]): Ratio of female lions in prides :math:`\in [0, 1]`.
+            roaming_factor (Optional[float]): Roaming factor :math:`\in [0, 1]`.
+            mating_factor (Optional[float]): Mating factor :math:`\in [0, 1]`.
+            mutation_factor (Optional[float]): Mutation factor :math:`\in [0, 1]`.
+            immigration_factor (Optional[float]): Immigration factor :math:`\in [0, 1]`.
 
         See Also:
             * :func:`niapy.algorithms.Algorithm.set_parameters`
@@ -218,7 +218,7 @@ class LionOptimizationAlgorithm(Algorithm):
         r"""Initialize data of starting population.
 
         Args:
-            pop (numpy.ndarray[Lion]: Starting lion population
+            pop (numpy.ndarray[Lion]): Starting lion population
             d (Dict[str, Any]): Additional arguments
 
         Returns:
@@ -491,7 +491,7 @@ class LionOptimizationAlgorithm(Algorithm):
             task (Task): Optimization task.
 
         Returns:
-            Tuple[numpy.ndarray[Lion], numpy.ndarray[int]):
+            Tuple[numpy.ndarray[Lion], numpy.ndarray[int]]:
                 1. Lion population that finished with mating.
                 2. Pride and nomad excess gender quantities.
 
@@ -703,7 +703,7 @@ class LionOptimizationAlgorithm(Algorithm):
             task (Task): Optimization task.
 
         Returns:
-            Tuple[numpy.ndarray[Lion], numpy.ndarray[int]):
+            Tuple[numpy.ndarray[Lion], numpy.ndarray[int]]:
                 1. Lion population that finished with defending.
                 2. Pride and nomad excess gender quantities.
 
@@ -812,7 +812,7 @@ class LionOptimizationAlgorithm(Algorithm):
             task (Task): Optimization task.
 
         Returns:
-            Tuple[numpy.ndarray[Lion], numpy.ndarray[int]):
+            Tuple[numpy.ndarray[Lion], numpy.ndarray[int]]:
                 1. Lion population that finished with migration.
                 2. Pride and nomad excess gender quantities.
 
