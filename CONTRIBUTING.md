@@ -29,105 +29,73 @@ If you are not so familiar with Git or/and GitHub, we suggest you take a look at
 
 ### Requirements
 
-* Make:
-    * Windows: [http://mingw.org/download/installer](http://mingw.org/download/installer) [Detailed install instructions](.github/mingw_install_guide.md)
-    * Mac: http://developer.apple.com/xcode
-    * Linux: http://www.gnu.org/software/make
-* pipenv: http://docs.pipenv.org (run ```pip install pipenv``` command)
-* Pandoc: [http://johnmacfarlane.net/pandoc/installing.html] (http://johnmacfarlane.net/pandoc/installing.html) * optional
-* Graphviz: [http://www.graphviz.org/Download.php](http://www.graphviz.org/Download.php) * optional
+* Python >= 3.9
+* Poetry: https://python-poetry.org/docs/
 
 ### Development dependencies
 
-List of NiaPy's dependencies:
+**NiaPy dependencies:**
 
-| Package    | Version | Platform |
-| ---------- |:-------:|:--------:|
-| numpy      | 1.17.0  | All      |
-| matplotlib | 2.2.4   | All      |
-| pandas     | 0.24.2  | All      |
-| openpyxl   | 3.0.3   | All      |
+| Package    |  Version  | Platform |
+|------------|:---------:|:--------:|
+| numpy      | \>=1.26.1 |   All    |
+| matplotlib | \>=3.8.0  |   All    |
+| pandas     | \>=2.1.1  |   All    |
+| openpyxl   | \>=3.1.2  |   All    |
 
+**Test dependencies:**
 
-List of development dependencies:
+| Package         |  Version  | Platform |
+|-----------------|:---------:|:--------:|
+| pytest          | \>=7.4.2  |   Any    |
+| pytest-cov      | \>=4.1.0  |   Any    |
+| pytest-randomly | \>=3.15.0 |   Any    |
 
-| Package                       | Version | Platform |
-| ----------------------------- |:-------:|:--------:|
-|flake8                         | Any     | Any      |
-|pycodestyle                    | Any     | Any      |
-|pydocstyle                     | Any     | Any      |
-|pytest                         | ~=3.3   | Any      |
-|pytest-describe                | Any     | Any      |
-|pytest-expecter                | Any     | Any      |
-|pytest-random                  | Any     | Any      |
-|pytest-cov                     | Any     | Any      |
-|freezegun                      | Any     | Any      |
-|coverage-space                 | Any     | Any      |
-|docutils                       | Any     | Any      |
-|Pygments                       | Any     | Any      |
-|wheel                          | Any     | Any      |
-|twine                          | Any     | Any      |
-|sniffer                        | Any     | Any      |
-|sphinx                         | Any     | Any      |
-|autopep8                       | Any     | Any      |
-|sphinx-autobuild               | Any     | Any      |
+**Documentation dependencies (optional):**
 
-
-To confirm these system dependencies are configured correctly:
-
-```sh
-$ make doctor
-```
+| Package            | Version  | Platform |
+|--------------------|:--------:|:--------:|
+| sphinx             | \>=7.2.6 |   Any    |
+| sphinx-press-theme | \>=0.8.0 |   Any    |
 
 ### Installation
 
 Install project dependencies into a virtual environment:
 
 ```sh
-$ make install
+$ poetry install
+```
+
+Install the optional documentation dependencies with:
+
+```sh
+$ poetry install --with docs
 ```
 
 To enter created virtual environment with all installed dependencies run:
 
 ```sh
-$ pipenv shell
+$ poetry shell
 ```
 
 ## Development Tasks
 
 ### Testing
 
-Manually run the tests:
+Run the tests:
 
 ```sh
-$ make test
+$ poetry run pytest
 ```
-
-or keep them running on change:
-
-```sh
-$ make watch
-```
-
-> In order to have OS X notifications, `brew install terminal-notifier`.
 
 ### Documentation
 
 Build the documentation:
 
 ```sh
-$ make docs
-```
-
-### Static Analysis
-
-Run linters and static analyzers:
-
-```sh
-$ make flake8
-$ make pycodestyle
-$ make pydocstyle
-$ make check  # includes all checks
+$ poetry shell
+$ cd docs
+$ make html
 ```
 
 ## Support

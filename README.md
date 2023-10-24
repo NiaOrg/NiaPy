@@ -33,7 +33,7 @@ Nature-inspired algorithms are a very popular tool for solving optimization prob
 
 * **Free software:** MIT license
 * **Documentation:** https://niapy.readthedocs.io/en/stable/
-* **Python versions:** 3.6.x, 3.7.x, 3.8.x, 3.9.x, 3.10x, 3.11x
+* **Python versions:** 3.9.x, 3.10.x, 3.11.x
 * **Dependencies:** [click here](CONTRIBUTING.md#development-dependencies)
 
 # Mission
@@ -96,8 +96,7 @@ In case you want to install directly from the source code, use:
 
 ```sh
 $ git clone https://github.com/NiaOrg/NiaPy.git
-$ cd NiaPy
-$ python setup.py install
+$ pip install NiaPy/
 ```
 
 # Algorithms
