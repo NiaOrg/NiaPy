@@ -1,35 +1,31 @@
-{% set data = load_setup_py_data() %}
+{% set pyproject = load_file_data('pyproject.toml') %}
+{% set poetry = pyproject.get('tool', {}).get('poetry') %}
 
 package:
-  name: niapy
-  version: {{ data['version'] }}
+  name: {{ poetry.get('name') }}
+  version: {{ poetry.get('version') }}
 
 source:
   path: ..
 
 build:
   number: 0
-  script: python setup.py install --single-version-externally-managed --record=record.txt
+  script: {{ PYTHON }} -m pip install . -vv
 
 requirements:
-  build:
+  host:
     - python
-    - numpy>=1.17.0
-    - matplotlib
-    - pandas
-    - openpyxl
+    - pip
+    - setuptools
+    - wheel
   run:
     - python
-    - numpy>=1.17.0
-    - matplotlib
-    - pandas
-    - openpyxl
-
-test:
-  imports:
-    - niapy
 
 about:
-  home: {{ data['url'] }}
-  license: {{ data['license'] }}
-summary: {{ data['description'] }}
+  home: {{ poetry.get('homepage') }}
+  license: {{ poetry.get('license') }}
+  license_file: LICENSE
+  license_url: https://github.com/NiaOrg/NiaPy/blob/master/LICENSE
+  summary: {{ poetry.get('description') }}
+  doc_url: {{ poetry.get('documentation') }}
+  dev_url: {{ poetry.get('repository') }}
