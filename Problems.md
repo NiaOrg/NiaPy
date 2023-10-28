@@ -1,4 +1,4 @@
-# List of test problems included in niapy
+# List of test problems included in niapy (alphabetically)
 
 - Ackley
 - Alpine
