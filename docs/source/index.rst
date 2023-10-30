@@ -3,11 +3,6 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-.. _reference:
-
-.. image:: _static/NiaPyLogo.png
-    :align: center
-
 NiaPy's documentation
 =================================
 
@@ -28,7 +23,7 @@ implementing algorithms from scratch.
 
 * **Free software:** MIT license
 * **Github repository:** https://github.com/NiaOrg/NiaPy
-* **Python versions:** 3.9.x, 3.10.x, 3.11.x
+* **Python versions:** 3.9.x, 3.10.x, 3.11.x, 3.12.x
 
 The main documentation is organized into a couple sections:
 
@@ -74,6 +69,7 @@ The main documentation is organized into a couple sections:
 .. _api-docs:
 
 .. toctree::
-  :caption: API Documentation
+   :maxdepth: 2
+   :caption: API Documentation
 
-  api/index
+   api/index

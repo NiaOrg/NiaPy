@@ -14,3 +14,10 @@
     :members:
     :undoc-members:
     :show-inheritance:
+
+:mod:`niapy.callbacks`
+----------------------
+.. automodule:: niapy.callbacks
+    :members:
+    :undoc-members:
+    :show-inheritance:

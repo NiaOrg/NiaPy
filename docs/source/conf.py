@@ -19,7 +19,7 @@ sys.path.insert(0, os.path.abspath('../../'))
 # -- Project information -----------------------------------------------------
 
 project = u'NiaPy'
-copyright = u'2018-2020, NiaOrg'
+copyright = u'2018-2023, NiaOrg'
 author = u'Grega Vrbančič, Lucija Brezočnik, Uroš Mlakar, Dušan Fister, Iztok Fister Jr., Klemen Berkovič, Jan Popič'
 
 # The short X.Y version
@@ -82,7 +82,7 @@ pygments_style = 'sphinx'
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'press' #'sphinx_rtd_theme'
+html_theme = "sphinx_rtd_theme"
 
 html_logo = '_static/NiaPyLogo.png'
 
@@ -91,9 +91,8 @@ html_logo = '_static/NiaPyLogo.png'
 # documentation.
 #
 html_theme_options = {
-    "external_links": [
-      ("Github", "https://github.com/NiaOrg/NiaPy"),
-    ]
+    "logo_only": True,
+    "display_version": False,
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
@@ -200,6 +199,3 @@ napoleon_use_param = True
 napoleon_use_rtype = True
 napoleon_use_keyword = True
 napoleon_custom_sections = None
-
-import matplotlib
-matplotlib.use('agg')
