@@ -14,25 +14,17 @@ Requirements
 Installation of development dependencies
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-**NiaPy dependencies:**
-
-+-----------+-----------+----------+
-| Package   | Version   | Platform |
-+===========+===========+==========+
-| numpy     | >=1.26.1  | All      |
-+-----------+-----------+----------+
-| matplotlib| >=3.8.0   | All      |
-+-----------+-----------+----------+
-| pandas    | >=2.1.1   | All      |
-+-----------+-----------+----------+
-| openpyxl  | >=3.1.2   | All      |
-+-----------+-----------+----------+
-
 Install project dependencies into a virtual environment:
 
 .. code-block:: bash
 
     poetry install
+
+Install documentation dependencies with:
+
+.. code-block:: bash
+
+    poetry install --with docs
 
 Run tests with:
 

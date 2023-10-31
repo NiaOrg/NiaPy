@@ -4,23 +4,17 @@
 
 
 
-![Check codestyle and test build](https://github.com/NiaOrg/NiaPy/workflows/Check%20and%20Test/badge.svg)
+![Check codestyle and test build](https://github.com/NiaOrg/NiaPy/actions/workflows/main.yml/badge.svg)
 [![PyPI Version](https://img.shields.io/pypi/v/NiaPy.svg)](https://pypi.python.org/pypi/NiaPy)
-![PyPI - Python Version](https://img.shields.io/pypi/pyversions/NiaPy.svg)
 ![PyPI - Status](https://img.shields.io/pypi/status/NiaPy.svg)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/NiaPy.svg)
-[![Downloads](https://pepy.tech/badge/niapy)](https://pepy.tech/project/niapy)
-![GitHub Release Date](https://img.shields.io/github/release-date/NiaOrg/NiaPy.svg)
-[![Anaconda-Server Badge](https://anaconda.org/niaorg/niapy/badges/installer/conda.svg)](https://conda.anaconda.org/niaorg)
+[![Anaconda Badge](https://anaconda.org/niaorg/niapy/badges/version.svg)](https://conda.anaconda.org/niaorg)
 [![Fedora package](https://img.shields.io/fedora/v/python3-niapy?color=blue&label=Fedora%20Linux&logo=fedora)](https://src.fedoraproject.org/rpms/python-niapy)
 [![AUR package](https://img.shields.io/aur/version/python-niapy?color=blue&label=Arch%20Linux&logo=arch-linux)](https://aur.archlinux.org/packages/python-niapy)
 [![Documentation Status](https://readthedocs.org/projects/niapy/badge/?version=latest)](http://niapy.readthedocs.io/en/latest/?badge=latest)
 [![GitHub license](https://img.shields.io/github/license/NiaOrg/NiaPy.svg)](https://github.com/NiaOrg/NiaPy/blob/master/LICENSE)
 
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/NiaOrg/NiaPy/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/NiaOrg/NiaPy/?branch=master)
-[![Coverage Status](https://img.shields.io/coveralls/NiaOrg/NiaPy/master.svg)](https://coveralls.io/r/NiaOrg/NiaPy)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/w/NiaOrg/NiaPy.svg)
-[![Updates](https://pyup.io/repos/github/NiaOrg/NiaPy/shield.svg)](https://pyup.io/repos/github/NiaOrg/NiaPy/)
 [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/NiaOrg/NiaPy.svg)](http://isitmaintained.com/project/NiaOrg/NiaPy "Average time to resolve an issue")
 [![Percentage of issues still open](http://isitmaintained.com/badge/open/NiaOrg/NiaPy.svg)](http://isitmaintained.com/project/NiaOrg/NiaPy "Percentage of issues still open")
 ![GitHub contributors](https://img.shields.io/github/contributors/NiaOrg/NiaPy.svg)
@@ -33,7 +27,7 @@ Nature-inspired algorithms are a very popular tool for solving optimization prob
 
 * **Free software:** MIT license
 * **Documentation:** https://niapy.readthedocs.io/en/stable/
-* **Python versions:** 3.9.x, 3.10.x, 3.11.x
+* **Python versions:** 3.9.x, 3.10.x, 3.11.x, 3.12.x
 * **Dependencies:** [click here](CONTRIBUTING.md#development-dependencies)
 
 # Mission
@@ -51,43 +45,43 @@ Our mission is to build a collection of nature-inspired algorithms and create a 
 Install NiaPy with pip:
 
 ```sh
-$ pip install niapy
+pip install niapy
 ```
 
 To install NiaPy with conda, use:
 
 ```sh
-$ conda install -c niaorg niapy
+conda install -c niaorg niapy
 ```
 
 To install NiaPy on Fedora, use:
 
 ```sh
-$ dnf install python3-niapy
+dnf install python3-niapy
 ```
 
 To install NiaPy on Arch Linux, please use an [AUR helper](https://wiki.archlinux.org/title/AUR_helpers):
 
 ```sh
-$ yay -Syyu python-niapy
+yay -Syyu python-niapy
 ```
 
 To install NiaPy on Alpine Linux, please enable Community repository and use:
 
 ```sh
-$ apk add py3-niapy
+apk add py3-niapy
 ```
 
 To install NiaPy on NixOS, please use:
 
 ```sh
-$ nix-env -iA nixos.python310Packages.niapy
+nix-env -iA nixos.python310Packages.niapy
 ```
 
 To install NiaPy on Void Linux, use:
 
 ```sh
-$ xbps-install -S python3-niapy
+xbps-install -S python3-niapy
 ```
 
 ## Install from source
@@ -95,8 +89,7 @@ $ xbps-install -S python3-niapy
 In case you want to install directly from the source code, use:
 
 ```sh
-$ git clone https://github.com/NiaOrg/NiaPy.git
-$ pip install NiaPy/
+pip install git+https://github.com/NiaOrg/NiaPy.git
 ```
 
 # Algorithms
@@ -308,8 +301,6 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind are welcome!
 
 ## Contributing
-
-[![Open Source Helpers](https://www.codetriage.com/niaorg/niapy/badges/users.svg)](https://www.codetriage.com/niaorg/niapy)
 
 We encourage you to contribute to NiaPy! Please check out the [Contributing to NiaPy guide](CONTRIBUTING.md) for guidelines about how to proceed.
 
