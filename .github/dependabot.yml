@@ -10,3 +10,10 @@ updates:
     directory: "/"
     schedule:
       interval: "monthly"
+
+  - package-ecosystem: "pip"
+    directory: "/docs"
+    schedule:
+      interval: "monthly"
+    # Disable automatic updates for docs dependencies
+    open-pull-requests-limit: 0
