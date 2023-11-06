@@ -20,7 +20,7 @@ sys.path.insert(0, os.path.abspath('../../'))
 
 project = u'NiaPy'
 copyright = u'2018-2023, NiaOrg'
-author = u'Grega Vrbančič, Lucija Brezočnik, Uroš Mlakar, Dušan Fister, Iztok Fister Jr., Klemen Berkovič, Jan Popič'
+author = u'Grega Vrbančič, Lucija Brezočnik, Uroš Mlakar, Dušan Fister, Iztok Fister Jr., Klemen Berkovič, Jan Popič, Žiga Stupan'
 
 # The short X.Y version
 version = u'2.0'
