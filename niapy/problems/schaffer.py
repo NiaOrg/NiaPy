@@ -23,9 +23,9 @@ class SchafferN2(Problem):
 
     **Input domain:**
     The function can be defined on any input domain but it is usually
-    evaluated on the hypercube :math:`x_i ∈ [-100, 100]`, for all :math:`i = 1, 2,..., D`.
+    evaluated on the hypercube :math:`x_i ∈ [-100, 100]`, for all :math:`i = 1, 2`.
 
-    **Global minimum:** :math:`f(x^*) = 0`, at :math:`x^* = (420.968746,...,420.968746)`
+    **Global minimum:** :math:`f(x^*) = 0`, at :math:`x^* = (0, 0)`
 
     LaTeX formats:
         Inline:
@@ -85,9 +85,9 @@ class SchafferN4(Problem):
 
     **Input domain:**
         The function can be defined on any input domain but it is usually
-        evaluated on the hypercube :math:`x_i ∈ [-100, 100]`, for all :math:`i = 1, 2,..., D`.
+        evaluated on the hypercube :math:`x_i ∈ [-100, 100]`, for all :math:`i = 1, 2`.
 
-    **Global minimum:** :math:`f(x^*) = 0`, at :math:`x^* = (420.968746,...,420.968746)`
+    **Global minimum:** :math:`f(x^*) = 0`, at :math:`x^* = (0, 0)`
 
     LaTeX formats:
         Inline:
@@ -143,13 +143,18 @@ class ExpandedSchaffer(Problem):
 
     Function:
         **Expanded Schaffer Function**
-        :math:`f(\textbf{x}) = g(x_D, x_1) + \sum_{i=2}^D g(x_{i - 1}, x_i) \\ g(x, y) = 0.5 + \frac{\sin \left(\sqrt{x^2 + y^2} \right)^2 - 0.5}{\left( 1 + 0.001 (x^2 + y^2) \right)}^2`
+
+        .. math::
+
+           f(\textbf{x}) = g(x_D, x_1) + \sum_{i=2}^D g(x_{i - 1}, x_i)
+
+           g(x, y) = 0.5 + \frac{\sin \left(\sqrt{x^2 + y^2} \right)^2 - 0.5}{\left( 1 + 0.001 (x^2 + y^2) \right)}^2`
 
     **Input domain:**
         The function can be defined on any input domain but it is usually
         evaluated on the hypercube :math:`x_i ∈ [-100, 100]`, for all :math:`i = 1, 2,..., D`.
 
-    **Global minimum:** :math:`f(x^*) = 0`, at :math:`x^* = (420.968746,...,420.968746)`
+    **Global minimum:** :math:`f(x^*) = 0`, at :math:`x_i^* = 0`
 
     LaTeX formats:
         Inline:

@@ -75,5 +75,5 @@ class Salomon(Problem):
                 \right)+ 0.1 \sqrt{\sum_{i=1}^D x_i^2}$'''
 
     def _evaluate(self, x):
-        val = np.sum(x ** 2.0)
-        return 1.0 - np.cos(2.0 * np.pi * np.sqrt(val)) + 0.1 * val
+        val = np.sqrt(np.sum(x ** 2.0))
+        return 1.0 - np.cos(2.0 * np.pi * val) + 0.1 * val

@@ -27,7 +27,7 @@ class Discus(Problem):
         evaluated on the hypercube :math:`x_i ∈ [-100, 100]`, for all :math:`i = 1, 2,..., D`.
 
         **Global minimum:**
-        :math:`f(x^*) = 0`, at :math:`x^* = (420.968746,...,420.968746)`
+        :math:`f(x^*) = 0`, at :math:`x_i^* = 0`
 
     LaTeX formats:
         Inline:

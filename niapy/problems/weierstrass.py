@@ -26,7 +26,7 @@ class Weierstrass(Problem):
         evaluated on the hypercube :math:`x_i ∈ [-100, 100]`, for all :math:`i = 1, 2,..., D`.
         Default value of a = 0.5, b = 3 and k_max = 20.
 
-        **Global minimum:** :math:`f(x^*) = 0`, at :math:`x^* = (420.968746,...,420.968746)`
+        **Global minimum:** :math:`f(x^*) = 0`, at :math:`x_i^* = 0`
 
     LaTeX formats:
         Inline:
@@ -44,7 +44,7 @@ class Weierstrass(Problem):
     """
 
     def __init__(self, dimension=4, lower=-100.0, upper=100.0, a=0.5, b=3, k_max=20, *args, **kwargs):
-        r"""Initialize Bent Cigar problem..
+        r"""Initialize Weierstrass problem..
 
         Args:
             dimension (Optional[int]): Dimension of the problem.
@@ -74,13 +74,8 @@ class Weierstrass(Problem):
         return r'''$f(\textbf{x}) = \sum_{i=1}^D \left( \sum_{k=0}^{k_{max}} a^k \cos\left( 2 \pi b^k ( x_i + 0.5) \right) \right) - D \sum_{k=0}^{k_{max}} a^k \cos \left( 2 \pi b^k \cdot 0.5 \right)$'''
 
     def _evaluate(self, x):
-        val1 = 0.0
-        for i in range(self.dimension):
-            val = 0.0
-            for k in range(self.k_max):
-                val += self.a ** k * np.cos(2.0 * np.pi * self.b ** k * (x[i] + 0.5))
-            val1 += val
-        val2 = 0.0
-        for k in range(self.k_max):
-            val2 += self.a ** k * np.cos(2 * np.pi * self.b ** k * 0.5)
-        return val1 - self.dimension * val2
+        k = np.atleast_2d(np.arange(self.k_max + 1)).T
+        t1 = self.a ** k * np.cos(2 * np.pi * self.b ** k * (x + 0.5))
+        t2 = self.dimension * np.sum(self.a ** k.T * np.cos(np.pi * self.b ** k.T))
+
+        return np.sum(np.sum(t1, axis=0)) - t2
