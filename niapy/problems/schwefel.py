@@ -68,7 +68,7 @@ class Schwefel(Problem):
         return r'''$f(\textbf{x}) = 418.9829d - \sum_{i=1}^{D} x_i \sin(\sqrt{\lvert x_i \rvert})$'''
 
     def _evaluate(self, x):
-        return 418.9829 * self.dimension - np.sum(x * np.sin(np.sqrt(np.abs(x))))
+        return 418.982887272433799807913601398 * self.dimension - np.sum(x * np.sin(np.sqrt(np.abs(x))))
 
 
 class Schwefel221(Problem):

@@ -69,10 +69,10 @@ class Powell(Problem):
         return r'''$f(\textbf{x}) = \sum_{i = 1}^{D / 4} \left( (x_{4 i - 3} + 10 x_{4 i - 2})^2 + 5 (x_{4 i - 1} - x_{4 i})^2 + (x_{4 i - 2} - 2 x_{4 i - 1})^4 + 10 (x_{4 i - 3} - x_{4 i})^4 \right)$'''
 
     def _evaluate(self, x):
-        x1 = x[range(1, self.dimension - 3, 4)]
-        x2 = x[range(2, self.dimension - 2, 4)]
-        x3 = x[range(3, self.dimension - 1, 4)]
-        x4 = x[range(4, self.dimension, 4)]
+        x1 = x[0::4]
+        x2 = x[1::4]
+        x3 = x[2::4]
+        x4 = x[3::4]
 
         term1 = (x1 + 10 * x2) ** 2.0
         term2 = 5 * (x3 - x4) ** 2.0

@@ -26,7 +26,7 @@ class Quintic(Problem):
         The function can be defined on any input domain but it is usually
         evaluated on the hypercube :math:`x_i ∈ [-10, 10]`, for all :math:`i = 1, 2,..., D`.
 
-        **Global minimum:** :math:`f(x^*) = 0`, at :math:`x^* = f(-1\; \text{or}\; 2)`
+        **Global minimum:** :math:`f(x^*) = 0`, at :math:`x_i^* = -1`
 
     LaTeX formats:
         Inline:

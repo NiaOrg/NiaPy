@@ -159,7 +159,7 @@ class TestProblemFunctions(TestCase):
     def test_elliptic(self):
         """Test the elliptic function."""
         fun = get_problem('elliptic', self.dimension, -100, 100)
-        self.assertAlmostEqual(fun(self.array10), 5129555.351959938, delta=2e6)
+        self.assertAlmostEqual(fun(self.array), 0)
 
     def test_expanded_griewank_plus_rosenbrock(self):
         """Test the expanded griewank plus rosenbrock function."""
@@ -189,7 +189,7 @@ class TestProblemFunctions(TestCase):
     def test_katsuura(self):
         """Test the katsuura function."""
         fun = get_problem('katsuura', self.dimension, -100, 100)
-        self.assertAlmostEqual(fun(self.array10), 3837.4739882594373, delta=4000)
+        self.assertAlmostEqual(fun(self.array), 1)
 
     def test_modified_schwefel(self):
         """Test the modified schwefel function."""
