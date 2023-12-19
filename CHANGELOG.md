@@ -1,6 +1,29 @@
 # Changelog
 
 <!-- insertion marker -->
+## [2.1.0](https://github.com/NiaOrg/NiaPy/releases/tag/2.1.0) - 2023-12-19
+
+<small>[Compare with 2.0.5](https://github.com/NiaOrg/NiaPy/compare/2.0.5...2.1.0)</small>
+
+### Added
+
+- Add repology badge ([6d56ff5](https://github.com/NiaOrg/NiaPy/commit/6d56ff579d42c5a4960f7ff5e7d482628bdb3967) by Iztok Fister Jr).
+- Added pyproject.toml and poetry lock ([f459f56](https://github.com/NiaOrg/NiaPy/commit/f459f56152fa8da1e027d125233f44931706bff0) by zStupan).
+- added before_run and after_run callbacks. added a reference to the algorithm in Callback class ([f54f7c2](https://github.com/NiaOrg/NiaPy/commit/f54f7c2008a20eee90ce1447406bfd7e3fa9dcab) by zStupan).
+- added callback example ([ea82514](https://github.com/NiaOrg/NiaPy/commit/ea82514dff8aa252652c7f7dd7ad059d91721c92) by zStupan).
+- Added callbacks, removed the run_task and iteration_generator methods, moved functionallity to Algorithm.run ([cc08dac](https://github.com/NiaOrg/NiaPy/commit/cc08dac1163f96bb6ee2ed394a333ebe730b2582) by zStupan).
+
+### Fixed
+
+- fixed tests ([a9e68b4](https://github.com/NiaOrg/NiaPy/commit/a9e68b4f9f3926aaa5ee586c0fc69a0fc597bf90) by zStupan).
+- fix pypi workflow ([5966cf3](https://github.com/NiaOrg/NiaPy/commit/5966cf330a89ec282008d0395cab47e4261b7e89) by zStupan).
+- fix docs warnings ([ab71ddc](https://github.com/NiaOrg/NiaPy/commit/ab71ddcd5b840fdc4032eeec44d37f9be8be91c0) by zStupan).
+
+### Removed
+
+- removed unused files ([a48d1ff](https://github.com/NiaOrg/NiaPy/commit/a48d1ffd342aea27dbb1f81780acca7ed8fddce5) by zStupan).
+- remove pytest-custom-exit-code plugin ([90a15ed](https://github.com/NiaOrg/NiaPy/commit/90a15ed1b9cb85c399616370d9f76f182ef59f43) by zStupan).
+
 
 ## [2.0.5](https://github.com/NiaOrg/NiaPy/tree/2.0.5) (2023-03-26)
 
