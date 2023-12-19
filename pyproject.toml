@@ -46,6 +46,52 @@ optional = true
 sphinx = "^7.2.6"
 sphinx-rtd-theme = "^1.3.0"
 
+[tool.poetry.group.release]
+optional = true
+
+[tool.poetry.group.release.dependencies]
+git-changelog = "^2.4.0"
+bump-my-version = "^0.15.3"
+pandoc = "^2.3"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.bumpversion]
+current_version = "2.0.5"
+allow_dirty = true
+commit = true
+tag = true
+tag_name = "v{new_version}"
+parse = '(?P<major>\d+)\.(?P<minor>\d+)(\.(?P<patch>\d+))(\-?((rc)?(?P<rc>\d+))?)'
+serialize = [
+	"{major}.{minor}.{patch}rc{rc}",
+	"{major}.{minor}.{patch}"
+]
+
+[[tool.bumpversion.files]]
+filename = "pyproject.toml"
+search = "version = \"{current_version}\""
+replace = "version = \"{new_version}\""
+
+[[tool.bumpversion.files]]
+filename = "niapy/__init__.py"
+search = "__version__ = \"{current_version}\""
+replace = "__version__ = \"{new_version}\""
+
+[[tool.bumpversion.files]]
+filename = "docs/source/conf.py"
+search = "release = u'{current_version}'"
+replace = "release = u'{new_version}'"
+
+[tool.git-changelog]
+convention = "basic"
+in-place = true
+marker-line = "<!-- insertion marker -->"
+output = "CHANGELOG.md"
+parse-refs = true
+parse-trailers = true
+repository = "."
+provider = "github"
+template = "keepachangelog"
