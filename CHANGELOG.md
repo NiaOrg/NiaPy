@@ -1,5 +1,7 @@
 # Changelog
 
+<!-- insertion marker -->
+
 ## [2.0.5](https://github.com/NiaOrg/NiaPy/tree/2.0.5) (2023-03-26)
 
 [Full Changelog](https://github.com/NiaOrg/NiaPy/compare/2.0.4...2.0.5)
