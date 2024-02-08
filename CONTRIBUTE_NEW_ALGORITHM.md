@@ -32,6 +32,39 @@ Given the current influx of metaphor-based nature-inspired algorithms in the res
 
 ### Code Structure
 
+#### Main Algorithm File
+
+1. Create a New File: Create a new file in niapy/algorithms/{basic/modified/other}. The file name should correspond to the acronym of the nature-inspired algorithm.
+
+2. Define Algorithm Class: Begin by defining a new class for your algorithm, inheriting from the appropriate base class (e.g., Algorithm). Name your class after the nature-inspired algorithm; avoid using acronyms.
+
+3. Initialization: Implement the __init__ method to initialize necessary parameters and attributes specific to your algorithm. Ensure clarity and consistency in parameter naming.
+
+- Set Parameters Method: Modify the set_parameters method to handle parameters specific to your algorithm. Update the docstring to provide clear information about each parameter.
+- Init Population Method: Adjust the init_population method to initialize the initial population for your algorithm. Add any additional parameters required by your algorithm.
+
+4. Run Iteration Method: Customize the run_iteration method, the core function of your algorithm. Implement the main logic, considering the optimization task, population, and iteration-specific parameters.
+
+#### Documentation
+
+- Provide Detailed Information: Document your algorithm, including its reference paper, attributes, and usage instructions.
+
+#### Tests
+
+- Write Test Cases: Write at least two test cases to ensure the correctness of your algorithm's implementation.
+
+#### Examples
+
+- Provide Simple Example: Include a simple example for running your algorithm.
+
+#### Code Style and PEP 8 Compliance
+
+- Follow the PEP 8 style guide for Python.
+- Maintain consistency in formatting and naming conventions.
+
+#### License
+
+- MIT License: Each code contribution in this repository is licensed under the MIT license.
 
 ## References
 
