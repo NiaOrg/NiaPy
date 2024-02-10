@@ -52,20 +52,20 @@ dev = ["freezegun (>=1.0,<2.0)", "pytest (>=6.0)", "pytest-cov"]
 
 [[package]]
 name = "bump-my-version"
-version = "0.15.3"
+version = "0.17.3"
 description = "Version bump your Python project"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "bump-my-version-0.15.3.tar.gz", hash = "sha256:0894ac7f026054734c3386f8db87c8feb85c40f41c1fcbc3ebf674f56bc446b6"},
-    {file = "bump_my_version-0.15.3-py3-none-any.whl", hash = "sha256:ecf1b1ecf1f4ec0db59cc83fb14dfbbb80196fcbeb446cfac8f25943714330d6"},
+    {file = "bump-my-version-0.17.3.tar.gz", hash = "sha256:ac643cf4b36cb925e78c2c48628fd30d3f99d0d30d3d954725214813dde7283c"},
+    {file = "bump_my_version-0.17.3-py3-none-any.whl", hash = "sha256:d07b33784922ad6acba19e31a62d0f56572e405430187bf9e7d9ab2d3e593921"},
 ]
 
 [package.dependencies]
 click = "*"
-dotted-notation = "*"
 pydantic = ">=2.0.0"
 pydantic-settings = "*"
+questionary = "*"
 rich = "*"
 rich-click = "*"
 tomlkit = "*"
@@ -365,19 +365,6 @@ files = [
     {file = "docutils-0.18.1-py2.py3-none-any.whl", hash = "sha256:23010f129180089fbcd3bc08cfefccb3b890b0050e1ca00c867036e9d161b98c"},
     {file = "docutils-0.18.1.tar.gz", hash = "sha256:679987caf361a7539d76e584cbeddc311e3aee937877c87346f31debc63e9d06"},
 ]
-
-[[package]]
-name = "dotted-notation"
-version = "0.11.0"
-description = "Dotted notation parser with pattern matching"
-optional = false
-python-versions = ">=3.6"
-files = [
-    {file = "dotted-notation-0.11.0.tar.gz", hash = "sha256:e1a214cb236cd647e56c79108e8eca2a50a635b7196077eab211869d9a93b0ed"},
-]
-
-[package.dependencies]
-pyparsing = ">=2.4"
 
 [[package]]
 name = "et-xmlfile"
@@ -1104,6 +1091,20 @@ files = [
 ]
 
 [[package]]
+name = "prompt-toolkit"
+version = "3.0.36"
+description = "Library for building powerful interactive command lines in Python"
+optional = false
+python-versions = ">=3.6.2"
+files = [
+    {file = "prompt_toolkit-3.0.36-py3-none-any.whl", hash = "sha256:aa64ad242a462c5ff0363a7b9cfe696c20d55d9fc60c11fd8e632d064804d305"},
+    {file = "prompt_toolkit-3.0.36.tar.gz", hash = "sha256:3e163f254bef5a03b146397d7c1963bd3e2812f0964bb9a24e6ec761fd28db63"},
+]
+
+[package.dependencies]
+wcwidth = "*"
+
+[[package]]
 name = "pydantic"
 version = "2.5.2"
 description = "Data validation using Python type hints"
@@ -1398,6 +1399,20 @@ files = [
     {file = "pywin32-306-cp39-cp39-win32.whl", hash = "sha256:e25fd5b485b55ac9c057f67d94bc203f3f6595078d1fb3b458c9c28b7153a802"},
     {file = "pywin32-306-cp39-cp39-win_amd64.whl", hash = "sha256:39b61c15272833b5c329a2989999dcae836b1eed650252ab1b7bfbe1d59f30f4"},
 ]
+
+[[package]]
+name = "questionary"
+version = "2.0.1"
+description = "Python library to build pretty command line user prompts ⭐️"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "questionary-2.0.1-py3-none-any.whl", hash = "sha256:8ab9a01d0b91b68444dff7f6652c1e754105533f083cbe27597c8110ecc230a2"},
+    {file = "questionary-2.0.1.tar.gz", hash = "sha256:bcce898bf3dbb446ff62830c86c5c6fb9a22a54146f0f5597d3da43b10d8fc8b"},
+]
+
+[package.dependencies]
+prompt_toolkit = ">=2.0,<=3.0.36"
 
 [[package]]
 name = "requests"
@@ -1740,6 +1755,17 @@ socks = ["pysocks (>=1.5.6,!=1.5.7,<2.0)"]
 zstd = ["zstandard (>=0.18.0)"]
 
 [[package]]
+name = "wcwidth"
+version = "0.2.13"
+description = "Measures the displayed width of unicode strings in a terminal"
+optional = false
+python-versions = "*"
+files = [
+    {file = "wcwidth-0.2.13-py2.py3-none-any.whl", hash = "sha256:3da69048e4540d84af32131829ff948f1e022c1c6bdb8d6102117aac784f6859"},
+    {file = "wcwidth-0.2.13.tar.gz", hash = "sha256:72ea0c06399eb286d978fdedb6923a9eb47e1c486ce63e9b4e64fc18303972b5"},
+]
+
+[[package]]
 name = "zipp"
 version = "3.17.0"
 description = "Backport of pathlib-compatible object wrapper for zip files"
@@ -1757,4 +1783,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.13"
-content-hash = "512c0f0018cc21a0447d463e0986fe1846b22342e248e003fd600a238d102bcd"
+content-hash = "c72f2eed019825855d7e2bd79e3ad1de37eddf52f78749110fb5bf8d18f48c1c"
