@@ -1,16 +1,30 @@
 # Contributing new nature-inspired algorithms to NiaPy framework
 
+## Table of Contents
+- [Introduction](#introduction)
+- [Prerequisites](#prerequisites)
+- [Adding a New Algorithm](#adding-a-new-algorithm)
+  - [Algorithm Overview](#algorithm-overview)
+  - [Code Structure](#code-structure)
+    - [Main Algorithm File](#main-algorithm-file)
+    - [Documentation](#documentation)
+    - [Tests](#tests)
+    - [Examples](#examples)
+    - [Code Style and PEP 8 Compliance](#code-style-and-pep-8-compliance)
+- [License](#license)
+- [References](#references)
+
 ## Introduction
 
 Thank you for taking the time to explore this document. The NiaPy framework has experienced over 5 years of growth, thanks to the helpfulness and willingness of our community contributors. Their significant contributions have played a vital role in the success of this project. While designing and implementing key functions for the main framework is crucial, adding new algorithms is an equally important step in keeping the framework dynamic and up-to-date.
 
 Currently, the NiaPy framework hosts more than 30 algorithms, categorized into three families:
 
-- Basic Algorithms: These are vanilla implementations of nature-inspired algorithms, often derived from research papers where authors propose new algorithms.
+- **Basic Algorithms**: These are vanilla implementations of nature-inspired algorithms, often derived from research papers where authors propose new algorithms.
 
-- Modified Algorithms: This category includes modified, hybrid, and adaptive variants of basic algorithms.
+- **Modified Algorithms**: This category includes modified, hybrid, and adaptive variants of basic algorithms.
 
-- Other Algorithms: This encompasses algorithms that fit well under the optimization umbrella but cannot be directly classified into the previously mentioned families (e.g., random search).
+- **Other Algorithms**: This encompasses algorithms that fit well under the optimization umbrella but cannot be directly classified into the previously mentioned families (e.g., random search).
 
 For a comprehensive overview of the implemented algorithms, please refer to the [following document](https://raw.githubusercontent.com/firefly-cpp/NiaPy/master/Algorithms.md).
 
@@ -34,9 +48,9 @@ Given the current influx of metaphor-based nature-inspired algorithms in the res
 
 #### Main Algorithm File
 
-1. Create a New File: Create a new file in niapy/algorithms/{basic/modified/other}. The file name should correspond to the acronym of the nature-inspired algorithm.
+- Create a New File: Create a new file in `niapy/algorithms/{basic/modified/other}`. The file name should correspond to the acronym of the nature-inspired algorithm.
 
-2. Define Algorithm Class: Begin by defining a new class for your algorithm, inheriting from the appropriate base class (e.g., Algorithm). Name your class after the nature-inspired algorithm; avoid using acronyms.
+- Define Algorithm Class: Begin by defining a new class for your algorithm, inheriting from the appropriate base class (e.g., Algorithm). Name your class after the nature-inspired algorithm; avoid using acronyms.
 
 ```python
 import logging
@@ -72,7 +86,7 @@ class BatAlgorithm(Algorithm):
     Name = ["BatAlgorithm", "BA"]
 ```
 
-3. Initialization: Implement the __init__ method to initialize necessary parameters and attributes specific to your algorithm. Ensure clarity and consistency in parameter naming.
+- Initialization: Implement the `__init__` method to initialize necessary parameters and attributes specific to your algorithm. Ensure clarity and consistency in parameter naming.
 
 ```python
 def __init__(self, population_size=40, loudness=1.0, pulse_rate=1.0, alpha=0.97, gamma=0.1, min_frequency=0.0,
@@ -101,7 +115,7 @@ def __init__(self, population_size=40, loudness=1.0, pulse_rate=1.0, alpha=0.97,
         self.max_frequency = max_frequency
 ```
 
-- Set Parameters Method: Override the set_parameters method to set parameters specific to your algorithm. Update the docstring to provide clear information about each parameter.
+- Set Parameters Method: Override the `set_parameters` method to set parameters specific to your algorithm. Update the docstring to provide clear information about each parameter.
 
 ```python
 def set_parameters(self, population_size=20, loudness=1.0, pulse_rate=1.0, alpha=0.97, gamma=0.1, min_frequency=0.0,
@@ -129,7 +143,7 @@ def set_parameters(self, population_size=20, loudness=1.0, pulse_rate=1.0, alpha
         self.min_frequency = min_frequency
         self.max_frequency = max_frequency
 ```
-- Get Parameters Method: Override the get_parameters method to return your algorithms parameters.
+- Get Parameters Method: Override the `get_parameters` method to return your algorithms parameters.
 
 ```python
 def get_parameters(self):
@@ -151,7 +165,7 @@ def get_parameters(self):
         return parameters
 ```
 
-- Init Population Method: Adjust the init_population method to initialize the initial population for your algorithm. Add any additional parameters required by your algorithm.
+- Init Population Method: Adjust the `init_population` method to initialize the initial population for your algorithm. Add any additional parameters required by your algorithm.
 
 ```python
 def init_population(self, task):
@@ -178,7 +192,7 @@ def init_population(self, task):
     return population, fitness, d
 ```
 
-4. Run Iteration Method: Customize the run_iteration method, the core function of your algorithm. Implement the main logic, considering the optimization task, population, and iteration-specific parameters.
+- Run Iteration Method: Customize the `run_iteration` method, the core function of your algorithm. Implement the main logic, considering the optimization task, population, and iteration-specific parameters.
 
 ```python
 def run_iteration(self, task, population, population_fitness, best_x, best_fitness, **params):
@@ -240,7 +254,7 @@ def run_iteration(self, task, population, population_fitness, best_x, best_fitne
 - Follow the PEP 8 style guide for Python.
 - Maintain consistency in formatting and naming conventions.
 
-#### License
+## License
 
 - MIT License: Each code contribution in this repository is licensed under the MIT license.
 
