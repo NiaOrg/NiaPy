@@ -52,13 +52,13 @@ dev = ["freezegun (>=1.0,<2.0)", "pytest (>=6.0)", "pytest-cov"]
 
 [[package]]
 name = "bump-my-version"
-version = "0.17.3"
+version = "0.18.3"
 description = "Version bump your Python project"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "bump-my-version-0.17.3.tar.gz", hash = "sha256:ac643cf4b36cb925e78c2c48628fd30d3f99d0d30d3d954725214813dde7283c"},
-    {file = "bump_my_version-0.17.3-py3-none-any.whl", hash = "sha256:d07b33784922ad6acba19e31a62d0f56572e405430187bf9e7d9ab2d3e593921"},
+    {file = "bump-my-version-0.18.3.tar.gz", hash = "sha256:716cabd4e300cab0a46e41477761f3b7cf63791978d9369ced4e9b611bc90dbb"},
+    {file = "bump_my_version-0.18.3-py3-none-any.whl", hash = "sha256:affe1f067469a29bfc6ad711c6012884222baccbe3716ab7e68a8b2d67171436"},
 ]
 
 [package.dependencies]
@@ -72,7 +72,7 @@ tomlkit = "*"
 
 [package.extras]
 dev = ["generate-changelog (>=0.7.6)", "git-fame (>=1.12.2)", "pip-tools", "pre-commit"]
-docs = ["Sphinx (>=4.3.0)", "furo", "ghp-import", "linkify-it-py", "myst-parser", "sphinx-autodoc-typehints", "sphinx-autodoc2", "sphinx-click", "sphinx-copybutton"]
+docs = ["black", "markdown-customblocks", "mdx-truly-sane-lists", "mkdocs", "mkdocs-click", "mkdocs-drawio", "mkdocs-gen-files", "mkdocs-git-authors-plugin", "mkdocs-git-committers-plugin", "mkdocs-git-revision-date-localized-plugin", "mkdocs-include-markdown-plugin", "mkdocs-literate-nav", "mkdocs-material", "mkdocstrings[python]", "python-frontmatter"]
 test = ["coverage", "pre-commit", "pytest", "pytest-cov", "pytest-mock"]
 
 [[package]]
@@ -1783,4 +1783,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.13"
-content-hash = "c72f2eed019825855d7e2bd79e3ad1de37eddf52f78749110fb5bf8d18f48c1c"
+content-hash = "ae5967e0816553c179a8b8148598e080c2b0b65cb6a66e97942a79fb72717f4c"
