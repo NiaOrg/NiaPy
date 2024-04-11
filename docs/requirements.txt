@@ -16,7 +16,7 @@ contourpy==1.2.0
     # via matplotlib
 cycler==0.12.1
     # via matplotlib
-docutils==0.18.1
+docutils==0.21.1
     # via
     #   sphinx
     #   sphinx-rtd-theme
