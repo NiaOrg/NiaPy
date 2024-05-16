@@ -237,26 +237,6 @@ class AlgorithmBaseTestCase(TestCase):
         self.assertEqual(self.rng.normal(10, 100), a)
 
 
-class TestingTask(Task, TestCase):
-    r"""Testing task.
-
-    Date:
-        April 2019
-
-    Author:
-        Klemen Berkovič
-
-    See Also:
-        * :class:`niapy.task.Task`
-
-    """
-
-    def eval(self, x):
-        r"""Check if is algorithm trying to evaluate solution out of bounds."""
-        self.assertTrue(self.is_feasible(x), 'Solution %s is not in feasible space!!!' % x)
-        return super().eval(x)
-
-
 class AlgorithmTestCase(TestCase):
     r"""Base class for testing other algorithms.
 
@@ -314,8 +294,8 @@ class AlgorithmTestCase(TestCase):
             dimension = None
         max_evals = self.max_evals if max_evals is None else max_evals
         max_iters = self.max_iters if max_iters is None else max_iters
-        task1 = TestingTask(dimension=dimension, max_evals=max_evals, max_iters=max_iters, problem=problem)
-        task2 = TestingTask(dimension=dimension, max_evals=max_evals, max_iters=max_iters, problem=problem)
+        task1 = Task(dimension=dimension, max_evals=max_evals, max_iters=max_iters, problem=problem)
+        task2 = Task(dimension=dimension, max_evals=max_evals, max_iters=max_iters, problem=problem)
         return task1, task2
 
     def test_algorithm_run(self, a=None, b=None, problem='griewank', max_evals=None, max_iters=None):
