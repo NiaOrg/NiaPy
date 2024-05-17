@@ -5,6 +5,22 @@ Changelog
 
    <!-- insertion marker -->
 
+`2.3.1 <https://github.com/NiaOrg/NiaPy/releases/tag/2.3.1>`__ - 2024-05-17
+---------------------------------------------------------------------------
+
+\ `Compare with
+v2.3.0 <https://github.com/NiaOrg/NiaPy/compare/v2.3.0...2.3.1>`__\ 
+
+Fixed
+~~~~~
+
+-  fix: workflow for publishing to pypi
+   (`9e61439 <https://github.com/NiaOrg/NiaPy/commit/9e61439fb080b72deec22e8e96c7bd20772b981a>`__
+   by Grega Vrbančič).
+
+`v2.3.0 <https://github.com/NiaOrg/NiaPy/releases/tag/v2.3.0>`__ - 2024-05-17
+-----------------------------------------------------------------------------
+
 `v2.2.0 <https://github.com/NiaOrg/NiaPy/releases/tag/v2.2.0>`__ - 2024-05-17
 -----------------------------------------------------------------------------
 
@@ -24,6 +40,8 @@ Removed
 -  Remove TestingTask class
    (`d783f69 <https://github.com/NiaOrg/NiaPy/commit/d783f69f6049c9baa6dc79189c47e1ac16d96a75>`__
    by zStupan).
+
+.. _section-1:
 
 `2.1.0 <https://github.com/NiaOrg/NiaPy/releases/tag/2.1.0>`__ - 2023-12-19
 ---------------------------------------------------------------------------
@@ -54,6 +72,8 @@ Added
    (`cc08dac <https://github.com/NiaOrg/NiaPy/commit/cc08dac1163f96bb6ee2ed394a333ebe730b2582>`__
    by zStupan).
 
+.. _fixed-1:
+
 Fixed
 ~~~~~
 
@@ -79,7 +99,7 @@ Removed
    (`90a15ed <https://github.com/NiaOrg/NiaPy/commit/90a15ed1b9cb85c399616370d9f76f182ef59f43>`__
    by zStupan).
 
-.. _section-1:
+.. _section-2:
 
 `2.0.5 <https://github.com/NiaOrg/NiaPy/tree/2.0.5>`__ (2023-03-26)
 -------------------------------------------------------------------
@@ -103,7 +123,7 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/2.0.4...2.0.5>`__
    `#397 <https://github.com/NiaOrg/NiaPy/pull/397>`__
    (`zStupan <https://github.com/zStupan>`__)
 
-.. _section-2:
+.. _section-3:
 
 `2.0.4 <https://github.com/NiaOrg/NiaPy/tree/2.0.4>`__ (2022-11-20)
 -------------------------------------------------------------------
@@ -121,7 +141,7 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/2.0.3...2.0.4>`__
    `#395 <https://github.com/NiaOrg/NiaPy/pull/395>`__
    (`zStupan <https://github.com/zStupan>`__)
 
-.. _section-3:
+.. _section-4:
 
 `2.0.3 <https://github.com/NiaOrg/NiaPy/tree/2.0.3>`__ (2022-09-03)
 -------------------------------------------------------------------
@@ -151,7 +171,7 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/2.0.2...2.0.3>`__
    `#389 <https://github.com/NiaOrg/NiaPy/pull/389>`__
    (`firefly-cpp <https://github.com/firefly-cpp>`__)
 
-.. _section-4:
+.. _section-5:
 
 `2.0.2 <https://github.com/NiaOrg/NiaPy/tree/2.0.2>`__ (2022-05-22)
 -------------------------------------------------------------------
@@ -178,7 +198,7 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/2.0.1...2.0.2>`__
    `#383 <https://github.com/NiaOrg/NiaPy/pull/383>`__
    (`zStupan <https://github.com/zStupan>`__)
 
-.. _section-5:
+.. _section-6:
 
 `2.0.1 <https://github.com/NiaOrg/NiaPy/tree/2.0.1>`__ (2022-03-05)
 -------------------------------------------------------------------
@@ -246,7 +266,7 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/2.0.0...2.0.1>`__
    `#362 <https://github.com/NiaOrg/NiaPy/pull/362>`__
    (`sisco0 <https://github.com/sisco0>`__)
 
-.. _section-6:
+.. _section-7:
 
 `2.0.0 <https://github.com/NiaOrg/NiaPy/tree/2.0.0>`__ (2021-12-27)
 -------------------------------------------------------------------
@@ -916,7 +936,7 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/1.0.2...2.0.0rc3>`__
 -  HBA - bugfix `#157 <https://github.com/NiaOrg/NiaPy/pull/157>`__
    (`kivancguckiran <https://github.com/kivancguckiran>`__)
 
-.. _section-7:
+.. _section-8:
 
 `1.0.2 <https://github.com/NiaOrg/NiaPy/tree/1.0.2>`__ (2018-10-24)
 -------------------------------------------------------------------
@@ -933,7 +953,7 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/1.0.2...2.0.0rc3>`__
 -  fix Bat Algorithm `#161 <https://github.com/NiaOrg/NiaPy/pull/161>`__
    (`GregaVrbancic <https://github.com/GregaVrbancic>`__)
 
-.. _section-8:
+.. _section-9:
 
 `2 <https://github.com/NiaOrg/NiaPy/tree/2>`__ (2018-08-30)
 -----------------------------------------------------------
@@ -1020,7 +1040,7 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/1.0.1...2.0.0rc1>`__
 -  DOI added `#128 <https://github.com/NiaOrg/NiaPy/pull/128>`__
    (`lucijabrezocnik <https://github.com/lucijabrezocnik>`__)
 
-.. _section-9:
+.. _section-10:
 
 `1.0.1 <https://github.com/NiaOrg/NiaPy/tree/1.0.1>`__ (2018-03-21)
 -------------------------------------------------------------------
@@ -1066,7 +1086,7 @@ Changelog <https://github.com/NiaOrg/NiaPy/compare/1.0.0...1.0.1>`__
    … `#114 <https://github.com/NiaOrg/NiaPy/pull/114>`__
    (`mlaky88 <https://github.com/mlaky88>`__)
 
-.. _section-10:
+.. _section-11:
 
 `1.0.0 <https://github.com/NiaOrg/NiaPy/tree/1.0.0>`__ (2018-02-28)
 -------------------------------------------------------------------

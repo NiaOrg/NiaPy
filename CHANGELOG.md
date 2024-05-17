@@ -1,6 +1,14 @@
 # Changelog
 
 <!-- insertion marker -->
+## [2.3.1](https://github.com/NiaOrg/NiaPy/releases/tag/2.3.1) - 2024-05-17
+
+<small>[Compare with v2.3.0](https://github.com/NiaOrg/NiaPy/compare/v2.3.0...2.3.1)</small>
+
+### Fixed
+
+- fix: workflow for publishing to pypi ([9e61439](https://github.com/NiaOrg/NiaPy/commit/9e61439fb080b72deec22e8e96c7bd20772b981a) by Grega Vrbančič).
+
 ## [v2.3.0](https://github.com/NiaOrg/NiaPy/releases/tag/v2.3.0) - 2024-05-17
 ## [v2.2.0](https://github.com/NiaOrg/NiaPy/releases/tag/v2.2.0) - 2024-05-17
 
