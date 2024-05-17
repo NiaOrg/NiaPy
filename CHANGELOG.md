@@ -1,6 +1,7 @@
 # Changelog
 
 <!-- insertion marker -->
+## [v2.3.0](https://github.com/NiaOrg/NiaPy/releases/tag/v2.3.0) - 2024-05-17
 ## [v2.2.0](https://github.com/NiaOrg/NiaPy/releases/tag/v2.2.0) - 2024-05-17
 
 <small>[Compare with 2.1.0](https://github.com/NiaOrg/NiaPy/compare/2.1.0...v2.2.0)</small>
