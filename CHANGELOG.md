@@ -1,6 +1,18 @@
 # Changelog
 
 <!-- insertion marker -->
+## [v2.2.0](https://github.com/NiaOrg/NiaPy/releases/tag/v2.2.0) - 2024-05-17
+
+<small>[Compare with 2.1.0](https://github.com/NiaOrg/NiaPy/compare/2.1.0...v2.2.0)</small>
+
+### Added
+
+- add example code ([de3a522](https://github.com/NiaOrg/NiaPy/commit/de3a5229dfd366634ab0321e6421ba9817519450) by zStupan).
+
+### Removed
+
+- Remove TestingTask class ([d783f69](https://github.com/NiaOrg/NiaPy/commit/d783f69f6049c9baa6dc79189c47e1ac16d96a75) by zStupan).
+
 ## [2.1.0](https://github.com/NiaOrg/NiaPy/releases/tag/2.1.0) - 2023-12-19
 
 <small>[Compare with 2.0.5](https://github.com/NiaOrg/NiaPy/compare/2.0.5...2.1.0)</small>
