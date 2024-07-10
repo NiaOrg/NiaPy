@@ -271,7 +271,7 @@ class SuccessHistoryAdaptiveDifferentialEvolution(DifferentialEvolution):
 
         """
         new_pop = objects_to_array([self.gen_ind_params(xi, hist_cr, hist_f) for xi in pop])
-        p_num = np.int_(np.around(len(pop) * self.pbest_factor))
+        p_num = round(len(pop) * self.pbest_factor)
         if p_num < 2:
             p_num = 2
         # cr and f for mutation are computed
@@ -309,7 +309,7 @@ class SuccessHistoryAdaptiveDifferentialEvolution(DifferentialEvolution):
         success_f = np.asarray([])  # array for storing successful f values
         success_cr = np.asarray([])  # array for storing successful cr values
         fitness_diff = np.asarray([])  # array for storing the difference of fitness of new individuals
-        archive_size = np.int_(np.around(len(pop) * self.extern_arc_rate))
+        archive_size = round(len(pop) * self.extern_arc_rate)
         arr = np.copy(pop)
         for i, vi in enumerate(new_pop):
             if vi.f == pop[i].f:
@@ -380,7 +380,7 @@ class SuccessHistoryAdaptiveDifferentialEvolution(DifferentialEvolution):
         h_mem_f = np.full(self.hist_mem_size, 0.5)
         # all values in the historical memory for parameters f and cr are initialized to 0.5
         k = 0  # the starting memory position is set to 1
-        arc_size = np.int_(np.around(self.population_size * self.extern_arc_rate))
+        arc_size = round(self.population_size * self.extern_arc_rate)
         archive = np.zeros((arc_size, task.dimension))
         # the external archive of max size pop_size * arc_rate is initialized
         arc_ind_cnt = 0  # the number of archive elements is set to 0
@@ -514,7 +514,7 @@ class LpsrSuccessHistoryAdaptiveDifferentialEvolution(SuccessHistoryAdaptiveDiff
         max_nfe = task.max_evals
         nfe = task.evals
 
-        next_pop_size = np.int_(np.around((((4.0 - self.population_size) / np.float_(max_nfe)) * nfe) + self.population_size))
+        next_pop_size = round((((4.0 - self.population_size) / max_nfe) * nfe) + self.population_size)
 
         if next_pop_size < 4:
             next_pop_size = 4
@@ -529,7 +529,7 @@ class LpsrSuccessHistoryAdaptiveDifferentialEvolution(SuccessHistoryAdaptiveDiff
                     worst = j if e.f > pop[worst].f else worst
                 pop = np.delete(pop, worst)
 
-            next_arc_size = np.int_(next_pop_size * self.extern_arc_rate)  # the size of the new archive
+            next_arc_size = int(next_pop_size * self.extern_arc_rate)  # the size of the new archive
             if arc_ind_cnt > next_arc_size:
                 arc_ind_cnt = next_arc_size
 
