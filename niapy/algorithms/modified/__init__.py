@@ -26,6 +26,7 @@ from niapy.algorithms.modified.shade import (
     SuccessHistoryAdaptiveDifferentialEvolution,
     LpsrSuccessHistoryAdaptiveDifferentialEvolution
 )
+from niapy.algorithms.modified.ilshade import ImprovedLpsrSuccessHistoryAdaptiveDifferentialEvolution
 
 __all__ = [
     'HybridBatAlgorithm',
@@ -45,4 +46,5 @@ __all__ = [
     'ParameterFreeBatAlgorithm',
     'SuccessHistoryAdaptiveDifferentialEvolution',
     'LpsrSuccessHistoryAdaptiveDifferentialEvolution'
+    'ImprovedLpsrSuccessHistoryAdaptiveDifferentialEvolution'
 ]
