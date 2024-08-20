@@ -1,37 +1,79 @@
-<p align="center"><img src=".github/imgs/NiaPyLogo.png" alt="NiaPy" title="NiaPy"/></p>
+<p align="center">
+  <img src=".github/imgs/NiaPyLogo.png" alt="NiaPy" title="NiaPy"/>
+</p>
 
 ---
 
+<p align="center">
+  <a href="https://pypi.python.org/pypi/NiaPy">
+    <img alt="PyPI Version" src="https://img.shields.io/pypi/v/NiaPy.svg">
+  </a>
+  <img alt="PyPI - Python Version" src="https://img.shields.io/pypi/pyversions/niapy.svg">
+  <img alt="PyPI - Status" src="https://img.shields.io/pypi/status/NiaPy.svg">
+  <img alt="PyPI - Downloads" src="https://img.shields.io/pypi/dm/NiaPy.svg">
+  <a href="https://repology.org/project/python:niapy/versions">
+    <img alt="Packaging status" src="https://repology.org/badge/tiny-repos/python:niapy.svg">
+  <a href="https://conda.anaconda.org/niaorg">
+    <img alt="Anaconda Badge" src="https://img.shields.io/badge/Anaconda.org-2.0.4-blue.svg?style=rounded">
+  </a>
+  <a href="https://src.fedoraproject.org/rpms/python-niapy">
+    <img alt="Fedora package" src="https://img.shields.io/fedora/v/python3-niapy?color=blue&label=Fedora%20Linux&logo=fedora">
+  </a>
+  <a href="https://aur.archlinux.org/packages/python-niapy">
+    <img alt="AUR package" src="https://img.shields.io/aur/version/python-niapy?color=blue&label=Arch%20Linux&logo=arch-linux">
+  </a>
+  </a>
+  <a href="https://github.com/NiaOrg/NiaPy/blob/master/LICENSE">
+    <img alt="GitHub license" src="https://img.shields.io/github/license/NiaOrg/NiaPy.svg">
+  </a>
+  <img alt="Check codestyle and test build" src="https://github.com/NiaOrg/NiaPy/actions/workflows/main.yml/badge.svg">
+  <a href="http://niapy.readthedocs.io/en/latest/?badge=latest">
+    <img alt="Documentation Status" src="https://readthedocs.org/projects/niapy/badge/?version=latest">
+  </a>
+</p>
 
+<p align="center">
+  <img alt="GitHub commit activity" src="https://img.shields.io/github/commit-activity/w/NiaOrg/NiaPy.svg">
+  <a href='http://isitmaintained.com/project/NiaOrg/NiaPy "Average time to resolve an issue"'>
+    <img alt="Average time to resolve an issue" src="http://isitmaintained.com/badge/resolution/NiaOrg/NiaPy.svg">
+  </a>
+  <a href='http://isitmaintained.com/project/NiaOrg/NiaPy "Percentage of issues still open"'>
+    <img alt="Percentage of issues still open" src="http://isitmaintained.com/badge/open/NiaOrg/NiaPy.svg">
+  </a>
+  <a href="#-contributors">
+    <img alt="GitHub contributors" src="https://img.shields.io/github/contributors/NiaOrg/NiaPy.svg">
+  </a>
+</p>
 
-![Check codestyle and test build](https://github.com/NiaOrg/NiaPy/actions/workflows/main.yml/badge.svg)
-[![PyPI Version](https://img.shields.io/pypi/v/NiaPy.svg)](https://pypi.python.org/pypi/NiaPy)
-![PyPI - Status](https://img.shields.io/pypi/status/NiaPy.svg)
-![PyPI - Downloads](https://img.shields.io/pypi/dm/NiaPy.svg)
-[![Anaconda Badge](https://anaconda.org/niaorg/niapy/badges/version.svg)](https://conda.anaconda.org/niaorg)
-[![Fedora package](https://img.shields.io/fedora/v/python3-niapy?color=blue&label=Fedora%20Linux&logo=fedora)](https://src.fedoraproject.org/rpms/python-niapy)
-[![AUR package](https://img.shields.io/aur/version/python-niapy?color=blue&label=Arch%20Linux&logo=arch-linux)](https://aur.archlinux.org/packages/python-niapy)
-[![Packaging status](https://repology.org/badge/tiny-repos/python:niapy.svg)](https://repology.org/project/python:niapy/versions)
-[![Documentation Status](https://readthedocs.org/projects/niapy/badge/?version=latest)](http://niapy.readthedocs.io/en/latest/?badge=latest)
-[![GitHub license](https://img.shields.io/github/license/NiaOrg/NiaPy.svg)](https://github.com/NiaOrg/NiaPy/blob/master/LICENSE)
+<p align="center">
+  <a href="https://doi.org/10.5281/zenodo.1205048">
+    <img alt="DOI" src="https://zenodo.org/badge/DOI/10.5281/zenodo.1205048.svg">
+  </a>
+  <a href="https://doi.org/10.21105/joss.00613">
+    <img alt="JOSS" src="http://joss.theoj.org/papers/10.21105/joss.00613/status.svg">
+  </a>
+</p>
 
-![GitHub commit activity](https://img.shields.io/github/commit-activity/w/NiaOrg/NiaPy.svg)
-[![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/NiaOrg/NiaPy.svg)](http://isitmaintained.com/project/NiaOrg/NiaPy "Average time to resolve an issue")
-[![Percentage of issues still open](http://isitmaintained.com/badge/open/NiaOrg/NiaPy.svg)](http://isitmaintained.com/project/NiaOrg/NiaPy "Percentage of issues still open")
-![GitHub contributors](https://img.shields.io/github/contributors/NiaOrg/NiaPy.svg)
-
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1205048.svg)](https://doi.org/10.5281/zenodo.1205048)
-[![DOI](http://joss.theoj.org/papers/10.21105/joss.00613/status.svg)](https://doi.org/10.21105/joss.00613)
-
+<p align="center">
+  <a href="#-mission">🎯 Mission</a> •
+  <a href="#-installation">📦 Installation</a> •
+  <a href="#-algorithms">🧠 Algorithms</a> •
+  <a href="#-problems">🧪 Problems</a> •
+  <a href="#-usage">🚀 Usage</a> •
+  <a href="#-contributors">🫂 Contributors</a> •
+  <a href="#-contributing">🙇 Contributing</a> •
+  <a href="#-license">🔑 License</a> •
+  <a href="#-cite-us">📄 Cite us</a>
+</p>
 
 Nature-inspired algorithms are a very popular tool for solving optimization problems. Numerous variants of nature-inspired algorithms have been developed ([paper 1](https://arxiv.org/abs/1307.4186), [paper 2](https://www.mdpi.com/2076-3417/8/9/1521)) since the beginning of their era. To prove their versatility, those were tested in various domains on various applications, especially when they are hybridized, modified or adapted. However, implementation of nature-inspired algorithms is sometimes a difficult, complex and tedious task. In order to break this wall, NiaPy is intended for simple and quick use, without spending time for implementing algorithms from scratch.
 
 * **Free software:** MIT license
-* **Documentation:** https://niapy.readthedocs.io/en/stable/
+* **Documentation:** https://niapy.readthedocs.io/en/stable
 * **Python versions:** 3.9.x, 3.10.x, 3.11.x, 3.12.x
-* **Dependencies:** [click here](CONTRIBUTING.md#development-dependencies)
+* **Dependencies:** listed in [CONTRIBUTING.md](CONTRIBUTING.md#development-dependencies)
 
-# Mission
+## 🎯 Mission
 
 Our mission is to build a collection of nature-inspired algorithms and create a simple interface for managing the optimization process. NiaPy offers:
 
@@ -40,68 +82,67 @@ Our mission is to build a collection of nature-inspired algorithms and create a 
 - easy comparison between nature-inspired algorithms, and
 - export of results in various formats such as Pandas DataFrame, JSON or even Excel.
 
+## 📦 Installation
 
-# Installation
-
-Install NiaPy with pip:
+To install `NiaPy` with pip, use:
 
 ```sh
 pip install niapy
 ```
 
-To install NiaPy with conda, use:
+To install `NiaPy` with conda, use:
 
 ```sh
 conda install -c niaorg niapy
 ```
 
-To install NiaPy on Fedora, use:
+To install `NiaPy` on Fedora, use:
 
 ```sh
 dnf install python3-niapy
 ```
 
-To install NiaPy on Arch Linux, please use an [AUR helper](https://wiki.archlinux.org/title/AUR_helpers):
+To install `NiaPy` on Arch Linux, use an [AUR helper](https://wiki.archlinux.org/title/AUR_helpers):
 
 ```sh
 yay -Syyu python-niapy
 ```
 
-To install NiaPy on Alpine Linux, please enable Community repository and use:
+To install `NiaPy` on Alpine Linux, enable Community repository and use:
 
 ```sh
 apk add py3-niapy
 ```
 
-To install NiaPy on NixOS, please use:
+To install `NiaPy` on NixOS, use:
 
 ```sh
 nix-env -iA nixos.python310Packages.niapy
 ```
 
-To install NiaPy on Void Linux, use:
+To install `NiaPy` on Void Linux, use:
 
 ```sh
 xbps-install -S python3-niapy
 ```
 
-## Install from source
+### Installation from source
 
-In case you want to install directly from the source code, use:
+To install `NiaPy` directly from the source code, use:
 
 ```sh
 pip install git+https://github.com/NiaOrg/NiaPy.git
 ```
 
-# Algorithms
+## 🧠 Algorithms
 
 [Click here](Algorithms.md) for the list of implemented algorithms.
 
-# Problems
+## 🧪 Problems
 
 [Click here](Problems.md) for the list of implemented test problems.
 
-# Usage
+## 🚀 Usage
 
 After installation, you can import NiaPy as any other Python module:
 
@@ -111,10 +152,9 @@ $ python
 >>> niapy.__version__
 ```
 
-
 Let's go through a basic and advanced example.
 
-## Basic Example
+### Basic Example
 Let’s say, we want to try out PSO against the Pintér problem function. Firstly, we have to create new file, with name, for example *basic_example.py*. Then we have to import chosen algorithm from NiaPy, so we can use it. Afterwards we initialize ParticleSwarmAlgorithm class instance and run the algorithm. Given bellow is the complete source code of basic example.
 
 ```python
@@ -144,7 +184,7 @@ Given example can be run with *python basic_example.py* command and should give 
 0.06732518679742806
 ```
 
-## Advanced Example
+### Advanced Example
 
 In this example we will show you how to implement a custom problem class and use it with any of
 implemented algorithms. First let's create new file named advanced_example.py. As in the previous examples
@@ -204,56 +244,7 @@ For more usage examples please look at [examples](/examples) folder.
 
 More advanced examples can also be found in the [NiaPy-examples repository](https://github.com/NiaOrg/NiaPy-examples).
 
-
-
-# Cite us
-
-Are you using NiaPy in your project or research? Please cite us!
-
-## Plain format
-
-```
-      Vrbančič, G., Brezočnik, L., Mlakar, U., Fister, D., & Fister Jr., I. (2018).
-      NiaPy: Python microframework for building nature-inspired algorithms.
-      Journal of Open Source Software, 3(23), 613\. <https://doi.org/10.21105/joss.00613>
-```
-
-## Bibtex format
-
-```
-    @article{NiaPyJOSS2018,
-        author  = {Vrban{\v{c}}i{\v{c}}, Grega and Brezo{\v{c}}nik, Lucija
-                  and Mlakar, Uro{\v{s}} and Fister, Du{\v{s}}an and {Fister Jr.}, Iztok},
-        title   = {{NiaPy: Python microframework for building nature-inspired algorithms}},
-        journal = {{Journal of Open Source Software}},
-        year    = {2018},
-        volume  = {3},
-        issue   = {23},
-        issn    = {2475-9066},
-        doi     = {10.21105/joss.00613},
-        url     = {https://doi.org/10.21105/joss.00613}
-    }
-```
-
-## RIS format
-
-```
-    TY  - JOUR
-    T1  - NiaPy: Python microframework for building nature-inspired algorithms
-    AU  - Vrbančič, Grega
-    AU  - Brezočnik, Lucija
-    AU  - Mlakar, Uroš
-    AU  - Fister, Dušan
-    AU  - Fister Jr., Iztok
-    PY  - 2018
-    JF  - Journal of Open Source Software
-    VL  - 3
-    IS  - 23
-    DO  - 10.21105/joss.00613
-    UR  - http://joss.theoj.org/papers/10.21105/joss.00613
-```
-
-## Contributors ✨
+## 🫂 Contributors
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 
@@ -301,16 +292,63 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind are welcome!
 
-## Contributing
+## 🙇 Contributing
 
 We encourage you to contribute to NiaPy! Please check out the [Contributing to NiaPy guide](CONTRIBUTING.md) for guidelines about how to proceed.
 
 Everyone interacting in NiaPy's codebases, issue trackers, chat rooms and mailing lists is expected to follow the NiaPy [code of conduct](CODE_OF_CONDUCT.md).
 
-## Licence
+## 🔑 License
 
 This package is distributed under the MIT License. This license can be found online at <http://www.opensource.org/licenses/MIT>.
 
 ## Disclaimer
 
 This framework is provided as-is, and there are no guarantees that it fits your purposes or that it is bug-free. Use it at your own risk!
+
+## 📄 Cite us
+
+Are you using NiaPy in your project or research? Please cite us!
+
+### Plain format
+
+```
+Vrbančič, G., Brezočnik, L., Mlakar, U., Fister, D., & Fister Jr., I. (2018).
+NiaPy: Python microframework for building nature-inspired algorithms.
+Journal of Open Source Software, 3(23), 613\. <https://doi.org/10.21105/joss.00613>
+```
+
+### Bibtex format
+
+```bibtex
+@article{NiaPyJOSS2018,
+  author  = {Vrban{\v{c}}i{\v{c}}, Grega and Brezo{\v{c}}nik, Lucija
+            and Mlakar, Uro{\v{s}} and Fister, Du{\v{s}}an and {Fister Jr.}, Iztok},
+  title   = {{NiaPy: Python microframework for building nature-inspired algorithms}},
+  journal = {{Journal of Open Source Software}},
+  year    = {2018},
+  volume  = {3},
+  issue   = {23},
+  issn    = {2475-9066},
+  doi     = {10.21105/joss.00613},
+  url     = {https://doi.org/10.21105/joss.00613}
+}
+```
+
+### RIS format
+
+```
+TY  - JOUR
+T1  - NiaPy: Python microframework for building nature-inspired algorithms
+AU  - Vrbančič, Grega
+AU  - Brezočnik, Lucija
+AU  - Mlakar, Uroš
+AU  - Fister, Dušan
+AU  - Fister Jr., Iztok
+PY  - 2018
+JF  - Journal of Open Source Software
+VL  - 3
+IS  - 23
+DO  - 10.21105/joss.00613
+UR  - http://joss.theoj.org/papers/10.21105/joss.00613
+```
