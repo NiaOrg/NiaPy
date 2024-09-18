@@ -23,8 +23,6 @@ If you are not so familiar with Git or/and GitHub, we suggest you take a look at
 - Make sure all the code goes through Flake8 without problems (run ```make check``` command)
 - Make sure PR builds goes through
 
-
-
 ## Setup development environment
 
 ### Requirements
@@ -38,25 +36,25 @@ If you are not so familiar with Git or/and GitHub, we suggest you take a look at
 
 | Package    |  Version  | Platform |
 |------------|:---------:|:--------:|
-| numpy      | \>=1.26.1 |   All    |
-| matplotlib | \>=3.8.0  |   All    |
-| pandas     | \>=2.1.1  |   All    |
-| openpyxl   | \>=3.1.2  |   All    |
+| numpy      | ^1.26.1   |   All    |
+| pandas     | ^2.1.1    |   All    |
+| openpyxl   | ^3.1.2    |   All    |
+| matplotlib | ^3.8.0    |   All    |
 
 **Test dependencies:**
 
-| Package         |  Version  | Platform |
-|-----------------|:---------:|:--------:|
-| pytest          | \>=7.4.2  |   Any    |
-| pytest-cov      | \>=4.1.0  |   Any    |
-| pytest-randomly | \>=3.15.0 |   Any    |
+| Package         |  Version         | Platform |
+|-----------------|:----------------:|:--------:|
+| pytest          | >=7.4.2,<9.0.0   |   Any    |
+| pytest-cov      | ^4.1.0           |   Any    |
+| pytest-randomly | ^3.15.0          |   Any    |
 
 **Documentation dependencies (optional):**
 
 | Package            | Version  | Platform |
 |--------------------|:--------:|:--------:|
-| sphinx             | \>=7.2.6 |   Any    |
-| sphinx-press-theme | \>=0.8.0 |   Any    |
+| sphinx             | ^7.2.6   |   Any    |
+| sphinx-rtd-theme   | ^1.3.0   |   Any    |
 
 ### Installation
 
