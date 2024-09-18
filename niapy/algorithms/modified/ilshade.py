@@ -170,7 +170,6 @@ class ImprovedLpsrSuccessHistoryAdaptiveDifferentialEvolution(SuccessHistoryAdap
         
         #ilshade
         cr = self.normal(m_cr, 0.1) if m_cr >= 0 else 0 
-        #cr = self.normal(m_cr, 0.1) if m_cr >= -1 else 0 
 
         cr = np.clip(cr, 0, 1)
         #ilshade
