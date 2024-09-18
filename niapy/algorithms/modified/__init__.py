@@ -45,6 +45,6 @@ __all__ = [
     'HybridSelfAdaptiveBatAlgorithm',
     'ParameterFreeBatAlgorithm',
     'SuccessHistoryAdaptiveDifferentialEvolution',
-    'LpsrSuccessHistoryAdaptiveDifferentialEvolution'
+    'LpsrSuccessHistoryAdaptiveDifferentialEvolution',
     'ImprovedLpsrSuccessHistoryAdaptiveDifferentialEvolution'
 ]
