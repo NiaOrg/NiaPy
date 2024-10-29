@@ -184,6 +184,10 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
                     best_fitness = new_solution.f
             else:
                 trials[i] += 1
+                if trials[i] >= self.limit:
+                    population[i], trials[i] = SolutionABC(task=task, rng=self.rng), 0
+                    if population[i].f < best_fitness:
+                        best_x, best_fitness = population[i].x.copy(), population[i].f
         probabilities, t, s = self.calculate_probabilities(population), 0, 0
         while t < self.food_number:
             if self.random() < probabilities[s]:
@@ -204,12 +208,11 @@ class ArtificialBeeColonyAlgorithm(Algorithm):
                         best_fitness = solution.f
                 else:
                     trials[s] += 1
+                    if trials[i] >= self.limit:
+                        population[i], trials[i] = SolutionABC(task=task, rng=self.rng), 0
+                        if population[i].f < best_fitness:
+                            best_x, best_fitness = population[i].x.copy(), population[i].f
             s += 1
             if s == self.food_number:
                 s = 0
-        mi = np.argmax(trials)
-        if trials[mi] >= self.limit:
-            population[mi], trials[mi] = SolutionABC(task=task, rng=self.rng), 0
-            if population[mi].f < best_fitness:
-                best_x, best_fitness = population[mi].x.copy(), population[mi].f
         return population, np.asarray([f.f for f in population]), best_x, best_fitness, {'trials': trials}
