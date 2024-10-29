@@ -7,6 +7,6 @@ from niapy.runner import Runner
 
 __all__ = ["algorithms", "problems", "util", "task", "Runner"]
 __project__ = "NiaPy"
-__version__ = "2.4.0"
+__version__ = "2.5.0"
 
 VERSION = "{0} v{1}".format(__project__, __version__)
