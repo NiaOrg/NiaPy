@@ -244,7 +244,7 @@ class ImprovedLpsrSuccessHistoryAdaptiveDifferentialEvolution(SuccessHistoryAdap
         max_nfe = task.max_evals
         nfe = task.evals
 
-        next_pop_size = np.int_(np.around((((4.0 - self.population_size) / np.float_(max_nfe)) * nfe) + self.population_size))
+        next_pop_size = np.int_(np.around((((4.0 - self.population_size) / np.float64(max_nfe)) * nfe) + self.population_size))
 
         if next_pop_size < 4:
             next_pop_size = 4
