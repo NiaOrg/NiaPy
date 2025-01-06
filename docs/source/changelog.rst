@@ -5,7 +5,7 @@ Changelog
 
    <!-- insertion marker -->
 
-`2.3.1 <https://github.com/NiaOrg/NiaPy/releases/tag/2.3.1>`__ - 2024-05-17
+`2.5.1 <https://github.com/NiaOrg/NiaPy/releases/tag/2.3.1>`__ - 2024-05-17
 ---------------------------------------------------------------------------
 
 \ `Compare with
