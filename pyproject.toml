@@ -1,7 +1,7 @@
 [tool]
 [tool.poetry]
 name = "niapy"
-version = "2.5.1"
+version = "2.5.2"
 description = "Python micro framework for building nature-inspired algorithms."
 authors = ["NiaOrg <niapy.organization@gmail.com>"]
 license = "MIT"
@@ -57,7 +57,7 @@ pandoc = "^2.3"
 
 
 [tool.bumpversion]
-current_version = "2.5.1"
+current_version = "2.5.2"
 allow_dirty = true
 commit = true
 tag = true
@@ -90,6 +90,7 @@ replace = "release = u'{new_version}'"
 
 
 
+
 [tool.git-changelog]
 convention = "basic"
 in-place = true
@@ -100,6 +101,7 @@ parse-trailers = true
 repository = "."
 provider = "github"
 template = "keepachangelog"
+
 
 
 
