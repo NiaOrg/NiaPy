@@ -22,7 +22,7 @@ docutils==0.18.1
     #   sphinx-rtd-theme
 et-xmlfile==1.1.0
     # via openpyxl
-fonttools==4.51.0
+fonttools==4.55.8
     # via matplotlib
 idna==3.4
     # via requests
