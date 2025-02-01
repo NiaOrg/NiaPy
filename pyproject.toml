@@ -52,7 +52,7 @@ optional = true
 
 [tool.poetry.group.release.dependencies]
 git-changelog = "^2.4.0"
-bump-my-version = ">=0.15.3,<0.18.0"
+bump-my-version = ">=0.15.3,<0.31.0"
 pandoc = "^2.3"
 
 
