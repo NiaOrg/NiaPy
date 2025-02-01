@@ -96,5 +96,5 @@ sphinxcontrib-serializinghtml==1.1.9
     # via sphinx
 tzdata==2023.4
     # via pandas
-urllib3==2.0.7
+urllib3==2.3.0
     # via requests
