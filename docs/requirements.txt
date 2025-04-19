@@ -44,7 +44,7 @@ numpy==1.26.4
     #   pandas
 openpyxl==3.1.2
     # via -r requirements.in
-packaging==23.2
+packaging==25.0
     # via
     #   matplotlib
     #   sphinx
