@@ -10,7 +10,7 @@ babel==2.13.1
     # via sphinx
 certifi==2023.7.22
     # via requests
-charset-normalizer==3.3.1
+charset-normalizer==3.4.2
     # via requests
 contourpy==1.2.0
     # via matplotlib
