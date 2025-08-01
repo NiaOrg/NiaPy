@@ -34,7 +34,7 @@ kiwisolver==1.4.5
     # via matplotlib
 markupsafe==2.1.3
     # via jinja2
-matplotlib==3.8.2
+matplotlib==3.10.5
     # via -r requirements.in
 numpy==1.26.4
     # via
