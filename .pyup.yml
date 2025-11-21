@@ -1,0 +1,56 @@
+# PyUp configuration
+# See https://pyup.io/docs/configuration/
+
+# Update schedule
+schedule: "every month"
+
+# Branch to create PRs against
+branch: master
+
+# Only update direct dependencies in pyproject.toml main group
+# Ignore all optional dependencies and transitive dependencies
+update: insecure
+
+# Ignore all optional dependency groups
+ignore:
+  # All docs dependencies (optional group)
+  - sphinx
+  - sphinx-rtd-theme
+  
+  # All release dependencies (optional group)
+  - git-changelog
+  - bump-my-version
+  - pandoc
+  
+  # All test dependencies
+  - pytest
+  - pytest-cov
+  - pytest-randomly
+  
+  # Transitive dependencies (let main deps pull these)
+  - certifi
+  - charset-normalizer
+  - idna
+  - requests
+  - urllib3
+  - pillow
+  - docutils
+  - babel
+  - markupsafe
+  - pygments
+  - jinja2
+  - packaging
+  - pyparsing
+  - fonttools
+  - kiwisolver
+  - contourpy
+  - snowballstemmer
+  - pytz
+  - tzdata
+
+# Only track core dependencies: numpy, pandas, openpyxl, matplotlib
+requirements:
+  - pyproject.toml
+
+# Label for PRs
+label_prs: dependencies

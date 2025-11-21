@@ -1,0 +1,37 @@
+name: Test Conda Build
+
+on:
+  pull_request:
+    paths:
+      - 'conda/**'
+      - 'pyproject.toml'
+  workflow_dispatch:
+
+jobs:
+  test-conda-build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Miniconda
+      uses: conda-incubator/setup-miniconda@v3
+      with:
+        auto-activate-base: true
+        activate-environment: ""
+    
+    - name: Test conda build
+      shell: bash -l {0}
+      run: |
+        conda install -y conda-build
+        conda build conda --no-anaconda-upload --output-folder build
+        
+    - name: Show build artifacts
+      shell: bash -l {0}
+      run: |
+        ls -lh build/noarch/
+        
+    - name: Verify package contents
+      shell: bash -l {0}
+      run: |
+        conda install -y conda-verify
+        conda verify build/noarch/*.tar.bz2

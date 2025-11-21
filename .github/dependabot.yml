@@ -10,9 +10,14 @@ updates:
     directory: "/"
     schedule:
       interval: "monthly"
-
-  - package-ecosystem: "pip"
-    directory: "/docs"
-    # Disable automatic updates for docs dependencies
-    schedule:
-      interval: "never"
+    # Ignore optional dependency groups (docs, release, test)
+    ignore:
+      # Release dependencies (optional group)
+      - dependency-name: "bump-my-version"
+      - dependency-name: "git-changelog"
+      - dependency-name: "pandoc"
+      # Docs dependencies (optional group)
+      - dependency-name: "sphinx*"
+      - dependency-name: "sphinx-rtd-theme"
+      # Test dependencies
+      - dependency-name: "pytest*"
