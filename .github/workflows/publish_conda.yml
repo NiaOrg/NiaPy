@@ -19,4 +19,4 @@ jobs:
       run: |
         conda install -y conda-build anaconda-client
         conda build conda --output-folder build
-        anaconda -t ${{ secrets.ANACONDA_TOKEN }} upload build/noarch/*.tar.bz2 --force
+        anaconda -t ${{ secrets.ANACONDA_TOKEN }} upload build/noarch/*.conda --force
