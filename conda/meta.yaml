@@ -18,6 +18,8 @@ requirements:
     - python >=3.9,<3.14
     - pip
     - poetry-core >=1.0.0
+    - setuptools
+    - wheel
   run:
     - python >=3.9,<3.14
     - numpy >=1.26.1
