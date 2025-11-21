@@ -62,7 +62,7 @@ python-dateutil==2.8.2
     #   pandas
 pytz==2024.1
     # via pandas
-requests==2.31.0
+requests==2.32.4
     # via sphinx
 six==1.16.0
     # via python-dateutil
