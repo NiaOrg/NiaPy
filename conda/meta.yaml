@@ -22,10 +22,10 @@ requirements:
     - wheel
   run:
     - python >=3.9,<3.14
-    - numpy >=1.26.1
-    - pandas >=2.1.1
-    - openpyxl >=3.1.2
-    - matplotlib >=3.8.0
+    - numpy >=2.1.1
+    - pandas >=2.2.3
+    - openpyxl >=3.1.5
+    - matplotlib >=3.9.0
 
 about:
   home: {{ poetry.get('homepage') }}
