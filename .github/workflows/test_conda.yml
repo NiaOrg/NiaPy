@@ -1,0 +1,46 @@
+name: Test Conda Build
+
+on:
+  pull_request:
+    paths:
+      - 'conda/**'
+      - 'pyproject.toml'
+  workflow_dispatch:
+
+jobs:
+  test-conda-build:
+    # Use short, fixed build & package directories to prevent excessively long conda env prefixes
+    env:
+      CONDA_BLD_PATH: /tmp/conda-bld
+      CONDA_PKGS_DIRS: /tmp/conda-pkgs
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup Miniconda
+      uses: conda-incubator/setup-miniconda@v3
+      with:
+        auto-activate-base: true
+        activate-environment: ""
+
+    - name: Prepare short conda directories
+      run: |
+        sudo mkdir -p /tmp/conda-bld /tmp/conda-pkgs
+        sudo chown $USER:$USER /tmp/conda-bld /tmp/conda-pkgs
+
+    - name: Test conda build
+      shell: bash -l {0}
+      run: |
+        # Ensure conda-build uses short paths to avoid long prefix issues
+        conda install -y conda-build
+        export CONDA_BLD_PATH=${CONDA_BLD_PATH:-/tmp/conda-bld}
+        export CONDA_PKGS_DIRS=${CONDA_PKGS_DIRS:-/tmp/conda-pkgs}
+        mkdir -p "$CONDA_BLD_PATH" "$CONDA_PKGS_DIRS"
+        conda build conda --no-anaconda-upload --output-folder build
+
+    - name: Show build artifacts
+      shell: bash -l {0}
+      run: |
+        ls -lh build/noarch/
+        echo "Build successful! Package created:"
+        ls build/noarch/*.conda

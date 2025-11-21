@@ -10,16 +10,22 @@ source:
 
 build:
   number: 0
-  script: {{ PYTHON }} -m pip install . -vv
+  noarch: python
+  script: python -m pip install . -vv --no-deps --no-build-isolation
 
 requirements:
   host:
-    - python
+    - python >=3.10,<3.14
     - pip
+    - poetry-core >=1.0.0
     - setuptools
     - wheel
   run:
-    - python
+    - python >=3.10,<3.14
+    - numpy >=2.1.1
+    - pandas >=2.2.3
+    - openpyxl >=3.1.5
+    - matplotlib >=3.9.0
 
 about:
   home: {{ poetry.get('homepage') }}

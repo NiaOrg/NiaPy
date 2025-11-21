@@ -8,10 +8,15 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: publish-to-conda
-      uses: fcakyon/conda-publish-action@v1.3
+    - uses: actions/checkout@v4
+    - name: Setup Miniconda
+      uses: conda-incubator/setup-miniconda@v3
       with:
-        subdir: 'conda'
-        anacondatoken: ${{ secrets.ANACONDA_TOKEN }}
-        platforms: 'win osx linux'
+        auto-activate-base: true
+        activate-environment: ""
+    - name: Build and publish to conda
+      shell: bash -l {0}
+      run: |
+        conda install -y conda-build anaconda-client
+        conda build conda --output-folder build
+        anaconda -t ${{ secrets.ANACONDA_TOKEN }} upload build/noarch/*.conda --force
