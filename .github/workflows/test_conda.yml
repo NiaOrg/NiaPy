@@ -15,7 +15,7 @@ jobs:
       CONDA_PKGS_DIRS: /tmp/conda-pkgs
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
 
     - name: Setup Miniconda
       uses: conda-incubator/setup-miniconda@v3
