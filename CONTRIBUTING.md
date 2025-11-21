@@ -27,7 +27,7 @@ If you are not so familiar with Git or/and GitHub, we suggest you take a look at
 
 ### Requirements
 
-* Python >= 3.9
+* Python >= 3.10
 * Poetry: https://python-poetry.org/docs/
 
 ### Development dependencies

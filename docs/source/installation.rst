@@ -7,7 +7,7 @@ Setup development environment
 Requirements
 ~~~~~~~~~~~~
 
-- Python: `download <https://www.python.org/downloads/>`__ (3.9 or greater)
+- Python: `download <https://www.python.org/downloads/>`__ (3.10 or greater)
 - Poetry: `docs <https://python-poetry.org/docs/>`__
 
 
