@@ -11,7 +11,7 @@ repository = "https://github.com/NiaOrg/NiaPy"
 documentation = "https://niapy.org/en/stable/"
 keywords = ["nature-inspired algorithms", "evolutionary algorithms", "swarm intelligence", "optimization"]
 classifiers = [
-    "Programming Language :: Python :: 3.10",   
+    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
