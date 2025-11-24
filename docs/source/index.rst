@@ -23,7 +23,7 @@ implementing algorithms from scratch.
 
 * **Free software:** MIT license
 * **Github repository:** https://github.com/NiaOrg/NiaPy
-* **Python versions:** 3.10.x, 3.11.x, 3.12.x, 3.13.x
+* **Python versions:** 3.10.x, 3.11.x, 3.12.x, 3.13.x, 3.14.x
 
 The main documentation is organized into a couple sections:
 

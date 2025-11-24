@@ -15,6 +15,7 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
     "Intended Audience :: Science/Research",
@@ -33,7 +34,7 @@ include = [
 ]
 
 [tool.poetry.dependencies]
-python = ">=3.10,<3.14"
+python = ">=3.10,<=3.14"
 numpy = "^2.1.1"
 pandas = "^2.2.3"
 openpyxl = "^3.1.5"
@@ -87,14 +88,6 @@ filename = "docs/source/conf.py"
 search = "release = u'{current_version}'"
 replace = "release = u'{new_version}'"
 
-
-
-
-
-
-
-
-
 [tool.git-changelog]
 convention = "basic"
 in-place = true
@@ -106,13 +99,6 @@ repository = "."
 provider = "github"
 template = "keepachangelog"
 
-
-
-
-
-
-
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
-
