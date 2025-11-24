@@ -1,7 +1,7 @@
 [tool]
 [tool.poetry]
 name = "niapy"
-version = "2.6.0"
+version = "2.6.1"
 description = "Python micro framework for building nature-inspired algorithms."
 authors = ["NiaOrg <niapy.organization@gmail.com>"]
 license = "MIT"
@@ -62,7 +62,7 @@ pandoc = "^2.4"
 
 
 [tool.bumpversion]
-current_version = "2.6.0"
+current_version = "2.6.1"
 allow_dirty = true
 commit = true
 tag = true
