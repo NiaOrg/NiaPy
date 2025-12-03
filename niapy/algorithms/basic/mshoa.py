@@ -81,7 +81,7 @@ class MantisSearchAlgorithm(Algorithm):
         self.defense_probability = defense_probability
 
     def set_parameters(self, population_size=50, polarization_rate=0.5, strike_factor=2.0,
-                       defense_factor=0.1, defense_probability=0.1, **kwargs):
+                       defense_factor=0.1, defense_probability=0.1,*args ,**kwargs):
         r"""Set Mantis Search Algorithm main parameters.
 
         Args:
@@ -95,7 +95,7 @@ class MantisSearchAlgorithm(Algorithm):
             * :func:`niapy.algorithms.Algorithm.set_parameters`
 
         """
-        super().set_parameters(population_size=population_size, **kwargs)
+        super().set_parameters(population_size=population_size,*args, **kwargs)
         self.polarization_rate = polarization_rate
         self.strike_factor = strike_factor
         self.defense_factor = defense_factor
