@@ -31,6 +31,7 @@ Harris hawks optimization      |HHO| Heidari et al. "Harris hawks optimization: 
 |Monarch Butterfly Algorithm   |MBO|Wang, G. G., Deb, S., & Cui, Z. (2019). Monarch butterfly optimization. Neural computing and applications, 31(7), 1995-2014.
 |Moth-flame Optimization       |MFO|Mirjalili, Seyedali. "Moth-flame optimization algorithm: A novel nature-inspired heuristic paradigm." Knowledge-Based Systems 89 (2015): 228-249.
 |Monkey King Evolution         |MKE|Zhenyu Meng, Jeng-Shyang Pan, Monkey King Evolution: A new memetic evolutionary algorithm and its application in vehicle fuel consumption optimization, Knowledge-Based Systems, Volume 97, 2016, Pages 144-157.
+|Mantis Shrimp Optimization Algorithm|MShOA|Sánchez Cortez, J. A., Peraza Vázquez, H., & Peña Delgado, A. F. "A Novel Bio-Inspired Optimization Algorithm Based on Mantis Shrimp Survival Tactics". Mathematics, 13(9), 1500, 2025. https://doi.org/10.3390/math13091500|
 |Particle Swarm Optimization   |PSO|Kennedy, J. and Eberhart, R. "Particle Swarm Optimization". Proceedings of IEEE International Conference on Neural Networks. IV. pp. 1942--1948, 1995.
 |Sine Cosine Algorithm         |SCA|Seyedali Mirjalili, SCA: A Sine Cosine Algorithm for solving optimization problems, Knowledge-Based Systems, Volume 96, 2016, Pages 120-133,
 
