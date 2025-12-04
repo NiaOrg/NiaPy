@@ -154,14 +154,14 @@ class MantisSearchAlgorithm(Algorithm):
             
             if not (np.any(below_lower) or np.any(above_upper)):
                 break
-            
+
             # Apply reflection
             x = np.where(below_lower, lower + (lower - x), x)
             x = np.where(above_upper, upper - (x - upper), x)
-        
+
         # Final clamp to ensure bounds (safety fallback)
         x = np.clip(x, lower, upper)
-        
+
         if is_1d:
             x = x[0]
         return x
@@ -211,22 +211,22 @@ class MantisSearchAlgorithm(Algorithm):
         """
         pi_8 = np.pi / 8
         pi = np.pi
-        
+
         # Initialize result array with default value 2
         result = np.full(angles.shape, 2, dtype=int)
-        
+
         # Type 1: 3π/8 ≤ θ ≤ 5π/8
         mask_type1 = (3 * pi_8 <= angles) & (angles <= 5 * pi_8)
         result[mask_type1] = 1
-        
+
         # Type 2: (0 ≤ θ ≤ π/8) or (7π/8 ≤ θ ≤ π)
         mask_type2 = ((0 <= angles) & (angles <= pi_8)) | ((7 * pi_8 <= angles) & (angles <= pi))
         result[mask_type2] = 2
-        
+
         # Type 3: (π/8 < θ < 3π/8) or (5π/8 < θ < 7π/8)
         mask_type3 = ((pi_8 < angles) & (angles < 3 * pi_8)) | ((5 * pi_8 < angles) & (angles < 7 * pi_8))
         result[mask_type3] = 3
-        
+
         return result
 
     def _calculate_angular_difference_vectorized(self, angles, polarization_types):
@@ -289,7 +289,7 @@ class MantisSearchAlgorithm(Algorithm):
 
         """
         pop, fpop, d = super().init_population(task)
-        
+
         # Optional normalization: convert to normalized space if enabled
         if self.normalize_space:
             pop = self._normalize_from_real(pop, task.lower, task.upper)
@@ -298,7 +298,7 @@ class MantisSearchAlgorithm(Algorithm):
             fpop = np.apply_along_axis(task.eval, 1, pop_real)
         else:
             fpop = np.apply_along_axis(task.eval, 1, pop)
-        
+
         # Initialize PTI vector: round(1 + 2 * rand) gives values {1, 2, 3}
         pti = np.round(1 + 2 * self.random(self.population_size)).astype(int)
         d['pti'] = pti
@@ -333,7 +333,7 @@ class MantisSearchAlgorithm(Algorithm):
 
         """
         pti = params.pop('pti')
-        
+
         # Handle normalization: convert to/from normalized space if enabled
         if self.normalize_space:
             # Convert current population and best to normalized space
@@ -351,7 +351,7 @@ class MantisSearchAlgorithm(Algorithm):
             xb_work = xb.copy()
             lower_work = task.lower
             upper_work = task.upper
-        
+
         # Create boolean masks for each PTI type
         mask_foraging = (pti == 1)
         mask_attack = (pti == 2)
@@ -359,9 +359,9 @@ class MantisSearchAlgorithm(Algorithm):
         
         # Initialize new population with old positions
         pop_new = pop_old.copy()
-        
+
         # Algorithm 2: Update positions based on PTI (Vectorized)
-        
+
         # PTI == 1: Foraging - Eq. 12 (Langevin Equation)
         # x_new = x_best - (x_i - x_best) + D * (x_r - x_i)
         if np.any(mask_foraging):
@@ -377,14 +377,14 @@ class MantisSearchAlgorithm(Algorithm):
             if self.population_size > 1:
                 equal_mask = (r_indices == foraging_indices)
                 r_indices[equal_mask] = (r_indices[equal_mask] + 1) % self.population_size
-            
+
             x_r = pop_old[r_indices]
             x_i = pop_old[mask_foraging]
             x_best_expanded = np.tile(xb_work, (n_foraging, 1))
-            
+
             # Apply Eq. 12 vectorized
             pop_new[mask_foraging] = x_best_expanded - (x_i - x_best_expanded) + D * (x_r - x_i)
-        
+
         # PTI == 2: Attack - Eq. 14
         # x_new = x_best * cos(theta)
         if np.any(mask_attack):
@@ -392,26 +392,26 @@ class MantisSearchAlgorithm(Algorithm):
             # Generate random theta values in [pi, 2*pi]
             theta = self.uniform(np.pi, 2 * np.pi, size=n_attack)
             theta = theta[:, np.newaxis]
-            
+
             x_best_expanded = np.tile(xb_work, (n_attack, 1))
             # Apply Eq. 14 vectorized
             pop_new[mask_attack] = x_best_expanded * np.cos(theta)
-        
+
         # PTI == 3: Burrow/Defense/Shelter - Eq. 15
         # x_new = x_best ± k * x_best (with k = k_value, default 0.3)
         if np.any(mask_defense):
             n_defense = np.sum(mask_defense)
             # Use fixed k_value (default 0.3) instead of random
             k = np.full((n_defense, 1), self.k_value, dtype=float)
-            
+
             # Randomly decide between Defense (+) or Shelter (-)
             sign = np.where(self.random(n_defense) < 0.5, 1.0, -1.0)
             sign = sign[:, np.newaxis]
-            
+
             x_best_expanded = np.tile(xb_work, (n_defense, 1))
             # Apply Eq. 15 vectorized
             pop_new[mask_defense] = x_best_expanded + sign * k * x_best_expanded
-        
+
         # Boundary check and repair
         if self.use_reflection:
             # Reflection-based boundary handling
@@ -420,7 +420,7 @@ class MantisSearchAlgorithm(Algorithm):
         else:
             # Standard repair
             pop_new = np.apply_along_axis(task.repair, 1, pop_new, rng=self.rng)
-        
+
         # Convert to real space for evaluation if normalization is enabled
         if self.normalize_space:
             pop_real = np.apply_along_axis(
@@ -430,7 +430,7 @@ class MantisSearchAlgorithm(Algorithm):
             fpop = np.apply_along_axis(task.eval, 1, pop_real)
         else:
             fpop = np.apply_along_axis(task.eval, 1, pop_new)
-        
+
         # Update global best if better solution found
         best_idx = np.argmin(fpop)
         if fpop[best_idx] < fxb:
@@ -447,24 +447,24 @@ class MantisSearchAlgorithm(Algorithm):
         
         # Use working population for PTI calculation
         pop_work = pop_new
-        
+
         # Algorithm 1: Update PTI vector using "Eye Vision" logic (Vectorized)
         # Step 1: Compute LPA and RPA for all particles
-        
+
         # Calculate dot products: X_old · X_new for all particles
         dot_products = np.sum(pop_old * pop_work, axis=1)
-        
+
         # Calculate norms: ||X_old|| and ||X_new|| for all particles
         norms_old = np.linalg.norm(pop_old, axis=1)
         norms_new = np.linalg.norm(pop_work, axis=1)
-        
+
         # Avoid division by zero
         denominator = norms_old * norms_new
         mask_zero = (denominator == 0)
-        
+
         # Calculate cosine angles
         cos_angles = np.clip(dot_products / np.where(denominator != 0, denominator, 1.0), -1.0, 1.0)
-        
+
         # Calculate LPA (Left Polarization Angle)
         lpa = np.arccos(cos_angles)
         lpa = np.clip(lpa, 0.0, np.pi)
@@ -472,24 +472,24 @@ class MantisSearchAlgorithm(Algorithm):
         
         # Calculate RPA (Right Polarization Angle) = rand * pi for all particles
         rpa = self.random(self.population_size) * np.pi
-        
+
         # Step 2: Determine LPT and RPT based on angle ranges (Eq. 5) - Vectorized
         lpt = self._determine_polarization_type_vectorized(lpa)
         rpt = self._determine_polarization_type_vectorized(rpa)
-        
+
         # Step 3: Calculate LAD and RAD (Angular differences) according to Eq. 6 - Vectorized
         lad = self._calculate_angular_difference_vectorized(lpa, lpt)
         rad = self._calculate_angular_difference_vectorized(rpa, rpt)
-        
+
         # Step 4: Update PTI: if LAD < RAD, PTI = LPT, else PTI = RPT - Vectorized
         pti = np.where(lad < rad, lpt, rpt)
-        
+
         # PTI distribution debugging (optional)
         if self.debug_pti:
             unique, counts = np.unique(pti, return_counts=True)
             pti_dist = dict(zip(unique.tolist(), counts.tolist()))
             logger.debug(f"PTI distribution: {pti_dist}")
-        
+
         # Return population in the correct space
         # If normalization is enabled, convert back to real space for return
         if self.normalize_space:
@@ -499,7 +499,7 @@ class MantisSearchAlgorithm(Algorithm):
             )
         else:
             pop_return = pop_new
-        
+
         return pop_return, fpop, xb, fxb, {'pti': pti}
 
 

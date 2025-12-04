@@ -38,6 +38,10 @@ class MShOATestCase(AlgorithmTestCase):
         """Test that run_iteration works correctly and returns proper shapes."""
         mshoa = self.algo(population_size=10, seed=self.seed)
         task = Task(problem=MyProblem(dimension=5), max_iters=2)
+<<<<<<< HEAD
+=======
+
+>>>>>>> 75dae7f (Fix Codacy style issues for MShOA)
         # Initialize population
         pop, fpop, d = mshoa.init_population(task)
         
@@ -46,14 +50,14 @@ class MShOATestCase(AlgorithmTestCase):
         self.assertEqual(fpop.shape, (10,))
         self.assertIn('pti', d)
         self.assertEqual(d['pti'].shape, (10,))
-        
+
         # Get initial best
         xb, fxb = mshoa.get_best(pop, fpop)
         
         # Check initial best
         self.assertEqual(xb.shape, (5,))
         self.assertIsInstance(fxb, numbers.Real)
-        
+
         # Run one iteration
         pop_new, fpop_new, xb_new, fxb_new, d_new = mshoa.run_iteration(task, pop, fpop, xb, fxb, **d)
         
@@ -64,7 +68,7 @@ class MShOATestCase(AlgorithmTestCase):
         self.assertIsInstance(fxb_new, numbers.Real)
         self.assertIn('pti', d_new)
         self.assertEqual(d_new['pti'].shape, (10,))
-        
+
         # Check PTI values are valid (1, 2, or 3)
         self.assertTrue(np.all((d_new['pti'] >= 1) & (d_new['pti'] <= 3)))
 
