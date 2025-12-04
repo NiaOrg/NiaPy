@@ -30,6 +30,7 @@ from niapy.algorithms.basic.loa import LionOptimizationAlgorithm
 from niapy.algorithms.basic.mbo import MonarchButterflyOptimization
 from niapy.algorithms.basic.mfo import MothFlameOptimizer
 from niapy.algorithms.basic.mke import MonkeyKingEvolutionV1, MonkeyKingEvolutionV2, MonkeyKingEvolutionV3
+from niapy.algorithms.basic.mshoa import MantisSearchAlgorithm, MShOA
 from niapy.algorithms.basic.pso import ParticleSwarmAlgorithm, ParticleSwarmOptimization, \
     CenterParticleSwarmOptimization, ComprehensiveLearningParticleSwarmOptimizer, \
     OppositionVelocityClampingParticleSwarmOptimization, MutatedCenterParticleSwarmOptimization, \
@@ -76,6 +77,8 @@ __all__ = [
     'DynamicFireworksAlgorithmGauss',
     'GravitationalSearchAlgorithm',
     'MothFlameOptimizer',
+    'MantisSearchAlgorithm',
+    'MShOA',
     'FishSchoolSearch',
     'CuckooSearch',
     'CoralReefsOptimization',
