@@ -38,13 +38,10 @@ class MShOATestCase(AlgorithmTestCase):
         """Test that run_iteration works correctly and returns proper shapes."""
         mshoa = self.algo(population_size=10, seed=self.seed)
         task = Task(problem=MyProblem(dimension=5), max_iters=2)
-<<<<<<< HEAD
-=======
 
->>>>>>> 75dae7f (Fix Codacy style issues for MShOA)
         # Initialize population
         pop, fpop, d = mshoa.init_population(task)
-        
+
         # Check initial population shape
         self.assertEqual(pop.shape, (10, 5))
         self.assertEqual(fpop.shape, (10,))
@@ -53,14 +50,14 @@ class MShOATestCase(AlgorithmTestCase):
 
         # Get initial best
         xb, fxb = mshoa.get_best(pop, fpop)
-        
+
         # Check initial best
         self.assertEqual(xb.shape, (5,))
         self.assertIsInstance(fxb, numbers.Real)
 
         # Run one iteration
         pop_new, fpop_new, xb_new, fxb_new, d_new = mshoa.run_iteration(task, pop, fpop, xb, fxb, **d)
-        
+
         # Check shapes after iteration
         self.assertEqual(pop_new.shape, (10, 5))
         self.assertEqual(fpop_new.shape, (10,))
