@@ -144,7 +144,6 @@ class MantisSearchAlgorithm(Algorithm):
         is_1d = (x.ndim == 1)
         if is_1d:
             x = x[np.newaxis, :]
-        
         # Apply reflection iteratively until all components are in bounds
         max_iterations = 10  # Safety limit
         for _ in range(max_iterations):
