@@ -38,7 +38,6 @@ class MShOATestCase(AlgorithmTestCase):
         """Test that run_iteration works correctly and returns proper shapes."""
         mshoa = self.algo(population_size=10, seed=self.seed)
         task = Task(problem=MyProblem(dimension=5), max_iters=2)
-        
         # Initialize population
         pop, fpop, d = mshoa.init_population(task)
         
