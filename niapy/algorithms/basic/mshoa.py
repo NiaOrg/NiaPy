@@ -150,7 +150,7 @@ class MantisSearchAlgorithm(Algorithm):
             # Check violations
             below_lower = x < lower
             above_upper = x > upper
-            
+
             if not (np.any(below_lower) or np.any(above_upper)):
                 break
 
@@ -247,11 +247,11 @@ class MantisSearchAlgorithm(Algorithm):
         """
         pi = np.pi
         result = np.zeros_like(angles)
-        
+
         # Type 1: reference angle is π/2
         mask_type1 = (polarization_types == 1)
         result[mask_type1] = np.abs(angles[mask_type1] - pi / 2)
-        
+
         # Type 2: reference angles are 0 or π
         mask_type2 = (polarization_types == 2)
         if np.any(mask_type2):
@@ -259,7 +259,7 @@ class MantisSearchAlgorithm(Algorithm):
             diff_0 = np.abs(angles_type2 - 0.0)
             diff_pi = np.abs(angles_type2 - pi)
             result[mask_type2] = np.minimum(diff_0, diff_pi)
-        
+
         # Type 3: reference angles are π/4 or 3π/4
         mask_type3 = (polarization_types == 3)
         if np.any(mask_type3):
@@ -267,7 +267,7 @@ class MantisSearchAlgorithm(Algorithm):
             diff_pi4 = np.abs(angles_type3 - pi / 4)
             diff_3pi4 = np.abs(angles_type3 - 3 * pi / 4)
             result[mask_type3] = np.minimum(diff_pi4, diff_3pi4)
-        
+
         return result
 
     def init_population(self, task):
@@ -355,7 +355,7 @@ class MantisSearchAlgorithm(Algorithm):
         mask_foraging = (pti == 1)
         mask_attack = (pti == 2)
         mask_defense = (pti == 3)
-        
+
         # Initialize new population with old positions
         pop_new = pop_old.copy()
 
@@ -368,7 +368,7 @@ class MantisSearchAlgorithm(Algorithm):
             # Generate random D values for foraging particles
             D = self.uniform(-1.0, 1.0, size=n_foraging)
             D = D[:, np.newaxis]  # Shape: (n_foraging, 1) for broadcasting
-            
+
             # Generate random indices for x_r (distinct from current index)
             foraging_indices = np.where(mask_foraging)[0]
             r_indices = self.integers(0, self.population_size, size=n_foraging)
@@ -443,7 +443,7 @@ class MantisSearchAlgorithm(Algorithm):
                 xb = pop_new[best_idx].copy()
                 xb_work = xb.copy()
             fxb = fpop[best_idx]
-        
+
         # Use working population for PTI calculation
         pop_work = pop_new
 
@@ -468,7 +468,7 @@ class MantisSearchAlgorithm(Algorithm):
         lpa = np.arccos(cos_angles)
         lpa = np.clip(lpa, 0.0, np.pi)
         lpa[mask_zero] = 0.0
-        
+
         # Calculate RPA (Right Polarization Angle) = rand * pi for all particles
         rpa = self.random(self.population_size) * np.pi
 
