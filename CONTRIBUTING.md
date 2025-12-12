@@ -27,53 +27,47 @@ If you are not so familiar with Git or/and GitHub, we suggest you take a look at
 
 ### Requirements
 
-* Python >= 3.10
-* Poetry: https://python-poetry.org/docs/
+* Python >= 3.11
+* uv: https://docs.astral.sh/uv/
 
 ### Development dependencies
 
 **NiaPy dependencies:**
 
-| Package    |  Version  | Platform |
-|------------|:---------:|:--------:|
-| numpy      | ^1.26.1   |   All    |
-| pandas     | ^2.1.1    |   All    |
-| openpyxl   | ^3.1.2    |   All    |
-| matplotlib | ^3.8.0    |   All    |
+| Package    | Version  | Platform |
+|------------|:--------:|:--------:|
+| numpy      | \>=2.3.5 |   All    |
+| pandas     | \>=2.3.3 |   All    |
+| openpyxl   | >=3.1.5  |   All    |
+| matplotlib | >=3.10.8 |   All    |
 
-**Test dependencies:**
+**Development dependencies:**
 
-| Package         |  Version         | Platform |
-|-----------------|:----------------:|:--------:|
-| pytest          | >=7.4.2,<9.0.0   |   Any    |
-| pytest-cov      | ^4.1.0           |   Any    |
-| pytest-randomly | ^3.15.0          |   Any    |
+| Package         | Version  | Platform |
+|-----------------|:--------:|:--------:|
+| pytest          | \>=9.0.0 |   All    |
+| pytest-cov      | \>=7.0.0 |   All    |
+| pytest-randomly | \>=4.0.1 |   All    |
 
 **Documentation dependencies (optional):**
 
-| Package            | Version  | Platform |
-|--------------------|:--------:|:--------:|
-| sphinx             | ^7.2.6   |   Any    |
-| sphinx-rtd-theme   | ^1.3.0   |   Any    |
+| Package          | Version  | Platform |
+|------------------|:--------:|:--------:|
+| sphinx           | \>=8.2.3 |   All    |
+| sphinx-rtd-theme | \>=3.0.2 |   All    |
 
 ### Installation
 
 Install project dependencies into a virtual environment:
 
 ```sh
-$ poetry install
+uv sync
 ```
 
 Install the optional documentation dependencies with:
 
 ```sh
-$ poetry install --with docs
-```
-
-To enter created virtual environment with all installed dependencies run:
-
-```sh
-$ poetry shell
+uv sync --group docs
 ```
 
 ## Development Tasks
@@ -83,7 +77,7 @@ $ poetry shell
 Run the tests:
 
 ```sh
-$ poetry run pytest
+uv run pytest
 ```
 
 ### Documentation
@@ -91,9 +85,7 @@ $ poetry run pytest
 Build the documentation:
 
 ```sh
-$ poetry shell
-$ cd docs
-$ make html
+uv run sphinx-build ./docs ./docs/_build
 ```
 
 ## Support
