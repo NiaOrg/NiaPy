@@ -1,7 +1,6 @@
 # encoding=utf8
 import copy
 import logging
-import numpy
 import numpy as np
 
 from niapy.algorithms.algorithm import Algorithm, Individual, default_individual_init
@@ -149,7 +148,7 @@ class LionOptimizationAlgorithm(Algorithm):
         self.mutation_factor = mutation_factor
         self.immigration_factor = immigration_factor
 
-    def set_parameters(self, population_size=50, nomad_ratio=0.2, num_of_prides=5, female_ratio=0.8, roaming_factor=0.2, mating_factor=0.3, mutation_factor=0.2, immigration_factor=0.4, **kwargs):
+    def set_parameters(self, population_size=50, nomad_ratio=0.2, num_of_prides=5, female_ratio=0.8, roaming_factor=0.2, mating_factor=0.3, mutation_factor=0.2, immigration_factor=0.4, *args, **kwargs):
         r"""Set the arguments of an algorithm.
 
         Args:
@@ -167,7 +166,7 @@ class LionOptimizationAlgorithm(Algorithm):
 
         """
         super().set_parameters(population_size=population_size, individual_type=Lion,
-                               initialization_function=kwargs.pop('initialization_function', default_individual_init()), **kwargs)
+                               initialization_function=kwargs.pop('initialization_function', default_individual_init), *args, **kwargs)
         self.nomad_ratio = nomad_ratio
         self.num_of_prides = num_of_prides
         self.female_ratio = female_ratio
