@@ -1,4 +1,4 @@
-{% set pyproject = load_file_data('pyproject.toml') %}
+{% set pyproject = load_file_data('../pyproject.toml') %}
 {% set project = pyproject.get('project', {}) %}
 {% set project_urls = project.get('urls', {}) %}
 
