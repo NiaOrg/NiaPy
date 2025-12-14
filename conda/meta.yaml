@@ -3,8 +3,8 @@
 {% set project_urls = project.get('urls', {}) %}
 
 package:
-  name: {{ poetry.get('name') }}
-  version: {{ poetry.get('version') }}
+  name: {{ project.get('name') }}
+  version: {{ project.get('version') }}
 
 source:
   path: ..
