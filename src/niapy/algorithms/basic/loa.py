@@ -441,10 +441,11 @@ class LionOptimizationAlgorithm(Algorithm):
                 territory.append(lion)
                 num_of_improvements += lion.has_improved
 
-
             if len(territory) > 1:
                 tournament_size = max(2, int(np.ceil(num_of_improvements / 2)))
-                indices = self.rng.choice(len(territory), tournament_size, replace=False)
+                indices = self.rng.choice(
+                    len(territory), tournament_size, replace=False
+                )
                 selected = [territory[i] for i in indices]
 
                 winner = min(selected, key=lambda selected_lion: selected_lion.f)
