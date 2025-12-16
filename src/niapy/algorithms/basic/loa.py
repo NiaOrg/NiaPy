@@ -441,12 +441,15 @@ class LionOptimizationAlgorithm(Algorithm):
                 territory.append(lion)
                 num_of_improvements += lion.has_improved
 
-            # Tournament selection
-            tournament_size = max(2, int(np.ceil(num_of_improvements / 2)))
-            indices = self.rng.choice(len(territory), tournament_size, replace=False)
-            selected = [territory[i] for i in indices]
 
-            winner = min(selected, key=lambda selected_lion: selected_lion.f)
+            if len(territory) > 1:
+                tournament_size = max(2, int(np.ceil(num_of_improvements / 2)))
+                indices = self.rng.choice(len(territory), tournament_size, replace=False)
+                selected = [territory[i] for i in indices]
+
+                winner = min(selected, key=lambda selected_lion: selected_lion.f)
+            else:
+                winner = territory[0]
             winner_x = winner.x.copy()
 
             # Move female non-hunters
@@ -557,7 +560,14 @@ class LionOptimizationAlgorithm(Algorithm):
 
     def create_offspring(self, female, males, pride_idx, has_pride, task):
         offspring = []
-        n_mating_males = 1 if not has_pride else self.integers(1, len(males))
+        # Handle edge case when there are no males
+        if len(males) == 0:
+            return offspring
+        # Handle edge case when there's only 1 male or for nomads
+        if not has_pride or len(males) == 1:
+            n_mating_males = 1
+        else:
+            n_mating_males = self.integers(1, len(males))
         indices = self.rng.choice(len(males), n_mating_males, replace=False)
         mating_males = [males[i] for i in indices]
 
