@@ -10,6 +10,6 @@ To locally generate the documentation run the following command in the project r
 
 .. code-block:: bash
 
-    poetry run sphinx-build docs/source docs/build/html
+    uv run sphinx-build docs/source docs/_build
 
-You can then view it by opening docs/build/html/index.html in your browser
+You can then view it by opening docs/_build/index.html in your browser

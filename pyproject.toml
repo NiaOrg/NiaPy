@@ -1,17 +1,18 @@
-[tool]
-[tool.poetry]
+[project]
 name = "niapy"
 version = "2.6.1"
 description = "Python micro framework for building nature-inspired algorithms."
-authors = ["NiaOrg <niapy.organization@gmail.com>"]
-license = "MIT"
+authors = [{ name = "NiaOrg", email = "niapy.organization@gmail.com" }]
+requires-python = ">=3.11"
 readme = "README.md"
-homepage = "https://github.com/NiaOrg/NiaPy"
-repository = "https://github.com/NiaOrg/NiaPy"
-documentation = "https://niapy.org/en/stable/"
-keywords = ["nature-inspired algorithms", "evolutionary algorithms", "swarm intelligence", "optimization"]
+license = "MIT"
+keywords = [
+    "nature-inspired algorithms",
+    "evolutionary algorithms",
+    "swarm intelligence",
+    "optimization",
+]
 classifiers = [
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
@@ -22,43 +23,46 @@ classifiers = [
     "Natural Language :: English",
     "Operating System :: OS Independent",
     "Topic :: Scientific/Engineering",
-    "Topic :: Software Development"
+    "Topic :: Software Development",
+]
+dependencies = [
+    "numpy>=2.3.5",
+    "pandas>=2.3.3",
+    "openpyxl>=3.1.5",
+    "matplotlib>=3.10.8",
 ]
 
-include = [
-    { path="LICENSE", format="sdist" },
-    { path="CHANGELOG.md", format="sdist" },
-    { path="CITATION.cff", format="sdist" },
-    { path="Algorithms.md", format="sdist" },
-    { path="Problems.md", format="sdist" },
+[project.urls]
+Homepage = "https://github.com/NiaOrg/NiaPy"
+Repository = "https://github.com/NiaOrg/NiaPy"
+Documentation = "https://niapy.org/en/stable/"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.0",
+    "pytest-cov>=7.0.0",
+    "pytest-randomly>=4.0.1",
+]
+docs = [
+    "sphinx>=8.2.3",
+    "sphinx-rtd-theme>=3.0.2",
+]
+release = [
+    "bump-my-version>=1.2.4",
+    "git-changelog>=2.7.0",
+    "pandoc>=2.4",
 ]
 
-[tool.poetry.dependencies]
-python = ">=3.10,<=3.14"
-numpy = "^2.1.1"
-pandas = "^2.2.3"
-openpyxl = "^3.1.5"
-matplotlib = "^3.9.0"
+[tool.uv.build-backend]
+source-include = [
+    "LICENSE",
+    "CHANGELOG.md",
+    "CITATION.cff",
+]
 
-[tool.poetry.group.test.dependencies]
-pytest = "^8.3.3"
-pytest-cov = "^5.0.0"
-pytest-randomly = "^3.15.0"
-
-[tool.poetry.group.docs]
-optional = true
-
-[tool.poetry.group.docs.dependencies]
-sphinx = "^7.4.7"
-sphinx-rtd-theme = "^2.0.0"
-
-[tool.poetry.group.release]
-optional = true
-
-[tool.poetry.group.release.dependencies]
-git-changelog = "^2.5.0"
-bump-my-version = ">=0.21.0,<0.22.0"
-pandoc = "^2.4"
+[build-system]
+requires = ["uv_build>=0.9.17,<0.10.0"]
+build-backend = "uv_build"
 
 
 [tool.bumpversion]
@@ -98,7 +102,3 @@ parse-trailers = true
 repository = "."
 provider = "github"
 template = "keepachangelog"
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"

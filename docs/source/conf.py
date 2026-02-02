@@ -12,9 +12,10 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-import os
 import sys
-sys.path.insert(0, os.path.abspath('../../'))
+from pathlib import Path
+
+sys.path.insert(0, str(Path('..', '..', 'src').resolve()))
 
 # -- Project information -----------------------------------------------------
 
@@ -92,7 +93,6 @@ html_logo = '_static/NiaPyLogo.png'
 #
 html_theme_options = {
     "logo_only": True,
-    "display_version": False,
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,

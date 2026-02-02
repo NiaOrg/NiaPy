@@ -16,7 +16,7 @@ For the purpose of checking if all test are passing locally you can run followin
 
 .. code-block:: bash
 
-    poetry run pytest
+    uv run pytest
 
 If all tests passed running this command it is most likely that the tests would pass on
-our build system to.
+our build system too.
