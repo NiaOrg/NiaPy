@@ -1,6 +1,6 @@
 [project]
 name = "niapy"
-version = "2.6.1"
+version = "2.7.0"
 description = "Python micro framework for building nature-inspired algorithms."
 authors = [{ name = "NiaOrg", email = "niapy.organization@gmail.com" }]
 requires-python = ">=3.11"
@@ -66,7 +66,7 @@ build-backend = "uv_build"
 
 
 [tool.bumpversion]
-current_version = "2.6.1"
+current_version = "2.7.0"
 allow_dirty = true
 commit = true
 tag = true
@@ -83,7 +83,7 @@ search = "version = \"{current_version}\""
 replace = "version = \"{new_version}\""
 
 [[tool.bumpversion.files]]
-filename = "niapy/__init__.py"
+filename = "src/niapy/__init__.py"
 search = "__version__ = \"{current_version}\""
 replace = "__version__ = \"{new_version}\""
 
