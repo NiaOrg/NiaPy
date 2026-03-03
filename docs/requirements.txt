@@ -107,7 +107,7 @@ sphinxcontrib-qthelp==2.0.0
     # via sphinx
 sphinxcontrib-serializinghtml==2.0.0
     # via sphinx
-tzdata==2025.2
+tzdata==2025.3
     # via pandas
 urllib3==2.6.3
     # via requests
