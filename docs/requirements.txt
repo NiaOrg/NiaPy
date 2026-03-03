@@ -49,7 +49,7 @@ packaging==25.0
     #   matplotlib
     #   pytest
     #   sphinx
-pandas==2.3.3
+pandas==3.0.1
     # via niapy (pyproject.toml)
 pillow==12.1.1
     # via matplotlib
