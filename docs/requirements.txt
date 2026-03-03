@@ -10,7 +10,7 @@ charset-normalizer==3.4.4
     # via requests
 contourpy==1.3.3
     # via matplotlib
-coverage==7.13.2
+coverage==7.13.4
     # via pytest-cov
 cycler==0.12.1
     # via matplotlib
