@@ -36,7 +36,7 @@ markupsafe==3.0.3
     # via jinja2
 matplotlib==3.10.8
     # via niapy (pyproject.toml)
-numpy==2.3.5
+numpy==2.4.2
     # via
     #   niapy (pyproject.toml)
     #   contourpy
