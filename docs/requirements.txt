@@ -24,7 +24,7 @@ fonttools==4.61.0
     # via matplotlib
 idna==3.11
     # via requests
-imagesize==1.4.1
+imagesize==1.5.0
     # via sphinx
 iniconfig==2.3.0
     # via pytest
