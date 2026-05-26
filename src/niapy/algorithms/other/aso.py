@@ -1,183 +1,196 @@
 # encoding=utf8
-import logging
+"""Anarchic Society Optimization algorithm."""
 
 import numpy as np
+from scipy.spatial.distance import euclidean
 
 from niapy.algorithms.algorithm import Algorithm
-from niapy.util import full_array, euclidean
+from niapy.util.array import full_array
 
-logging.basicConfig()
-logger = logging.getLogger('niapy.algorithms.other')
-logger.setLevel('INFO')
-
-__all__ = ['AnarchicSocietyOptimization', 'elitism', 'sequential', 'crossover']
-
-
-def elitism(x, xpb, xb, xr, mp_c, mp_s, mp_p, mutation_rate, crossover_probability, task, rng):
-    r"""Select the best of all three strategies.
-
-    Args:
-        x (numpy.ndarray): individual position.
-        xpb (numpy.ndarray): individuals best position.
-        xb (numpy.ndarray): current best position.
-        xr (numpy.ndarray): random individual.
-        mp_c (float): Fickleness index value.
-        mp_s (float): External irregularity index value.
-        mp_p (float): Internal irregularity index value.
-        mutation_rate (float): scale factor.
-        crossover_probability (float): crossover factor.
-        task (Task): optimization task.
-        rng (numpy.random.Generator): random number generator.
-
-    Returns:
-        Tuple[numpy.ndarray, float]:
-            1. New position of individual
-            2. New positions fitness/function value
-
-    """
-    xn = [task.repair(mp_current(x, mutation_rate, crossover_probability, mp_c, rng), rng=rng),
-          task.repair(mp_society(x, xr, xb, crossover_probability, mp_s, rng), rng=rng),
-          task.repair(mp_past(x, xpb, crossover_probability, mp_p, rng), rng=rng)]
-    xn_f = np.apply_along_axis(task.eval, 1, xn)
-    ib = np.argmin(xn_f)
-    return xn[ib], xn_f[ib]
+__all__ = [
+    'AnarchicSocietyOptimization',
+    'elitism',
+    'sequential',
+    'crossover',
+]
 
 
-def sequential(x, xpb, xb, xr, mp_c, mp_s, mp_p, mutation_rate, crossover_probability, task, rng):
-    r"""Sequentially combines all three strategies.
+def _mp_c(x, f, cr, mp, rng):
+    r"""Get new position based on fickleness (Fickleness Index strategy).
 
     Args:
-        x (numpy.ndarray): individual position.
-        xpb (numpy.ndarray): individuals best position.
-        xb (numpy.ndarray): current best position.
-        xr (numpy.ndarray): random individual.
-        mp_c (float): Fickleness index value.
-        mp_s (float): External irregularity index value.
-        mp_p (float): Internal irregularity index value.
-        mutation_rate (float): scale factor.
-        crossover_probability (float): crossover factor.
-        task (Task): optimization task.
-        rng (numpy.random.Generator): random number generator.
-
-    Returns:
-        tuple[numpy.ndarray, float]:
-            1. new position
-            2. new positions function/fitness value
-
-    """
-    xn = task.repair(mp_society(
-        mp_past(mp_current(x, mutation_rate, crossover_probability, mp_c, rng), xpb, crossover_probability, mp_p, rng),
-        xr,
-        xb, crossover_probability, mp_s, rng), rng=rng)
-    return xn, task.eval(xn)
-
-
-def crossover(x, xpb, xb, xr, mp_c, mp_s, mp_p, mutation_rate, crossover_probability, task, rng):
-    r"""Create a crossover over all three strategies.
-
-    Args:
-        x (numpy.ndarray): individual position.
-        xpb (numpy.ndarray): individuals best position.
-        xb (numpy.ndarray): current best position.
-        xr (numpy.ndarray): random individual.
-        mp_c (float): Fickleness index value.
-        mp_s (float): External irregularity index value.
-        mp_p (float): Internal irregularity index value.
-        mutation_rate (float): scale factor.
-        crossover_probability (float): crossover factor.
-        task (Task): optimization task.
-        rng (numpy.random.Generator): random number generator.
-
-    Returns:
-        Tuple[numpy.ndarray, float]:
-            1. new position
-            2. new positions function/fitness value.
-
-    """
-    xns = [task.repair(mp_current(x, mutation_rate, crossover_probability, mp_c, rng), rng=rng),
-           task.repair(mp_society(x, xr, xb, crossover_probability, mp_s, rng), rng=rng),
-           task.repair(mp_past(x, xpb, crossover_probability, mp_p, rng), rng=rng)]
-    index = rng.integers(len(xns))
-    x = np.asarray([xns[index][i] if rng.random() < crossover_probability else x[i] for i in range(len(x))])
-    return x, task.eval(x)
-
-
-def mp_current(x, mutation_rate, crossover_rate, mp, rng):
-    r"""Get bew position based on fickleness.
-
-    Args:
-        x (numpy.ndarray): Current individuals position.
-        mutation_rate (float): Scale factor.
-        crossover_rate (float): Crossover probability.
-        mp (float): Fickleness index value
-        rng (numpy.random.Generator): Random number generator
-
-    Returns:
-        numpy.ndarray: New position
-
-    """
-    if mp < 0.5:
-        b = np.sort(rng.choice(len(x), 2, replace=False))
-        x[b[0]:b[1]] = x[b[0]:b[1]] + mutation_rate * rng.normal(0, 1, b[1] - b[0])
-        return x
-    return np.asarray(
-        [x[i] + mutation_rate * rng.normal(0, 1) if rng.random() < crossover_rate else x[i] for i in range(len(x))])
-
-
-def mp_society(x, xr, xb, crossover_rate, mp, rng):
-    r"""Get new position based on external irregularity.
-
-    Args:
-        x (numpy.ndarray): Current individuals position.
-        xr (numpy.ndarray): Random individuals position.
-        xb (numpy.ndarray): Global best individuals position.
-        crossover_rate (float): Crossover probability.
-        mp (float): External irregularity index.
+        x (numpy.ndarray): Current individual's position.
+        f (float): Scale factor.
+        cr (float): Crossover probability.
+        mp (float): Fickleness index value.
         rng (numpy.random.Generator): Random number generator.
 
     Returns:
         numpy.ndarray: New position.
-
     """
-    if mp < 0.25:
+    xn = x.copy()
+    if mp < 0.5:
         b = np.sort(rng.choice(len(x), 2, replace=False))
-        x[b[0]:b[1]] = xb[b[0]:b[1]]
-        return x
-    elif mp < 0.5:
-        return np.asarray([xb[i] if rng.random() < crossover_rate else x[i] for i in range(len(x))])
-    elif mp < 0.75:
-        b = np.sort(rng.choice(len(x), 2, replace=False))
-        x[b[0]:b[1]] = xr[b[0]:b[1]]
-        return x
-    return np.asarray([xr[i] if rng.random() < crossover_rate else x[i] for i in range(len(x))])
+        xn[b[0]:b[1]] = xn[b[0]:b[1]] + f * rng.standard_normal(b[1] - b[0])
+    else:
+        mask = rng.random(len(x)) < cr
+        xn[mask] = xn[mask] + f * rng.standard_normal(np.sum(mask))
+    return xn
 
 
-def mp_past(x, xpb, crossover_rate, mp, rng):
-    r"""Get new position based on internal irregularity.
+def _mp_s(x, xr, xb, cr, mp, rng):
+    r"""Get new position based on external irregularity (External Irregularity Index strategy).
 
     Args:
-        x (numpy.ndarray): Current individuals position.
-        xpb (numpy.ndarray): Current individuals personal best position.
-        crossover_rate (float): Crossover probability.
+        x (numpy.ndarray): Current individual's position.
+        xr (numpy.ndarray): Random individual's position.
+        xb (numpy.ndarray): Global best individual's position.
+        cr (float): Crossover probability.
+        mp (float): External irregularity index value.
+        rng (numpy.random.Generator): Random number generator.
+
+    Returns:
+        numpy.ndarray: New position.
+    """
+    xn = x.copy()
+    if mp < 0.25:
+        b = np.sort(rng.choice(len(x), 2, replace=False))
+        xn[b[0]:b[1]] = xb[b[0]:b[1]]
+    elif mp < 0.5:
+        mask = rng.random(len(x)) < cr
+        xn[mask] = xb[mask]
+    elif mp < 0.75:
+        b = np.sort(rng.choice(len(x), 2, replace=False))
+        xn[b[0]:b[1]] = xr[b[0]:b[1]]
+    else:
+        mask = rng.random(len(x)) < cr
+        xn[mask] = xr[mask]
+    return xn
+
+
+def _mp_p(x, xpb, cr, mp, rng):
+    r"""Get new position based on internal irregularity (Internal Irregularity Index strategy).
+
+    Args:
+        x (numpy.ndarray): Current individual's position.
+        xpb (numpy.ndarray): Individual's personal best position.
+        cr (float): Crossover probability.
         mp (float): Internal irregularity index value.
         rng (numpy.random.Generator): Random number generator.
 
     Returns:
-        numpy.ndarray: Current individuals new position.
-
+        numpy.ndarray: New position.
     """
+    xn = x.copy()
     if mp < 0.5:
         b = np.sort(rng.choice(len(x), 2, replace=False))
-        x[b[0]:b[1]] = xpb[b[0]:b[1]]
-        return x
-    return np.asarray([xpb[i] if rng.random() < crossover_rate else x[i] for i in range(len(x))])
+        xn[b[0]:b[1]] = xpb[b[0]:b[1]]
+    else:
+        mask = rng.random(len(x)) < cr
+        xn[mask] = xpb[mask]
+    return xn
+
+
+def elitism(x, xpb, xb, xr, mp_c, mp_s, mp_p, f, cr, task, rng):
+    r"""Select the best of all three movement strategies.
+
+    Args:
+        x (numpy.ndarray): Individual's current position.
+        xpb (numpy.ndarray): Individual's personal best position.
+        xb (numpy.ndarray): Global best position.
+        xr (numpy.ndarray): Random individual's position.
+        mp_c (float): Fickleness index value.
+        mp_s (float): External irregularity index value.
+        mp_p (float): Internal irregularity index value.
+        f (float): Scale factor.
+        cr (float): Crossover probability.
+        task (Task): Optimization task.
+        rng (numpy.random.Generator): Random number generator.
+
+    Returns:
+        Tuple[numpy.ndarray, float]:
+            1. New position of individual.
+            2. New position's fitness value.
+    """
+    candidates = [
+        task.repair(_mp_c(x, f, cr, mp_c, rng), rng=rng),
+        task.repair(_mp_s(x, xr, xb, cr, mp_s, rng), rng=rng),
+        task.repair(_mp_p(x, xpb, cr, mp_p, rng), rng=rng),
+    ]
+    fitnesses = np.apply_along_axis(task.eval, 1, candidates)
+    best_idx = np.argmin(fitnesses)
+    return candidates[best_idx], fitnesses[best_idx]
+
+
+def sequential(x, xpb, xb, xr, mp_c, mp_s, mp_p, f, cr, task, rng):
+    r"""Sequentially apply all three movement strategies.
+
+    Args:
+        x (numpy.ndarray): Individual's current position.
+        xpb (numpy.ndarray): Individual's personal best position.
+        xb (numpy.ndarray): Global best position.
+        xr (numpy.ndarray): Random individual's position.
+        mp_c (float): Fickleness index value.
+        mp_s (float): External irregularity index value.
+        mp_p (float): Internal irregularity index value.
+        f (float): Scale factor.
+        cr (float): Crossover probability.
+        task (Task): Optimization task.
+        rng (numpy.random.Generator): Random number generator.
+
+    Returns:
+        Tuple[numpy.ndarray, float]:
+            1. New position.
+            2. New position's fitness value.
+    """
+    xn = task.repair(
+        _mp_s(
+            _mp_p(_mp_c(x, f, cr, mp_c, rng), xpb, cr, mp_p, rng),
+            xr, xb, cr, mp_s, rng,
+        ),
+        rng=rng,
+    )
+    return xn, task.eval(xn)
+
+
+def crossover(x, xpb, xb, xr, mp_c, mp_s, mp_p, f, cr, task, rng):
+    r"""Create a crossover over all three movement strategies.
+
+    Args:
+        x (numpy.ndarray): Individual's current position.
+        xpb (numpy.ndarray): Individual's personal best position.
+        xb (numpy.ndarray): Global best position.
+        xr (numpy.ndarray): Random individual's position.
+        mp_c (float): Fickleness index value.
+        mp_s (float): External irregularity index value.
+        mp_p (float): Internal irregularity index value.
+        f (float): Scale factor.
+        cr (float): Crossover probability.
+        task (Task): Optimization task.
+        rng (numpy.random.Generator): Random number generator.
+
+    Returns:
+        Tuple[numpy.ndarray, float]:
+            1. New position.
+            2. New position's fitness value.
+    """
+    candidates = [
+        task.repair(_mp_c(x, f, cr, mp_c, rng), rng=rng),
+        task.repair(_mp_s(x, xr, xb, cr, mp_s, rng), rng=rng),
+        task.repair(_mp_p(x, xpb, cr, mp_p, rng), rng=rng),
+    ]
+    xn = np.array([
+        candidates[rng.integers(len(candidates))][i] if rng.random() < cr else x[i]
+        for i in range(len(x))
+    ])
+    return xn, task.eval(xn)
 
 
 class AnarchicSocietyOptimization(Algorithm):
     r"""Implementation of Anarchic Society Optimization algorithm.
 
     Algorithm:
-        Anarchic Society Optimization algorithm
+        Anarchic Society Optimization
 
     Date:
         2018
@@ -189,26 +202,44 @@ class AnarchicSocietyOptimization(Algorithm):
         MIT
 
     Reference paper:
-        Ahmadi-Javid, Amir. "Anarchic Society Optimization: A human-inspired method." Evolutionary Computation (CEC), 2011 IEEE Congress on. IEEE, 2011.
+        Ahmadi-Javid, Amir. "Anarchic Society Optimization: A human-inspired method."
+        Evolutionary Computation (CEC), 2011 IEEE Congress on. IEEE, 2011.
 
     Attributes:
-        Name (list of str): List of stings representing name of algorithm.
+        Name (List[str]): List of strings representing algorithm names.
         alpha (List[float]): Factor for fickleness index function :math:`\in [0, 1]`.
         gamma (List[float]): Factor for external irregularity index function :math:`\in [0, \infty)`.
         theta (List[float]): Factor for internal irregularity index function :math:`\in [0, \infty)`.
-        d (Callable[[float, float], float]): function that takes two arguments that are function values and calculates the distance between them.
-        dn (Callable[[numpy.ndarray, numpy.ndarray], float]): function that takes two arguments that are points in function landscape and calculates the distance between them.
-        nl (float): Normalized range for neighborhood search :math:`\in (0, 1]`.
-        F (float): Mutation parameter.
-        CR (float): Crossover parameter :math:`\in [0, 1]`.
-        Combination (Callable[numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray, float, float, float, float, float, float, Task, numpy.random.Generator]): Function for combining individuals to get new position/individual.
+        d (Callable): Distance function for fitness values.
+        dn (Callable): Distance function for positions in search space.
+        nl (float): Normalized neighbourhood range :math:`\in (0, 1]`.
+        f (float): Mutation scale factor.
+        cr (float): Crossover probability :math:`\in [0, 1]`.
+        combination (Callable): Strategy for combining movement operators.
 
     See Also:
         * :class:`niapy.algorithms.Algorithm`
 
+    Examples:
+        >>> from niapy.algorithms.other import AnarchicSocietyOptimization
+        >>> from niapy.task import Task
+        >>> from niapy.benchmarks import Sphere
+        >>> task = Task(problem=Sphere(dimension=10), max_evals=10000)
+        >>> algo = AnarchicSocietyOptimization(population_size=43)
+        >>> best, best_fit = algo.run(task)
+        >>> print(best_fit)
     """
 
     Name = ['AnarchicSocietyOptimization', 'ASO']
+
+    def __init__(self, population_size=43, alpha=(1, 0.83), gamma=(1.17, 0.56),
+                 theta=(0.932, 0.832), d=euclidean, dn=euclidean, nl=1.0,
+                 f=1.2, cr=0.25, combination=elitism, *args, **kwargs):
+        r"""Initialize AnarchicSocietyOptimization algorithm."""
+        super().__init__(population_size=population_size, *args, **kwargs)
+        self.set_parameters(population_size=population_size, alpha=alpha, gamma=gamma,
+                            theta=theta, d=d, dn=dn, nl=nl, f=f, cr=cr,
+                            combination=combination)
 
     @staticmethod
     def info():
@@ -216,67 +247,54 @@ class AnarchicSocietyOptimization(Algorithm):
 
         Returns:
             str: Basic information.
-
-        See Also:
-            :func:`niapy.algorithms.algorithm.Algorithm.info`
-
         """
-        return r"""Ahmadi-Javid, Amir. "Anarchic Society Optimization: A human-inspired method." Evolutionary Computation (CEC), 2011 IEEE Congress on. IEEE, 2011."""
+        return r"""Ahmadi-Javid, Amir. "Anarchic Society Optimization: A human-inspired method."
+        Evolutionary Computation (CEC), 2011 IEEE Congress on. IEEE, 2011."""
 
-    def __init__(self, population_size=43, alpha=(1, 0.83), gamma=(1.17, 0.56), theta=(0.932, 0.832), d=euclidean,
-                 dn=euclidean, nl=1, mutation_rate=1.2, crossover_rate=0.25, combination=elitism, *args, **kwargs):
-        r"""Initialize AnarchicSocietyOptimization.
+    @staticmethod
+    def type_parameters():
+        r"""Get functions for checking parameter values.
+
+        Returns:
+            Dict[str, Callable]:
+                * alpha: Check alpha parameter.
+                * gamma: Check gamma parameter.
+                * theta: Check theta parameter.
+                * nl: Check neighbourhood range.
+                * f: Check scale factor.
+                * cr: Check crossover probability.
+        """
+        d = Algorithm.type_parameters()
+        d.update({
+            'alpha': lambda x: True,
+            'gamma': lambda x: True,
+            'theta': lambda x: True,
+            'nl': lambda x: isinstance(x, float) and 0 < x <= 1,
+            'f': lambda x: isinstance(x, (int, float)) and x > 0,
+            'cr': lambda x: isinstance(x, float) and 0 <= x <= 1,
+        })
+        return d
+
+    def set_parameters(self, population_size=43, alpha=(1, 0.83), gamma=(1.17, 0.56),
+                       theta=(0.932, 0.832), d=euclidean, dn=euclidean, nl=1.0,
+                       f=1.2, cr=0.25, combination=elitism, **kwargs):
+        r"""Set algorithm parameters.
 
         Args:
-            population_size (Optional[int]): Population size.
-            alpha (Optional[Tuple[float, ...]]): Factor for fickleness index function :math:`\in [0, 1]`.
-            gamma (Optional[Tuple[float, ...]]): Factor for external irregularity index function :math:`\in [0, \infty)`.
-            theta (Optional[List[float]]): Factor for internal irregularity index function :math:`\in [0, \infty)`.
-            d (Optional[Callable[[float, float], float]]): function that takes two arguments that are function values and calculates the distance between them.
-            dn (Optional[Callable[[numpy.ndarray, numpy.ndarray], float]]): function that takes two arguments that are points in function landscape and calculates the distance between them.
-            nl (Optional[float]): Normalized range for neighborhood search :math:`\in (0, 1]`.
-            mutation_rate (Optional[float]): Mutation parameter.
-            crossover_rate (Optional[float]): Crossover parameter :math:`\in [0, 1]`.
-            combination (Optional[Callable[numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray, float, float, float, float, float, float, Task, numpy.random.Generator]]): Function for combining individuals to get new position/individual.
+            population_size (Optional[int]): Number of individuals in population.
+            alpha (Optional[List[float]]): Factors for fickleness index :math:`\in [0, 1]`.
+            gamma (Optional[List[float]]): Factors for external irregularity index :math:`\in [0, \infty)`.
+            theta (Optional[List[float]]): Factors for internal irregularity index :math:`\in [0, \infty)`.
+            d (Optional[Callable]): Distance function for fitness values.
+            dn (Optional[Callable]): Distance function for positions.
+            nl (Optional[float]): Normalized neighbourhood range :math:`\in (0, 1]`.
+            f (Optional[float]): Mutation scale factor.
+            cr (Optional[float]): Crossover probability :math:`\in [0, 1]`.
+            combination (Optional[Callable]): Movement strategy combination function.
+                Choose from :func:`elitism`, :func:`sequential`, :func:`crossover`.
 
         See Also:
             * :func:`niapy.algorithms.Algorithm.set_parameters`
-
-        """
-        super().__init__(population_size, *args, **kwargs)
-        self.alpha = alpha
-        self.gamma = gamma
-        self.theta = theta
-        self.d = d
-        self.dn = dn
-        self.nl = nl
-        self.mutation_rate = mutation_rate
-        self.crossover_rate = crossover_rate
-        self.combination = combination
-
-    def set_parameters(self, population_size=43, alpha=(1, 0.83), gamma=(1.17, 0.56), theta=(0.932, 0.832), d=euclidean,
-                       dn=euclidean, nl=1, mutation_rate=1.2, crossover_rate=0.25, combination=elitism, **kwargs):
-        r"""Set the parameters for the algorithm.
-
-        Args:
-            population_size (Optional[int]): Population size.
-            alpha (Optional[Tuple[float, ...]]): Factor for fickleness index function :math:`\in [0, 1]`.
-            gamma (Optional[Tuple[float, ...]]): Factor for external irregularity index function :math:`\in [0, \infty)`.
-            theta (Optional[List[float]]): Factor for internal irregularity index function :math:`\in [0, \infty)`.
-            d (Optional[Callable[[float, float], float]]): function that takes two arguments that are function values and calculates the distance between them.
-            dn (Optional[Callable[[numpy.ndarray, numpy.ndarray], float]]): function that takes two arguments that are points in function landscape and calculates the distance between them.
-            nl (Optional[float]): Normalized range for neighborhood search :math:`\in (0, 1]`.
-            mutation_rate (Optional[float]): Mutation parameter.
-            crossover_rate (Optional[float]): Crossover parameter :math:`\in [0, 1]`.
-            combination (Optional[Callable[numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray, float, float, float, float, float, float, Task, numpy.random.Generator]]): Function for combining individuals to get new position/individual.
-
-        See Also:
-            * :func:`niapy.algorithms.Algorithm.set_parameters`
-            * Combination methods:
-                * :func:`niapy.algorithms.other.elitism`
-                * :func:`niapy.algorithms.other.crossover`
-                * :func:`niapy.algorithms.other.sequential`
-
         """
         super().set_parameters(population_size=population_size, **kwargs)
         self.alpha = alpha
@@ -285,215 +303,249 @@ class AnarchicSocietyOptimization(Algorithm):
         self.d = d
         self.dn = dn
         self.nl = nl
-        self.mutation_rate = mutation_rate
-        self.crossover_rate = crossover_rate
+        self.f = f
+        self.cr = cr
         self.combination = combination
 
     def get_parameters(self):
-        r"""Get parameters of the algorithm.
+        r"""Get parameter values of the algorithm.
 
         Returns:
-            Dict[str, Any]: Algorithm parameters.
-
+            Dict[str, Any]: Parameter values.
         """
         params = super().get_parameters()
         params.update({
             'alpha': self.alpha,
             'gamma': self.gamma,
             'theta': self.theta,
-            'd': self.d,
-            'dn': self.dn,
             'nl': self.nl,
-            'mutation_rate': self.mutation_rate,
-            'crossover_rate': self.crossover_rate,
-            'combination': self.combination
+            'f': self.f,
+            'cr': self.cr,
+            'combination': self.combination,
         })
         return params
 
-    def init(self, _task):
-        r"""Initialize dynamic parameters of algorithm.
+    def _init_params(self, population_size):
+        r"""Expand scalar or short list parameters to arrays of length population_size.
 
         Args:
-            _task (Task): Optimization task.
+            population_size (int): Population size.
 
         Returns:
-            Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray]
-                1. Array of `self.alpha` propagated values
-                2. Array of `self.gamma` propagated values
-                3. Array of `self.theta` propagated values
-
+            Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray]:
+                1. Alpha values per individual.
+                2. Gamma values per individual.
+                3. Theta values per individual.
         """
-        return full_array(self.alpha, self.population_size), full_array(self.gamma, self.population_size), full_array(
-            self.theta, self.population_size)
+        return (
+            full_array(self.alpha, population_size),
+            full_array(self.gamma, population_size),
+            full_array(self.theta, population_size),
+        )
 
-    @staticmethod
-    def fickleness_index(x_f, xpb_f, xb_f, alpha):
-        r"""Get fickleness index.
+    def _fi(self, x_f, xpb_f, xb_f, alpha):
+        r"""Calculate fickleness index.
+
+        A high fickleness index means the individual is likely to change its
+        behaviour (move away from its current position).
 
         Args:
-            x_f (float): Individuals fitness/function value.
-            xpb_f (float): Individuals personal best fitness/function value.
-            xb_f (float): Current best found individuals fitness/function value.
-            alpha (float): Fickleness factor.
+            x_f (float): Individual's current fitness value.
+            xpb_f (float): Individual's personal best fitness value.
+            xb_f (float): Global best fitness value.
+            alpha (float): Fickleness scaling factor.
 
         Returns:
-            float: Fickleness index.
-
+            float: Fickleness index value.
         """
-        return 1 - alpha * xb_f / x_f - (1 - alpha) * xpb_f / x_f
+        return 1.0 - alpha * xb_f / x_f - (1.0 - alpha) * xpb_f / x_f
 
-    def external_irregularity(self, x_f, xnb_f, gamma):
-        r"""Get external irregularity index.
+    def _ei(self, x_f, xnb_f, gamma):
+        r"""Calculate external irregularity index.
+
+        Measures how different the individual's fitness is from its neighbour's.
 
         Args:
-            x_f (float): Individuals fitness/function value.
-            xnb_f (float): Individuals new fitness/function value.
-            gamma (float): External irregularity factor.
+            x_f (float): Individual's current fitness value.
+            xnb_f (float): Neighbour's fitness value.
+            gamma (float): External irregularity scaling factor.
 
         Returns:
-            float: External irregularity index.
-
+            float: External irregularity index value.
         """
-        return 1 - np.exp(-gamma * self.d(x_f, xnb_f))
+        return 1.0 - np.exp(-gamma * abs(x_f - xnb_f))
 
-    def irregularity_index(self, x_f, xpb_f, theta):
-        r"""Get internal irregularity index.
+    def _ii(self, x_f, xpb_f, theta):
+        r"""Calculate internal irregularity index.
+
+        Measures how different the individual's current fitness is from its
+        personal best fitness.
 
         Args:
-            x_f (float): Individuals fitness/function value.
-            xpb_f (float): Individuals personal best fitness/function value.
-            theta (float): Internal irregularity factor.
+            x_f (float): Individual's current fitness value.
+            xpb_f (float): Individual's personal best fitness value.
+            theta (float): Internal irregularity scaling factor.
 
         Returns:
-            float: Internal irregularity index
-
+            float: Internal irregularity index value.
         """
-        return 1 - np.exp(-theta * self.d(x_f, xpb_f))
+        return 1.0 - np.exp(-theta * abs(x_f - xpb_f))
 
-    def get_best_neighbors(self, i, population, population_fitness, rs):
-        r"""Get neighbors of individual.
+    def _get_best_neighbor(self, i, population, population_fitness, rs):
+        r"""Find the best neighbour of individual *i* within the neighbourhood radius.
 
-        Measurement of distance for neighborhood is defined with `self.nl`.
-        Function for calculating distances is define with `self.dn`.
+        Neighbourhood is defined by ``self.nl`` (normalised distance threshold)
+        and ``self.dn`` (distance function in solution space).
 
         Args:
-            i (int): Index of individual for hum we are looking for neighbours.
-            population (numpy.ndarray): Current population.
-            population_fitness (numpy.ndarray[float]): Current population fitness/function values.
-            rs (numpy.ndarray[float]): distance between individuals.
+            i (int): Index of the focal individual.
+            population (numpy.ndarray): Current population positions.
+            population_fitness (numpy.ndarray): Current population fitness values.
+            rs (float): Search-space diameter used for normalisation.
 
         Returns:
-            numpy.ndarray[int]: Indexes that represent individuals closest to `i`-th individual.
-
+            int: Index of the best neighbour within the neighbourhood.
         """
-        nn = np.asarray([self.dn(population[i], population[j]) / rs for j in range(len(population))])
-        return np.argmin(population_fitness[np.where(nn <= self.nl)])
+        distances = np.array([
+            self.dn(population[i], population[j]) / rs
+            for j in range(len(population))
+        ])
+        neighbor_indices = np.where(distances <= self.nl)[0]
+        return neighbor_indices[np.argmin(population_fitness[neighbor_indices])]
 
-    @staticmethod
-    def update_personal_best(population, population_fitness, personal_best, personal_best_fitness):
-        r"""Update personal best solution of all individuals in population.
+    def _update_personal_best(self, population, population_fitness, personal_best, personal_best_fitness):
+        r"""Update personal best positions for all individuals.
 
         Args:
-            population (numpy.ndarray): Current population.
-            population_fitness (numpy.ndarray[float]): Current population fitness/function values.
-            personal_best (numpy.ndarray): Current population best positions.
-            personal_best_fitness (numpy.ndarray[float]): Current populations best positions fitness/function values.
+            population (numpy.ndarray): Current population positions.
+            population_fitness (numpy.ndarray): Current population fitness values.
+            personal_best (numpy.ndarray): Current personal best positions.
+            personal_best_fitness (numpy.ndarray): Current personal best fitness values.
 
         Returns:
-            Tuple[numpy.ndarray, numpy.ndarray[float], numpy.ndarray, float]:
-                1. New personal best positions for current population.
-                2. New personal best positions function/fitness values for current population.
-                3. New best individual.
-                4. New best individual fitness/function value.
-
+            Tuple[numpy.ndarray, numpy.ndarray]:
+                1. Updated personal best positions.
+                2. Updated personal best fitness values.
         """
-        ix_pb = np.where(population_fitness < personal_best_fitness)
-        personal_best[ix_pb], personal_best_fitness[ix_pb] = population[ix_pb], population_fitness[ix_pb]
+        improved = population_fitness < personal_best_fitness
+        personal_best[improved] = population[improved].copy()
+        personal_best_fitness[improved] = population_fitness[improved].copy()
         return personal_best, personal_best_fitness
 
     def init_population(self, task):
-        r"""Initialize first population and additional arguments.
-
-        Args:
-            task (Task): Optimization task
-
-        Returns:
-            Tuple[numpy.ndarray, numpy.ndarray, dict]:
-                1. Initialized population
-                2. Initialized population fitness/function values
-                3. Dict[str, Any]:
-                    * x_best (numpy.ndarray): Initialized populations best positions.
-                    * x_best_fitness (numpy.ndarray): Initialized populations best positions function/fitness values.
-                    * alpha (numpy.ndarray):
-                    * gamma (numpy.ndarray):
-                    * theta (numpy.ndarray):
-                    * rs (float): distance of search space.
-
-        See Also:
-            * :func:`niapy.algorithms.algorithm.Algorithm.init_population`
-            * :func:`niapy.algorithms.other.aso.AnarchicSocietyOptimization.init`
-
-        """
-        population, population_fitness, d = Algorithm.init_population(self, task)
-        alpha, gamma, theta = self.init(task)
-        x_best, x_best_fitness = self.update_personal_best(population, task.optimization_type.value * population_fitness,
-                                                           np.zeros((self.population_size, task.dimension)),
-                                                           np.full(self.population_size, np.inf))
-        d.update({'x_best': x_best, 'x_best_fitness': x_best_fitness, 'alpha': alpha, 'gamma': gamma, 'theta': theta,
-                  'rs': self.d(task.upper, task.lower)})
-        return population, population_fitness, d
-
-    def run_iteration(self, task, population, population_fitness, best_x, best_fitness, **params):
-        r"""Core function of AnarchicSocietyOptimization algorithm.
+        r"""Initialize population and algorithm state.
 
         Args:
             task (Task): Optimization task.
-            population (numpy.ndarray): Current populations positions.
-            population_fitness (numpy.ndarray): Current populations function/fitness values.
-            best_x (numpy.ndarray): Current global best individuals position.
-            best_fitness (float): Current global best individual function/fitness value.
-            **params: Additional arguments.
 
         Returns:
-            Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, float, dict]:
-                1. Initialized population
-                2. Initialized population fitness/function values
-                3. New global best solution
-                4. New global best solutions fitness/objective value
-                5. Dict[str, Union[float, int, numpy.ndarray]:
-                    * x_best (numpy.ndarray): Initialized populations best positions.
-                    * x_best_fitness (numpy.ndarray): Initialized populations best positions function/fitness values.
-                    * alpha (numpy.ndarray):
-                    * gamma (numpy.ndarray):
-                    * theta (numpy.ndarray):
-                    * rs (float): distance of search space.
+            Tuple[numpy.ndarray, numpy.ndarray, Dict[str, Any]]:
+                1. Initial population positions.
+                2. Initial population fitness values.
+                3. Additional state:
+                    * personal_best (numpy.ndarray): Personal best positions.
+                    * personal_best_fitness (numpy.ndarray): Personal best fitness values.
+                    * alpha (numpy.ndarray): Per-individual alpha values.
+                    * gamma (numpy.ndarray): Per-individual gamma values.
+                    * theta (numpy.ndarray): Per-individual theta values.
+                    * rs (float): Search-space diameter.
 
+        See Also:
+            * :func:`niapy.algorithms.Algorithm.init_population`
         """
-        x_best = params.pop('x_best')
-        x_best_fitness = params.pop('x_best_fitness')
-        alpha = params.pop('alpha')
-        gamma = params.pop('gamma')
-        theta = params.pop('theta')
-        rs = params.pop('rs')
+        population, population_fitness, state = super().init_population(task)
+        alpha, gamma, theta = self._init_params(self.population_size)
+        personal_best = population.copy()
+        personal_best_fitness = population_fitness.copy()
+        rs = self.dn(task.upper, task.lower)
+        state.update({
+            'personal_best': personal_best,
+            'personal_best_fitness': personal_best_fitness,
+            'alpha': alpha,
+            'gamma': gamma,
+            'theta': theta,
+            'rs': rs,
+        })
+        return population, population_fitness, state
 
-        x_in = [self.get_best_neighbors(i, population, population_fitness, rs) for i in range(len(population))]
-        mp_c, mp_s, mp_p = np.asarray(
-            [self.fickleness_index(population_fitness[i], x_best_fitness[i], best_fitness, alpha[i]) for i in
-             range(len(population))]), np.asarray(
-            [self.external_irregularity(population_fitness[i], population_fitness[x_in[i]], gamma[i]) for i in
-             range(len(population))]), np.asarray(
-            [self.irregularity_index(population_fitness[i], x_best_fitness[i], theta[i]) for i in range(len(population))])
-        x_tmp = np.asarray([self.combination(population[i], x_best[i], best_x,
-                                             population[self.integers(len(population), skip=[i])], mp_c[i], mp_s[i],
-                                             mp_p[i], self.mutation_rate, self.crossover_rate, task, self.rng) for i in range(len(population))],
-                           dtype=object)
-        population, population_fitness = np.asarray([x_tmp[i][0] for i in range(len(population))]), np.asarray(
-            [x_tmp[i][1] for i in range(len(population))])
-        x_best, x_best_fitness = self.update_personal_best(population, population_fitness, x_best, x_best_fitness)
-        best_x, best_fitness = self.get_best(population, population_fitness, best_x, best_fitness)
-        return population, population_fitness, best_x, best_fitness, {'x_best': x_best,
-                                                                      'x_best_fitness': x_best_fitness,
-                                                                      'alpha': alpha,
-                                                                      'gamma': gamma,
-                                                                      'theta': theta,
-                                                                      'rs': rs}
+    def run_iteration(self, task, population, population_fitness, best_x, best_fitness,
+                      personal_best, personal_best_fitness, alpha, gamma, theta, rs, **params):
+        r"""Perform one iteration of the Anarchic Society Optimization algorithm.
+
+        Args:
+            task (Task): Optimization task.
+            population (numpy.ndarray): Current population positions.
+            population_fitness (numpy.ndarray): Current population fitness values.
+            best_x (numpy.ndarray): Global best position found so far.
+            best_fitness (float): Global best fitness value found so far.
+            personal_best (numpy.ndarray): Personal best positions.
+            personal_best_fitness (numpy.ndarray): Personal best fitness values.
+            alpha (numpy.ndarray): Per-individual fickleness factors.
+            gamma (numpy.ndarray): Per-individual external irregularity factors.
+            theta (numpy.ndarray): Per-individual internal irregularity factors.
+            rs (float): Search-space diameter for normalising distances.
+            **params: Unused additional parameters.
+
+        Returns:
+            Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, float, Dict[str, Any]]:
+                1. New population positions.
+                2. New population fitness values.
+                3. New global best position.
+                4. New global best fitness value.
+                5. Updated state dictionary.
+        """
+        n = len(population)
+
+        # Find best neighbour index for each individual
+        neighbor_indices = [
+            self._get_best_neighbor(i, population, population_fitness, rs)
+            for i in range(n)
+        ]
+
+        # Compute movement probability indices
+        mp_c = np.array([
+            self._fi(population_fitness[i], personal_best_fitness[i], best_fitness, alpha[i])
+            for i in range(n)
+        ])
+        mp_s = np.array([
+            self._ei(population_fitness[i], population_fitness[neighbor_indices[i]], gamma[i])
+            for i in range(n)
+        ])
+        mp_p = np.array([
+            self._ii(population_fitness[i], personal_best_fitness[i], theta[i])
+            for i in range(n)
+        ])
+
+        # Generate new positions using the chosen combination strategy
+        new_population = np.empty_like(population)
+        new_fitness = np.empty(n)
+        for i in range(n):
+            # Pick a random individual different from i
+            rand_idx = self.integers(n, skip=[i])
+            new_population[i], new_fitness[i] = self.combination(
+                population[i],
+                personal_best[i],
+                best_x,
+                population[rand_idx],
+                mp_c[i], mp_s[i], mp_p[i],
+                self.f, self.cr,
+                task,
+                self.rng,
+            )
+
+        # Update personal bests
+        personal_best, personal_best_fitness = self._update_personal_best(
+            new_population, new_fitness, personal_best, personal_best_fitness
+        )
+
+        # Update global best
+        best_x, best_fitness = self.get_best(new_population, new_fitness, best_x, best_fitness)
+
+        return new_population, new_fitness, best_x, best_fitness, {
+            'personal_best': personal_best,
+            'personal_best_fitness': personal_best_fitness,
+            'alpha': alpha,
+            'gamma': gamma,
+            'theta': theta,
+            'rs': rs,
+        }
