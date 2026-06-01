@@ -22,7 +22,7 @@ et-xmlfile==2.0.0
     # via openpyxl
 fonttools==4.63.0
     # via matplotlib
-idna==3.11
+idna==3.17
     # via requests
 imagesize==1.4.1
     # via sphinx
