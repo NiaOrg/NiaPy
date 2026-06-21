@@ -8,7 +8,8 @@ from niapy.util.array import full_array
 
 
 def euclidean(u, v):
-    r"""Calculate Euclidean distance between two vectors.
+    r"""
+    Calculate Euclidean distance between two vectors.
 
     Implemented with numpy only, since scipy is not a NiaPy dependency.
 
@@ -33,8 +34,7 @@ __all__ = [
 
 
 def _mp_c(x, f, cr, mp, rng):
-    r"""
-    Get new position based on fickleness (Fickleness Index strategy).
+    r"""Get new position based on fickleness (Fickleness Index strategy).
 
     Args:
         x (numpy.ndarray): Current individual's position.
@@ -222,7 +222,6 @@ def crossover(x, xpb, xb, xr, mp_c, mp_s, mp_p, f, cr, task, rng):
 
 
 class AnarchicSocietyOptimization(Algorithm):
-
     r"""
     Implementation of Anarchic Society Optimization algorithm.
 
