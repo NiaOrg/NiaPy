@@ -251,7 +251,7 @@ class AnarchicSocietyOptimization(Algorithm):
                  theta=(0.932, 0.832), d=euclidean, dn=euclidean, nl=1.0,
                  f=1.2, cr=0.25, combination=elitism, *args, **kwargs):
         r"""Initialize AnarchicSocietyOptimization algorithm."""
-        super().__init__(population_size=population_size, *args, **kwargs)
+        super().__init__(*args, population_size=population_size, **kwargs)
         self.set_parameters(population_size=population_size, alpha=alpha, gamma=gamma,
                             theta=theta, d=d, dn=dn, nl=nl, f=f, cr=cr,
                             combination=combination, **kwargs)
@@ -292,7 +292,7 @@ class AnarchicSocietyOptimization(Algorithm):
 
     def set_parameters(self, population_size=43, alpha=(1, 0.83), gamma=(1.17, 0.56),
                        theta=(0.932, 0.832), d=euclidean, dn=euclidean, nl=1.0,
-                       f=1.2, cr=0.25, combination=elitism, **kwargs):
+                       f=1.2, cr=0.25, combination=elitism, *args, **kwargs):
         r"""Set algorithm parameters.
 
         Args:
@@ -311,7 +311,7 @@ class AnarchicSocietyOptimization(Algorithm):
         See Also:
             * :func:`niapy.algorithms.Algorithm.set_parameters`
         """
-        super().set_parameters(population_size=population_size, **kwargs)
+        super().set_parameters(*args, population_size=population_size, **kwargs)
         self.alpha = alpha
         self.gamma = gamma
         self.theta = theta
