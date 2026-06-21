@@ -8,7 +8,8 @@ from niapy.util.array import full_array
 
 
 def euclidean(u, v):
-    r"""Calculate Euclidean distance between two vectors.
+    r"""
+    Calculate Euclidean distance between two vectors.
 
     Implemented with numpy only, since scipy is not a NiaPy dependency.
 
@@ -33,7 +34,8 @@ __all__ = [
 
 
 def _mp_c(x, f, cr, mp, rng):
-    r"""Get new position based on fickleness (Fickleness Index strategy).
+    r"""
+    Get new position based on fickleness (Fickleness Index strategy).
 
     Args:
         x (numpy.ndarray): Current individual's position.
@@ -58,7 +60,8 @@ def _mp_c(x, f, cr, mp, rng):
 
 
 def _mp_s(x, xr, xb, cr, mp, rng):
-    r"""Get new position based on external irregularity (External Irregularity Index strategy).
+    r"""
+    Get new position based on external irregularity (External Irregularity Index strategy).
 
     Args:
         x (numpy.ndarray): Current individual's position.
@@ -90,7 +93,8 @@ def _mp_s(x, xr, xb, cr, mp, rng):
 
 
 def _mp_p(x, xpb, cr, mp, rng):
-    r"""Get new position based on internal irregularity (Internal Irregularity Index strategy).
+    r"""
+    Get new position based on internal irregularity (Internal Irregularity Index strategy).
 
     Args:
         x (numpy.ndarray): Current individual's position.
@@ -115,7 +119,8 @@ def _mp_p(x, xpb, cr, mp, rng):
 
 
 def elitism(x, xpb, xb, xr, mp_c, mp_s, mp_p, f, cr, task, rng):
-    r"""Select the best of all three movement strategies.
+    r"""
+    Select the best of all three movement strategies.
 
     Args:
         x (numpy.ndarray): Individual's current position.
@@ -148,7 +153,8 @@ def elitism(x, xpb, xb, xr, mp_c, mp_s, mp_p, f, cr, task, rng):
 
 
 def sequential(x, xpb, xb, xr, mp_c, mp_s, mp_p, f, cr, task, rng):
-    r"""Sequentially apply all three movement strategies.
+    r"""
+    Sequentially apply all three movement strategies.
 
     Args:
         x (numpy.ndarray): Individual's current position.
@@ -181,7 +187,8 @@ def sequential(x, xpb, xb, xr, mp_c, mp_s, mp_p, f, cr, task, rng):
 
 
 def crossover(x, xpb, xb, xr, mp_c, mp_s, mp_p, f, cr, task, rng):
-    r"""Create a crossover over all three movement strategies.
+    r"""
+    Create a crossover over all three movement strategies.
 
     Args:
         x (numpy.ndarray): Individual's current position.
@@ -216,7 +223,8 @@ def crossover(x, xpb, xb, xr, mp_c, mp_s, mp_p, f, cr, task, rng):
 
 
 class AnarchicSocietyOptimization(Algorithm):
-    r"""Implementation of Anarchic Society Optimization algorithm.
+    r"""
+    Implementation of Anarchic Society Optimization algorithm.
 
     Algorithm:
         Anarchic Society Optimization
@@ -268,7 +276,8 @@ class AnarchicSocietyOptimization(Algorithm):
     def __init__(self, population_size=43, alpha=(1, 0.83), gamma=(1.17, 0.56),
                  theta=(0.932, 0.832), d=euclidean, dn=euclidean, nl=1.0,
                  f=1.2, cr=0.25, combination=elitism, *args, **kwargs):
-        r"""Initialize AnarchicSocietyOptimization algorithm."""
+        r"""
+        Initialize AnarchicSocietyOptimization algorithm."""
         super().__init__(*args, population_size=population_size, **kwargs)
         self.set_parameters(population_size=population_size, alpha=alpha, gamma=gamma,
                             theta=theta, d=d, dn=dn, nl=nl, f=f, cr=cr,
@@ -276,7 +285,8 @@ class AnarchicSocietyOptimization(Algorithm):
 
     @staticmethod
     def info():
-        r"""Get basic information about the algorithm.
+        r"""
+        Get basic information about the algorithm.
 
         Returns
         -------
@@ -288,7 +298,8 @@ class AnarchicSocietyOptimization(Algorithm):
 
     @staticmethod
     def type_parameters():
-        r"""Get functions for checking parameter values.
+        r"""
+        Get functions for checking parameter values.
 
         Returns
         -------
@@ -315,7 +326,8 @@ class AnarchicSocietyOptimization(Algorithm):
     def set_parameters(self, population_size=43, alpha=(1, 0.83), gamma=(1.17, 0.56),
                        theta=(0.932, 0.832), d=euclidean, dn=euclidean, nl=1.0,
                        f=1.2, cr=0.25, combination=elitism, *args, **kwargs):
-        r"""Set algorithm parameters.
+        r"""
+        Set algorithm parameters.
 
         Args:
             population_size (Optional[int]): Number of individuals in population.
@@ -347,7 +359,8 @@ class AnarchicSocietyOptimization(Algorithm):
         self.combination = combination
 
     def get_parameters(self):
-        r"""Get parameter values of the algorithm.
+        r"""
+        Get parameter values of the algorithm.
 
         Returns
         -------
@@ -367,7 +380,8 @@ class AnarchicSocietyOptimization(Algorithm):
         return params
 
     def _init_params(self, population_size):
-        r"""Expand scalar or short list parameters to arrays of length population_size.
+        r"""
+        Expand scalar or short list parameters to arrays of length population_size.
 
         Args:
             population_size (int): Population size.
@@ -387,7 +401,8 @@ class AnarchicSocietyOptimization(Algorithm):
         )
 
     def _fi(self, x_f, xpb_f, xb_f, alpha):
-        r"""Calculate fickleness index.
+        r"""
+        Calculate fickleness index.
 
         A high fickleness index means the individual is likely to change its
         behaviour (move away from its current position).
@@ -406,7 +421,8 @@ class AnarchicSocietyOptimization(Algorithm):
         return 1.0 - alpha * xb_f / x_f - (1.0 - alpha) * xpb_f / x_f
 
     def _ei(self, x_f, xnb_f, gamma):
-        r"""Calculate external irregularity index.
+        r"""
+        Calculate external irregularity index.
 
         Measures how different the individual's fitness is from its neighbour's.
 
@@ -423,7 +439,8 @@ class AnarchicSocietyOptimization(Algorithm):
         return 1.0 - np.exp(-gamma * abs(x_f - xnb_f))
 
     def _ii(self, x_f, xpb_f, theta):
-        r"""Calculate internal irregularity index.
+        r"""
+        Calculate internal irregularity index.
 
         Measures how different the individual's current fitness is from its
         personal best fitness.
@@ -441,7 +458,8 @@ class AnarchicSocietyOptimization(Algorithm):
         return 1.0 - np.exp(-theta * abs(x_f - xpb_f))
 
     def _get_best_neighbor(self, i, population, population_fitness, rs):
-        r"""Find the best neighbour of individual *i* within the neighbourhood radius.
+        r"""
+        Find the best neighbour of individual *i* within the neighbourhood radius.
 
         Neighbourhood is defined by ``self.nl`` (normalised distance threshold)
         and ``self.dn`` (distance function in solution space).
@@ -465,7 +483,8 @@ class AnarchicSocietyOptimization(Algorithm):
         return neighbor_indices[np.argmin(population_fitness[neighbor_indices])]
 
     def _update_personal_best(self, population, population_fitness, personal_best, personal_best_fitness):
-        r"""Update personal best positions for all individuals.
+        r"""
+        Update personal best positions for all individuals.
 
         Args:
             population (numpy.ndarray): Current population positions.
@@ -486,7 +505,8 @@ class AnarchicSocietyOptimization(Algorithm):
         return personal_best, personal_best_fitness
 
     def init_population(self, task):
-        r"""Initialize population and algorithm state.
+        r"""
+        Initialize population and algorithm state.
 
         Args:
             task (Task): Optimization task.
@@ -525,7 +545,8 @@ class AnarchicSocietyOptimization(Algorithm):
         return population, population_fitness, state
 
     def run_iteration(self, task, population, population_fitness, best_x, best_fitness, **params):
-        r"""Perform one iteration of the Anarchic Society Optimization algorithm.
+        r"""
+        Perform one iteration of the Anarchic Society Optimization algorithm.
 
         Args:
             task (Task): Optimization task.
