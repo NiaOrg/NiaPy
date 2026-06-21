@@ -2,10 +2,25 @@
 """Anarchic Society Optimization algorithm."""
 
 import numpy as np
-from scipy.spatial.distance import euclidean
 
 from niapy.algorithms.algorithm import Algorithm
 from niapy.util.array import full_array
+
+
+def euclidean(u, v):
+    r"""Calculate Euclidean distance between two vectors.
+
+    Implemented with numpy only, since scipy is not a NiaPy dependency.
+
+    Args:
+        u (numpy.ndarray): First vector.
+        v (numpy.ndarray): Second vector.
+
+    Returns:
+        float: Euclidean distance between u and v.
+    """
+    return np.sqrt(np.sum((np.asarray(u) - np.asarray(v)) ** 2))
+
 
 __all__ = [
     'AnarchicSocietyOptimization',
