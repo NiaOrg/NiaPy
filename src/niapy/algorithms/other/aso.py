@@ -8,8 +8,7 @@ from niapy.util.array import full_array
 
 
 def euclidean(u, v):
-    r"""
-    Calculate Euclidean distance between two vectors.
+    r"""Calculate Euclidean distance between two vectors.
 
     Implemented with numpy only, since scipy is not a NiaPy dependency.
 
@@ -223,6 +222,7 @@ def crossover(x, xpb, xb, xr, mp_c, mp_s, mp_p, f, cr, task, rng):
 
 
 class AnarchicSocietyOptimization(Algorithm):
+
     r"""
     Implementation of Anarchic Society Optimization algorithm.
 
@@ -276,8 +276,7 @@ class AnarchicSocietyOptimization(Algorithm):
     def __init__(self, population_size=43, alpha=(1, 0.83), gamma=(1.17, 0.56),
                  theta=(0.932, 0.832), d=euclidean, dn=euclidean, nl=1.0,
                  f=1.2, cr=0.25, combination=elitism, *args, **kwargs):
-        r"""
-        Initialize AnarchicSocietyOptimization algorithm."""
+        r"""Initialize AnarchicSocietyOptimization algorithm."""
         super().__init__(*args, population_size=population_size, **kwargs)
         self.set_parameters(population_size=population_size, alpha=alpha, gamma=gamma,
                             theta=theta, d=d, dn=dn, nl=nl, f=f, cr=cr,
