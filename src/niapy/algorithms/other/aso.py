@@ -8,8 +8,7 @@ from niapy.util.array import full_array
 
 
 def euclidean(u, v):
-    r"""
-    Calculate Euclidean distance between two vectors.
+    r"""Calculate Euclidean distance between two vectors.
 
     Implemented with numpy only, since scipy is not a NiaPy dependency.
 
