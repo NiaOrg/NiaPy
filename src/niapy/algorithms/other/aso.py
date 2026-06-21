@@ -254,7 +254,7 @@ class AnarchicSocietyOptimization(Algorithm):
         super().__init__(population_size=population_size, *args, **kwargs)
         self.set_parameters(population_size=population_size, alpha=alpha, gamma=gamma,
                             theta=theta, d=d, dn=dn, nl=nl, f=f, cr=cr,
-                            combination=combination)
+                            combination=combination, **kwargs)
 
     @staticmethod
     def info():
@@ -483,8 +483,7 @@ class AnarchicSocietyOptimization(Algorithm):
         })
         return population, population_fitness, state
 
-    def run_iteration(self, task, population, population_fitness, best_x, best_fitness,
-                      personal_best, personal_best_fitness, alpha, gamma, theta, rs, **params):
+    def run_iteration(self, task, population, population_fitness, best_x, best_fitness, **params):
         r"""Perform one iteration of the Anarchic Society Optimization algorithm.
 
         Args:
@@ -493,13 +492,8 @@ class AnarchicSocietyOptimization(Algorithm):
             population_fitness (numpy.ndarray): Current population fitness values.
             best_x (numpy.ndarray): Global best position found so far.
             best_fitness (float): Global best fitness value found so far.
-            personal_best (numpy.ndarray): Personal best positions.
-            personal_best_fitness (numpy.ndarray): Personal best fitness values.
-            alpha (numpy.ndarray): Per-individual fickleness factors.
-            gamma (numpy.ndarray): Per-individual external irregularity factors.
-            theta (numpy.ndarray): Per-individual internal irregularity factors.
-            rs (float): Search-space diameter for normalising distances.
-            **params: Unused additional parameters.
+            **params: Additional algorithm state (personal_best, personal_best_fitness,
+                alpha, gamma, theta, rs). See :func:`AnarchicSocietyOptimization.init_population`.
 
         Returns:
             Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, float, Dict[str, Any]]:
@@ -509,6 +503,13 @@ class AnarchicSocietyOptimization(Algorithm):
                 4. New global best fitness value.
                 5. Updated state dictionary.
         """
+        personal_best = params.pop('personal_best')
+        personal_best_fitness = params.pop('personal_best_fitness')
+        alpha = params.pop('alpha')
+        gamma = params.pop('gamma')
+        theta = params.pop('theta')
+        rs = params.pop('rs')
+
         n = len(population)
 
         # Find best neighbour index for each individual
