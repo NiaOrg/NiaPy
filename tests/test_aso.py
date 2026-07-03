@@ -1,16 +1,13 @@
 # encoding=utf8
-from niapy.algorithms.other import AnarchicSocietyOptimization
-from niapy.algorithms.other.aso import elitism, sequential, crossover
+from niapy.algorithms.other.aso import AnarchicSocietyOptimization, elitism, sequential, crossover
 from tests.test_algorithm import AlgorithmTestCase, MyProblem
 
 
-class ASOTestCase(AlgorithmTestCase):
+class ASOElitismTestCase(AlgorithmTestCase):
     def setUp(self):
         AlgorithmTestCase.setUp(self)
         self.algo = AnarchicSocietyOptimization
 
-
-class ASOElitismTestCase(ASOTestCase):
     def test_custom(self):
         aso_custom = self.algo(population_size=10, combination=elitism, seed=self.seed)
         aso_customc = self.algo(population_size=10, combination=elitism, seed=self.seed)
@@ -23,6 +20,10 @@ class ASOElitismTestCase(ASOTestCase):
 
 
 class ASOSequentialTestCase(AlgorithmTestCase):
+    def setUp(self):
+        AlgorithmTestCase.setUp(self)
+        self.algo = AnarchicSocietyOptimization
+
     def test_custom(self):
         aso_custom = self.algo(population_size=10, combination=sequential, seed=self.seed)
         aso_customc = self.algo(population_size=10, combination=sequential, seed=self.seed)
@@ -35,6 +36,10 @@ class ASOSequentialTestCase(AlgorithmTestCase):
 
 
 class ASOCrossoverTestCase(AlgorithmTestCase):
+    def setUp(self):
+        AlgorithmTestCase.setUp(self)
+        self.algo = AnarchicSocietyOptimization
+
     def test_custom(self):
         aso_custom = self.algo(population_size=10, combination=crossover, seed=self.seed)
         aso_customc = self.algo(population_size=10, combination=crossover, seed=self.seed)
