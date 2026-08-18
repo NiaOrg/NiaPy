@@ -20,9 +20,9 @@ docutils==0.22.4
     #   sphinx-rtd-theme
 et-xmlfile==2.0.0
     # via openpyxl
-fonttools==4.61.0
+fonttools==4.63.0
     # via matplotlib
-idna==3.11
+idna==3.18
     # via requests
 imagesize==1.4.1
     # via sphinx
@@ -51,7 +51,7 @@ packaging==25.0
     #   sphinx
 pandas==2.3.3
     # via niapy (pyproject.toml)
-pillow==12.1.1
+pillow==12.3.0
     # via matplotlib
 pluggy==1.6.0
     # via
@@ -78,7 +78,7 @@ python-dateutil==2.9.0.post0
     #   pandas
 pytz==2025.2
     # via pandas
-requests==2.32.5
+requests==2.34.2
     # via sphinx
 roman-numerals==4.1.0
     # via sphinx
@@ -109,5 +109,5 @@ sphinxcontrib-serializinghtml==2.0.0
     # via sphinx
 tzdata==2025.2
     # via pandas
-urllib3==2.6.3
+urllib3==2.7.0
     # via requests
