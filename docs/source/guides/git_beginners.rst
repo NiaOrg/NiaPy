@@ -5,8 +5,8 @@ Beginner's guide on how to contribute to open source community.
 
 .. note::
 
-    If you don't have any previous experience with using Git, we recommend you take a
-    `15 minutes long Git Tutorial <https://try.github.io>`_.
+    If you don't have any previous experience with using Git, we recommend you take an
+    `interactive Git course <https://coddy.tech/landing/git>`_.
 
 Whether you're trying to give back to the open source community or collaborating on
 your own projects, knowing how to properly fork and generate pull requests is essential.
