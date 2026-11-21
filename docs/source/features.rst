@@ -49,6 +49,7 @@ Modified algorithms
 - Hybrid Bat Algorithm
 - Self-adaptive Differential Evolution
 - Dynamic Population Size Self-adaptive Differential Evolution
+- Multi-population based Differential Evolution
 
 Documentation for the modified algorithms can be found here: :mod:`niapy.algorithms.modified`.
 

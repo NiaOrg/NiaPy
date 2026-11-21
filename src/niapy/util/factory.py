@@ -169,6 +169,7 @@ def _algorithm_options():
         "MultiStrategySelfAdaptiveDifferentialEvolution": modified_algorithms.MultiStrategySelfAdaptiveDifferentialEvolution,
         "SuccessHistoryAdaptiveDifferentialEvolution": modified_algorithms.SuccessHistoryAdaptiveDifferentialEvolution,
         "LpsrSuccessHistoryAdaptiveDifferentialEvolution": modified_algorithms.LpsrSuccessHistoryAdaptiveDifferentialEvolution,
+        "MultiPopulationDifferentialEvolution": modified_algorithms.MultiPopulationDifferentialEvolution,
         "NelderMeadMethod": other_algorithms.NelderMeadMethod,
         "HillClimbAlgorithm": other_algorithms.HillClimbAlgorithm,
         "SimulatedAnnealing": other_algorithms.SimulatedAnnealing,

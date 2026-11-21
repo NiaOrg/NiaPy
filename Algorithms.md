@@ -45,6 +45,7 @@ Harris hawks optimization      |HHO| Heidari et al. "Harris hawks optimization: 
 |Self-adaptive differential evolution					|jDE    |Brest, J., Greiner, S., Boskovic, B., Mernik, M., Zumer, V. Self-adapting control parameters in differential evolution: A comparative study on numerical benchmark problems. IEEE transactions on evolutionary computation, 10(6), 646-657, 2006. 	|
 |Success-history based adaptive differential evolution	|SHADE  |Ryoji Tanabe and Alex Fukunaga: Improving the Search Performance of SHADE Using Linear Population Size Reduction,  Proc. IEEE Congress on Evolutionary Computation (CEC-2014), Beijing, July, 2014.												|
 |Parameter-free bat algorithm							|PLBA   |Iztok Fister Jr., Iztok Fister, Xin-She Yang. Towards the development of a parameter-free bat algorithm . In: FISTER Jr., Iztok (Ed.), BRODNIK, Andrej (Ed.). StuCoSReC : proceedings of the 2015 2nd Student Computer Science Research Conference. Koper: University of Primorska, 2015, pp. 31-34.|
+|Multi-population based Differential Evolution			|MDE    |Karkinli, A. E. (2023). Detection of object boundary from point cloud by using multi-population based differential evolution algorithm. Neural Computing and Applications, 35, 5193-5206. <https://doi.org/10.1007/s00521-022-07969-w>|
 
 ## Other algorithms
 
