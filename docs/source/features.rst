@@ -37,6 +37,7 @@ Basic algorithms
 - Monarch Butterfly Optimization
 - Monkey King Evolution
 - Moth flame Optimizer
+- Multi-population based Differential Evolution
 - Particle Swarm Optimization
 - Sine Cosine Algorithm
 

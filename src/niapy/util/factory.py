@@ -106,6 +106,7 @@ def _algorithm_options():
         "DynNpDifferentialEvolution": basic_algorithms.DynNpDifferentialEvolution,
         "MultiStrategyDifferentialEvolution": basic_algorithms.MultiStrategyDifferentialEvolution,
         "DynNpMultiStrategyDifferentialEvolution": basic_algorithms.DynNpMultiStrategyDifferentialEvolution,
+        "MultiPopulationDifferentialEvolution": basic_algorithms.MultiPopulationDifferentialEvolution,
         "FlowerPollinationAlgorithm": basic_algorithms.FlowerPollinationAlgorithm,
         "GreyWolfOptimizer": basic_algorithms.GreyWolfOptimizer,
         "GeneticAlgorithm": basic_algorithms.GeneticAlgorithm,
