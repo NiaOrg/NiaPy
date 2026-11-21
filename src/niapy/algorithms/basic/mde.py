@@ -6,7 +6,7 @@ import logging
 
 import numpy as np
 
-from niapy.algorithms.algorithm import Algorithm
+from niapy.algorithms.algorithm import Algorithm, default_numpy_init
 
 logging.basicConfig()
 logger = logging.getLogger('niapy.algorithms.basic')
@@ -94,19 +94,24 @@ class MultiPopulationDifferentialEvolution(Algorithm):
         self._check_population_size(population_size)
         super().__init__(population_size, *args, **kwargs)
 
-    def set_parameters(self, population_size=90, **kwargs):
+    def set_parameters(self, population_size=90, initialization_function=default_numpy_init, individual_type=None,
+                       *args, **kwargs):
         r"""Set the parameters of the algorithm.
 
         Args:
             population_size (Optional[int]): Size of the full population (:math:`3N` in the paper, at least 9).
                 The sub-population evolved in each iteration has ``population_size // 3`` members.
+            initialization_function (Optional[Callable[[int, Task, numpy.random.Generator, Dict[str, Any]], Tuple[numpy.ndarray, numpy.ndarray[float]]]]):
+                Population initialization function.
+            individual_type (Optional[Type[Individual]]): Individual type used in population, default is Numpy array.
 
         See Also:
             * :func:`niapy.algorithms.Algorithm.set_parameters`
 
         """
         self._check_population_size(population_size)
-        super().set_parameters(population_size=population_size, **kwargs)
+        super().set_parameters(population_size=population_size, initialization_function=initialization_function,
+                               individual_type=individual_type, *args, **kwargs)
 
     @staticmethod
     def _check_population_size(population_size):
