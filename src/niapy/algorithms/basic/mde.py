@@ -25,7 +25,7 @@ class MultiPopulationDifferentialEvolution(Algorithm):
         2026
 
     Author:
-        A. E. Karkinli
+        Ahmet Emin Karkinli
 
     License:
         MIT
