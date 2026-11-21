@@ -9,7 +9,7 @@ import numpy as np
 from niapy.algorithms.algorithm import Algorithm, default_numpy_init
 
 logging.basicConfig()
-logger = logging.getLogger('niapy.algorithms.basic')
+logger = logging.getLogger('niapy.algorithms.modified')
 logger.setLevel('INFO')
 
 __all__ = ['MultiPopulationDifferentialEvolution']

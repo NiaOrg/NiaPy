@@ -1,7 +1,7 @@
 # encoding=utf8
 import numpy as np
 
-from niapy.algorithms.basic import MultiPopulationDifferentialEvolution
+from niapy.algorithms.modified import MultiPopulationDifferentialEvolution
 from niapy.task import Task
 from niapy.util.factory import get_algorithm
 from tests.test_algorithm import AlgorithmTestCase, MyProblem

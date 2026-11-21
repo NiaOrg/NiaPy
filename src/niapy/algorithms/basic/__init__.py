@@ -28,7 +28,6 @@ from niapy.algorithms.basic.hs import HarmonySearch, HarmonySearchV1
 from niapy.algorithms.basic.kh import KrillHerd
 from niapy.algorithms.basic.loa import LionOptimizationAlgorithm
 from niapy.algorithms.basic.mbo import MonarchButterflyOptimization
-from niapy.algorithms.basic.mde import MultiPopulationDifferentialEvolution
 from niapy.algorithms.basic.mfo import MothFlameOptimizer
 from niapy.algorithms.basic.mke import MonkeyKingEvolutionV1, MonkeyKingEvolutionV2, MonkeyKingEvolutionV3
 from niapy.algorithms.basic.mshoa import MantisSearchAlgorithm, MShOA
@@ -47,7 +46,6 @@ __all__ = [
     'DynNpDifferentialEvolution',
     'MultiStrategyDifferentialEvolution',
     'DynNpMultiStrategyDifferentialEvolution',
-    'MultiPopulationDifferentialEvolution',
     'multi_mutations',
     'FlowerPollinationAlgorithm',
     'GreyWolfOptimizer',

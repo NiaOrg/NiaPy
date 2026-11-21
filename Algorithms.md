@@ -29,7 +29,6 @@ Harris hawks optimization      |HHO| Heidari et al. "Harris hawks optimization: 
 |Krill Herd Algorithm          |KH |Amir Hossein Gandomi, Amir Hossein Alavi, Krill herd: A new bio-inspired optimization algorithm, Communications in Nonlinear Science and Numerical Simulation, Volume 17, Issue 12, 2012.
 |Lion Optimization Algorithm   |LOA|Yazdani, Maziar, Jolai, Fariborz. Lion Optimization Algorithm (LOA): A nature-inspired metaheuristic algorithm. Journal of Computational Design and Engineering, Volume 3, Issue 1, Pages 24-36. 2016.
 |Monarch Butterfly Algorithm   |MBO|Wang, G. G., Deb, S., & Cui, Z. (2019). Monarch butterfly optimization. Neural computing and applications, 31(7), 1995-2014.
-|Multi-population based Differential Evolution|MDE|Karkinli, A. E. (2023). Detection of object boundary from point cloud by using multi-population based differential evolution algorithm. Neural Computing and Applications, 35, 5193-5206. <https://doi.org/10.1007/s00521-022-07969-w>
 |Moth-flame Optimization       |MFO|Mirjalili, Seyedali. "Moth-flame optimization algorithm: A novel nature-inspired heuristic paradigm." Knowledge-Based Systems 89 (2015): 228-249.
 |Monkey King Evolution         |MKE|Zhenyu Meng, Jeng-Shyang Pan, Monkey King Evolution: A new memetic evolutionary algorithm and its application in vehicle fuel consumption optimization, Knowledge-Based Systems, Volume 97, 2016, Pages 144-157.
 |Mantis Shrimp Optimization Algorithm|MShOA|Sánchez Cortez et al., 2025, [DOI](https://doi.org/10.3390/math13091500)|
@@ -46,6 +45,7 @@ Harris hawks optimization      |HHO| Heidari et al. "Harris hawks optimization: 
 |Self-adaptive differential evolution					|jDE    |Brest, J., Greiner, S., Boskovic, B., Mernik, M., Zumer, V. Self-adapting control parameters in differential evolution: A comparative study on numerical benchmark problems. IEEE transactions on evolutionary computation, 10(6), 646-657, 2006. 	|
 |Success-history based adaptive differential evolution	|SHADE  |Ryoji Tanabe and Alex Fukunaga: Improving the Search Performance of SHADE Using Linear Population Size Reduction,  Proc. IEEE Congress on Evolutionary Computation (CEC-2014), Beijing, July, 2014.												|
 |Parameter-free bat algorithm							|PLBA   |Iztok Fister Jr., Iztok Fister, Xin-She Yang. Towards the development of a parameter-free bat algorithm . In: FISTER Jr., Iztok (Ed.), BRODNIK, Andrej (Ed.). StuCoSReC : proceedings of the 2015 2nd Student Computer Science Research Conference. Koper: University of Primorska, 2015, pp. 31-34.|
+|Multi-population based Differential Evolution			|MDE    |Karkinli, A. E. (2023). Detection of object boundary from point cloud by using multi-population based differential evolution algorithm. Neural Computing and Applications, 35, 5193-5206. <https://doi.org/10.1007/s00521-022-07969-w>|
 
 ## Other algorithms
 

@@ -37,7 +37,6 @@ Basic algorithms
 - Monarch Butterfly Optimization
 - Monkey King Evolution
 - Moth flame Optimizer
-- Multi-population based Differential Evolution
 - Particle Swarm Optimization
 - Sine Cosine Algorithm
 
@@ -50,6 +49,7 @@ Modified algorithms
 - Hybrid Bat Algorithm
 - Self-adaptive Differential Evolution
 - Dynamic Population Size Self-adaptive Differential Evolution
+- Multi-population based Differential Evolution
 
 Documentation for the modified algorithms can be found here: :mod:`niapy.algorithms.modified`.
 

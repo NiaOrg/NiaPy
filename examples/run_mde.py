@@ -8,7 +8,7 @@ sys.path.append('../')
 
 from niapy.task import Task
 from niapy.problems import Sphere
-from niapy.algorithms.basic import MultiPopulationDifferentialEvolution
+from niapy.algorithms.modified import MultiPopulationDifferentialEvolution
 
 # we will run Multi-population based Differential Evolution for 5 independent runs
 # population_size is the full population (3N); each iteration evolves N = population_size // 3 individuals
